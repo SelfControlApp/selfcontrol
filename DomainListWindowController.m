@@ -4,7 +4,7 @@
 //  SelfControl
 //
 //  Created by Charlie Stigler on 2/7/09.
-//  Copyright 2009 Eyebeam.
+//  Copyright 2009 Eyebeam. 
 
 // This file is part of SelfControl.
 // 
@@ -20,7 +20,6 @@
 
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 
 #import "DomainListWindowController.h"
 

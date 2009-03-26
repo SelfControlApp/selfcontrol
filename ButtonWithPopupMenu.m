@@ -3,7 +3,7 @@
 //  SelfControl
 //
 //  Created by Charlie Stigler on 2/18/09.
-//  Copyright 2009 Eyebeam.  
+//  Copyright 2009 Eyebeam. 
 
 // This file is part of SelfControl.
 // 

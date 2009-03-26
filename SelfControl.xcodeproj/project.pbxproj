@@ -11,6 +11,7 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		CB1ED4480F56686400EFECEE /* org.eyebeam.SelfControl in Copy Helper Tool */ = {isa = PBXBuildFile; fileRef = CBA2AFD20F39EC12005AFEBE /* org.eyebeam.SelfControl */; };
 		CB4C58D60F3F8F2A00B5D7CB /* SelfControlIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = CB4C58D50F3F8F2A00B5D7CB /* SelfControlIcon.icns */; };
 		CB4C58DA0F3F90B000B5D7CB /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = CB4C58D90F3F90B000B5D7CB /* Credits.rtf */; };
 		CB529BBF0F32B7ED00564FB8 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB529BBE0F32B7ED00564FB8 /* AppController.m */; };
@@ -30,6 +31,16 @@
 		CBEE50C60F48C37900F5DF1C /* TimerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBEE50C50F48C37900F5DF1C /* TimerWindow.xib */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		CBEF43CF0F7BB7F6009A9FDF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CBA2AFD10F39EC12005AFEBE;
+			remoteInfo = org.eyebeam.SelfControl;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		CB2359D90F4541AB0030F59C /* Copy Helper Tool */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -37,6 +48,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 6;
 			files = (
+				CB1ED4480F56686400EFECEE /* org.eyebeam.SelfControl in Copy Helper Tool */,
 			);
 			name = "Copy Helper Tool";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -54,7 +66,6 @@
 		32CA4F630368D1EE00C91783 /* SelfControl_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelfControl_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* SelfControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SelfControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		AA4B43660F7A8A9000FD0366 /* org.eyebeam.SelfControl */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = org.eyebeam.SelfControl; path = build/Debug/org.eyebeam.SelfControl; sourceTree = "<group>"; };
 		CB42939A0F53A819008E10CA /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
 		CB4295C20F53EF8C008E10CA /* org.eyebeam.SelfControl.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = org.eyebeam.SelfControl.plist; sourceTree = "<group>"; };
 		CB4C58D50F3F8F2A00B5D7CB /* SelfControlIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SelfControlIcon.icns; sourceTree = "<group>"; };
@@ -67,6 +78,7 @@
 		CB90BF820F49F430006D202D /* HostImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HostImporter.m; sourceTree = "<group>"; };
 		CB9E90190F397FF6006DE6E4 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		CB9E901D0F397FFA006DE6E4 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		CBA2AFD20F39EC12005AFEBE /* org.eyebeam.SelfControl */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = org.eyebeam.SelfControl; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBA2AFD70F39EC46005AFEBE /* HelperMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperMain.h; sourceTree = "<group>"; };
 		CBA2AFD80F39EC46005AFEBE /* HelperMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelperMain.m; sourceTree = "<group>"; };
 		CBA2E7590F41388800571571 /* IPFirewall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPFirewall.h; sourceTree = "<group>"; };
@@ -128,7 +140,7 @@
 			isa = PBXGroup;
 			children = (
 				8D1107320486CEB800E47090 /* SelfControl.app */,
-				AA4B43660F7A8A9000FD0366 /* org.eyebeam.SelfControl */,
+				CBA2AFD20F39EC12005AFEBE /* org.eyebeam.SelfControl */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -230,6 +242,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				CBEF43D00F7BB7F6009A9FDF /* PBXTargetDependency */,
 			);
 			name = SelfControl;
 			productInstallPath = "$(HOME)/Applications";
@@ -250,7 +263,7 @@
 			);
 			name = org.eyebeam.SelfControl;
 			productName = "selfcontrol-helper";
-			productReference = AA4B43660F7A8A9000FD0366 /* org.eyebeam.SelfControl */;
+			productReference = CBA2AFD20F39EC12005AFEBE /* org.eyebeam.SelfControl */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -314,6 +327,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CBEF43D00F7BB7F6009A9FDF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CBA2AFD10F39EC12005AFEBE /* org.eyebeam.SelfControl */;
+			targetProxy = CBEF43CF0F7BB7F6009A9FDF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
