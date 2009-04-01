@@ -331,7 +331,29 @@
 }
 
 - (IBAction)soundSelectionChanged:(id)sender {
-  NSLog(@"something happened");
+  // Map the tags used in interface builder to the sound
+  NSArray* systemSoundNames = [NSArray arrayWithObjects:
+                               @"Basso",
+                               @"Blow",
+                               @"Bottle",
+                               @"Frog",
+                               @"Funk",
+                               @"Glass",
+                               @"Hero",
+                               @"Morse",
+                               @"Ping",
+                               @"Pop",
+                               @"Purr",
+                               @"Sosumi",
+                               @"Submarine",
+                               @"Tink",
+                               nil
+                               ];
+  NSSound* alertSound = [NSSound soundNamed: [systemSoundNames objectAtIndex: [defaults_ integerForKey: @"BlockSound"]]];
+  if(!alertSound)
+    NSLog(@"WARNING: Alert sound not found.");
+  else
+    [alertSound play];
 }
 
 - (void)dealloc {
@@ -348,5 +370,9 @@
   [super dealloc];
 }
 
-@synthesize initialWindow = initialWindow_;
+// @synthesize initialWindow = initialWindow_;
+- (id)initialWindow {
+  return initialWindow_;
+}
+
 @end

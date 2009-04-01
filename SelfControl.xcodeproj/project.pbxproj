@@ -122,6 +122,8 @@
 			isa = PBXGroup;
 			children = (
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+				CB587E4F0F50FE8800C66A09 /* SystemConfiguration.framework */,
+				CB9E901D0F397FFA006DE6E4 /* Security.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -131,6 +133,7 @@
 			children = (
 				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
 				13E42FB307B3F0F600E4EEF1 /* CoreData.framework */,
+				CB9E90190F397FF6006DE6E4 /* CoreFoundation.framework */,
 				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
 			);
 			name = "Other Frameworks";
@@ -183,9 +186,6 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CB587E4F0F50FE8800C66A09 /* SystemConfiguration.framework */,
-				CB9E90190F397FF6006DE6E4 /* CoreFoundation.framework */,
-				CB9E901D0F397FFA006DE6E4 /* Security.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
@@ -377,6 +377,7 @@
 				GCC_PREFIX_HEADER = SelfControl_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				PRODUCT_NAME = SelfControl;
 			};
 			name = Debug;
@@ -391,6 +392,7 @@
 				GCC_PREFIX_HEADER = SelfControl_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				PRODUCT_NAME = SelfControl;
 			};
 			name = Release;

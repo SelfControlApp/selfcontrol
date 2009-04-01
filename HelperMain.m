@@ -46,12 +46,36 @@ int main(int argc, char* argv[]) {
   // We'll need the controlling UID to know what defaults database to search
   int controllingUID = [[NSString stringWithUTF8String: argv[1]] intValue];
         
+  // You'll see this pattern several times in this file.  The two resets and
+  // set of euid to the controlling UID are necessary in order to successfully
+  // return the NSUserDefaults object for the controlling user.  Also note that
+  // the defaults object cannot be simply kept in a variable and repeatedly
+  // referred to, the resets will invalidate it.  For now, we're just re-registering
+  // the default settings, since they don't carry over from the main application.
+  // TODO: Factor this code out into a function
+  [NSUserDefaults resetStandardUserDefaults];
+  seteuid(controllingUID);
+  defaults = [NSUserDefaults standardUserDefaults];
+  [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
+  NSDictionary* appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
+                               [NSNumber numberWithInt: 0], @"BlockDuration",
+                               [NSDate distantFuture], @"BlockStartedDate",
+                               [NSArray array], @"HostBlacklist", 
+                               [NSNumber numberWithBool: YES], @"EvaluateCommonSubdomains",
+                               [NSNumber numberWithBool: YES], @"HighlightInvalidHosts",
+                               [NSNumber numberWithBool: YES], @"VerifyInternetConnection",
+                               [NSNumber numberWithBool: NO], @"TimerWindowFloats",
+                               [NSNumber numberWithBool: NO], @"BlockSoundShouldPlay",
+                               [NSNumber numberWithInt: 5], @"BlockSound",
+                               nil];
+  
+  [defaults registerDefaults:appDefaults];    
+  domainList = [defaults objectForKey:@"HostBlacklist"];
+  [defaults synchronize];
+  [NSUserDefaults resetStandardUserDefaults];
+  seteuid(0);  
+  
   if([modeString isEqual: @"--install"]) {
-    // You'll see this pattern several times in this file.  The two resets and
-    // set of euid to the controlling UID are necessary in order to successfully
-    // return the NSUserDefaults object for the controlling user.  Also note that
-    // the defaults object cannot be simply kept in a variable and repeatedly
-    // referred to, the resets will invalidate it.
     [NSUserDefaults resetStandardUserDefaults];
     seteuid(controllingUID);
     defaults = [NSUserDefaults standardUserDefaults];
@@ -256,7 +280,8 @@ int main(int argc, char* argv[]) {
 }
 
 void addRulesToFirewall(int controllingUID) {
-  NSMutableArray* hostsToBlock = [NSMutableArray array];
+  // Note all arrays in the host blocking code was changed to sets to easily stop duplicates
+  NSMutableSet* hostsToBlock = [NSMutableSet set];
     
   for(int i = 0; i < [domainList count]; i++) {
     NSArray* hostAndPort = [[domainList objectAtIndex: i] componentsSeparatedByString:@":"];
@@ -288,53 +313,54 @@ void addRulesToFirewall(int controllingUID) {
           else [hostsToBlock addObject: [addresses objectAtIndex: j]];
         }
       }
+      
       [NSUserDefaults resetStandardUserDefaults];
       seteuid(controllingUID);
       defaults = [NSUserDefaults standardUserDefaults];
       [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
-      int evaluateCommonSubdomains = [[defaults objectForKey: @"EvaluateCommonSubdomains"] intValue];
+      BOOL shouldEvaluateCommonSubdomains = [[defaults objectForKey: @"EvaluateCommonSubdomains"] boolValue];
       [defaults synchronize];
       [NSUserDefaults resetStandardUserDefaults];
       seteuid(0);
       
-      if(evaluateCommonSubdomains) {
-        // If we've been told to evaluate common subdomains, also block the www
-        // subdomain.  More intelligent-style blocks may be included with this
-        // preference later.
-        if([hostToBeBlocked rangeOfString: @"www."].location == 0) {
-          NSHost* modifiedHost = [NSHost hostWithName: [hostToBeBlocked substringFromIndex: 4]];
-                    
-          if(modifiedHost) {
-            NSArray* addresses = [modifiedHost addresses];
-            
-            for(int j = 0; j < [addresses count]; j++) {
-              if(portToBeBlocked != nil)
-                [hostsToBlock addObject: [NSString stringWithFormat: @"%@:%@", [addresses objectAtIndex: j], portToBeBlocked]];
-              else [hostsToBlock addObject: [addresses objectAtIndex: j]];
-            }
-          }
-        } else {
-          NSHost* modifiedHost = [NSHost hostWithName: [@"www." stringByAppendingString: hostToBeBlocked]];
-                    
-          if(modifiedHost) {
-            NSArray* addresses = [modifiedHost addresses];
-            
-            for(int j = 0; j < [addresses count]; j++) {
-              if(portToBeBlocked != nil)
-                [hostsToBlock addObject: [NSString stringWithFormat: @"%@:%@", [addresses objectAtIndex: j], portToBeBlocked]];
-              else [hostsToBlock addObject: [addresses objectAtIndex: j]];
-            }
-          }
-        }
+      if(shouldEvaluateCommonSubdomains) {
+        // Get the evaluated hostnames and union (combine) them with our current set
+        NSSet* evaluatedHosts = getEvaluatedHostNamesFromCommonSubdomains(hostToBeBlocked, portToBeBlocked);
+        [hostsToBlock unionSet: evaluatedHosts];
       }
     }
   }
+  
+  // This section is broken and plus seems to slow down parsing too much to be
+  // useful.  Consider reintroduction later, possibly with modifications?
+  /*
+  // OpenDNS, the very popular DNS provider, doesn't return NXDOMAIN.  Instead,
+  // all nonexistent DNS requests are pointed to hit-nxdomain.opendns.com.  We
+  // don't want to accidentally block that if one of our DNS resolutions fails,
+  // so we'll filter for those addresses.
+  NSHost* openDNSNXDomain = [NSHost hostWithName: @"hit-nxdomain.opendns.com"];
+  
+  if(openDNSNXDomain) {
+    NSArray* addresses = [openDNSNXDomain addresses];
+    
+    for(int j = 0; j < [addresses count]; j++) {
+      NSPredicate* openDNSFilter = [NSPredicate predicateWithFormat: @"NOT SELF beginswith '%@'", [addresses objectAtIndex: j]];
+      [hostsToBlock filterUsingPredicate: openDNSFilter];
+    }
+  }
+  */
+  
   IPFirewall* firewall = [[IPFirewall alloc] init];
   [firewall clearSelfControlBlockRuleSet];
   [firewall addSelfControlBlockHeader];
-  for(int i = 0; i < [hostsToBlock count]; i++) {
-    [firewall addSelfControlBlockRuleBlockingIP: [hostsToBlock objectAtIndex: i]];
-  }
+  
+  // Iterate through the host list to add a block rule for each
+  NSEnumerator* hostEnumerator = [hostsToBlock objectEnumerator];
+  NSString* hostString;
+  
+  while(hostString = [hostEnumerator nextObject])
+      [firewall addSelfControlBlockRuleBlockingIP: hostString];
+  
   [firewall addSelfControlBlockFooter];
 }
 
@@ -344,7 +370,6 @@ void removeRulesFromFirewall(int controllingUID) {
     [firewall clearSelfControlBlockRuleSet];
     NSLog(@"INFO: Blacklist blocking cleared.");
     
-    NSLog(@"INFO: About to enter block sound code");
     // We'll play the sound now rather than putting it in the "defaults block"
     // a few lines ago, because it is important that the UI get updated (by
     // the posted notification) before we sleep to play the sound.  Otherwise,
@@ -354,7 +379,6 @@ void removeRulesFromFirewall(int controllingUID) {
     defaults = [NSUserDefaults standardUserDefaults];
     [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
     if([defaults boolForKey: @"BlockSoundShouldPlay"]) {
-      NSLog(@"INFO: BlockSoundShouldPlay was true");
       // Map the tags used in interface builder to the sound
       NSArray* systemSoundNames = [NSArray arrayWithObjects:
                                    @"Basso",
@@ -373,25 +397,93 @@ void removeRulesFromFirewall(int controllingUID) {
                                    @"Tink",
                                    nil
                                    ];
-      NSLog(@"INFO: The matching sound name for %d is %@", [defaults integerForKey:@"BlockSound"], [systemSoundNames objectAtIndex: [defaults integerForKey: @"BlockSound"]]);
       NSSound* alertSound = [NSSound soundNamed: [systemSoundNames objectAtIndex: [defaults integerForKey: @"BlockSound"]]];
       if(!alertSound)
         NSLog(@"WARNING: Alert sound not found.");
       else {
-        NSLog(@"INFO: alertSound was %@", alertSound);
         [alertSound play];
-        NSLog(@"INFO: alertSound played, about to sleep...");
         // Sleeping a second is a messy way of doing this, but otherwise the
         // sound is killed along with this process when it is unloaded in just
         // a few lines.
         sleep(1);
-        NSLog(@"INFO: Slept");
       }
-    } else NSLog(@"INFO: BlockSoundShouldPlay was false");
+    }
     [defaults synchronize];
     [NSUserDefaults resetStandardUserDefaults];
     seteuid(0);    
     
   } else
     NSLog(@"WARNING: SelfControl rules do not appear to be loaded into ipfw.");
+}
+
+NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, NSString* port) {
+  NSMutableSet* evaluatedAddresses = [NSMutableSet set];
+  
+  // If the domain ends in facebook.com...  Special case for Facebook because
+  // users will often forget to block some of its many mirror subdomains that resolve
+  // to different IPs, i.e. hs.facebook.com.  Thanks to Danielle for raising this issue.
+  if([hostName rangeOfString: @"facebook.com"].location == ([hostName length] - 12)) {
+    // Initialize an array of aliases for Facebook
+    NSArray* facebookNames = [NSArray arrayWithObjects: 
+                                @"facebook.com",
+                                @"www.facebook.com",
+                                @"apps.facebook.com",
+                                @"new.facebook.com",
+                                @"login.facebook.com",
+                                @"register.facebook.com"
+                                @"developers.facebook.com",
+                                @"ak.facebook.com",
+                                @"hs.facebook.com",
+                                @"m.facebook.com",
+                                @"upload.facebook.com",
+                                @"connect.facebook.com",
+                                @"secure.facebook.com",
+                                @"iphone.facebook.com",
+                                @"blog.facebook.com",
+                              nil];
+    
+    for(int i = 0; i < [facebookNames count]; i++) {
+      NSHost* host = [NSHost hostWithName: [facebookNames objectAtIndex: i]];
+      
+      if(host) {
+        NSArray* addresses = [host addresses];
+        
+        for(int j = 0; j < [addresses count]; j++) {
+          if(port != nil)
+            [evaluatedAddresses addObject: [NSString stringWithFormat: @"%@:%@", [addresses objectAtIndex: j], port]];
+          else [evaluatedAddresses addObject: [addresses objectAtIndex: j]];
+        }
+      }
+    }
+  }
+  // Block the domain with no subdomains, if www.domain is blocked
+  else if([hostName rangeOfString: @"www."].location == 0) {
+    NSHost* modifiedHost = [NSHost hostWithName: [hostName substringFromIndex: 4]];
+    
+    if(modifiedHost) {
+      NSArray* addresses = [modifiedHost addresses];
+      
+      for(int j = 0; j < [addresses count]; j++) {
+        if(port != nil)
+          [evaluatedAddresses addObject: [NSString stringWithFormat: @"%@:%@", [addresses objectAtIndex: j], port]];
+        else [evaluatedAddresses addObject: [addresses objectAtIndex: j]];
+      }
+    }
+  }
+  // Or block www.domain otherwise
+  else {
+    NSHost* modifiedHost = [NSHost hostWithName: [@"www." stringByAppendingString: hostName]];
+    
+    if(modifiedHost) {
+      NSArray* addresses = [modifiedHost addresses];
+      
+      for(int j = 0; j < [addresses count]; j++) {
+        if(port != nil)
+          [evaluatedAddresses addObject: [NSString stringWithFormat: @"%@:%@", [addresses objectAtIndex: j], port]];
+        else [evaluatedAddresses addObject: [addresses objectAtIndex: j]];
+      }
+    }
+  }  
+  
+  return evaluatedAddresses;
 }

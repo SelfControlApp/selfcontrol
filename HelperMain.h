@@ -44,3 +44,7 @@ void addRulesToFirewall();
 
 // Removes from ipfw all rules that were created by SelfControl.
 void removeRulesFromFirewall();
+
+// Returns an autoreleased NSSet containing all IP adresses for evaluated
+// "common subdomains" for the specified hostname
+NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, NSString* port);

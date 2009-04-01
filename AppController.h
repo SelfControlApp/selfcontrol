@@ -94,5 +94,9 @@
 - (IBAction)soundSelectionChanged:(id)sender;
 
 // Property allows initialWindow to be accessed from TimerWindowController
-@property (retain, nonatomic, readonly) id initialWindow;
+// @property (retain, nonatomic, readonly) id initialWindow;
+
+// Changed property to manual accessor for pre-Leopard compatibility
+- (id)initialWindow;
+
 @end
