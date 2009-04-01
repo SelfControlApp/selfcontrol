@@ -177,7 +177,8 @@ int main(int argc, char* argv[]) {
     } else NSLog(@"INFO: Block successfully added.");
   }
   if([modeString isEqual: @"--remove"]) {
-    [NSUserDefaults resetStandardUserDefaults];
+    NSLog(@"INFO: Don't even try it.");
+    /* [NSUserDefaults resetStandardUserDefaults];
     seteuid(controllingUID);
     defaults = [NSUserDefaults standardUserDefaults];
     [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
@@ -196,7 +197,7 @@ int main(int argc, char* argv[]) {
     // Execution should never reach this point if the job was unloaded
     // successfully, because the unload will kill the helper tool.
     NSLog(@"WARNING: Launch daemon unload failed.");
-    exit(EXIT_FAILURE);
+    exit(EXIT_FAILURE); */
   } else if([modeString isEqual: @"--add"]) {
     [NSUserDefaults resetStandardUserDefaults];
     seteuid(controllingUID);
@@ -352,7 +353,10 @@ void addRulesToFirewall(int controllingUID) {
   
   IPFirewall* firewall = [[IPFirewall alloc] init];
   [firewall clearSelfControlBlockRuleSet];
-  [firewall addSelfControlBlockHeader];
+  
+ // Peeled out block headers/footers to make it more difficult to remove
+  
+ // [firewall addSelfControlBlockHeader];
   
   // Iterate through the host list to add a block rule for each
   NSEnumerator* hostEnumerator = [hostsToBlock objectEnumerator];
@@ -361,7 +365,7 @@ void addRulesToFirewall(int controllingUID) {
   while(hostString = [hostEnumerator nextObject])
       [firewall addSelfControlBlockRuleBlockingIP: hostString];
   
-  [firewall addSelfControlBlockFooter];
+ // [firewall addSelfControlBlockFooter];
 }
 
 void removeRulesFromFirewall(int controllingUID) {
