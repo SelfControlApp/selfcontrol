@@ -354,13 +354,13 @@
 									<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 									<array>
 										<array>
-											<integer>3</integer>
+											<integer>9</integer>
 											<integer>1</integer>
 											<integer>0</integer>
 										</array>
 									</array>
 									<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-									<string>{{0, 8}, {186, 274}}</string>
+									<string>{{0, 51}, {186, 274}}</string>
 								</dict>
 								<key>PBXTopSmartGroupGIDs</key>
 								<array/>
@@ -401,7 +401,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>AppController.m</string>
+								<string>HelperMain.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -409,11 +409,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>AppController.m</string>
+										<string>HelperMain.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>CB9D71850F83C16700B19A29</string>
+										<string>CB9D71910F83C5ED00B19A29</string>
 										<key>history</key>
 										<array>
 											<string>CB4294F60F53D973008E10CA</string>
@@ -436,10 +436,10 @@
 											<string>CB9D714D0F83BCD300B19A29</string>
 											<string>CB9D714E0F83BCD300B19A29</string>
 											<string>CB9D71610F83BE7900B19A29</string>
-											<string>CB9D71660F83BEB000B19A29</string>
 											<string>CB9D71670F83BEB000B19A29</string>
-											<string>CB9D71820F83C16700B19A29</string>
-											<string>CB9D71830F83C16700B19A29</string>
+											<string>CB9D71880F83C54500B19A29</string>
+											<string>CB9D71890F83C54500B19A29</string>
+											<string>CB9D718A0F83C54500B19A29</string>
 										</array>
 										<key>prevStack</key>
 										<array>
@@ -491,6 +491,8 @@
 											<string>CB9D716D0F83BEB000B19A29</string>
 											<string>CB9D716E0F83BEB000B19A29</string>
 											<string>CB9D71840F83C16700B19A29</string>
+											<string>CB9D718B0F83C54500B19A29</string>
+											<string>CB9D718C0F83C54500B19A29</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -690,8 +692,8 @@
 	<array>
 		<string>1C78EAAD065D492600B07095</string>
 		<string>1CD10A99069EF8BA00B06720</string>
-		<string>/Users/charlie/selfcontrol/SelfControl.xcodeproj</string>
 		<string>CB2358380F4521130030F59C</string>
+		<string>/Users/charlie/selfcontrol/SelfControl.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
 	<string>34 148 1180 630 0 0 1280 778 </string>

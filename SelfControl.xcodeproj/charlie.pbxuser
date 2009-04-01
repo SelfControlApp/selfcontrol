@@ -270,6 +270,16 @@
 			CB9D71830F83C16700B19A29 /* PBXTextBookmark */ = CB9D71830F83C16700B19A29 /* PBXTextBookmark */;
 			CB9D71840F83C16700B19A29 /* PBXTextBookmark */ = CB9D71840F83C16700B19A29 /* PBXTextBookmark */;
 			CB9D71850F83C16700B19A29 /* PBXTextBookmark */ = CB9D71850F83C16700B19A29 /* PBXTextBookmark */;
+			CB9D71860F83C4B900B19A29 /* PBXTextBookmark */ = CB9D71860F83C4B900B19A29 /* PBXTextBookmark */;
+			CB9D71880F83C54500B19A29 /* PBXTextBookmark */ = CB9D71880F83C54500B19A29 /* PBXTextBookmark */;
+			CB9D71890F83C54500B19A29 /* PBXTextBookmark */ = CB9D71890F83C54500B19A29 /* PBXTextBookmark */;
+			CB9D718A0F83C54500B19A29 /* PBXTextBookmark */ = CB9D718A0F83C54500B19A29 /* PBXTextBookmark */;
+			CB9D718B0F83C54500B19A29 /* PBXTextBookmark */ = CB9D718B0F83C54500B19A29 /* PBXTextBookmark */;
+			CB9D718C0F83C54500B19A29 /* PBXTextBookmark */ = CB9D718C0F83C54500B19A29 /* PBXTextBookmark */;
+			CB9D718D0F83C54500B19A29 /* PBXTextBookmark */ = CB9D718D0F83C54500B19A29 /* PBXTextBookmark */;
+			CB9D718E0F83C5A500B19A29 /* PBXTextBookmark */ = CB9D718E0F83C5A500B19A29 /* PBXTextBookmark */;
+			CB9D71900F83C5D200B19A29 /* PBXTextBookmark */ = CB9D71900F83C5D200B19A29 /* PBXTextBookmark */;
+			CB9D71910F83C5ED00B19A29 /* PBXTextBookmark */ = CB9D71910F83C5ED00B19A29 /* PBXTextBookmark */;
 			CBB2CBF50F4F5AB500B2C087 = CBB2CBF50F4F5AB500B2C087 /* PlistBookmark */;
 			CBBCA2390F5505BB00C75324 = CBBCA2390F5505BB00C75324 /* PBXTextBookmark */;
 			CBBD3B710F562C8B00E8A802 = CBBD3B710F562C8B00E8A802 /* PBXTextBookmark */;
@@ -708,7 +718,7 @@
 		fRef = CBA2AFD80F39EC46005AFEBE /* HelperMain.m */;
 		name = "HelperMain.m: 335";
 		rLen = 0;
-		rLoc = 15601;
+		rLoc = 15591;
 		rType = 0;
 		vrLen = 1007;
 		vrLoc = 15756;
@@ -924,7 +934,7 @@
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {13014, 5054}}";
 			sepNavSelRange = "{14250, 285}";
-			sepNavVisRange = "{13874, 1028}";
+			sepNavVisRange = "{13874, 988}";
 			sepNavVisRect = "{{0, 4497}, {925, 383}}";
 			sepNavWindowFrame = "{{166, 103}, {1101, 675}}";
 		};
@@ -1056,7 +1066,7 @@
 		fRef = CBA2AFD80F39EC46005AFEBE /* HelperMain.m */;
 		name = "HelperMain.m: 335";
 		rLen = 0;
-		rLoc = 15601;
+		rLoc = 15591;
 		rType = 0;
 		vrLen = 1281;
 		vrLoc = 8637;
@@ -1116,7 +1126,7 @@
 		fRef = CBA2AFD80F39EC46005AFEBE /* HelperMain.m */;
 		name = "HelperMain.m: 335";
 		rLen = 0;
-		rLoc = 15601;
+		rLoc = 15591;
 		rType = 0;
 		vrLen = 1281;
 		vrLoc = 8637;
@@ -1156,7 +1166,7 @@
 		fRef = CBA2AFD80F39EC46005AFEBE /* HelperMain.m */;
 		name = "HelperMain.m: 180";
 		rLen = 0;
-		rLoc = 8628;
+		rLoc = 8619;
 		rType = 0;
 		vrLen = 1279;
 		vrLoc = 8386;
@@ -1376,7 +1386,7 @@
 		fRef = CBA2AFD80F39EC46005AFEBE /* HelperMain.m */;
 		name = "HelperMain.m: 196";
 		rLen = 0;
-		rLoc = 9359;
+		rLoc = 9349;
 		rType = 0;
 		vrLen = 1254;
 		vrLoc = 8369;
@@ -1386,7 +1396,7 @@
 		fRef = CBA2AFD80F39EC46005AFEBE /* HelperMain.m */;
 		name = "HelperMain.m: 196";
 		rLen = 0;
-		rLoc = 9359;
+		rLoc = 9349;
 		rType = 0;
 		vrLen = 1254;
 		vrLoc = 8369;
@@ -1395,16 +1405,16 @@
 		isa = PBXTextBookmark;
 		comments = "warning: passing argument 1 of 'NSLog' from incompatible pointer type";
 		fRef = CBA2AFD80F39EC46005AFEBE /* HelperMain.m */;
-		rLen = 1;
-		rLoc = 179;
+		rLen = 0;
+		rLoc = 178;
 		rType = 1;
 	};
 	CB9D717C0F83BFB200B19A29 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = CBA2AFD80F39EC46005AFEBE /* HelperMain.m */;
 		name = "HelperMain.m: 180";
-		rLen = 40;
-		rLoc = 8589;
+		rLen = 1;
+		rLoc = 8619;
 		rType = 0;
 		vrLen = 1260;
 		vrLoc = 8412;
@@ -1448,6 +1458,106 @@
 		rType = 0;
 		vrLen = 1028;
 		vrLoc = 13874;
+	};
+	CB9D71860F83C4B900B19A29 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = CB529BBE0F32B7ED00564FB8 /* AppController.m */;
+		name = "AppController.m: 325";
+		rLen = 285;
+		rLoc = 14250;
+		rType = 0;
+		vrLen = 988;
+		vrLoc = 13874;
+	};
+	CB9D71880F83C54500B19A29 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = CB529BBE0F32B7ED00564FB8 /* AppController.m */;
+		name = "AppController.m: 325";
+		rLen = 285;
+		rLoc = 14250;
+		rType = 0;
+		vrLen = 988;
+		vrLoc = 13874;
+	};
+	CB9D71890F83C54500B19A29 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = CBA2E75A0F41388800571571 /* IPFirewall.m */;
+		name = "IPFirewall.m: 116";
+		rLen = 0;
+		rLoc = 4249;
+		rType = 0;
+		vrLen = 907;
+		vrLoc = 3541;
+	};
+	CB9D718A0F83C54500B19A29 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = CBA2AFD80F39EC46005AFEBE /* HelperMain.m */;
+		name = "HelperMain.m: 172";
+		rLen = 40;
+		rLoc = 8307;
+		rType = 0;
+		vrLen = 1212;
+		vrLoc = 8412;
+	};
+	CB9D718B0F83C54500B19A29 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = CB529BBE0F32B7ED00564FB8 /* AppController.m */;
+		name = "AppController.m: 325";
+		rLen = 285;
+		rLoc = 14250;
+		rType = 0;
+		vrLen = 988;
+		vrLoc = 13874;
+	};
+	CB9D718C0F83C54500B19A29 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = CBA2E75A0F41388800571571 /* IPFirewall.m */;
+		name = "IPFirewall.m: 116";
+		rLen = 0;
+		rLoc = 4249;
+		rType = 0;
+		vrLen = 907;
+		vrLoc = 3541;
+	};
+	CB9D718D0F83C54500B19A29 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = CBA2AFD80F39EC46005AFEBE /* HelperMain.m */;
+		name = "HelperMain.m: 180";
+		rLen = 0;
+		rLoc = 8626;
+		rType = 0;
+		vrLen = 1167;
+		vrLoc = 9205;
+	};
+	CB9D718E0F83C5A500B19A29 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = CBA2AFD80F39EC46005AFEBE /* HelperMain.m */;
+		name = "HelperMain.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1156;
+		vrLoc = 1390;
+	};
+	CB9D71900F83C5D200B19A29 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = CBA2AFD80F39EC46005AFEBE /* HelperMain.m */;
+		name = "HelperMain.m: 180";
+		rLen = 0;
+		rLoc = 8619;
+		rType = 0;
+		vrLen = 1232;
+		vrLoc = 8001;
+	};
+	CB9D71910F83C5ED00B19A29 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = CBA2AFD80F39EC46005AFEBE /* HelperMain.m */;
+		name = "HelperMain.m: 215";
+		rLen = 18;
+		rLoc = 10066;
+		rType = 0;
+		vrLen = 1143;
+		vrLoc = 9421;
 	};
 	CBA2AFD10F39EC12005AFEBE /* org.eyebeam.SelfControl */ = {
 		activeExec = 0;
@@ -1527,9 +1637,9 @@
 	};
 	CBA2AFD80F39EC46005AFEBE /* HelperMain.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {911, 6888}}";
-			sepNavSelRange = "{8602, 40}";
-			sepNavVisRange = "{8425, 1260}";
+			sepNavIntBoundsRect = "{{0, 0}, {3108, 6748}}";
+			sepNavSelRange = "{10066, 18}";
+			sepNavVisRange = "{9421, 1143}";
 			sepNavWindowFrame = "{{364, 98}, {1257, 680}}";
 		};
 	};
@@ -1543,9 +1653,9 @@
 	};
 	CBA2E75A0F41388800571571 /* IPFirewall.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {911, 2282}}";
-			sepNavSelRange = "{4347, 0}";
-			sepNavVisRange = "{2601, 940}";
+			sepNavIntBoundsRect = "{{0, 0}, {911, 2268}}";
+			sepNavSelRange = "{4249, 0}";
+			sepNavVisRange = "{3541, 907}";
 			sepNavWindowFrame = "{{443, -545}, {1101, 680}}";
 		};
 	};
@@ -1648,7 +1758,7 @@
 		fRef = CBA2AFD80F39EC46005AFEBE /* HelperMain.m */;
 		name = "helpermain.m: 202";
 		rLen = 0;
-		rLoc = 15182;
+		rLoc = 15172;
 		rType = 0;
 		vrLen = 0;
 		vrLoc = 8449;
