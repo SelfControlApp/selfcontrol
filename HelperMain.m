@@ -424,7 +424,7 @@ NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, NSString* p
   // users will often forget to block some of its many mirror subdomains that resolve
   // to different IPs, i.e. hs.facebook.com.  Thanks to Danielle for raising this issue.
   if([hostName rangeOfString: @"facebook.com"].location == ([hostName length] - 12)) {
-    // Initialize an array of aliases for Facebook
+    /* // Initialize an array of aliases for Facebook
     NSArray* facebookNames = [NSArray arrayWithObjects: 
                                 @"facebook.com",
                                 @"www.facebook.com",
@@ -455,7 +455,8 @@ NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, NSString* p
           else [evaluatedAddresses addObject: [addresses objectAtIndex: j]];
         }
       }
-    }
+    } */
+    [evaluatedAddresses addObject: @"69.63.176.0/20"];
   }
   // Block the domain with no subdomains, if www.domain is blocked
   else if([hostName rangeOfString: @"www."].location == 0) {
