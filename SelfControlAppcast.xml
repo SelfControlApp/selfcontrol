@@ -21,8 +21,8 @@
             url="http://cloud.github.com/downloads/slambert/selfcontrol/SelfControl-1.1.zip"
             sparkle:version="1.1"
             type="application/octet-stream"
-            length="1756603"
-            sparkle:dsaSignature="MCwCFFD7+JxxGyQJ2cQ6FYehBiBCr0+GAhQS1Nxdf6tpYfZidwpwLC8UWid4HA=="
+            length="1756736"
+            sparkle:dsaSignature="MC0CFQCLL/BaTKKK6uje5qx0mP+QA44+OAIUXaEU+BsdKI2DnyytX4uNFtXl00Y="
           />
         </item>
    </channel>

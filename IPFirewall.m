@@ -25,7 +25,7 @@
 
 NSString* const kIPFirewallExecutablePath = @"/sbin/ipfw";
 int const kIPFirewallRuleSetNumber = 19;
-int const kIPFirewallRuleStartNumber = 2500;
+int const kIPFirewallRuleStartNumber = 1500;
 NSString* const kIPFirewallSelfControlHeader = @"// BEGIN SELFCONTROL BLOCK";
 NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
 

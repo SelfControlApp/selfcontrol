@@ -298,7 +298,7 @@
 									<real>186</real>
 								</array>
 								<key>RubberWindowFrame</key>
-								<string>60 148 1180 630 0 0 1280 778 </string>
+								<string>49 146 1180 630 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXSmartGroupTreeModule</string>
@@ -371,7 +371,7 @@
 									<real>186</real>
 								</array>
 								<key>RubberWindowFrame</key>
-								<string>60 148 1180 630 0 0 1280 778 </string>
+								<string>49 146 1180 630 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXSmartGroupTreeModule</string>
@@ -405,7 +405,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>CB97044A0F868ECC00B8FC30</string>
+										<string>CBC3C0B50F86B39C0055C0B0</string>
 										<key>history</key>
 										<array>
 											<string>CB4294F60F53D973008E10CA</string>
@@ -420,12 +420,13 @@
 											<string>CB93657E0F85980B00EF284E</string>
 											<string>CB9367020F85BF2500EF284E</string>
 											<string>CB93672B0F85C15500EF284E</string>
-											<string>CB9367820F85C6F900EF284E</string>
 											<string>CB9367840F85C6F900EF284E</string>
 											<string>CB93680F0F85D09000EF284E</string>
 											<string>CB93683F0F85DC0C00EF284E</string>
 											<string>CB97043E0F868DED00B8FC30</string>
-											<string>CB97043F0F868DED00B8FC30</string>
+											<string>CBC3C0AA0F86B3460055C0B0</string>
+											<string>CBC3C0B20F86B39C0055C0B0</string>
+											<string>CBC3C0B30F86B39C0055C0B0</string>
 										</array>
 										<key>prevStack</key>
 										<array>
@@ -462,8 +463,9 @@
 											<string>CB9367580F85C35100EF284E</string>
 											<string>CB93675B0F85C35100EF284E</string>
 											<string>CB9368440F85DC0C00EF284E</string>
-											<string>CB9704370F868CCC00B8FC30</string>
-											<string>CB9704400F868DED00B8FC30</string>
+											<string>CBC3C0AC0F86B3460055C0B0</string>
+											<string>CBC3C0AD0F86B3460055C0B0</string>
+											<string>CBC3C0B40F86B39C0055C0B0</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -477,7 +479,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {972, 415}}</string>
 								<key>RubberWindowFrame</key>
-								<string>60 148 1180 630 0 0 1280 778 </string>
+								<string>49 146 1180 630 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -497,7 +499,7 @@
 								<key>Frame</key>
 								<string>{{0, 420}, {972, 169}}</string>
 								<key>RubberWindowFrame</key>
-								<string>60 148 1180 630 0 0 1280 778 </string>
+								<string>49 146 1180 630 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
@@ -523,11 +525,11 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>CB97041F0F868ADC00B8FC30</string>
-				<string>CB9704200F868ADC00B8FC30</string>
+				<string>CBC3C0930F86B31D0055C0B0</string>
+				<string>CBC3C0940F86B31D0055C0B0</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>CB9704210F868ADC00B8FC30</string>
+				<string>CBC3C0950F86B31D0055C0B0</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -661,13 +663,13 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>1C78EAAD065D492600B07095</string>
 		<string>1CD10A99069EF8BA00B06720</string>
+		<string>1C78EAAD065D492600B07095</string>
 		<string>CB2358380F4521130030F59C</string>
 		<string>/Users/charlie/selfcontrol/SelfControl.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>60 148 1180 630 0 0 1280 778 </string>
+	<string>49 146 1180 630 0 0 1280 778 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
@@ -710,7 +712,7 @@
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXBuildLogShowsTranscriptDefaultKey</key>
-								<string>{{0, 25}, {1419, 205}}</string>
+								<string>{{0, 5}, {1419, 225}}</string>
 								<key>PBXProjectModuleGUID</key>
 								<string>XCMainBuildResultsModuleGUID</string>
 								<key>PBXProjectModuleLabel</key>
@@ -748,7 +750,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>CB2358380F4521130030F59C</string>
-				<string>CB9704420F868DED00B8FC30</string>
+				<string>CBC3C0AF0F86B3460055C0B0</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
@@ -868,13 +870,13 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1CD10A99069EF8BA00B06720</string>
-				<string>CB9704430F868DED00B8FC30</string>
+				<string>CBC3C0B60F86B39C0055C0B0</string>
 				<string>1C162984064C10D400B95A72</string>
-				<string>CB9704440F868DED00B8FC30</string>
-				<string>CB9704450F868DED00B8FC30</string>
-				<string>CB9704460F868DED00B8FC30</string>
-				<string>CB9704470F868DED00B8FC30</string>
-				<string>CB9704480F868DED00B8FC30</string>
+				<string>CBC3C0B70F86B39C0055C0B0</string>
+				<string>CBC3C0B80F86B39C0055C0B0</string>
+				<string>CBC3C0B90F86B39C0055C0B0</string>
+				<string>CBC3C0BA0F86B39C0055C0B0</string>
+				<string>CBC3C0BB0F86B39C0055C0B0</string>
 			</array>
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.debugV3</string>
@@ -993,6 +995,8 @@
 					<key>Dock</key>
 					<array>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -1028,7 +1032,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1C78EAAD065D492600B07095</string>
-				<string>CB9704490F868DED00B8FC30</string>
+				<string>CBC3C0BC0F86B39C0055C0B0</string>
 				<string>1C78EAAC065D492600B07095</string>
 			</array>
 			<key>ToolbarConfiguration</key>
@@ -1038,7 +1042,7 @@
 			<key>WindowToolGUID</key>
 			<string>1C78EAAD065D492600B07095</string>
 			<key>WindowToolIsVisible</key>
-			<false/>
+			<true/>
 		</dict>
 		<dict>
 			<key>FirstTimeWindowDisplayed</key>
