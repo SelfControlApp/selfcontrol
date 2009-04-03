@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+   <channel>
+      <title>SelfControl Changelog</title>
+      <link>http://cloud.github.com/downloads/slambert/selfcontrol/SelfControlAppcast.xml</link>
+      <description>Most recent changes with links to updates.</description>
+      <language>en</language>
+         <item>
+            <title>Version 1.0 (The beginning!)</title>
+				    <description><![CDATA[
+						<h1>SelfControl</h1>
+						<p>SelfControl 1.0 is the first release of our app.  Try it out!</p>
+    ]]></description>
+            <sparkle:minimumSystemVersion>10.5</sparkle:minimumSystemVersion>
+            <pubDate>Thu, 26 Mar 2009 12:00:00 -0700</pubDate>
+            <enclosure url="http://cloud.github.com/downloads/slambert/selfcontrol/SelfControl.1.0.zip" sparkle:version="1.0" length="251408" type="application/octet-stream" sparkle:dsaSignature="CwCFG4YqaqHLvet9TgDe2CtB/Bwrlf9AhRpkGIliyBi6/p4fpn1SjjDc8d3Yw==" />
+         </item>
+   </channel>
+</rss>
