@@ -6,14 +6,11 @@
       <description>Most recent changes with links to updates.</description>
       <language>en</language>
          <item>
-            <title>Version 1.0 (The beginning!)</title>
-				    <description><![CDATA[
-						<h1>SelfControl</h1>
-						<p>SelfControl 1.0 is the first release of our app.  Try it out!</p>
-    ]]></description>
+            <title>Version 1.0</title>
+            <sparkle:releaseNotesLink>http://cloud.github.com/downloads/slambert/selfcontrol/releasenotes.html#version-1.1</sparkle:releaseNotesLink>
             <sparkle:minimumSystemVersion>10.5</sparkle:minimumSystemVersion>
             <pubDate>Thu, 26 Mar 2009 12:00:00 -0700</pubDate>
-            <enclosure url="http://cloud.github.com/downloads/slambert/selfcontrol/SelfControl.1.0.zip" sparkle:version="1.0" length="251408" type="application/octet-stream" sparkle:dsaSignature="CwCFG4YqaqHLvet9TgDe2CtB/Bwrlf9AhRpkGIliyBi6/p4fpn1SjjDc8d3Yw==" />
+            <enclosure url="http://cloud.github.com/downloads/slambert/selfcontrol/SelfControl-1.0.zip" sparkle:version="1.0" length="251408" type="application/octet-stream" sparkle:dsaSignature="CwCFG4YqaqHLvet9TgDe2CtB/Bwrlf9AhRpkGIliyBi6/p4fpn1SjjDc8d3Yw==" />
          </item>
    </channel>
 </rss>

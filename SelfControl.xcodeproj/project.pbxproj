@@ -6,6 +6,21 @@
 	objectVersion = 45;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		CB9368250F85D84E00EF284E /* Distribution */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = CB93682C0F85D88C00EF284E /* Build configuration list for PBXAggregateTarget "Distribution" */;
+			buildPhases = (
+				CB9368240F85D84E00EF284E /* ShellScript */,
+			);
+			dependencies = (
+				CB9368290F85D86500EF284E /* PBXTargetDependency */,
+			);
+			name = Distribution;
+			productName = "Sparkle Distribution";
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
@@ -41,6 +56,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		CB9368280F85D86500EF284E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8D1107260486CEB800E47090 /* SelfControl */;
+			remoteInfo = SelfControl;
+		};
 		CBEF43CF0F7BB7F6009A9FDF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -105,6 +127,7 @@
 		CB9366EA0F85BF0700EF284E /* iLifeControls.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = iLifeControls.framework; sourceTree = "<group>"; };
 		CB93674D0F85C2C100EF284E /* NSCharacterSet+NewlineAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSCharacterSet+NewlineAddition.h"; sourceTree = "<group>"; };
 		CB93674E0F85C2C100EF284E /* NSCharacterSet+NewlineAddition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSCharacterSet+NewlineAddition.m"; sourceTree = "<group>"; };
+		CB9368390F85DA1D00EF284E /* releasenotes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = releasenotes.html; sourceTree = "<group>"; };
 		CB9E90190F397FF6006DE6E4 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		CB9E901D0F397FFA006DE6E4 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		CBA2AFD20F39EC12005AFEBE /* org.eyebeam.SelfControl */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = org.eyebeam.SelfControl; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -191,6 +214,7 @@
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				CB42939A0F53A819008E10CA /* COPYING */,
+				CB9368390F85DA1D00EF284E /* releasenotes.html */,
 				CB9365770F85846200EF284E /* SelfControlAppcast.xml */,
 			);
 			name = SelfControl;
@@ -320,6 +344,7 @@
 			targets = (
 				8D1107260486CEB800E47090 /* SelfControl */,
 				CBA2AFD10F39EC12005AFEBE /* org.eyebeam.SelfControl */,
+				CB9368250F85D84E00EF284E /* Distribution */,
 			);
 		};
 /* End PBXProject section */
@@ -344,6 +369,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		CB9368240F85D84E00EF284E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "#!/bin/bash\n\nset -o errexit\n\n[ $BUILD_STYLE = Release ] || { echo Distribution target requires \"'Release'\" build style; false; }\n\nVERSION=$(defaults read \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app/Contents/Info\" CFBundleVersion)\nDOWNLOAD_BASE_URL=\"http://cloud.github.com/downloads/slambert/selfcontrol\"\nRELEASENOTES_URL=\"http://cloud.github.com/downloads/slambert/selfcontrol/releasenotes.html#version-$VERSION\"\n\nARCHIVE_FILENAME=\"$PROJECT_NAME-$VERSION.zip\"\nDOWNLOAD_URL=\"$DOWNLOAD_BASE_URL/$ARCHIVE_FILENAME\"\nKEYCHAIN_PRIVKEY_NAME=\"Sparkle Private Key 1\"\n\nWD=$PWD\ncd \"$BUILT_PRODUCTS_DIR\"\nrm -f \"$PROJECT_NAME\"*.zip\nzip -qr \"$ARCHIVE_FILENAME\" \"$PROJECT_NAME.app\"\n\nSIZE=$(stat -f %z \"$ARCHIVE_FILENAME\")\nPUBDATE=$(date +\"%a, %d %b %G %T %z\")\nSIGNATURE=$(\n\topenssl dgst -sha1 -binary < \"$ARCHIVE_FILENAME\" \\\n\t| openssl dgst -dss1 -sign <(security find-generic-password -g -s \"$KEYCHAIN_PRIVKEY_NAME\" 2>&1 1>/dev/null | perl -pe '($_) = /\"(.+)\"/; s/\\\\012/\\n/g') \\\n\t| openssl enc -base64\n)\n\n[ $SIGNATURE ] || { echo Unable to load signing private key with name \"'$KEYCHAIN_PRIVKEY_NAME'\" from keychain; false; }\n\ncat <<EOF\n\t\t<item>\n\t\t\t<title>Version $VERSION</title>\n\t\t\t<sparkle:releaseNotesLink>$RELEASENOTES_URL</sparkle:releaseNotesLink>\n\t\t\t<pubDate>$PUBDATE</pubDate>\n\t\t\t<enclosure\n\t\t\t\turl=\"$DOWNLOAD_URL\"\n\t\t\t\tsparkle:version=\"$VERSION\"\n\t\t\t\ttype=\"application/octet-stream\"\n\t\t\t\tlength=\"$SIZE\"\n\t\t\t\tsparkle:dsaSignature=\"$SIGNATURE\"\n\t\t\t/>\n\t\t</item>\nEOF\n\necho scp \"'$HOME/svn/my-cool-app/build/Release/$ARCHIVE_FILENAME'\" www.example.com:download/\necho scp \"'$WD/appcast.xml'\" www.example.com:web/software/my-cool-app/appcast.xml";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8D11072C0486CEB800E47090 /* Sources */ = {
@@ -374,6 +415,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		CB9368290F85D86500EF284E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8D1107260486CEB800E47090 /* SelfControl */;
+			targetProxy = CB9368280F85D86500EF284E /* PBXContainerItemProxy */;
+		};
 		CBEF43D00F7BB7F6009A9FDF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = CBA2AFD10F39EC12005AFEBE /* org.eyebeam.SelfControl */;
@@ -477,6 +523,27 @@
 			};
 			name = Release;
 		};
+		CB9368260F85D84E00EF284E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = "Sparkle Distribution";
+			};
+			name = Debug;
+		};
+		CB9368270F85D84E00EF284E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = "Sparkle Distribution";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 		CBA2AFD40F39EC14005AFEBE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -540,6 +607,15 @@
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
 				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CB93682C0F85D88C00EF284E /* Build configuration list for PBXAggregateTarget "Distribution" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB9368260F85D84E00EF284E /* Debug */,
+				CB9368270F85D84E00EF284E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
