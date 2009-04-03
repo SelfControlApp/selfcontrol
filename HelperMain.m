@@ -24,6 +24,7 @@
 #import "HelperMain.h"
 #import "IPFirewall.h"
 #import "LaunchctlHelper.h"
+#import <unistd.h>
 
 NSString* const kSelfControlLaunchDaemonPlist = @"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n<plist version=\"1.0\">\n<dict>\n<key>Label</key>\n<string>org.eyebeam.SelfControl</string>\n<key>ProgramArguments</key>\n<array>\n<string>%@</string>\n<string>%d</string>\n<string>--checkup</string>\n</array>\n<key>StartInterval</key>\n<integer>60</integer>\n<key>StartOnMount</key>\n<false/>\n</dict>\n</plist>";
 
@@ -138,14 +139,14 @@ int main(int argc, char* argv[]) {
     // We should delete the old file if it exists and copy the new binary in,
     // because it might be a new version of the helper if we've upgraded SelfControl
     if([fileManager fileExistsAtPath: @"/Library/PrivilegedHelperTools/org.eyebeam.SelfControl"]) {
-      if(![fileManager removeItemAtPath: @"/Library/PrivilegedHelperTools/org.eyebeam.SelfControl" error: NULL]) {
+      if(![fileManager removeFileAtPath: @"/Library/PrivilegedHelperTools/org.eyebeam.SelfControl" handler: nil]) {
         NSLog(@"ERROR: Could not delete old helper binary.");
         exit(EXIT_FAILURE);
       }
     }
-    if(![fileManager copyItemAtPath: [NSString stringWithCString: argv[0]]
+    if(![fileManager copyPath: [NSString stringWithCString: argv[0]]
                              toPath: @"/Library/PrivilegedHelperTools/org.eyebeam.SelfControl"
-                              error: NULL]) {
+                              handler: NULL]) {
       NSLog(@"ERROR: Could not copy SelfControl's helper binary to PrivilegedHelperTools directory.");
       exit(EXIT_FAILURE);
     }

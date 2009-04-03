@@ -47,12 +47,12 @@
 // Called by the table view on it's data source object (this) to determine how
 // many rows are in the table view to be displayed.  Returns the number of
 // objects in the domain list array.
-- (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView;
+- (int)numberOfRowsInTableView:(NSTableView *)aTableView;
 
 // Called by the table view on it's data source object (this) to determine what
 // value should be displayed for a given row index.  Returns the corresponding
 // value from the domain list array.
-- (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex;
+- (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex;
 
 // Called by the table view on it's data source object (this) to set the value
 // of the cell at a given row index.  Sets the value of the corresponding object
@@ -61,7 +61,7 @@
 - (void)tableView:(NSTableView *)aTableView
    setObjectValue:(id)theObject
    forTableColumn:(NSTableColumn *)aTableColumn
-              row:(NSInteger)rowIndex;
+              row:(int)rowIndex;
  
 // Called by the table view on it's data source object (this) when a given cell
 // is about to be displayed.  Used to implement invalid domain highlighting if

@@ -22,6 +22,7 @@
 
 
 #import <Cocoa/Cocoa.h>
+#import "NSCharacterSet+NewlineAddition.h"
 
 // A class designed to provide all necessary methods for parsing the incoming
 // and outgoing mail hostnames from Thunderbird configuration files, and made

@@ -31,11 +31,11 @@
 // systems to load into the launchd system a new job.  The specifications
 // for this job are provided in the plist at the given path.  Returns the exit
 // status code of launchctl.
-+ (NSInteger)loadLaunchdJobWithPlistAt:(NSString*)pathToLaunchdPlist;
++ (int)loadLaunchdJobWithPlistAt:(NSString*)pathToLaunchdPlist;
 
 // Calls the launchctl command-line tool installed on all newer Mac OS X
 // systems to unload a job from the launchd system, which was loaded from the
 // plist at the given path.  Returns the exit status code of launchctl.
-+ (NSInteger)unloadLaunchdJobWithPlistAt:(NSString*)pathToLaunchdPlist;
++ (int)unloadLaunchdJobWithPlistAt:(NSString*)pathToLaunchdPlist;
 
 @end

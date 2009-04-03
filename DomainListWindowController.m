@@ -77,18 +77,18 @@
                                                       object: nil];
 }
 
-- (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView {
+- (int)numberOfRowsInTableView:(NSTableView *)aTableView {
   return [domainList_ count];
 }
 
-- (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex {
+- (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex {
   return [domainList_ objectAtIndex:rowIndex];
 }
 
 - (void)tableView:(NSTableView *)aTableView
    setObjectValue:(id)theObject
    forTableColumn:(NSTableColumn *)aTableColumn
-              row:(NSInteger)rowIndex {
+              row:(int)rowIndex {
   // All of this is just code to standardize and clean up the input value.
   // This'll remove whitespace and lowercase the string.
   NSString* str = [[theObject stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];
@@ -117,7 +117,7 @@
 
 /* - (NSCell *)tableView:(NSTableView*)tableView
 dataCellForTableColumn:(NSTableColumn *)tableColumn
-                  row:(NSInteger)row {
+                  row:(int)row {
   NSTextFieldCell *cell = [tableColumn dataCell];
   
   if(row == 0) {

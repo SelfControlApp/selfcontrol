@@ -23,6 +23,7 @@
 #import "AppController.h"
 #import <Security/Security.h>
 #import <SystemConfiguration/SCNetwork.h>
+#import <unistd.h>
 
 @implementation AppController
 

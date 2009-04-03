@@ -142,7 +142,11 @@ NSString* const kThunderbirdSupportFolderPath = @"~/Library/Thunderbird";
   if(![[NSFileManager defaultManager] isReadableFileAtPath: pathToPrefsJsFile])
     return [NSArray array];
   
-  NSArray* prefsJsLines = [[NSString stringWithContentsOfFile: pathToPrefsJsFile] componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
+  // NSArray* prefsJsLines = [[NSString stringWithContentsOfFile: pathToPrefsJsFile] componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
+  // The old implementation of this was better.  The new one misses alternative
+  // line breaks like \r.  10.4 doesn't have a componentSeparatedByCharactersInSet
+  // method though, so this'll have to do.
+  NSArray* prefsJsLines = [[NSString stringWithContentsOfFile: pathToPrefsJsFile] componentsSeparatedByString: @"\n"];
   NSMutableArray* hostnames = [NSMutableArray arrayWithCapacity: 10];
   
   for(int i = 0; i < [prefsJsLines count]; i++) {
@@ -150,7 +154,7 @@ NSString* const kThunderbirdSupportFolderPath = @"~/Library/Thunderbird";
     // All of the asterisks are necessary for globbing so that any amount of
     // whitespace will work.
     if([line isLike: @"*user_pref(*\"mail.server.server*.hostname\"*,*\"*\"*)*;*"]) {
-      NSArray* parts = [line componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @"\""]];
+      NSArray* parts = [line  componentsSeparatedByString: @"\""];
       // If the hostname is "Local Folders", it's a special Thunderbird thing,
       // and obviously not something we can block.
       if([parts count] >= 4 && ![[parts objectAtIndex: 3] isEqual: @"Local Folders"]) {
@@ -158,10 +162,10 @@ NSString* const kThunderbirdSupportFolderPath = @"~/Library/Thunderbird";
       }
     }
     else if([line isLike: @"*user_pref(*\"mail.server.server*.port\"*,*)*;*"]) {
-      NSArray* parts = [line componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @","]];
-      parts = [[parts objectAtIndex: 1] componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @")"]];
+      NSArray* parts = [line  componentsSeparatedByString: @","];
+      parts = [[parts objectAtIndex: 1]  componentsSeparatedByString: @")"];
       int portNumber = [[[parts objectAtIndex: 0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] intValue];
-      NSString* alteredHost = [[[hostnames objectAtIndex: ([hostnames count] - 1)] componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @":"]] objectAtIndex: 0];
+      NSString* alteredHost = [[[hostnames objectAtIndex: ([hostnames count] - 1)]  componentsSeparatedByString: @":"] objectAtIndex: 0];
       alteredHost = [alteredHost stringByAppendingFormat: @":%d", portNumber];
       [hostnames replaceObjectAtIndex: ([hostnames count] - 1) withObject: alteredHost];
     }
@@ -177,13 +181,13 @@ NSString* const kThunderbirdSupportFolderPath = @"~/Library/Thunderbird";
   if(![[NSFileManager defaultManager] isReadableFileAtPath: pathToPrefsJsFile])
     return [NSArray array];
   
-  NSArray* prefsJsLines = [[NSString stringWithContentsOfFile: pathToPrefsJsFile] componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
+  NSArray* prefsJsLines = [[NSString stringWithContentsOfFile: pathToPrefsJsFile]  componentsSeparatedByString: @"\n"];
   NSMutableArray* hostnames = [NSMutableArray arrayWithCapacity: 10];
   
   for(int i = 0; i < [prefsJsLines count]; i++) {
     NSString* line = [prefsJsLines objectAtIndex: i];
     if([line isLike: @"*user_pref(*\"mail.smtpserver.smtp*.hostname\"*,*\"*\"*)*;*"]) {
-      NSArray* parts = [line componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @"\""]];
+      NSArray* parts = [line componentsSeparatedByString: @"\""];
       if([parts count] >= 4 && ![[parts objectAtIndex: 3] isEqual: @"Local Folders"]) {
         [hostnames addObject: [[parts objectAtIndex: 3] stringByAppendingString: @":25"]];
       }
@@ -192,10 +196,10 @@ NSString* const kThunderbirdSupportFolderPath = @"~/Library/Thunderbird";
     // technically be associated with a different hostname, but only if the user
     // was manually editing the preferences file and changed it stupidly.
     else if([line isLike: @"*user_pref(*\"mail.smtpserver.smtp*.port\"*,*)*;*"]) {
-      NSArray* parts = [line componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @","]];
-      parts = [[parts objectAtIndex: 1] componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @")"]];
+      NSArray* parts = [line  componentsSeparatedByString: @","];
+      parts = [[parts objectAtIndex: 1] componentsSeparatedByString: @")"];
       int portNumber = [[[parts objectAtIndex: 0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] intValue];
-      NSString* alteredHost = [[[hostnames objectAtIndex: ([hostnames count] - 1)] componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @":"]] objectAtIndex: 0];
+      NSString* alteredHost = [[[hostnames objectAtIndex: ([hostnames count] - 1)] componentsSeparatedByString: @":"] objectAtIndex: 0];
       alteredHost = [alteredHost stringByAppendingFormat: @":%d", portNumber];
       [hostnames replaceObjectAtIndex: ([hostnames count] - 1) withObject: alteredHost];
     }

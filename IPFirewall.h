@@ -21,6 +21,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #import <Cocoa/Cocoa.h>
+#import <unistd.h>
 
 // A class that represents the ipfw (ipfirewall) command-line firewall tool that
 // comes installed on every Mac.  It has methods specifically for SelfControl to
