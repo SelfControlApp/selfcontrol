@@ -202,46 +202,6 @@
 			<key>Content</key>
 			<dict>
 				<key>PBXProjectModuleGUID</key>
-				<string>CBCA81110F8C60A900BD4D0D</string>
-				<key>PBXProjectModuleLabel</key>
-				<string>HelperMain.m</string>
-				<key>PBXSplitModuleInNavigatorKey</key>
-				<dict>
-					<key>Split0</key>
-					<dict>
-						<key>PBXProjectModuleGUID</key>
-						<string>CBCA81120F8C60A900BD4D0D</string>
-						<key>PBXProjectModuleLabel</key>
-						<string>HelperMain.m</string>
-						<key>_historyCapacity</key>
-						<integer>0</integer>
-						<key>bookmark</key>
-						<string>CB5310130F90687B009929C0</string>
-						<key>history</key>
-						<array>
-							<string>CBCA82500F8C9DD400BD4D0D</string>
-						</array>
-					</dict>
-					<key>SplitCount</key>
-					<string>1</string>
-				</dict>
-				<key>StatusBarVisibility</key>
-				<true/>
-			</dict>
-			<key>Geometry</key>
-			<dict>
-				<key>Frame</key>
-				<string>{{0, 20}, {1257, 583}}</string>
-				<key>PBXModuleWindowStatusBarHidden2</key>
-				<false/>
-				<key>RubberWindowFrame</key>
-				<string>364 154 1257 624 0 0 1280 778 </string>
-			</dict>
-		</dict>
-		<dict>
-			<key>Content</key>
-			<dict>
-				<key>PBXProjectModuleGUID</key>
 				<string>CBCA81DC0F8C6F1B00BD4D0D</string>
 				<key>PBXProjectModuleLabel</key>
 				<string>AppController.m</string>
@@ -256,7 +216,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>CB5310140F90687B009929C0</string>
+						<string>CB53101E0F906B5B009929C0</string>
 						<key>history</key>
 						<array>
 							<string>CBCA824F0F8C9DD400BD4D0D</string>
@@ -275,7 +235,7 @@
 				<key>PBXModuleWindowStatusBarHidden2</key>
 				<false/>
 				<key>RubberWindowFrame</key>
-				<string>25 159 1101 619 0 0 1280 778 </string>
+				<string>76 159 1101 619 0 0 1280 778 </string>
 			</dict>
 		</dict>
 		<dict>
@@ -296,7 +256,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>CB5310150F90687B009929C0</string>
+						<string>CB53101F0F906B5B009929C0</string>
 						<key>history</key>
 						<array>
 							<string>CBCA82520F8C9DD400BD4D0D</string>
@@ -336,7 +296,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>CB5310160F90687B009929C0</string>
+						<string>CB5310200F906B5B009929C0</string>
 						<key>history</key>
 						<array>
 							<string>CB530F440F905A79009929C0</string>
@@ -376,7 +336,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>CB5310170F90687B009929C0</string>
+						<string>CB5310210F906B5B009929C0</string>
 						<key>history</key>
 						<array>
 							<string>CBCA82510F8C9DD400BD4D0D</string>
@@ -532,7 +492,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>CB5310120F90687B009929C0</string>
+										<string>CB53101D0F906B5B009929C0</string>
 										<key>history</key>
 										<array>
 											<string>CB4294F60F53D973008E10CA</string>
@@ -862,9 +822,8 @@
 		<string>CB530F4F0F905A97009929C0</string>
 		<string>/Users/charlie/selfcontrol/SelfControl.xcodeproj</string>
 		<string>CB1BDBAD0F8A68B6004421F5</string>
-		<string>CBCA81DC0F8C6F1B00BD4D0D</string>
 		<string>1C530D57069F1CE1000CFCEE</string>
-		<string>CBCA81110F8C60A900BD4D0D</string>
+		<string>CBCA81DC0F8C6F1B00BD4D0D</string>
 	</array>
 	<key>WindowString</key>
 	<string>-298 -526 1178 630 0 0 1280 778 </string>
