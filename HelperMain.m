@@ -20,13 +20,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 #import "HelperMain.h"
-#import "IPFirewall.h"
-#import "LaunchctlHelper.h"
-#import <unistd.h>
 
 NSString* const kSelfControlLaunchDaemonPlist = @"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n<plist version=\"1.0\">\n<dict>\n<key>Label</key>\n<string>org.eyebeam.SelfControl</string>\n<key>ProgramArguments</key>\n<array>\n<string>%@</string>\n<string>%d</string>\n<string>--checkup</string>\n</array>\n<key>StartInterval</key>\n<integer>60</integer>\n<key>StartOnMount</key>\n<false/>\n</dict>\n</plist>";
+NSString* const kSelfControlLockFilePath = @"/etc/SelfControl.lock";
 
 int main(int argc, char* argv[]) {
   NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -46,7 +43,26 @@ int main(int argc, char* argv[]) {
   NSString* modeString = [NSString stringWithUTF8String: argv[2]];
   // We'll need the controlling UID to know what defaults database to search
   int controllingUID = [[NSString stringWithUTF8String: argv[1]] intValue];
-        
+  
+  // For proper security, we need to make sure that SelfControl files are owned
+  // by root and only writable by root.  We'll define this here so we can use it
+  // throughout the main function.
+  NSDictionary* fileAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  [NSNumber numberWithUnsignedLong: 0], NSFileOwnerAccountID,
+                                  [NSNumber numberWithUnsignedLong: 0], NSFileGroupOwnerAccountID,
+                                  // 493 (decimal) = 755 (octal) = rwxr-xr-x
+                                  [NSNumber numberWithUnsignedLong: 493], NSFilePosixPermissions,
+                                  nil];  
+  
+  // This is where we get going with the lockfile system, saving a "lock" in /etc/SelfControl.lock
+  // to make a more reliable block detection system.  For most of the program,
+  // the pattern exhibited here will be used: we attempt to use the lock file's
+  // contents, and revert to the user's defaults if the lock file has unreasonable
+  // contents.
+  NSDictionary* curLockDict = [NSDictionary dictionaryWithContentsOfFile: kSelfControlLockFilePath];
+  if(!([[curLockDict objectForKey: @"HostBlacklist"] count] <= 0))
+    domainList = [curLockDict objectForKey: @"HostBlacklist"];
+            
   // You'll see this pattern several times in this file.  The two resets and
   // set of euid to the controlling UID are necessary in order to successfully
   // return the NSUserDefaults object for the controlling user.  Also note that
@@ -69,28 +85,19 @@ int main(int argc, char* argv[]) {
                                [NSNumber numberWithBool: NO], @"BlockSoundShouldPlay",
                                [NSNumber numberWithInt: 5], @"BlockSound",
                                nil];
-  
   [defaults registerDefaults:appDefaults];    
-  domainList = [defaults objectForKey:@"HostBlacklist"];
+  if(!domainList) {
+    domainList = [defaults objectForKey:@"HostBlacklist"];
+    if([domainList count] <= 0) {
+      NSLog(@"ERROR: Not enough block information.");
+      exit(EXIT_FAILURE);
+    }
+  }
   [defaults synchronize];
   [NSUserDefaults resetStandardUserDefaults];
   seteuid(0);  
   
-  if([modeString isEqual: @"--install"]) {
-    [NSUserDefaults resetStandardUserDefaults];
-    seteuid(controllingUID);
-    defaults = [NSUserDefaults standardUserDefaults];
-    [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
-    domainList = [defaults objectForKey:@"HostBlacklist"];
-    [defaults synchronize];
-    [NSUserDefaults resetStandardUserDefaults];
-    seteuid(0);
-    
-    if(!domainList) {
-      NSLog(@"ERROR: No blacklist set.");
-      exit(EXIT_FAILURE);
-    }       
-            
+  if([modeString isEqual: @"--install"]) {                
     // Initialize writeErr to nil so calling messages on it later don't cause
     // crashes (it doesn't make sense we need to do this, but whatever).
     NSError* writeErr = nil; 
@@ -114,14 +121,6 @@ int main(int argc, char* argv[]) {
     }
             
     NSFileManager* fileManager = [NSFileManager defaultManager];
-    // For proper security, we need to make sure that the helper binary is owned
-    // by root and only writable by root
-    NSDictionary* fileAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                    [NSNumber numberWithUnsignedLong: 0], NSFileOwnerAccountID,
-                                    [NSNumber numberWithUnsignedLong: 0], NSFileGroupOwnerAccountID,
-                                    // 493 (decimal) = 755 (octal) = rwxr-xr-x
-                                    [NSNumber numberWithUnsignedLong: 493], NSFilePosixPermissions,
-                                    nil];
         
     if(![fileManager fileExistsAtPath: @"/Library/PrivilegedHelperTools"]) {
       if(![fileManager createDirectoryAtPath: @"/Library/PrivilegedHelperTools"
@@ -161,9 +160,50 @@ int main(int argc, char* argv[]) {
     defaults = [NSUserDefaults standardUserDefaults];
     [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
     [defaults setObject: [NSDate date] forKey: @"BlockStartedDate"];
+    // In this case it doesn't make any sense to use an existing lock file (in
+    // fact, one shouldn't exist), so we fail if the defaults system has unreasonable
+    // settings.
+    NSDictionary* lockDictionary = [NSDictionary dictionaryWithObjectsAndKeys: 
+                                    [defaults objectForKey: @"HostBlacklist"], @"HostBlacklist",
+                                    [defaults objectForKey: @"BlockDuration"], @"BlockDuration",
+                                    [defaults objectForKey: @"BlockStartedDate"], @"BlockStartedDate",
+                                    nil];        
+    if([[lockDictionary objectForKey: @"HostBlacklist"] count] <= 0 || [[lockDictionary objectForKey: @"BlockDuration"] intValue] < 1
+       || [lockDictionary objectForKey: @"BlockStartedDate"] == nil
+       || [[lockDictionary objectForKey: @"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]) {
+      NSLog(@"ERROR: Not enough block information.");
+      exit(EXIT_FAILURE);
+    }
     [defaults synchronize];
     [NSUserDefaults resetStandardUserDefaults];
     seteuid(0);
+
+    // If perchance another lock is in existence already (which would be weird)
+    // we try to remove a block and continue as normal.  This should definitely not be
+    // happening though.
+    if([fileManager fileExistsAtPath: kSelfControlLockFilePath]) {
+      NSLog(@"WARNING: Lock already created--removing it and destroying any current block.");
+
+      [fileManager removeFileAtPath: kSelfControlLockFilePath handler: nil];
+
+      [NSUserDefaults resetStandardUserDefaults];
+      seteuid(controllingUID);
+      defaults = [NSUserDefaults standardUserDefaults];
+      [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
+      [defaults setObject: [NSDate distantFuture] forKey: @"BlockStartedDate"];
+      [defaults synchronize];
+      [NSUserDefaults resetStandardUserDefaults];
+      seteuid(0);
+      
+      removeRulesFromFirewall(controllingUID);
+            
+      [LaunchctlHelper unloadLaunchdJobWithPlistAt:@"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
+    }
+    
+    // And write out our lock...
+    [lockDictionary writeToFile: kSelfControlLockFilePath atomically: YES];
+    // Make sure the privileges are correct on our lock file
+    [fileManager changeFileAttributes: fileAttributes atPath: kSelfControlLockFilePath];
     
     addRulesToFirewall(controllingUID);
     
@@ -178,7 +218,9 @@ int main(int argc, char* argv[]) {
     } else NSLog(@"INFO: Block successfully added.");
   }
   if([modeString isEqual: @"--remove"]) {
+    // This was just too easy for the user to remove the block with.
     NSLog(@"INFO: Nice try.");
+    exit(EXIT_FAILURE);
    /* [NSUserDefaults resetStandardUserDefaults];
     seteuid(controllingUID);
     defaults = [NSUserDefaults standardUserDefaults];
@@ -199,36 +241,113 @@ int main(int argc, char* argv[]) {
     // successfully, because the unload will kill the helper tool.
     NSLog(@"WARNING: Launch daemon unload failed.");
     exit(EXIT_FAILURE); */
-  } else if([modeString isEqual: @"--add"]) {
+ /*  } else if([modeString isEqual: @"--add"]) {
+    addRulesToFirewall(controllingUID);
+    NSLog(@"INFO: Rules successfully added to firewall."); */
+  } else if([modeString isEqual: @"--refresh"]) {
+    NSLog(@"in refresh");
+    // Check what the current block is (based on the lock file) because if possible
+    // we want to keep most of its information.
+    NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: kSelfControlLockFilePath];
+    NSDictionary* newLockDictionary;
+    
     [NSUserDefaults resetStandardUserDefaults];
     seteuid(controllingUID);
     defaults = [NSUserDefaults standardUserDefaults];
     [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
-    domainList = [defaults objectForKey: @"HostBlacklist"];
+    if(curDictionary == nil) {
+      // If there is no block file we just use all information from defaults
+      
+      if([[defaults objectForKey: @"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]) {
+        // But if the block is already over (which is going to happen if the user
+        // starts authentication for the host add and then the block expires before
+        // they authenticate), we shouldn't do anything at all.
+        
+        NSLog(@"ERROR: Refreshing domain blacklist, but no block is currently ongoing.");
+        exit(EXIT_FAILURE);
+      }
+      
+      NSLog(@"WARNING: Refreshing domain blacklist, but no block is currently ongoing.  Relaunching block.");
+      newLockDictionary = [NSDictionary dictionaryWithObjectsAndKeys: 
+                                        [defaults objectForKey: @"HostBlacklist"], @"HostBlacklist",
+                                        [defaults objectForKey: @"BlockDuration"], @"BlockDuration",
+                                        [defaults objectForKey: @"BlockStartedDate"], @"BlockStartedDate",
+                                        nil];
+      // And later on we'll be reloading the launchd daemon if curDictionary
+      // was nil, just in case.  Watch for it.
+    } else {
+      NSLog(@"is a block file and [defaults objectForKey: @\"HostBlacklist\"] is %@", [defaults objectForKey: @"HostBlacklist"]);
+      // If there is an existing block file we can save most of it from the old file
+      newLockDictionary = [NSDictionary dictionaryWithObjectsAndKeys: 
+                           [defaults objectForKey: @"HostBlacklist"], @"HostBlacklist",
+                           [curDictionary objectForKey: @"BlockDuration"], @"BlockDuration",
+                           [curDictionary objectForKey: @"BlockStartedDate"], @"BlockStartedDate",
+                           nil];      
+    }
     [defaults synchronize];
     [NSUserDefaults resetStandardUserDefaults];
     seteuid(0);
     
-    if(!domainList) {
-      NSLog(@"ERROR: No blacklist set.");
+    if([[newLockDictionary objectForKey: @"HostBlacklist"] count] <= 0 || [[newLockDictionary objectForKey: @"BlockDuration"] intValue] < 1
+       || [newLockDictionary objectForKey: @"BlockStartedDate"] == nil
+       || [[newLockDictionary objectForKey: @"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]) {
+      NSLog(@"ERROR: Not enough block information.");
       exit(EXIT_FAILURE);
-    }       
+    }
+    
+    [newLockDictionary writeToFile: kSelfControlLockFilePath atomically: YES];
+    // Make sure the privileges are correct on our lock file
+    [[NSFileManager defaultManager] changeFileAttributes: fileAttributes atPath: kSelfControlLockFilePath];    
+    domainList = [newLockDictionary objectForKey: @"HostBlacklist"];
+    
+    // Add and remove the rules to put in any new ones
+    removeRulesFromFirewall(controllingUID);
     addRulesToFirewall(controllingUID);
     
-    NSLog(@"INFO: Rules successfully added to firewall.");
+    if(curDictionary == nil) {
+      // aka if there was no lock file, and it's possible we're reloading the block,
+      // and we're sure the block is still on (that's checked earlier).
+      [LaunchctlHelper loadLaunchdJobWithPlistAt: @"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
+    }
   } else if([modeString isEqual: @"--checkup"]) {    
-    [NSUserDefaults resetStandardUserDefaults];
-    seteuid(controllingUID);
-    defaults = [NSUserDefaults standardUserDefaults];
-    [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
-    NSDate* blockStartedDate = [defaults objectForKey: @"BlockStartedDate"];
-    NSString* blockDurationString = [defaults objectForKey: @"BlockDuration"];
-    [defaults synchronize];
-    [NSUserDefaults resetStandardUserDefaults];
-    seteuid(0);
+    NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: kSelfControlLockFilePath];
+    
+    NSDate* blockStartedDate = [curDictionary objectForKey: @"BlockStartedDate"];
+    NSTimeInterval blockDuration = [[curDictionary objectForKey: @"BlockDuration"] intValue];
+    
+    if(blockStartedDate == nil || [blockStartedDate isEqualToDate: [NSDate distantFuture]]
+       || blockDuration < 1) {    
+      // The lock file seems to be broken.  Read from defaults, then write out a
+      // new lock file while we're at it.
+      [NSUserDefaults resetStandardUserDefaults];
+      seteuid(controllingUID);
+      defaults = [NSUserDefaults standardUserDefaults];
+      [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
+      blockStartedDate = [defaults objectForKey: @"BlockStartedDate"];
+      blockDuration = [[defaults objectForKey: @"BlockDuration"] intValue];
+      [defaults synchronize];
+      [NSUserDefaults resetStandardUserDefaults];
+      seteuid(0);
+      
+      if(blockStartedDate == nil || [blockStartedDate isEqualToDate: [NSDate distantFuture]]
+         || blockDuration < 1) {    
+          // Defaults is broken too!  Let's get out of here!
+        NSLog(@"ERROR: Checkup ran -- no block found.");
+        exit(EXIT_FAILURE);
+      }
+      
+      NSDictionary* newDictionary = [NSDictionary dictionaryWithObjectsAndKeys: 
+                                     domainList, @"HostBlacklist",
+                                     blockStartedDate, @"BlockStartedDate",
+                                     blockDuration, @"BlockDuration",
+                                     nil];
+      [newDictionary writeToFile: kSelfControlLockFilePath atomically: YES];
+      // Make sure the privileges are correct on our lock file
+      [[NSFileManager defaultManager] changeFileAttributes: fileAttributes atPath: kSelfControlLockFilePath];    
+    }
     
     NSTimeInterval timeSinceStarted = [[NSDate date] timeIntervalSinceDate: blockStartedDate];
-    NSTimeInterval blockDuration = [blockDurationString intValue] * 60;
+    blockDuration *= 60;
     
     // Note there are a few extra possible conditions on this if statement, this
     // makes it more likely that an improperly applied block might come right
@@ -247,6 +366,8 @@ int main(int argc, char* argv[]) {
                   
       removeRulesFromFirewall(controllingUID);
       
+      [[NSFileManager defaultManager] removeFileAtPath: kSelfControlLockFilePath handler: nil];
+      
       [[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
                                                                      object: nil];
       
@@ -256,24 +377,28 @@ int main(int argc, char* argv[]) {
       // should have killed this process.
       exit(EXIT_FAILURE);
     } else {
-      [NSUserDefaults resetStandardUserDefaults];
-      seteuid(controllingUID);
-      defaults = [NSUserDefaults standardUserDefaults];
-      [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
-      domainList = [defaults objectForKey: @"HostBlacklist"];
-      [defaults synchronize];
-      [NSUserDefaults resetStandardUserDefaults];
-      seteuid(0);
-      
-      if(!domainList) {
-        NSLog(@"ERROR: No blacklist set.");
-        exit(EXIT_FAILURE);
-      }           
+      // The block is still on.  Check if anybody removed our rules, and if so
+      // re-add them.  Also make sure the user's defaults are set to the correct
+      // settings just in case.
       IPFirewall* firewall = [[IPFirewall alloc] init];
       if(![firewall containsSelfControlBlockSet]) { 
         addRulesToFirewall(controllingUID);
         NSLog(@"INFO: Checkup ran, readded block rules.");
       } else NSLog(@"INFO: Checkup ran, no action needed.");
+      
+      // Why would we make sure the defaults are correct even if we can get the
+      // info from the lock file?  In case one goes down, we want to make sure
+      // we always have a backup.
+      [NSUserDefaults resetStandardUserDefaults];
+      seteuid(controllingUID);
+      defaults = [NSUserDefaults standardUserDefaults];
+      [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
+      [defaults setObject: blockStartedDate forKey: @"BlockStartedDate"];
+      [defaults setObject: [NSNumber numberWithFloat: (blockDuration / 60)] forKey: @"BlockDuration"];
+      [defaults setObject: domainList forKey: @"HostBlacklist"];
+      [defaults synchronize];
+      [NSUserDefaults resetStandardUserDefaults];
+      seteuid(0);
     }
   }
   

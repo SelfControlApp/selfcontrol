@@ -22,7 +22,6 @@
 
 
 #import "HostImporter.h"
-#import "ThunderbirdPreferenceParser.h"
 
 @implementation HostImporter
 

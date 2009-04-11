@@ -1,4 +1,4 @@
-
+ 
 //
 //  TimerWindowController.m
 //  SelfControl
@@ -24,12 +24,17 @@
 
 #import "TimerWindowController.h"
 
-#import "AppController.h"
-
 @implementation TimerWindowController
 
 - (TimerWindowController*) init {
-  [super initWithWindowNibName:@"TimerWindow"];
+  unsigned int major, minor, bugfix;
+  
+  [NSApp getSystemVersionMajor: &major minor: &minor bugFix: &bugfix];
+  
+  if(major <= 10 && minor < 5)
+    [super initWithWindowNibName:@"TigerTimerWindow"];
+  else
+    [super initWithWindowNibName:@"TimerWindow"];
     
   return self;
 }
@@ -38,7 +43,7 @@
   NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
   
   NSWindow* window = [self window];
-  
+        
   if([defaults boolForKey:@"TimerWindowFloats"]) {
     [window setLevel: NSFloatingWindowLevel];
     [window setHidesOnDeactivate: NO];
@@ -48,8 +53,20 @@
     [window setHidesOnDeactivate: NO];
   }
   
-  NSDate* beginDate = [defaults objectForKey:@"BlockStartedDate"];
-  NSTimeInterval blockDuration = [defaults integerForKey:@"BlockDuration"] * 60;
+  NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: kSelfControlLockFilePath];
+  
+  NSDate* beginDate = [lockDict objectForKey:@"BlockStartedDate"];
+  NSTimeInterval blockDuration = [[lockDict objectForKey:@"BlockDuration"] intValue] * 60;
+  
+  if(beginDate == nil || [beginDate isEqualToDate: [NSDate distantFuture]]
+     || blockDuration <= 0) {
+    beginDate = [defaults objectForKey:@"BlockStartedDate"];
+    blockDuration = [defaults integerForKey:@"BlockDuration"] * 60;
+  } else {
+    [defaults setObject: beginDate forKey: @"BlockStartedDate"];
+    [defaults setObject: [NSNumber numberWithFloat: (blockDuration / 60)] forKey: @"BlockDuration"];
+  }
+  
   // It is KEY to retain the block ending date , if you forget to retain it
   // you'll end up with a nasty program crash.
   if(blockDuration)
@@ -57,46 +74,57 @@
   else
     // If the block duration is 0, the ending date is... now!
     blockEndingDate_ = [[NSDate date] retain];
-  [self updateTimerDisplay];
+  [self updateTimerDisplay: nil];
   timerUpdater_ = [NSTimer scheduledTimerWithTimeInterval: 1.0
                                                    target: self
-                                                 selector: @selector(updateTimerDisplay)
+                                                 selector: @selector(updateTimerDisplay:)
                                                  userInfo: nil
                                                   repeats: YES];
 }
 
 - (void)reloadTimer {
   NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-  NSDate* beginDate = [defaults objectForKey:@"BlockStartedDate"];
-  NSTimeInterval blockDuration = [defaults integerForKey:@"BlockDuration"] * 60;
+
+  NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: kSelfControlLockFilePath];
+  
+  NSDate* beginDate = [lockDict objectForKey:@"BlockStartedDate"];
+  NSTimeInterval blockDuration = [[lockDict objectForKey:@"BlockDuration"] intValue] * 60;
+  
+  if(beginDate == nil || [beginDate isEqualToDate: [NSDate distantFuture]]
+     || blockDuration <= 0) {
+    beginDate = [defaults objectForKey:@"BlockStartedDate"];
+    blockDuration = [defaults integerForKey:@"BlockDuration"] * 60;
+  } else {
+    [defaults setObject: beginDate forKey: @"BlockStartedDate"];
+    [defaults setObject: [NSNumber numberWithFloat: (blockDuration / 60)] forKey: @"BlockDuration"];
+  }
+  
   [blockEndingDate_ release];
   if(blockDuration)
     blockEndingDate_ = [[beginDate addTimeInterval: blockDuration] retain];
   else
     blockEndingDate_ = [[NSDate date] retain];
-  if([timerUpdater_ isValid]) {
-    [timerUpdater_ invalidate];
-    timerUpdater_ = nil;
-  }
+  
+  [timerUpdater_ invalidate];
+  timerUpdater_ = nil;
+
   timerUpdater_ = [NSTimer scheduledTimerWithTimeInterval: 1.0
                                                    target: self
-                                                 selector: @selector(updateTimerDisplay)
+                                                 selector: @selector(updateTimerDisplay:)
                                                  userInfo: nil
                                                   repeats: YES];
-  [self updateTimerDisplay];
+  [self updateTimerDisplay: nil];
 }
 
-- (void)updateTimerDisplay {
+- (void)updateTimerDisplay:(NSTimer*)timer {
   int numSeconds = (int) [blockEndingDate_ timeIntervalSinceNow];
   int numHours;
   int numMinutes;
   
   if(numSeconds < 0) {
     if(![[NSApp delegate] selfControlLaunchDaemonIsLoaded]) {
-      if([timerUpdater_ isValid]) {
-        [timerUpdater_ invalidate];
-        timerUpdater_ = nil;
-      }
+      [timer invalidate];
+      timerUpdater_ = nil;
       
       [timerLabel_ setStringValue: @"Block not active"];
       [timerLabel_ setFont: [[NSFontManager sharedFontManager]
@@ -105,6 +133,12 @@
        ];
       
       [timerLabel_ sizeToFit];
+      
+      // Also reload the contents of the domain list in case it was changed while
+      // the block was ongoing.  We do this by simply clearing the
+      // AppController's domainListWindowController variable.  It will initialize
+      // a new object when it is needed, which will have new data.
+      [[NSApp delegate] setDomainListWindowController: nil];
       
       [[NSApp delegate] refreshUserInterface];
     }
@@ -137,6 +171,39 @@
   if(![[[NSApp delegate] initialWindow] isVisible]) {
     [NSApp terminate: self];
   }
+}
+
+- (IBAction) addToBlock:(id)sender {
+  // At first I tried loading the nib only if it wasn't loaded, but for some reason
+  // it didn't work right and sometimes the nib would seem to be loaded even though
+  // it obviously wasn't loaded properly.
+  [NSBundle loadNibNamed: @"AddToBlock" owner: self];
+  
+  [NSApp beginSheet: addSheet_
+     modalForWindow: [self window]
+      modalDelegate: self
+     didEndSelector: @selector(didEndSheet:returnCode:contextInfo:)
+        contextInfo: nil];
+}
+
+- (IBAction) cancelAdd:(id)sender {
+  [NSApp endSheet: addSheet_];
+}
+
+- (IBAction) performAdd:(id)sender {
+  NSString* addToBlockTextFieldContents = [addToBlockTextField_ stringValue];
+  [[NSApp delegate] addToBlockList: addToBlockTextFieldContents];
+  [NSApp endSheet: addSheet_];
+}
+
+- (void)didEndSheet:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {  
+  [sheet orderOut:self];  
+}
+
+- (void)dealloc {
+  [timerUpdater_ invalidate];
+  timerUpdater_ = nil;
+  [super dealloc];
 }
 
 @end

@@ -20,8 +20,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
+#import "IPFirewall.h"
+#import "LaunchctlHelper.h"
+#import <unistd.h>
 
 // The main class for SelfControl's helper tool to be run by launchd with high
 // privileges in order to handle the root-only configuration.

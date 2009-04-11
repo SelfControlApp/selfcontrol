@@ -20,7 +20,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
 // A simple utility class to deal with launchd jobs by calling the launchctl
 // command-line tool.  Each method corresponds to a launchctl subcommand.

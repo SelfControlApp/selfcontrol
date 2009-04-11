@@ -22,6 +22,7 @@
 
 
 #import <Cocoa/Cocoa.h>
+#import "ThunderbirdPreferenceParser.h"
 
 // A small class to handle getting the mail hostnames from different mail
 // programs (just Mail and Thunderbird currently).

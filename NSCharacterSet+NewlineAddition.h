@@ -1,5 +1,5 @@
 //
-//  ThunderbirdPreferenceParser.h
+//  NSCharacterSet+NewlineAddition.h
 //  SelfControl
 //
 //  Created by Charlie Stigler on 4/2/09.

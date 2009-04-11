@@ -1,8 +1,8 @@
 //
-//  NSCharacterSet+NewlineAddition.m
+//  NSApplication+SystemVersion.h
 //  SelfControl
 //
-//  Created by Charlie Stigler on 4/2/09.
+//  Created by Charlie Stigler on 4/3/09.
 //  Copyright 2009 Eyebeam. 
 
 // This file is part of SelfControl.
@@ -20,20 +20,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#import "NSCharacterSet+NewlineAddition.h"
+#import <Cocoa/Cocoa.h>
 
-@implementation NSCharacterSet (NewlineAddition)
+// A category to add a -getSystemVersionMajor:minor:bugFix method to the NSApplication
+// class, because most ways of getting system version are messy.
+// This source was taken from CocoaDev at http://www.cocoadev.com/index.pl?DeterminingOSVersion
+@interface NSApplication (SystemVersion)
 
-+ (NSCharacterSet*)newlineCharacterSet {
-  static NSCharacterSet *newlineCharacterSet = nil;
-  if (newlineCharacterSet == nil) {
-    NSMutableCharacterSet *tmpSet = [[NSCharacterSet whitespaceCharacterSet] mutableCopy];
-    [tmpSet invert];
-    [tmpSet formIntersectionWithCharacterSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    newlineCharacterSet = [tmpSet copy];
-    [tmpSet release];
-  }
-  return newlineCharacterSet;
-}
+// Reads the major, minor, and bug-fix versions of the system into three unsigned
+// int pointers.
+- (void)getSystemVersionMajor:(unsigned *)major
+                        minor:(unsigned *)minor
+                       bugFix:(unsigned *)bugFix;
 
 @end

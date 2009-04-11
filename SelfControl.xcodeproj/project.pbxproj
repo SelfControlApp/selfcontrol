@@ -49,10 +49,13 @@
 		CBB7DEEA0F53313F00ABF3EA /* DomainListWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB637220F3E296000EBD135 /* DomainListWindowController.m */; };
 		CBBCA14B0F54E1B300C75324 /* org.eyebeam.SelfControl.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB4295C20F53EF8C008E10CA /* org.eyebeam.SelfControl.plist */; };
 		CBC2F8580F4672FE00CF2A42 /* LaunchctlHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */; };
+		CBC3C0C20F86DDA10055C0B0 /* NSApplication+SystemVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC3C0C10F86DDA10055C0B0 /* NSApplication+SystemVersion.m */; };
+		CBC3C17F0F870D480055C0B0 /* TimerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBC3C17E0F870D480055C0B0 /* TimerWindow.xib */; };
+		CBC3C19E0F8713370055C0B0 /* TigerTimerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBC3C19D0F8713370055C0B0 /* TigerTimerWindow.xib */; };
+		CBC3C1A50F8717F50055C0B0 /* AddToBlock.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBC3C1A40F8717F50055C0B0 /* AddToBlock.xib */; };
 		CBE4401B0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE4401A0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m */; };
 		CBE5C40B0F4D4531003DB900 /* ButtonWithPopupMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE5C40A0F4D4531003DB900 /* ButtonWithPopupMenu.m */; };
 		CBEE50C10F48C21F00F5DF1C /* TimerWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */; };
-		CBEE50C60F48C37900F5DF1C /* TimerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBEE50C50F48C37900F5DF1C /* TimerWindow.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -139,13 +142,17 @@
 		CBB637220F3E296000EBD135 /* DomainListWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DomainListWindowController.m; sourceTree = "<group>"; };
 		CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchctlHelper.m; sourceTree = "<group>"; };
 		CBC2F8650F4674E300CF2A42 /* LaunchctlHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchctlHelper.h; sourceTree = "<group>"; };
+		CBC3C0C00F86DDA10055C0B0 /* NSApplication+SystemVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSApplication+SystemVersion.h"; sourceTree = "<group>"; };
+		CBC3C0C10F86DDA10055C0B0 /* NSApplication+SystemVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSApplication+SystemVersion.m"; sourceTree = "<group>"; };
+		CBC3C17E0F870D480055C0B0 /* TimerWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimerWindow.xib; sourceTree = "<group>"; };
+		CBC3C19D0F8713370055C0B0 /* TigerTimerWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TigerTimerWindow.xib; sourceTree = "<group>"; };
+		CBC3C1A40F8717F50055C0B0 /* AddToBlock.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddToBlock.xib; sourceTree = "<group>"; };
 		CBE440190F4BE0670062A1FE /* ThunderbirdPreferenceParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThunderbirdPreferenceParser.h; sourceTree = "<group>"; };
 		CBE4401A0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThunderbirdPreferenceParser.m; sourceTree = "<group>"; };
 		CBE5C4090F4D4531003DB900 /* ButtonWithPopupMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonWithPopupMenu.h; sourceTree = "<group>"; };
 		CBE5C40A0F4D4531003DB900 /* ButtonWithPopupMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonWithPopupMenu.m; sourceTree = "<group>"; };
 		CBEE50BF0F48C21F00F5DF1C /* TimerWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerWindowController.h; sourceTree = "<group>"; };
 		CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerWindowController.m; sourceTree = "<group>"; };
-		CBEE50C50F48C37900F5DF1C /* TimerWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimerWindow.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -256,12 +263,12 @@
 		CB4294DF0F53D865008E10CA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				CBE5C4090F4D4531003DB900 /* ButtonWithPopupMenu.h */,
+				CBE5C40A0F4D4531003DB900 /* ButtonWithPopupMenu.m */,
 				CB93674D0F85C2C100EF284E /* NSCharacterSet+NewlineAddition.h */,
 				CB93674E0F85C2C100EF284E /* NSCharacterSet+NewlineAddition.m */,
 				CB529BBD0F32B7ED00564FB8 /* AppController.h */,
 				CB529BBE0F32B7ED00564FB8 /* AppController.m */,
-				CBE5C4090F4D4531003DB900 /* ButtonWithPopupMenu.h */,
-				CBE5C40A0F4D4531003DB900 /* ButtonWithPopupMenu.m */,
 				CBB637210F3E296000EBD135 /* DomainListWindowController.h */,
 				CBB637220F3E296000EBD135 /* DomainListWindowController.m */,
 				CBA2AFD70F39EC46005AFEBE /* HelperMain.h */,
@@ -276,6 +283,8 @@
 				CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */,
 				CBC2F8650F4674E300CF2A42 /* LaunchctlHelper.h */,
 				CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */,
+				CBC3C0C00F86DDA10055C0B0 /* NSApplication+SystemVersion.h */,
+				CBC3C0C10F86DDA10055C0B0 /* NSApplication+SystemVersion.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -283,9 +292,11 @@
 		CB4294F10F53D95D008E10CA /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
+				CBC3C1A40F8717F50055C0B0 /* AddToBlock.xib */,
 				CB5B40420F3528E100EFBF4A /* DomainList.xib */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
-				CBEE50C50F48C37900F5DF1C /* TimerWindow.xib */,
+				CBC3C17E0F870D480055C0B0 /* TimerWindow.xib */,
+				CBC3C19D0F8713370055C0B0 /* TigerTimerWindow.xib */,
 			);
 			name = Interfaces;
 			sourceTree = "<group>";
@@ -360,11 +371,13 @@
 				CB5B40440F3528E100EFBF4A /* DomainList.xib in Resources */,
 				CB4C58D60F3F8F2A00B5D7CB /* SelfControlIcon.icns in Resources */,
 				CB4C58DA0F3F90B000B5D7CB /* Credits.rtf in Resources */,
-				CBEE50C60F48C37900F5DF1C /* TimerWindow.xib in Resources */,
 				CB9365620F8581B000EF284E /* dsa_pub.pem in Resources */,
 				CB9365780F85846200EF284E /* SelfControlAppcast.xml in Resources */,
 				CB9366E80F85BEF100EF284E /* NSRemoveTemplate.jpg in Resources */,
 				CB9366E90F85BEF100EF284E /* NSAddTemplate.jpg in Resources */,
+				CBC3C17F0F870D480055C0B0 /* TimerWindow.xib in Resources */,
+				CBC3C19E0F8713370055C0B0 /* TigerTimerWindow.xib in Resources */,
+				CBC3C1A50F8717F50055C0B0 /* AddToBlock.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -399,6 +412,7 @@
 				CBE5C40B0F4D4531003DB900 /* ButtonWithPopupMenu.m in Sources */,
 				CBB7DEEA0F53313F00ABF3EA /* DomainListWindowController.m in Sources */,
 				CB93674F0F85C2C100EF284E /* NSCharacterSet+NewlineAddition.m in Sources */,
+				CBC3C0C20F86DDA10055C0B0 /* NSApplication+SystemVersion.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

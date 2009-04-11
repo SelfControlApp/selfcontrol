@@ -21,9 +21,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "AppController.h"
-#import <Security/Security.h>
-#import <SystemConfiguration/SCNetwork.h>
-#import <unistd.h>
+
+NSString* const kSelfControlLockFilePath = @"/etc/SelfControl.lock";
 
 @implementation AppController
 
@@ -220,7 +219,7 @@
   [timerWindowController_ close];
 }
 
-- (void)removeBlock {
+/* - (void)removeBlock {
   // Remember not to use this method, it defeats the point of SelfControl!
   
   [defaults_ synchronize];
@@ -261,7 +260,7 @@
     NSLog(@"WARNING: Helper tool returned failure status code %d.");
     return;
   }    
-}
+} */
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
   [NSApp setDelegate: self];
@@ -287,11 +286,15 @@
 
 - (BOOL)selfControlLaunchDaemonIsLoaded {
   [defaults_ synchronize];
-  NSDate* blockStartedDate = [defaults_ objectForKey:@"BlockStartedDate"];
-  return (![blockStartedDate isEqualToDate: [NSDate distantFuture]]);
-  // If the user deletes the defaults and therefore destroys our flag (that the
-  // blockStartedDate will be set to distantFuture if no block is on) our program
-  // will get very confused.  Oh well.
+ //  NSDate* blockStartedDate = [defaults_ objectForKey:@"BlockStartedDate"];
+  /*BOOL cur = (![blockStartedDate isEqualToDate: [NSDate distantFuture]]);
+  BOOL next = [[NSFileManager defaultManager] fileExistsAtPath: kSelfControlLockFilePath];
+  if(cur != next)
+    NSLog(@"cur isn't next!");
+  return next; */
+  return [[NSFileManager defaultManager] fileExistsAtPath: kSelfControlLockFilePath];
+  /* return (![blockStartedDate isEqualToDate: [NSDate distantFuture]]);
+  return [[NSFileManager defaultManager] fileExistsAtPath: kSelfControlLockFilePath]; */
 }
 
 - (IBAction)showDomainList:(id)sender {
@@ -357,6 +360,127 @@
     [alertSound play];
 }
 
+- (void)addToBlockList:(NSString*)host {  
+  if(host == nil)
+    return;
+  
+  host = [[host stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];
+  
+  // Remove "http://" if a user tried to put that in
+  NSArray* splitString = [host componentsSeparatedByString: @"http://"];
+  for(int i = 0; i < [splitString count]; i++) {
+    if(![[splitString objectAtIndex: i] isEqual: @""]) {
+      host = [splitString objectAtIndex: i];
+      break;
+    }
+  }
+  
+  // Delete anything after a "/" in case a user tried to copy-paste a web address.
+  host = [[host componentsSeparatedByString: @"/"] objectAtIndex: 0];
+
+  if([host isEqualToString: @""])
+    return;
+  
+  NSMutableArray* list = [[defaults_ arrayForKey: @"HostBlacklist"] mutableCopy];
+  [list addObject: host];
+  [defaults_ setObject: list forKey: @"HostBlacklist"];
+  [defaults_ synchronize];
+  
+  if(([[defaults_ objectForKey:@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]])) {
+    // This method shouldn't be getting called, a block is not on (block started
+    // is in the distantFuture) so the Start button should be disabled.
+    // Maybe the UI didn't get properly refreshed, so try refreshing it again
+    // before we return.
+    [self refreshUserInterface];
+    
+    // Reverse the blacklist change made before we fail
+    NSMutableArray* list = [[defaults_ arrayForKey: @"HostBlacklist"] mutableCopy];
+    [list removeLastObject];
+    [defaults_ setObject: list forKey: @"HostBlacklist"];
+    
+    return;
+  }
+  
+  if([defaults_ boolForKey: @"VerifyInternetConnection"] && ![self networkConnectionIsAvailable]) {
+    NSAlert* networkUnavailableAlert = [[[NSAlert alloc] init] autorelease];
+    [networkUnavailableAlert setMessageText: @"No network connection detected"];
+    [networkUnavailableAlert setInformativeText:@"A block cannot be started without a working network connection.  You can override this setting in Preferences."];
+    [networkUnavailableAlert addButtonWithTitle: @"Cancel"];
+    [networkUnavailableAlert addButtonWithTitle: @"Network Diagnostics..."];
+    if([networkUnavailableAlert runModal] == NSAlertFirstButtonReturn) {
+      // User clicked cancel
+      // Reverse the blacklist change made before we fail
+      NSMutableArray* list = [[defaults_ arrayForKey: @"HostBlacklist"] mutableCopy];
+      [list removeLastObject];
+      [defaults_ setObject: list forKey: @"HostBlacklist"];      
+      
+      return;
+    }
+    
+    // If the user selected Network Diagnostics, launch an assisant to help them.
+    // apple.com is an arbitrary host chosen to pass to Network Diagnostics.
+    CFURLRef url = CFURLCreateWithString(NULL, CFSTR("http://apple.com"), NULL);
+    CFNetDiagnosticRef diagRef = CFNetDiagnosticCreateWithURL(NULL, url);
+    CFNetDiagnosticDiagnoseProblemInteractively(diagRef);
+    
+    // Reverse the blacklist change made before we fail
+    NSMutableArray* list = [[defaults_ arrayForKey: @"HostBlacklist"] mutableCopy];
+    [list removeLastObject];
+    [defaults_ setObject: list forKey: @"HostBlacklist"];    
+    
+    return;
+  }
+  
+  AuthorizationRef authorizationRef;
+  char* helperToolPath = [self selfControlHelperToolPathUTF8String];
+  int helperToolPathSize = strlen(helperToolPath);
+  AuthorizationItem right = {
+    kAuthorizationRightExecute,
+    helperToolPathSize,
+    helperToolPath,
+    0
+  };
+  AuthorizationRights authRights = {
+    1,
+    &right
+  };
+  AuthorizationFlags myFlags = kAuthorizationFlagDefaults |
+  kAuthorizationFlagExtendRights |
+  kAuthorizationFlagInteractionAllowed;
+  OSStatus status;
+  
+  status = AuthorizationCreate (&authRights,
+                                kAuthorizationEmptyEnvironment,
+                                myFlags,
+                                &authorizationRef);
+  
+  if(status) {
+    NSLog(@"ERROR: Failed to authorize block refresh.");
+    
+    // Reverse the blacklist change made before we fail
+    NSMutableArray* list = [[defaults_ arrayForKey: @"HostBlacklist"] mutableCopy];
+    [list removeLastObject];
+    [defaults_ setObject: list forKey: @"HostBlacklist"];    
+    
+    return;
+  }
+  
+  // We need to pass our UID to the helper tool.  It needs to know whose defaults
+  // it should read in order to properly load the blacklist.
+  char uidString[10];
+  snprintf(uidString, sizeof(uidString), "%d", getuid());
+  
+  char* args[] = { uidString, "--refresh", NULL };
+  status = AuthorizationExecuteWithPrivileges(authorizationRef,
+                                              helperToolPath,
+                                              kAuthorizationFlagDefaults,
+                                              args,
+                                              NULL);
+  if(status) {
+    NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", status);
+  }  
+}
+
 - (void)dealloc {
   [domainListWindowController_ release];
   [timerWindowController_ release];
@@ -374,6 +498,16 @@
 // @synthesize initialWindow = initialWindow_;
 - (id)initialWindow {
   return initialWindow_;
+}
+
+- (id)domainListWindowController {
+  return domainListWindowController_;
+}
+
+- (void)setDomainListWindowController:(id)newController {
+  [newController retain];
+  [domainListWindowController_ release];
+  domainListWindowController_ = newController;
 }
 
 @end

@@ -25,6 +25,9 @@
 #import "HostImporter.h"
 #import "ThunderbirdPreferenceParser.h"
 
+// This is a reference to the kSelfControlLockFilePath const variable in AppController.m
+extern NSString* const kSelfControlLockFilePath;
+
 // A subclass of NSWindowController created to manage the domain list (actually
 // host list, but domain list seems more understandable to inexperienced users
 // and experienced users will figure out they can put in IP addresses) window,

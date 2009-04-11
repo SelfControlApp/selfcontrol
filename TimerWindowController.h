@@ -21,23 +21,47 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #import <Cocoa/Cocoa.h>
+#import "AppController.h"
+#import "NSApplication+SystemVersion.h"
+
+// This is a reference to the kSelfControlLockFilePath const variable in AppController.m
+extern NSString* const kSelfControlLockFilePath;
 
 // A subclass of NSWindowController created to manage the floating timer window
 // which tells the user how much time remains in the block.
 @interface TimerWindowController : NSWindowController {
   IBOutlet id timerLabel_;
+  // The leopardWindow_ and leopardLabel_ IBOutlets are connected to versions of
+  // window and timerLabel_ which are optimized and nicer for Leopard.
   NSTimer* timerUpdater_;
   NSDate* blockEndingDate_;
+  IBOutlet NSPanel* addSheet_;
+  IBOutlet NSTextField* addToBlockTextField_;
 }
 
 // Updates the window's timer display to the correct time remaining until the
 // block expires.  If the block has expired and been removed, it invalidates
 // timerUpdater, closes the timer window, and opens the initial window. 
-- (void)updateTimerDisplay;
+- (void)updateTimerDisplay:(NSTimer*)timer;
 
 // Invalidates timerUpdater if it's still valid, then restarts the timer and
 // sets the end time to the scheduled end of the block, or the current time if
 // no block is scheduled.
 - (void)reloadTimer;
+
+// Called when the "Add to Block" method is called, instantiates and runs a sheet
+// to take input for the host to block.
+- (IBAction) addToBlock:(id)sender;
+
+// Called by the "Add to Block" sheet if the user clicks the cancel button, to
+// destroy the sheet without doing anything else.
+- (IBAction) cancelAdd:(id)sender;
+
+// Called by the "Add to Block" sheet if the user clicks the add button, to destroy
+// the sheet and first try to add the host to the block.
+- (IBAction) performAdd:(id)sender;
+
+// Delegate method for the sheet.  Just closes the sheet.
+- (void)didEndSheet:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo;
 
 @end

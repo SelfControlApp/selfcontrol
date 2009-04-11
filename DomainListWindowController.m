@@ -28,6 +28,8 @@
 - (DomainListWindowController*)init {
   self = [super initWithWindowNibName:@"DomainList"];
   
+ // [domainListTableView_ retain];
+  
   defaults_ = [NSUserDefaults standardUserDefaults];
   
   NSArray* curArray = [defaults_ arrayForKey: @"HostBlacklist"];
@@ -221,6 +223,11 @@ dataCellForTableColumn:(NSTableColumn *)tableColumn
   [domainListTableView_ reloadData];
   [[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
                                                       object: nil];
+}
+
+- (void)dealloc {
+ // [domainListTableView_ release];
+  [super dealloc];
 }
 
 @end

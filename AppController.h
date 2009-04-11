@@ -20,10 +20,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Forward declaration to avoid compiler weirdness
+@class TimerWindowController;
 
 #import <Cocoa/Cocoa.h>
 #import "DomainListWindowController.h"
 #import "TimerWindowController.h"
+#import <Security/Security.h>
+#import <SystemConfiguration/SCNetwork.h>
+#import <unistd.h>
 
 // The main controller for the SelfControl app, which includes several methods
 // to handle command flow and acts as delegate for the initial window.
@@ -50,11 +55,11 @@
 // the block duration in words (hours and minutes).
 - (IBAction)updateTimeSliderDisplay:(id)sender;
 
-// Gets authorization for and then immediately removes the block by calling
+/* // Gets authorization for and then immediately removes the block by calling
 // SelfControl's helper tool with the appropriate arguments.  This can be used
 // for testing, but should not be called at all during normal execution of the
 // program.
-- (void)removeBlock;
+- (void)removeBlock; */
 
 // Called when the main Start button is clicked.  Gets authorization for and
 // then immediately adds the block by calling SelfControl's helper tool with the
@@ -91,12 +96,22 @@
 // was just changed a few seconds ago.
 - (BOOL)networkConnectionIsAvailable;
 
+// Called whenever the selection of sound to play in the Preferences menu changes.
+// Plays the sound so that the user can "sample" them.
 - (IBAction)soundSelectionChanged:(id)sender;
+
+// Called by timerWindowController_ after its sheet returns, to add a specified
+// host to the blacklist (and refresh the block to use the new blacklist)
+- (void)addToBlockList:(NSString*)host;
 
 // Property allows initialWindow to be accessed from TimerWindowController
 // @property (retain, nonatomic, readonly) id initialWindow;
 
 // Changed property to manual accessor for pre-Leopard compatibility
 - (id)initialWindow;
+
+// Getter/setter for domainListWindowController to be accessed from a TimerWindowController
+- (id)domainListWindowController;
+- (void)setDomainListWindowController:(id)newController;
 
 @end
