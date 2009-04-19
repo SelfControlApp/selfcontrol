@@ -1,5 +1,5 @@
 //
-//  NSApplication+SystemVersion.m
+//  VersionChecker.m
 //  SelfControl
 //
 //  Created by Charlie Stigler on 4/3/09.
@@ -20,11 +20,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#import "NSApplication+SystemVersion.h"
+#import "VersionChecker.h"
 
-@implementation NSApplication (SystemVersion)
+@implementation VersionChecker
 
-- (void)getSystemVersionMajor:(unsigned *)major
++ (void)getSystemVersionMajor:(unsigned *)major
                         minor:(unsigned *)minor
                        bugFix:(unsigned *)bugFix;
 {

@@ -22,7 +22,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "AppController.h"
-#import "NSApplication+SystemVersion.h"
+#import "VersionChecker.h"
 
 // This is a reference to the kSelfControlLockFilePath const variable in AppController.m
 extern NSString* const kSelfControlLockFilePath;

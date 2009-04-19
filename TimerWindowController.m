@@ -29,7 +29,7 @@
 - (TimerWindowController*) init {
   unsigned int major, minor, bugfix;
   
-  [NSApp getSystemVersionMajor: &major minor: &minor bugFix: &bugfix];
+  [VersionChecker getSystemVersionMajor: &major minor: &minor bugFix: &bugfix];
   
   if(major <= 10 && minor < 5)
     [super initWithWindowNibName:@"TigerTimerWindow"];

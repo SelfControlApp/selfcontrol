@@ -1,5 +1,5 @@
 //
-//  NSApplication+SystemVersion.h
+//  VersionChecker.h
 //  SelfControl
 //
 //  Created by Charlie Stigler on 4/3/09.
@@ -20,16 +20,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
-// A category to add a -getSystemVersionMajor:minor:bugFix method to the NSApplication
-// class, because most ways of getting system version are messy.
+// A class to create a +getSystemVersionMajor:minor:bugFix method because most
+// ways of getting system version are messy.
 // This source was taken from CocoaDev at http://www.cocoadev.com/index.pl?DeterminingOSVersion
-@interface NSApplication (SystemVersion)
+@interface VersionChecker : NSObject {
+}
 
 // Reads the major, minor, and bug-fix versions of the system into three unsigned
 // int pointers.
-- (void)getSystemVersionMajor:(unsigned *)major
++ (void)getSystemVersionMajor:(unsigned *)major
                         minor:(unsigned *)minor
                        bugFix:(unsigned *)bugFix;
 

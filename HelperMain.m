@@ -22,7 +22,6 @@
 
 #import "HelperMain.h"
 
-NSString* const kSelfControlLaunchDaemonPlist = @"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n<plist version=\"1.0\">\n<dict>\n<key>Label</key>\n<string>org.eyebeam.SelfControl</string>\n<key>ProgramArguments</key>\n<array>\n<string>%@</string>\n<string>%d</string>\n<string>--checkup</string>\n</array>\n<key>StartInterval</key>\n<integer>60</integer>\n<key>StartOnMount</key>\n<false/>\n</dict>\n</plist>";
 NSString* const kSelfControlLockFilePath = @"/etc/SelfControl.lock";
 
 int main(int argc, char* argv[]) {
@@ -30,14 +29,14 @@ int main(int argc, char* argv[]) {
     
   if(geteuid()) {
     NSLog(@"ERROR: SelfControl's helper tool must be run as root.");
-    exit(EXIT_FAILURE);
+    exit(-201);
   }
   
   setuid(0);
   
   if(argv[1] == NULL || argv[2] == NULL) {
     NSLog(@"ERROR: Not enough arguments");
-    exit(EXIT_FAILURE);
+    exit(-202);
   }
   
   NSString* modeString = [NSString stringWithUTF8String: argv[2]];
@@ -84,20 +83,25 @@ int main(int argc, char* argv[]) {
                                [NSNumber numberWithBool: NO], @"TimerWindowFloats",
                                [NSNumber numberWithBool: NO], @"BlockSoundShouldPlay",
                                [NSNumber numberWithInt: 5], @"BlockSound",
+                               [NSNumber numberWithBool: YES], @"ClearCaches",
+                               [NSNumber numberWithBool: NO], @"BlockAsWhitelist",
                                nil];
   [defaults registerDefaults:appDefaults];    
   if(!domainList) {
     domainList = [defaults objectForKey:@"HostBlacklist"];
     if([domainList count] <= 0) {
       NSLog(@"ERROR: Not enough block information.");
-      exit(EXIT_FAILURE);
+      exit(-203);
     }
   }
   [defaults synchronize];
   [NSUserDefaults resetStandardUserDefaults];
   seteuid(0);  
   
-  if([modeString isEqual: @"--install"]) {                
+  if([modeString isEqual: @"--install"]) {   
+    
+    NSFileManager* fileManager = [NSFileManager defaultManager];
+        
     // Initialize writeErr to nil so calling messages on it later don't cause
     // crashes (it doesn't make sense we need to do this, but whatever).
     NSError* writeErr = nil; 
@@ -116,23 +120,21 @@ int main(int argc, char* argv[]) {
                        error: &writeErr];
         
     if([writeErr code]) {
-      NSLog(@"ERROR: Could not write launchd plist file to disk.");
-      exit(EXIT_FAILURE);
+      NSLog(@"ERROR: Could not write launchd plist file to LaunchDaemons folder.");
+      exit(-204);
     }
-            
-    NSFileManager* fileManager = [NSFileManager defaultManager];
-        
+                    
     if(![fileManager fileExistsAtPath: @"/Library/PrivilegedHelperTools"]) {
       if(![fileManager createDirectoryAtPath: @"/Library/PrivilegedHelperTools"
                                   attributes: fileAttributes]) {
         NSLog(@"ERROR: Could not create PrivilegedHelperTools directory.");
-        exit(EXIT_FAILURE);
+        exit(-205);
       }
     } else {
       if(![fileManager changeFileAttributes: fileAttributes
                                      atPath:  @"/Library/PrivilegedHelperTools"]) {
         NSLog(@"ERROR: Could not change permissions on PrivilegedHelperTools directory.");
-        exit(EXIT_FAILURE);
+        exit(-206);
       }
     }
     // We should delete the old file if it exists and copy the new binary in,
@@ -140,21 +142,21 @@ int main(int argc, char* argv[]) {
     if([fileManager fileExistsAtPath: @"/Library/PrivilegedHelperTools/org.eyebeam.SelfControl"]) {
       if(![fileManager removeFileAtPath: @"/Library/PrivilegedHelperTools/org.eyebeam.SelfControl" handler: nil]) {
         NSLog(@"ERROR: Could not delete old helper binary.");
-        exit(EXIT_FAILURE);
+        exit(-207);
       }
     }
     if(![fileManager copyPath: [NSString stringWithCString: argv[0]]
                              toPath: @"/Library/PrivilegedHelperTools/org.eyebeam.SelfControl"
                               handler: NULL]) {
       NSLog(@"ERROR: Could not copy SelfControl's helper binary to PrivilegedHelperTools directory.");
-      exit(EXIT_FAILURE);
+      exit(-208);
     }
     if(![fileManager changeFileAttributes: fileAttributes
                                    atPath:  @"/Library/PrivilegedHelperTools/org.eyebeam.SelfControl"]) {
       NSLog(@"ERROR: Could not change permissions on SelfControl's helper binary.");
-      exit(EXIT_FAILURE);
+      exit(-209);
     }
-        
+            
     [NSUserDefaults resetStandardUserDefaults];
     seteuid(controllingUID);
     defaults = [NSUserDefaults standardUserDefaults];
@@ -172,7 +174,7 @@ int main(int argc, char* argv[]) {
        || [lockDictionary objectForKey: @"BlockStartedDate"] == nil
        || [[lockDictionary objectForKey: @"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]) {
       NSLog(@"ERROR: Not enough block information.");
-      exit(EXIT_FAILURE);
+      exit(-210);
     }
     [defaults synchronize];
     [NSUserDefaults resetStandardUserDefaults];
@@ -204,23 +206,27 @@ int main(int argc, char* argv[]) {
     [lockDictionary writeToFile: kSelfControlLockFilePath atomically: YES];
     // Make sure the privileges are correct on our lock file
     [fileManager changeFileAttributes: fileAttributes atPath: kSelfControlLockFilePath];
-    
+        
     addRulesToFirewall(controllingUID);
-    
+        
     int result = [LaunchctlHelper loadLaunchdJobWithPlistAt: @"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
-    
+        
     [[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
                                                                    object: nil];
     
+    // Clear web browser caches if the user has the correct preference set, so
+    // that blocked pages are not loaded from a cache.
+    clearCachesIfRequested(controllingUID);
+    
     if(result) {
-      exit(EXIT_FAILURE);
+      exit(-211);
       NSLog(@"WARNING: Launch daemon load returned a failure status code.");
     } else NSLog(@"INFO: Block successfully added.");
   }
   if([modeString isEqual: @"--remove"]) {
     // This was just too easy for the user to remove the block with.
     NSLog(@"INFO: Nice try.");
-    exit(EXIT_FAILURE);
+    exit(-212);
    /* [NSUserDefaults resetStandardUserDefaults];
     seteuid(controllingUID);
     defaults = [NSUserDefaults standardUserDefaults];
@@ -245,7 +251,6 @@ int main(int argc, char* argv[]) {
     addRulesToFirewall(controllingUID);
     NSLog(@"INFO: Rules successfully added to firewall."); */
   } else if([modeString isEqual: @"--refresh"]) {
-    NSLog(@"in refresh");
     // Check what the current block is (based on the lock file) because if possible
     // we want to keep most of its information.
     NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: kSelfControlLockFilePath];
@@ -264,7 +269,7 @@ int main(int argc, char* argv[]) {
         // they authenticate), we shouldn't do anything at all.
         
         NSLog(@"ERROR: Refreshing domain blacklist, but no block is currently ongoing.");
-        exit(EXIT_FAILURE);
+        exit(-213);
       }
       
       NSLog(@"WARNING: Refreshing domain blacklist, but no block is currently ongoing.  Relaunching block.");
@@ -276,7 +281,6 @@ int main(int argc, char* argv[]) {
       // And later on we'll be reloading the launchd daemon if curDictionary
       // was nil, just in case.  Watch for it.
     } else {
-      NSLog(@"is a block file and [defaults objectForKey: @\"HostBlacklist\"] is %@", [defaults objectForKey: @"HostBlacklist"]);
       // If there is an existing block file we can save most of it from the old file
       newLockDictionary = [NSDictionary dictionaryWithObjectsAndKeys: 
                            [defaults objectForKey: @"HostBlacklist"], @"HostBlacklist",
@@ -292,7 +296,7 @@ int main(int argc, char* argv[]) {
        || [newLockDictionary objectForKey: @"BlockStartedDate"] == nil
        || [[newLockDictionary objectForKey: @"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]) {
       NSLog(@"ERROR: Not enough block information.");
-      exit(EXIT_FAILURE);
+      exit(-214);
     }
     
     [newLockDictionary writeToFile: kSelfControlLockFilePath atomically: YES];
@@ -309,6 +313,11 @@ int main(int argc, char* argv[]) {
       // and we're sure the block is still on (that's checked earlier).
       [LaunchctlHelper loadLaunchdJobWithPlistAt: @"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
     }
+    
+    // Clear web browser caches if the user has the correct preference set.  We
+    // need to do this again even if it's only a refresh because there might be
+    // caches for the new host blocked.
+    clearCachesIfRequested(controllingUID);
   } else if([modeString isEqual: @"--checkup"]) {    
     NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: kSelfControlLockFilePath];
     
@@ -333,7 +342,7 @@ int main(int argc, char* argv[]) {
          || blockDuration < 1) {    
           // Defaults is broken too!  Let's get out of here!
         NSLog(@"ERROR: Checkup ran -- no block found.");
-        exit(EXIT_FAILURE);
+        exit(-215);
       }
       
       NSDictionary* newDictionary = [NSDictionary dictionaryWithObjectsAndKeys: 
@@ -375,7 +384,7 @@ int main(int argc, char* argv[]) {
       
       // Execution should never reach this point.  Launchd unloading the job
       // should have killed this process.
-      exit(EXIT_FAILURE);
+      exit(-216);
     } else {
       // The block is still on.  Check if anybody removed our rules, and if so
       // re-add them.  Also make sure the user's defaults are set to the correct
@@ -409,7 +418,7 @@ int main(int argc, char* argv[]) {
 void addRulesToFirewall(int controllingUID) {
   // Note all arrays in the host blocking code was changed to sets to easily stop duplicates
   NSMutableSet* hostsToBlock = [NSMutableSet set];
-    
+      
   for(int i = 0; i < [domainList count]; i++) {
     NSArray* hostAndPort = [[domainList objectAtIndex: i] componentsSeparatedByString:@":"];
     NSString* hostToBeBlocked = [hostAndPort objectAtIndex: 0];
@@ -476,17 +485,32 @@ void addRulesToFirewall(int controllingUID) {
     }
   }
   */
-  
+    
   IPFirewall* firewall = [[IPFirewall alloc] init];
   [firewall clearSelfControlBlockRuleSet];
   [firewall addSelfControlBlockHeader];
-  
+    
   // Iterate through the host list to add a block rule for each
   NSEnumerator* hostEnumerator = [hostsToBlock objectEnumerator];
   NSString* hostString;
+    
+  [NSUserDefaults resetStandardUserDefaults];
+  seteuid(controllingUID);
+  defaults = [NSUserDefaults standardUserDefaults];
+  [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];  
+  BOOL blockAsWhitelist = [defaults boolForKey: @"BlockAsWhitelist"];
+  [NSUserDefaults resetStandardUserDefaults];
+  seteuid(0);
   
-  while(hostString = [hostEnumerator nextObject])
+  if(blockAsWhitelist) {  
+    while(hostString = [hostEnumerator nextObject])
+        [firewall addSelfControlBlockRuleAllowingIP: hostString];
+    
+    [firewall addWhitelistFooter];
+  } else {
+    while(hostString = [hostEnumerator nextObject])
       [firewall addSelfControlBlockRuleBlockingIP: hostString];
+  }
   
   [firewall addSelfControlBlockFooter];
 }
@@ -550,38 +574,6 @@ NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, NSString* p
   // users will often forget to block some of its many mirror subdomains that resolve
   // to different IPs, i.e. hs.facebook.com.  Thanks to Danielle for raising this issue.
   if([hostName rangeOfString: @"facebook.com"].location == ([hostName length] - 12)) {
-    /* // Initialize an array of aliases for Facebook
-    NSArray* facebookNames = [NSArray arrayWithObjects: 
-                                @"facebook.com",
-                                @"www.facebook.com",
-                                @"apps.facebook.com",
-                                @"new.facebook.com",
-                                @"login.facebook.com",
-                                @"register.facebook.com"
-                                @"developers.facebook.com",
-                                @"ak.facebook.com",
-                                @"hs.facebook.com",
-                                @"m.facebook.com",
-                                @"upload.facebook.com",
-                                @"connect.facebook.com",
-                                @"secure.facebook.com",
-                                @"iphone.facebook.com",
-                                @"blog.facebook.com",
-                              nil];
-    
-    for(int i = 0; i < [facebookNames count]; i++) {
-      NSHost* host = [NSHost hostWithName: [facebookNames objectAtIndex: i]];
-      
-      if(host) {
-        NSArray* addresses = [host addresses];
-        
-        for(int j = 0; j < [addresses count]; j++) {
-          if(port != nil)
-            [evaluatedAddresses addObject: [NSString stringWithFormat: @"%@:%@", [addresses objectAtIndex: j], port]];
-          else [evaluatedAddresses addObject: [addresses objectAtIndex: j]];
-        }
-      }
-    } */
     [evaluatedAddresses addObject: @"69.63.176.0/20"];
   }
   // Block the domain with no subdomains, if www.domain is blocked
@@ -614,4 +606,83 @@ NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, NSString* p
   }  
   
   return evaluatedAddresses;
+}
+
+void clearCachesIfRequested(int controllingUID) {
+  [NSUserDefaults resetStandardUserDefaults];
+  seteuid(controllingUID);
+  defaults = [NSUserDefaults standardUserDefaults];
+  [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
+  if([defaults boolForKey: @"ClearCaches"]) {
+    NSFileManager* fileManager = [NSFileManager defaultManager];
+    
+    unsigned int major, minor, bugfix;
+    
+    [VersionChecker getSystemVersionMajor: &major minor: &minor bugFix: &bugfix];
+    
+    // We've got to check if we're on 10.5 or not, because earlier systems don't
+    // have the DARWIN_USER_CACHE_DIR caches that we're about to remove.  This is
+    // also why we have to spawn a task to get the directory path, the specific
+    // API to get this path is Leopard-only and we need to have a single version
+    // that works on Tiger and Leopard.
+    if(major >= 10 && minor >= 5) {
+      NSTask* task = [[[NSTask alloc] init] autorelease];
+      [task setLaunchPath: @"/usr/bin/getconf"];
+      [task setArguments: [NSArray arrayWithObject:
+                           @"DARWIN_USER_CACHE_DIR"
+                           ]];
+      NSPipe* inPipe = [[[NSPipe alloc] init] autorelease];
+      NSFileHandle* readHandle = [inPipe fileHandleForReading];
+      [task setStandardOutput: inPipe];      
+      [task launch];
+      NSString* leopardCacheDirectory = [[[NSString alloc] initWithData:[readHandle readDataToEndOfFile]
+                                                               encoding: NSUTF8StringEncoding] autorelease];
+      close([readHandle fileDescriptor]);
+      [task waitUntilExit];
+      
+      leopardCacheDirectory = [leopardCacheDirectory stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+      
+      if([task terminationStatus] == 0 && [leopardCacheDirectory length] > 0) {
+        NSMutableArray* leopardCacheDirs = [NSMutableArray arrayWithObjects:
+                                            @"org.mozilla.firefox",
+                                            @"com.apple.Safari",
+                                            @"jp.hmdt.shiira",
+                                            @"org.mozilla.camino",
+                                            nil];
+        for(int i = 0; i < [leopardCacheDirs count]; i++) {
+          NSString* cacheDir = [leopardCacheDirectory stringByAppendingPathComponent: [leopardCacheDirs objectAtIndex: i]];
+          if([fileManager isDeletableFileAtPath: cacheDir]) {
+            [fileManager removeFileAtPath: cacheDir handler: nil];
+          }
+        }
+      }
+      
+      // NSArray* userCacheDirectories = NSSearchPathForDirectoriesInDomain(NSCachesDirectory, NSUserDomainMask, NO);
+      // I have no clue why this doesn't compile, I'm #importing properly I believe.
+      // We'll have to do it the messy way...
+      
+      NSString* userLibraryDirectory = [@"~/Library" stringByExpandingTildeInPath];
+      NSMutableArray* cacheDirs = [NSMutableArray arrayWithObjects:
+                                   @"Caches/Camino",
+                                   @"Caches/com.apple.Safari",
+                                   @"Caches/Firefox",
+                                   @"Caches/Flock",
+                                   @"Caches/Opera",
+                                   @"Caches/Unison",
+                                   @"Caches/com.omnigroup.OmniWeb5",
+                                   @"Preferences/iCab Preferences/iCab Cache",
+                                   @"Preferences/com.omnigroup.OmniWeb5",
+                                   nil];
+      
+      for(int i = 0; i < [cacheDirs count]; i++) {
+        NSString* cacheDir = [userLibraryDirectory stringByAppendingPathComponent: [cacheDirs objectAtIndex: i]];
+        if([fileManager isDeletableFileAtPath: cacheDir]) {
+          [fileManager removeFileAtPath: cacheDir handler: nil];
+        }
+      }
+      
+    }
+  }
+  [NSUserDefaults resetStandardUserDefaults];
+  seteuid(0);
 }

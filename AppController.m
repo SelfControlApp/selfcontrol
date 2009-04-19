@@ -23,6 +23,7 @@
 #import "AppController.h"
 
 NSString* const kSelfControlLockFilePath = @"/etc/SelfControl.lock";
+NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 @implementation AppController
 
@@ -41,6 +42,8 @@ NSString* const kSelfControlLockFilePath = @"/etc/SelfControl.lock";
                                [NSNumber numberWithBool: NO], @"TimerWindowFloats",
                                [NSNumber numberWithBool: NO], @"BlockSoundShouldPlay",
                                [NSNumber numberWithInt: 5], @"BlockSound",
+                               [NSNumber numberWithBool: YES], @"ClearCaches",
+                               [NSNumber numberWithBool: NO], @"BlockAsWhitelist",
                                nil];
   
   [defaults_ registerDefaults:appDefaults];
@@ -111,12 +114,29 @@ NSString* const kSelfControlLockFilePath = @"/etc/SelfControl.lock";
     // Maybe the UI didn't get properly refreshed, so try refreshing it again
     // before we return.
     [self refreshUserInterface];
+    
+    NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
+                                       code: -101
+                                   userInfo: [NSDictionary dictionaryWithObject: @"Attempting to add block, but a block appears to be in progress."
+                                                                         forKey: NSLocalizedDescriptionKey]];
+    
+    [NSApp presentError: err];
+    
     return;
   }
-  if([[defaults_ arrayForKey:@"HostBlacklist"] count] == 0)
+  if([[defaults_ arrayForKey:@"HostBlacklist"] count] == 0) {
     // Since the Start button should be disabled when the blacklist has no entries,
     // this should definitely not be happening.  Exit.
+    
+    NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
+                                       code: -102
+                                   userInfo: [NSDictionary dictionaryWithObject: @"Attempting to add block, but no blocklist is set."
+                                                                         forKey: NSLocalizedDescriptionKey]];
+    
+    [NSApp presentError: err];    
+    
     return;
+  }
   
   if([defaults_ boolForKey: @"VerifyInternetConnection"] && ![self networkConnectionIsAvailable]) {
     NSAlert* networkUnavailableAlert = [[[NSAlert alloc] init] autorelease];
@@ -174,8 +194,13 @@ NSString* const kSelfControlLockFilePath = @"/etc/SelfControl.lock";
                                               kAuthorizationFlagDefaults,
                                               args,
                                               NULL);
-    if(status) {
+  if(status) {
     NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", status);
+    
+    NSError* err = [self errorFromHelperToolStatusCode: status];
+    
+    [NSApp presentError: err];
+    
   }
 }
 
@@ -354,8 +379,11 @@ NSString* const kSelfControlLockFilePath = @"/etc/SelfControl.lock";
                                nil
                                ];
   NSSound* alertSound = [NSSound soundNamed: [systemSoundNames objectAtIndex: [defaults_ integerForKey: @"BlockSound"]]];
-  if(!alertSound)
+  if(!alertSound) {
     NSLog(@"WARNING: Alert sound not found.");
+    
+    
+  }
   else
     [alertSound play];
 }
@@ -397,6 +425,13 @@ NSString* const kSelfControlLockFilePath = @"/etc/SelfControl.lock";
     NSMutableArray* list = [[defaults_ arrayForKey: @"HostBlacklist"] mutableCopy];
     [list removeLastObject];
     [defaults_ setObject: list forKey: @"HostBlacklist"];
+    
+    NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
+                                       code: -103
+                                   userInfo: [NSDictionary dictionaryWithObject: @"Attempting to add host to block, but no block appears to be in progress."
+                                                                         forKey: NSLocalizedDescriptionKey]];
+    
+    [NSApp presentError: err];    
     
     return;
   }
@@ -478,6 +513,10 @@ NSString* const kSelfControlLockFilePath = @"/etc/SelfControl.lock";
                                               NULL);
   if(status) {
     NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", status);
+    
+    NSError* err = [self errorFromHelperToolStatusCode: status];
+    
+    [NSApp presentError: err];    
   }  
 }
 
@@ -508,6 +547,67 @@ NSString* const kSelfControlLockFilePath = @"/etc/SelfControl.lock";
   [newController retain];
   [domainListWindowController_ release];
   domainListWindowController_ = newController;
+}
+
+- (NSError*)errorFromHelperToolStatusCode:(int)status {
+  NSString* domain = kSelfControlErrorDomain;
+  NSString* description;
+  switch(status) {
+    case -201:
+      description = @"Helper tool not launched as root.";
+      break;
+    case -202:
+      description = @"Helper tool launched with insufficient arguments.";
+      break;
+    case -203:
+      description = @"Host blocklist not set";
+      break;
+    case -204:
+      description = @"Could not write launchd plist file to LaunchDaemons folder.";
+      break;
+    case -205:
+      description = @"Could not create PrivilegedHelperTools directory.";
+      break;
+    case -206:
+      description = @"Could not change permissions on PrivilegedHelperTools directory.";
+      break;
+    case -207:
+      description = @"Could not delete old helper binary.";
+      break;
+    case -208:
+      description = @"Could not copy SelfControl's helper binary to PrivilegedHelperTools directory.";
+      break;
+    case -209:
+      description = @"Could not change permissions on SelfControl's helper binary.";
+      break;
+    case -210:
+      description = @"Insufficient block information found.";
+      break;
+    case -211:
+      description = @"Launch daemon load returned a failure status code.";
+      break;
+    case -212:
+      description = @"Remove option called";
+      break;
+    case -213:
+      description = @"Refreshing domain blacklist, but no block is currently ongoing.";
+      break;
+    case -214:
+      description = @"Insufficient block information found.";
+      break;
+    case -215:
+      description = @"Checkup ran but no block found.";
+      break;
+      
+    default: 
+      description = [NSString stringWithFormat: @"Helper tool failed with unknown error code: %d", status];
+  }
+  
+  return [NSError errorWithDomain: domain code: status userInfo: [NSDictionary dictionaryWithObject: description
+                                                                                                     forKey: NSLocalizedDescriptionKey]];
+}
+
+- (void)presentError:(NSError*)err {
 }
 
 @end

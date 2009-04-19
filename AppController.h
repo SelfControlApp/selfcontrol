@@ -104,6 +104,10 @@
 // host to the blacklist (and refresh the block to use the new blacklist)
 - (void)addToBlockList:(NSString*)host;
 
+// Converts a failure exit code from a helper tool invocation into an NSError,
+// ready to be presented to the user.
+- (NSError*)errorFromHelperToolStatusCode:(int)status;
+
 // Property allows initialWindow to be accessed from TimerWindowController
 // @property (retain, nonatomic, readonly) id initialWindow;
 

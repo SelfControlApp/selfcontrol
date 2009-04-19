@@ -81,6 +81,101 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
   return status;
 }
 
+- (int)addSelfControlBlockRuleAllowingIP:(NSString*)ipAddress {    
+  NSArray* hostAndPort = [ipAddress componentsSeparatedByString:@":"];
+  NSString* hostToBeAllowed = [hostAndPort objectAtIndex: 0];
+  NSString* portToBeAllowed = nil;
+  if([hostAndPort count] > 1) {
+    portToBeAllowed = [hostAndPort objectAtIndex: 1];
+  }
+  NSArray* args = [NSArray array];
+  if(portToBeAllowed == nil) {
+    args = [NSArray arrayWithObjects:
+            @"add",
+            [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + selfControlBlockRuleCount_],
+            @"set",
+            [NSString stringWithFormat: @"%d", kIPFirewallRuleSetNumber],
+            @"allow",
+            @"ip",
+            @"from",
+            @"me",
+            @"to",
+            [NSString stringWithString: hostToBeAllowed],
+            nil];
+  }
+  else {
+    args = [NSArray arrayWithObjects:
+            @"add",
+            [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + selfControlBlockRuleCount_],
+            @"set",
+            [NSString stringWithFormat: @"%d", kIPFirewallRuleSetNumber],
+            @"allow",
+            @"ip",
+            @"from",
+            @"me",
+            @"to",
+            [NSString stringWithString: hostToBeAllowed],
+            @"dst-port",
+            [NSString stringWithString: portToBeAllowed],
+            nil];
+  }
+  
+  NSTask* task = [NSTask launchedTaskWithLaunchPath: kIPFirewallExecutablePath arguments:args];
+  
+  [task waitUntilExit];
+  int status = [task terminationStatus];
+  
+  // We have to keep track of how many rules we've used to we know at what number
+  // to insert new rules.
+  selfControlBlockRuleCount_++;
+  
+  return status;
+}
+
+- (int)addWhitelistFooter {
+  NSArray* args = [NSArray arrayWithObjects:
+                   @"add",
+                   [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + selfControlBlockRuleCount_],
+                   @"set",
+                   [NSString stringWithFormat: @"%d", kIPFirewallRuleSetNumber],
+                   @"allow",
+                   @"udp",
+                   @"from",
+                   @"me",
+                   @"to",
+                   @"any",
+                   @"dst-port",
+                   @"53",
+                   nil];
+  NSTask* task = [NSTask launchedTaskWithLaunchPath:kIPFirewallExecutablePath arguments:args];
+  
+  [task waitUntilExit];
+  int status = [task terminationStatus];
+  
+  selfControlBlockRuleCount_++;
+    
+  args = [NSArray arrayWithObjects:
+                   @"add",
+                   [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + selfControlBlockRuleCount_],
+                   @"set",
+                   [NSString stringWithFormat: @"%d", kIPFirewallRuleSetNumber],
+                   @"deny",
+                   @"ip",
+                   @"from",
+                   @"me",
+                   @"to",
+                   @"any",
+                   nil];
+  task = [NSTask launchedTaskWithLaunchPath:kIPFirewallExecutablePath arguments:args];
+  
+  [task waitUntilExit];
+  status = [task terminationStatus] && status;
+  
+  selfControlBlockRuleCount_++;
+  
+  return status;  
+}
+
 - (int)addSelfControlBlockHeader {
   NSArray* args = [NSArray arrayWithObjects:
                    @"add",
@@ -98,6 +193,30 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
   int status = [task terminationStatus];
   
   selfControlBlockRuleCount_++;
+
+  // This adds a rule to allow any traffic coming on the loopback interface, this
+  // is necessary because if we accidentally blocked localhost it would make the
+  // computer go crazy.
+  args = [NSArray arrayWithObjects:
+                   @"add",
+                   [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + selfControlBlockRuleCount_],
+                   @"set",
+                   [NSString stringWithFormat: @"%d", kIPFirewallRuleSetNumber],
+                   @"allow",
+                   @"ip",
+                   @"from",
+                   @"any",
+                   @"to",
+                   @"any",
+                   @"via",
+                   @"lo*",
+                   nil];
+  task = [NSTask launchedTaskWithLaunchPath:kIPFirewallExecutablePath arguments:args];
+  
+  [task waitUntilExit];
+  status = [task terminationStatus] && status;
+  
+  selfControlBlockRuleCount_++;  
   
   return status;
 }

@@ -21,9 +21,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #import <Foundation/Foundation.h>
+#import <CoreFoundation/CoreFoundation.h>
 #import "IPFirewall.h"
 #import "LaunchctlHelper.h"
+#import "VersionChecker.h"
 #import <unistd.h>
+#import <Cocoa/Cocoa.h>
 
 // The main class for SelfControl's helper tool to be run by launchd with high
 // privileges in order to handle the root-only configuration.
@@ -42,11 +45,16 @@ int main(int argc, char* argv[]);
 // Reads the domain block list from the defaults for SelfControl, and adds deny
 // rules for all of the IPs (or the A DNS record IPS for doamin names) to the
 // ipfw firewall.
-void addRulesToFirewall();
+void addRulesToFirewall(int controllingUID);
 
 // Removes from ipfw all rules that were created by SelfControl.
-void removeRulesFromFirewall();
+void removeRulesFromFirewall(int controllingUID);
 
 // Returns an autoreleased NSSet containing all IP adresses for evaluated
 // "common subdomains" for the specified hostname
 NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, NSString* port);
+
+// Checks the defaults system to see whether the user wants their web browser
+// caches cleared, and deletes the specific cache folders for few common
+// web browsers if it is required.
+void clearCachesIfRequested(int controllingUID);

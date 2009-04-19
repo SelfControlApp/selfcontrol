@@ -37,6 +37,11 @@
 // parameter.  Returns the exit status code of ipfw.
 - (int)addSelfControlBlockRuleBlockingIP: (NSString*) ipAddress;
 
+// Calls the ipfw command-line tool to add a rule into the designated
+// SelfControl ipfw rule set, explicitly allowing the IP address represented by
+// the NSString parameter.  Returns the exit status code of ipfw.
+- (int)addSelfControlBlockRuleAllowingIP: (NSString*) ipAddress;
+
 // Calls the ipfw command-line tool to add a comment rule into the designated
 // SelfControl ipfw rule set, containing a footer for the SelfControl block set.
 // Returns the exit status code of ipfw.
@@ -44,6 +49,7 @@
 
 // Calls the ipfw command-line tool to add a comment rule into the designated
 // SelfControl ipfw rule set, containing a header for the SelfControl block set.
+// The header also explicitly allows traffic on the loopback interface.
 // Returns the exit status code of ipfw.
 - (int)addSelfControlBlockHeader;
 
@@ -55,5 +61,11 @@
 // the SelfControl header, whether the SelfControl block set is loaded.  Returns
 // the exit status code of ipfw.
 - (BOOL)containsSelfControlBlockSet;
+
+// Calls the ipfw command-line tool to add a rule into the designated
+// SelfControl ipfw rule set, which stops all traffic and therefore when placed
+// at the end of the SelfControl block set makes it a whitelist.
+// Returns the exit status code of ipfw.
+- (int)addWhitelistFooter;
 
 @end
