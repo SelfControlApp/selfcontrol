@@ -29,14 +29,16 @@ int main(int argc, char* argv[]) {
     
   if(geteuid()) {
     NSLog(@"ERROR: SelfControl's helper tool must be run as root.");
-    exit(-201);
+    printStatus(-201); 
+    exit(EX_NOPERM);
   }
   
   setuid(0);
   
   if(argv[1] == NULL || argv[2] == NULL) {
     NSLog(@"ERROR: Not enough arguments");
-    exit(-202);
+    printStatus(-202);
+    exit(EX_USAGE);
   }
   
   NSString* modeString = [NSString stringWithUTF8String: argv[2]];
@@ -91,7 +93,8 @@ int main(int argc, char* argv[]) {
     domainList = [defaults objectForKey:@"HostBlacklist"];
     if([domainList count] <= 0) {
       NSLog(@"ERROR: Not enough block information.");
-      exit(-203);
+      printStatus(-203);
+      exit(EX_CONFIG);
     }
   }
   [defaults synchronize];
@@ -121,20 +124,23 @@ int main(int argc, char* argv[]) {
         
     if([writeErr code]) {
       NSLog(@"ERROR: Could not write launchd plist file to LaunchDaemons folder.");
-      exit(-204);
+      printStatus(-204);
+      exit(EX_IOERR);
     }
                     
     if(![fileManager fileExistsAtPath: @"/Library/PrivilegedHelperTools"]) {
       if(![fileManager createDirectoryAtPath: @"/Library/PrivilegedHelperTools"
                                   attributes: fileAttributes]) {
         NSLog(@"ERROR: Could not create PrivilegedHelperTools directory.");
-        exit(-205);
+        printStatus(-205);
+        exit(EX_IOERR);
       }
     } else {
       if(![fileManager changeFileAttributes: fileAttributes
                                      atPath:  @"/Library/PrivilegedHelperTools"]) {
         NSLog(@"ERROR: Could not change permissions on PrivilegedHelperTools directory.");
-        exit(-206);
+        printStatus(-206);
+        exit(EX_IOERR);
       }
     }
     // We should delete the old file if it exists and copy the new binary in,
@@ -142,19 +148,22 @@ int main(int argc, char* argv[]) {
     if([fileManager fileExistsAtPath: @"/Library/PrivilegedHelperTools/org.eyebeam.SelfControl"]) {
       if(![fileManager removeFileAtPath: @"/Library/PrivilegedHelperTools/org.eyebeam.SelfControl" handler: nil]) {
         NSLog(@"ERROR: Could not delete old helper binary.");
-        exit(-207);
+        printStatus(-207);
+        exit(EX_IOERR);
       }
     }
     if(![fileManager copyPath: [NSString stringWithCString: argv[0]]
                              toPath: @"/Library/PrivilegedHelperTools/org.eyebeam.SelfControl"
                               handler: NULL]) {
       NSLog(@"ERROR: Could not copy SelfControl's helper binary to PrivilegedHelperTools directory.");
-      exit(-208);
+      printStatus(-208);
+      exit(EX_IOERR);
     }
     if(![fileManager changeFileAttributes: fileAttributes
                                    atPath:  @"/Library/PrivilegedHelperTools/org.eyebeam.SelfControl"]) {
       NSLog(@"ERROR: Could not change permissions on SelfControl's helper binary.");
-      exit(-209);
+      printStatus(-209);
+      exit(EX_IOERR);
     }
             
     [NSUserDefaults resetStandardUserDefaults];
@@ -169,12 +178,14 @@ int main(int argc, char* argv[]) {
                                     [defaults objectForKey: @"HostBlacklist"], @"HostBlacklist",
                                     [defaults objectForKey: @"BlockDuration"], @"BlockDuration",
                                     [defaults objectForKey: @"BlockStartedDate"], @"BlockStartedDate",
+                                    [defaults objectForKey: @"BlockAsWhitelist"], @"BlockAsWhitelist",
                                     nil];        
     if([[lockDictionary objectForKey: @"HostBlacklist"] count] <= 0 || [[lockDictionary objectForKey: @"BlockDuration"] intValue] < 1
        || [lockDictionary objectForKey: @"BlockStartedDate"] == nil
        || [[lockDictionary objectForKey: @"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]) {
       NSLog(@"ERROR: Not enough block information.");
-      exit(-210);
+      printStatus(-210);
+      exit(EX_CONFIG);
     }
     [defaults synchronize];
     [NSUserDefaults resetStandardUserDefaults];
@@ -208,7 +219,7 @@ int main(int argc, char* argv[]) {
     [fileManager changeFileAttributes: fileAttributes atPath: kSelfControlLockFilePath];
         
     addRulesToFirewall(controllingUID);
-        
+            
     int result = [LaunchctlHelper loadLaunchdJobWithPlistAt: @"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
         
     [[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
@@ -219,14 +230,16 @@ int main(int argc, char* argv[]) {
     clearCachesIfRequested(controllingUID);
     
     if(result) {
-      exit(-211);
+      printStatus(-211);
+      exit(EX_UNAVAILABLE);
       NSLog(@"WARNING: Launch daemon load returned a failure status code.");
     } else NSLog(@"INFO: Block successfully added.");
   }
   if([modeString isEqual: @"--remove"]) {
     // This was just too easy for the user to remove the block with.
     NSLog(@"INFO: Nice try.");
-    exit(-212);
+    printStatus(-212);
+    exit(EX_UNAVAILABLE);
    /* [NSUserDefaults resetStandardUserDefaults];
     seteuid(controllingUID);
     defaults = [NSUserDefaults standardUserDefaults];
@@ -246,7 +259,7 @@ int main(int argc, char* argv[]) {
     // Execution should never reach this point if the job was unloaded
     // successfully, because the unload will kill the helper tool.
     NSLog(@"WARNING: Launch daemon unload failed.");
-    exit(EXIT_FAILURE); */
+    printStatus(printStatus_FAILURE); */
  /*  } else if([modeString isEqual: @"--add"]) {
     addRulesToFirewall(controllingUID);
     NSLog(@"INFO: Rules successfully added to firewall."); */
@@ -269,7 +282,8 @@ int main(int argc, char* argv[]) {
         // they authenticate), we shouldn't do anything at all.
         
         NSLog(@"ERROR: Refreshing domain blacklist, but no block is currently ongoing.");
-        exit(-213);
+        printStatus(-213);
+        exit(EX_SOFTWARE);
       }
       
       NSLog(@"WARNING: Refreshing domain blacklist, but no block is currently ongoing.  Relaunching block.");
@@ -277,6 +291,7 @@ int main(int argc, char* argv[]) {
                                         [defaults objectForKey: @"HostBlacklist"], @"HostBlacklist",
                                         [defaults objectForKey: @"BlockDuration"], @"BlockDuration",
                                         [defaults objectForKey: @"BlockStartedDate"], @"BlockStartedDate",
+                                        [defaults objectForKey: @"BlockAsWhitelist"], @"BlockAsWhitelist",
                                         nil];
       // And later on we'll be reloading the launchd daemon if curDictionary
       // was nil, just in case.  Watch for it.
@@ -286,6 +301,7 @@ int main(int argc, char* argv[]) {
                            [defaults objectForKey: @"HostBlacklist"], @"HostBlacklist",
                            [curDictionary objectForKey: @"BlockDuration"], @"BlockDuration",
                            [curDictionary objectForKey: @"BlockStartedDate"], @"BlockStartedDate",
+                           [curDictionary objectForKey: @"BlockAsWhitelist"], @"BlockAsWhitelist",
                            nil];      
     }
     [defaults synchronize];
@@ -296,7 +312,8 @@ int main(int argc, char* argv[]) {
        || [newLockDictionary objectForKey: @"BlockStartedDate"] == nil
        || [[newLockDictionary objectForKey: @"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]) {
       NSLog(@"ERROR: Not enough block information.");
-      exit(-214);
+      printStatus(-214);
+      exit(EX_CONFIG);
     }
     
     [newLockDictionary writeToFile: kSelfControlLockFilePath atomically: YES];
@@ -342,7 +359,8 @@ int main(int argc, char* argv[]) {
          || blockDuration < 1) {    
           // Defaults is broken too!  Let's get out of here!
         NSLog(@"ERROR: Checkup ran -- no block found.");
-        exit(-215);
+        printStatus(-215);
+        exit(EX_SOFTWARE);
       }
       
       NSDictionary* newDictionary = [NSDictionary dictionaryWithObjectsAndKeys: 
@@ -372,7 +390,7 @@ int main(int argc, char* argv[]) {
       [defaults synchronize];
       [NSUserDefaults resetStandardUserDefaults];
       seteuid(0);
-                  
+                        
       removeRulesFromFirewall(controllingUID);
       
       [[NSFileManager defaultManager] removeFileAtPath: kSelfControlLockFilePath handler: nil];
@@ -384,7 +402,8 @@ int main(int argc, char* argv[]) {
       
       // Execution should never reach this point.  Launchd unloading the job
       // should have killed this process.
-      exit(-216);
+      printStatus(-216);
+      exit(EX_SOFTWARE);
     } else {
       // The block is still on.  Check if anybody removed our rules, and if so
       // re-add them.  Also make sure the user's defaults are set to the correct
@@ -412,7 +431,8 @@ int main(int argc, char* argv[]) {
   }
   
   [pool drain];
-  return 0;
+  printStatus(0);
+  exit(EXIT_SUCCESS);
 }
 
 void addRulesToFirewall(int controllingUID) {
@@ -485,26 +505,55 @@ void addRulesToFirewall(int controllingUID) {
     }
   }
   */
-    
+  
+  BOOL blockAsWhitelist;
+  NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: kSelfControlLockFilePath];
+  
+  if(curDictionary == nil || [curDictionary objectForKey: @"BlockAsWhitelist"] == nil)
+    blockAsWhitelist = [defaults boolForKey: @"BlockAsWhitelist"];
+  else
+    blockAsWhitelist = [[curDictionary objectForKey: @"BlockAsWhitelist"] boolValue];
+      
+  // /etc/hosts blocking
+  if(!blockAsWhitelist) {
+    HostFileBlocker* hostFileBlocker = [[[HostFileBlocker alloc] init] autorelease];
+    if(![hostFileBlocker containsSelfControlBlock]) {
+      [hostFileBlocker addSelfControlBlockHeader];
+      NSLog(@"started /etc/host blocking at: %@", [NSDate date]);
+      for(int i = 0; i < [domainList count]; i++) {
+          NSString* hostToBlock = [domainList objectAtIndex: i];
+          NSString* ipValidationRegex = @"^([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
+          NSPredicate *regexTester = [NSPredicate
+                                      predicateWithFormat:@"SELF MATCHES %@",
+                                      ipValidationRegex];
+          if ([regexTester evaluateWithObject: hostToBlock] != YES)
+            // It's not an IP, so we'll add it to the /etc/hosts block as well
+            [hostFileBlocker addRuleBlockingDomain: hostToBlock];
+      }
+      [hostFileBlocker addSelfControlBlockFooter];
+      [hostFileBlocker writeNewFileContents];
+      NSLog(@"stopped /etc/host blocking at: %@", [NSDate date]);
+    }
+  }
+  
   IPFirewall* firewall = [[IPFirewall alloc] init];
   [firewall clearSelfControlBlockRuleSet];
   [firewall addSelfControlBlockHeader];
-    
+  
   // Iterate through the host list to add a block rule for each
   NSEnumerator* hostEnumerator = [hostsToBlock objectEnumerator];
   NSString* hostString;
-    
+  
   [NSUserDefaults resetStandardUserDefaults];
   seteuid(controllingUID);
   defaults = [NSUserDefaults standardUserDefaults];
   [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];  
-  BOOL blockAsWhitelist = [defaults boolForKey: @"BlockAsWhitelist"];
   [NSUserDefaults resetStandardUserDefaults];
   seteuid(0);
   
   if(blockAsWhitelist) {  
     while(hostString = [hostEnumerator nextObject])
-        [firewall addSelfControlBlockRuleAllowingIP: hostString];
+      [firewall addSelfControlBlockRuleAllowingIP: hostString];
     
     [firewall addWhitelistFooter];
   } else {
@@ -512,12 +561,15 @@ void addRulesToFirewall(int controllingUID) {
       [firewall addSelfControlBlockRuleBlockingIP: hostString];
   }
   
-  [firewall addSelfControlBlockFooter];
+  [firewall addSelfControlBlockFooter];  
 }
 
 void removeRulesFromFirewall(int controllingUID) {
   IPFirewall* firewall = [[IPFirewall alloc] init];
-  if([firewall containsSelfControlBlockSet] ) {
+  if([firewall containsSelfControlBlockSet]) {
+    HostFileBlocker* hostFileBlocker = [[[HostFileBlocker alloc] init] autorelease];
+    [hostFileBlocker removeSelfControlBlock];
+    [hostFileBlocker writeNewFileContents];
     [firewall clearSelfControlBlockRuleSet];
     NSLog(@"INFO: Blacklist blocking cleared.");
     
@@ -618,7 +670,7 @@ void clearCachesIfRequested(int controllingUID) {
     
     unsigned int major, minor, bugfix;
     
-    [VersionChecker getSystemVersionMajor: &major minor: &minor bugFix: &bugfix];
+    [SelfControlUtilities getSystemVersionMajor: &major minor: &minor bugFix: &bugfix];
     
     // We've got to check if we're on 10.5 or not, because earlier systems don't
     // have the DARWIN_USER_CACHE_DIR caches that we're about to remove.  This is
@@ -685,4 +737,8 @@ void clearCachesIfRequested(int controllingUID) {
   }
   [NSUserDefaults resetStandardUserDefaults];
   seteuid(0);
+}
+
+void printStatus(int status) {
+  printf("%d", status);
 }

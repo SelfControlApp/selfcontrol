@@ -24,9 +24,11 @@
 #import <CoreFoundation/CoreFoundation.h>
 #import "IPFirewall.h"
 #import "LaunchctlHelper.h"
-#import "VersionChecker.h"
+#import "SelfControlUtilities.h"
 #import <unistd.h>
 #import <Cocoa/Cocoa.h>
+#import <sysexits.h>
+#import "HostFileBlocker.h"
 
 // The main class for SelfControl's helper tool to be run by launchd with high
 // privileges in order to handle the root-only configuration.
@@ -58,3 +60,5 @@ NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, NSString* p
 // caches cleared, and deletes the specific cache folders for few common
 // web browsers if it is required.
 void clearCachesIfRequested(int controllingUID);
+
+void printStatus(int status);

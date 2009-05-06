@@ -29,6 +29,7 @@
   [task setLaunchPath: @"/bin/launchctl"];
   [task setArguments: [NSArray arrayWithObjects:
                        @"load",
+                       @"-w",
                        pathToLaunchdPlist,
                        nil]];
   [task launch];
@@ -41,6 +42,7 @@
   [task setLaunchPath: @"/bin/launchctl"];
   [task setArguments: [NSArray arrayWithObjects:
                        @"unload",
+                       @"-w",
                        pathToLaunchdPlist,
                        nil]];
   [task launch];

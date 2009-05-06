@@ -4,6 +4,8 @@
 <dict>
 	<key>Label</key>
 	<string>org.eyebeam.SelfControl</string>
+	<key>Disabled</key>
+	<true/>
 	<key>StartInterval</key>
 	<integer>60</integer>
 	<key>ProgramArguments</key>

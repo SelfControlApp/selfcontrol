@@ -27,19 +27,25 @@
 @implementation TimerWindowController
 
 - (TimerWindowController*) init {
+  NSLog(@"TimerWindowController: init");
   unsigned int major, minor, bugfix;
   
-  [VersionChecker getSystemVersionMajor: &major minor: &minor bugFix: &bugfix];
+  [SelfControlUtilities getSystemVersionMajor: &major minor: &minor bugFix: &bugfix];
   
   if(major <= 10 && minor < 5)
     [super initWithWindowNibName:@"TigerTimerWindow"];
   else
     [super initWithWindowNibName:@"TimerWindow"];
-    
+      
+  // We need a block to prevent us from running multiple copies of the "Add to Block"
+  // sheet.
+  addToBlockLock = [[NSLock alloc] init];
+  
   return self;
 }
 
 - (void)awakeFromNib {
+  NSLog(@"TimerWindowController: awakeFromNib");
   NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
   
   NSWindow* window = [self window];
@@ -54,6 +60,13 @@
   }
   
   NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: kSelfControlLockFilePath];
+  
+  /* if([[lockDict objectForKey: @"BlockAsWhitelist"] boolValue])
+    [addToBlockButton_ setEnabled: NO];
+  else
+    [addToBlockButton_ setEnabled: YES]; */
+  
+  NSLog(@"TimerWindowController: Passed where BlockAsWhitelist check was");
   
   NSDate* beginDate = [lockDict objectForKey:@"BlockStartedDate"];
   NSTimeInterval blockDuration = [[lockDict objectForKey:@"BlockDuration"] intValue] * 60;
@@ -75,14 +88,16 @@
     // If the block duration is 0, the ending date is... now!
     blockEndingDate_ = [[NSDate date] retain];
   [self updateTimerDisplay: nil];
-  timerUpdater_ = [NSTimer scheduledTimerWithTimeInterval: 1.0
+  timerUpdater_ = [[NSTimer scheduledTimerWithTimeInterval: 1.0
                                                    target: self
                                                  selector: @selector(updateTimerDisplay:)
                                                  userInfo: nil
-                                                  repeats: YES];
+                                                  repeats: YES] retain];
+  NSLog(@"TimerWindowController: Scheduled timer, timerUpdater_ is now %@", timerUpdater_);
 }
 
 - (void)reloadTimer {
+  NSLog(@"TimerWindowController: reloadTimer");
   NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
 
   NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: kSelfControlLockFilePath];
@@ -105,25 +120,36 @@
   else
     blockEndingDate_ = [[NSDate date] retain];
   
-  [timerUpdater_ invalidate];
+  if([timerUpdater_ isValid])
+    [timerUpdater_ invalidate];
+  [timerUpdater_ release];
   timerUpdater_ = nil;
 
-  timerUpdater_ = [NSTimer scheduledTimerWithTimeInterval: 1.0
+  timerUpdater_ = [[NSTimer scheduledTimerWithTimeInterval: 1.0
                                                    target: self
                                                  selector: @selector(updateTimerDisplay:)
                                                  userInfo: nil
-                                                  repeats: YES];
+                                                  repeats: YES] retain];
+  
+  NSLog(@"TimerWindowController: Scheduled timer (reloaded), timerUpdater_ is now %@", timerUpdater_);
+  
   [self updateTimerDisplay: nil];
 }
 
 - (void)updateTimerDisplay:(NSTimer*)timer {
+  NSLog(@"TimerWindowController: updateTimerDisplay:%@", timer);
   int numSeconds = (int) [blockEndingDate_ timeIntervalSinceNow];
   int numHours;
   int numMinutes;
   
   if(numSeconds < 0) {
     if(![[NSApp delegate] selfControlLaunchDaemonIsLoaded]) {
-      [timer invalidate];
+      if([timer isValid])
+        [timer invalidate];
+      timer = nil;
+      if([timerUpdater_ isValid])
+        [timerUpdater_ invalidate];
+      [timerUpdater_ release];
       timerUpdater_ = nil;
       
       [timerLabel_ setStringValue: @"Block not active"];
@@ -163,6 +189,8 @@
    ];
   
   [timerLabel_ sizeToFit];
+  
+  NSLog(@"TimerWindowController: updateTimerDisplay: set string value to %@", timeString);
 }
 
 - (void)windowShouldClose:(NSNotification *)notification {
@@ -173,12 +201,17 @@
   }
 }
 
-- (IBAction) addToBlock:(id)sender {
+- (IBAction) addToBlock:(id)sender {  
+  // Check if there's already a thread trying to add a host.  If so, don't make
+  // another.
+  if(![addToBlockLock tryLock])
+    return;
+  
   // At first I tried loading the nib only if it wasn't loaded, but for some reason
   // it didn't work right and sometimes the nib would seem to be loaded even though
   // it obviously wasn't loaded properly.
   [NSBundle loadNibNamed: @"AddToBlock" owner: self];
-  
+    
   [NSApp beginSheet: addSheet_
      modalForWindow: [self window]
       modalDelegate: self
@@ -186,8 +219,10 @@
         contextInfo: nil];
 }
 
-- (IBAction) cancelAdd:(id)sender {
+- (IBAction) closeAddSheet:(id)sender {
   [NSApp endSheet: addSheet_];
+  // Unlock the lock so that we can add another host to the list
+  [addToBlockLock unlock];
 }
 
 - (IBAction) performAdd:(id)sender {
@@ -196,12 +231,15 @@
   [NSApp endSheet: addSheet_];
 }
 
-- (void)didEndSheet:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {  
+- (void)didEndSheet:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
   [sheet orderOut:self];  
 }
 
 - (void)dealloc {
-  [timerUpdater_ invalidate];
+  NSLog(@"TimerWindowController: dealloc");
+  if([timerUpdater_ isValid])
+    [timerUpdater_ invalidate];
+  [timerUpdater_ release];
   timerUpdater_ = nil;
   [super dealloc];
 }

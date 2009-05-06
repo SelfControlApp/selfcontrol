@@ -26,19 +26,20 @@
 @implementation DomainListWindowController
 
 - (DomainListWindowController*)init {
-  self = [super initWithWindowNibName:@"DomainList"];
+  if(self = [super initWithWindowNibName:@"DomainList"]) {
   
- // [domainListTableView_ retain];
-  
-  defaults_ = [NSUserDefaults standardUserDefaults];
-  
-  NSArray* curArray = [defaults_ arrayForKey: @"HostBlacklist"];
-  if(curArray == nil)
-    domainList_ = [NSMutableArray arrayWithCapacity: 10];
-  else
-    domainList_ = [curArray mutableCopy];
+   // [domainListTableView_ retain];
     
-  [defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
+    defaults_ = [NSUserDefaults standardUserDefaults];
+    
+    NSArray* curArray = [defaults_ arrayForKey: @"HostBlacklist"];
+    if(curArray == nil)
+      domainList_ = [NSMutableArray arrayWithCapacity: 10];
+    else
+      domainList_ = [curArray mutableCopy];
+      
+    [defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
+  }
   
   return self;
 }

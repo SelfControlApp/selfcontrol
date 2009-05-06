@@ -27,14 +27,16 @@
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		CB1E7A6E0F9AEA9B00D158BC /* ERRORS in Resources */ = {isa = PBXBuildFile; fileRef = CB1E7A6D0F9AEA9B00D158BC /* ERRORS */; };
-		CB1ED4480F56686400EFECEE /* org.eyebeam.SelfControl in Copy Helper Tool */ = {isa = PBXBuildFile; fileRef = CBA2AFD20F39EC12005AFEBE /* org.eyebeam.SelfControl */; };
+		CB1ED4480F56686400EFECEE /* org.eyebeam.SelfControl in Copy Helper Tools */ = {isa = PBXBuildFile; fileRef = CBA2AFD20F39EC12005AFEBE /* org.eyebeam.SelfControl */; };
 		CB4C58D60F3F8F2A00B5D7CB /* SelfControlIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = CB4C58D50F3F8F2A00B5D7CB /* SelfControlIcon.icns */; };
 		CB4C58DA0F3F90B000B5D7CB /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = CB4C58D90F3F90B000B5D7CB /* Credits.rtf */; };
 		CB529BBF0F32B7ED00564FB8 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB529BBE0F32B7ED00564FB8 /* AppController.m */; };
 		CB54D44C0F93E33300AA22E9 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9E901D0F397FFA006DE6E4 /* Security.framework */; };
 		CB587E500F50FE8800C66A09 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB587E4F0F50FE8800C66A09 /* SystemConfiguration.framework */; };
-		CB5A306E0F92E582005CCA3E /* VersionChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC3C0C10F86DDA10055C0B0 /* VersionChecker.m */; };
+		CB5A306E0F92E582005CCA3E /* SelfControlUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC3C0C10F86DDA10055C0B0 /* SelfControlUtilities.m */; };
 		CB5B40440F3528E100EFBF4A /* DomainList.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB5B40420F3528E100EFBF4A /* DomainList.xib */; };
+		CB5E20C80FAE0D04006DBFC8 /* checkup.c in Sources */ = {isa = PBXBuildFile; fileRef = CB5E20C70FAE0D04006DBFC8 /* checkup.c */; };
+		CB5E20DC0FAE0FF2006DBFC8 /* scheckup in Copy Helper Tools */ = {isa = PBXBuildFile; fileRef = CB5E20BF0FAE0CDC006DBFC8 /* scheckup */; };
 		CB90BF830F49F430006D202D /* HostImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB90BF820F49F430006D202D /* HostImporter.m */; };
 		CB93654E0F85802400EF284E /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB93654D0F85802400EF284E /* Sparkle.framework */; };
 		CB93655C0F85806A00EF284E /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CB93654D0F85802400EF284E /* Sparkle.framework */; };
@@ -47,11 +49,12 @@
 		CB93674F0F85C2C100EF284E /* NSCharacterSet+NewlineAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = CB93674E0F85C2C100EF284E /* NSCharacterSet+NewlineAddition.m */; };
 		CBA2AFD90F39EC46005AFEBE /* HelperMain.m in Sources */ = {isa = PBXBuildFile; fileRef = CBA2AFD80F39EC46005AFEBE /* HelperMain.m */; };
 		CBA2E75B0F41388800571571 /* IPFirewall.m in Sources */ = {isa = PBXBuildFile; fileRef = CBA2E75A0F41388800571571 /* IPFirewall.m */; };
+		CBB0AE2A0FA74566006229B3 /* HostFileBlocker.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB0AE290FA74566006229B3 /* HostFileBlocker.m */; };
 		CBB3FD7A0F53834B00244132 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9E901D0F397FFA006DE6E4 /* Security.framework */; };
 		CBB7DEEA0F53313F00ABF3EA /* DomainListWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB637220F3E296000EBD135 /* DomainListWindowController.m */; };
 		CBBCA14B0F54E1B300C75324 /* org.eyebeam.SelfControl.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB4295C20F53EF8C008E10CA /* org.eyebeam.SelfControl.plist */; };
 		CBC2F8580F4672FE00CF2A42 /* LaunchctlHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */; };
-		CBC3C0C20F86DDA10055C0B0 /* VersionChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC3C0C10F86DDA10055C0B0 /* VersionChecker.m */; };
+		CBC3C0C20F86DDA10055C0B0 /* SelfControlUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC3C0C10F86DDA10055C0B0 /* SelfControlUtilities.m */; };
 		CBC3C17F0F870D480055C0B0 /* TimerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBC3C17E0F870D480055C0B0 /* TimerWindow.xib */; };
 		CBC3C19E0F8713370055C0B0 /* TigerTimerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBC3C19D0F8713370055C0B0 /* TigerTimerWindow.xib */; };
 		CBC3C1A50F8717F50055C0B0 /* AddToBlock.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBC3C1A40F8717F50055C0B0 /* AddToBlock.xib */; };
@@ -61,6 +64,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		CB5E20D80FAE0FB9006DBFC8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CB5E20BE0FAE0CDC006DBFC8;
+			remoteInfo = scheckup;
+		};
 		CB9368280F85D86500EF284E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -78,15 +88,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		CB2359D90F4541AB0030F59C /* Copy Helper Tool */ = {
+		CB2359D90F4541AB0030F59C /* Copy Helper Tools */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 6;
 			files = (
-				CB1ED4480F56686400EFECEE /* org.eyebeam.SelfControl in Copy Helper Tool */,
+				CB5E20DC0FAE0FF2006DBFC8 /* scheckup in Copy Helper Tools */,
+				CB1ED4480F56686400EFECEE /* org.eyebeam.SelfControl in Copy Helper Tools */,
 			);
-			name = "Copy Helper Tool";
+			name = "Copy Helper Tools";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		CB93655B0F85805300EF284E /* Copy Frameworks */ = {
@@ -123,6 +134,9 @@
 		CB529BBE0F32B7ED00564FB8 /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
 		CB587E4F0F50FE8800C66A09 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = /System/Library/Frameworks/SystemConfiguration.framework; sourceTree = "<absolute>"; };
 		CB5B40430F3528E100EFBF4A /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/DomainList.xib; sourceTree = "<group>"; };
+		CB5E20BF0FAE0CDC006DBFC8 /* scheckup */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = scheckup; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB5E20C60FAE0D04006DBFC8 /* checkup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = checkup.h; sourceTree = "<group>"; };
+		CB5E20C70FAE0D04006DBFC8 /* checkup.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = checkup.c; sourceTree = "<group>"; };
 		CB90BF810F49F430006D202D /* HostImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostImporter.h; sourceTree = "<group>"; };
 		CB90BF820F49F430006D202D /* HostImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HostImporter.m; sourceTree = "<group>"; };
 		CB93654D0F85802400EF284E /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
@@ -141,12 +155,14 @@
 		CBA2AFD80F39EC46005AFEBE /* HelperMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelperMain.m; sourceTree = "<group>"; };
 		CBA2E7590F41388800571571 /* IPFirewall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPFirewall.h; sourceTree = "<group>"; };
 		CBA2E75A0F41388800571571 /* IPFirewall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IPFirewall.m; sourceTree = "<group>"; };
+		CBB0AE280FA74566006229B3 /* HostFileBlocker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostFileBlocker.h; sourceTree = "<group>"; };
+		CBB0AE290FA74566006229B3 /* HostFileBlocker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HostFileBlocker.m; sourceTree = "<group>"; };
 		CBB637210F3E296000EBD135 /* DomainListWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DomainListWindowController.h; sourceTree = "<group>"; };
 		CBB637220F3E296000EBD135 /* DomainListWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DomainListWindowController.m; sourceTree = "<group>"; };
 		CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchctlHelper.m; sourceTree = "<group>"; };
 		CBC2F8650F4674E300CF2A42 /* LaunchctlHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchctlHelper.h; sourceTree = "<group>"; };
-		CBC3C0C00F86DDA10055C0B0 /* VersionChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VersionChecker.h; sourceTree = "<group>"; };
-		CBC3C0C10F86DDA10055C0B0 /* VersionChecker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VersionChecker.m; sourceTree = "<group>"; };
+		CBC3C0C00F86DDA10055C0B0 /* SelfControlUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelfControlUtilities.h; sourceTree = "<group>"; };
+		CBC3C0C10F86DDA10055C0B0 /* SelfControlUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelfControlUtilities.m; sourceTree = "<group>"; };
 		CBC3C17E0F870D480055C0B0 /* TimerWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimerWindow.xib; sourceTree = "<group>"; };
 		CBC3C19D0F8713370055C0B0 /* TigerTimerWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TigerTimerWindow.xib; sourceTree = "<group>"; };
 		CBC3C1A40F8717F50055C0B0 /* AddToBlock.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddToBlock.xib; sourceTree = "<group>"; };
@@ -176,6 +192,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB54D44C0F93E33300AA22E9 /* Security.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB5E20BD0FAE0CDC006DBFC8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,6 +233,7 @@
 			children = (
 				8D1107320486CEB800E47090 /* SelfControl.app */,
 				CBA2AFD20F39EC12005AFEBE /* org.eyebeam.SelfControl */,
+				CB5E20BF0FAE0CDC006DBFC8 /* scheckup */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -267,6 +291,8 @@
 		CB4294DF0F53D865008E10CA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				CBB0AE280FA74566006229B3 /* HostFileBlocker.h */,
+				CBB0AE290FA74566006229B3 /* HostFileBlocker.m */,
 				CBE5C4090F4D4531003DB900 /* ButtonWithPopupMenu.h */,
 				CBE5C40A0F4D4531003DB900 /* ButtonWithPopupMenu.m */,
 				CB93674D0F85C2C100EF284E /* NSCharacterSet+NewlineAddition.h */,
@@ -287,8 +313,10 @@
 				CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */,
 				CBC2F8650F4674E300CF2A42 /* LaunchctlHelper.h */,
 				CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */,
-				CBC3C0C00F86DDA10055C0B0 /* VersionChecker.h */,
-				CBC3C0C10F86DDA10055C0B0 /* VersionChecker.m */,
+				CBC3C0C00F86DDA10055C0B0 /* SelfControlUtilities.h */,
+				CBC3C0C10F86DDA10055C0B0 /* SelfControlUtilities.m */,
+				CB5E20C60FAE0D04006DBFC8 /* checkup.h */,
+				CB5E20C70FAE0D04006DBFC8 /* checkup.c */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -315,19 +343,36 @@
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
-				CB2359D90F4541AB0030F59C /* Copy Helper Tool */,
+				CB2359D90F4541AB0030F59C /* Copy Helper Tools */,
 				CB93655B0F85805300EF284E /* Copy Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				CBEF43D00F7BB7F6009A9FDF /* PBXTargetDependency */,
+				CB5E20D90FAE0FB9006DBFC8 /* PBXTargetDependency */,
 			);
 			name = SelfControl;
 			productInstallPath = "$(HOME)/Applications";
 			productName = SelfControl;
 			productReference = 8D1107320486CEB800E47090 /* SelfControl.app */;
 			productType = "com.apple.product-type.application";
+		};
+		CB5E20BE0FAE0CDC006DBFC8 /* scheckup */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CB5E20C50FAE0D01006DBFC8 /* Build configuration list for PBXNativeTarget "scheckup" */;
+			buildPhases = (
+				CB5E20BC0FAE0CDC006DBFC8 /* Sources */,
+				CB5E20BD0FAE0CDC006DBFC8 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = scheckup;
+			productName = scheckup;
+			productReference = CB5E20BF0FAE0CDC006DBFC8 /* scheckup */;
+			productType = "com.apple.product-type.tool";
 		};
 		CBA2AFD10F39EC12005AFEBE /* org.eyebeam.SelfControl */ = {
 			isa = PBXNativeTarget;
@@ -360,6 +405,7 @@
 				8D1107260486CEB800E47090 /* SelfControl */,
 				CBA2AFD10F39EC12005AFEBE /* org.eyebeam.SelfControl */,
 				CB9368250F85D84E00EF284E /* Distribution */,
+				CB5E20BE0FAE0CDC006DBFC8 /* scheckup */,
 			);
 		};
 /* End PBXProject section */
@@ -417,7 +463,15 @@
 				CBE5C40B0F4D4531003DB900 /* ButtonWithPopupMenu.m in Sources */,
 				CBB7DEEA0F53313F00ABF3EA /* DomainListWindowController.m in Sources */,
 				CB93674F0F85C2C100EF284E /* NSCharacterSet+NewlineAddition.m in Sources */,
-				CBC3C0C20F86DDA10055C0B0 /* VersionChecker.m in Sources */,
+				CBC3C0C20F86DDA10055C0B0 /* SelfControlUtilities.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB5E20BC0FAE0CDC006DBFC8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB5E20C80FAE0D04006DBFC8 /* checkup.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,13 +482,19 @@
 				CBA2AFD90F39EC46005AFEBE /* HelperMain.m in Sources */,
 				CBA2E75B0F41388800571571 /* IPFirewall.m in Sources */,
 				CBC2F8580F4672FE00CF2A42 /* LaunchctlHelper.m in Sources */,
-				CB5A306E0F92E582005CCA3E /* VersionChecker.m in Sources */,
+				CB5A306E0F92E582005CCA3E /* SelfControlUtilities.m in Sources */,
+				CBB0AE2A0FA74566006229B3 /* HostFileBlocker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		CB5E20D90FAE0FB9006DBFC8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CB5E20BE0FAE0CDC006DBFC8 /* scheckup */;
+			targetProxy = CB5E20D80FAE0FB9006DBFC8 /* PBXContainerItemProxy */;
+		};
 		CB9368290F85D86500EF284E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8D1107260486CEB800E47090 /* SelfControl */;
@@ -543,6 +603,52 @@
 			};
 			name = Release;
 		};
+		CB5E20C10FAE0CDD006DBFC8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INSTALL_MODE_FLAG = "u+w,go-w,a+rX";
+				INSTALL_OWNER = "$(USER)";
+				INSTALL_PATH = /usr/local/bin;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = scheckup;
+			};
+			name = Debug;
+		};
+		CB5E20C20FAE0CDD006DBFC8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INSTALL_MODE_FLAG = "u+w,go-w,a+rX";
+				INSTALL_OWNER = "$(USER)";
+				INSTALL_PATH = /usr/local/bin;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = scheckup;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 		CB9368260F85D84E00EF284E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -627,6 +733,15 @@
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
 				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CB5E20C50FAE0D01006DBFC8 /* Build configuration list for PBXNativeTarget "scheckup" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB5E20C10FAE0CDD006DBFC8 /* Debug */,
+				CB5E20C20FAE0CDD006DBFC8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

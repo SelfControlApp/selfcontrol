@@ -8,8 +8,8 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="634"/>
 			<integer value="29"/>
+			<integer value="634"/>
 			<integer value="372"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
@@ -806,10 +806,6 @@
 				<string key="NSClassName">AppController</string>
 			</object>
 			<object class="NSUserDefaultsController" id="863284654">
-				<object class="NSMutableArray" key="NSDeclaredKeys">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>ClearCaches</string>
-				</object>
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
 			<object class="NSCustomObject" id="975807847">
@@ -1154,6 +1150,14 @@
 						</object>
 					</object>
 					<int key="connectionID">746</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">editBlacklistButton_</string>
+						<reference key="source" ref="542474807"/>
+						<reference key="destination" ref="617926098"/>
+					</object>
+					<int key="connectionID">749</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1990,7 +1994,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">748</int>
+			<int key="maxID">749</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2022,11 +2026,13 @@
 							<string>blockDurationSlider_</string>
 							<string>blockSliderTimeDisplayLabel_</string>
 							<string>domainListMenuItem_</string>
+							<string>editBlacklistButton_</string>
 							<string>initialWindow_</string>
 							<string>submitButton_</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>

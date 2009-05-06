@@ -28,25 +28,30 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 @implementation AppController
 
 - (AppController*) init {
-  [super init];
+  if(self = [super init]) {
   
-  defaults_ = [NSUserDefaults standardUserDefaults];
-  
-  NSDictionary* appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
-                               [NSNumber numberWithInt: 0], @"BlockDuration",
-                               [NSDate distantFuture], @"BlockStartedDate",
-                               [NSArray array], @"HostBlacklist", 
-                               [NSNumber numberWithBool: YES], @"EvaluateCommonSubdomains",
-                               [NSNumber numberWithBool: YES], @"HighlightInvalidHosts",
-                               [NSNumber numberWithBool: YES], @"VerifyInternetConnection",
-                               [NSNumber numberWithBool: NO], @"TimerWindowFloats",
-                               [NSNumber numberWithBool: NO], @"BlockSoundShouldPlay",
-                               [NSNumber numberWithInt: 5], @"BlockSound",
-                               [NSNumber numberWithBool: YES], @"ClearCaches",
-                               [NSNumber numberWithBool: NO], @"BlockAsWhitelist",
-                               nil];
-  
-  [defaults_ registerDefaults:appDefaults];
+    defaults_ = [NSUserDefaults standardUserDefaults];
+    
+    NSDictionary* appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
+                                 [NSNumber numberWithInt: 0], @"BlockDuration",
+                                 [NSDate distantFuture], @"BlockStartedDate",
+                                 [NSArray array], @"HostBlacklist", 
+                                 [NSNumber numberWithBool: YES], @"EvaluateCommonSubdomains",
+                                 [NSNumber numberWithBool: YES], @"HighlightInvalidHosts",
+                                 [NSNumber numberWithBool: YES], @"VerifyInternetConnection",
+                                 [NSNumber numberWithBool: NO], @"TimerWindowFloats",
+                                 [NSNumber numberWithBool: NO], @"BlockSoundShouldPlay",
+                                 [NSNumber numberWithInt: 5], @"BlockSound",
+                                 [NSNumber numberWithBool: YES], @"ClearCaches",
+                                 [NSNumber numberWithBool: NO], @"BlockAsWhitelist",
+                                 nil];
+    
+    [defaults_ registerDefaults:appDefaults];
+    
+    // blockLock_ is a lock that allows us to ensure that the user interface will
+    // be locked up while we're adding a block.
+    blockLock_ = [[NSLock alloc] init];
+  }
   
   return self;
 }
@@ -106,7 +111,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   [blockSliderTimeDisplayLabel_ setStringValue:timeString];
 }
 
-- (IBAction)addBlock:(id)sender{
+- (IBAction)addBlock:(id)sender {
   [defaults_ synchronize];
   if(([[defaults_ objectForKey:@"BlockStartedDate"] timeIntervalSinceNow] < 0)) {
     // This method shouldn't be getting called, a block is on (block started date
@@ -115,9 +120,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     // before we return.
     [self refreshUserInterface];
     
-    NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
+    NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
                                        code: -101
-                                   userInfo: [NSDictionary dictionaryWithObject: @"Attempting to add block, but a block appears to be in progress."
+                                   userInfo: [NSDictionary dictionaryWithObject: @"Error -101: Attempting to add block, but a block appears to be in progress."
                                                                          forKey: NSLocalizedDescriptionKey]];
     
     [NSApp presentError: err];
@@ -130,7 +135,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     
     NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
                                        code: -102
-                                   userInfo: [NSDictionary dictionaryWithObject: @"Attempting to add block, but no blocklist is set."
+                                   userInfo: [NSDictionary dictionaryWithObject: @"Error -102: Attempting to add block, but no blocklist is set."
                                                                          forKey: NSLocalizedDescriptionKey]];
     
     [NSApp presentError: err];    
@@ -155,7 +160,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     return;
   }
   
-  AuthorizationRef authorizationRef;
+  [NSThread detachNewThreadSelector: @selector(installBlock) toTarget: self withObject: nil];
+  
+  /* AuthorizationRef authorizationRef;
   char* helperToolPath = [self selfControlHelperToolPathUTF8String];
   int helperToolPathSize = strlen(helperToolPath);
   AuthorizationItem right = {
@@ -188,12 +195,15 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   char uidString[10];
   snprintf(uidString, sizeof(uidString), "%d", getuid());
   
+  FILE* commPipe;
+  
   char* args[] = { uidString, "--install", NULL };
   status = AuthorizationExecuteWithPrivileges(authorizationRef,
                                               helperToolPath,
                                               kAuthorizationFlagDefaults,
                                               args,
-                                              NULL);
+                                              &commPipe);
+  
   if(status) {
     NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", status);
     
@@ -201,7 +211,18 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     
     [NSApp presentError: err];
     
+    return;
   }
+  
+  NSFileHandle* helperToolHandle = [[NSFileHandle alloc] initWithFileDescriptor: fileno(commPipe) closeOnDealloc: YES];
+  
+  int exitCode = [[[[NSString alloc] initWithData: [helperToolHandle readDataToEndOfFile] encoding: NSUTF8StringEncoding] autorelease] intValue];
+  
+  if(exitCode) {
+    NSError* err = [self errorFromHelperToolStatusCode: status];
+    
+    [NSApp presentError: err];    
+  } */
 }
 
 - (void)refreshUserInterface {
@@ -214,10 +235,31 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     
     [defaults_ synchronize];
     
-    if([blockDurationSlider_ intValue] != 0 && [[defaults_ objectForKey: @"HostBlacklist"] count] != 0)
+    // We check whether a block is currently being added by trying to lock
+    // blockLock_.
+    BOOL addBlockIsOngoing = ![blockLock_ tryLock];
+        
+    if([blockDurationSlider_ intValue] != 0 && [[defaults_ objectForKey: @"HostBlacklist"] count] != 0 && !addBlockIsOngoing)
       [submitButton_ setEnabled: YES];
     else
       [submitButton_ setEnabled: NO];
+    
+    // If we're adding a block, we want buttons disabled.
+    if(!addBlockIsOngoing) {
+      [blockDurationSlider_ setEnabled: YES];
+      [editBlacklistButton_ setEnabled: YES];
+      [submitButton_ setTitle: @"Start"];
+    }
+    else {
+      [blockDurationSlider_ setEnabled: NO];
+      [editBlacklistButton_ setEnabled: NO];
+      [submitButton_ setTitle: @"Loading"];
+    }
+    
+    // Unlock blockLock_ if we locked it
+    if(!addBlockIsOngoing) {
+      [blockLock_ unlock];
+    }
     
     NSWindow* mainWindow = [NSApp mainWindow];
     // We don't necessarily want the initial window to be key and front,
@@ -323,7 +365,10 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (IBAction)showDomainList:(id)sender {
-  if([self selfControlLaunchDaemonIsLoaded]) {
+  // We check whether a block is currently being added by trying to lock
+  // blockLock_.
+  BOOL addBlockIsOngoing = ![blockLock_ tryLock];
+  if([self selfControlLaunchDaemonIsLoaded] || addBlockIsOngoing) {
     NSAlert* blockInProgressAlert = [[[NSAlert alloc] init] autorelease];
     [blockInProgressAlert setMessageText: @"Block in progress"];
     [blockInProgressAlert setInformativeText:@"The blacklist cannot be edited while a block is in progress."];
@@ -336,6 +381,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   }
   
   [domainListWindowController_ showWindow: self];
+
+  if(!addBlockIsOngoing)
+    [blockLock_ unlock];
 }
 
 - (void)closeDomainList {
@@ -382,7 +430,13 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   if(!alertSound) {
     NSLog(@"WARNING: Alert sound not found.");
     
+    NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
+                                       code: -901
+                                   userInfo: [NSDictionary dictionaryWithObject: @"Error -901: Selected sound not found."
+                                                                         forKey: NSLocalizedDescriptionKey]];
     
+    [NSApp presentError: err];
+
   }
   else
     [alertSound play];
@@ -428,7 +482,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     
     NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
                                        code: -103
-                                   userInfo: [NSDictionary dictionaryWithObject: @"Attempting to add host to block, but no block appears to be in progress."
+                                   userInfo: [NSDictionary dictionaryWithObject: @"Error -103: Attempting to add host to block, but no block appears to be in progress."
                                                                          forKey: NSLocalizedDescriptionKey]];
     
     [NSApp presentError: err];    
@@ -465,7 +519,177 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     
     return;
   }
+    
+  [NSThread detachNewThreadSelector: @selector(refreshBlock) toTarget: self withObject: nil];
+}
+
+- (void)dealloc {
+  [domainListWindowController_ release];
+  [timerWindowController_ release];
   
+  [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                  name: @"SCConfigurationChangedNotification"
+                                                object: nil];
+  [[NSDistributedNotificationCenter defaultCenter] removeObserver: self
+                                                             name: @"SCConfigurationChangedNotification"
+                                                           object: nil];  
+  
+  [super dealloc];
+}
+
+// @synthesize initialWindow = initialWindow_;
+- (id)initialWindow {
+  return initialWindow_;
+}
+
+- (id)domainListWindowController {
+  return domainListWindowController_;
+}
+
+- (void)setDomainListWindowController:(id)newController {
+  [newController retain];
+  [domainListWindowController_ release];
+  domainListWindowController_ = newController;
+}
+
+- (NSError*)errorFromHelperToolStatusCode:(int)status {
+  NSString* domain = kSelfControlErrorDomain;
+  NSMutableString* description = [NSMutableString stringWithFormat: @"Error %d: ", status];
+  switch(status) {
+    case -201:
+      [description appendString: @"Helper tool not launched as root."];
+      break;
+    case -202:
+      [description appendString: @"Helper tool launched with insufficient arguments."];
+      break;
+    case -203:
+      [description appendString: @"Host blocklist not set"];
+      break;
+    case -204:
+      [description appendString: @"Could not write launchd plist file to LaunchDaemons folder."];
+      break;
+    case -205:
+      [description appendString: @"Could not create PrivilegedHelperTools directory."];
+      break;
+    case -206:
+      [description appendString: @"Could not change permissions on PrivilegedHelperTools directory."];
+      break;
+    case -207:
+      [description appendString: @"Could not delete old helper binary."];
+      break;
+    case -208:
+      [description appendString: @"Could not copy SelfControl's helper binary to PrivilegedHelperTools directory."];
+      break;
+    case -209:
+      [description appendString: @"Could not change permissions on SelfControl's helper binary."];
+      break;
+    case -210:
+      [description appendString: @"Insufficient block information found."];
+      break;
+    case -211:
+      [description appendString: @"Launch daemon load returned a failure status code."];
+      break;
+    case -212:
+      [description appendString: @"Remove option called"];
+      break;
+    case -213:
+      [description appendString: @"Refreshing domain blacklist, but no block is currently ongoing."];
+      break;
+    case -214:
+      [description appendString: @"Insufficient block information found."];
+      break;
+    case -215:
+      [description appendString: @"Checkup ran but no block found."];
+      break;
+      
+    default: 
+      [description appendString: [NSString stringWithFormat: @"Helper tool failed with unknown error code: %d", status]];
+  }
+    
+  return [NSError errorWithDomain: domain code: status userInfo: [NSDictionary dictionaryWithObject: description
+                                                                                                     forKey: NSLocalizedDescriptionKey]];
+}
+
+- (void)installBlock {
+  NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+  // Lock blockLock_ so that refreshUserInterface knows to disable buttons.
+  [blockLock_ lock];
+  [self refreshUserInterface];
+  AuthorizationRef authorizationRef;
+  char* helperToolPath = [self selfControlHelperToolPathUTF8String];
+  int helperToolPathSize = strlen(helperToolPath);
+  AuthorizationItem right = {
+    kAuthorizationRightExecute,
+    helperToolPathSize,
+    helperToolPath,
+    0
+  };
+  AuthorizationRights authRights = {
+    1,
+    &right
+  };
+  AuthorizationFlags myFlags = kAuthorizationFlagDefaults |
+  kAuthorizationFlagExtendRights |
+  kAuthorizationFlagInteractionAllowed;
+  OSStatus status;
+  
+  status = AuthorizationCreate (&authRights,
+                                kAuthorizationEmptyEnvironment,
+                                myFlags,
+                                &authorizationRef);
+  
+  if(status) {
+    NSLog(@"ERROR: Failed to authorize block start.");
+    return;
+  }
+  
+  // We need to pass our UID to the helper tool.  It needs to know whose defaults
+  // it should reading in order to properly load the blacklist.
+  char uidString[10];
+  snprintf(uidString, sizeof(uidString), "%d", getuid());
+  
+  FILE* commPipe;
+  
+  char* args[] = { uidString, "--install", NULL };
+  status = AuthorizationExecuteWithPrivileges(authorizationRef,
+                                              helperToolPath,
+                                              kAuthorizationFlagDefaults,
+                                              args,
+                                              &commPipe);
+  
+  if(status) {
+    NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", status);
+    
+    NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
+                                       code: status
+                                   userInfo: [NSDictionary dictionaryWithObject: [NSString stringWithFormat: @"Error %d received from the Security Server.",
+                                                                            status]
+                                                                         forKey: NSLocalizedDescriptionKey]];
+    
+    [NSApp presentError: err];
+    
+    return;
+  }
+  
+  NSFileHandle* helperToolHandle = [[NSFileHandle alloc] initWithFileDescriptor: fileno(commPipe) closeOnDealloc: YES];
+  
+  NSData* inData = [helperToolHandle readDataToEndOfFile];
+  NSString* inDataString = [[NSString alloc] initWithData: inData encoding: NSUTF8StringEncoding];
+  int exitCode = [inDataString intValue];
+    
+  if(exitCode) {
+    NSError* err = [self errorFromHelperToolStatusCode: exitCode];
+    
+    [NSApp presentError: err];    
+  }  
+  
+  [blockLock_ unlock];
+  [self refreshUserInterface];
+  [pool drain];
+}
+
+- (void)refreshBlock {
+  NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
   AuthorizationRef authorizationRef;
   char* helperToolPath = [self selfControlHelperToolPathUTF8String];
   int helperToolPathSize = strlen(helperToolPath);
@@ -505,109 +729,40 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   char uidString[10];
   snprintf(uidString, sizeof(uidString), "%d", getuid());
   
+  FILE* commPipe;
+  
   char* args[] = { uidString, "--refresh", NULL };
   status = AuthorizationExecuteWithPrivileges(authorizationRef,
                                               helperToolPath,
                                               kAuthorizationFlagDefaults,
                                               args,
-                                              NULL);
+                                              &commPipe);
+  
   if(status) {
     NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", status);
     
     NSError* err = [self errorFromHelperToolStatusCode: status];
     
-    [NSApp presentError: err];    
-  }  
-}
-
-- (void)dealloc {
-  [domainListWindowController_ release];
-  [timerWindowController_ release];
-  
-  [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                  name: @"SCConfigurationChangedNotification"
-                                                object: nil];
-  [[NSDistributedNotificationCenter defaultCenter] removeObserver: self
-                                                             name: @"SCConfigurationChangedNotification"
-                                                           object: nil];  
-  
-  [super dealloc];
-}
-
-// @synthesize initialWindow = initialWindow_;
-- (id)initialWindow {
-  return initialWindow_;
-}
-
-- (id)domainListWindowController {
-  return domainListWindowController_;
-}
-
-- (void)setDomainListWindowController:(id)newController {
-  [newController retain];
-  [domainListWindowController_ release];
-  domainListWindowController_ = newController;
-}
-
-- (NSError*)errorFromHelperToolStatusCode:(int)status {
-  NSString* domain = kSelfControlErrorDomain;
-  NSString* description;
-  switch(status) {
-    case -201:
-      description = @"Helper tool not launched as root.";
-      break;
-    case -202:
-      description = @"Helper tool launched with insufficient arguments.";
-      break;
-    case -203:
-      description = @"Host blocklist not set";
-      break;
-    case -204:
-      description = @"Could not write launchd plist file to LaunchDaemons folder.";
-      break;
-    case -205:
-      description = @"Could not create PrivilegedHelperTools directory.";
-      break;
-    case -206:
-      description = @"Could not change permissions on PrivilegedHelperTools directory.";
-      break;
-    case -207:
-      description = @"Could not delete old helper binary.";
-      break;
-    case -208:
-      description = @"Could not copy SelfControl's helper binary to PrivilegedHelperTools directory.";
-      break;
-    case -209:
-      description = @"Could not change permissions on SelfControl's helper binary.";
-      break;
-    case -210:
-      description = @"Insufficient block information found.";
-      break;
-    case -211:
-      description = @"Launch daemon load returned a failure status code.";
-      break;
-    case -212:
-      description = @"Remove option called";
-      break;
-    case -213:
-      description = @"Refreshing domain blacklist, but no block is currently ongoing.";
-      break;
-    case -214:
-      description = @"Insufficient block information found.";
-      break;
-    case -215:
-      description = @"Checkup ran but no block found.";
-      break;
-      
-    default: 
-      description = [NSString stringWithFormat: @"Helper tool failed with unknown error code: %d", status];
+    [NSApp presentError: err];
+    
+    return;
   }
   
-  return [NSError errorWithDomain: domain code: status userInfo: [NSDictionary dictionaryWithObject: description
-                                                                                                     forKey: NSLocalizedDescriptionKey]];
-}
-
-- (void)presentError:(NSError*)err {
+  NSFileHandle* helperToolHandle = [[NSFileHandle alloc] initWithFileDescriptor: fileno(commPipe) closeOnDealloc: YES];
+  
+  NSData* inData = [helperToolHandle readDataToEndOfFile];
+  NSString* inDataString = [[NSString alloc] initWithData: inData encoding: NSUTF8StringEncoding];
+  int exitCode = [inDataString intValue];
+  NSLog(@"exitCode is %d", exitCode);
+  
+  if(exitCode) {
+    NSError* err = [self errorFromHelperToolStatusCode: exitCode];
+    
+    [NSApp presentError: err];    
+  }  
+    
+  [timerWindowController_ closeAddSheet: self];
+  [pool drain];
 }
 
 @end

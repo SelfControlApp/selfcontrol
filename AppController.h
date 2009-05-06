@@ -38,9 +38,11 @@
   IBOutlet id submitButton_;
   IBOutlet id initialWindow_;
   IBOutlet id domainListMenuItem_;
+  IBOutlet id editBlacklistButton_;
   DomainListWindowController* domainListWindowController_;
   TimerWindowController* timerWindowController_;
   NSUserDefaults* defaults_;
+  NSLock* blockLock_;
 }
 
 // Returns an autoreleased instance of the path to the helper tool inside
@@ -61,9 +63,8 @@
 // program.
 - (void)removeBlock; */
 
-// Called when the main Start button is clicked.  Gets authorization for and
-// then immediately adds the block by calling SelfControl's helper tool with the
-// appropriate arguments.
+// Called when the main Start button is clicked.  Launchs installBlock in another
+// thread after some checking and syncing.
 - (IBAction)addBlock:(id)sender;
 
 // Checks whether the SelfControl block is active and accordingly changes the
@@ -101,12 +102,23 @@
 - (IBAction)soundSelectionChanged:(id)sender;
 
 // Called by timerWindowController_ after its sheet returns, to add a specified
-// host to the blacklist (and refresh the block to use the new blacklist)
+// host to the blacklist (and refresh the block to use the new blacklist).  Launches
+// a new thread with refreshBlock:
 - (void)addToBlockList:(NSString*)host;
 
 // Converts a failure exit code from a helper tool invocation into an NSError,
 // ready to be presented to the user.
 - (NSError*)errorFromHelperToolStatusCode:(int)status;
+
+// Gets authorization for and then immediately adds the block by calling
+// SelfControl's helper tool with the appropriate arguments.  Meant to be called
+// as a separate thread.
+- (void)installBlock;
+
+// Gets authorization for and then immediately refreshes the block by calling
+// SelfControl's helper tool with the appropriate arguments.  Meant to be called
+// as a separate thread.
+- (void)refreshBlock;
 
 // Property allows initialWindow to be accessed from TimerWindowController
 // @property (retain, nonatomic, readonly) id initialWindow;

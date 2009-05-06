@@ -40,6 +40,7 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
   NSArray* args = [NSArray array];
   if(portToBeBlocked == nil) {
     args = [NSArray arrayWithObjects:
+                     @"-q",
                      @"add",
                      [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + selfControlBlockRuleCount_],
                      @"set",
@@ -54,6 +55,7 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
   }
   else {
     args = [NSArray arrayWithObjects:
+                     @"-q",
                      @"add",
                      [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + selfControlBlockRuleCount_],
                      @"set",
@@ -91,6 +93,7 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
   NSArray* args = [NSArray array];
   if(portToBeAllowed == nil) {
     args = [NSArray arrayWithObjects:
+            @"-q",
             @"add",
             [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + selfControlBlockRuleCount_],
             @"set",
@@ -105,6 +108,7 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
   }
   else {
     args = [NSArray arrayWithObjects:
+            @"-q",
             @"add",
             [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + selfControlBlockRuleCount_],
             @"set",
@@ -134,6 +138,7 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
 
 - (int)addWhitelistFooter {
   NSArray* args = [NSArray arrayWithObjects:
+                   @"-q",
                    @"add",
                    [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + selfControlBlockRuleCount_],
                    @"set",
@@ -155,6 +160,7 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
   selfControlBlockRuleCount_++;
     
   args = [NSArray arrayWithObjects:
+                   @"-q",
                    @"add",
                    [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + selfControlBlockRuleCount_],
                    @"set",
@@ -178,6 +184,7 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
 
 - (int)addSelfControlBlockHeader {
   NSArray* args = [NSArray arrayWithObjects:
+                   @"-q",
                    @"add",
                    [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + selfControlBlockRuleCount_],
                    @"set",
@@ -198,6 +205,7 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
   // is necessary because if we accidentally blocked localhost it would make the
   // computer go crazy.
   args = [NSArray arrayWithObjects:
+                   @"-q",
                    @"add",
                    [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + selfControlBlockRuleCount_],
                    @"set",
@@ -223,6 +231,7 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
 
 - (int)addSelfControlBlockFooter {
   NSArray* args = [NSArray arrayWithObjects:
+                   @"-q",
                    @"add",
                    [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + selfControlBlockRuleCount_],
                    @"set",
@@ -244,6 +253,7 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
 
 - (int)clearSelfControlBlockRuleSet {
   NSArray* args = [NSArray arrayWithObjects:
+                   @"-q",
                    @"delete",
                    @"set",
                    [NSString stringWithFormat: @"%d", kIPFirewallRuleSetNumber],

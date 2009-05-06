@@ -22,7 +22,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "AppController.h"
-#import "VersionChecker.h"
+#import "SelfControlUtilities.h"
 
 // This is a reference to the kSelfControlLockFilePath const variable in AppController.m
 extern NSString* const kSelfControlLockFilePath;
@@ -35,6 +35,8 @@ extern NSString* const kSelfControlLockFilePath;
   // window and timerLabel_ which are optimized and nicer for Leopard.
   NSTimer* timerUpdater_;
   NSDate* blockEndingDate_;
+  NSLock* addToBlockLock;
+  IBOutlet NSButton* addToBlockButton_;
   IBOutlet NSPanel* addSheet_;
   IBOutlet NSTextField* addToBlockTextField_;
 }
@@ -49,16 +51,15 @@ extern NSString* const kSelfControlLockFilePath;
 // no block is scheduled.
 - (void)reloadTimer;
 
-// Called when the "Add to Block" method is called, instantiates and runs a sheet
+// Closes the "Add to Block" sheet.
+- (IBAction) closeAddSheet:(id)sender;
+
+// Called when the "Add to Block" button is clicked, instantiates and runs a sheet
 // to take input for the host to block.
 - (IBAction) addToBlock:(id)sender;
 
-// Called by the "Add to Block" sheet if the user clicks the cancel button, to
-// destroy the sheet without doing anything else.
-- (IBAction) cancelAdd:(id)sender;
-
 // Called by the "Add to Block" sheet if the user clicks the add button, to destroy
-// the sheet and first try to add the host to the block.
+// the sheet and try to add the host to the block.
 - (IBAction) performAdd:(id)sender;
 
 // Delegate method for the sheet.  Just closes the sheet.
