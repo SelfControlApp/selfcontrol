@@ -44,6 +44,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
                                  [NSNumber numberWithInt: 5], @"BlockSound",
                                  [NSNumber numberWithBool: YES], @"ClearCaches",
                                  [NSNumber numberWithBool: NO], @"BlockAsWhitelist",
+                                 [NSNumber numberWithBool: YES], @"BadgeApplicationIcon",
                                  nil];
     
     [defaults_ registerDefaults:appDefaults];
@@ -52,7 +53,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     // be locked up while we're adding a block.
     blockLock_ = [[NSLock alloc] init];
   }
-  
+    
   return self;
 }
 
@@ -274,8 +275,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 - (void)showAndReloadTimerWindow {
   if(timerWindowController_ == nil) {
+    NSLog(@"timerWindowController_ == nil");
     timerWindowController_ = [[TimerWindowController alloc] init];
-  }
+  } else NSLog(@"timerWindowController_ == %@", timerWindowController_);
   
   [[timerWindowController_ window] center];
   [timerWindowController_ showWindow: self];
@@ -374,9 +376,14 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     [blockInProgressAlert setInformativeText:@"The blacklist cannot be edited while a block is in progress."];
     [blockInProgressAlert addButtonWithTitle: @"OK"];
     [blockInProgressAlert runModal];
+    
+    if(!addBlockIsOngoing)
+      [blockLock_ unlock];
+    
     return;
   }
   if(domainListWindowController_ == nil) {
+    NSLog(@"domainListController == nil");
     domainListWindowController_ = [[DomainListWindowController alloc] init];
   }
   
@@ -442,7 +449,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     [alertSound play];
 }
 
-- (void)addToBlockList:(NSString*)host {  
+- (void)addToBlockList:(NSString*)host lock:(NSLock*)lock {  
   if(host == nil)
     return;
   
@@ -520,7 +527,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     return;
   }
     
-  [NSThread detachNewThreadSelector: @selector(refreshBlock) toTarget: self withObject: nil];
+  [NSThread detachNewThreadSelector: @selector(refreshBlock:) toTarget: self withObject: lock];
 }
 
 - (void)dealloc {
@@ -640,6 +647,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   
   if(status) {
     NSLog(@"ERROR: Failed to authorize block start.");
+    [blockLock_ unlock];
+    [self refreshUserInterface];
     return;
   }
   
@@ -668,12 +677,18 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     
     [NSApp presentError: err];
     
+    [blockLock_ unlock];
+    [self refreshUserInterface];
+    
     return;
   }
   
   NSFileHandle* helperToolHandle = [[NSFileHandle alloc] initWithFileDescriptor: fileno(commPipe) closeOnDealloc: YES];
   
   NSData* inData = [helperToolHandle readDataToEndOfFile];
+  
+  [helperToolHandle release];
+  
   NSString* inDataString = [[NSString alloc] initWithData: inData encoding: NSUTF8StringEncoding];
   int exitCode = [inDataString intValue];
     
@@ -688,7 +703,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   [pool drain];
 }
 
-- (void)refreshBlock {
+- (void)refreshBlock:(NSLock*)lockToUse {
+  if(![lockToUse tryLock])
+    return;
   NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
   AuthorizationRef authorizationRef;
   char* helperToolPath = [self selfControlHelperToolPathUTF8String];
@@ -721,6 +738,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     [list removeLastObject];
     [defaults_ setObject: list forKey: @"HostBlacklist"];    
     
+    [lockToUse unlock];
+    
     return;
   }
   
@@ -745,6 +764,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     
     [NSApp presentError: err];
     
+    [lockToUse unlock];
+    
     return;
   }
   
@@ -763,6 +784,18 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     
   [timerWindowController_ closeAddSheet: self];
   [pool drain];
+  [lockToUse unlock];
+}
+
+- (BOOL)isTiger {
+  unsigned int major, minor, bugfix;
+  
+  [SelfControlUtilities getSystemVersionMajor: &major minor: &minor bugFix: &bugfix];
+  
+  if(major <= 10 && minor < 5)
+    return YES;
+  else
+    return NO;
 }
 
 @end

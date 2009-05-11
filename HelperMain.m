@@ -87,6 +87,7 @@ int main(int argc, char* argv[]) {
                                [NSNumber numberWithInt: 5], @"BlockSound",
                                [NSNumber numberWithBool: YES], @"ClearCaches",
                                [NSNumber numberWithBool: NO], @"BlockAsWhitelist",
+                               [NSNumber numberWithBool: YES], @"BadgeApplicationIcon",
                                nil];
   [defaults registerDefaults:appDefaults];    
   if(!domainList) {
@@ -519,7 +520,6 @@ void addRulesToFirewall(int controllingUID) {
     HostFileBlocker* hostFileBlocker = [[[HostFileBlocker alloc] init] autorelease];
     if(![hostFileBlocker containsSelfControlBlock]) {
       [hostFileBlocker addSelfControlBlockHeader];
-      NSLog(@"started /etc/host blocking at: %@", [NSDate date]);
       for(int i = 0; i < [domainList count]; i++) {
           NSString* hostToBlock = [domainList objectAtIndex: i];
           NSString* ipValidationRegex = @"^([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
@@ -532,7 +532,6 @@ void addRulesToFirewall(int controllingUID) {
       }
       [hostFileBlocker addSelfControlBlockFooter];
       [hostFileBlocker writeNewFileContents];
-      NSLog(@"stopped /etc/host blocking at: %@", [NSDate date]);
     }
   }
   

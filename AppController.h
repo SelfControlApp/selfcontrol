@@ -104,7 +104,7 @@
 // Called by timerWindowController_ after its sheet returns, to add a specified
 // host to the blacklist (and refresh the block to use the new blacklist).  Launches
 // a new thread with refreshBlock:
-- (void)addToBlockList:(NSString*)host;
+- (void)addToBlockList:(NSString*)host lock:(NSLock*)lock;
 
 // Converts a failure exit code from a helper tool invocation into an NSError,
 // ready to be presented to the user.
@@ -118,7 +118,9 @@
 // Gets authorization for and then immediately refreshes the block by calling
 // SelfControl's helper tool with the appropriate arguments.  Meant to be called
 // as a separate thread.
-- (void)refreshBlock;
+- (void)refreshBlock:(NSLock*)lockToUse;
+
+- (BOOL)isTiger;
 
 // Property allows initialWindow to be accessed from TimerWindowController
 // @property (retain, nonatomic, readonly) id initialWindow;

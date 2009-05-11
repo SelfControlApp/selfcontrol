@@ -54,7 +54,7 @@ NSString* const kHostFileBlockerSelfControlFooter = @"# END SELFCONTROL BLOCK";
   NSRange startRange = [newFileContents rangeOfString: kHostFileBlockerSelfControlHeader];
   NSRange endRange = [newFileContents rangeOfString: kHostFileBlockerSelfControlFooter];
   
-  NSRange deleteRange = NSMakeRange(startRange.location, ((endRange.location + endRange.length) - startRange.location) + 1);
+  NSRange deleteRange = NSMakeRange(startRange.location - 1, ((endRange.location + endRange.length) - startRange.location) + 2);
   
   [newFileContents deleteCharactersInRange: deleteRange];
 }

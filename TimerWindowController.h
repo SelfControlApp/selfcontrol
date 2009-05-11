@@ -36,6 +36,7 @@ extern NSString* const kSelfControlLockFilePath;
   NSTimer* timerUpdater_;
   NSDate* blockEndingDate_;
   NSLock* addToBlockLock;
+  BOOL isLeopard;
   IBOutlet NSButton* addToBlockButton_;
   IBOutlet NSPanel* addSheet_;
   IBOutlet NSTextField* addToBlockTextField_;
