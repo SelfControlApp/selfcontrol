@@ -38,9 +38,41 @@
 - (int)addSelfControlBlockRuleBlockingIP: (NSString*) ipAddress;
 
 // Calls the ipfw command-line tool to add a rule into the designated
-// SelfControl ipfw rule set, explicitly allowing the IP address represented by
-// the NSString parameter.  Returns the exit status code of ipfw.
+// SelfControl ipfw rule set, blocking the IP address represented by the NSString
+// parameter on the specified port.  Returns the exit status code of ipfw.
+- (int)addSelfControlBlockRuleBlockingIP: (NSString*) ipAddress port:(int)portNum;
+
+// Calls the ipfw command-line tool to add a rule into the designated
+// SelfControl ipfw rule set, blocking the IP range represented by the NSString
+// parameter with the specified mask length.  Returns the exit status code of ipfw.
+- (int)addSelfControlBlockRuleBlockingIP: (NSString*) ipAddress maskLength:(int)maskLength;
+
+// Calls the ipfw command-line tool to add a rule into the designated
+// SelfControl ipfw rule set, blocking the IP range represented by the NSString
+// parameter with the specified mask length on the specified port.  Returns the
+// exit status code of ipfw.
+- (int)addSelfControlBlockRuleBlockingIP: (NSString*) ipAddress port:(int)portNum maskLength:(int)maskLength;
+
+// Calls the ipfw command-line tool to add a rule into the designated
+// SelfControl ipfw rule set, explicitly allowing the IP address represented by the NSString
+// parameter.  Returns the exit status code of ipfw.
 - (int)addSelfControlBlockRuleAllowingIP: (NSString*) ipAddress;
+
+// Calls the ipfw command-line tool to add a rule into the designated
+// SelfControl ipfw rule set, explicitly allowing the IP address represented by the NSString
+// parameter on the specified port.  Returns the exit status code of ipfw.
+- (int)addSelfControlBlockRuleAllowingIP: (NSString*) ipAddress port:(int)portNum;
+
+// Calls the ipfw command-line tool to add a rule into the designated
+// SelfControl ipfw rule set, explicitly allowing the IP range represented by the NSString
+// parameter with the specified mask length.  Returns the exit status code of ipfw.
+- (int)addSelfControlBlockRuleAllowingIP: (NSString*) ipAddress maskLength:(int)maskLength;
+
+// Calls the ipfw command-line tool to add a rule into the designated
+// SelfControl ipfw rule set, explicitly allowing the IP range represented by the NSString
+// parameter with the specified mask length on the specified port.  Returns the
+// exit status code of ipfw.
+- (int)addSelfControlBlockRuleAllowingIP: (NSString*) ipAddress port:(int)portNum maskLength:(int)maskLength;
 
 // Calls the ipfw command-line tool to add a comment rule into the designated
 // SelfControl ipfw rule set, containing a footer for the SelfControl block set.

@@ -47,10 +47,10 @@ extern NSString* const kSelfControlLockFilePath;
 // timerUpdater, closes the timer window, and opens the initial window. 
 - (void)updateTimerDisplay:(NSTimer*)timer;
 
-// Invalidates timerUpdater if it's still valid, then restarts the timer and
+/* // Invalidates timerUpdater if it's still valid, then restarts the timer and
 // sets the end time to the scheduled end of the block, or the current time if
 // no block is scheduled.
-- (void)reloadTimer;
+- (void)reloadTimer; */
 
 // Closes the "Add to Block" sheet.
 - (IBAction) closeAddSheet:(id)sender;

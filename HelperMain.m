@@ -171,7 +171,9 @@ int main(int argc, char* argv[]) {
     seteuid(controllingUID);
     defaults = [NSUserDefaults standardUserDefaults];
     [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
-    [defaults setObject: [NSDate date] forKey: @"BlockStartedDate"];
+    NSDate* d = [NSDate date];
+    [defaults setObject: d forKey: @"BlockStartedDate"];
+    NSLog(@"set %@ for date in HelperMain main() --install", d);
     // In this case it doesn't make any sense to use an existing lock file (in
     // fact, one shouldn't exist), so we fail if the defaults system has unreasonable
     // settings.
@@ -205,6 +207,7 @@ int main(int argc, char* argv[]) {
       defaults = [NSUserDefaults standardUserDefaults];
       [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
       [defaults setObject: [NSDate distantFuture] forKey: @"BlockStartedDate"];
+      NSLog(@"set %@ for date in HelperMain main() --install (second)", [NSDate distantFuture]);
       [defaults synchronize];
       [NSUserDefaults resetStandardUserDefaults];
       seteuid(0);
@@ -388,6 +391,7 @@ int main(int argc, char* argv[]) {
       defaults = [NSUserDefaults standardUserDefaults];
       [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
       [defaults setObject: [NSDate distantFuture] forKey: @"BlockStartedDate"];
+      NSLog(@"set %@ for date in HelperMain main() --checkup", [NSDate distantFuture]);
       [defaults synchronize];
       [NSUserDefaults resetStandardUserDefaults];
       seteuid(0);
@@ -423,6 +427,7 @@ int main(int argc, char* argv[]) {
       defaults = [NSUserDefaults standardUserDefaults];
       [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
       [defaults setObject: blockStartedDate forKey: @"BlockStartedDate"];
+      NSLog(@"set %@ for date in HelperMain main() --checkup because the lock file said so", blockStartedDate);
       [defaults setObject: [NSNumber numberWithFloat: (blockDuration / 60)] forKey: @"BlockDuration"];
       [defaults setObject: domainList forKey: @"HostBlacklist"];
       [defaults synchronize];
@@ -437,36 +442,36 @@ int main(int argc, char* argv[]) {
 }
 
 void addRulesToFirewall(int controllingUID) {
-  // Note all arrays in the host blocking code was changed to sets to easily stop duplicates
+  // Note all arrays in the host blocking code were changed to sets to easily stop duplicates
   NSMutableSet* hostsToBlock = [NSMutableSet set];
       
   for(int i = 0; i < [domainList count]; i++) {
-    NSArray* hostAndPort = [[domainList objectAtIndex: i] componentsSeparatedByString:@":"];
-    NSString* hostToBeBlocked = [hostAndPort objectAtIndex: 0];
-    NSString* portToBeBlocked = nil;
-    if([hostAndPort count] > 1) {
-      portToBeBlocked = [hostAndPort objectAtIndex: 1];
-    }      
+    NSString* hostName;
+    int portNum;
+    int maskLen;
+    
+    parseHost([domainList objectAtIndex: i], &hostName, &maskLen, &portNum);
+    
+    NSLog(@"Parsed host into: %@/%d:%d", hostName, maskLen, portNum);
+    
     NSString* ipValidationRegex = @"^([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
     NSPredicate *regexTester = [NSPredicate
                                 predicateWithFormat:@"SELF MATCHES %@",
                                 ipValidationRegex];
-    if ([regexTester evaluateWithObject: hostToBeBlocked] == YES) {
-      // We're dealing with an IP address, block it
-      if(portToBeBlocked != nil)
-        [hostsToBlock addObject: [NSString stringWithFormat: @"%@:%@", hostToBeBlocked, portToBeBlocked]];
-      else 
-        [hostsToBlock addObject: hostToBeBlocked];
-    } else {
+    if ([regexTester evaluateWithObject: hostName])
+      [hostsToBlock addObject: [domainList objectAtIndex: i]];
+    else {
+      NSLog(@"Not an IP address");
       // We have a domain name, we need to resolve it first
-      NSHost* host = [NSHost hostWithName: hostToBeBlocked];
+      NSHost* host = [NSHost hostWithName: hostName];
       
       if(host) {
         NSArray* addresses = [host addresses];
+        NSLog(@"Resolved host into addresses: %@", addresses);
         
         for(int j = 0; j < [addresses count]; j++) {
-          if(portToBeBlocked != nil)
-            [hostsToBlock addObject: [NSString stringWithFormat: @"%@:%@", [addresses objectAtIndex: j], portToBeBlocked]];
+          if(portNum != -1)
+            [hostsToBlock addObject: [NSString stringWithFormat: @"%@:%d", [addresses objectAtIndex: j], portNum]];
           else [hostsToBlock addObject: [addresses objectAtIndex: j]];
         }
       }
@@ -482,7 +487,8 @@ void addRulesToFirewall(int controllingUID) {
       
       if(shouldEvaluateCommonSubdomains) {
         // Get the evaluated hostnames and union (combine) them with our current set
-        NSSet* evaluatedHosts = getEvaluatedHostNamesFromCommonSubdomains(hostToBeBlocked, portToBeBlocked);
+        NSSet* evaluatedHosts = getEvaluatedHostNamesFromCommonSubdomains(hostName, portNum);
+        NSLog(@"Evaluated common subdomains and got %@", evaluatedHosts);
         [hostsToBlock unionSet: evaluatedHosts];
       }
     }
@@ -521,14 +527,21 @@ void addRulesToFirewall(int controllingUID) {
     if(![hostFileBlocker containsSelfControlBlock]) {
       [hostFileBlocker addSelfControlBlockHeader];
       for(int i = 0; i < [domainList count]; i++) {
-          NSString* hostToBlock = [domainList objectAtIndex: i];
-          NSString* ipValidationRegex = @"^([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
-          NSPredicate *regexTester = [NSPredicate
-                                      predicateWithFormat:@"SELF MATCHES %@",
-                                      ipValidationRegex];
-          if ([regexTester evaluateWithObject: hostToBlock] != YES)
-            // It's not an IP, so we'll add it to the /etc/hosts block as well
-            [hostFileBlocker addRuleBlockingDomain: hostToBlock];
+          NSString* hostName;
+          int portNum;
+          int maskLen;
+          
+          parseHost([domainList objectAtIndex: i], &hostName, &maskLen, &portNum);
+        
+          if(portNum == -1) {
+            NSString* ipValidationRegex = @"^([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
+            NSPredicate *regexTester = [NSPredicate
+                                        predicateWithFormat:@"SELF MATCHES %@",
+                                        ipValidationRegex];
+            if ([regexTester evaluateWithObject: hostName] != YES)
+              // It's not an IP, so we'll add it to the /etc/hosts block as well
+              [hostFileBlocker addRuleBlockingDomain: hostName];
+          }
       }
       [hostFileBlocker addSelfControlBlockFooter];
       [hostFileBlocker writeNewFileContents];
@@ -542,23 +555,39 @@ void addRulesToFirewall(int controllingUID) {
   // Iterate through the host list to add a block rule for each
   NSEnumerator* hostEnumerator = [hostsToBlock objectEnumerator];
   NSString* hostString;
-  
-  [NSUserDefaults resetStandardUserDefaults];
-  seteuid(controllingUID);
-  defaults = [NSUserDefaults standardUserDefaults];
-  [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];  
-  [NSUserDefaults resetStandardUserDefaults];
-  seteuid(0);
-  
-  if(blockAsWhitelist) {  
-    while(hostString = [hostEnumerator nextObject])
-      [firewall addSelfControlBlockRuleAllowingIP: hostString];
     
-    [firewall addWhitelistFooter];
-  } else {
-    while(hostString = [hostEnumerator nextObject])
-      [firewall addSelfControlBlockRuleBlockingIP: hostString];
+  while(hostString = [hostEnumerator nextObject]) {
+    NSString* hostName;
+    int portNum;
+    int maskLen;
+    
+    parseHost(hostString, &hostName, &maskLen, &portNum);
+
+    NSLog(@"Just before block, parsed: %@/%d:%d", hostName, maskLen, portNum);
+    
+    if(blockAsWhitelist) {
+      if(portNum != -1 && maskLen != -1)
+        [firewall addSelfControlBlockRuleAllowingIP: hostName port: portNum maskLength: maskLen];
+      else if(portNum != -1)
+        [firewall addSelfControlBlockRuleAllowingIP: hostName port: portNum];
+      else if(maskLen != -1)
+        [firewall addSelfControlBlockRuleAllowingIP: hostName maskLength: maskLen];
+      else
+        [firewall addSelfControlBlockRuleAllowingIP: hostName];
+    } else {
+      if(portNum != -1 && maskLen != -1)
+        [firewall addSelfControlBlockRuleBlockingIP: hostName port: portNum maskLength: maskLen];
+      else if(portNum != -1)
+        [firewall addSelfControlBlockRuleBlockingIP: hostName port: portNum];
+      else if(maskLen != -1)
+        [firewall addSelfControlBlockRuleBlockingIP: hostName maskLength: maskLen];
+      else
+        [firewall addSelfControlBlockRuleBlockingIP: hostName];
+    }
   }
+  
+  if(blockAsWhitelist) 
+    [firewall addWhitelistFooter];
   
   [firewall addSelfControlBlockFooter];  
 }
@@ -618,7 +647,7 @@ void removeRulesFromFirewall(int controllingUID) {
     NSLog(@"WARNING: SelfControl rules do not appear to be loaded into ipfw.");
 }
 
-NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, NSString* port) {
+NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, int port) {
   NSMutableSet* evaluatedAddresses = [NSMutableSet set];
   
   // If the domain ends in facebook.com...  Special case for Facebook because
@@ -635,8 +664,8 @@ NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, NSString* p
       NSArray* addresses = [modifiedHost addresses];
       
       for(int j = 0; j < [addresses count]; j++) {
-        if(port != nil)
-          [evaluatedAddresses addObject: [NSString stringWithFormat: @"%@:%@", [addresses objectAtIndex: j], port]];
+        if(port != -1)
+          [evaluatedAddresses addObject: [NSString stringWithFormat: @"%@:%d", [addresses objectAtIndex: j], port]];
         else [evaluatedAddresses addObject: [addresses objectAtIndex: j]];
       }
     }
@@ -649,8 +678,8 @@ NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, NSString* p
       NSArray* addresses = [modifiedHost addresses];
       
       for(int j = 0; j < [addresses count]; j++) {
-        if(port != nil)
-          [evaluatedAddresses addObject: [NSString stringWithFormat: @"%@:%@", [addresses objectAtIndex: j], port]];
+        if(port != -1)
+          [evaluatedAddresses addObject: [NSString stringWithFormat: @"%@:%d", [addresses objectAtIndex: j], port]];
         else [evaluatedAddresses addObject: [addresses objectAtIndex: j]];
       }
     }
@@ -740,4 +769,42 @@ void clearCachesIfRequested(int controllingUID) {
 
 void printStatus(int status) {
   printf("%d", status);
+}
+
+void parseHost(NSString* hostName, NSString** baseName, int* maskLength, int* portNumber) {
+  int maskLen = -1;
+  int portNum = -1;
+  
+  NSArray* splitString = [hostName componentsSeparatedByString: @"/"];
+  
+  hostName = [splitString objectAtIndex: 0];
+  
+  NSString* stringToSearchForPort = hostName;
+  
+  if([splitString count] >= 2) {
+    maskLen = [[splitString objectAtIndex: 1] intValue];
+    // If the int value is 0, we couldn't find a valid integer representation
+    // in the split off string
+    if(maskLen == 0)
+      maskLen = -1;
+    
+    stringToSearchForPort = [splitString objectAtIndex: 1];
+  }
+  
+  splitString = [stringToSearchForPort componentsSeparatedByString: @":"];
+  
+  if([stringToSearchForPort isEqualToString: hostName])
+    hostName = [splitString objectAtIndex: 0];
+  
+  if([splitString count] >= 2) {
+    portNum = [[splitString objectAtIndex: 1] intValue];
+    // If the int value is 0, we couldn't find a valid integer representation
+    // in the split off string
+    if(portNum == 0)
+      portNum = -1;
+  }
+  
+  if(baseName) *baseName = hostName;
+  if(portNumber) *portNumber = portNum;
+  if(maskLength) *maskLength = maskLen;
 }

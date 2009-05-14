@@ -27,33 +27,33 @@
 @implementation TimerWindowController
 
 - (TimerWindowController*) init {
-  NSLog(@"TimerWindowController: init");
+  [super init];
   unsigned int major, minor, bugfix;
   
   [SelfControlUtilities getSystemVersionMajor: &major minor: &minor bugFix: &bugfix];
   
-  if(major <= 10 && minor < 5) {
-    self = [self initWithWindowNibName:@"TigerTimerWindow"];
+  if(major <= 10 && minor < 5)
     isLeopard = NO;
-  }
-  else {
-    self = [self initWithWindowNibName:@"TimerWindow"];
+  else
     isLeopard = YES;
-  }
-      
+        
   // We need a block to prevent us from running multiple copies of the "Add to Block"
   // sheet.
   addToBlockLock = [[NSLock alloc] init];
-    
+      
   return self;
 }
 
 - (void)awakeFromNib {
-  NSLog(@"TimerWindowController: awakeFromNib");
+  [[self window] center];
+  [[self window] makeKeyAndOrderFront: self];
+  
   NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
   
   NSWindow* window = [self window];
         
+  [window center];
+  
   if([defaults boolForKey:@"TimerWindowFloats"])
     [window setLevel: NSFloatingWindowLevel];
   else
@@ -61,15 +61,10 @@
   
   [window setHidesOnDeactivate: NO];
   
+  [window makeKeyAndOrderFront: self];
+  
   NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: kSelfControlLockFilePath];
-  
-  if([[lockDict objectForKey: @"BlockAsWhitelist"] boolValue])
-      [addToBlockButton_ setEnabled: NO];
-  else
-      [addToBlockButton_ setEnabled: YES];
-  
-  NSLog(@"TimerWindowController: Passed where BlockAsWhitelist check was");
-  
+      
   NSDate* beginDate = [lockDict objectForKey:@"BlockStartedDate"];
   NSTimeInterval blockDuration = [[lockDict objectForKey:@"BlockDuration"] intValue] * 60;
   
@@ -79,6 +74,7 @@
     blockDuration = [defaults integerForKey:@"BlockDuration"] * 60;
   } else {
     [defaults setObject: beginDate forKey: @"BlockStartedDate"];
+    NSLog(@"set date to %@ in TimerWindowController -awakeFromNib because lockDict said so", beginDate);
     [defaults setObject: [NSNumber numberWithFloat: (blockDuration / 60)] forKey: @"BlockDuration"];
   }
   
@@ -95,11 +91,9 @@
                                                  selector: @selector(updateTimerDisplay:)
                                                  userInfo: nil
                                                   repeats: YES];
-  NSLog(@"TimerWindowController: Scheduled timer, timerUpdater_ is now %@", timerUpdater_);
 }
 
-- (void)reloadTimer {  
-  NSLog(@"TimerWindowController: reloadTimer");
+/* - (void)reloadTimer {  
   NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];  
   
   NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: kSelfControlLockFilePath];
@@ -129,42 +123,32 @@
   
   // Yes, I'm aware the timer should be invalidated.  Something deep inside broke
   // every time I tried that.
+    
   [timerUpdater_ invalidate];
   timerUpdater_ = nil;
-
-  NSLog(@"TimerWindowController: Killed timerUpdater_ in reloadTimer");
     
   timerUpdater_ = [NSTimer scheduledTimerWithTimeInterval: 1.0
                                                    target: self
                                                  selector: @selector(updateTimerDisplay:)
                                                  userInfo: nil
                                                   repeats: YES];
-  
-  NSLog(@"TimerWindowController: Scheduled timer (reloaded), timerUpdater_ is now %@", timerUpdater_);
-  
+    
   [self updateTimerDisplay: timerUpdater_];
-}
+} */
 
-- (void)updateTimerDisplay:(NSTimer*)timer {
-  NSLog(@"TimerWindowController: updateTimerDisplay:%@", timer);
+- (void)updateTimerDisplay:(NSTimer*)timer {  
   int numSeconds = (int) [blockEndingDate_ timeIntervalSinceNow];
   int numHours;
   int numMinutes;
   
   if(numSeconds < 0) {
-    if(isLeopard && [[NSUserDefaults standardUserDefaults] objectForKey: @"BadgeApplicationIcon"])
+    if(isLeopard)
       [[NSApp dockTile] setBadgeLabel: @""];
     
     if(![[NSApp delegate] selfControlLaunchDaemonIsLoaded]) {
-      [timer invalidate];
-      timer = nil;
-      if(timer != timerUpdater_) {
-        [timerUpdater_ invalidate];
-      }
+      [timerUpdater_ invalidate];
       timerUpdater_ = nil;
-      
-      NSLog(@"TimerWindowController: Killed timerUpdater_ in reloadTimer");
-      
+            
       [timerLabel_ setStringValue: @"Block not active"];
       [timerLabel_ setFont: [[NSFontManager sharedFontManager]
                             convertFont: [timerLabel_ font]
@@ -179,7 +163,6 @@
       // a new object when it is needed, which will have new data.
       [[[NSApp delegate] domainListWindowController] close];
       [[NSApp delegate] setDomainListWindowController: nil];
-      NSLog(@"setDomainListWindowController to nil in updateTimerDisplay");
       
       [[NSApp delegate] refreshUserInterface];
     }
@@ -205,7 +188,7 @@
   
   [timerLabel_ sizeToFit];
   
-  if(isLeopard && [[NSUserDefaults standardUserDefaults] objectForKey: @"BadgeApplicationIcon"]) {
+  if(isLeopard && [[NSUserDefaults standardUserDefaults] boolForKey: @"BadgeApplicationIcon"]) {
     // We want to round up the minutes--standard when we aren't displaying seconds.
     if(numSeconds > 0)
       numMinutes++;
@@ -213,6 +196,10 @@
                                                         numHours,
                                                         numMinutes];
     [[NSApp dockTile] setBadgeLabel: badgeString];
+  } else if(isLeopard) {
+    // If we're on Leopard but aren't using badging, set the badge string to be
+    // empty to remove any badge if there is one.
+    [[NSApp dockTile] setBadgeLabel: @""];
   }
 }
 
@@ -230,11 +217,6 @@
   if(![addToBlockLock tryLock])
     return;
   
-  // At first I tried loading the nib only if it wasn't loaded, but for some reason
-  // it didn't work right and sometimes the nib would seem to be loaded even though
-  // it obviously wasn't loaded properly.
-  [NSBundle loadNibNamed: @"AddToBlock" owner: self];
-    
   [NSApp beginSheet: addSheet_
      modalForWindow: [self window]
       modalDelegate: self
@@ -259,10 +241,8 @@
 }
 
 - (void)dealloc {
-  NSLog(@"TimerWindowController: dealloc");
   [timerUpdater_ invalidate];
   timerUpdater_ = nil;
-  NSLog(@"TimerWindowController: Killed timerUpdater_ in dealloc");
   [super dealloc];
 }
 

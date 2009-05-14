@@ -162,178 +162,111 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   }
   
   [NSThread detachNewThreadSelector: @selector(installBlock) toTarget: self withObject: nil];
-  
-  /* AuthorizationRef authorizationRef;
-  char* helperToolPath = [self selfControlHelperToolPathUTF8String];
-  int helperToolPathSize = strlen(helperToolPath);
-  AuthorizationItem right = {
-    kAuthorizationRightExecute,
-    helperToolPathSize,
-    helperToolPath,
-    0
-  };
-  AuthorizationRights authRights = {
-    1,
-    &right
-  };
-  AuthorizationFlags myFlags = kAuthorizationFlagDefaults |
-                               kAuthorizationFlagExtendRights |
-                               kAuthorizationFlagInteractionAllowed;
-  OSStatus status;
-  
-  status = AuthorizationCreate (&authRights,
-                                kAuthorizationEmptyEnvironment,
-                                myFlags,
-                                &authorizationRef);
-  
-  if(status) {
-    NSLog(@"ERROR: Failed to authorize block start.");
-    return;
-  }
-    
-  // We need to pass our UID to the helper tool.  It needs to know whose defaults
-  // it should reading in order to properly load the blacklist.
-  char uidString[10];
-  snprintf(uidString, sizeof(uidString), "%d", getuid());
-  
-  FILE* commPipe;
-  
-  char* args[] = { uidString, "--install", NULL };
-  status = AuthorizationExecuteWithPrivileges(authorizationRef,
-                                              helperToolPath,
-                                              kAuthorizationFlagDefaults,
-                                              args,
-                                              &commPipe);
-  
-  if(status) {
-    NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", status);
-    
-    NSError* err = [self errorFromHelperToolStatusCode: status];
-    
-    [NSApp presentError: err];
-    
-    return;
-  }
-  
-  NSFileHandle* helperToolHandle = [[NSFileHandle alloc] initWithFileDescriptor: fileno(commPipe) closeOnDealloc: YES];
-  
-  int exitCode = [[[[NSString alloc] initWithData: [helperToolHandle readDataToEndOfFile] encoding: NSUTF8StringEncoding] autorelease] intValue];
-  
-  if(exitCode) {
-    NSError* err = [self errorFromHelperToolStatusCode: status];
-    
-    [NSApp presentError: err];    
-  } */
 }
 
 - (void)refreshUserInterface {
-  if([self selfControlLaunchDaemonIsLoaded]) {
-    [self showAndReloadTimerWindow];
-    [initialWindow_ close];
-    [self closeDomainList];
-  } else {
-    [self updateTimeSliderDisplay: blockDurationSlider_];
-    
-    [defaults_ synchronize];
-    
-    // We check whether a block is currently being added by trying to lock
-    // blockLock_.
-    BOOL addBlockIsOngoing = ![blockLock_ tryLock];
-        
-    if([blockDurationSlider_ intValue] != 0 && [[defaults_ objectForKey: @"HostBlacklist"] count] != 0 && !addBlockIsOngoing)
-      [submitButton_ setEnabled: YES];
-    else
-      [submitButton_ setEnabled: NO];
-    
-    // If we're adding a block, we want buttons disabled.
-    if(!addBlockIsOngoing) {
-      [blockDurationSlider_ setEnabled: YES];
-      [editBlacklistButton_ setEnabled: YES];
-      [submitButton_ setTitle: @"Start"];
+  BOOL blockIsReallyOn = [self selfControlLaunchDaemonIsLoaded];
+  if(blockIsReallyOn != blockIsOn) {
+    blockIsOn = blockIsReallyOn;
+    if(blockIsOn) {
+      [timerWindowController_ close];
+      [timerWindowController_ release];
+      timerWindowController_ = nil;
+      [self showTimerWindow];
+      [initialWindow_ close];
+      [self closeDomainList];
+    } else {
+      [self updateTimeSliderDisplay: blockDurationSlider_];
+      
+      [defaults_ synchronize];
+      
+      // We check whether a block is currently being added by trying to lock
+      // blockLock_.
+      BOOL addBlockIsOngoing = ![blockLock_ tryLock];
+          
+      if([blockDurationSlider_ intValue] != 0 && [[defaults_ objectForKey: @"HostBlacklist"] count] != 0 && !addBlockIsOngoing)
+        [submitButton_ setEnabled: YES];
+      else
+        [submitButton_ setEnabled: NO];
+      
+      // If we're adding a block, we want buttons disabled.
+      if(!addBlockIsOngoing) {
+        [blockDurationSlider_ setEnabled: YES];
+        [editBlacklistButton_ setEnabled: YES];
+        [submitButton_ setTitle: @"Start"];
+      }
+      else {
+        [blockDurationSlider_ setEnabled: NO];
+        [editBlacklistButton_ setEnabled: NO];
+        [submitButton_ setTitle: @"Loading"];
+      }
+      
+      // Unlock blockLock_ if we locked it
+      if(!addBlockIsOngoing) {
+        [blockLock_ unlock];
+      }
+      
+      NSWindow* mainWindow = [NSApp mainWindow];
+      // We don't necessarily want the initial window to be key and front,
+      // but no other message seems to show it properly.
+      [initialWindow_ makeKeyAndOrderFront: self];
+      // So we work around it and make key and front whatever was the main window
+      [mainWindow makeKeyAndOrderFront: self];
+      
+      [self closeTimerWindow];
     }
-    else {
-      [blockDurationSlider_ setEnabled: NO];
-      [editBlacklistButton_ setEnabled: NO];
-      [submitButton_ setTitle: @"Loading"];
-    }
-    
-    // Unlock blockLock_ if we locked it
-    if(!addBlockIsOngoing) {
-      [blockLock_ unlock];
-    }
-    
-    NSWindow* mainWindow = [NSApp mainWindow];
-    // We don't necessarily want the initial window to be key and front,
-    // but no other message seems to show it properly.
-    [initialWindow_ makeKeyAndOrderFront: self];
-    // So we work around it and make key and front whatever was the main window
-    [mainWindow makeKeyAndOrderFront: self];
-    
-    [self closeTimerWindow];
   }
+  
+  // We check whether a block is currently being added by trying to lock
+  // blockLock_.
+  BOOL addBlockIsOngoing = ![blockLock_ tryLock];
+  
+  if([blockDurationSlider_ intValue] != 0 && [[defaults_ objectForKey: @"HostBlacklist"] count] != 0 && !addBlockIsOngoing)
+    [submitButton_ setEnabled: YES];
+  else
+    [submitButton_ setEnabled: NO];
+  
+  // If we're adding a block, we want buttons disabled.
+  if(!addBlockIsOngoing) {
+    [blockDurationSlider_ setEnabled: YES];
+    [editBlacklistButton_ setEnabled: YES];
+    [submitButton_ setTitle: @"Start"];
+  }
+  else {
+    [blockDurationSlider_ setEnabled: NO];
+    [editBlacklistButton_ setEnabled: NO];
+    [submitButton_ setTitle: @"Loading"];
+  }
+  
+  // Unlock blockLock_ if we locked it
+  if(!addBlockIsOngoing) {
+    [blockLock_ unlock];
+  }  
 }
 
-- (void)showAndReloadTimerWindow {
+- (void)showTimerWindow {
   if(timerWindowController_ == nil) {
-    NSLog(@"timerWindowController_ == nil");
-    timerWindowController_ = [[TimerWindowController alloc] init];
-  } else NSLog(@"timerWindowController_ == %@", timerWindowController_);
-  
-  [[timerWindowController_ window] center];
-  [timerWindowController_ showWindow: self];
-  [timerWindowController_ reloadTimer];
+     unsigned int major, minor, bugfix;
+     
+    [SelfControlUtilities getSystemVersionMajor: &major minor: &minor bugFix: &bugfix];
+    
+    if(major <= 10 && minor < 5)
+      [NSBundle loadNibNamed: @"TigerTimerWindow" owner: self];
+    else
+      [NSBundle loadNibNamed: @"TimerWindow" owner: self];
+  }
+  else {
+    [[timerWindowController_ window] makeKeyAndOrderFront: self];
+    [[timerWindowController_ window] center];
+  }
 }
 
 - (void)closeTimerWindow {
   [timerWindowController_ close];
 }
 
-/* - (void)removeBlock {
-  // Remember not to use this method, it defeats the point of SelfControl!
-  
-  [defaults_ synchronize];
-  
-  AuthorizationRef authorizationRef;
-  char* helperToolPath = [self selfControlHelperToolPathUTF8String];
-  int helperToolPathSize = strlen(helperToolPath);
-  AuthorizationItem right = {
-    kAuthorizationRightExecute,
-    helperToolPathSize,
-    helperToolPath,
-    0
-  };
-  AuthorizationRights authRights = {
-    1,
-    &right
-  };
-  AuthorizationFlags myFlags = kAuthorizationFlagDefaults |
-                               kAuthorizationFlagExtendRights |
-                               kAuthorizationFlagInteractionAllowed;
-  OSStatus status;
-  status = AuthorizationCreate (&authRights, kAuthorizationEmptyEnvironment, myFlags, &authorizationRef);
-  
-  if(status) {
-    NSLog(@"ERROR: Failed to authorize block removal.");
-    return;
-  }    
-  
-  char uidString[10];
-  snprintf(uidString, sizeof(uidString), "%d", getuid());
-  char* args[] = { uidString, "--remove", NULL };
-  status = AuthorizationExecuteWithPrivileges(authorizationRef,
-                                              [self selfControlHelperToolPathUTF8String],
-                                              kAuthorizationFlagDefaults, args,
-                                              NULL);
-  
-  if(status) {
-    NSLog(@"WARNING: Helper tool returned failure status code %d.");
-    return;
-  }    
-} */
-
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
   [NSApp setDelegate: self];
-  
   
   // Register observers on both distributed and normal notification centers
   // to receive notifications from the helper tool and the other parts of the
@@ -350,20 +283,15 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   
   [initialWindow_ center];
   
+  // We'll set blockIsOn to whatever is NOT right, so that in refreshUserInterface
+  // it'll fix it and properly refresh the user interface.
+  blockIsOn = ![self selfControlLaunchDaemonIsLoaded];
+  
   [self refreshUserInterface];                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
 }
 
 - (BOOL)selfControlLaunchDaemonIsLoaded {
-  [defaults_ synchronize];
- //  NSDate* blockStartedDate = [defaults_ objectForKey:@"BlockStartedDate"];
-  /*BOOL cur = (![blockStartedDate isEqualToDate: [NSDate distantFuture]]);
-  BOOL next = [[NSFileManager defaultManager] fileExistsAtPath: kSelfControlLockFilePath];
-  if(cur != next)
-    NSLog(@"cur isn't next!");
-  return next; */
   return [[NSFileManager defaultManager] fileExistsAtPath: kSelfControlLockFilePath];
-  /* return (![blockStartedDate isEqualToDate: [NSDate distantFuture]]);
-  return [[NSFileManager defaultManager] fileExistsAtPath: kSelfControlLockFilePath]; */
 }
 
 - (IBAction)showDomainList:(id)sender {
@@ -382,13 +310,12 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     
     return;
   }
-  if(domainListWindowController_ == nil) {
-    NSLog(@"domainListController == nil");
-    domainListWindowController_ = [[DomainListWindowController alloc] init];
-  }
   
-  [domainListWindowController_ showWindow: self];
-
+  if(domainListWindowController_ == nil)
+    [NSBundle loadNibNamed: @"DomainList" owner: self];
+  else
+    [[domainListWindowController_ window] makeKeyAndOrderFront: self];
+  
   if(!addBlockIsOngoing)
     [blockLock_ unlock];
 }
@@ -531,7 +458,6 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (void)dealloc {
-  [domainListWindowController_ release];
   [timerWindowController_ release];
   
   [[NSNotificationCenter defaultCenter] removeObserver: self

@@ -44,6 +44,10 @@
   return self;
 }
 
+- (void)awakeFromNib {
+  [[self window] makeKeyAndOrderFront: self];
+}
+
 - (IBAction)addDomain:(id)sender
 {
   [domainList_ addObject:@""];
@@ -105,12 +109,72 @@
     }
   }
   
+  // Remove "https://" if a user tried to put that in
+  splitString = [str componentsSeparatedByString: @"https://"];
+  for(int i = 0; i < [splitString count]; i++) {
+    if(![[splitString objectAtIndex: i] isEqual: @""]) {
+      str = [splitString objectAtIndex: i];
+      break;
+    }
+  }  
+  
+  // Remove URL login names/passwords (username:password@host) if a user tried to put that in
+  splitString = [str componentsSeparatedByString: @"@"];
+  str = [splitString lastObject];
+  
   // Delete anything after a "/" in case a user tried to copy-paste a web address.
-  str = [[str componentsSeparatedByString: @"/"] objectAtIndex: 0];
+  // str = [[str componentsSeparatedByString: @"/"] objectAtIndex: 0];
+  
+  int maskLength = -1;
+  int portNum = -1;
+  
+  splitString = [str componentsSeparatedByString: @"/"];
+
+  str = [splitString objectAtIndex: 0];
+  
+  NSString* stringToSearchForPort = str;
+  
+  if([splitString count] >= 2) {
+    maskLength = [[splitString objectAtIndex: 1] intValue];
+    // If the int value is 0, we couldn't find a valid integer representation
+    // in the split off string
+    if(maskLength == 0)
+      maskLength = -1;
+    
+    stringToSearchForPort = [splitString objectAtIndex: 1];
+  }
+  
+  splitString = [stringToSearchForPort componentsSeparatedByString: @":"];
+  
+  if(stringToSearchForPort == str)
+    str = [splitString objectAtIndex: 0];
+  
+  if([splitString count] >= 2) {
+    portNum = [[splitString objectAtIndex: 1] intValue];
+    // If the int value is 0, we couldn't find a valid integer representation
+    // in the split off string
+    if(portNum == 0)
+      portNum = -1;
+  }
+  
+  NSLog(@"Domain: %@, Port number: %d, Mask length: %d", str, portNum, maskLength);
+  
   if([str isEqual: @""])
     [domainList_ removeObjectAtIndex: rowIndex];
-  else
+  else {
+    NSString* maskString;
+    NSString* portString;
+    if(maskLength == -1)
+      maskString = @"";
+    else
+      maskString = [NSString stringWithFormat: @"/%d", maskLength];
+    if(portNum == -1)
+      portString = @"";
+    else
+      portString = [NSString stringWithFormat: @":%d", portNum];
+    str = [NSString stringWithFormat: @"%@%@%@", str, maskString, portString];
     [domainList_ replaceObjectAtIndex:rowIndex withObject:str];
+  }
   
   [defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
   [aTableView reloadData];
@@ -147,29 +211,69 @@ dataCellForTableColumn:(NSTableColumn *)tableColumn
   if([defaults_ boolForKey: @"HighlightInvalidHosts"]) {
     // Validate the value as either an IP or a hostname.  In case of failure,
     // we'll make its text color red.
-    NSArray* parts = [str componentsSeparatedByString:@":"];
-    str = [parts objectAtIndex: 0];
-    NSString* hostnameValidationRegex = @"^([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}$";
-    NSPredicate *hostnameRegexTester = [NSPredicate
-                                        predicateWithFormat:@"SELF MATCHES %@",
-                                        hostnameValidationRegex
-                                       ];
-    if ([hostnameRegexTester evaluateWithObject:str] != YES) {
-      NSString* ipValidationRegex = @"^([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
-      NSPredicate *ipRegexTester = [NSPredicate
-                                    predicateWithFormat:@"SELF MATCHES %@",
-                                    ipValidationRegex];
-      if ([ipRegexTester evaluateWithObject:str] != YES) {
+        
+    int maskLength = -1;
+    int portNum = -1;
+    
+    NSArray* splitString = [str componentsSeparatedByString: @"/"];
+    
+    str = [splitString objectAtIndex: 0];
+    
+    NSString* stringToSearchForPort = str;
+    
+    if([splitString count] >= 2) {
+      maskLength = [[splitString objectAtIndex: 1] intValue];
+      // If the int value is 0, we couldn't find a valid integer representation
+      // in the split off string
+      if(maskLength == 0)
+        maskLength = -1;
+      
+      stringToSearchForPort = [splitString objectAtIndex: 1];
+    }
+    
+    splitString = [stringToSearchForPort componentsSeparatedByString: @":"];
+    
+    if(stringToSearchForPort == str)
+      str = [splitString objectAtIndex: 0];
+    
+    if([splitString count] >= 2) {
+      portNum = [[splitString objectAtIndex: 1] intValue];
+      // If the int value is 0, we couldn't find a valid integer representation
+      // in the split off string
+      if(portNum == 0)
+        portNum = -1;
+    }
+    
+    NSLog(@"Domain: %@, Port number: %d, Mask length: %d", str, portNum, maskLength);
+    
+    BOOL isIP;
+    
+    NSString* ipValidationRegex = @"^([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
+    NSPredicate *ipRegexTester = [NSPredicate
+                                  predicateWithFormat:@"SELF MATCHES %@",
+                                  ipValidationRegex];      
+    isIP = [ipRegexTester evaluateWithObject: str];
+    
+    if(!isIP) {
+      NSString* hostnameValidationRegex = @"^([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}$";
+      NSPredicate *hostnameRegexTester = [NSPredicate
+                                          predicateWithFormat:@"SELF MATCHES %@",
+                                          hostnameValidationRegex
+                                          ];
+      if(![hostnameRegexTester evaluateWithObject: str]) {
         [cell setTextColor: [NSColor redColor]];
-      } else
-        [cell setTextColor: [NSColor blackColor]];
-    } else
-      if([parts count] > 1 && ([[parts objectAtIndex: 1] intValue] < 0 || [[parts objectAtIndex: 1] intValue] > 65536))
-        [cell setTextColor: [NSColor redColor]];
-      else
-        [cell setTextColor: [NSColor blackColor]];
-  } else
+        return;
+      }
+    }
+    
+    // We shouldn't have a mask length if it's not an IP, fail
+    if(!isIP && maskLength != -1) {
+      [cell setTextColor: [NSColor redColor]];
+      return;
+    }
+    
     [cell setTextColor: [NSColor blackColor]];
+  }
 }
 
 - (IBAction)importIncomingMailServersFromThunderbird:(id)sender {

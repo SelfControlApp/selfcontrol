@@ -39,10 +39,11 @@
   IBOutlet id initialWindow_;
   IBOutlet id domainListMenuItem_;
   IBOutlet id editBlacklistButton_;
-  DomainListWindowController* domainListWindowController_;
-  TimerWindowController* timerWindowController_;
+  IBOutlet DomainListWindowController* domainListWindowController_;
+  IBOutlet TimerWindowController* timerWindowController_;
   NSUserDefaults* defaults_;
   NSLock* blockLock_;
+  BOOL blockIsOn;
 }
 
 // Returns an autoreleased instance of the path to the helper tool inside
@@ -84,7 +85,7 @@
 // Allocates a new TimerWindowController if necessary and opens the timer window.
 // Also calls TimerWindowController's reloadTimer method to begin the timer's
 // countdown.
-- (void)showAndReloadTimerWindow;
+- (void)showTimerWindow;
 
 // Calls the close method of our TimerWindowController
 - (void)closeTimerWindow;

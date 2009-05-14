@@ -54,7 +54,7 @@ void removeRulesFromFirewall(int controllingUID);
 
 // Returns an autoreleased NSSet containing all IP adresses for evaluated
 // "common subdomains" for the specified hostname
-NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, NSString* port);
+NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, int port);
 
 // Checks the defaults system to see whether the user wants their web browser
 // caches cleared, and deletes the specific cache folders for few common
@@ -62,3 +62,5 @@ NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, NSString* p
 void clearCachesIfRequested(int controllingUID);
 
 void printStatus(int status);
+
+void parseHost(NSString* hostName, NSString** baseName, int* maskLength, int* portNumber);
