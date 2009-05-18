@@ -2,14 +2,14 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.03">
 	<data>
 		<int key="IBDocument.SystemTarget">1040</int>
-		<string key="IBDocument.SystemVersion">9G55</string>
+		<string key="IBDocument.SystemVersion">9J61</string>
 		<string key="IBDocument.InterfaceBuilderVersion">677</string>
-		<string key="IBDocument.AppKitVersion">949.43</string>
+		<string key="IBDocument.AppKitVersion">949.46</string>
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="31"/>
 			<integer value="61"/>
-			<integer value="32"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -40,7 +40,7 @@
 				<string key="NSClassName">TimerWindowController</string>
 			</object>
 			<object class="NSWindowTemplate" id="397986685">
-				<int key="NSWindowStyleMask">8215</int>
+				<int key="NSWindowStyleMask">23</int>
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{196, 428}, {212, 82}}</string>
 				<int key="NSWTFlags">-469762048</int>
@@ -102,7 +102,7 @@
 								</object>
 								<reference key="NSControlView" ref="738500806"/>
 								<int key="NSButtonFlags">-2038152961</int>
-								<int key="NSButtonFlags2">164</int>
+								<int key="NSButtonFlags2">36</int>
 								<string key="NSAlternateContents"/>
 								<string key="NSKeyEquivalent"/>
 								<int key="NSPeriodicDelay">400</int>
@@ -200,7 +200,7 @@
 								<reference key="NSSupport" ref="182552859"/>
 								<reference key="NSControlView" ref="612720333"/>
 								<int key="NSButtonFlags">-2038021889</int>
-								<int key="NSButtonFlags2">163</int>
+								<int key="NSButtonFlags2">35</int>
 								<reference key="NSAlternateImage" ref="182552859"/>
 								<string key="NSAlternateContents"/>
 								<string type="base64-UTF8" key="NSKeyEquivalent">DQ</string>
@@ -221,7 +221,7 @@
 								<reference key="NSSupport" ref="182552859"/>
 								<reference key="NSControlView" ref="798516925"/>
 								<int key="NSButtonFlags">-2038284033</int>
-								<int key="NSButtonFlags2">163</int>
+								<int key="NSButtonFlags2">35</int>
 								<reference key="NSAlternateImage" ref="182552859"/>
 								<string key="NSAlternateContents"/>
 								<string key="NSKeyEquivalent"/>
@@ -552,9 +552,9 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{-30, 382}, {205, 100}}</string>
+					<string>{{112, 389}, {205, 100}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{-30, 382}, {205, 100}}</string>
+					<string>{{112, 389}, {205, 100}}</string>
 					<reference ref="6"/>
 					<string>{196, 240}</string>
 					<string>{{202, 428}, {480, 270}}</string>
@@ -607,12 +607,16 @@
 						<object class="NSMutableArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>addBlock:</string>
+							<string>open:</string>
+							<string>save:</string>
 							<string>showDomainList:</string>
 							<string>soundSelectionChanged:</string>
 							<string>updateTimeSliderDisplay:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>

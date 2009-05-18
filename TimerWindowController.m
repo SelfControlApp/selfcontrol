@@ -72,10 +72,6 @@
      || blockDuration <= 0) {
     beginDate = [defaults objectForKey:@"BlockStartedDate"];
     blockDuration = [defaults integerForKey:@"BlockDuration"] * 60;
-  } else {
-    [defaults setObject: beginDate forKey: @"BlockStartedDate"];
-    NSLog(@"set date to %@ in TimerWindowController -awakeFromNib because lockDict said so", beginDate);
-    [defaults setObject: [NSNumber numberWithFloat: (blockDuration / 60)] forKey: @"BlockDuration"];
   }
   
   // It is KEY to retain the block ending date , if you forget to retain it
@@ -143,7 +139,7 @@
   
   if(numSeconds < 0) {
     if(isLeopard)
-      [[NSApp dockTile] setBadgeLabel: @""];
+      [[NSApp dockTile] setBadgeLabel: @""];    
     
     if(![[NSApp delegate] selfControlLaunchDaemonIsLoaded]) {
       [timerUpdater_ invalidate];
@@ -161,9 +157,7 @@
       // the block was ongoing.  We do this by simply clearing the
       // AppController's domainListWindowController variable.  It will initialize
       // a new object when it is needed, which will have new data.
-      [[[NSApp delegate] domainListWindowController] close];
-      [[NSApp delegate] setDomainListWindowController: nil];
-      
+      [[NSApp delegate] closeDomainList];      
       [[NSApp delegate] refreshUserInterface];
     }
     

@@ -121,16 +121,20 @@
 // as a separate thread.
 - (void)refreshBlock:(NSLock*)lockToUse;
 
+// Checks the system version and returns YES if the system version is Tiger (10.4)
+// or NO if it is a later version.
 - (BOOL)isTiger;
+
+// Opens a save panel and saves the blocklist.
+- (IBAction)save:(id)sender;
+
+// Opens an open panel and imports a blocklist, clearing the current one.
+- (IBAction)open:(id)sender;
 
 // Property allows initialWindow to be accessed from TimerWindowController
 // @property (retain, nonatomic, readonly) id initialWindow;
 
 // Changed property to manual accessor for pre-Leopard compatibility
 - (id)initialWindow;
-
-// Getter/setter for domainListWindowController to be accessed from a TimerWindowController
-- (id)domainListWindowController;
-- (void)setDomainListWindowController:(id)newController;
 
 @end

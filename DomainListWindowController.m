@@ -146,8 +146,9 @@
   
   splitString = [stringToSearchForPort componentsSeparatedByString: @":"];
   
-  if(stringToSearchForPort == str)
+  if(stringToSearchForPort == str) {
     str = [splitString objectAtIndex: 0];
+  }
   
   if([splitString count] >= 2) {
     portNum = [[splitString objectAtIndex: 1] intValue];
@@ -156,10 +157,8 @@
     if(portNum == 0)
       portNum = -1;
   }
-  
-  NSLog(@"Domain: %@, Port number: %d, Mask length: %d", str, portNum, maskLength);
-  
-  if([str isEqual: @""])
+    
+  if([str isEqual: @""] && portNum == -1)
     [domainList_ removeObjectAtIndex: rowIndex];
   else {
     NSString* maskString;
@@ -233,8 +232,9 @@ dataCellForTableColumn:(NSTableColumn *)tableColumn
     
     splitString = [stringToSearchForPort componentsSeparatedByString: @":"];
     
-    if(stringToSearchForPort == str)
+    if(stringToSearchForPort == str) {
       str = [splitString objectAtIndex: 0];
+    }
     
     if([splitString count] >= 2) {
       portNum = [[splitString objectAtIndex: 1] intValue];
@@ -243,9 +243,7 @@ dataCellForTableColumn:(NSTableColumn *)tableColumn
       if(portNum == 0)
         portNum = -1;
     }
-    
-    NSLog(@"Domain: %@, Port number: %d, Mask length: %d", str, portNum, maskLength);
-    
+        
     BOOL isIP;
     
     NSString* ipValidationRegex = @"^([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
@@ -260,7 +258,7 @@ dataCellForTableColumn:(NSTableColumn *)tableColumn
                                           predicateWithFormat:@"SELF MATCHES %@",
                                           hostnameValidationRegex
                                           ];
-      if(![hostnameRegexTester evaluateWithObject: str]) {
+      if(![hostnameRegexTester evaluateWithObject: str] && ![str isEqualToString: @"*"] && ![str isEqualToString: @""]) {
         [cell setTextColor: [NSColor redColor]];
         return;
       }
@@ -268,6 +266,11 @@ dataCellForTableColumn:(NSTableColumn *)tableColumn
     
     // We shouldn't have a mask length if it's not an IP, fail
     if(!isIP && maskLength != -1) {
+      [cell setTextColor: [NSColor redColor]];
+      return;
+    }
+    
+    if(([str isEqualToString: @"*"] || [str isEqualToString: @""]) && portNum == -1) {
       [cell setTextColor: [NSColor redColor]];
       return;
     }

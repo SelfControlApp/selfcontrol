@@ -117,18 +117,17 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   if(([[defaults_ objectForKey:@"BlockStartedDate"] timeIntervalSinceNow] < 0)) {
     // This method shouldn't be getting called, a block is on (block started date
     // is in the past, not distantFuture) so the Start button should be disabled.
-    // Maybe the UI didn't get properly refreshed, so try refreshing it again
-    // before we return.
-    [self refreshUserInterface];
-    
-    NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
+
+    NSLog(@"WARNING: Block started date is in the past (%@)", [defaults_ objectForKey: @"BlockStartedDate"]);
+        
+   /* NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
                                        code: -101
                                    userInfo: [NSDictionary dictionaryWithObject: @"Error -101: Attempting to add block, but a block appears to be in progress."
                                                                          forKey: NSLocalizedDescriptionKey]];
     
     [NSApp presentError: err];
     
-    return;
+    return; */
   }
   if([[defaults_ arrayForKey:@"HostBlacklist"] count] == 0) {
     // Since the Start button should be disabled when the blacklist has no entries,
@@ -143,7 +142,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     
     return;
   }
-  
+    
   if([defaults_ boolForKey: @"VerifyInternetConnection"] && ![self networkConnectionIsAvailable]) {
     NSAlert* networkUnavailableAlert = [[[NSAlert alloc] init] autorelease];
     [networkUnavailableAlert setMessageText: @"No network connection detected"];
@@ -322,6 +321,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 - (void)closeDomainList {
   [domainListWindowController_ close];
+  domainListWindowController_ = nil;
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed: (NSApplication*) theApplication {
@@ -523,7 +523,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
       [description appendString: @"Launch daemon load returned a failure status code."];
       break;
     case -212:
-      [description appendString: @"Remove option called"];
+      [description appendString: @"Remove option called."];
       break;
     case -213:
       [description appendString: @"Refreshing domain blacklist, but no block is currently ongoing."];
@@ -533,6 +533,15 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
       break;
     case -215:
       [description appendString: @"Checkup ran but no block found."];
+      break;
+    case -216:
+      [description appendString: @"Could not write lock file."];
+      break;
+    case -217:
+      [description appendString: @"Could not write lock file."];
+      break;
+    case -218:
+      [description appendString: @"Could not remove SelfControl lock file."];
       break;
       
     default: 
@@ -597,8 +606,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     
     NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
                                        code: status
-                                   userInfo: [NSDictionary dictionaryWithObject: [NSString stringWithFormat: @"Error %d received from the Security Server.",
-                                                                            status]
+                                   userInfo: [NSDictionary dictionaryWithObject: [NSString stringWithFormat: @"Error %d received from the Security Server.", status]
                                                                          forKey: NSLocalizedDescriptionKey]];
     
     [NSApp presentError: err];
@@ -616,8 +624,18 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   [helperToolHandle release];
   
   NSString* inDataString = [[NSString alloc] initWithData: inData encoding: NSUTF8StringEncoding];
-  int exitCode = [inDataString intValue];
+  
+  if([inDataString isEqualToString: @""]) {
+    NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
+                                       code: -104
+                                   userInfo: [NSDictionary dictionaryWithObject: @"Error -104: The helper tool crashed.  This may cause unexpected errors."
+                                                                         forKey: NSLocalizedDescriptionKey]];
     
+    [NSApp presentError: err];
+  }
+  
+  int exitCode = [inDataString intValue];
+  
   if(exitCode) {
     NSError* err = [self errorFromHelperToolStatusCode: exitCode];
     
@@ -699,8 +717,17 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   
   NSData* inData = [helperToolHandle readDataToEndOfFile];
   NSString* inDataString = [[NSString alloc] initWithData: inData encoding: NSUTF8StringEncoding];
+  
+  if([inDataString isEqualToString: @""]) {
+    NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
+                                       code: -105
+                                   userInfo: [NSDictionary dictionaryWithObject: @"Error -105: The helper tool crashed.  This may cause unexpected errors."
+                                                                         forKey: NSLocalizedDescriptionKey]];
+    
+    [NSApp presentError: err];
+  }  
+  
   int exitCode = [inDataString intValue];
-  NSLog(@"exitCode is %d", exitCode);
   
   if(exitCode) {
     NSError* err = [self errorFromHelperToolStatusCode: exitCode];
@@ -722,6 +749,85 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     return YES;
   else
     return NO;
+}
+
+- (IBAction)save:(id)sender {
+  NSSavePanel *sp;
+  int runResult;
+  
+  /* create or get the shared instance of NSSavePanel */
+  sp = [NSSavePanel savePanel];
+  
+  /* set up new attributes */
+  [sp setRequiredFileType: @"selfcontrol"];
+  
+  /* display the NSSavePanel */
+  runResult = [sp runModal];
+  
+  /* if successful, save file under designated name */
+  if (runResult == NSOKButton) {
+    [defaults_ synchronize];
+    NSString* err;
+    NSDictionary* saveDict = [NSDictionary dictionaryWithObjectsAndKeys: [defaults_ objectForKey: @"HostBlacklist"], @"HostBlacklist",
+                                                                         [defaults_ objectForKey: @"BlockAsWhitelist"], @"BlockAsWhitelist",
+                                                                         nil];
+    NSData* saveData = [NSPropertyListSerialization dataFromPropertyList: saveDict format: NSPropertyListBinaryFormat_v1_0 errorDescription: &err];
+    if(err) {
+      NSError* displayErr = [NSError errorWithDomain: kSelfControlErrorDomain code: -902 userInfo: [NSDictionary dictionaryWithObject: [@"Error 902: " stringByAppendingString: err]
+                                                                                                                               forKey: NSLocalizedDescriptionKey]];
+      [NSApp presentError: displayErr];
+      return;
+    }
+    if (![saveData writeToFile:[sp filename] atomically: YES]) {
+      NSBeep();
+    } else {
+      NSDictionary* attribs = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool: YES], NSFileExtensionHidden, nil];
+      [[NSFileManager defaultManager] changeFileAttributes: attribs atPath: [sp filename]];
+    }
+  }
+}
+
+- (IBAction)open:(id)sender {
+  int result;
+  NSArray *fileTypes = [NSArray arrayWithObject:@"selfcontrol"];
+  NSOpenPanel *oPanel = [NSOpenPanel openPanel];
+  
+  [oPanel setAllowsMultipleSelection: NO];
+  result = [oPanel runModalForTypes: fileTypes];
+  if (result == NSOKButton) {
+    NSArray *filesToOpen = [oPanel filenames];
+    if([filesToOpen count] > 0) {
+      NSDictionary* openedDict = [NSDictionary dictionaryWithContentsOfFile: [filesToOpen objectAtIndex: 0]];
+      [defaults_ setObject: [openedDict objectForKey: @"HostBlacklist"] forKey: @"HostBlacklist"];
+      [defaults_ setObject: [openedDict objectForKey: @"BlockAsWhitelist"] forKey: @"BlockAsWhitelist"];
+      BOOL domainListIsOpen = [[domainListWindowController_ window] isVisible];
+      NSRect frame = [[domainListWindowController_ window] frame];
+      [self closeDomainList];
+      if(domainListIsOpen) {
+        [self showDomainList: self];
+        [[domainListWindowController_ window] setFrame: frame display: YES];
+      }
+    }
+  }
+}
+
+- (BOOL)application:(NSApplication*)theApplication openFile:(NSString*)filename {
+  NSDictionary* openedDict = [NSDictionary dictionaryWithContentsOfFile: filename];
+  if(openedDict == nil) return NO;
+  NSArray* newBlocklist = [openedDict objectForKey: @"HostBlacklist"];
+  NSNumber* newWhitelistChoice = [openedDict objectForKey: @"BlockAsWhitelist"];
+  if(newBlocklist == nil || newWhitelistChoice == nil) return NO;
+  [defaults_ setObject: newBlocklist forKey: @"HostBlacklist"];
+  [defaults_ setObject: newWhitelistChoice forKey: @"BlockAsWhitelist"];
+  BOOL domainListIsOpen = [[domainListWindowController_ window] isVisible];
+  NSRect frame = [[domainListWindowController_ window] frame];
+  [self closeDomainList];
+  if(domainListIsOpen) {
+    [self showDomainList: self];
+    [[domainListWindowController_ window] setFrame: frame display: YES];
+  }  
+  
+  return YES;
 }
 
 @end

@@ -61,6 +61,11 @@ NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, int port);
 // web browsers if it is required.
 void clearCachesIfRequested(int controllingUID);
 
+// Prints out the given status code to stdout using printf
 void printStatus(int status);
 
+// Parses hostName, to find a mask length (for IP ranges) and port number, if
+// specified.  Returns by reference baseName, which is hostName without mask
+// length or port number, and the mask length and port number unless they were
+// not specified, in which case they will be initialized to -1.
 void parseHost(NSString* hostName, NSString** baseName, int* maskLength, int* portNumber);

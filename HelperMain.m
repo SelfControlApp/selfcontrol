@@ -40,7 +40,7 @@ int main(int argc, char* argv[]) {
     printStatus(-202);
     exit(EX_USAGE);
   }
-  
+    
   NSString* modeString = [NSString stringWithUTF8String: argv[2]];
   // We'll need the controlling UID to know what defaults database to search
   int controllingUID = [[NSString stringWithUTF8String: argv[1]] intValue];
@@ -103,7 +103,6 @@ int main(int argc, char* argv[]) {
   seteuid(0);  
   
   if([modeString isEqual: @"--install"]) {   
-    
     NSFileManager* fileManager = [NSFileManager defaultManager];
         
     // Initialize writeErr to nil so calling messages on it later don't cause
@@ -166,7 +165,7 @@ int main(int argc, char* argv[]) {
       printStatus(-209);
       exit(EX_IOERR);
     }
-            
+        
     [NSUserDefaults resetStandardUserDefaults];
     seteuid(controllingUID);
     defaults = [NSUserDefaults standardUserDefaults];
@@ -218,21 +217,25 @@ int main(int argc, char* argv[]) {
     }
     
     // And write out our lock...
-    [lockDictionary writeToFile: kSelfControlLockFilePath atomically: YES];
+    if(![lockDictionary writeToFile: kSelfControlLockFilePath atomically: YES]) {
+      NSLog(@"ERROR: Could not write lock file.");
+      printStatus(-216);
+      exit(EX_IOERR);      
+    }
     // Make sure the privileges are correct on our lock file
     [fileManager changeFileAttributes: fileAttributes atPath: kSelfControlLockFilePath];
         
     addRulesToFirewall(controllingUID);
-            
+                
     int result = [LaunchctlHelper loadLaunchdJobWithPlistAt: @"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
-        
+            
     [[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
                                                                    object: nil];
-    
+        
     // Clear web browser caches if the user has the correct preference set, so
     // that blocked pages are not loaded from a cache.
     clearCachesIfRequested(controllingUID);
-    
+        
     if(result) {
       printStatus(-211);
       exit(EX_UNAVAILABLE);
@@ -320,7 +323,11 @@ int main(int argc, char* argv[]) {
       exit(EX_CONFIG);
     }
     
-    [newLockDictionary writeToFile: kSelfControlLockFilePath atomically: YES];
+    if(![newLockDictionary writeToFile: kSelfControlLockFilePath atomically: YES]) {
+      NSLog(@"ERROR: Could not write lock file.");
+      printStatus(-217);
+      exit(EX_IOERR);      
+    }
     // Make sure the privileges are correct on our lock file
     [[NSFileManager defaultManager] changeFileAttributes: fileAttributes atPath: kSelfControlLockFilePath];    
     domainList = [newLockDictionary objectForKey: @"HostBlacklist"];
@@ -398,7 +405,11 @@ int main(int argc, char* argv[]) {
                         
       removeRulesFromFirewall(controllingUID);
       
-      [[NSFileManager defaultManager] removeFileAtPath: kSelfControlLockFilePath handler: nil];
+      if(![[NSFileManager defaultManager] removeFileAtPath: kSelfControlLockFilePath handler: nil]) {
+        NSLog(@"ERROR: Could not remove SelfControl lock file.");
+        printStatus(-218);
+        exit(EX_IOERR);
+      }
       
       [[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
                                                                      object: nil];
@@ -428,7 +439,7 @@ int main(int argc, char* argv[]) {
       [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
       [defaults setObject: blockStartedDate forKey: @"BlockStartedDate"];
       NSLog(@"set %@ for date in HelperMain main() --checkup because the lock file said so", blockStartedDate);
-      [defaults setObject: [NSNumber numberWithFloat: (blockDuration / 60)] forKey: @"BlockDuration"];
+      [defaults setObject: [NSNumber numberWithInt: (blockDuration / 60)] forKey: @"BlockDuration"];
       [defaults setObject: domainList forKey: @"HostBlacklist"];
       [defaults synchronize];
       [NSUserDefaults resetStandardUserDefaults];
@@ -451,8 +462,10 @@ void addRulesToFirewall(int controllingUID) {
     int maskLen;
     
     parseHost([domainList objectAtIndex: i], &hostName, &maskLen, &portNum);
-    
-    NSLog(@"Parsed host into: %@/%d:%d", hostName, maskLen, portNum);
+        
+    if([hostName isEqualToString: @"*"]) {
+      [hostsToBlock addObject: [domainList objectAtIndex: i]];
+    }
     
     NSString* ipValidationRegex = @"^([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
     NSPredicate *regexTester = [NSPredicate
@@ -461,13 +474,11 @@ void addRulesToFirewall(int controllingUID) {
     if ([regexTester evaluateWithObject: hostName])
       [hostsToBlock addObject: [domainList objectAtIndex: i]];
     else {
-      NSLog(@"Not an IP address");
       // We have a domain name, we need to resolve it first
       NSHost* host = [NSHost hostWithName: hostName];
       
       if(host) {
         NSArray* addresses = [host addresses];
-        NSLog(@"Resolved host into addresses: %@", addresses);
         
         for(int j = 0; j < [addresses count]; j++) {
           if(portNum != -1)
@@ -488,7 +499,6 @@ void addRulesToFirewall(int controllingUID) {
       if(shouldEvaluateCommonSubdomains) {
         // Get the evaluated hostnames and union (combine) them with our current set
         NSSet* evaluatedHosts = getEvaluatedHostNamesFromCommonSubdomains(hostName, portNum);
-        NSLog(@"Evaluated common subdomains and got %@", evaluatedHosts);
         [hostsToBlock unionSet: evaluatedHosts];
       }
     }
@@ -533,6 +543,8 @@ void addRulesToFirewall(int controllingUID) {
           
           parseHost([domainList objectAtIndex: i], &hostName, &maskLen, &portNum);
         
+          if([hostName isEqualToString: @"*"]) continue;
+        
           if(portNum == -1) {
             NSString* ipValidationRegex = @"^([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
             NSPredicate *regexTester = [NSPredicate
@@ -562,11 +574,11 @@ void addRulesToFirewall(int controllingUID) {
     int maskLen;
     
     parseHost(hostString, &hostName, &maskLen, &portNum);
-
-    NSLog(@"Just before block, parsed: %@/%d:%d", hostName, maskLen, portNum);
     
     if(blockAsWhitelist) {
-      if(portNum != -1 && maskLen != -1)
+      if([hostName isEqualToString: @"*"])
+        [firewall addSelfControlBlockRuleAllowingPort: portNum];
+      else if(portNum != -1 && maskLen != -1)
         [firewall addSelfControlBlockRuleAllowingIP: hostName port: portNum maskLength: maskLen];
       else if(portNum != -1)
         [firewall addSelfControlBlockRuleAllowingIP: hostName port: portNum];
@@ -575,7 +587,9 @@ void addRulesToFirewall(int controllingUID) {
       else
         [firewall addSelfControlBlockRuleAllowingIP: hostName];
     } else {
-      if(portNum != -1 && maskLen != -1)
+      if([hostName isEqualToString: @"*"])
+        [firewall addSelfControlBlockRuleBlockingPort: portNum];
+      else if(portNum != -1 && maskLen != -1)
         [firewall addSelfControlBlockRuleBlockingIP: hostName port: portNum maskLength: maskLen];
       else if(portNum != -1)
         [firewall addSelfControlBlockRuleBlockingIP: hostName port: portNum];
@@ -656,6 +670,7 @@ NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, int port) {
   if([hostName rangeOfString: @"facebook.com"].location == ([hostName length] - 12)) {
     [evaluatedAddresses addObject: @"69.63.176.0/20"];
   }
+ 
   // Block the domain with no subdomains, if www.domain is blocked
   else if([hostName rangeOfString: @"www."].location == 0) {
     NSHost* modifiedHost = [NSHost hostWithName: [hostName substringFromIndex: 4]];
@@ -803,6 +818,9 @@ void parseHost(NSString* hostName, NSString** baseName, int* maskLength, int* po
     if(portNum == 0)
       portNum = -1;
   }
+  
+  if([hostName isEqualToString: @""])
+    hostName = @"*";
   
   if(baseName) *baseName = hostName;
   if(portNumber) *portNumber = portNum;

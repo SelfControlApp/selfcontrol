@@ -28,6 +28,7 @@
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		CB1E7A6E0F9AEA9B00D158BC /* ERRORS in Resources */ = {isa = PBXBuildFile; fileRef = CB1E7A6D0F9AEA9B00D158BC /* ERRORS */; };
 		CB1ED4480F56686400EFECEE /* org.eyebeam.SelfControl in Copy Helper Tools */ = {isa = PBXBuildFile; fileRef = CBA2AFD20F39EC12005AFEBE /* org.eyebeam.SelfControl */; };
+		CB40A8680FBC7DE700167727 /* SelfControlBlocklist.icns in Resources */ = {isa = PBXBuildFile; fileRef = CB40A8670FBC7DE700167727 /* SelfControlBlocklist.icns */; };
 		CB4C58D60F3F8F2A00B5D7CB /* SelfControlIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = CB4C58D50F3F8F2A00B5D7CB /* SelfControlIcon.icns */; };
 		CB4C58DA0F3F90B000B5D7CB /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = CB4C58D90F3F90B000B5D7CB /* Credits.rtf */; };
 		CB529BBF0F32B7ED00564FB8 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB529BBE0F32B7ED00564FB8 /* AppController.m */; };
@@ -36,7 +37,6 @@
 		CB5A306E0F92E582005CCA3E /* SelfControlUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC3C0C10F86DDA10055C0B0 /* SelfControlUtilities.m */; };
 		CB5B40440F3528E100EFBF4A /* DomainList.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB5B40420F3528E100EFBF4A /* DomainList.xib */; };
 		CB5E20C80FAE0D04006DBFC8 /* checkup.c in Sources */ = {isa = PBXBuildFile; fileRef = CB5E20C70FAE0D04006DBFC8 /* checkup.c */; };
-		CB5E20DC0FAE0FF2006DBFC8 /* scheckup in Copy Helper Tools */ = {isa = PBXBuildFile; fileRef = CB5E20BF0FAE0CDC006DBFC8 /* scheckup */; };
 		CB90BF830F49F430006D202D /* HostImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB90BF820F49F430006D202D /* HostImporter.m */; };
 		CB93654E0F85802400EF284E /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB93654D0F85802400EF284E /* Sparkle.framework */; };
 		CB93655C0F85806A00EF284E /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CB93654D0F85802400EF284E /* Sparkle.framework */; };
@@ -57,20 +57,12 @@
 		CBC3C0C20F86DDA10055C0B0 /* SelfControlUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC3C0C10F86DDA10055C0B0 /* SelfControlUtilities.m */; };
 		CBC3C17F0F870D480055C0B0 /* TimerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBC3C17E0F870D480055C0B0 /* TimerWindow.xib */; };
 		CBC3C19E0F8713370055C0B0 /* TigerTimerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBC3C19D0F8713370055C0B0 /* TigerTimerWindow.xib */; };
-		CBC3C1A50F8717F50055C0B0 /* AddToBlock.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBC3C1A40F8717F50055C0B0 /* AddToBlock.xib */; };
 		CBE4401B0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE4401A0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m */; };
 		CBE5C40B0F4D4531003DB900 /* ButtonWithPopupMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE5C40A0F4D4531003DB900 /* ButtonWithPopupMenu.m */; };
 		CBEE50C10F48C21F00F5DF1C /* TimerWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		CB5E20D80FAE0FB9006DBFC8 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = CB5E20BE0FAE0CDC006DBFC8;
-			remoteInfo = scheckup;
-		};
 		CB9368280F85D86500EF284E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -94,7 +86,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 6;
 			files = (
-				CB5E20DC0FAE0FF2006DBFC8 /* scheckup in Copy Helper Tools */,
 				CB1ED4480F56686400EFECEE /* org.eyebeam.SelfControl in Copy Helper Tools */,
 			);
 			name = "Copy Helper Tools";
@@ -126,6 +117,7 @@
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* SelfControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SelfControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB1E7A6D0F9AEA9B00D158BC /* ERRORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ERRORS; sourceTree = "<group>"; };
+		CB40A8670FBC7DE700167727 /* SelfControlBlocklist.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SelfControlBlocklist.icns; sourceTree = "<group>"; };
 		CB42939A0F53A819008E10CA /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
 		CB4295C20F53EF8C008E10CA /* org.eyebeam.SelfControl.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = org.eyebeam.SelfControl.plist; sourceTree = "<group>"; };
 		CB4C58D50F3F8F2A00B5D7CB /* SelfControlIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SelfControlIcon.icns; sourceTree = "<group>"; };
@@ -165,7 +157,6 @@
 		CBC3C0C10F86DDA10055C0B0 /* SelfControlUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelfControlUtilities.m; sourceTree = "<group>"; };
 		CBC3C17E0F870D480055C0B0 /* TimerWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimerWindow.xib; sourceTree = "<group>"; };
 		CBC3C19D0F8713370055C0B0 /* TigerTimerWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TigerTimerWindow.xib; sourceTree = "<group>"; };
-		CBC3C1A40F8717F50055C0B0 /* AddToBlock.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddToBlock.xib; sourceTree = "<group>"; };
 		CBE440190F4BE0670062A1FE /* ThunderbirdPreferenceParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThunderbirdPreferenceParser.h; sourceTree = "<group>"; };
 		CBE4401A0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThunderbirdPreferenceParser.m; sourceTree = "<group>"; };
 		CBE5C4090F4D4531003DB900 /* ButtonWithPopupMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonWithPopupMenu.h; sourceTree = "<group>"; };
@@ -267,6 +258,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CB40A8670FBC7DE700167727 /* SelfControlBlocklist.icns */,
 				CB9366E60F85BEF100EF284E /* NSRemoveTemplate.jpg */,
 				CB9366E70F85BEF100EF284E /* NSAddTemplate.jpg */,
 				CB9365610F8581B000EF284E /* dsa_pub.pem */,
@@ -324,7 +316,6 @@
 		CB4294F10F53D95D008E10CA /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
-				CBC3C1A40F8717F50055C0B0 /* AddToBlock.xib */,
 				CB5B40420F3528E100EFBF4A /* DomainList.xib */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
 				CBC3C17E0F870D480055C0B0 /* TimerWindow.xib */,
@@ -350,7 +341,6 @@
 			);
 			dependencies = (
 				CBEF43D00F7BB7F6009A9FDF /* PBXTargetDependency */,
-				CB5E20D90FAE0FB9006DBFC8 /* PBXTargetDependency */,
 			);
 			name = SelfControl;
 			productInstallPath = "$(HOME)/Applications";
@@ -427,8 +417,8 @@
 				CB9366E90F85BEF100EF284E /* NSAddTemplate.jpg in Resources */,
 				CBC3C17F0F870D480055C0B0 /* TimerWindow.xib in Resources */,
 				CBC3C19E0F8713370055C0B0 /* TigerTimerWindow.xib in Resources */,
-				CBC3C1A50F8717F50055C0B0 /* AddToBlock.xib in Resources */,
 				CB1E7A6E0F9AEA9B00D158BC /* ERRORS in Resources */,
+				CB40A8680FBC7DE700167727 /* SelfControlBlocklist.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -490,11 +480,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		CB5E20D90FAE0FB9006DBFC8 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = CB5E20BE0FAE0CDC006DBFC8 /* scheckup */;
-			targetProxy = CB5E20D80FAE0FB9006DBFC8 /* PBXContainerItemProxy */;
-		};
 		CB9368290F85D86500EF284E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8D1107260486CEB800E47090 /* SelfControl */;
