@@ -398,14 +398,13 @@ int main(int argc, char* argv[]) {
       defaults = [NSUserDefaults standardUserDefaults];
       [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
       [defaults setObject: [NSDate distantFuture] forKey: @"BlockStartedDate"];
-      NSLog(@"set %@ for date in HelperMain main() --checkup", [NSDate distantFuture]);
       [defaults synchronize];
       [NSUserDefaults resetStandardUserDefaults];
       seteuid(0);
                         
       removeRulesFromFirewall(controllingUID);
       
-      if(![[NSFileManager defaultManager] removeFileAtPath: kSelfControlLockFilePath handler: nil]) {
+      if([[NSFileManager defaultManager] isDeletableFileAtPath: kSelfControlLockFilePath] && ![[NSFileManager defaultManager] removeFileAtPath: kSelfControlLockFilePath handler: nil]) {
         NSLog(@"ERROR: Could not remove SelfControl lock file.");
         printStatus(-218);
         exit(EX_IOERR);
