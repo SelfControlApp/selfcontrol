@@ -404,11 +404,17 @@ int main(int argc, char* argv[]) {
                         
       removeRulesFromFirewall(controllingUID);
       
+      NSLog(@"");
       if([[NSFileManager defaultManager] isDeletableFileAtPath: kSelfControlLockFilePath] && ![[NSFileManager defaultManager] removeFileAtPath: kSelfControlLockFilePath handler: nil]) {
+        NSLog(@"");
         NSLog(@"ERROR: Could not remove SelfControl lock file.");
+        NSLog(@"");
         printStatus(-218);
+        NSLog(@"");
         exit(EX_IOERR);
+        NSLog(@"");
       }
+      NSLog(@"");
       
       [[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
                                                                      object: nil];
