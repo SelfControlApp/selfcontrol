@@ -34,8 +34,8 @@ int main(int argc, char* argv[]) {
   }
   
   setuid(0);
-  
-  if(argv[1] == NULL || argv[2] == NULL) {
+    
+  if(argc < 3 || argv[1] == NULL || argv[2] == NULL) {
     NSLog(@"ERROR: Not enough arguments");
     printStatus(-202);
     exit(EX_USAGE);
@@ -88,6 +88,7 @@ int main(int argc, char* argv[]) {
                                [NSNumber numberWithBool: YES], @"ClearCaches",
                                [NSNumber numberWithBool: NO], @"BlockAsWhitelist",
                                [NSNumber numberWithBool: YES], @"BadgeApplicationIcon",
+                               [NSNumber numberWithBool: YES], @"AllowLocalNetworks",
                                nil];
   [defaults registerDefaults:appDefaults];    
   if(!domainList) {
@@ -531,11 +532,19 @@ void addRulesToFirewall(int controllingUID) {
   BOOL blockAsWhitelist;
   NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: kSelfControlLockFilePath];
   
-  if(curDictionary == nil || [curDictionary objectForKey: @"BlockAsWhitelist"] == nil)
+  if(curDictionary == nil || [curDictionary objectForKey: @"BlockAsWhitelist"] == nil) {
+    [NSUserDefaults resetStandardUserDefaults];
+    seteuid(controllingUID);
+    defaults = [NSUserDefaults standardUserDefaults];
+    [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
     blockAsWhitelist = [defaults boolForKey: @"BlockAsWhitelist"];
+    [defaults synchronize];
+    [NSUserDefaults resetStandardUserDefaults];
+    seteuid(0);    
+  }
   else
     blockAsWhitelist = [[curDictionary objectForKey: @"BlockAsWhitelist"] boolValue];
-      
+  
   // /etc/hosts blocking
   if(!blockAsWhitelist) {
     HostFileBlocker* hostFileBlocker = [[[HostFileBlocker alloc] init] autorelease];
@@ -568,6 +577,22 @@ void addRulesToFirewall(int controllingUID) {
   IPFirewall* firewall = [[IPFirewall alloc] init];
   [firewall clearSelfControlBlockRuleSet];
   [firewall addSelfControlBlockHeader];
+  
+  if(blockAsWhitelist) {
+    [NSUserDefaults resetStandardUserDefaults];
+    seteuid(controllingUID);
+    defaults = [NSUserDefaults standardUserDefaults];
+    [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
+    BOOL allowLocalNetworks = [defaults boolForKey: @"AllowLocalNetworks"];
+    [defaults synchronize];
+    [NSUserDefaults resetStandardUserDefaults];
+    seteuid(0);        
+    if(allowLocalNetworks) {
+      [firewall addSelfControlBlockRuleAllowingIP: @"10.0.0.0" maskLength: 8];
+      [firewall addSelfControlBlockRuleAllowingIP: @"172.16.0.0" maskLength: 12];
+      [firewall addSelfControlBlockRuleAllowingIP: @"192.168.0.0" maskLength: 16];
+    }
+  }
   
   // Iterate through the host list to add a block rule for each
   NSEnumerator* hostEnumerator = [hostsToBlock objectEnumerator];

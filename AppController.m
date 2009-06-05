@@ -45,6 +45,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
                                  [NSNumber numberWithBool: YES], @"ClearCaches",
                                  [NSNumber numberWithBool: NO], @"BlockAsWhitelist",
                                  [NSNumber numberWithBool: YES], @"BadgeApplicationIcon",
+                                 [NSNumber numberWithBool: YES], @"AllowLocalNetworks",
                                  nil];
     
     [defaults_ registerDefaults:appDefaults];
