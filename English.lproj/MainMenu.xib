@@ -8,9 +8,9 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="372"/>
-			<integer value="634"/>
 			<integer value="29"/>
+			<integer value="634"/>
+			<integer value="372"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -978,7 +978,7 @@
 						<object class="NSButton" id="273203401">
 							<reference key="NSNextResponder" ref="1017004010"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{16, 18}, {318, 18}}</string>
+							<string key="NSFrame">{{18, 18}, {318, 18}}</string>
 							<reference key="NSSuperview" ref="1017004010"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="1070052610">
@@ -1030,10 +1030,6 @@
 				<string key="NSClassName">AppController</string>
 			</object>
 			<object class="NSUserDefaultsController" id="863284654">
-				<object class="NSMutableArray" key="NSDeclaredKeys">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>AllowLocalNetworks</string>
-				</object>
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
 			<object class="NSCustomObject" id="975807847">
@@ -1878,8 +1874,8 @@
 							<reference ref="583078105"/>
 							<reference ref="205984878"/>
 							<reference ref="132293881"/>
-							<reference ref="273203401"/>
 							<reference ref="1042338180"/>
+							<reference ref="273203401"/>
 						</object>
 						<reference key="parent" ref="1069983487"/>
 					</object>

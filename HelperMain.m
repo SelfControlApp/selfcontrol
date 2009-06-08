@@ -173,7 +173,6 @@ int main(int argc, char* argv[]) {
     [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
     NSDate* d = [NSDate date];
     [defaults setObject: d forKey: @"BlockStartedDate"];
-    NSLog(@"set %@ for date in HelperMain main() --install", d);
     // In this case it doesn't make any sense to use an existing lock file (in
     // fact, one shouldn't exist), so we fail if the defaults system has unreasonable
     // settings.
@@ -207,7 +206,6 @@ int main(int argc, char* argv[]) {
       defaults = [NSUserDefaults standardUserDefaults];
       [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
       [defaults setObject: [NSDate distantFuture] forKey: @"BlockStartedDate"];
-      NSLog(@"set %@ for date in HelperMain main() --install (second)", [NSDate distantFuture]);
       [defaults synchronize];
       [NSUserDefaults resetStandardUserDefaults];
       seteuid(0);
@@ -248,30 +246,7 @@ int main(int argc, char* argv[]) {
     NSLog(@"INFO: Nice try.");
     printStatus(-212);
     exit(EX_UNAVAILABLE);
-   /* [NSUserDefaults resetStandardUserDefaults];
-    seteuid(controllingUID);
-    defaults = [NSUserDefaults standardUserDefaults];
-    [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
-    [defaults setObject: [NSDate distantFuture] forKey: @"BlockStartedDate"];
-    [defaults synchronize];
-    [NSUserDefaults resetStandardUserDefaults];
-    seteuid(0);
-        
-    removeRulesFromFirewall(controllingUID);
-    
-    [[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
-                                                                   object: nil];
-    
-    [LaunchctlHelper unloadLaunchdJobWithPlistAt:@"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
-    
-    // Execution should never reach this point if the job was unloaded
-    // successfully, because the unload will kill the helper tool.
-    NSLog(@"WARNING: Launch daemon unload failed.");
-    printStatus(printStatus_FAILURE); */
- /*  } else if([modeString isEqual: @"--add"]) {
-    addRulesToFirewall(controllingUID);
-    NSLog(@"INFO: Rules successfully added to firewall."); */
-  } else if([modeString isEqual: @"--refresh"]) {
+   } else if([modeString isEqual: @"--refresh"]) {
     // Check what the current block is (based on the lock file) because if possible
     // we want to keep most of its information.
     NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: kSelfControlLockFilePath];
@@ -405,17 +380,11 @@ int main(int argc, char* argv[]) {
                         
       removeRulesFromFirewall(controllingUID);
       
-      NSLog(@"");
       if([[NSFileManager defaultManager] isDeletableFileAtPath: kSelfControlLockFilePath] && ![[NSFileManager defaultManager] removeFileAtPath: kSelfControlLockFilePath handler: nil]) {
-        NSLog(@"");
         NSLog(@"ERROR: Could not remove SelfControl lock file.");
-        NSLog(@"");
         printStatus(-218);
-        NSLog(@"");
         exit(EX_IOERR);
-        NSLog(@"");
       }
-      NSLog(@"");
       
       [[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
                                                                      object: nil];
@@ -444,7 +413,6 @@ int main(int argc, char* argv[]) {
       defaults = [NSUserDefaults standardUserDefaults];
       [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
       [defaults setObject: blockStartedDate forKey: @"BlockStartedDate"];
-      NSLog(@"set %@ for date in HelperMain main() --checkup because the lock file said so", blockStartedDate);
       [defaults setObject: [NSNumber numberWithInt: (blockDuration / 60)] forKey: @"BlockDuration"];
       [defaults setObject: domainList forKey: @"HostBlacklist"];
       [defaults synchronize];
