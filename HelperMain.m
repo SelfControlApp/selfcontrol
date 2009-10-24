@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
                                   [NSNumber numberWithUnsignedLong: 0], NSFileGroupOwnerAccountID,
                                   // 493 (decimal) = 755 (octal) = rwxr-xr-x
                                   [NSNumber numberWithUnsignedLong: 493], NSFilePosixPermissions,
-                                  nil];  
+                                  nil];
   
   // This is where we get going with the lockfile system, saving a "lock" in /etc/SelfControl.lock
   // to make a more reliable block detection system.  For most of the program,
@@ -328,8 +328,7 @@ int main(int argc, char* argv[]) {
     NSDate* blockStartedDate = [curDictionary objectForKey: @"BlockStartedDate"];
     NSTimeInterval blockDuration = [[curDictionary objectForKey: @"BlockDuration"] intValue];
     
-    if(blockStartedDate == nil || [blockStartedDate isEqualToDate: [NSDate distantFuture]]
-       || blockDuration < 1) {    
+    if(blockStartedDate == nil || [[NSDate distantFuture] isEqualToDate: blockStartedDate] || blockDuration < 1) {    
       // The lock file seems to be broken.  Read from defaults, then write out a
       // new lock file while we're at it.
       [NSUserDefaults resetStandardUserDefaults];
@@ -342,10 +341,9 @@ int main(int argc, char* argv[]) {
       [NSUserDefaults resetStandardUserDefaults];
       seteuid(0);
       
-      if(blockStartedDate == nil || [blockStartedDate isEqualToDate: [NSDate distantFuture]]
-         || blockDuration < 1) {    
+      if(blockStartedDate == nil || blockDuration < 1) {    
           // Defaults is broken too!  Let's get out of here!
-        NSLog(@"ERROR: Checkup ran -- no block found.");
+        NSLog(@"ERROR: Checkup ran but no block found.  This may leave a block permanently applied.");
         printStatus(-215);
         exit(EX_SOFTWARE);
       }
@@ -383,7 +381,6 @@ int main(int argc, char* argv[]) {
       if([[NSFileManager defaultManager] isDeletableFileAtPath: kSelfControlLockFilePath] && ![[NSFileManager defaultManager] removeFileAtPath: kSelfControlLockFilePath handler: nil]) {
         NSLog(@"ERROR: Could not remove SelfControl lock file.");
         printStatus(-218);
-        exit(EX_IOERR);
       }
       
       [[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
@@ -516,7 +513,7 @@ void addRulesToFirewall(int controllingUID) {
   // /etc/hosts blocking
   if(!blockAsWhitelist) {
     HostFileBlocker* hostFileBlocker = [[[HostFileBlocker alloc] init] autorelease];
-    if(![hostFileBlocker containsSelfControlBlock]) {
+    if(![hostFileBlocker containsSelfControlBlock] && [hostFileBlocker createBackupHostsFile]) {
       [hostFileBlocker addSelfControlBlockHeader];
       for(int i = 0; i < [domainList count]; i++) {
           NSString* hostName;
@@ -539,6 +536,11 @@ void addRulesToFirewall(int controllingUID) {
       }
       [hostFileBlocker addSelfControlBlockFooter];
       [hostFileBlocker writeNewFileContents];
+    } else if([hostFileBlocker containsSelfControlBlock]) { 
+      [hostFileBlocker removeSelfControlBlock];
+      [hostFileBlocker writeNewFileContents];
+    } else { 
+      NSLog(@"WARNING: Could not create backup file.  Giving up on host file blocking.");
     }
   }
   
@@ -606,57 +608,72 @@ void addRulesToFirewall(int controllingUID) {
 
 void removeRulesFromFirewall(int controllingUID) {
   IPFirewall* firewall = [[IPFirewall alloc] init];
-  if([firewall containsSelfControlBlockSet]) {
-    HostFileBlocker* hostFileBlocker = [[[HostFileBlocker alloc] init] autorelease];
-    [hostFileBlocker removeSelfControlBlock];
-    [hostFileBlocker writeNewFileContents];
-    [firewall clearSelfControlBlockRuleSet];
-    NSLog(@"INFO: Blacklist blocking cleared.");
-    
-    // We'll play the sound now rather than putting it in the "defaults block"
-    // a few lines ago, because it is important that the UI get updated (by
-    // the posted notification) before we sleep to play the sound.  Otherwise,
-    // the app seems unresponsive and slow.
-    [NSUserDefaults resetStandardUserDefaults];
-    seteuid(controllingUID);
-    defaults = [NSUserDefaults standardUserDefaults];
-    [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
-    if([defaults boolForKey: @"BlockSoundShouldPlay"]) {
-      // Map the tags used in interface builder to the sound
-      NSArray* systemSoundNames = [NSArray arrayWithObjects:
-                                   @"Basso",
-                                   @"Blow",
-                                   @"Bottle",
-                                   @"Frog",
-                                   @"Funk",
-                                   @"Glass",
-                                   @"Hero",
-                                   @"Morse",
-                                   @"Ping",
-                                   @"Pop",
-                                   @"Purr",
-                                   @"Sosumi",
-                                   @"Submarine",
-                                   @"Tink",
-                                   nil
-                                   ];
-      NSSound* alertSound = [NSSound soundNamed: [systemSoundNames objectAtIndex: [defaults integerForKey: @"BlockSound"]]];
-      if(!alertSound)
-        NSLog(@"WARNING: Alert sound not found.");
-      else {
-        [alertSound play];
-        // Sleeping a second is a messy way of doing this, but otherwise the
-        // sound is killed along with this process when it is unloaded in just
-        // a few lines.
-        sleep(1);
-      }
-    }
-    [defaults synchronize];
-    [NSUserDefaults resetStandardUserDefaults];
-    seteuid(0);    
-    
-  } else
+  if(![firewall containsSelfControlBlockSet])
     NSLog(@"WARNING: SelfControl rules do not appear to be loaded into ipfw.");
+  HostFileBlocker* hostFileBlocker = [[[HostFileBlocker alloc] init] autorelease];
+  [hostFileBlocker removeSelfControlBlock];
+  BOOL success = [hostFileBlocker writeNewFileContents];
+  // Revert the host file blocker's file contents to disk so we can check
+  // whether or not it still contains the block (aka we messed up).
+  [hostFileBlocker revertFileContentsToDisk];
+  [firewall clearSelfControlBlockRuleSet];
+  if(success && ![hostFileBlocker containsSelfControlBlock])
+    NSLog(@"INFO: Block successfully cleared.");
+  else {
+    NSLog(@"WARNING: Error removing host file block.  Attempting to restore backup.");
+    
+    if([hostFileBlocker restoreBackupHostsFile])
+      NSLog(@"INFO: Host file backup restored.");
+    else 
+      NSLog(@"ERROR: Host file backup could not be restored.  This may result in a permanent block.");
+  }
+
+  [hostFileBlocker deleteBackupHostsFile];
+  
+  // We'll play the sound now rather than putting it in the "defaults block"
+  // a few lines ago, because it is important that the UI get updated (by
+  // the posted notification) before we sleep to play the sound.  Otherwise,
+  // the app seems unresponsive and slow.
+  [NSUserDefaults resetStandardUserDefaults];
+  seteuid(controllingUID);
+  defaults = [NSUserDefaults standardUserDefaults];
+  [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
+  if([defaults boolForKey: @"BlockSoundShouldPlay"]) {
+    // Map the tags used in interface builder to the sound
+    NSArray* systemSoundNames = [NSArray arrayWithObjects:
+                   @"Basso",
+                   @"Blow",
+                   @"Bottle",
+                   @"Frog",
+                   @"Funk",
+                   @"Glass",
+                   @"Hero",
+                   @"Morse",
+                   @"Ping",
+                   @"Pop",
+                   @"Purr",
+                   @"Sosumi",
+                   @"Submarine",
+                   @"Tink",
+                   nil
+                   ];
+    NSSound* alertSound = [NSSound soundNamed: [systemSoundNames objectAtIndex: [defaults integerForKey: @"BlockSound"]]];
+    if(!alertSound)
+    NSLog(@"WARNING: Alert sound not found.");
+    else {
+    [alertSound play];
+    // Sleeping a second is a messy way of doing this, but otherwise the
+    // sound is killed along with this process when it is unloaded in just
+    // a few lines.
+    sleep(1);
+    }
+  }
+  [defaults synchronize];
+  [NSUserDefaults resetStandardUserDefaults];
+  seteuid(0);    
+    
+//  } else
+//    NSLog(@"WARNING: SelfControl rules do not appear to be loaded into ipfw.");
 }
 
 NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, int port) {

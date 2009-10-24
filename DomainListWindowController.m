@@ -81,7 +81,7 @@
   [domainListTableView_ reloadData];
   
   [[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
-                                                      object: nil];
+                                                      object: self];
 }
 
 - (int)numberOfRowsInTableView:(NSTableView *)aTableView {
@@ -178,7 +178,7 @@
   [defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
   [aTableView reloadData];
   [[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
-                                                      object: nil];  
+                                                      object: self];  
 }
 
 /* - (NSCell *)tableView:(NSTableView*)tableView
@@ -289,7 +289,7 @@ dataCellForTableColumn:(NSTableColumn *)tableColumn
   [defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
   [domainListTableView_ reloadData];
   [[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
-                                                      object: nil];
+                                                      object: self];
 }
 
 - (IBAction)importOutgoingMailServersFromThunderbird:(id)sender {
@@ -302,7 +302,7 @@ dataCellForTableColumn:(NSTableColumn *)tableColumn
   [defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
   [domainListTableView_ reloadData];
   [[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
-                                                      object: nil];
+                                                      object: self];
 }
 
 
@@ -316,7 +316,7 @@ dataCellForTableColumn:(NSTableColumn *)tableColumn
   [defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
   [domainListTableView_ reloadData];
   [[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
-                                                      object: nil];
+                                                      object: self];
 }
 
 
@@ -330,7 +330,7 @@ dataCellForTableColumn:(NSTableColumn *)tableColumn
   [defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
   [domainListTableView_ reloadData];
   [[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
-                                                      object: nil];
+                                                      object: self];
 }
 
 - (void)dealloc {

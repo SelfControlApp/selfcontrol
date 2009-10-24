@@ -25,13 +25,22 @@
 
 @interface HostFileBlocker : NSObject {
   NSMutableString* newFileContents;
+  NSStringEncoding stringEnc;
 }
+
+- (BOOL)deleteBackupHostsFile;
+
+- (BOOL)revertFileContentsToDisk;
 
 - (BOOL)writeNewFileContents;
 
 - (void)addSelfControlBlockHeader;
 
 - (void)addSelfControlBlockFooter;
+
+- (BOOL)createBackupHostsFile;
+
+- (BOOL)restoreBackupHostsFile;
 
 - (void)addRuleBlockingDomain:(NSString*)domainName;
 

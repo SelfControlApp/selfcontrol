@@ -30,7 +30,7 @@ NSString* const kHostFileBlockerSelfControlFooter = @"# END SELFCONTROL BLOCK";
 
 - (HostFileBlocker*)init {
   if(self = [super init]) {
-    newFileContents = [NSMutableString stringWithContentsOfFile: kHostFileBlockerPath encoding: NSUTF8StringEncoding error: NULL];
+    newFileContents = [NSMutableString stringWithContentsOfFile: kHostFileBlockerPath usedEncoding: &stringEnc error: NULL];
     if(!newFileContents)
       return nil;
   }
@@ -38,8 +38,43 @@ NSString* const kHostFileBlockerSelfControlFooter = @"# END SELFCONTROL BLOCK";
   return self;
 }    
 
+- (BOOL)revertFileContentsToDisk {
+  newFileContents = [NSMutableString stringWithContentsOfFile: kHostFileBlockerPath usedEncoding: &stringEnc error: NULL];
+  if(newFileContents) return YES;
+  else return NO;
+}
+
 - (BOOL)writeNewFileContents {
-  return [newFileContents writeToFile: kHostFileBlockerPath atomically: YES encoding: NSUTF8StringEncoding error: NULL];
+  return [newFileContents writeToFile: kHostFileBlockerPath atomically: YES encoding: stringEnc error: NULL];
+}
+
+- (BOOL)createBackupHostsFile {
+  NSFileManager* fileMan = [NSFileManager defaultManager];
+
+  if(![fileMan isReadableFileAtPath: @"/etc/hosts"] || [fileMan fileExistsAtPath: @"/etc/hosts.bak"])
+    return NO;
+  
+  return [fileMan copyPath: @"/etc/hosts" toPath: @"/etc/hosts.bak" handler: nil];
+}
+
+- (BOOL)deleteBackupHostsFile {
+  NSFileManager* fileMan = [NSFileManager defaultManager];
+  
+  if(![fileMan isDeletableFileAtPath: @"/etc/hosts.bak"])
+    return NO;
+  
+  return [fileMan removeFileAtPath: @"/etc/hosts.bak" handler: nil];
+}
+
+- (BOOL)restoreBackupHostsFile {  
+  NSFileManager* fileMan = [NSFileManager defaultManager];
+  
+  if(![fileMan removeFileAtPath: @"/etc/hosts" handler: nil])
+    return NO;
+  if(![fileMan isReadableFileAtPath: @"/etc/hosts.bak"] || ![fileMan movePath: @"/etc/hosts.bak" toPath: @"/etc/hosts" handler: nil])
+    return NO;
+  
+  return YES;
 }
 
 - (void)addSelfControlBlockHeader {
