@@ -398,6 +398,29 @@ int main(int argc, char* argv[]) {
       // settings just in case.
       IPFirewall* firewall = [[IPFirewall alloc] init];
       if(![firewall containsSelfControlBlockSet]) { 
+        // The firewall is missing at least the block header.  Let's clear everything
+        // before we re-add to make sure everything goes smoothly.
+        
+        HostFileBlocker* hostFileBlocker = [[[HostFileBlocker alloc] init] autorelease];
+        [hostFileBlocker removeSelfControlBlock];
+        BOOL success = [hostFileBlocker writeNewFileContents];
+        // Revert the host file blocker's file contents to disk so we can check
+        // whether or not it still contains the block (aka we messed up).
+        [hostFileBlocker revertFileContentsToDisk];
+        [firewall clearSelfControlBlockRuleSet];
+        if(!success || [hostFileBlocker containsSelfControlBlock]) {
+          NSLog(@"WARNING: Error removing host file block.  Attempting to restore backup.");
+          
+          if([hostFileBlocker restoreBackupHostsFile])
+            NSLog(@"INFO: Host file backup restored.");
+          else 
+            NSLog(@"ERROR: Host file backup could not be restored.  This may result in a permanent block.");
+        }
+        
+        // Get rid of the backup file since we're about to make a new one.
+        [hostFileBlocker deleteBackupHostsFile];        
+        
+        // Perform the re-add of the rules
         addRulesToFirewall(controllingUID);
         NSLog(@"INFO: Checkup ran, readded block rules.");
       } else NSLog(@"INFO: Checkup ran, no action needed.");
@@ -426,6 +449,15 @@ int main(int argc, char* argv[]) {
 void addRulesToFirewall(int controllingUID) {
   // Note all arrays in the host blocking code were changed to sets to easily stop duplicates
   NSMutableSet* hostsToBlock = [NSMutableSet set];
+  
+  [NSUserDefaults resetStandardUserDefaults];
+  seteuid(controllingUID);
+  defaults = [NSUserDefaults standardUserDefaults];
+  [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
+  BOOL shouldEvaluateCommonSubdomains = [[defaults objectForKey: @"EvaluateCommonSubdomains"] boolValue];
+  [defaults synchronize];
+  [NSUserDefaults resetStandardUserDefaults];
+  seteuid(0);  
       
   for(int i = 0; i < [domainList count]; i++) {
     NSString* hostName;
@@ -457,16 +489,7 @@ void addRulesToFirewall(int controllingUID) {
           else [hostsToBlock addObject: [addresses objectAtIndex: j]];
         }
       }
-      
-      [NSUserDefaults resetStandardUserDefaults];
-      seteuid(controllingUID);
-      defaults = [NSUserDefaults standardUserDefaults];
-      [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
-      BOOL shouldEvaluateCommonSubdomains = [[defaults objectForKey: @"EvaluateCommonSubdomains"] boolValue];
-      [defaults synchronize];
-      [NSUserDefaults resetStandardUserDefaults];
-      seteuid(0);
-      
+            
       if(shouldEvaluateCommonSubdomains) {
         // Get the evaluated hostnames and union (combine) them with our current set
         NSSet* evaluatedHosts = getEvaluatedHostNamesFromCommonSubdomains(hostName, portNum);
@@ -529,9 +552,21 @@ void addRulesToFirewall(int controllingUID) {
             NSPredicate *regexTester = [NSPredicate
                                         predicateWithFormat:@"SELF MATCHES %@",
                                         ipValidationRegex];
-            if ([regexTester evaluateWithObject: hostName] != YES)
+            if ([regexTester evaluateWithObject: hostName] != YES) {
               // It's not an IP, so we'll add it to the /etc/hosts block as well
               [hostFileBlocker addRuleBlockingDomain: hostName];
+              
+              // If we're supposed to evaluate common subdomains, block www subdomain also
+              if(shouldEvaluateCommonSubdomains) {
+                // Block the normal domain if www. was added
+                if([hostName rangeOfString: @"www."].location == 0)
+                  [hostFileBlocker addRuleBlockingDomain: [hostName substringFromIndex: 4]];
+
+                // Or block www.domain otherwise
+                else
+                  [hostFileBlocker addRuleBlockingDomain: [@"www." stringByAppendingString: hostName]];                
+              }
+            }
           }
       }
       [hostFileBlocker addSelfControlBlockFooter];
@@ -612,20 +647,27 @@ void removeRulesFromFirewall(int controllingUID) {
     NSLog(@"WARNING: SelfControl rules do not appear to be loaded into ipfw.");
   HostFileBlocker* hostFileBlocker = [[[HostFileBlocker alloc] init] autorelease];
   [hostFileBlocker removeSelfControlBlock];
-  BOOL success = [hostFileBlocker writeNewFileContents];
+  BOOL hostSuccess = [hostFileBlocker writeNewFileContents];
   // Revert the host file blocker's file contents to disk so we can check
   // whether or not it still contains the block (aka we messed up).
   [hostFileBlocker revertFileContentsToDisk];
-  [firewall clearSelfControlBlockRuleSet];
-  if(success && ![hostFileBlocker containsSelfControlBlock])
+  // We use ! (NOT) of the method as success because it returns a shell termination status, so 0 is the success code
+  BOOL ipfwSuccess = ![firewall clearSelfControlBlockRuleSet];
+  if(hostSuccess && ipfwSuccess && ![hostFileBlocker containsSelfControlBlock] && ![firewall containsSelfControlBlockSet])
     NSLog(@"INFO: Block successfully cleared.");
   else {
-    NSLog(@"WARNING: Error removing host file block.  Attempting to restore backup.");
+    NSLog(@"WARNING: Error removing block.  Attempting to restore host file backup.");
+    
+    [firewall clearSelfControlBlockRuleSet];
     
     if([hostFileBlocker restoreBackupHostsFile])
       NSLog(@"INFO: Host file backup restored.");
-    else 
+    else if([hostFileBlocker containsSelfControlBlock])
       NSLog(@"ERROR: Host file backup could not be restored.  This may result in a permanent block.");
+    else if([firewall containsSelfControlBlockSet])
+      NSLog(@"ERROR: Firewall rules could not be cleared.  This may result in a permanent block.");
+    else 
+      NSLog(@"INFO: Firewall rules successfully cleared.");
   }
 
   [hostFileBlocker deleteBackupHostsFile];

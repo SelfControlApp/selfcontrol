@@ -49,5 +49,17 @@
             sparkle:dsaSignature="MCwCFBf0N2WM+0jxwLgwfbKY6pIbelgpAhQzwBX1GzFRAYWKxmT6X9V98ys0xQ=="
           />
         </item>
+        <item>
+          <title>Version 1.2.2</title>
+          <sparkle:releaseNotesLink>http://cloud.github.com/downloads/slambert/selfcontrol/releasenotes.html#version-1.2.2</sparkle:releaseNotesLink>
+          <pubDate>Thu, 12 Nov 2009 21:15:30 -0700</pubDate>
+          <enclosure
+            url="http://cloud.github.com/downloads/slambert/selfcontrol/SelfControl-1.2.2.zip"
+            sparkle:version="1.2.2"
+            type="application/octet-stream"
+            length="1889752"
+            sparkle:dsaSignature="MCwCFCPEhDG9IigheXSQTMyGa/HM6zBbAhQE4LUgP+ptspk6nieM6uk6UhIFhA=="
+          />
+        </item>
    </channel>
 </rss>

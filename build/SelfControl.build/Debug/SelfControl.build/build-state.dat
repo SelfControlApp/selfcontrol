@@ -1,7 +1,7 @@
 TSelfControl
 v7
 r0
-t278005350.765349
+t278146323.858179
 cCheck dependencies
 cProcessInfoPlistFile /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Info.plist Info.plist
 cCopyPlistFile /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources/org.eyebeam.SelfControl.plist org.eyebeam.SelfControl.plist
@@ -263,7 +263,7 @@ s8293
 i"TimerWindowController.h"
 
 N/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app
-t1256312550
+t1256453523
 s102
 
 N/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Frameworks/Sparkle.framework
@@ -283,7 +283,7 @@ t1256051564
 s74340
 
 N/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/MacOS/org.eyebeam.SelfControl
-t1256312550
+t1256453523
 s64064
 
 N/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/PkgInfo
@@ -347,8 +347,8 @@ t1254803832
 s500
 
 N/Users/charlie/SelfControl/selfcontrol/build/Debug/org.eyebeam.SelfControl
-c000000004AE1CEE6000000000000FA40
-t1256312550
+c000000004AE3F593000000000000FA40
+t1256453523
 s64064
 
 N/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/AppController.o
@@ -433,7 +433,7 @@ s1479
 
 CCheck dependencies
 r0
-lSLF07#2@18"Check dependencies278005350#278005350#0(0"0(0#1#0"2422361408#0"0#
+lSLF07#2@18"Check dependencies278146323#278146323#0(0"0(0#1#0"2422361408#0"0#
 
 CCompileC build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/AppController.o /Users/charlie/SelfControl/selfcontrol/AppController.m normal i386 objective-c com.apple.compilers.gcc.4_0
 s277744363.336034
@@ -728,19 +728,19 @@ xiLifeControls.framework
 lSLF07#2@28"Copy iLifeControls.framework276496638#276496639#0(0"0(0#0#62"/Users/charlie/SelfControl/selfcontrol/iLifeControls.framework2422361408#344"    cd /Users/charlie/SelfControl/selfcontrol    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -resolve-src-symlinks /Users/charlie/SelfControl/selfcontrol/iLifeControls.framework /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Frameworks0#
 
 CPBXCp build/Debug/SelfControl.app/Contents/MacOS/org.eyebeam.SelfControl build/Debug/org.eyebeam.SelfControl
-s278005350.754170
-e278005350.761280
+s278146323.642275
+e278146323.853701
 r1
 xPBXCp
 xbuild/Debug/SelfControl.app/Contents/MacOS/org.eyebeam.SelfControl
 xbuild/Debug/org.eyebeam.SelfControl
-opbxcp(9310) malloc: *** error for object 0x1668: pointer being freed was not allocated
+opbxcp(96761) malloc: *** error for object 0x1668: pointer being freed was not allocated
 o*** set a breakpoint in malloc_error_break to debug
-opbxcp(9310) malloc: *** error for object 0x1668: pointer being freed was not allocated
+opbxcp(96761) malloc: *** error for object 0x1668: pointer being freed was not allocated
 o*** set a breakpoint in malloc_error_break to debug
-opbxcp(9310) malloc: *** error for object 0x1668: pointer being freed was not allocated
+opbxcp(96761) malloc: *** error for object 0x1668: pointer being freed was not allocated
 o*** set a breakpoint in malloc_error_break to debug
-lSLF07#2@40"Copy build/Debug/org.eyebeam.SelfControl278005350#278005350#0(417"pbxcp(9310) malloc: *** error for object 0x1668: pointer being freed was not allocated*** set a breakpoint in malloc_error_break to debugpbxcp(9310) malloc: *** error for object 0x1668: pointer being freed was not allocated*** set a breakpoint in malloc_error_break to debugpbxcp(9310) malloc: *** error for object 0x1668: pointer being freed was not allocated*** set a breakpoint in malloc_error_break to debug0(0#0#74"/Users/charlie/SelfControl/selfcontrol/build/Debug/org.eyebeam.SelfControl2422361408#351"    cd /Users/charlie/SelfControl/selfcontrol    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -resolve-src-symlinks /Users/charlie/SelfControl/selfcontrol/build/Debug/org.eyebeam.SelfControl /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/MacOS0#
+lSLF07#2@40"Copy build/Debug/org.eyebeam.SelfControl278146323#278146323#0(420"pbxcp(96761) malloc: *** error for object 0x1668: pointer being freed was not allocated*** set a breakpoint in malloc_error_break to debugpbxcp(96761) malloc: *** error for object 0x1668: pointer being freed was not allocated*** set a breakpoint in malloc_error_break to debugpbxcp(96761) malloc: *** error for object 0x1668: pointer being freed was not allocated*** set a breakpoint in malloc_error_break to debug0(0#0#74"/Users/charlie/SelfControl/selfcontrol/build/Debug/org.eyebeam.SelfControl2422361408#351"    cd /Users/charlie/SelfControl/selfcontrol    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -resolve-src-symlinks /Users/charlie/SelfControl/selfcontrol/build/Debug/org.eyebeam.SelfControl /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/MacOS0#
 
 CProcessInfoPlistFile /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Info.plist Info.plist
 s276496631.976612
@@ -778,10 +778,10 @@ xcom.apple.compilers.gcc.4_0
 lSLF07#2@33"Precompile SelfControl_Prefix.pch276496634#276496637#0(0"0(0#0#61"/Users/charlie/SelfControl/selfcontrol/SelfControl_Prefix.pch2422361408#1466"    cd /Users/charlie/SelfControl/selfcontrol    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x objective-c-header -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mfix-and-continue -mmacosx-version-min=10.4 -gdwarf-2 -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-generated-files.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-own-target-headers.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-all-target-headers.hmap -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-project-headers.hmap -F/Users/charlie/SelfControl/selfcontrol/build/Debug -F/Users/charlie/SelfControl/selfcontrol -I/Users/charlie/SelfControl/selfcontrol/build/Debug/include -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/DerivedSources/i386 -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/DerivedSources -c /Users/charlie/SelfControl/selfcontrol/SelfControl_Prefix.pch -o /var/folders/zz/zzzivhrRnAmviuee+++++++++++/-Caches-/com.apple.Xcode.0/SharedPrecompiledHeaders/SelfControl_Prefix-fxhrlbpkyvrqopajritkiupktile/SelfControl_Prefix.pch.gch0#
 
 CTouch /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app
-s278005350.761591
-e278005350.765289
+s278146323.854011
+e278146323.858111
 r1
 xTouch
 x/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app
-lSLF07#2@72"Touch /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app278005350#278005350#0(0"0(0#0#0"2422361408#135"    cd /Users/charlie/SelfControl/selfcontrol    /usr/bin/touch -c /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app0#
+lSLF07#2@72"Touch /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app278146323#278146323#0(0"0(0#0#0"2422361408#135"    cd /Users/charlie/SelfControl/selfcontrol    /usr/bin/touch -c /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app0#
 
