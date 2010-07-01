@@ -1,423 +1,0 @@
-Torg.eyebeam.SelfControl
-v7
-r0
-t276446224.994874
-cCheck dependencies
-cProcessPCH /var/folders/np/nppAh7s9H8CB9YCW88riEE+++TM/-Caches-/com.apple.Xcode.502/SharedPrecompiledHeaders/AppKit-avazgojcnijzpshczjbrrpcvnrkb/AppKit.h.gch /Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/AppKit.framework/Headers/AppKit.h normal i386 objective-c com.apple.compilers.gcc.4_0
-cProcessPCH /var/folders/np/nppAh7s9H8CB9YCW88riEE+++TM/-Caches-/com.apple.Xcode.502/SharedPrecompiledHeaders/AppKit-gtvztozlokugcqcoloxzbpcbobwo/AppKit.h.gch /Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/AppKit.framework/Headers/AppKit.h normal ppc objective-c com.apple.compilers.gcc.4_0
-cCompileC build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/i386/HelperMain.o /Users/charlie/SelfControl/selfcontrol/HelperMain.m normal i386 objective-c com.apple.compilers.gcc.4_0
-cCompileC build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/i386/IPFirewall.o /Users/charlie/SelfControl/selfcontrol/IPFirewall.m normal i386 objective-c com.apple.compilers.gcc.4_0
-cCompileC build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/i386/LaunchctlHelper.o /Users/charlie/SelfControl/selfcontrol/LaunchctlHelper.m normal i386 objective-c com.apple.compilers.gcc.4_0
-cCompileC build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/i386/SelfControlUtilities.o /Users/charlie/SelfControl/selfcontrol/SelfControlUtilities.m normal i386 objective-c com.apple.compilers.gcc.4_0
-cCompileC build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/i386/HostFileBlocker.o /Users/charlie/SelfControl/selfcontrol/HostFileBlocker.m normal i386 objective-c com.apple.compilers.gcc.4_0
-cCompileC build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/ppc/HelperMain.o /Users/charlie/SelfControl/selfcontrol/HelperMain.m normal ppc objective-c com.apple.compilers.gcc.4_0
-cCompileC build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/ppc/IPFirewall.o /Users/charlie/SelfControl/selfcontrol/IPFirewall.m normal ppc objective-c com.apple.compilers.gcc.4_0
-cCompileC build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/ppc/LaunchctlHelper.o /Users/charlie/SelfControl/selfcontrol/LaunchctlHelper.m normal ppc objective-c com.apple.compilers.gcc.4_0
-cCompileC build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/ppc/SelfControlUtilities.o /Users/charlie/SelfControl/selfcontrol/SelfControlUtilities.m normal ppc objective-c com.apple.compilers.gcc.4_0
-cCompileC build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/ppc/HostFileBlocker.o /Users/charlie/SelfControl/selfcontrol/HostFileBlocker.m normal ppc objective-c com.apple.compilers.gcc.4_0
-
-N/Developer/SDKs/MacOSX10.4u.sdk
-c000000004AC9F39300000000000000EE
-t1254749075
-s238
-
-N/Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/AppKit.framework/Headers/AppKit.h
-c000000004628C8C90000000000001504
-t1177077961
-s5380
-
-N/Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/Cocoa.framework/Headers/Cocoa.h
-c0000000040C4AA6800000000000001E5
-t1086630504
-s485
-
-N/Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CoreFoundation.h
-c00000000462EA283000000000000095A
-t1177461379
-s2394
-
-N/Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.h
-c00000000462EB9B00000000000001382
-t1177467312
-s4994
-
-N/Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/Security.framework/Security
-c000000004A0DE2E30000000000028898
-t1242424035
-s166040
-
-N/Developer/SDKs/MacOSX10.4u.sdk/usr/include/sysexits.h
-c00000000463BAA5A0000000000001933
-t1178315354
-s6451
-
-N/Developer/SDKs/MacOSX10.4u.sdk/usr/include/unistd.h
-c00000000463BAA5A0000000000004EED
-t1178315354
-s20205
-
-N/Users/charlie/SelfControl/selfcontrol/HelperMain.h
-c000000004A0DB9B70000000000000B6F
-t1242413495
-s2927
-i<Foundation/Foundation.h>
-i<CoreFoundation/CoreFoundation.h>
-i"IPFirewall.h"
-i"LaunchctlHelper.h"
-i"SelfControlUtilities.h"
-i<unistd.h>
-i<Cocoa/Cocoa.h>
-i<sysexits.h>
-i"HostFileBlocker.h"
-
-N/Users/charlie/SelfControl/selfcontrol/HelperMain.m
-c000000004A2C5DAA000000000000944F
-t1244421546
-s37967
-i"HelperMain.h"
-
-N/Users/charlie/SelfControl/selfcontrol/HostFileBlocker.h
-c000000004A1106A10000000000000471
-t1242629793
-s1137
-i<Cocoa/Cocoa.h>
-
-N/Users/charlie/SelfControl/selfcontrol/HostFileBlocker.m
-c000000004A1109910000000000000A23
-t1242630545
-s2595
-i"HostFileBlocker.h"
-
-N/Users/charlie/SelfControl/selfcontrol/IPFirewall.h
-c000000004A0CEC1F0000000000001627
-t1242360863
-s5671
-i<Foundation/Foundation.h>
-i<unistd.h>
-
-N/Users/charlie/SelfControl/selfcontrol/IPFirewall.m
-c000000004A0CEC590000000000003D8A
-t1242360921
-s15754
-i"IPFirewall.h"
-
-N/Users/charlie/SelfControl/selfcontrol/LaunchctlHelper.h
-c0000000049D6A8E70000000000000670
-t1238804711
-s1648
-i<Foundation/Foundation.h>
-
-N/Users/charlie/SelfControl/selfcontrol/LaunchctlHelper.m
-c000000004A00CBC000000000000006BE
-t1241566144
-s1726
-i"LaunchctlHelper.h"
-
-N/Users/charlie/SelfControl/selfcontrol/SelfControlUtilities.h
-c0000000049F204D20000000000000549
-t1240597714
-s1353
-i<Foundation/Foundation.h>
-
-N/Users/charlie/SelfControl/selfcontrol/SelfControlUtilities.m
-c0000000049F20BFE00000000000007C9
-t1240599550
-s1993
-i"SelfControlUtilities.h"
-
-N/Users/charlie/SelfControl/selfcontrol/build/Release/org.eyebeam.SelfControl
-t2
-s0
-
-N/Users/charlie/SelfControl/selfcontrol/build/Release/org.eyebeam.SelfControl.dSYM
-t2
-s0
-
-N/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/i386/HelperMain.o
-t2
-s0
-
-N/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/i386/HostFileBlocker.o
-t2
-s0
-
-N/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/i386/IPFirewall.o
-t2
-s0
-
-N/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/i386/LaunchctlHelper.o
-t2
-s0
-
-N/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/i386/SelfControlUtilities.o
-t2
-s0
-
-N/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/i386/org.eyebeam.SelfControl
-t2
-s0
-
-N/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/i386/org.eyebeam.SelfControl.LinkFileList
-c000000004ACA048700000000000002B2
-t1254753415
-s690
-
-N/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/ppc/HelperMain.o
-t2
-s0
-
-N/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/ppc/HostFileBlocker.o
-t2
-s0
-
-N/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/ppc/IPFirewall.o
-t2
-s0
-
-N/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/ppc/LaunchctlHelper.o
-t2
-s0
-
-N/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/ppc/SelfControlUtilities.o
-t2
-s0
-
-N/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/ppc/org.eyebeam.SelfControl
-t2
-s0
-
-N/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/ppc/org.eyebeam.SelfControl.LinkFileList
-c000000004ACA048700000000000002AD
-t1254753415
-s685
-
-N/var/folders/np/nppAh7s9H8CB9YCW88riEE+++TM/-Caches-/com.apple.Xcode.502/SharedPrecompiledHeaders/AppKit-avazgojcnijzpshczjbrrpcvnrkb/AppKit.h.gch
-t1254753422
-s29660380
-
-N/var/folders/np/nppAh7s9H8CB9YCW88riEE+++TM/-Caches-/com.apple.Xcode.502/SharedPrecompiledHeaders/AppKit-gtvztozlokugcqcoloxzbpcbobwo/AppKit.h.gch
-t1254753422
-s28001388
-
-CCheck dependencies
-r0
-lSLF07#2@18"Check dependencies276446215#276446215#0(0"0(0#1#0"4371640#0"0#
-
-CCompileC build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/i386/HelperMain.o /Users/charlie/SelfControl/selfcontrol/HelperMain.m normal i386 objective-c com.apple.compilers.gcc.4_0
-s276446222.452998
-e276446223.786725
-r0
-xCompileC
-xbuild/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/i386/HelperMain.o
-x/Users/charlie/SelfControl/selfcontrol/HelperMain.m
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.gcc.4_0
-o/Users/charlie/SelfControl/selfcontrol/HelperMain.m:826: fatal error: error writing to -: Broken pipe
-ocompilation terminated.
-oi686-apple-darwin10-gcc-4.0.1: Internal error: Bus error (program as)
-oPlease submit a full bug report.
-oSee <URL:http://developer.apple.com/bugreporter> for instructions.
-lSLF07#2@59"Compile /Users/charlie/SelfControl/selfcontrol/HelperMain.m276446222#276446223#0(296"/Users/charlie/SelfControl/selfcontrol/HelperMain.m:826: fatal error: error writing to -: Broken pipecompilation terminated.i686-apple-darwin10-gcc-4.0.1: Internal error: Bus error (program as)Please submit a full bug report.See <URL:http://developer.apple.com/bugreporter> for instructions.1(4@31"Error writing to -: Broken pipe276446223#0#102#0(6@51"/Users/charlie/SelfControl/selfcontrol/HelperMain.m266114346#826#0#826#0#0"0(0#0#51"/Users/charlie/SelfControl/selfcontrol/HelperMain.m4854736#1677"    cd /Users/charlie/SelfControl/selfcontrol    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.4u.sdk -fvisibility=hidden -mmacosx-version-min=10.4 -gdwarf-2 -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-generated-files.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-own-target-headers.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-all-target-headers.hmap -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-project-headers.hmap -F/Users/charlie/SelfControl/selfcontrol/build/Release -I/Users/charlie/SelfControl/selfcontrol/build/Release/include -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/DerivedSources/i386 -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/DerivedSources -include /var/folders/np/nppAh7s9H8CB9YCW88riEE+++TM/-Caches-/com.apple.Xcode.502/SharedPrecompiledHeaders/AppKit-avazgojcnijzpshczjbrrpcvnrkb/AppKit.h -c /Users/charlie/SelfControl/selfcontrol/HelperMain.m -o /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/i386/HelperMain.o1#
-
-CCompileC build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/i386/HostFileBlocker.o /Users/charlie/SelfControl/selfcontrol/HostFileBlocker.m normal i386 objective-c com.apple.compilers.gcc.4_0
-s276446223.470908
-e276446223.715327
-r0
-xCompileC
-xbuild/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/i386/HostFileBlocker.o
-x/Users/charlie/SelfControl/selfcontrol/HostFileBlocker.m
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.gcc.4_0
-o/Users/charlie/SelfControl/selfcontrol/HostFileBlocker.m:76: fatal error: error writing to -: Broken pipe
-ocompilation terminated.
-oi686-apple-darwin10-gcc-4.0.1: Internal error: Bus error (program as)
-oPlease submit a full bug report.
-oSee <URL:http://developer.apple.com/bugreporter> for instructions.
-lSLF07#2@64"Compile /Users/charlie/SelfControl/selfcontrol/HostFileBlocker.m276446223#276446223#0(300"/Users/charlie/SelfControl/selfcontrol/HostFileBlocker.m:76: fatal error: error writing to -: Broken pipecompilation terminated.i686-apple-darwin10-gcc-4.0.1: Internal error: Bus error (program as)Please submit a full bug report.See <URL:http://developer.apple.com/bugreporter> for instructions.1(4@31"Error writing to -: Broken pipe276446223#0#106#0(6@56"/Users/charlie/SelfControl/selfcontrol/HostFileBlocker.m264323345#76#0#76#0#0"0(0#0#56"/Users/charlie/SelfControl/selfcontrol/HostFileBlocker.m2422361408#1687"    cd /Users/charlie/SelfControl/selfcontrol    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.4u.sdk -fvisibility=hidden -mmacosx-version-min=10.4 -gdwarf-2 -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-generated-files.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-own-target-headers.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-all-target-headers.hmap -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-project-headers.hmap -F/Users/charlie/SelfControl/selfcontrol/build/Release -I/Users/charlie/SelfControl/selfcontrol/build/Release/include -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/DerivedSources/i386 -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/DerivedSources -include /var/folders/np/nppAh7s9H8CB9YCW88riEE+++TM/-Caches-/com.apple.Xcode.502/SharedPrecompiledHeaders/AppKit-avazgojcnijzpshczjbrrpcvnrkb/AppKit.h -c /Users/charlie/SelfControl/selfcontrol/HostFileBlocker.m -o /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/i386/HostFileBlocker.o1#
-
-CCompileC build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/i386/IPFirewall.o /Users/charlie/SelfControl/selfcontrol/IPFirewall.m normal i386 objective-c com.apple.compilers.gcc.4_0
-s276446222.455536
-e276446223.101539
-r0
-xCompileC
-xbuild/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/i386/IPFirewall.o
-x/Users/charlie/SelfControl/selfcontrol/IPFirewall.m
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.gcc.4_0
-o/Users/charlie/SelfControl/selfcontrol/IPFirewall.m:476: fatal error: error writing to -: Broken pipe
-ocompilation terminated.
-oi686-apple-darwin10-gcc-4.0.1: Internal error: Bus error (program as)
-oPlease submit a full bug report.
-oSee <URL:http://developer.apple.com/bugreporter> for instructions.
-lSLF07#2@59"Compile /Users/charlie/SelfControl/selfcontrol/IPFirewall.m276446222#276446223#0(296"/Users/charlie/SelfControl/selfcontrol/IPFirewall.m:476: fatal error: error writing to -: Broken pipecompilation terminated.i686-apple-darwin10-gcc-4.0.1: Internal error: Bus error (program as)Please submit a full bug report.See <URL:http://developer.apple.com/bugreporter> for instructions.1(4@31"Error writing to -: Broken pipe276446223#0#102#0(6@51"/Users/charlie/SelfControl/selfcontrol/IPFirewall.m264053721#476#0#476#0#0"0(0#0#51"/Users/charlie/SelfControl/selfcontrol/IPFirewall.m2422361408#1677"    cd /Users/charlie/SelfControl/selfcontrol    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.4u.sdk -fvisibility=hidden -mmacosx-version-min=10.4 -gdwarf-2 -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-generated-files.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-own-target-headers.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-all-target-headers.hmap -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-project-headers.hmap -F/Users/charlie/SelfControl/selfcontrol/build/Release -I/Users/charlie/SelfControl/selfcontrol/build/Release/include -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/DerivedSources/i386 -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/DerivedSources -include /var/folders/np/nppAh7s9H8CB9YCW88riEE+++TM/-Caches-/com.apple.Xcode.502/SharedPrecompiledHeaders/AppKit-avazgojcnijzpshczjbrrpcvnrkb/AppKit.h -c /Users/charlie/SelfControl/selfcontrol/IPFirewall.m -o /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/i386/IPFirewall.o1#
-
-CCompileC build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/i386/LaunchctlHelper.o /Users/charlie/SelfControl/selfcontrol/LaunchctlHelper.m normal i386 objective-c com.apple.compilers.gcc.4_0
-s276446223.101665
-e276446223.252127
-r0
-xCompileC
-xbuild/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/i386/LaunchctlHelper.o
-x/Users/charlie/SelfControl/selfcontrol/LaunchctlHelper.m
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.gcc.4_0
-o/Users/charlie/SelfControl/selfcontrol/LaunchctlHelper.m:53: fatal error: error writing to -: Broken pipe
-ocompilation terminated.
-oi686-apple-darwin10-gcc-4.0.1: Internal error: Bus error (program as)
-oPlease submit a full bug report.
-oSee <URL:http://developer.apple.com/bugreporter> for instructions.
-lSLF07#2@64"Compile /Users/charlie/SelfControl/selfcontrol/LaunchctlHelper.m276446223#276446223#0(300"/Users/charlie/SelfControl/selfcontrol/LaunchctlHelper.m:53: fatal error: error writing to -: Broken pipecompilation terminated.i686-apple-darwin10-gcc-4.0.1: Internal error: Bus error (program as)Please submit a full bug report.See <URL:http://developer.apple.com/bugreporter> for instructions.1(4@31"Error writing to -: Broken pipe276446223#0#106#0(6@56"/Users/charlie/SelfControl/selfcontrol/LaunchctlHelper.m263258944#53#0#53#0#0"0(0#0#56"/Users/charlie/SelfControl/selfcontrol/LaunchctlHelper.m4371640#1687"    cd /Users/charlie/SelfControl/selfcontrol    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.4u.sdk -fvisibility=hidden -mmacosx-version-min=10.4 -gdwarf-2 -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-generated-files.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-own-target-headers.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-all-target-headers.hmap -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-project-headers.hmap -F/Users/charlie/SelfControl/selfcontrol/build/Release -I/Users/charlie/SelfControl/selfcontrol/build/Release/include -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/DerivedSources/i386 -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/DerivedSources -include /var/folders/np/nppAh7s9H8CB9YCW88riEE+++TM/-Caches-/com.apple.Xcode.502/SharedPrecompiledHeaders/AppKit-avazgojcnijzpshczjbrrpcvnrkb/AppKit.h -c /Users/charlie/SelfControl/selfcontrol/LaunchctlHelper.m -o /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/i386/LaunchctlHelper.o1#
-
-CCompileC build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/i386/SelfControlUtilities.o /Users/charlie/SelfControl/selfcontrol/SelfControlUtilities.m normal i386 objective-c com.apple.compilers.gcc.4_0
-s276446223.252252
-e276446223.470765
-r0
-xCompileC
-xbuild/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/i386/SelfControlUtilities.o
-x/Users/charlie/SelfControl/selfcontrol/SelfControlUtilities.m
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.gcc.4_0
-o/Users/charlie/SelfControl/selfcontrol/SelfControlUtilities.m:60: fatal error: error writing to -: Broken pipe
-ocompilation terminated.
-oi686-apple-darwin10-gcc-4.0.1: Internal error: Bus error (program as)
-oPlease submit a full bug report.
-oSee <URL:http://developer.apple.com/bugreporter> for instructions.
-lSLF07#2@69"Compile /Users/charlie/SelfControl/selfcontrol/SelfControlUtilities.m276446223#276446223#0(305"/Users/charlie/SelfControl/selfcontrol/SelfControlUtilities.m:60: fatal error: error writing to -: Broken pipecompilation terminated.i686-apple-darwin10-gcc-4.0.1: Internal error: Bus error (program as)Please submit a full bug report.See <URL:http://developer.apple.com/bugreporter> for instructions.1(4@31"Error writing to -: Broken pipe276446223#0#111#0(6@61"/Users/charlie/SelfControl/selfcontrol/SelfControlUtilities.m262292350#60#0#60#0#0"0(0#0#61"/Users/charlie/SelfControl/selfcontrol/SelfControlUtilities.m4371640#1697"    cd /Users/charlie/SelfControl/selfcontrol    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.4u.sdk -fvisibility=hidden -mmacosx-version-min=10.4 -gdwarf-2 -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-generated-files.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-own-target-headers.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-all-target-headers.hmap -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-project-headers.hmap -F/Users/charlie/SelfControl/selfcontrol/build/Release -I/Users/charlie/SelfControl/selfcontrol/build/Release/include -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/DerivedSources/i386 -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/DerivedSources -include /var/folders/np/nppAh7s9H8CB9YCW88riEE+++TM/-Caches-/com.apple.Xcode.502/SharedPrecompiledHeaders/AppKit-avazgojcnijzpshczjbrrpcvnrkb/AppKit.h -c /Users/charlie/SelfControl/selfcontrol/SelfControlUtilities.m -o /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/i386/SelfControlUtilities.o1#
-
-CCompileC build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/ppc/HelperMain.o /Users/charlie/SelfControl/selfcontrol/HelperMain.m normal ppc objective-c com.apple.compilers.gcc.4_0
-s276446223.715467
-e276446224.994769
-r0
-xCompileC
-xbuild/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/ppc/HelperMain.o
-x/Users/charlie/SelfControl/selfcontrol/HelperMain.m
-xnormal
-xppc
-xobjective-c
-xcom.apple.compilers.gcc.4_0
-o/Users/charlie/SelfControl/selfcontrol/HelperMain.m:826: fatal error: error writing to -: Broken pipe
-ocompilation terminated.
-opowerpc-apple-darwin10-gcc-4.0.1: Internal error: Bus error (program as)
-oPlease submit a full bug report.
-oSee <URL:http://developer.apple.com/bugreporter> for instructions.
-lSLF07#2@59"Compile /Users/charlie/SelfControl/selfcontrol/HelperMain.m276446223#276446224#0(299"/Users/charlie/SelfControl/selfcontrol/HelperMain.m:826: fatal error: error writing to -: Broken pipecompilation terminated.powerpc-apple-darwin10-gcc-4.0.1: Internal error: Bus error (program as)Please submit a full bug report.See <URL:http://developer.apple.com/bugreporter> for instructions.1(4@31"Error writing to -: Broken pipe276446224#0#102#0(6@51"/Users/charlie/SelfControl/selfcontrol/HelperMain.m266114346#826#0#826#0#0"0(0#0#51"/Users/charlie/SelfControl/selfcontrol/HelperMain.m2422361408#1671"    cd /Users/charlie/SelfControl/selfcontrol    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x objective-c -arch ppc -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mtune=G5 -fvisibility=hidden -mmacosx-version-min=10.4 -gdwarf-2 -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-generated-files.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-own-target-headers.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-all-target-headers.hmap -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-project-headers.hmap -F/Users/charlie/SelfControl/selfcontrol/build/Release -I/Users/charlie/SelfControl/selfcontrol/build/Release/include -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/DerivedSources/ppc -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/DerivedSources -include /var/folders/np/nppAh7s9H8CB9YCW88riEE+++TM/-Caches-/com.apple.Xcode.502/SharedPrecompiledHeaders/AppKit-gtvztozlokugcqcoloxzbpcbobwo/AppKit.h -c /Users/charlie/SelfControl/selfcontrol/HelperMain.m -o /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/ppc/HelperMain.o1#
-
-CCompileC build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/ppc/HostFileBlocker.o /Users/charlie/SelfControl/selfcontrol/HostFileBlocker.m normal ppc objective-c com.apple.compilers.gcc.4_0
-s276446224.552521
-e276446224.753804
-r0
-xCompileC
-xbuild/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/ppc/HostFileBlocker.o
-x/Users/charlie/SelfControl/selfcontrol/HostFileBlocker.m
-xnormal
-xppc
-xobjective-c
-xcom.apple.compilers.gcc.4_0
-o/Users/charlie/SelfControl/selfcontrol/HostFileBlocker.m:76: fatal error: error writing to -: Broken pipe
-ocompilation terminated.
-opowerpc-apple-darwin10-gcc-4.0.1: Internal error: Bus error (program as)
-oPlease submit a full bug report.
-oSee <URL:http://developer.apple.com/bugreporter> for instructions.
-lSLF07#2@64"Compile /Users/charlie/SelfControl/selfcontrol/HostFileBlocker.m276446224#276446224#0(303"/Users/charlie/SelfControl/selfcontrol/HostFileBlocker.m:76: fatal error: error writing to -: Broken pipecompilation terminated.powerpc-apple-darwin10-gcc-4.0.1: Internal error: Bus error (program as)Please submit a full bug report.See <URL:http://developer.apple.com/bugreporter> for instructions.1(4@31"Error writing to -: Broken pipe276446224#0#106#0(6@56"/Users/charlie/SelfControl/selfcontrol/HostFileBlocker.m264323345#76#0#76#0#0"0(0#0#56"/Users/charlie/SelfControl/selfcontrol/HostFileBlocker.m2422361408#1681"    cd /Users/charlie/SelfControl/selfcontrol    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x objective-c -arch ppc -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mtune=G5 -fvisibility=hidden -mmacosx-version-min=10.4 -gdwarf-2 -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-generated-files.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-own-target-headers.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-all-target-headers.hmap -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-project-headers.hmap -F/Users/charlie/SelfControl/selfcontrol/build/Release -I/Users/charlie/SelfControl/selfcontrol/build/Release/include -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/DerivedSources/ppc -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/DerivedSources -include /var/folders/np/nppAh7s9H8CB9YCW88riEE+++TM/-Caches-/com.apple.Xcode.502/SharedPrecompiledHeaders/AppKit-gtvztozlokugcqcoloxzbpcbobwo/AppKit.h -c /Users/charlie/SelfControl/selfcontrol/HostFileBlocker.m -o /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/ppc/HostFileBlocker.o1#
-
-CCompileC build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/ppc/IPFirewall.o /Users/charlie/SelfControl/selfcontrol/IPFirewall.m normal ppc objective-c com.apple.compilers.gcc.4_0
-s276446223.786853
-e276446224.238486
-r0
-xCompileC
-xbuild/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/ppc/IPFirewall.o
-x/Users/charlie/SelfControl/selfcontrol/IPFirewall.m
-xnormal
-xppc
-xobjective-c
-xcom.apple.compilers.gcc.4_0
-o/Users/charlie/SelfControl/selfcontrol/IPFirewall.m:476: fatal error: error writing to -: Broken pipe
-ocompilation terminated.
-opowerpc-apple-darwin10-gcc-4.0.1: Internal error: Bus error (program as)
-oPlease submit a full bug report.
-oSee <URL:http://developer.apple.com/bugreporter> for instructions.
-lSLF07#2@59"Compile /Users/charlie/SelfControl/selfcontrol/IPFirewall.m276446223#276446224#0(299"/Users/charlie/SelfControl/selfcontrol/IPFirewall.m:476: fatal error: error writing to -: Broken pipecompilation terminated.powerpc-apple-darwin10-gcc-4.0.1: Internal error: Bus error (program as)Please submit a full bug report.See <URL:http://developer.apple.com/bugreporter> for instructions.1(4@31"Error writing to -: Broken pipe276446224#0#102#0(6@51"/Users/charlie/SelfControl/selfcontrol/IPFirewall.m264053721#476#0#476#0#0"0(0#0#51"/Users/charlie/SelfControl/selfcontrol/IPFirewall.m2422361408#1671"    cd /Users/charlie/SelfControl/selfcontrol    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x objective-c -arch ppc -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mtune=G5 -fvisibility=hidden -mmacosx-version-min=10.4 -gdwarf-2 -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-generated-files.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-own-target-headers.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-all-target-headers.hmap -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-project-headers.hmap -F/Users/charlie/SelfControl/selfcontrol/build/Release -I/Users/charlie/SelfControl/selfcontrol/build/Release/include -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/DerivedSources/ppc -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/DerivedSources -include /var/folders/np/nppAh7s9H8CB9YCW88riEE+++TM/-Caches-/com.apple.Xcode.502/SharedPrecompiledHeaders/AppKit-gtvztozlokugcqcoloxzbpcbobwo/AppKit.h -c /Users/charlie/SelfControl/selfcontrol/IPFirewall.m -o /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/ppc/IPFirewall.o1#
-
-CCompileC build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/ppc/LaunchctlHelper.o /Users/charlie/SelfControl/selfcontrol/LaunchctlHelper.m normal ppc objective-c com.apple.compilers.gcc.4_0
-s276446224.238720
-e276446224.376023
-r0
-xCompileC
-xbuild/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/ppc/LaunchctlHelper.o
-x/Users/charlie/SelfControl/selfcontrol/LaunchctlHelper.m
-xnormal
-xppc
-xobjective-c
-xcom.apple.compilers.gcc.4_0
-o/Users/charlie/SelfControl/selfcontrol/LaunchctlHelper.m:53: fatal error: error writing to -: Broken pipe
-ocompilation terminated.
-opowerpc-apple-darwin10-gcc-4.0.1: Internal error: Bus error (program as)
-oPlease submit a full bug report.
-oSee <URL:http://developer.apple.com/bugreporter> for instructions.
-lSLF07#2@64"Compile /Users/charlie/SelfControl/selfcontrol/LaunchctlHelper.m276446224#276446224#0(303"/Users/charlie/SelfControl/selfcontrol/LaunchctlHelper.m:53: fatal error: error writing to -: Broken pipecompilation terminated.powerpc-apple-darwin10-gcc-4.0.1: Internal error: Bus error (program as)Please submit a full bug report.See <URL:http://developer.apple.com/bugreporter> for instructions.1(4@31"Error writing to -: Broken pipe276446224#0#106#0(6@56"/Users/charlie/SelfControl/selfcontrol/LaunchctlHelper.m263258944#53#0#53#0#0"0(0#0#56"/Users/charlie/SelfControl/selfcontrol/LaunchctlHelper.m2422361408#1681"    cd /Users/charlie/SelfControl/selfcontrol    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x objective-c -arch ppc -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mtune=G5 -fvisibility=hidden -mmacosx-version-min=10.4 -gdwarf-2 -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-generated-files.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-own-target-headers.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-all-target-headers.hmap -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-project-headers.hmap -F/Users/charlie/SelfControl/selfcontrol/build/Release -I/Users/charlie/SelfControl/selfcontrol/build/Release/include -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/DerivedSources/ppc -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/DerivedSources -include /var/folders/np/nppAh7s9H8CB9YCW88riEE+++TM/-Caches-/com.apple.Xcode.502/SharedPrecompiledHeaders/AppKit-gtvztozlokugcqcoloxzbpcbobwo/AppKit.h -c /Users/charlie/SelfControl/selfcontrol/LaunchctlHelper.m -o /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/ppc/LaunchctlHelper.o1#
-
-CCompileC build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/ppc/SelfControlUtilities.o /Users/charlie/SelfControl/selfcontrol/SelfControlUtilities.m normal ppc objective-c com.apple.compilers.gcc.4_0
-s276446224.376154
-e276446224.552388
-r0
-xCompileC
-xbuild/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/ppc/SelfControlUtilities.o
-x/Users/charlie/SelfControl/selfcontrol/SelfControlUtilities.m
-xnormal
-xppc
-xobjective-c
-xcom.apple.compilers.gcc.4_0
-o/Users/charlie/SelfControl/selfcontrol/SelfControlUtilities.m:60: fatal error: error writing to -: Broken pipe
-ocompilation terminated.
-opowerpc-apple-darwin10-gcc-4.0.1: Internal error: Bus error (program as)
-oPlease submit a full bug report.
-oSee <URL:http://developer.apple.com/bugreporter> for instructions.
-lSLF07#2@69"Compile /Users/charlie/SelfControl/selfcontrol/SelfControlUtilities.m276446224#276446224#0(308"/Users/charlie/SelfControl/selfcontrol/SelfControlUtilities.m:60: fatal error: error writing to -: Broken pipecompilation terminated.powerpc-apple-darwin10-gcc-4.0.1: Internal error: Bus error (program as)Please submit a full bug report.See <URL:http://developer.apple.com/bugreporter> for instructions.1(4@31"Error writing to -: Broken pipe276446224#0#111#0(6@61"/Users/charlie/SelfControl/selfcontrol/SelfControlUtilities.m262292350#60#0#60#0#0"0(0#0#61"/Users/charlie/SelfControl/selfcontrol/SelfControlUtilities.m2422361408#1691"    cd /Users/charlie/SelfControl/selfcontrol    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x objective-c -arch ppc -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mtune=G5 -fvisibility=hidden -mmacosx-version-min=10.4 -gdwarf-2 -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-generated-files.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-own-target-headers.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-all-target-headers.hmap -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-project-headers.hmap -F/Users/charlie/SelfControl/selfcontrol/build/Release -I/Users/charlie/SelfControl/selfcontrol/build/Release/include -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/DerivedSources/ppc -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/DerivedSources -include /var/folders/np/nppAh7s9H8CB9YCW88riEE+++TM/-Caches-/com.apple.Xcode.502/SharedPrecompiledHeaders/AppKit-gtvztozlokugcqcoloxzbpcbobwo/AppKit.h -c /Users/charlie/SelfControl/selfcontrol/SelfControlUtilities.m -o /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/ppc/SelfControlUtilities.o1#
-
-CCreateUniversalBinary /Users/charlie/SelfControl/selfcontrol/build/Release/org.eyebeam.SelfControl normal "i386 ppc"
-r0
-
-CGenerateDSYMFile /Users/charlie/SelfControl/selfcontrol/build/Release/org.eyebeam.SelfControl.dSYM /Users/charlie/SelfControl/selfcontrol/build/Release/org.eyebeam.SelfControl
-r0
-
-CLd /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/i386/org.eyebeam.SelfControl normal i386
-r0
-
-CLd /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/Objects-normal/ppc/org.eyebeam.SelfControl normal ppc
-r0
-
-CProcessPCH /var/folders/np/nppAh7s9H8CB9YCW88riEE+++TM/-Caches-/com.apple.Xcode.502/SharedPrecompiledHeaders/AppKit-avazgojcnijzpshczjbrrpcvnrkb/AppKit.h.gch /Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/AppKit.framework/Headers/AppKit.h normal i386 objective-c com.apple.compilers.gcc.4_0
-s276446215.686076
-e276446222.421053
-r1
-xProcessPCH
-x/var/folders/np/nppAh7s9H8CB9YCW88riEE+++TM/-Caches-/com.apple.Xcode.502/SharedPrecompiledHeaders/AppKit-avazgojcnijzpshczjbrrpcvnrkb/AppKit.h.gch
-x/Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/AppKit.framework/Headers/AppKit.h
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.gcc.4_0
-lSLF07#2@102"Precompile /Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/AppKit.framework/Headers/AppKit.h276446215#276446222#0(0"0(0#0#91"/Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/AppKit.framework/Headers/AppKit.h4371640#1585"    cd /Users/charlie/SelfControl/selfcontrol    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x objective-c-header -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.4u.sdk -fvisibility=hidden -mmacosx-version-min=10.4 -gdwarf-2 -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-generated-files.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-own-target-headers.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-all-target-headers.hmap -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-project-headers.hmap -F/Users/charlie/SelfControl/selfcontrol/build/Release -I/Users/charlie/SelfControl/selfcontrol/build/Release/include -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/DerivedSources/i386 -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/DerivedSources -c /Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/AppKit.framework/Headers/AppKit.h -o /var/folders/np/nppAh7s9H8CB9YCW88riEE+++TM/-Caches-/com.apple.Xcode.502/SharedPrecompiledHeaders/AppKit-avazgojcnijzpshczjbrrpcvnrkb/AppKit.h.gch0#
-
-CProcessPCH /var/folders/np/nppAh7s9H8CB9YCW88riEE+++TM/-Caches-/com.apple.Xcode.502/SharedPrecompiledHeaders/AppKit-gtvztozlokugcqcoloxzbpcbobwo/AppKit.h.gch /Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/AppKit.framework/Headers/AppKit.h normal ppc objective-c com.apple.compilers.gcc.4_0
-s276446215.730678
-e276446222.452850
-r1
-xProcessPCH
-x/var/folders/np/nppAh7s9H8CB9YCW88riEE+++TM/-Caches-/com.apple.Xcode.502/SharedPrecompiledHeaders/AppKit-gtvztozlokugcqcoloxzbpcbobwo/AppKit.h.gch
-x/Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/AppKit.framework/Headers/AppKit.h
-xnormal
-xppc
-xobjective-c
-xcom.apple.compilers.gcc.4_0
-lSLF07#2@102"Precompile /Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/AppKit.framework/Headers/AppKit.h276446215#276446222#0(0"0(0#0#91"/Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/AppKit.framework/Headers/AppKit.h4371640#1580"    cd /Users/charlie/SelfControl/selfcontrol    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x objective-c-header -arch ppc -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mtune=G5 -fvisibility=hidden -mmacosx-version-min=10.4 -gdwarf-2 -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-generated-files.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-own-target-headers.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-all-target-headers.hmap -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/org.eyebeam.SelfControl-project-headers.hmap -F/Users/charlie/SelfControl/selfcontrol/build/Release -I/Users/charlie/SelfControl/selfcontrol/build/Release/include -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/DerivedSources/ppc -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Release/org.eyebeam.SelfControl.build/DerivedSources -c /Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/AppKit.framework/Headers/AppKit.h -o /var/folders/np/nppAh7s9H8CB9YCW88riEE+++TM/-Caches-/com.apple.Xcode.502/SharedPrecompiledHeaders/AppKit-gtvztozlokugcqcoloxzbpcbobwo/AppKit.h.gch0#
-

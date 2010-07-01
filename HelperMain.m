@@ -358,13 +358,21 @@ int main(int argc, char* argv[]) {
       [[NSFileManager defaultManager] changeFileAttributes: fileAttributes atPath: kSelfControlLockFilePath];    
     }
     
+    // BACKUP CHECK
+    NSDate* blockEndingDate;
+    if(blockDuration != 0)
+      blockEndingDate = [blockStartedDate addTimeInterval: blockDuration];
+    else
+      // If the block duration is 0, the ending date is... now!
+      blockEndingDate = [NSDate date];
+    
     NSTimeInterval timeSinceStarted = [[NSDate date] timeIntervalSinceDate: blockStartedDate];
     blockDuration *= 60;
     
     // Note there are a few extra possible conditions on this if statement, this
     // makes it more likely that an improperly applied block might come right
     // off.
-    if( blockStartedDate == nil || [[NSDate distantFuture] isEqualToDate: blockStartedDate] || timeSinceStarted >= blockDuration) {
+    if( blockStartedDate == nil || [[NSDate distantFuture] isEqualToDate: blockStartedDate] || timeSinceStarted >= blockDuration || [[NSDate date] timeIntervalSinceDate: blockEndingDate] >= 0) {
       NSLog(@"INFO: Checkup ran, block expired, removing block.");            
                         
       [NSUserDefaults resetStandardUserDefaults];

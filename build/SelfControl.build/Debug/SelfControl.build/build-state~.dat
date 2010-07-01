@@ -1,764 +1,0 @@
-TSelfControl
-v7
-r0
-t276496639.194222
-cCheck dependencies
-cProcessInfoPlistFile /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Info.plist Info.plist
-cCopyPlistFile /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources/org.eyebeam.SelfControl.plist org.eyebeam.SelfControl.plist
-cCopyStringsFile /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources/English.lproj/InfoPlist.strings English.lproj/InfoPlist.strings
-cCompileXIB /Users/charlie/SelfControl/selfcontrol/English.lproj/MainMenu.xib
-cCompileXIB /Users/charlie/SelfControl/selfcontrol/English.lproj/DomainList.xib
-cCpResource build/Debug/SelfControl.app/Contents/Resources/SelfControlIcon.icns SelfControlIcon.icns
-cCpResource build/Debug/SelfControl.app/Contents/Resources/Credits.rtf Credits.rtf
-cCpResource build/Debug/SelfControl.app/Contents/Resources/dsa_pub.pem dsa_pub.pem
-cCpResource build/Debug/SelfControl.app/Contents/Resources/SelfControlAppcast.xml SelfControlAppcast.xml
-cCpResource build/Debug/SelfControl.app/Contents/Resources/NSRemoveTemplate.jpg NSRemoveTemplate.jpg
-cCpResource build/Debug/SelfControl.app/Contents/Resources/NSAddTemplate.jpg NSAddTemplate.jpg
-cCompileXIB /Users/charlie/SelfControl/selfcontrol/TimerWindow.xib
-cCompileXIB /Users/charlie/SelfControl/selfcontrol/TigerTimerWindow.xib
-cCpResource build/Debug/SelfControl.app/Contents/Resources/ERRORS ERRORS
-cCpResource build/Debug/SelfControl.app/Contents/Resources/SelfControlBlocklist.icns SelfControlBlocklist.icns
-cProcessPCH /var/folders/zz/zzzivhrRnAmviuee+++++++++++/-Caches-/com.apple.Xcode.0/SharedPrecompiledHeaders/SelfControl_Prefix-fxhrlbpkyvrqopajritkiupktile/SelfControl_Prefix.pch.gch SelfControl_Prefix.pch normal i386 objective-c com.apple.compilers.gcc.4_0
-cCompileC build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/main.o /Users/charlie/SelfControl/selfcontrol/main.m normal i386 objective-c com.apple.compilers.gcc.4_0
-cCompileC build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/AppController.o /Users/charlie/SelfControl/selfcontrol/AppController.m normal i386 objective-c com.apple.compilers.gcc.4_0
-cCompileC build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/TimerWindowController.o /Users/charlie/SelfControl/selfcontrol/TimerWindowController.m normal i386 objective-c com.apple.compilers.gcc.4_0
-cCompileC build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/HostImporter.o /Users/charlie/SelfControl/selfcontrol/HostImporter.m normal i386 objective-c com.apple.compilers.gcc.4_0
-cCompileC build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/ThunderbirdPreferenceParser.o /Users/charlie/SelfControl/selfcontrol/ThunderbirdPreferenceParser.m normal i386 objective-c com.apple.compilers.gcc.4_0
-cCompileC build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/ButtonWithPopupMenu.o /Users/charlie/SelfControl/selfcontrol/ButtonWithPopupMenu.m normal i386 objective-c com.apple.compilers.gcc.4_0
-cCompileC build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/DomainListWindowController.o /Users/charlie/SelfControl/selfcontrol/DomainListWindowController.m normal i386 objective-c com.apple.compilers.gcc.4_0
-cCompileC build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/NSCharacterSet+NewlineAddition.o /Users/charlie/SelfControl/selfcontrol/NSCharacterSet+NewlineAddition.m normal i386 objective-c com.apple.compilers.gcc.4_0
-cCompileC build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/SelfControlUtilities.o /Users/charlie/SelfControl/selfcontrol/SelfControlUtilities.m normal i386 objective-c com.apple.compilers.gcc.4_0
-cLd /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/MacOS/SelfControl normal i386
-cPBXCp build/Debug/SelfControl.app/Contents/MacOS/org.eyebeam.SelfControl build/Debug/org.eyebeam.SelfControl
-cPBXCp build/Debug/SelfControl.app/Contents/Frameworks/iLifeControls.framework iLifeControls.framework
-cPBXCp build/Debug/SelfControl.app/Contents/Frameworks/Sparkle.framework Sparkle.framework
-cTouch /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app
-
-N/Developer/SDKs/MacOSX10.4u.sdk
-c000000004A1199E200000000000000EE
-t1242667490
-s238
-
-N/Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/Cocoa.framework/Headers/Cocoa.h
-c0000000040C4AA6800000000000001E5
-t1086630504
-s485
-
-N/Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.h
-c00000000462EB9B00000000000001382
-t1177467312
-s4994
-
-N/Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/Security.framework/Headers/Security.h
-c00000000462EA4FB00000000000009A4
-t1177462011
-s2468
-
-N/Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/Security.framework/Security
-c000000004A0DE2E30000000000028898
-t1242424035
-s166040
-
-N/Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/SystemConfiguration.framework/Headers/SCNetwork.h
-c00000000462892630000000000001B50
-t1177064035
-s6992
-
-N/Developer/SDKs/MacOSX10.4u.sdk/usr/include/unistd.h
-c00000000463BAA5A0000000000004EED
-t1178315354
-s20205
-
-N/System/Library/Frameworks/Cocoa.framework/Cocoa
-c000000004A1F2D63000000000000A5E0
-t1243557219
-s42464
-
-N/System/Library/Frameworks/SystemConfiguration.framework/SystemConfiguration
-c000000004A6A95710000000000117D80
-t1248499057
-s1146240
-
-N/Users/charlie/SelfControl/selfcontrol/AppController.h
-c000000004A0DBA7E0000000000001539
-t1242413694
-s5433
-i<Cocoa/Cocoa.h>
-i"DomainListWindowController.h"
-i"TimerWindowController.h"
-i<Security/Security.h>
-i<SystemConfiguration/SCNetwork.h>
-i<unistd.h>
-
-N/Users/charlie/SelfControl/selfcontrol/AppController.m
-c000000004A2946E000000000000085D0
-t1244219104
-s34256
-i"AppController.h"
-
-N/Users/charlie/SelfControl/selfcontrol/ButtonWithPopupMenu.h
-c0000000049D3F50000000000000005AB
-t1238627584
-s1451
-i<Cocoa/Cocoa.h>
-
-N/Users/charlie/SelfControl/selfcontrol/ButtonWithPopupMenu.m
-c000000004A06484400000000000007B0
-t1241925700
-s1968
-i"ButtonWithPopupMenu.h"
-
-N/Users/charlie/SelfControl/selfcontrol/Credits.rtf
-c0000000049D6534E000000000000025D
-t1238782798
-s605
-
-N/Users/charlie/SelfControl/selfcontrol/DomainListWindowController.h
-c0000000049E025120000000000001257
-t1239426322
-s4695
-i<Cocoa/Cocoa.h>
-i"HostImporter.h"
-i"ThunderbirdPreferenceParser.h"
-
-N/Users/charlie/SelfControl/selfcontrol/DomainListWindowController.m
-c000000004A0DBC4D0000000000002EF1
-t1242414157
-s12017
-i"DomainListWindowController.h"
-
-N/Users/charlie/SelfControl/selfcontrol/ERRORS
-c000000004A0D961F00000000000008DA
-t1242404383
-s2266
-
-N/Users/charlie/SelfControl/selfcontrol/English.lproj/DomainList.xib
-c000000004A110CA8000000000000DDCC
-t1242631336
-s56780
-
-N/Users/charlie/SelfControl/selfcontrol/English.lproj/InfoPlist.strings
-c0000000049D3F500000000000000005C
-t1238627584
-s92
-
-N/Users/charlie/SelfControl/selfcontrol/English.lproj/MainMenu.xib
-c000000004A2C5C11000000000001D573
-t1244421137
-s120179
-
-N/Users/charlie/SelfControl/selfcontrol/HostImporter.h
-c0000000049D6A8070000000000000704
-t1238804487
-s1796
-i<Cocoa/Cocoa.h>
-i"ThunderbirdPreferenceParser.h"
-
-N/Users/charlie/SelfControl/selfcontrol/HostImporter.m
-c0000000049D6A8070000000000001082
-t1238804487
-s4226
-i"HostImporter.h"
-
-N/Users/charlie/SelfControl/selfcontrol/NSAddTemplate.jpg
-c0000000049D6534E00000000000003A3
-t1238782798
-s931
-
-N/Users/charlie/SelfControl/selfcontrol/NSCharacterSet+NewlineAddition.h
-c0000000049D6A76800000000000005B7
-t1238804328
-s1463
-i<Cocoa/Cocoa.h>
-
-N/Users/charlie/SelfControl/selfcontrol/NSCharacterSet+NewlineAddition.m
-c0000000049D6A8070000000000000549
-t1238804487
-s1353
-i"NSCharacterSet+NewlineAddition.h"
-
-N/Users/charlie/SelfControl/selfcontrol/NSRemoveTemplate.jpg
-c0000000049D6534E0000000000000369
-t1238782798
-s873
-
-N/Users/charlie/SelfControl/selfcontrol/SelfControlAppcast.xml
-c000000004A2C5EA30000000000000BB3
-t1244421795
-s2995
-
-N/Users/charlie/SelfControl/selfcontrol/SelfControlBlocklist.icns
-c000000004A0C4636000000000001B2A2
-t1242318390
-s111266
-
-N/Users/charlie/SelfControl/selfcontrol/SelfControlIcon.icns
-c0000000049D3F501000000000003580B
-t1238627585
-s219147
-
-N/Users/charlie/SelfControl/selfcontrol/SelfControlUtilities.h
-c0000000049F204D20000000000000549
-t1240597714
-s1353
-i<Foundation/Foundation.h>
-
-N/Users/charlie/SelfControl/selfcontrol/SelfControlUtilities.m
-c0000000049F20BFE00000000000007C9
-t1240599550
-s1993
-i"SelfControlUtilities.h"
-
-N/Users/charlie/SelfControl/selfcontrol/SelfControl_Prefix.pch
-c0000000049D3F5010000000000000095
-t1238627585
-s149
-i<Cocoa/Cocoa.h>
-
-N/Users/charlie/SelfControl/selfcontrol/Sparkle.framework
-c0000000048CD827200000000000000CC
-t1221427826
-s204
-
-N/Users/charlie/SelfControl/selfcontrol/Sparkle.framework/Sparkle
-c0000000048CCA0E200000000000712B4
-t1221370082
-s463540
-
-N/Users/charlie/SelfControl/selfcontrol/ThunderbirdPreferenceParser.h
-c0000000049D58D130000000000000A6B
-t1238732051
-s2667
-i<Cocoa/Cocoa.h>
-i"NSCharacterSet+NewlineAddition.h"
-
-N/Users/charlie/SelfControl/selfcontrol/ThunderbirdPreferenceParser.m
-c0000000049D58F660000000000002410
-t1238732646
-s9232
-i"ThunderbirdPreferenceParser.h"
-
-N/Users/charlie/SelfControl/selfcontrol/TigerTimerWindow.xib
-c000000004A110B190000000000007A7A
-t1242630937
-s31354
-
-N/Users/charlie/SelfControl/selfcontrol/TimerWindow.xib
-c000000004A110CA80000000000007C06
-t1242631336
-s31750
-
-N/Users/charlie/SelfControl/selfcontrol/TimerWindowController.h
-c000000004A0986F80000000000000A74
-t1242138360
-s2676
-i<Cocoa/Cocoa.h>
-i"AppController.h"
-i"SelfControlUtilities.h"
-
-N/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m
-c000000004A110D350000000000002065
-t1242631477
-s8293
-i"TimerWindowController.h"
-
-N/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app
-t1254803839
-s102
-
-N/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Frameworks/Sparkle.framework
-t1254803838
-s204
-
-N/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Frameworks/iLifeControls.framework
-t1254803838
-s204
-
-N/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Info.plist
-t1254803831
-s1453
-
-N/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/MacOS/SelfControl
-t1254803838
-s74340
-
-N/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/MacOS/org.eyebeam.SelfControl
-t1254803838
-s59352
-
-N/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/PkgInfo
-t1254803831
-s8
-
-N/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources/Credits.rtf
-t1254803833
-s605
-
-N/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources/ERRORS
-t1254803834
-s2266
-
-N/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources/English.lproj/DomainList.nib
-t1254803833
-s19376
-
-N/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources/English.lproj/InfoPlist.strings
-t1254803832
-s92
-
-N/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources/English.lproj/MainMenu.nib
-t1254803833
-s27765
-
-N/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources/NSAddTemplate.jpg
-t1254803833
-s931
-
-N/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources/NSRemoveTemplate.jpg
-t1254803833
-s873
-
-N/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources/SelfControlAppcast.xml
-t1254803833
-s2995
-
-N/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources/SelfControlBlocklist.icns
-t1254803834
-s111266
-
-N/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources/SelfControlIcon.icns
-t1254803833
-s219147
-
-N/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources/TigerTimerWindow.nib
-t1254803834
-s7718
-
-N/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources/TimerWindow.nib
-t1254803834
-s8138
-
-N/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources/dsa_pub.pem
-t1254803833
-s1178
-
-N/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources/org.eyebeam.SelfControl.plist
-t1254803832
-s500
-
-N/Users/charlie/SelfControl/selfcontrol/build/Debug/org.eyebeam.SelfControl
-c000000004ACAC977000000000000E7D8
-t1254803831
-s59352
-
-N/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/AppController.o
-t1254803838
-s89048
-
-N/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/ButtonWithPopupMenu.o
-t1254803838
-s22976
-
-N/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/DomainListWindowController.o
-t1254803838
-s45312
-
-N/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/HostImporter.o
-t1254803838
-s14680
-
-N/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/NSCharacterSet+NewlineAddition.o
-t1254803838
-s7452
-
-N/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/SelfControl.LinkFileList
-c000000004ACAC977000000000000048A
-t1254803831
-s1162
-
-N/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/SelfControlUtilities.o
-t1254803838
-s7012
-
-N/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/ThunderbirdPreferenceParser.o
-t1254803838
-s25376
-
-N/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/TimerWindowController.o
-t1254803837
-s33084
-
-N/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/main.o
-t1254803837
-s4676
-
-N/Users/charlie/SelfControl/selfcontrol/dsa_pub.pem
-c0000000049D549EE000000000000049A
-t1238714862
-s1178
-
-N/Users/charlie/SelfControl/selfcontrol/iLifeControls.framework
-c0000000049D6534E00000000000000CC
-t1238782798
-s204
-
-N/Users/charlie/SelfControl/selfcontrol/iLifeControls.framework/iLifeControls
-c0000000049D6534E0000000000023E28
-t1238782798
-s146984
-
-N/Users/charlie/SelfControl/selfcontrol/main.m
-c0000000049D3F5010000000000000109
-t1238627585
-s265
-i<Cocoa/Cocoa.h>
-
-N/Users/charlie/SelfControl/selfcontrol/org.eyebeam.SelfControl.plist
-c000000004A00C96D00000000000001F4
-t1241565549
-s500
-
-N/var/folders/zz/zzzivhrRnAmviuee+++++++++++/-Caches-/com.apple.Xcode.0/SharedPrecompiledHeaders/SelfControl_Prefix-fxhrlbpkyvrqopajritkiupktile/SelfControl_Prefix.pch.gch
-t1254803837
-s29976192
-
-NInfo.plist
-c000000004A305B0600000000000005C7
-t1244683014
-s1479
-
-CCheck dependencies
-r0
-lSLF07#2@18"Check dependencies276496631#276496631#0(0"0(0#1#0"2422361408#0"0#
-
-CCompileC build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/AppController.o /Users/charlie/SelfControl/selfcontrol/AppController.m normal i386 objective-c com.apple.compilers.gcc.4_0
-s276496637.301528
-e276496638.118176
-r1
-xCompileC
-xbuild/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/AppController.o
-x/Users/charlie/SelfControl/selfcontrol/AppController.m
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.gcc.4_0
-lSLF07#2@62"Compile /Users/charlie/SelfControl/selfcontrol/AppController.m276496637#276496638#0(0"0(0#0#54"/Users/charlie/SelfControl/selfcontrol/AppController.m2422361408#1580"    cd /Users/charlie/SelfControl/selfcontrol    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mfix-and-continue -mmacosx-version-min=10.4 -gdwarf-2 -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-generated-files.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-own-target-headers.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-all-target-headers.hmap -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-project-headers.hmap -F/Users/charlie/SelfControl/selfcontrol/build/Debug -F/Users/charlie/SelfControl/selfcontrol -I/Users/charlie/SelfControl/selfcontrol/build/Debug/include -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/DerivedSources/i386 -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/DerivedSources -include /var/folders/zz/zzzivhrRnAmviuee+++++++++++/-Caches-/com.apple.Xcode.0/SharedPrecompiledHeaders/SelfControl_Prefix-fxhrlbpkyvrqopajritkiupktile/SelfControl_Prefix.pch -c /Users/charlie/SelfControl/selfcontrol/AppController.m -o /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/AppController.o0#
-
-CCompileC build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/ButtonWithPopupMenu.o /Users/charlie/SelfControl/selfcontrol/ButtonWithPopupMenu.m normal i386 objective-c com.apple.compilers.gcc.4_0
-s276496638.198988
-e276496638.409319
-r1
-xCompileC
-xbuild/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/ButtonWithPopupMenu.o
-x/Users/charlie/SelfControl/selfcontrol/ButtonWithPopupMenu.m
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.gcc.4_0
-lSLF07#2@68"Compile /Users/charlie/SelfControl/selfcontrol/ButtonWithPopupMenu.m276496638#276496638#0(0"0(0#0#60"/Users/charlie/SelfControl/selfcontrol/ButtonWithPopupMenu.m2422361408#1592"    cd /Users/charlie/SelfControl/selfcontrol    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mfix-and-continue -mmacosx-version-min=10.4 -gdwarf-2 -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-generated-files.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-own-target-headers.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-all-target-headers.hmap -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-project-headers.hmap -F/Users/charlie/SelfControl/selfcontrol/build/Debug -F/Users/charlie/SelfControl/selfcontrol -I/Users/charlie/SelfControl/selfcontrol/build/Debug/include -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/DerivedSources/i386 -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/DerivedSources -include /var/folders/zz/zzzivhrRnAmviuee+++++++++++/-Caches-/com.apple.Xcode.0/SharedPrecompiledHeaders/SelfControl_Prefix-fxhrlbpkyvrqopajritkiupktile/SelfControl_Prefix.pch -c /Users/charlie/SelfControl/selfcontrol/ButtonWithPopupMenu.m -o /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/ButtonWithPopupMenu.o0#
-
-CCompileC build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/DomainListWindowController.o /Users/charlie/SelfControl/selfcontrol/DomainListWindowController.m normal i386 objective-c com.apple.compilers.gcc.4_0
-s276496638.333547
-e276496638.649103
-r1
-xCompileC
-xbuild/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/DomainListWindowController.o
-x/Users/charlie/SelfControl/selfcontrol/DomainListWindowController.m
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.gcc.4_0
-lSLF07#2@75"Compile /Users/charlie/SelfControl/selfcontrol/DomainListWindowController.m276496638#276496638#0(0"0(0#0#67"/Users/charlie/SelfControl/selfcontrol/DomainListWindowController.m2422361408#1606"    cd /Users/charlie/SelfControl/selfcontrol    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mfix-and-continue -mmacosx-version-min=10.4 -gdwarf-2 -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-generated-files.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-own-target-headers.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-all-target-headers.hmap -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-project-headers.hmap -F/Users/charlie/SelfControl/selfcontrol/build/Debug -F/Users/charlie/SelfControl/selfcontrol -I/Users/charlie/SelfControl/selfcontrol/build/Debug/include -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/DerivedSources/i386 -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/DerivedSources -include /var/folders/zz/zzzivhrRnAmviuee+++++++++++/-Caches-/com.apple.Xcode.0/SharedPrecompiledHeaders/SelfControl_Prefix-fxhrlbpkyvrqopajritkiupktile/SelfControl_Prefix.pch -c /Users/charlie/SelfControl/selfcontrol/DomainListWindowController.m -o /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/DomainListWindowController.o0#
-
-CCompileC build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/HostImporter.o /Users/charlie/SelfControl/selfcontrol/HostImporter.m normal i386 objective-c com.apple.compilers.gcc.4_0
-s276496637.976625
-e276496638.198855
-r1
-xCompileC
-xbuild/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/HostImporter.o
-x/Users/charlie/SelfControl/selfcontrol/HostImporter.m
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.gcc.4_0
-lSLF07#2@61"Compile /Users/charlie/SelfControl/selfcontrol/HostImporter.m276496637#276496638#0(0"0(0#0#53"/Users/charlie/SelfControl/selfcontrol/HostImporter.m2422361408#1578"    cd /Users/charlie/SelfControl/selfcontrol    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mfix-and-continue -mmacosx-version-min=10.4 -gdwarf-2 -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-generated-files.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-own-target-headers.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-all-target-headers.hmap -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-project-headers.hmap -F/Users/charlie/SelfControl/selfcontrol/build/Debug -F/Users/charlie/SelfControl/selfcontrol -I/Users/charlie/SelfControl/selfcontrol/build/Debug/include -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/DerivedSources/i386 -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/DerivedSources -include /var/folders/zz/zzzivhrRnAmviuee+++++++++++/-Caches-/com.apple.Xcode.0/SharedPrecompiledHeaders/SelfControl_Prefix-fxhrlbpkyvrqopajritkiupktile/SelfControl_Prefix.pch -c /Users/charlie/SelfControl/selfcontrol/HostImporter.m -o /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/HostImporter.o0#
-
-CCompileC build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/NSCharacterSet+NewlineAddition.o /Users/charlie/SelfControl/selfcontrol/NSCharacterSet+NewlineAddition.m normal i386 objective-c com.apple.compilers.gcc.4_0
-s276496638.409449
-e276496638.583629
-r1
-xCompileC
-xbuild/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/NSCharacterSet+NewlineAddition.o
-x/Users/charlie/SelfControl/selfcontrol/NSCharacterSet+NewlineAddition.m
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.gcc.4_0
-lSLF07#2@79"Compile /Users/charlie/SelfControl/selfcontrol/NSCharacterSet+NewlineAddition.m276496638#276496638#0(0"0(0#0#71"/Users/charlie/SelfControl/selfcontrol/NSCharacterSet+NewlineAddition.m2422361408#1614"    cd /Users/charlie/SelfControl/selfcontrol    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mfix-and-continue -mmacosx-version-min=10.4 -gdwarf-2 -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-generated-files.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-own-target-headers.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-all-target-headers.hmap -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-project-headers.hmap -F/Users/charlie/SelfControl/selfcontrol/build/Debug -F/Users/charlie/SelfControl/selfcontrol -I/Users/charlie/SelfControl/selfcontrol/build/Debug/include -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/DerivedSources/i386 -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/DerivedSources -include /var/folders/zz/zzzivhrRnAmviuee+++++++++++/-Caches-/com.apple.Xcode.0/SharedPrecompiledHeaders/SelfControl_Prefix-fxhrlbpkyvrqopajritkiupktile/SelfControl_Prefix.pch -c /Users/charlie/SelfControl/selfcontrol/NSCharacterSet+NewlineAddition.m -o /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/NSCharacterSet+NewlineAddition.o0#
-
-CCompileC build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/SelfControlUtilities.o /Users/charlie/SelfControl/selfcontrol/SelfControlUtilities.m normal i386 objective-c com.apple.compilers.gcc.4_0
-s276496638.583764
-e276496638.766556
-r1
-xCompileC
-xbuild/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/SelfControlUtilities.o
-x/Users/charlie/SelfControl/selfcontrol/SelfControlUtilities.m
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.gcc.4_0
-lSLF07#2@69"Compile /Users/charlie/SelfControl/selfcontrol/SelfControlUtilities.m276496638#276496638#0(0"0(0#0#61"/Users/charlie/SelfControl/selfcontrol/SelfControlUtilities.m2422361408#1594"    cd /Users/charlie/SelfControl/selfcontrol    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mfix-and-continue -mmacosx-version-min=10.4 -gdwarf-2 -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-generated-files.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-own-target-headers.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-all-target-headers.hmap -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-project-headers.hmap -F/Users/charlie/SelfControl/selfcontrol/build/Debug -F/Users/charlie/SelfControl/selfcontrol -I/Users/charlie/SelfControl/selfcontrol/build/Debug/include -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/DerivedSources/i386 -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/DerivedSources -include /var/folders/zz/zzzivhrRnAmviuee+++++++++++/-Caches-/com.apple.Xcode.0/SharedPrecompiledHeaders/SelfControl_Prefix-fxhrlbpkyvrqopajritkiupktile/SelfControl_Prefix.pch -c /Users/charlie/SelfControl/selfcontrol/SelfControlUtilities.m -o /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/SelfControlUtilities.o0#
-
-CCompileC build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/ThunderbirdPreferenceParser.o /Users/charlie/SelfControl/selfcontrol/ThunderbirdPreferenceParser.m normal i386 objective-c com.apple.compilers.gcc.4_0
-s276496638.118326
-e276496638.333401
-r1
-xCompileC
-xbuild/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/ThunderbirdPreferenceParser.o
-x/Users/charlie/SelfControl/selfcontrol/ThunderbirdPreferenceParser.m
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.gcc.4_0
-lSLF07#2@76"Compile /Users/charlie/SelfControl/selfcontrol/ThunderbirdPreferenceParser.m276496638#276496638#0(0"0(0#0#68"/Users/charlie/SelfControl/selfcontrol/ThunderbirdPreferenceParser.m2422361408#1608"    cd /Users/charlie/SelfControl/selfcontrol    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mfix-and-continue -mmacosx-version-min=10.4 -gdwarf-2 -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-generated-files.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-own-target-headers.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-all-target-headers.hmap -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-project-headers.hmap -F/Users/charlie/SelfControl/selfcontrol/build/Debug -F/Users/charlie/SelfControl/selfcontrol -I/Users/charlie/SelfControl/selfcontrol/build/Debug/include -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/DerivedSources/i386 -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/DerivedSources -include /var/folders/zz/zzzivhrRnAmviuee+++++++++++/-Caches-/com.apple.Xcode.0/SharedPrecompiledHeaders/SelfControl_Prefix-fxhrlbpkyvrqopajritkiupktile/SelfControl_Prefix.pch -c /Users/charlie/SelfControl/selfcontrol/ThunderbirdPreferenceParser.m -o /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/ThunderbirdPreferenceParser.o0#
-
-CCompileC build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/TimerWindowController.o /Users/charlie/SelfControl/selfcontrol/TimerWindowController.m normal i386 objective-c com.apple.compilers.gcc.4_0
-s276496637.507674
-e276496637.976464
-r1
-xCompileC
-xbuild/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/TimerWindowController.o
-x/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.gcc.4_0
-o/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m: In function '-[TimerWindowController updateTimerDisplay:]':
-o/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m:142: warning: no '-dockTile' method found
-o/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m:142: warning: (Messages without a matching method signature
-o/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m:142: warning: will be assumed to return 'id' and accept
-o/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m:142: warning: '...' as arguments.)
-o/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m:142: warning: no '-setBadgeLabel:' method found
-o/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m:192: warning: no '-dockTile' method found
-o/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m:192: warning: no '-setBadgeLabel:' method found
-o/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m:196: warning: no '-dockTile' method found
-o/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m:196: warning: no '-setBadgeLabel:' method found
-lSLF07#2@70"Compile /Users/charlie/SelfControl/selfcontrol/TimerWindowController.m276496637#276496638#0(1112"/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m: In function '-[TimerWindowController updateTimerDisplay:]':/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m:142: warning: no '-dockTile' method found/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m:142: warning: (Messages without a matching method signature/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m:142: warning: will be assumed to return 'id' and accept/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m:142: warning: '...' as arguments.)/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m:142: warning: no '-setBadgeLabel:' method found/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m:192: warning: no '-dockTile' method found/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m:192: warning: no '-setBadgeLabel:' method found/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m:196: warning: no '-dockTile' method found/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m:196: warning: no '-setBadgeLabel:' method found7(22@27"No '-dockTile' method found276496637#124#105#0(6@62"/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m264324277#142#0#142#0#19"no '*' method found0(13@108"(Messages without a matching method signature will be assumed to return 'id' and accept '...' as arguments.)276496637#229#123#0(6@62"/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m264324277#142#0#142#0#0"0(22@33"No '-setBadgeLabel:' method found276496637#569#111#0(6@62"/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m264324277#142#0#142#0#19"no '*' method found0(22@27"No '-dockTile' method found276496637#680#105#0(6@62"/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m264324277#192#0#192#0#19"no '*' method found0(22@33"No '-setBadgeLabel:' method found276496637#785#111#0(6@62"/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m264324277#192#0#192#0#19"no '*' method found0(22@27"No '-dockTile' method found276496637#896#105#0(6@62"/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m264324277#196#0#196#0#19"no '*' method found0(22@33"No '-setBadgeLabel:' method found276496637#1001#111#0(6@62"/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m264324277#196#0#196#0#19"no '*' method found0(0#0#62"/Users/charlie/SelfControl/selfcontrol/TimerWindowController.m2422361408#1596"    cd /Users/charlie/SelfControl/selfcontrol    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mfix-and-continue -mmacosx-version-min=10.4 -gdwarf-2 -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-generated-files.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-own-target-headers.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-all-target-headers.hmap -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-project-headers.hmap -F/Users/charlie/SelfControl/selfcontrol/build/Debug -F/Users/charlie/SelfControl/selfcontrol -I/Users/charlie/SelfControl/selfcontrol/build/Debug/include -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/DerivedSources/i386 -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/DerivedSources -include /var/folders/zz/zzzivhrRnAmviuee+++++++++++/-Caches-/com.apple.Xcode.0/SharedPrecompiledHeaders/SelfControl_Prefix-fxhrlbpkyvrqopajritkiupktile/SelfControl_Prefix.pch -c /Users/charlie/SelfControl/selfcontrol/TimerWindowController.m -o /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/TimerWindowController.o0#
-
-CCompileC build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/main.o /Users/charlie/SelfControl/selfcontrol/main.m normal i386 objective-c com.apple.compilers.gcc.4_0
-s276496637.299655
-e276496637.507537
-r1
-xCompileC
-xbuild/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/main.o
-x/Users/charlie/SelfControl/selfcontrol/main.m
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.gcc.4_0
-lSLF07#2@53"Compile /Users/charlie/SelfControl/selfcontrol/main.m276496637#276496637#0(0"0(0#0#45"/Users/charlie/SelfControl/selfcontrol/main.m2422361408#1562"    cd /Users/charlie/SelfControl/selfcontrol    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mfix-and-continue -mmacosx-version-min=10.4 -gdwarf-2 -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-generated-files.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-own-target-headers.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-all-target-headers.hmap -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-project-headers.hmap -F/Users/charlie/SelfControl/selfcontrol/build/Debug -F/Users/charlie/SelfControl/selfcontrol -I/Users/charlie/SelfControl/selfcontrol/build/Debug/include -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/DerivedSources/i386 -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/DerivedSources -include /var/folders/zz/zzzivhrRnAmviuee+++++++++++/-Caches-/com.apple.Xcode.0/SharedPrecompiledHeaders/SelfControl_Prefix-fxhrlbpkyvrqopajritkiupktile/SelfControl_Prefix.pch -c /Users/charlie/SelfControl/selfcontrol/main.m -o /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/main.o0#
-
-CCompileXIB /Users/charlie/SelfControl/selfcontrol/English.lproj/DomainList.xib
-s276496632.378751
-e276496633.510169
-r1
-xCompileXIB
-x/Users/charlie/SelfControl/selfcontrol/English.lproj/DomainList.xib
-o/* com.apple.ibtool.document.warnings */
-o/Users/charlie/SelfControl/selfcontrol/English.lproj/DomainList.xib:111: warning: Image scaling is not supported on Mac OS X versions prior to 10.5.
-o/Users/charlie/SelfControl/selfcontrol/English.lproj/DomainList.xib:111: warning: The image scaling property should not be used with radio buttons.  A radio button should always appear at the standard size.
-o/Users/charlie/SelfControl/selfcontrol/English.lproj/DomainList.xib:112: warning: Image scaling is not supported on Mac OS X versions prior to 10.5.
-o/Users/charlie/SelfControl/selfcontrol/English.lproj/DomainList.xib:112: warning: The image scaling property should not be used with radio buttons.  A radio button should always appear at the standard size.
-o/Users/charlie/SelfControl/selfcontrol/English.lproj/DomainList.xib:20: warning: NSTextField's "Allows Only Roman Characters" will be ignored on Mac OS X versions prior to 10.5.
-o/Users/charlie/SelfControl/selfcontrol/English.lproj/DomainList.xib:110: warning: Image scaling is not supported on Mac OS X versions prior to 10.5.
-o/Users/charlie/SelfControl/selfcontrol/English.lproj/DomainList.xib:110: warning: The image scaling property should not be used with radio buttons.  A radio button should always appear at the standard size.
-lSLF07#2@39"CompileXIB English.lproj/DomainList.xib276496632#276496633#0(1287"/* com.apple.ibtool.document.warnings *//Users/charlie/SelfControl/selfcontrol/English.lproj/DomainList.xib:111: warning: Image scaling is not supported on Mac OS X versions prior to 10.5./Users/charlie/SelfControl/selfcontrol/English.lproj/DomainList.xib:111: warning: The image scaling property should not be used with radio buttons.  A radio button should always appear at the standard size./Users/charlie/SelfControl/selfcontrol/English.lproj/DomainList.xib:112: warning: Image scaling is not supported on Mac OS X versions prior to 10.5./Users/charlie/SelfControl/selfcontrol/English.lproj/DomainList.xib:112: warning: The image scaling property should not be used with radio buttons.  A radio button should always appear at the standard size./Users/charlie/SelfControl/selfcontrol/English.lproj/DomainList.xib:20: warning: NSTextField's "Allows Only Roman Characters" will be ignored on Mac OS X versions prior to 10.5./Users/charlie/SelfControl/selfcontrol/English.lproj/DomainList.xib:110: warning: Image scaling is not supported on Mac OS X versions prior to 10.5./Users/charlie/SelfControl/selfcontrol/English.lproj/DomainList.xib:110: warning: The image scaling property should not be used with radio buttons.  A radio button should always appear at the standard size.7(22@66"Image scaling is not supported on Mac OS X versions prior to 10.5.276496633#4294967295#0#0(6@67"/Users/charlie/SelfControl/selfcontrol/English.lproj/DomainList.xib264324136#111#0#111#0#0"0(22@124"The image scaling property should not be used with radio buttons.  A radio button should always appear at the standard size.276496633#4294967295#0#0(6@67"/Users/charlie/SelfControl/selfcontrol/English.lproj/DomainList.xib264324136#111#0#111#0#0"0(22@66"Image scaling is not supported on Mac OS X versions prior to 10.5.276496633#4294967295#0#0(6@67"/Users/charlie/SelfControl/selfcontrol/English.lproj/DomainList.xib264324136#112#0#112#0#0"0(22@124"The image scaling property should not be used with radio buttons.  A radio button should always appear at the standard size.276496633#4294967295#0#0(6@67"/Users/charlie/SelfControl/selfcontrol/English.lproj/DomainList.xib264324136#112#0#112#0#0"0(22@96"NSTextField's "Allows Only Roman Characters" will be ignored on Mac OS X versions prior to 10.5.276496633#4294967295#0#0(6@67"/Users/charlie/SelfControl/selfcontrol/English.lproj/DomainList.xib264324136#20#0#20#0#0"0(22@66"Image scaling is not supported on Mac OS X versions prior to 10.5.276496633#4294967295#0#0(6@67"/Users/charlie/SelfControl/selfcontrol/English.lproj/DomainList.xib264324136#110#0#110#0#0"0(22@124"The image scaling property should not be used with radio buttons.  A radio button should always appear at the standard size.276496633#4294967295#0#0(6@67"/Users/charlie/SelfControl/selfcontrol/English.lproj/DomainList.xib264324136#110#0#110#0#0"0(0#0#67"/Users/charlie/SelfControl/selfcontrol/English.lproj/DomainList.xib2422361408#335"    cd /Users/charlie/SelfControl/selfcontrol    /Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources/English.lproj/DomainList.nib /Users/charlie/SelfControl/selfcontrol/English.lproj/DomainList.xib0#
-
-CCompileXIB /Users/charlie/SelfControl/selfcontrol/English.lproj/MainMenu.xib
-s276496632.343359
-e276496633.871431
-r1
-xCompileXIB
-x/Users/charlie/SelfControl/selfcontrol/English.lproj/MainMenu.xib
-o/* com.apple.ibtool.document.notices */
-o/Users/charlie/SelfControl/selfcontrol/English.lproj/MainMenu.xib:694: note: This view is clipping its content.
-o/* com.apple.ibtool.document.warnings */
-o/Users/charlie/SelfControl/selfcontrol/English.lproj/MainMenu.xib:890: warning: Image scaling is not supported on Mac OS X versions prior to 10.5.
-o/Users/charlie/SelfControl/selfcontrol/English.lproj/MainMenu.xib:890: warning: The image scaling property should not be used with checkboxes.  A checkbox should always appear at the standard size.
-lSLF07#2@37"CompileXIB English.lproj/MainMenu.xib276496632#276496633#0(538"/* com.apple.ibtool.document.notices *//Users/charlie/SelfControl/selfcontrol/English.lproj/MainMenu.xib:694: note: This view is clipping its content./* com.apple.ibtool.document.warnings *//Users/charlie/SelfControl/selfcontrol/English.lproj/MainMenu.xib:890: warning: Image scaling is not supported on Mac OS X versions prior to 10.5./Users/charlie/SelfControl/selfcontrol/English.lproj/MainMenu.xib:890: warning: The image scaling property should not be used with checkboxes.  A checkbox should always appear at the standard size.3(13@34"This view is clipping its content.276496633#4294967295#0#0(6@65"/Users/charlie/SelfControl/selfcontrol/English.lproj/MainMenu.xib266113937#694#0#694#0#0"0(22@66"Image scaling is not supported on Mac OS X versions prior to 10.5.276496633#4294967295#0#0(6@65"/Users/charlie/SelfControl/selfcontrol/English.lproj/MainMenu.xib266113937#890#0#890#0#0"0(22@117"The image scaling property should not be used with checkboxes.  A checkbox should always appear at the standard size.276496633#4294967295#0#0(6@65"/Users/charlie/SelfControl/selfcontrol/English.lproj/MainMenu.xib266113937#890#0#890#0#0"0(0#0#65"/Users/charlie/SelfControl/selfcontrol/English.lproj/MainMenu.xib4371640#331"    cd /Users/charlie/SelfControl/selfcontrol    /Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources/English.lproj/MainMenu.nib /Users/charlie/SelfControl/selfcontrol/English.lproj/MainMenu.xib0#
-
-CCompileXIB /Users/charlie/SelfControl/selfcontrol/TigerTimerWindow.xib
-s276496633.871550
-e276496634.347723
-r1
-xCompileXIB
-x/Users/charlie/SelfControl/selfcontrol/TigerTimerWindow.xib
-lSLF07#2@31"CompileXIB TigerTimerWindow.xib276496633#276496634#0(0"0(0#0#59"/Users/charlie/SelfControl/selfcontrol/TigerTimerWindow.xib2422361408#319"    cd /Users/charlie/SelfControl/selfcontrol    /Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources/TigerTimerWindow.nib /Users/charlie/SelfControl/selfcontrol/TigerTimerWindow.xib0#
-
-CCompileXIB /Users/charlie/SelfControl/selfcontrol/TimerWindow.xib
-s276496633.521916
-e276496634.114910
-r1
-xCompileXIB
-x/Users/charlie/SelfControl/selfcontrol/TimerWindow.xib
-o/* com.apple.ibtool.document.warnings */
-o/Users/charlie/SelfControl/selfcontrol/TimerWindow.xib:31: warning: NSPanel's "HUD Window Mask" option is not supported in Mac OS X versions prior to 10.5.
-lSLF07#2@26"CompileXIB TimerWindow.xib276496633#276496634#0(197"/* com.apple.ibtool.document.warnings *//Users/charlie/SelfControl/selfcontrol/TimerWindow.xib:31: warning: NSPanel's "HUD Window Mask" option is not supported in Mac OS X versions prior to 10.5.1(22@87"NSPanel's "HUD Window Mask" option is not supported in Mac OS X versions prior to 10.5.276496634#4294967295#0#0(6@54"/Users/charlie/SelfControl/selfcontrol/TimerWindow.xib264324136#31#0#31#0#0"0(0#0#54"/Users/charlie/SelfControl/selfcontrol/TimerWindow.xib2422361408#309"    cd /Users/charlie/SelfControl/selfcontrol    /Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources/TimerWindow.nib /Users/charlie/SelfControl/selfcontrol/TimerWindow.xib0#
-
-CCopyPlistFile /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources/org.eyebeam.SelfControl.plist org.eyebeam.SelfControl.plist
-s276496631.982261
-e276496632.378629
-r1
-xCopyPlistFile
-x/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources/org.eyebeam.SelfControl.plist
-xorg.eyebeam.SelfControl.plist
-lSLF07#2@34"Copy org.eyebeam.SelfControl.plist276496631#276496632#0(0"0(0#0#68"/Users/charlie/SelfControl/selfcontrol/org.eyebeam.SelfControl.plist2422361408#262"    cd /Users/charlie/SelfControl/selfcontrol    /Developer/Library/Xcode/Plug-ins/CoreBuildTasks.xcplugin/Contents/Resources/copyplist org.eyebeam.SelfControl.plist --outdir /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources0#
-
-CCopyStringsFile /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources/English.lproj/InfoPlist.strings English.lproj/InfoPlist.strings
-s276496631.983302
-e276496632.343230
-r1
-xCopyStringsFile
-x/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources/English.lproj/InfoPlist.strings
-xEnglish.lproj/InfoPlist.strings
-lSLF07#2@36"Copy English.lproj/InfoPlist.strings276496631#276496632#0(0"0(0#0#70"/Users/charlie/SelfControl/selfcontrol/English.lproj/InfoPlist.strings2422361408#370"    cd /Users/charlie/SelfControl/selfcontrol    setenv ICONV /usr/bin/iconv    /Developer/Library/Xcode/Plug-ins/CoreBuildTasks.xcplugin/Contents/Resources/copystrings --validate --inputencoding utf-16 --outputencoding UTF-16 English.lproj/InfoPlist.strings --outdir /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources/English.lproj0#
-
-CCpResource build/Debug/SelfControl.app/Contents/Resources/Credits.rtf Credits.rtf
-s276496633.512438
-e276496633.581130
-r1
-xCpResource
-xbuild/Debug/SelfControl.app/Contents/Resources/Credits.rtf
-xCredits.rtf
-lSLF07#2@16"Copy Credits.rtf276496633#276496633#0(0"0(0#0#50"/Users/charlie/SelfControl/selfcontrol/Credits.rtf2422361408#331"    cd /Users/charlie/SelfControl/selfcontrol    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -resolve-src-symlinks /Users/charlie/SelfControl/selfcontrol/Credits.rtf /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources0#
-
-CCpResource build/Debug/SelfControl.app/Contents/Resources/ERRORS ERRORS
-s276496634.115022
-e276496634.132270
-r1
-xCpResource
-xbuild/Debug/SelfControl.app/Contents/Resources/ERRORS
-xERRORS
-lSLF07#2@11"Copy ERRORS276496634#276496634#0(0"0(0#0#45"/Users/charlie/SelfControl/selfcontrol/ERRORS2422361408#326"    cd /Users/charlie/SelfControl/selfcontrol    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -resolve-src-symlinks /Users/charlie/SelfControl/selfcontrol/ERRORS /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources0#
-
-CCpResource build/Debug/SelfControl.app/Contents/Resources/NSAddTemplate.jpg NSAddTemplate.jpg
-s276496633.519846
-e276496633.579033
-r1
-xCpResource
-xbuild/Debug/SelfControl.app/Contents/Resources/NSAddTemplate.jpg
-xNSAddTemplate.jpg
-lSLF07#2@22"Copy NSAddTemplate.jpg276496633#276496633#0(0"0(0#0#56"/Users/charlie/SelfControl/selfcontrol/NSAddTemplate.jpg2422361408#337"    cd /Users/charlie/SelfControl/selfcontrol    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -resolve-src-symlinks /Users/charlie/SelfControl/selfcontrol/NSAddTemplate.jpg /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources0#
-
-CCpResource build/Debug/SelfControl.app/Contents/Resources/NSRemoveTemplate.jpg NSRemoveTemplate.jpg
-s276496633.518629
-e276496633.578806
-r1
-xCpResource
-xbuild/Debug/SelfControl.app/Contents/Resources/NSRemoveTemplate.jpg
-xNSRemoveTemplate.jpg
-lSLF07#2@25"Copy NSRemoveTemplate.jpg276496633#276496633#0(0"0(0#0#59"/Users/charlie/SelfControl/selfcontrol/NSRemoveTemplate.jpg2422361408#340"    cd /Users/charlie/SelfControl/selfcontrol    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -resolve-src-symlinks /Users/charlie/SelfControl/selfcontrol/NSRemoveTemplate.jpg /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources0#
-
-CCpResource build/Debug/SelfControl.app/Contents/Resources/SelfControlAppcast.xml SelfControlAppcast.xml
-s276496633.516571
-e276496633.552161
-r1
-xCpResource
-xbuild/Debug/SelfControl.app/Contents/Resources/SelfControlAppcast.xml
-xSelfControlAppcast.xml
-lSLF07#2@27"Copy SelfControlAppcast.xml276496633#276496633#0(0"0(0#0#61"/Users/charlie/SelfControl/selfcontrol/SelfControlAppcast.xml2422361408#342"    cd /Users/charlie/SelfControl/selfcontrol    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -resolve-src-symlinks /Users/charlie/SelfControl/selfcontrol/SelfControlAppcast.xml /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources0#
-
-CCpResource build/Debug/SelfControl.app/Contents/Resources/SelfControlBlocklist.icns SelfControlBlocklist.icns
-s276496634.117055
-e276496634.135030
-r1
-xCpResource
-xbuild/Debug/SelfControl.app/Contents/Resources/SelfControlBlocklist.icns
-xSelfControlBlocklist.icns
-lSLF07#2@30"Copy SelfControlBlocklist.icns276496634#276496634#0(0"0(0#0#64"/Users/charlie/SelfControl/selfcontrol/SelfControlBlocklist.icns2422361408#345"    cd /Users/charlie/SelfControl/selfcontrol    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -resolve-src-symlinks /Users/charlie/SelfControl/selfcontrol/SelfControlBlocklist.icns /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources0#
-
-CCpResource build/Debug/SelfControl.app/Contents/Resources/SelfControlIcon.icns SelfControlIcon.icns
-s276496633.510387
-e276496633.585341
-r1
-xCpResource
-xbuild/Debug/SelfControl.app/Contents/Resources/SelfControlIcon.icns
-xSelfControlIcon.icns
-lSLF07#2@25"Copy SelfControlIcon.icns276496633#276496633#0(0"0(0#0#59"/Users/charlie/SelfControl/selfcontrol/SelfControlIcon.icns2422361408#340"    cd /Users/charlie/SelfControl/selfcontrol    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -resolve-src-symlinks /Users/charlie/SelfControl/selfcontrol/SelfControlIcon.icns /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources0#
-
-CCpResource build/Debug/SelfControl.app/Contents/Resources/dsa_pub.pem dsa_pub.pem
-s276496633.514475
-e276496633.581304
-r1
-xCpResource
-xbuild/Debug/SelfControl.app/Contents/Resources/dsa_pub.pem
-xdsa_pub.pem
-lSLF07#2@16"Copy dsa_pub.pem276496633#276496633#0(0"0(0#0#50"/Users/charlie/SelfControl/selfcontrol/dsa_pub.pem2422361408#331"    cd /Users/charlie/SelfControl/selfcontrol    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -resolve-src-symlinks /Users/charlie/SelfControl/selfcontrol/dsa_pub.pem /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Resources0#
-
-CLd /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/MacOS/SelfControl normal i386
-s276496638.766747
-e276496638.897735
-r1
-xLd
-x/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/MacOS/SelfControl
-xnormal
-xi386
-lSLF07#2@98"Link /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/MacOS/SelfControl276496638#276496638#0(0"0(0#0#0"2422361408#704"    cd /Users/charlie/SelfControl/selfcontrol    setenv MACOSX_DEPLOYMENT_TARGET 10.4    /Developer/usr/bin/gcc-4.0 -arch i386 -isysroot /Developer/SDKs/MacOSX10.4u.sdk -L/Users/charlie/SelfControl/selfcontrol/build/Debug -F/Users/charlie/SelfControl/selfcontrol/build/Debug -F/Users/charlie/SelfControl/selfcontrol -filelist /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/Objects-normal/i386/SelfControl.LinkFileList -mmacosx-version-min=10.4 -framework Cocoa -framework SystemConfiguration -framework Security -framework Sparkle -framework iLifeControls -prebind -o /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/MacOS/SelfControl0#
-
-CPBXCp build/Debug/SelfControl.app/Contents/Frameworks/Sparkle.framework Sparkle.framework
-s276496638.908012
-e276496639.186979
-r1
-xPBXCp
-xbuild/Debug/SelfControl.app/Contents/Frameworks/Sparkle.framework
-xSparkle.framework
-lSLF07#2@22"Copy Sparkle.framework276496638#276496639#0(0"0(0#0#56"/Users/charlie/SelfControl/selfcontrol/Sparkle.framework2422361408#338"    cd /Users/charlie/SelfControl/selfcontrol    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -resolve-src-symlinks /Users/charlie/SelfControl/selfcontrol/Sparkle.framework /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Frameworks0#
-
-CPBXCp build/Debug/SelfControl.app/Contents/Frameworks/iLifeControls.framework iLifeControls.framework
-s276496638.906497
-e276496639.117027
-r1
-xPBXCp
-xbuild/Debug/SelfControl.app/Contents/Frameworks/iLifeControls.framework
-xiLifeControls.framework
-lSLF07#2@28"Copy iLifeControls.framework276496638#276496639#0(0"0(0#0#62"/Users/charlie/SelfControl/selfcontrol/iLifeControls.framework2422361408#344"    cd /Users/charlie/SelfControl/selfcontrol    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -resolve-src-symlinks /Users/charlie/SelfControl/selfcontrol/iLifeControls.framework /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Frameworks0#
-
-CPBXCp build/Debug/SelfControl.app/Contents/MacOS/org.eyebeam.SelfControl build/Debug/org.eyebeam.SelfControl
-s276496638.897961
-e276496638.906382
-r1
-xPBXCp
-xbuild/Debug/SelfControl.app/Contents/MacOS/org.eyebeam.SelfControl
-xbuild/Debug/org.eyebeam.SelfControl
-lSLF07#2@40"Copy build/Debug/org.eyebeam.SelfControl276496638#276496638#0(0"0(0#0#74"/Users/charlie/SelfControl/selfcontrol/build/Debug/org.eyebeam.SelfControl2422361408#351"    cd /Users/charlie/SelfControl/selfcontrol    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -resolve-src-symlinks /Users/charlie/SelfControl/selfcontrol/build/Debug/org.eyebeam.SelfControl /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/MacOS0#
-
-CProcessInfoPlistFile /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Info.plist Info.plist
-s276496631.976612
-e276496631.982127
-r1
-xProcessInfoPlistFile
-x/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Info.plist
-xInfo.plist
-lSLF07#2@18"Process Info.plist276496631#276496631#0(0"0(0#0#49"/Users/charlie/SelfControl/selfcontrol/Info.plist4371640#310"    cd /Users/charlie/SelfControl/selfcontrol    builtin-infoPlistUtility Info.plist -genpkginfo /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/PkgInfo -expandbuildsettings -platform macosx -o /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app/Contents/Info.plist0#
-
-CProcessPCH /var/folders/zz/zzzivhrRnAmviuee+++++++++++/-Caches-/com.apple.Xcode.0/SharedPrecompiledHeaders/SelfControl_Prefix-fxhrlbpkyvrqopajritkiupktile/SelfControl_Prefix.pch.gch SelfControl_Prefix.pch normal i386 objective-c com.apple.compilers.gcc.4_0
-s276496634.347884
-e276496637.299367
-r1
-xProcessPCH
-x/var/folders/zz/zzzivhrRnAmviuee+++++++++++/-Caches-/com.apple.Xcode.0/SharedPrecompiledHeaders/SelfControl_Prefix-fxhrlbpkyvrqopajritkiupktile/SelfControl_Prefix.pch.gch
-xSelfControl_Prefix.pch
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.gcc.4_0
-lSLF07#2@33"Precompile SelfControl_Prefix.pch276496634#276496637#0(0"0(0#0#61"/Users/charlie/SelfControl/selfcontrol/SelfControl_Prefix.pch2422361408#1466"    cd /Users/charlie/SelfControl/selfcontrol    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.0 -x objective-c-header -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mfix-and-continue -mmacosx-version-min=10.4 -gdwarf-2 -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-generated-files.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-own-target-headers.hmap -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-all-target-headers.hmap -iquote /Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/SelfControl-project-headers.hmap -F/Users/charlie/SelfControl/selfcontrol/build/Debug -F/Users/charlie/SelfControl/selfcontrol -I/Users/charlie/SelfControl/selfcontrol/build/Debug/include -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/DerivedSources/i386 -I/Users/charlie/SelfControl/selfcontrol/build/SelfControl.build/Debug/SelfControl.build/DerivedSources -c /Users/charlie/SelfControl/selfcontrol/SelfControl_Prefix.pch -o /var/folders/zz/zzzivhrRnAmviuee+++++++++++/-Caches-/com.apple.Xcode.0/SharedPrecompiledHeaders/SelfControl_Prefix-fxhrlbpkyvrqopajritkiupktile/SelfControl_Prefix.pch.gch0#
-
-CTouch /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app
-s276496639.187363
-e276496639.194139
-r1
-xTouch
-x/Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app
-lSLF07#2@72"Touch /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app276496639#276496639#0(0"0(0#0#0"2422361408#135"    cd /Users/charlie/SelfControl/selfcontrol    /usr/bin/touch -c /Users/charlie/SelfControl/selfcontrol/build/Debug/SelfControl.app0#
-

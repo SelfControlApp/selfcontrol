@@ -184,7 +184,7 @@
   
   if(isLeopard && [[NSUserDefaults standardUserDefaults] boolForKey: @"BadgeApplicationIcon"]) {
     // We want to round up the minutes--standard when we aren't displaying seconds.
-    if(numSeconds > 0)
+    if(numSeconds > 0 && numMinutes != 59)
       numMinutes++;
     NSString* badgeString = [NSString stringWithFormat: @"%0.2d:%0.2d",
                                                         numHours,

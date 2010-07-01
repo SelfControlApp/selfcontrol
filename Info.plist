@@ -45,5 +45,7 @@
 	<string>http://cloud.github.com/downloads/slambert/selfcontrol/SelfControlAppcast.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
+	<key>NSAppleScriptEnabled</key>
+	<true/>
 </dict>
 </plist>
