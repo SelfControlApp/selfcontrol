@@ -841,4 +841,13 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   return YES;
 }
 
+- (int)blockLength {
+  return [blockDurationSlider_ intValue];
+}
+
+- (void)setBlockLength:(int)blockLength {
+  [blockDurationSlider_ setIntValue: blockLength];
+  [self updateTimeSliderDisplay];
+}
+
 @end

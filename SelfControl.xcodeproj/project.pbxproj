@@ -57,7 +57,6 @@
 		CBC3C0C20F86DDA10055C0B0 /* SelfControlUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC3C0C10F86DDA10055C0B0 /* SelfControlUtilities.m */; };
 		CBC3C17F0F870D480055C0B0 /* TimerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBC3C17E0F870D480055C0B0 /* TimerWindow.xib */; };
 		CBC3C19E0F8713370055C0B0 /* TigerTimerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBC3C19D0F8713370055C0B0 /* TigerTimerWindow.xib */; };
-		CBC71A77111877F0004DF387 /* SelfControl.sdef in Resources */ = {isa = PBXBuildFile; fileRef = CBC71A76111877F0004DF387 /* SelfControl.sdef */; };
 		CBE4401B0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE4401A0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m */; };
 		CBE5C40B0F4D4531003DB900 /* ButtonWithPopupMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE5C40A0F4D4531003DB900 /* ButtonWithPopupMenu.m */; };
 		CBEE50C10F48C21F00F5DF1C /* TimerWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */; };
@@ -158,7 +157,6 @@
 		CBC3C0C10F86DDA10055C0B0 /* SelfControlUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelfControlUtilities.m; sourceTree = "<group>"; };
 		CBC3C17E0F870D480055C0B0 /* TimerWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimerWindow.xib; sourceTree = "<group>"; };
 		CBC3C19D0F8713370055C0B0 /* TigerTimerWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TigerTimerWindow.xib; sourceTree = "<group>"; };
-		CBC71A76111877F0004DF387 /* SelfControl.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.sdef; path = SelfControl.sdef; sourceTree = "<group>"; };
 		CBE440190F4BE0670062A1FE /* ThunderbirdPreferenceParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThunderbirdPreferenceParser.h; sourceTree = "<group>"; };
 		CBE4401A0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThunderbirdPreferenceParser.m; sourceTree = "<group>"; };
 		CBE5C4090F4D4531003DB900 /* ButtonWithPopupMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonWithPopupMenu.h; sourceTree = "<group>"; };
@@ -271,7 +269,6 @@
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				CB4C58D50F3F8F2A00B5D7CB /* SelfControlIcon.icns */,
-				CBC71A76111877F0004DF387 /* SelfControl.sdef */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -425,7 +422,6 @@
 				CBC3C19E0F8713370055C0B0 /* TigerTimerWindow.xib in Resources */,
 				CB1E7A6E0F9AEA9B00D158BC /* ERRORS in Resources */,
 				CB40A8680FBC7DE700167727 /* SelfControlBlocklist.icns in Resources */,
-				CBC71A77111877F0004DF387 /* SelfControl.sdef in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -137,4 +137,7 @@
 // Changed property to manual accessor for pre-Leopard compatibility
 - (id)initialWindow;
 
+- (int)blockLength;
+
+- (void)setBlockLength:(int)blockLength;
 @end

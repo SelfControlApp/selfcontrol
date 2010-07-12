@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
     
   NSString* modeString = [NSString stringWithUTF8String: argv[2]];
   // We'll need the controlling UID to know what defaults database to search
-  int controllingUID = [[NSString stringWithUTF8String: argv[1]] intValue];
+  signed long long int controllingUID = [[NSString stringWithUTF8String: argv[1]] longLongValue];
   
   // For proper security, we need to make sure that SelfControl files are owned
   // by root and only writable by root.  We'll define this here so we can use it
@@ -360,13 +360,17 @@ int main(int argc, char* argv[]) {
       [[NSFileManager defaultManager] changeFileAttributes: fileAttributes atPath: kSelfControlLockFilePath];    
     }
     
+    NSLog(@"Successfully attained blockStartedDate: %@ blockDuration: %f", blockStartedDate, blockDuration);
+    
     // BACKUP CHECK
     NSDate* blockEndingDate;
-    if(blockDuration != 0)
-      blockEndingDate = [blockStartedDate addTimeInterval: blockDuration];
-    else
+    if(blockDuration != 0) {
+      blockEndingDate = [blockStartedDate addTimeInterval: blockDuration * 60];
+    }
+    else {
       // If the block duration is 0, the ending date is... now!
       blockEndingDate = [NSDate date];
+    }
     
     NSTimeInterval timeSinceStarted = [[NSDate date] timeIntervalSinceDate: blockStartedDate];
     blockDuration *= 60;
@@ -376,7 +380,14 @@ int main(int argc, char* argv[]) {
     // off.
     if( blockStartedDate == nil || [[NSDate distantFuture] isEqualToDate: blockStartedDate] || timeSinceStarted >= blockDuration || [[NSDate date] timeIntervalSinceDate: blockEndingDate] >= 0) {
       NSLog(@"INFO: Checkup ran, block expired, removing block.");            
-                        
+      
+#ifdef DEBUG
+      NSLog(@"blockStartedDate == nil: %d", blockStartedDate == nil);
+      NSLog(@"[[NSDate distantFuture] isEqualToDate: blockStartedDate]: %d", [[NSDate distantFuture] isEqualToDate: blockStartedDate]);
+      NSLog(@"timeSinceStarted >= blockDuration: %d", timeSinceStarted >= blockDuration);
+      NSLog(@"[[NSDate date] timeIntervalSinceDate: blockEndingDate] >= 0: %d", [[NSDate date] timeIntervalSinceDate: blockEndingDate] >= 0);
+#endif
+      
       [NSUserDefaults resetStandardUserDefaults];
       seteuid(controllingUID);
       defaults = [NSUserDefaults standardUserDefaults];
@@ -456,7 +467,7 @@ int main(int argc, char* argv[]) {
   exit(EXIT_SUCCESS);
 }
 
-void addRulesToFirewall(int controllingUID) {
+void addRulesToFirewall(signed long long int controllingUID) {
   // Note all arrays in the host blocking code were changed to sets to easily stop duplicates
   NSMutableSet* hostsToBlock = [NSMutableSet set];
   
@@ -651,7 +662,7 @@ void addRulesToFirewall(int controllingUID) {
   [firewall addSelfControlBlockFooter];  
 }
 
-void removeRulesFromFirewall(int controllingUID) {
+void removeRulesFromFirewall(signed long long int controllingUID) {
   IPFirewall* firewall = [[IPFirewall alloc] init];
   if(![firewall containsSelfControlBlockSet])
     NSLog(@"WARNING: SelfControl rules do not appear to be loaded into ipfw.");
@@ -770,7 +781,7 @@ NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, int port) {
   return evaluatedAddresses;
 }
 
-void clearCachesIfRequested(int controllingUID) {
+void clearCachesIfRequested(signed long long int controllingUID) {
   [NSUserDefaults resetStandardUserDefaults];
   seteuid(controllingUID);
   defaults = [NSUserDefaults standardUserDefaults];

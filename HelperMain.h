@@ -47,10 +47,10 @@ int main(int argc, char* argv[]);
 // Reads the domain block list from the defaults for SelfControl, and adds deny
 // rules for all of the IPs (or the A DNS record IPS for doamin names) to the
 // ipfw firewall.
-void addRulesToFirewall(int controllingUID);
+void addRulesToFirewall(signed long long int controllingUID);
 
 // Removes from ipfw all rules that were created by SelfControl.
-void removeRulesFromFirewall(int controllingUID);
+void removeRulesFromFirewall(signed long long int controllingUID);
 
 // Returns an autoreleased NSSet containing all IP adresses for evaluated
 // "common subdomains" for the specified hostname
@@ -59,7 +59,7 @@ NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, int port);
 // Checks the defaults system to see whether the user wants their web browser
 // caches cleared, and deletes the specific cache folders for few common
 // web browsers if it is required.
-void clearCachesIfRequested(int controllingUID);
+void clearCachesIfRequested(signed long long int controllingUID);
 
 // Prints out the given status code to stdout using printf
 void printStatus(int status);
