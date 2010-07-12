@@ -46,6 +46,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
                                  [NSNumber numberWithBool: NO], @"BlockAsWhitelist",
                                  [NSNumber numberWithBool: YES], @"BadgeApplicationIcon",
                                  [NSNumber numberWithBool: YES], @"AllowLocalNetworks",
+                                 [NSNumber numberWithInt: 1440], @"MaxBlockLength",
+                                 [NSNumber numberWithInt: 15], @"BlockLengthInterval",
                                  nil];
     
     [defaults_ registerDefaults:appDefaults];
@@ -86,59 +88,34 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 - (IBAction)updateTimeSliderDisplay:(id)sender {
   int numMinutes = floor([blockDurationSlider_ intValue]);
+    
+  // Time-display code cleaned up thanks to the contributions of many users
   
-  NSString* timeString;
-  NSString* minuteString;
-  NSString* hourString;
-  NSString* dayString;
+  NSString* timeString = @"";
+
+  int formatDays, formatHours, formatMinutes;
   
-  if (numMinutes == 1 || numMinutes % 60 == 1) {
-    minuteString = @"minute";
-  } else {
-    minuteString = @"minutes";
-  }
+  formatDays = numMinutes / 1440;
+  formatHours = (numMinutes % 1440) / 60;
+  formatMinutes = (numMinutes % 60);
   
-  if (numMinutes / 60 == 1) {
-    hourString = @"hour";
-  } else {
-    hourString = @"hours";
+  if(numMinutes > 0) {
+    if(formatDays > 0) {
+      timeString = [NSString stringWithFormat:@"%d %@", formatDays, (formatDays == 1 ? @"day" : @"days")];
+    }
+    if(formatHours > 0) {
+      timeString = [NSString stringWithFormat: @"%@%@%d %@", timeString, (formatDays > 0 ? @", " : @""), formatHours, (formatHours == 1 ? @"hour" : @"hours")];
+    }
+    if(formatMinutes > 0) {
+      timeString = [NSString stringWithFormat:@"%@%@%d %@", timeString, (formatHours > 0 || formatDays > 0 ? @", " : @""), formatMinutes, (formatMinutes == 1 ? @"minute" : @"minutes")];
+    }
   }
-  
-  if(numMinutes / 1440 == 1) {
-    dayString = @"day";
-  } else {
-    dayString = @"days";
+  else {
+    timeString = @"Disabled";
   }
-  
-  if (numMinutes == 0) {
-    timeString = [NSString stringWithString:@"Disabled"];
-    [submitButton_ setEnabled: NO];
-  }
-  else if (numMinutes < 60) {
-    timeString = [NSString stringWithFormat:@"%d %@", numMinutes, minuteString];
-    if([[defaults_ arrayForKey:@"HostBlacklist"] count] != 0)
-      [submitButton_ setEnabled: YES];
-  }
-  else if (numMinutes % 60 == 0) { 
-    timeString = [NSString stringWithFormat:@"%d %@", numMinutes / 60, hourString];
-    if([[defaults_ arrayForKey:@"HostBlacklist"] count] != 0)
-      [submitButton_ setEnabled: YES];
-  }
-  else if (numMinutes < 1440) {
-    timeString = [NSString stringWithFormat:@"%d %@, %d %@",
-                  numMinutes / 60,
-                  hourString,
-                  numMinutes % 60,
-                  minuteString];
-    if([[defaults_ arrayForKey:@"HostBlacklist"] count] != 0)
-      [submitButton_ setEnabled: YES];
-  }
-  else if(numMinutes >= 1440) {
-    timeString = [NSString stringWithFormat: @"%d %@", numMinutes / 1440, dayString];
-    if([[defaults_ arrayForKey:@"HostBlacklist"] count] != 0)
-      [submitButton_ setEnabled: YES];
-  }
+    
   [blockSliderTimeDisplayLabel_ setStringValue:timeString];
+  [submitButton_ setEnabled: (numMinutes > 0) && ([[defaults_ arrayForKey:@"HostBlacklist"] count] > 0)];
 }
 
 - (IBAction)addBlock:(id)sender {
@@ -314,6 +291,11 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   // We'll set blockIsOn to whatever is NOT right, so that in refreshUserInterface
   // it'll fix it and properly refresh the user interface.
   blockIsOn = ![self selfControlLaunchDaemonIsLoaded];
+  
+  // Change block duration slider for hidden user defaults settings
+  int numTickMarks = ([defaults_ integerForKey: @"MaxBlockLength"] / [defaults_ integerForKey: @"BlockLengthInterval"]) + 1;
+  [blockDurationSlider_ setMaxValue: [defaults_ integerForKey: @"MaxBlockLength"]];
+  [blockDurationSlider_ setNumberOfTickMarks: numTickMarks];
   
   [self refreshUserInterface];                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
 }

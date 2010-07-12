@@ -89,6 +89,8 @@ int main(int argc, char* argv[]) {
                                [NSNumber numberWithBool: NO], @"BlockAsWhitelist",
                                [NSNumber numberWithBool: YES], @"BadgeApplicationIcon",
                                [NSNumber numberWithBool: YES], @"AllowLocalNetworks",
+                               [NSNumber numberWithInt: 1440], @"MaxBlockLength",
+                               [NSNumber numberWithInt: 15], @"BlockLengthInterval",
                                nil];
   [defaults registerDefaults:appDefaults];    
   if(!domainList) {
