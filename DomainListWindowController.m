@@ -100,6 +100,26 @@
   // This'll remove whitespace and lowercase the string.
   NSString* str = [[theObject stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];
   
+  if([str rangeOfCharacterFromSet: [NSCharacterSet newlineCharacterSet]].location != NSNotFound) {
+    // only hits LF linebreaks, but componentsSeparatedByCharacterSet won't work on 10.4
+    NSArray* listComponents = [str componentsSeparatedByString: @"\n"];
+    
+    for(int i = 0; i < [listComponents count]; i++) {
+      if(i == 0) {
+        [self tableView: aTableView setObjectValue: [listComponents objectAtIndex: i] forTableColumn: aTableColumn row: rowIndex];
+      }
+      else {
+        [domainList_ addObject:@""];
+        [self tableView: aTableView setObjectValue: [listComponents objectAtIndex: i] forTableColumn: aTableColumn row: [domainList_ count] - 1];
+      }
+    }
+    
+    [defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
+    [domainListTableView_ reloadData];
+    
+    return;
+  }
+  
   // Remove "http://" if a user tried to put that in
   NSArray* splitString = [str componentsSeparatedByString: @"http://"];
   for(int i = 0; i < [splitString count]; i++) {
@@ -200,7 +220,7 @@ dataCellForTableColumn:(NSTableColumn *)tableColumn
   willDisplayCell:(id)cell
    forTableColumn:(NSTableColumn *)tableColumn
               row:(int)row {
-  // this method is really inefficient.   rewrite/optimize latter.
+  // this method is really inefficient. rewrite/optimize later.
   [defaults_ synchronize];
   
   // Initialize the cell's text color to black
