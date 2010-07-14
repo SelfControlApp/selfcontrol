@@ -20,52 +20,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#import <Foundation/Foundation.h>
-#import <CoreFoundation/CoreFoundation.h>
-#import "IPFirewall.h"
-#import "LaunchctlHelper.h"
-#import "SelfControlUtilities.h"
-#import <unistd.h>
-#import <Cocoa/Cocoa.h>
-#import <sysexits.h>
-#import "HostFileBlocker.h"
-
 // The main class for SelfControl's helper tool to be run by launchd with high
 // privileges in order to handle the root-only configuration.
 
-// These don't comply with the "end instance variables with an underscore" rule
-// because they aren't instance variables.  Note this file is, although in
-// Objective-C, not a class.  It contains only functions.
-NSUserDefaults* defaults;
-NSArray* domainList;
+#import "HelperCommon.h"
 
 // The main method which deals which most of the logic flow and execution of 
 // the helper tool.  Posts an SCConfigurationChangedNotification if the block
 // is enabled or disabled.
 int main(int argc, char* argv[]);
-
-// Reads the domain block list from the defaults for SelfControl, and adds deny
-// rules for all of the IPs (or the A DNS record IPS for doamin names) to the
-// ipfw firewall.
-void addRulesToFirewall(signed long long int controllingUID);
-
-// Removes from ipfw all rules that were created by SelfControl.
-void removeRulesFromFirewall(signed long long int controllingUID);
-
-// Returns an autoreleased NSSet containing all IP adresses for evaluated
-// "common subdomains" for the specified hostname
-NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, int port);
-
-// Checks the defaults system to see whether the user wants their web browser
-// caches cleared, and deletes the specific cache folders for few common
-// web browsers if it is required.
-void clearCachesIfRequested(signed long long int controllingUID);
-
-// Prints out the given status code to stdout using printf
-void printStatus(int status);
-
-// Parses hostName, to find a mask length (for IP ranges) and port number, if
-// specified.  Returns by reference baseName, which is hostName without mask
-// length or port number, and the mask length and port number unless they were
-// not specified, in which case they will be initialized to -1.
-void parseHost(NSString* hostName, NSString** baseName, int* maskLength, int* portNumber);

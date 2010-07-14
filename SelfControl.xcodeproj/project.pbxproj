@@ -36,7 +36,6 @@
 		CB587E500F50FE8800C66A09 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB587E4F0F50FE8800C66A09 /* SystemConfiguration.framework */; };
 		CB5A306E0F92E582005CCA3E /* SelfControlUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC3C0C10F86DDA10055C0B0 /* SelfControlUtilities.m */; };
 		CB5B40440F3528E100EFBF4A /* DomainList.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB5B40420F3528E100EFBF4A /* DomainList.xib */; };
-		CB5E20C80FAE0D04006DBFC8 /* checkup.c in Sources */ = {isa = PBXBuildFile; fileRef = CB5E20C70FAE0D04006DBFC8 /* checkup.c */; };
 		CB90BF830F49F430006D202D /* HostImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB90BF820F49F430006D202D /* HostImporter.m */; };
 		CB93654E0F85802400EF284E /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB93654D0F85802400EF284E /* Sparkle.framework */; };
 		CB93655C0F85806A00EF284E /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CB93654D0F85802400EF284E /* Sparkle.framework */; };
@@ -57,6 +56,21 @@
 		CBC3C0C20F86DDA10055C0B0 /* SelfControlUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC3C0C10F86DDA10055C0B0 /* SelfControlUtilities.m */; };
 		CBC3C17F0F870D480055C0B0 /* TimerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBC3C17E0F870D480055C0B0 /* TimerWindow.xib */; };
 		CBC3C19E0F8713370055C0B0 /* TigerTimerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBC3C19D0F8713370055C0B0 /* TigerTimerWindow.xib */; };
+		CBD266B011ED7D9C00042CD8 /* HelperCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD266AE11ED7D9C00042CD8 /* HelperCommon.m */; };
+		CBD266B111ED7D9C00042CD8 /* HelperCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD266AE11ED7D9C00042CD8 /* HelperCommon.m */; };
+		CBD2672011ED882700042CD8 /* CheckupMain.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD2671F11ED882700042CD8 /* CheckupMain.m */; };
+		CBD2676911ED924700042CD8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9E901D0F397FFA006DE6E4 /* Security.framework */; };
+		CBD2676A11ED925700042CD8 /* HostFileBlocker.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB0AE290FA74566006229B3 /* HostFileBlocker.m */; };
+		CBD2676B11ED925700042CD8 /* IPFirewall.m in Sources */ = {isa = PBXBuildFile; fileRef = CBA2E75A0F41388800571571 /* IPFirewall.m */; };
+		CBD2676C11ED926300042CD8 /* LaunchctlHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */; };
+		CBD2676D11ED926600042CD8 /* SelfControlUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC3C0C10F86DDA10055C0B0 /* SelfControlUtilities.m */; };
+		CBD2677011ED92DE00042CD8 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9E90190F397FF6006DE6E4 /* CoreFoundation.framework */; };
+		CBD2677111ED92DF00042CD8 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9E90190F397FF6006DE6E4 /* CoreFoundation.framework */; };
+		CBD2677211ED92EE00042CD8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97325FDCFA39411CA2CEA /* Foundation.framework */; };
+		CBD2677311ED92EF00042CD8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97325FDCFA39411CA2CEA /* Foundation.framework */; };
+		CBD2677411ED92F700042CD8 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		CBD2677511ED92F800042CD8 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		CBD2677811ED932D00042CD8 /* scheckup in Copy Helper Tools */ = {isa = PBXBuildFile; fileRef = CB5E20BF0FAE0CDC006DBFC8 /* scheckup */; };
 		CBE4401B0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE4401A0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m */; };
 		CBE5C40B0F4D4531003DB900 /* ButtonWithPopupMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE5C40A0F4D4531003DB900 /* ButtonWithPopupMenu.m */; };
 		CBEE50C10F48C21F00F5DF1C /* TimerWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */; };
@@ -69,6 +83,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8D1107260486CEB800E47090;
 			remoteInfo = SelfControl;
+		};
+		CBD2676711ED921A00042CD8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CB5E20BE0FAE0CDC006DBFC8;
+			remoteInfo = "SelfControl-checkup";
 		};
 		CBEF43CF0F7BB7F6009A9FDF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -87,6 +108,7 @@
 			dstSubfolderSpec = 6;
 			files = (
 				CB1ED4480F56686400EFECEE /* org.eyebeam.SelfControl in Copy Helper Tools */,
+				CBD2677811ED932D00042CD8 /* scheckup in Copy Helper Tools */,
 			);
 			name = "Copy Helper Tools";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -108,7 +130,6 @@
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		1DDD58150DA1D0A300B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
@@ -127,8 +148,6 @@
 		CB587E4F0F50FE8800C66A09 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = /System/Library/Frameworks/SystemConfiguration.framework; sourceTree = "<absolute>"; };
 		CB5B40430F3528E100EFBF4A /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/DomainList.xib; sourceTree = "<group>"; };
 		CB5E20BF0FAE0CDC006DBFC8 /* scheckup */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = scheckup; sourceTree = BUILT_PRODUCTS_DIR; };
-		CB5E20C60FAE0D04006DBFC8 /* checkup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = checkup.h; sourceTree = "<group>"; };
-		CB5E20C70FAE0D04006DBFC8 /* checkup.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = checkup.c; sourceTree = "<group>"; };
 		CB90BF810F49F430006D202D /* HostImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostImporter.h; sourceTree = "<group>"; };
 		CB90BF820F49F430006D202D /* HostImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HostImporter.m; sourceTree = "<group>"; };
 		CB93654D0F85802400EF284E /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
@@ -157,6 +176,11 @@
 		CBC3C0C10F86DDA10055C0B0 /* SelfControlUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelfControlUtilities.m; sourceTree = "<group>"; };
 		CBC3C17E0F870D480055C0B0 /* TimerWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimerWindow.xib; sourceTree = "<group>"; };
 		CBC3C19D0F8713370055C0B0 /* TigerTimerWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TigerTimerWindow.xib; sourceTree = "<group>"; };
+		CBD266AD11ED7D9C00042CD8 /* HelperCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperCommon.h; sourceTree = "<group>"; };
+		CBD266AE11ED7D9C00042CD8 /* HelperCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelperCommon.m; sourceTree = "<group>"; };
+		CBD266E111ED84F700042CD8 /* SelfControlCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelfControlCommon.h; sourceTree = "<group>"; };
+		CBD2671E11ED882700042CD8 /* CheckupMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckupMain.h; sourceTree = "<group>"; };
+		CBD2671F11ED882700042CD8 /* CheckupMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckupMain.m; sourceTree = "<group>"; };
 		CBE440190F4BE0670062A1FE /* ThunderbirdPreferenceParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThunderbirdPreferenceParser.h; sourceTree = "<group>"; };
 		CBE4401A0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThunderbirdPreferenceParser.m; sourceTree = "<group>"; };
 		CBE5C4090F4D4531003DB900 /* ButtonWithPopupMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonWithPopupMenu.h; sourceTree = "<group>"; };
@@ -184,6 +208,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB54D44C0F93E33300AA22E9 /* Security.framework in Frameworks */,
+				CBD2677011ED92DE00042CD8 /* CoreFoundation.framework in Frameworks */,
+				CBD2677311ED92EF00042CD8 /* Foundation.framework in Frameworks */,
+				CBD2677511ED92F800042CD8 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -191,6 +218,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBD2676911ED924700042CD8 /* Security.framework in Frameworks */,
+				CBD2677111ED92DF00042CD8 /* CoreFoundation.framework in Frameworks */,
+				CBD2677211ED92EE00042CD8 /* Foundation.framework in Frameworks */,
+				CBD2677411ED92F700042CD8 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -213,7 +244,6 @@
 			isa = PBXGroup;
 			children = (
 				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
-				13E42FB307B3F0F600E4EEF1 /* CoreData.framework */,
 				CB9E90190F397FF6006DE6E4 /* CoreFoundation.framework */,
 				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
 			);
@@ -285,6 +315,7 @@
 		CB4294DF0F53D865008E10CA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				CBD266E111ED84F700042CD8 /* SelfControlCommon.h */,
 				CBB0AE280FA74566006229B3 /* HostFileBlocker.h */,
 				CBB0AE290FA74566006229B3 /* HostFileBlocker.m */,
 				CBE5C4090F4D4531003DB900 /* ButtonWithPopupMenu.h */,
@@ -295,8 +326,7 @@
 				CB529BBE0F32B7ED00564FB8 /* AppController.m */,
 				CBB637210F3E296000EBD135 /* DomainListWindowController.h */,
 				CBB637220F3E296000EBD135 /* DomainListWindowController.m */,
-				CBA2AFD70F39EC46005AFEBE /* HelperMain.h */,
-				CBA2AFD80F39EC46005AFEBE /* HelperMain.m */,
+				CBD266C611ED82DB00042CD8 /* Helper Tools */,
 				CBA2E7590F41388800571571 /* IPFirewall.h */,
 				CBA2E75A0F41388800571571 /* IPFirewall.m */,
 				CBE440190F4BE0670062A1FE /* ThunderbirdPreferenceParser.h */,
@@ -309,8 +339,6 @@
 				CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */,
 				CBC3C0C00F86DDA10055C0B0 /* SelfControlUtilities.h */,
 				CBC3C0C10F86DDA10055C0B0 /* SelfControlUtilities.m */,
-				CB5E20C60FAE0D04006DBFC8 /* checkup.h */,
-				CB5E20C70FAE0D04006DBFC8 /* checkup.c */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -324,6 +352,19 @@
 				CBC3C19D0F8713370055C0B0 /* TigerTimerWindow.xib */,
 			);
 			name = Interfaces;
+			sourceTree = "<group>";
+		};
+		CBD266C611ED82DB00042CD8 /* Helper Tools */ = {
+			isa = PBXGroup;
+			children = (
+				CBA2AFD70F39EC46005AFEBE /* HelperMain.h */,
+				CBA2AFD80F39EC46005AFEBE /* HelperMain.m */,
+				CBD266AD11ED7D9C00042CD8 /* HelperCommon.h */,
+				CBD266AE11ED7D9C00042CD8 /* HelperCommon.m */,
+				CBD2671E11ED882700042CD8 /* CheckupMain.h */,
+				CBD2671F11ED882700042CD8 /* CheckupMain.m */,
+			);
+			name = "Helper Tools";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -344,6 +385,7 @@
 			);
 			dependencies = (
 				CBEF43D00F7BB7F6009A9FDF /* PBXTargetDependency */,
+				CBD2676811ED921A00042CD8 /* PBXTargetDependency */,
 			);
 			name = SelfControl;
 			productInstallPath = "$(HOME)/Applications";
@@ -351,9 +393,9 @@
 			productReference = 8D1107320486CEB800E47090 /* SelfControl.app */;
 			productType = "com.apple.product-type.application";
 		};
-		CB5E20BE0FAE0CDC006DBFC8 /* scheckup */ = {
+		CB5E20BE0FAE0CDC006DBFC8 /* SelfControl-checkup */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CB5E20C50FAE0D01006DBFC8 /* Build configuration list for PBXNativeTarget "scheckup" */;
+			buildConfigurationList = CB5E20C50FAE0D01006DBFC8 /* Build configuration list for PBXNativeTarget "SelfControl-checkup" */;
 			buildPhases = (
 				CB5E20BC0FAE0CDC006DBFC8 /* Sources */,
 				CB5E20BD0FAE0CDC006DBFC8 /* Frameworks */,
@@ -362,7 +404,7 @@
 			);
 			dependencies = (
 			);
-			name = scheckup;
+			name = "SelfControl-checkup";
 			productName = scheckup;
 			productReference = CB5E20BF0FAE0CDC006DBFC8 /* scheckup */;
 			productType = "com.apple.product-type.tool";
@@ -398,7 +440,7 @@
 				8D1107260486CEB800E47090 /* SelfControl */,
 				CBA2AFD10F39EC12005AFEBE /* org.eyebeam.SelfControl */,
 				CB9368250F85D84E00EF284E /* Distribution */,
-				CB5E20BE0FAE0CDC006DBFC8 /* scheckup */,
+				CB5E20BE0FAE0CDC006DBFC8 /* SelfControl-checkup */,
 			);
 		};
 /* End PBXProject section */
@@ -478,7 +520,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CB5E20C80FAE0D04006DBFC8 /* checkup.c in Sources */,
+				CBD2676C11ED926300042CD8 /* LaunchctlHelper.m in Sources */,
+				CBD266B111ED7D9C00042CD8 /* HelperCommon.m in Sources */,
+				CBD2676D11ED926600042CD8 /* SelfControlUtilities.m in Sources */,
+				CBD2672011ED882700042CD8 /* CheckupMain.m in Sources */,
+				CBD2676A11ED925700042CD8 /* HostFileBlocker.m in Sources */,
+				CBD2676B11ED925700042CD8 /* IPFirewall.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -491,6 +538,7 @@
 				CBC2F8580F4672FE00CF2A42 /* LaunchctlHelper.m in Sources */,
 				CB5A306E0F92E582005CCA3E /* SelfControlUtilities.m in Sources */,
 				CBB0AE2A0FA74566006229B3 /* HostFileBlocker.m in Sources */,
+				CBD266B011ED7D9C00042CD8 /* HelperCommon.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -501,6 +549,11 @@
 			isa = PBXTargetDependency;
 			target = 8D1107260486CEB800E47090 /* SelfControl */;
 			targetProxy = CB9368280F85D86500EF284E /* PBXContainerItemProxy */;
+		};
+		CBD2676811ED921A00042CD8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CB5E20BE0FAE0CDC006DBFC8 /* SelfControl-checkup */;
+			targetProxy = CBD2676711ED921A00042CD8 /* PBXContainerItemProxy */;
 		};
 		CBEF43D00F7BB7F6009A9FDF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -618,7 +671,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				INSTALL_MODE_FLAG = "u+w,go-w,a+rX";
+				INSTALL_MODE_FLAG = "u+w,go-w,a+rX,u+s";
 				INSTALL_OWNER = "$(USER)";
 				INSTALL_PATH = /usr/local/bin;
 				OTHER_LDFLAGS = (
@@ -640,7 +693,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				INSTALL_MODE_FLAG = "u+w,go-w,a+rX";
+				INSTALL_MODE_FLAG = "u+w,go-w,a+rX,u+s";
 				INSTALL_OWNER = "$(USER)";
 				INSTALL_PATH = /usr/local/bin;
 				OTHER_LDFLAGS = (
@@ -741,7 +794,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CB5E20C50FAE0D01006DBFC8 /* Build configuration list for PBXNativeTarget "scheckup" */ = {
+		CB5E20C50FAE0D01006DBFC8 /* Build configuration list for PBXNativeTarget "SelfControl-checkup" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CB5E20C10FAE0CDD006DBFC8 /* Debug */,

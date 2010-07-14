@@ -22,7 +22,6 @@
 
 #import "AppController.h"
 
-NSString* const kSelfControlLockFilePath = @"/etc/SelfControl.lock";
 NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 @implementation AppController
@@ -166,6 +165,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     return;
   }
   
+  [timerWindowController_ resetStrikes];
+  
   [NSThread detachNewThreadSelector: @selector(installBlock) toTarget: self withObject: nil];
 }
 
@@ -210,6 +211,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
       if(!addBlockIsOngoing) {
         [blockLock_ unlock];
       }
+      
+      [timerWindowController_ blockEnded];
       
       NSWindow* mainWindow = [NSApp mainWindow];
       // We don't necessarily want the initial window to be key and front,
@@ -301,7 +304,22 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (BOOL)selfControlLaunchDaemonIsLoaded {
-  return [[NSFileManager defaultManager] fileExistsAtPath: kSelfControlLockFilePath];
+  // First we check the host file, and see if a block is in there
+  NSString* hostFileContents = [NSString stringWithContentsOfFile: @"/etc/hosts"];
+  if(hostFileContents != nil && [hostFileContents rangeOfString: @"# BEGIN SELFCONTROL BLOCK"].location != NSNotFound) {
+    return YES;
+  }
+  
+  // Next we see whether defaults thinks a block is on (if BlockStartedDate is a valid date)
+  NSDate* blockStartedDate = [defaults_ objectForKey: @"BlockStartedDate"];
+  if(blockStartedDate != nil && ![blockStartedDate isEqualToDate: [NSDate distantFuture]]) {
+    return YES;
+  }
+  
+  // If there's no block in the hosts file, no defaults BlockStartedDate, and no lock-file,
+  // we'll assume we're clear of blocks.  Checking ipfw would be nice but usually requires 
+  // root permissions, so it would be difficult to do here.
+  return [[NSFileManager defaultManager] fileExistsAtPath: SelfControlLockFilePath];
 }
 
 - (IBAction)showDomainList:(id)sender {
@@ -553,6 +571,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
       break;
     case -218:
       [description appendString: @"Could not remove SelfControl lock file."];
+      break;
+    case -219:
+      [description appendString: @"SelfControl lock file already exists.  Please try your block again."];
       break;
       
     default: 

@@ -22,8 +22,6 @@
 
 #import "HelperMain.h"
 
-NSString* const kSelfControlLockFilePath = @"/etc/SelfControl.lock";
-
 int main(int argc, char* argv[]) {
   NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
     
@@ -43,7 +41,24 @@ int main(int argc, char* argv[]) {
     
   NSString* modeString = [NSString stringWithUTF8String: argv[2]];
   // We'll need the controlling UID to know what defaults database to search
+  // It's a signed long long int to avoid integer overflow with extra-long UIDs
   signed long long int controllingUID = [[NSString stringWithUTF8String: argv[1]] longLongValue];
+  
+  // First things first, let's set up our backup system -- give scheckup the SUID bit
+  NSDictionary* checkupAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     [NSNumber numberWithInt: 0], NSFileOwnerAccountID,
+                                     [NSNumber numberWithLongLong: controllingUID], NSFileGroupOwnerAccountID,
+                                     // 2541 (decimal) = 4755 (octal) = rwsr-xr-x
+                                     [NSNumber numberWithUnsignedLong: 2541], NSFilePosixPermissions,
+                                     nil];
+  if(![[NSFileManager defaultManager] changeFileAttributes: checkupAttributes atPath: [[NSBundle mainBundle] pathForAuxiliaryExecutable: @"scheckup"]]) {
+    // This is, uh, suuuuper messy.  But pretty much it just checks whether the file already has the right attributes.
+    // If it does already, we don't bother to warn the user about being unable to change attributes.
+    NSDictionary* oldAttributes = [[NSFileManager defaultManager] fileAttributesAtPath: [[NSBundle mainBundle] pathForAuxiliaryExecutable: @"scheckup"] traverseLink: YES];
+    NSString* octalPerms = [NSString stringWithFormat: @"%o", [oldAttributes objectForKey: NSFilePosixPermissions]];
+    if(!([[oldAttributes objectForKey: NSFileOwnerAccountID] longLongValue] == 0 && [octalPerms characterAtIndex: 0] == '4' && [octalPerms characterAtIndex: 3] != 0 && [octalPerms characterAtIndex: 3] != 4))
+      NSLog(@"WARNING: Could not change file attributes on scheckup.  Backup block-removal system may not work.");
+  }
   
   // For proper security, we need to make sure that SelfControl files are owned
   // by root and only writable by root.  We'll define this here so we can use it
@@ -60,7 +75,7 @@ int main(int argc, char* argv[]) {
   // the pattern exhibited here will be used: we attempt to use the lock file's
   // contents, and revert to the user's defaults if the lock file has unreasonable
   // contents.
-  NSDictionary* curLockDict = [NSDictionary dictionaryWithContentsOfFile: kSelfControlLockFilePath];
+  NSDictionary* curLockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
   if(!([[curLockDict objectForKey: @"HostBlacklist"] count] <= 0))
     domainList = [curLockDict objectForKey: @"HostBlacklist"];
             
@@ -198,33 +213,23 @@ int main(int argc, char* argv[]) {
     // If perchance another lock is in existence already (which would be weird)
     // we try to remove a block and continue as normal.  This should definitely not be
     // happening though.
-    if([fileManager fileExistsAtPath: kSelfControlLockFilePath]) {
-      NSLog(@"WARNING: Lock already created--removing it and destroying any current block.");
+    if([fileManager fileExistsAtPath: SelfControlLockFilePath]) {
+      NSLog(@"ERROR: Lock already established.  Attempting to stop block.");
 
-      [fileManager removeFileAtPath: kSelfControlLockFilePath handler: nil];
-
-      [NSUserDefaults resetStandardUserDefaults];
-      seteuid(controllingUID);
-      defaults = [NSUserDefaults standardUserDefaults];
-      [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
-      [defaults setObject: [NSDate distantFuture] forKey: @"BlockStartedDate"];
-      [defaults synchronize];
-      [NSUserDefaults resetStandardUserDefaults];
-      seteuid(0);
+      removeBlock(controllingUID);
       
-      removeRulesFromFirewall(controllingUID);
-            
-      [LaunchctlHelper unloadLaunchdJobWithPlistAt:@"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
+      printStatus(-219);
+      exit(EX_CONFIG);
     }
     
     // And write out our lock...
-    if(![lockDictionary writeToFile: kSelfControlLockFilePath atomically: YES]) {
+    if(![lockDictionary writeToFile: SelfControlLockFilePath atomically: YES]) {
       NSLog(@"ERROR: Could not write lock file.");
       printStatus(-216);
       exit(EX_IOERR);      
     }
     // Make sure the privileges are correct on our lock file
-    [fileManager changeFileAttributes: fileAttributes atPath: kSelfControlLockFilePath];
+    [fileManager changeFileAttributes: fileAttributes atPath: SelfControlLockFilePath];
         
     addRulesToFirewall(controllingUID);
                 
@@ -244,14 +249,14 @@ int main(int argc, char* argv[]) {
     } else NSLog(@"INFO: Block successfully added.");
   }
   if([modeString isEqual: @"--remove"]) {
-    // This was just too easy for the user to remove the block with.
+    // So you think you can rid yourself of SelfControl just like that?
     NSLog(@"INFO: Nice try.");
     printStatus(-212);
     exit(EX_UNAVAILABLE);
    } else if([modeString isEqual: @"--refresh"]) {
     // Check what the current block is (based on the lock file) because if possible
     // we want to keep most of its information.
-    NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: kSelfControlLockFilePath];
+    NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
     NSDictionary* newLockDictionary;
     
     [NSUserDefaults resetStandardUserDefaults];
@@ -301,13 +306,13 @@ int main(int argc, char* argv[]) {
       exit(EX_CONFIG);
     }
     
-    if(![newLockDictionary writeToFile: kSelfControlLockFilePath atomically: YES]) {
+    if(![newLockDictionary writeToFile: SelfControlLockFilePath atomically: YES]) {
       NSLog(@"ERROR: Could not write lock file.");
       printStatus(-217);
       exit(EX_IOERR);      
     }
     // Make sure the privileges are correct on our lock file
-    [[NSFileManager defaultManager] changeFileAttributes: fileAttributes atPath: kSelfControlLockFilePath];    
+    [[NSFileManager defaultManager] changeFileAttributes: fileAttributes atPath: SelfControlLockFilePath];    
     domainList = [newLockDictionary objectForKey: @"HostBlacklist"];
     
     // Add and remove the rules to put in any new ones
@@ -325,7 +330,7 @@ int main(int argc, char* argv[]) {
     // caches for the new host blocked.
     clearCachesIfRequested(controllingUID);
   } else if([modeString isEqual: @"--checkup"]) {    
-    NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: kSelfControlLockFilePath];
+    NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
     
     NSDate* blockStartedDate = [curDictionary objectForKey: @"BlockStartedDate"];
     NSTimeInterval blockDuration = [[curDictionary objectForKey: @"BlockDuration"] intValue];
@@ -345,71 +350,38 @@ int main(int argc, char* argv[]) {
       
       if(blockStartedDate == nil || blockDuration < 1) {    
           // Defaults is broken too!  Let's get out of here!
-        NSLog(@"ERROR: Checkup ran but no block found.  This may leave a block permanently applied.");
+        NSLog(@"ERROR: Checkup ran but no block found.  Attempting to remove block.");
+        
+        // get rid of this block
+        removeBlock(controllingUID);
+        
         printStatus(-215);
         exit(EX_SOFTWARE);
       }
-      
-      NSDictionary* newDictionary = [NSDictionary dictionaryWithObjectsAndKeys: 
-                                     domainList, @"HostBlacklist",
-                                     blockStartedDate, @"BlockStartedDate",
-                                     blockDuration, @"BlockDuration",
-                                     nil];
-      [newDictionary writeToFile: kSelfControlLockFilePath atomically: YES];
-      // Make sure the privileges are correct on our lock file
-      [[NSFileManager defaultManager] changeFileAttributes: fileAttributes atPath: kSelfControlLockFilePath];    
     }
-    
-    NSLog(@"Successfully attained blockStartedDate: %@ blockDuration: %f", blockStartedDate, blockDuration);
-    
-    // BACKUP CHECK
-    NSDate* blockEndingDate;
-    if(blockDuration != 0) {
-      blockEndingDate = [blockStartedDate addTimeInterval: blockDuration * 60];
-    }
-    else {
-      // If the block duration is 0, the ending date is... now!
-      blockEndingDate = [NSDate date];
-    }
-    
-    NSTimeInterval timeSinceStarted = [[NSDate date] timeIntervalSinceDate: blockStartedDate];
+
+    // convert to seconds
     blockDuration *= 60;
+
+    NSTimeInterval timeSinceStarted = [[NSDate date] timeIntervalSinceDate: blockStartedDate];
     
     // Note there are a few extra possible conditions on this if statement, this
     // makes it more likely that an improperly applied block might come right
     // off.
-    if( blockStartedDate == nil || [[NSDate distantFuture] isEqualToDate: blockStartedDate] || timeSinceStarted >= blockDuration || [[NSDate date] timeIntervalSinceDate: blockEndingDate] >= 0) {
+    if( blockStartedDate == nil || blockDuration < 1 || [[NSDate distantFuture] isEqualToDate: blockStartedDate] || timeSinceStarted >= blockDuration) {
       NSLog(@"INFO: Checkup ran, block expired, removing block.");            
       
 #ifdef DEBUG
+      NSLog(@"BLOCK EXPIRED DUE TO CONDITIONS:");
       NSLog(@"blockStartedDate == nil: %d", blockStartedDate == nil);
       NSLog(@"[[NSDate distantFuture] isEqualToDate: blockStartedDate]: %d", [[NSDate distantFuture] isEqualToDate: blockStartedDate]);
       NSLog(@"timeSinceStarted >= blockDuration: %d", timeSinceStarted >= blockDuration);
-      NSLog(@"[[NSDate date] timeIntervalSinceDate: blockEndingDate] >= 0: %d", [[NSDate date] timeIntervalSinceDate: blockEndingDate] >= 0);
+      NSLog(@"END CONDITIONS");
 #endif
+
+      removeBlock(controllingUID);
       
-      [NSUserDefaults resetStandardUserDefaults];
-      seteuid(controllingUID);
-      defaults = [NSUserDefaults standardUserDefaults];
-      [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
-      [defaults setObject: [NSDate distantFuture] forKey: @"BlockStartedDate"];
-      [defaults synchronize];
-      [NSUserDefaults resetStandardUserDefaults];
-      seteuid(0);
-                        
-      removeRulesFromFirewall(controllingUID);
-      
-      if([[NSFileManager defaultManager] isDeletableFileAtPath: kSelfControlLockFilePath] && ![[NSFileManager defaultManager] removeFileAtPath: kSelfControlLockFilePath handler: nil]) {
-        NSLog(@"ERROR: Could not remove SelfControl lock file.");
-        printStatus(-218);
-      }
-      
-      [[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
-                                                                     object: nil];
-      
-      [LaunchctlHelper unloadLaunchdJobWithPlistAt:@"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
-      
-      // Execution should never reach this point.  Launchd unloading the job
+      // Execution should never reach this point.  Launchd unloading the job in removeBlock()
       // should have killed this process.
       printStatus(-216);
       exit(EX_SOFTWARE);
@@ -465,442 +437,4 @@ int main(int argc, char* argv[]) {
   [pool drain];
   printStatus(0);
   exit(EXIT_SUCCESS);
-}
-
-void addRulesToFirewall(signed long long int controllingUID) {
-  // Note all arrays in the host blocking code were changed to sets to easily stop duplicates
-  NSMutableSet* hostsToBlock = [NSMutableSet set];
-  
-  [NSUserDefaults resetStandardUserDefaults];
-  seteuid(controllingUID);
-  defaults = [NSUserDefaults standardUserDefaults];
-  [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
-  BOOL shouldEvaluateCommonSubdomains = [[defaults objectForKey: @"EvaluateCommonSubdomains"] boolValue];
-  [defaults synchronize];
-  [NSUserDefaults resetStandardUserDefaults];
-  seteuid(0);  
-      
-  for(int i = 0; i < [domainList count]; i++) {
-    NSString* hostName;
-    int portNum;
-    int maskLen;
-    
-    parseHost([domainList objectAtIndex: i], &hostName, &maskLen, &portNum);
-        
-    if([hostName isEqualToString: @"*"]) {
-      [hostsToBlock addObject: [domainList objectAtIndex: i]];
-    }
-    
-    NSString* ipValidationRegex = @"^([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
-    NSPredicate *regexTester = [NSPredicate
-                                predicateWithFormat:@"SELF MATCHES %@",
-                                ipValidationRegex];
-    if ([regexTester evaluateWithObject: hostName])
-      [hostsToBlock addObject: [domainList objectAtIndex: i]];
-    else {
-      // We have a domain name, we need to resolve it first
-      NSHost* host = [NSHost hostWithName: hostName];
-      
-      if(host) {
-        NSArray* addresses = [host addresses];
-        
-        for(int j = 0; j < [addresses count]; j++) {
-          if(portNum != -1)
-            [hostsToBlock addObject: [NSString stringWithFormat: @"%@:%d", [addresses objectAtIndex: j], portNum]];
-          else [hostsToBlock addObject: [addresses objectAtIndex: j]];
-        }
-      }
-            
-      if(shouldEvaluateCommonSubdomains) {
-        // Get the evaluated hostnames and union (combine) them with our current set
-        NSSet* evaluatedHosts = getEvaluatedHostNamesFromCommonSubdomains(hostName, portNum);
-        [hostsToBlock unionSet: evaluatedHosts];
-      }
-    }
-  }
-  
-  // This section is broken and plus seems to slow down parsing too much to be
-  // useful.  Consider reintroduction later, possibly with modifications?
-  /*
-  // OpenDNS, the very popular DNS provider, doesn't return NXDOMAIN.  Instead,
-  // all nonexistent DNS requests are pointed to hit-nxdomain.opendns.com.  We
-  // don't want to accidentally block that if one of our DNS resolutions fails,
-  // so we'll filter for those addresses.
-  NSHost* openDNSNXDomain = [NSHost hostWithName: @"hit-nxdomain.opendns.com"];
-  
-  if(openDNSNXDomain) {
-    NSArray* addresses = [openDNSNXDomain addresses];
-    
-    for(int j = 0; j < [addresses count]; j++) {
-      NSPredicate* openDNSFilter = [NSPredicate predicateWithFormat: @"NOT SELF beginswith '%@'", [addresses objectAtIndex: j]];
-      [hostsToBlock filterUsingPredicate: openDNSFilter];
-    }
-  }
-  */
-  
-  BOOL blockAsWhitelist;
-  NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: kSelfControlLockFilePath];
-  
-  if(curDictionary == nil || [curDictionary objectForKey: @"BlockAsWhitelist"] == nil) {
-    [NSUserDefaults resetStandardUserDefaults];
-    seteuid(controllingUID);
-    defaults = [NSUserDefaults standardUserDefaults];
-    [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
-    blockAsWhitelist = [defaults boolForKey: @"BlockAsWhitelist"];
-    [defaults synchronize];
-    [NSUserDefaults resetStandardUserDefaults];
-    seteuid(0);    
-  }
-  else
-    blockAsWhitelist = [[curDictionary objectForKey: @"BlockAsWhitelist"] boolValue];
-  
-  // /etc/hosts blocking
-  if(!blockAsWhitelist) {
-    HostFileBlocker* hostFileBlocker = [[[HostFileBlocker alloc] init] autorelease];
-    if(![hostFileBlocker containsSelfControlBlock] && [hostFileBlocker createBackupHostsFile]) {
-      [hostFileBlocker addSelfControlBlockHeader];
-      for(int i = 0; i < [domainList count]; i++) {
-          NSString* hostName;
-          int portNum;
-          int maskLen;
-          
-          parseHost([domainList objectAtIndex: i], &hostName, &maskLen, &portNum);
-        
-          if([hostName isEqualToString: @"*"]) continue;
-        
-          if(portNum == -1) {
-            NSString* ipValidationRegex = @"^([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
-            NSPredicate *regexTester = [NSPredicate
-                                        predicateWithFormat:@"SELF MATCHES %@",
-                                        ipValidationRegex];
-            if ([regexTester evaluateWithObject: hostName] != YES) {
-              // It's not an IP, so we'll add it to the /etc/hosts block as well
-              [hostFileBlocker addRuleBlockingDomain: hostName];
-              
-              // If we're supposed to evaluate common subdomains, block www subdomain also
-              if(shouldEvaluateCommonSubdomains) {
-                // Block the normal domain if www. was added
-                if([hostName rangeOfString: @"www."].location == 0)
-                  [hostFileBlocker addRuleBlockingDomain: [hostName substringFromIndex: 4]];
-
-                // Or block www.domain otherwise
-                else
-                  [hostFileBlocker addRuleBlockingDomain: [@"www." stringByAppendingString: hostName]];                
-              }
-            }
-          }
-      }
-      [hostFileBlocker addSelfControlBlockFooter];
-      [hostFileBlocker writeNewFileContents];
-    } else if([hostFileBlocker containsSelfControlBlock]) { 
-      [hostFileBlocker removeSelfControlBlock];
-      [hostFileBlocker writeNewFileContents];
-    } else { 
-      NSLog(@"WARNING: Could not create backup file.  Giving up on host file blocking.");
-    }
-  }
-  
-  IPFirewall* firewall = [[IPFirewall alloc] init];
-  [firewall clearSelfControlBlockRuleSet];
-  [firewall addSelfControlBlockHeader];
-  
-  if(blockAsWhitelist) {
-    [NSUserDefaults resetStandardUserDefaults];
-    seteuid(controllingUID);
-    defaults = [NSUserDefaults standardUserDefaults];
-    [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
-    BOOL allowLocalNetworks = [defaults boolForKey: @"AllowLocalNetworks"];
-    [defaults synchronize];
-    [NSUserDefaults resetStandardUserDefaults];
-    seteuid(0);        
-    if(allowLocalNetworks) {
-      [firewall addSelfControlBlockRuleAllowingIP: @"10.0.0.0" maskLength: 8];
-      [firewall addSelfControlBlockRuleAllowingIP: @"172.16.0.0" maskLength: 12];
-      [firewall addSelfControlBlockRuleAllowingIP: @"192.168.0.0" maskLength: 16];
-    }
-  }
-  
-  // Iterate through the host list to add a block rule for each
-  NSEnumerator* hostEnumerator = [hostsToBlock objectEnumerator];
-  NSString* hostString;
-    
-  while(hostString = [hostEnumerator nextObject]) {
-    NSString* hostName;
-    int portNum;
-    int maskLen;
-    
-    parseHost(hostString, &hostName, &maskLen, &portNum);
-    
-    if(blockAsWhitelist) {
-      if([hostName isEqualToString: @"*"])
-        [firewall addSelfControlBlockRuleAllowingPort: portNum];
-      else if(portNum != -1 && maskLen != -1)
-        [firewall addSelfControlBlockRuleAllowingIP: hostName port: portNum maskLength: maskLen];
-      else if(portNum != -1)
-        [firewall addSelfControlBlockRuleAllowingIP: hostName port: portNum];
-      else if(maskLen != -1)
-        [firewall addSelfControlBlockRuleAllowingIP: hostName maskLength: maskLen];
-      else
-        [firewall addSelfControlBlockRuleAllowingIP: hostName];
-    } else {
-      if([hostName isEqualToString: @"*"])
-        [firewall addSelfControlBlockRuleBlockingPort: portNum];
-      else if(portNum != -1 && maskLen != -1)
-        [firewall addSelfControlBlockRuleBlockingIP: hostName port: portNum maskLength: maskLen];
-      else if(portNum != -1)
-        [firewall addSelfControlBlockRuleBlockingIP: hostName port: portNum];
-      else if(maskLen != -1)
-        [firewall addSelfControlBlockRuleBlockingIP: hostName maskLength: maskLen];
-      else
-        [firewall addSelfControlBlockRuleBlockingIP: hostName];
-    }
-  }
-  
-  if(blockAsWhitelist) 
-    [firewall addWhitelistFooter];
-  
-  [firewall addSelfControlBlockFooter];  
-}
-
-void removeRulesFromFirewall(signed long long int controllingUID) {
-  IPFirewall* firewall = [[IPFirewall alloc] init];
-  if(![firewall containsSelfControlBlockSet])
-    NSLog(@"WARNING: SelfControl rules do not appear to be loaded into ipfw.");
-  HostFileBlocker* hostFileBlocker = [[[HostFileBlocker alloc] init] autorelease];
-  [hostFileBlocker removeSelfControlBlock];
-  BOOL hostSuccess = [hostFileBlocker writeNewFileContents];
-  // Revert the host file blocker's file contents to disk so we can check
-  // whether or not it still contains the block (aka we messed up).
-  [hostFileBlocker revertFileContentsToDisk];
-  // We use ! (NOT) of the method as success because it returns a shell termination status, so 0 is the success code
-  BOOL ipfwSuccess = ![firewall clearSelfControlBlockRuleSet];
-  if(hostSuccess && ipfwSuccess && ![hostFileBlocker containsSelfControlBlock] && ![firewall containsSelfControlBlockSet])
-    NSLog(@"INFO: Block successfully cleared.");
-  else {
-    NSLog(@"WARNING: Error removing block.  Attempting to restore host file backup.");
-    
-    [firewall clearSelfControlBlockRuleSet];
-    
-    if([hostFileBlocker restoreBackupHostsFile])
-      NSLog(@"INFO: Host file backup restored.");
-    else if([hostFileBlocker containsSelfControlBlock])
-      NSLog(@"ERROR: Host file backup could not be restored.  This may result in a permanent block.");
-    else if([firewall containsSelfControlBlockSet])
-      NSLog(@"ERROR: Firewall rules could not be cleared.  This may result in a permanent block.");
-    else 
-      NSLog(@"INFO: Firewall rules successfully cleared.");
-  }
-
-  [hostFileBlocker deleteBackupHostsFile];
-  
-  // We'll play the sound now rather than putting it in the "defaults block"
-  // a few lines ago, because it is important that the UI get updated (by
-  // the posted notification) before we sleep to play the sound.  Otherwise,
-  // the app seems unresponsive and slow.
-  [NSUserDefaults resetStandardUserDefaults];
-  seteuid(controllingUID);
-  defaults = [NSUserDefaults standardUserDefaults];
-  [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
-  if([defaults boolForKey: @"BlockSoundShouldPlay"]) {
-    // Map the tags used in interface builder to the sound
-    NSArray* systemSoundNames = [NSArray arrayWithObjects:
-                   @"Basso",
-                   @"Blow",
-                   @"Bottle",
-                   @"Frog",
-                   @"Funk",
-                   @"Glass",
-                   @"Hero",
-                   @"Morse",
-                   @"Ping",
-                   @"Pop",
-                   @"Purr",
-                   @"Sosumi",
-                   @"Submarine",
-                   @"Tink",
-                   nil
-                   ];
-    NSSound* alertSound = [NSSound soundNamed: [systemSoundNames objectAtIndex: [defaults integerForKey: @"BlockSound"]]];
-    if(!alertSound)
-    NSLog(@"WARNING: Alert sound not found.");
-    else {
-    [alertSound play];
-    // Sleeping a second is a messy way of doing this, but otherwise the
-    // sound is killed along with this process when it is unloaded in just
-    // a few lines.
-    sleep(1);
-    }
-  }
-  [defaults synchronize];
-  [NSUserDefaults resetStandardUserDefaults];
-  seteuid(0);    
-    
-//  } else
-//    NSLog(@"WARNING: SelfControl rules do not appear to be loaded into ipfw.");
-}
-
-NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, int port) {
-  NSMutableSet* evaluatedAddresses = [NSMutableSet set];
-  
-  // If the domain ends in facebook.com...  Special case for Facebook because
-  // users will often forget to block some of its many mirror subdomains that resolve
-  // to different IPs, i.e. hs.facebook.com.  Thanks to Danielle for raising this issue.
-  if([hostName rangeOfString: @"facebook.com"].location == ([hostName length] - 12)) {
-    [evaluatedAddresses addObject: @"69.63.176.0/20"];
-  }
- 
-  // Block the domain with no subdomains, if www.domain is blocked
-  else if([hostName rangeOfString: @"www."].location == 0) {
-    NSHost* modifiedHost = [NSHost hostWithName: [hostName substringFromIndex: 4]];
-    
-    if(modifiedHost) {
-      NSArray* addresses = [modifiedHost addresses];
-      
-      for(int j = 0; j < [addresses count]; j++) {
-        if(port != -1)
-          [evaluatedAddresses addObject: [NSString stringWithFormat: @"%@:%d", [addresses objectAtIndex: j], port]];
-        else [evaluatedAddresses addObject: [addresses objectAtIndex: j]];
-      }
-    }
-  }
-  // Or block www.domain otherwise
-  else {
-    NSHost* modifiedHost = [NSHost hostWithName: [@"www." stringByAppendingString: hostName]];
-    
-    if(modifiedHost) {
-      NSArray* addresses = [modifiedHost addresses];
-      
-      for(int j = 0; j < [addresses count]; j++) {
-        if(port != -1)
-          [evaluatedAddresses addObject: [NSString stringWithFormat: @"%@:%d", [addresses objectAtIndex: j], port]];
-        else [evaluatedAddresses addObject: [addresses objectAtIndex: j]];
-      }
-    }
-  }  
-  
-  return evaluatedAddresses;
-}
-
-void clearCachesIfRequested(signed long long int controllingUID) {
-  [NSUserDefaults resetStandardUserDefaults];
-  seteuid(controllingUID);
-  defaults = [NSUserDefaults standardUserDefaults];
-  [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
-  if([defaults boolForKey: @"ClearCaches"]) {
-    NSFileManager* fileManager = [NSFileManager defaultManager];
-    
-    unsigned int major, minor, bugfix;
-    
-    [SelfControlUtilities getSystemVersionMajor: &major minor: &minor bugFix: &bugfix];
-    
-    // We've got to check if we're on 10.5 or not, because earlier systems don't
-    // have the DARWIN_USER_CACHE_DIR caches that we're about to remove.  This is
-    // also why we have to spawn a task to get the directory path, the specific
-    // API to get this path is Leopard-only and we need to have a single version
-    // that works on Tiger and Leopard.
-    if(major >= 10 && minor >= 5) {
-      NSTask* task = [[[NSTask alloc] init] autorelease];
-      [task setLaunchPath: @"/usr/bin/getconf"];
-      [task setArguments: [NSArray arrayWithObject:
-                           @"DARWIN_USER_CACHE_DIR"
-                           ]];
-      NSPipe* inPipe = [[[NSPipe alloc] init] autorelease];
-      NSFileHandle* readHandle = [inPipe fileHandleForReading];
-      [task setStandardOutput: inPipe];      
-      [task launch];
-      NSString* leopardCacheDirectory = [[[NSString alloc] initWithData:[readHandle readDataToEndOfFile]
-                                                               encoding: NSUTF8StringEncoding] autorelease];
-      close([readHandle fileDescriptor]);
-      [task waitUntilExit];
-      
-      leopardCacheDirectory = [leopardCacheDirectory stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-      
-      if([task terminationStatus] == 0 && [leopardCacheDirectory length] > 0) {
-        NSMutableArray* leopardCacheDirs = [NSMutableArray arrayWithObjects:
-                                            @"org.mozilla.firefox",
-                                            @"com.apple.Safari",
-                                            @"jp.hmdt.shiira",
-                                            @"org.mozilla.camino",
-                                            nil];
-        for(int i = 0; i < [leopardCacheDirs count]; i++) {
-          NSString* cacheDir = [leopardCacheDirectory stringByAppendingPathComponent: [leopardCacheDirs objectAtIndex: i]];
-          if([fileManager isDeletableFileAtPath: cacheDir]) {
-            [fileManager removeFileAtPath: cacheDir handler: nil];
-          }
-        }
-      }
-      
-      // NSArray* userCacheDirectories = NSSearchPathForDirectoriesInDomain(NSCachesDirectory, NSUserDomainMask, NO);
-      // I have no clue why this doesn't compile, I'm #importing properly I believe.
-      // We'll have to do it the messy way...
-      
-      NSString* userLibraryDirectory = [@"~/Library" stringByExpandingTildeInPath];
-      NSMutableArray* cacheDirs = [NSMutableArray arrayWithObjects:
-                                   @"Caches/Camino",
-                                   @"Caches/com.apple.Safari",
-                                   @"Caches/Firefox",
-                                   @"Caches/Flock",
-                                   @"Caches/Opera",
-                                   @"Caches/Unison",
-                                   @"Caches/com.omnigroup.OmniWeb5",
-                                   @"Preferences/iCab Preferences/iCab Cache",
-                                   @"Preferences/com.omnigroup.OmniWeb5",
-                                   nil];
-      
-      for(int i = 0; i < [cacheDirs count]; i++) {
-        NSString* cacheDir = [userLibraryDirectory stringByAppendingPathComponent: [cacheDirs objectAtIndex: i]];
-        if([fileManager isDeletableFileAtPath: cacheDir]) {
-          [fileManager removeFileAtPath: cacheDir handler: nil];
-        }
-      }
-      
-    }
-  }
-  [NSUserDefaults resetStandardUserDefaults];
-  seteuid(0);
-}
-
-void printStatus(int status) {
-  printf("%d", status);
-}
-
-void parseHost(NSString* hostName, NSString** baseName, int* maskLength, int* portNumber) {
-  int maskLen = -1;
-  int portNum = -1;
-  
-  NSArray* splitString = [hostName componentsSeparatedByString: @"/"];
-  
-  hostName = [splitString objectAtIndex: 0];
-  
-  NSString* stringToSearchForPort = hostName;
-  
-  if([splitString count] >= 2) {
-    maskLen = [[splitString objectAtIndex: 1] intValue];
-    // If the int value is 0, we couldn't find a valid integer representation
-    // in the split off string
-    if(maskLen == 0)
-      maskLen = -1;
-    
-    stringToSearchForPort = [splitString objectAtIndex: 1];
-  }
-  
-  splitString = [stringToSearchForPort componentsSeparatedByString: @":"];
-  
-  if([stringToSearchForPort isEqualToString: hostName])
-    hostName = [splitString objectAtIndex: 0];
-  
-  if([splitString count] >= 2) {
-    portNum = [[splitString objectAtIndex: 1] intValue];
-    // If the int value is 0, we couldn't find a valid integer representation
-    // in the split off string
-    if(portNum == 0)
-      portNum = -1;
-  }
-  
-  if([hostName isEqualToString: @""])
-    hostName = @"*";
-  
-  if(baseName) *baseName = hostName;
-  if(portNumber) *portNumber = portNum;
-  if(maskLength) *maskLength = maskLen;
 }

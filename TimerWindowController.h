@@ -23,9 +23,7 @@
 #import <Cocoa/Cocoa.h>
 #import "AppController.h"
 #import "SelfControlUtilities.h"
-
-// This is a reference to the kSelfControlLockFilePath const variable in AppController.m
-extern NSString* const kSelfControlLockFilePath;
+#import "SelfControlCommon.h"
 
 // A subclass of NSWindowController created to manage the floating timer window
 // which tells the user how much time remains in the block.
@@ -37,6 +35,7 @@ extern NSString* const kSelfControlLockFilePath;
   NSDate* blockEndingDate_;
   NSLock* addToBlockLock;
   BOOL isLeopard;
+  int numStrikes;
   IBOutlet NSButton* addToBlockButton_;
   IBOutlet NSPanel* addSheet_;
   IBOutlet NSTextField* addToBlockTextField_;
@@ -65,5 +64,13 @@ extern NSString* const kSelfControlLockFilePath;
 
 // Delegate method for the sheet.  Just closes the sheet.
 - (void)didEndSheet:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo;
+
+// Run specialized SelfControl checkup program to make sure timer should still be on,
+// and remove it if it isn't supposed to be on.
+- (void)runCheckup;
+
+- (void)resetStrikes;
+
+- (void)blockEnded;
 
 @end

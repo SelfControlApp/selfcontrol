@@ -1,8 +1,8 @@
 //
-//  checkup.c
+//  SelfControlCommon.h
 //  SelfControl
 //
-//  Created by Charlie Stigler on 5/03/09.
+//  Created by Charlie Stigler on 2/15/09.
 //  Copyright 2009 Eyebeam. 
 
 // This file is part of SelfControl.
@@ -20,15 +20,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "checkup.h"
+// This file holds variables, functions, includes, etc. that should be easily
+// accessible from many different parts of SelfControl.
 
-int main(int argc, char* argv[]) {
-  if(geteuid()) {
-    printf("ERROR: checkup must be run with root privileges.\n");
-    exit(EXIT_FAILURE);
-  }
-
-  char* args[] = { "launchctl", "start", "org.eyebeam.SelfControl", NULL };
-  
-  return execve("/bin/launchctl", args, NULL); 
-}
+#define SelfControlLockFilePath @"/etc/SelfControl.lock"
+#define DEBUG 0

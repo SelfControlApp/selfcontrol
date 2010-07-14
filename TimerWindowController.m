@@ -41,6 +41,8 @@
   // sheet.
   addToBlockLock = [[NSLock alloc] init];
       
+  numStrikes = 0;
+  
   return self;
 }
 
@@ -63,13 +65,13 @@
   
   [window makeKeyAndOrderFront: self];
   
-  NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: kSelfControlLockFilePath];
+  NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
       
   NSDate* beginDate = [lockDict objectForKey:@"BlockStartedDate"];
   NSTimeInterval blockDuration = [[lockDict objectForKey:@"BlockDuration"] intValue] * 60;
   
   if(beginDate == nil || [beginDate isEqualToDate: [NSDate distantFuture]]
-     || blockDuration <= 0) {
+     || blockDuration < 1) {
     beginDate = [defaults objectForKey:@"BlockStartedDate"];
     blockDuration = [defaults integerForKey:@"BlockDuration"] * 60;
   }
@@ -92,7 +94,7 @@
 /* - (void)reloadTimer {  
   NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];  
   
-  NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: kSelfControlLockFilePath];
+  NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
   
   if([[lockDict objectForKey: @"BlockAsWhitelist"] boolValue])
     [addToBlockButton_ setEnabled: NO];
@@ -132,6 +134,28 @@
   [self updateTimerDisplay: timerUpdater_];
 } */
 
+- (void)blockEnded {
+  if(![[NSApp delegate] selfControlLaunchDaemonIsLoaded]) {
+    [timerUpdater_ invalidate];
+    timerUpdater_ = nil;
+    
+    [timerLabel_ setStringValue: @"Block not active"];
+    [timerLabel_ setFont: [[NSFontManager sharedFontManager]
+                           convertFont: [timerLabel_ font]
+                           toSize: 37]
+     ];
+    
+    [timerLabel_ sizeToFit];
+    
+    // Also reload the contents of the domain list in case it was changed while
+    // the block was ongoing.  We do this by simply clearing the
+    // AppController's domainListWindowController variable.  It will initialize
+    // a new object when it is needed, which will have new data.
+    [[NSApp delegate] closeDomainList];      
+    [[NSApp delegate] refreshUserInterface];
+  }
+}
+
 - (void)updateTimerDisplay:(NSTimer*)timer {  
   int numSeconds = (int) [blockEndingDate_ timeIntervalSinceNow];
   int numHours;
@@ -140,25 +164,15 @@
   if(numSeconds < 0) {
     if(isLeopard)
       [[NSApp dockTile] setBadgeLabel: @""];    
-    
-    if(![[NSApp delegate] selfControlLaunchDaemonIsLoaded]) {
-      [timerUpdater_ invalidate];
-      timerUpdater_ = nil;
-            
-      [timerLabel_ setStringValue: @"Block not active"];
-      [timerLabel_ setFont: [[NSFontManager sharedFontManager]
-                            convertFont: [timerLabel_ font]
-                            toSize: 37]
-       ];
-      
-      [timerLabel_ sizeToFit];
-      
-      // Also reload the contents of the domain list in case it was changed while
-      // the block was ongoing.  We do this by simply clearing the
-      // AppController's domainListWindowController variable.  It will initialize
-      // a new object when it is needed, which will have new data.
-      [[NSApp delegate] closeDomainList];      
-      [[NSApp delegate] refreshUserInterface];
+        
+    // This increments the strike counter.  After four strikes of the timer being
+    // at or less than 0 seconds, SelfControl will assume something's wrong and run
+    // scheckup.
+    numStrikes++;
+        
+    if(numStrikes >= 4) {
+      NSLog(@"WARNING: numStrikes == %d, starting scheckup", numStrikes);
+      [self runCheckup];
     }
     
     return;
@@ -181,6 +195,7 @@
    ];
   
   [timerLabel_ sizeToFit];
+  [self resetStrikes];
   
   if(isLeopard && [[NSUserDefaults standardUserDefaults] boolForKey: @"BadgeApplicationIcon"]) {
     // We want to round up the minutes--standard when we aren't displaying seconds.
@@ -234,7 +249,18 @@
   [sheet orderOut:self];  
 }
 
+// see updateTimerDisplay: for an explanation
+- (void)resetStrikes {
+  numStrikes = 0;
+}
+
+- (void)runCheckup {
+  [NSTask launchedTaskWithLaunchPath: [[NSBundle mainBundle] pathForAuxiliaryExecutable: @"scheckup"] arguments: [NSArray array]];
+  [self resetStrikes];
+}
+
 - (void)dealloc {
+  [addToBlockLock release];
   [timerUpdater_ invalidate];
   timerUpdater_ = nil;
   [super dealloc];

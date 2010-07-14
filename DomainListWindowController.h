@@ -24,9 +24,7 @@
 #import <Cocoa/Cocoa.h>
 #import "HostImporter.h"
 #import "ThunderbirdPreferenceParser.h"
-
-// This is a reference to the kSelfControlLockFilePath const variable in AppController.m
-extern NSString* const kSelfControlLockFilePath;
+#import "SelfControlCommon.h"
 
 // A subclass of NSWindowController created to manage the domain list (actually
 // host list, but domain list seems more understandable to inexperienced users
