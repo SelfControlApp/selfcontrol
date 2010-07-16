@@ -68,7 +68,7 @@ int main(int argc, char* argv[]) {
   }  
     
   [pool drain];
-  NSLog(@"INFO: scheckup run but block should still be ongoing.");
+  NSLog(@"INFO: scheckup run, but block should still be ongoing.");
   exit(EXIT_SUCCESS);
 }
 

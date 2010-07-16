@@ -51,10 +51,14 @@ int main(int argc, char* argv[]) {
                                      // 2541 (decimal) = 4755 (octal) = rwsr-xr-x
                                      [NSNumber numberWithUnsignedLong: 2541], NSFilePosixPermissions,
                                      nil];
-  if(![[NSFileManager defaultManager] changeFileAttributes: checkupAttributes atPath: [[NSBundle mainBundle] pathForAuxiliaryExecutable: @"scheckup"]]) {
+  NSString* scheckupPath = [[NSString stringWithUTF8String: argv[0]] stringByDeletingLastPathComponent];
+  scheckupPath = [scheckupPath stringByAppendingPathComponent: @"scheckup"];
+  
+  
+  if(![[NSFileManager defaultManager] changeFileAttributes: checkupAttributes atPath: scheckupPath]) {
     // This is, uh, suuuuper messy.  But pretty much it just checks whether the file already has the right attributes.
     // If it does already, we don't bother to warn the user about being unable to change attributes.
-    NSDictionary* oldAttributes = [[NSFileManager defaultManager] fileAttributesAtPath: [[NSBundle mainBundle] pathForAuxiliaryExecutable: @"scheckup"] traverseLink: YES];
+    NSDictionary* oldAttributes = [[NSFileManager defaultManager] fileAttributesAtPath: scheckupPath traverseLink: YES];
     NSString* octalPerms = [NSString stringWithFormat: @"%o", [oldAttributes objectForKey: NSFilePosixPermissions]];
     if(!([[oldAttributes objectForKey: NSFileOwnerAccountID] longLongValue] == 0 && [octalPerms characterAtIndex: 0] == '4' && [octalPerms characterAtIndex: 3] != 0 && [octalPerms characterAtIndex: 3] != 4))
       NSLog(@"WARNING: Could not change file attributes on scheckup.  Backup block-removal system may not work.");
@@ -85,7 +89,7 @@ int main(int argc, char* argv[]) {
   // the defaults object cannot be simply kept in a variable and repeatedly
   // referred to, the resets will invalidate it.  For now, we're just re-registering
   // the default settings, since they don't carry over from the main application.
-  // TODO: Factor this code out into a function
+  // TODO: Factor this code out into a functionf
   [NSUserDefaults resetStandardUserDefaults];
   seteuid(controllingUID);
   defaults = [NSUserDefaults standardUserDefaults];
@@ -170,6 +174,7 @@ int main(int argc, char* argv[]) {
         exit(EX_IOERR);
       }
     }
+    
     if(![fileManager copyPath: [NSString stringWithCString: argv[0]]
                              toPath: @"/Library/PrivilegedHelperTools/org.eyebeam.SelfControl"
                               handler: NULL]) {
@@ -177,6 +182,35 @@ int main(int argc, char* argv[]) {
       printStatus(-208);
       exit(EX_IOERR);
     }
+    
+    if([fileManager fileExistsAtPath: @"/Library/PrivilegedHelperTools/scheckup"]) {
+      if(![fileManager removeFileAtPath: @"/Library/PrivilegedHelperTools/scheckup" handler: nil]) {
+        NSLog(@"WARNING: Could not delete old scheckup binary.");
+      }
+    }    
+    
+    NSString* scheckupPath = [[NSString stringWithUTF8String: argv[0]] stringByDeletingLastPathComponent];
+    scheckupPath = [scheckupPath stringByAppendingPathComponent: @"scheckup"];
+    
+    if(![fileManager copyPath: scheckupPath
+                       toPath: @"/Library/PrivilegedHelperTools/scheckup"
+                      handler: NULL]) {
+      NSLog(@"WARNING: Could not copy scheckup to PrivilegedHelperTools directory.");
+    }
+    
+    // Let's set up our backup system -- give scheckup the SUID bit
+    NSDictionary* checkupAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                       [NSNumber numberWithInt: 0], NSFileOwnerAccountID,
+                                       [NSNumber numberWithLongLong: controllingUID], NSFileGroupOwnerAccountID,
+                                       // 2541 (decimal) = 4755 (octal) = rwsr-xr-x
+                                       [NSNumber numberWithUnsignedLong: 2541], NSFilePosixPermissions,
+                                       nil];    
+    
+    if(![[NSFileManager defaultManager] changeFileAttributes: checkupAttributes atPath: scheckupPath]) {
+      NSLog(@"WARNING: Could not change file attributes on scheckup.  Backup block-removal system may not work.");
+    }
+    
+    
     if(![fileManager changeFileAttributes: fileAttributes
                                    atPath:  @"/Library/PrivilegedHelperTools/org.eyebeam.SelfControl"]) {
       NSLog(@"ERROR: Could not change permissions on SelfControl's helper binary.");

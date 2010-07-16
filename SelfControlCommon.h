@@ -24,4 +24,4 @@
 // accessible from many different parts of SelfControl.
 
 #define SelfControlLockFilePath @"/etc/SelfControl.lock"
-#define DEBUG 0
+// #define DEBUG 0

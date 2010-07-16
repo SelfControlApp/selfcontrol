@@ -147,12 +147,7 @@
     
     [timerLabel_ sizeToFit];
     
-    // Also reload the contents of the domain list in case it was changed while
-    // the block was ongoing.  We do this by simply clearing the
-    // AppController's domainListWindowController variable.  It will initialize
-    // a new object when it is needed, which will have new data.
-    [[NSApp delegate] closeDomainList];      
-    [[NSApp delegate] refreshUserInterface];
+    [self resetStrikes];
   }
 }
 
@@ -171,7 +166,7 @@
     numStrikes++;
         
     if(numStrikes >= 4) {
-      NSLog(@"WARNING: numStrikes == %d, starting scheckup", numStrikes);
+      NSLog(@"WARNING: Block should have ended four seconds ago, starting scheckup");
       [self runCheckup];
     }
     
@@ -255,7 +250,7 @@
 }
 
 - (void)runCheckup {
-  [NSTask launchedTaskWithLaunchPath: [[NSBundle mainBundle] pathForAuxiliaryExecutable: @"scheckup"] arguments: [NSArray array]];
+  [NSTask launchedTaskWithLaunchPath: @"/Library/PrivilegedHelperTools/scheckup" arguments: [NSArray array]];
   [self resetStrikes];
 }
 
