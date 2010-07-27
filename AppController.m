@@ -175,9 +175,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   
   if(blockIsReallyOn) { // block is on
     if(!blockIsOn) { // if we just switched states to on...
-      [timerWindowController_ close];
-      [timerWindowController_ release];
-      timerWindowController_ = nil;
+      [self closeTimerWindow];
       [self showTimerWindow];
       [initialWindow_ close];
       [self closeDomainList];
@@ -329,6 +327,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 - (void)closeTimerWindow {
   [timerWindowController_ close];
+  [timerWindowController_ release];
+  timerWindowController_ = nil;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
