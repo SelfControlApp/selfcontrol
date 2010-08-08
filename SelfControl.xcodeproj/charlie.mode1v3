@@ -216,10 +216,10 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>CBD9106B11FF4B2900615B1F</string>
+						<string>CB8F985F120E86FE00DD0604</string>
 						<key>history</key>
 						<array>
-							<string>CBD9104111FF47E500615B1F</string>
+							<string>CB8F983D120E86E000DD0604</string>
 						</array>
 					</dict>
 					<key>SplitCount</key>
@@ -328,7 +328,7 @@
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 3}, {179, 660}}</string>
+							<string>{{0, 0}, {179, 660}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -347,7 +347,7 @@
 							<real>179</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>26 59 1280 719 0 0 1280 778 </string>
+						<string>0 59 1280 719 0 0 1280 778 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -377,7 +377,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>CBD9106A11FF4B2900615B1F</string>
+										<string>CB8F985C120E86FE00DD0604</string>
 										<key>history</key>
 										<array>
 											<string>CB93672B0F85C15500EF284E</string>
@@ -425,7 +425,7 @@
 											<string>CBB076BD11F02E150078B5FE</string>
 											<string>CBB076C611F02F0E0078B5FE</string>
 											<string>CBD9106911FF4B2900615B1F</string>
-											<string>CBB0770A11F038280078B5FE</string>
+											<string>CB8F983C120E86E000DD0604</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -437,14 +437,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {1079, 427}}</string>
+								<string>{{0, 0}, {1079, 411}}</string>
 								<key>RubberWindowFrame</key>
-								<string>26 59 1280 719 0 0 1280 778 </string>
+								<string>0 59 1280 719 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>427pt</string>
+							<string>411pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -457,14 +457,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 432}, {1079, 246}}</string>
+								<string>{{0, 416}, {1079, 262}}</string>
 								<key>RubberWindowFrame</key>
-								<string>26 59 1280 719 0 0 1280 778 </string>
+								<string>0 59 1280 719 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>246pt</string>
+							<string>262pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
@@ -483,9 +483,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>CBD9106311FF47FF00615B1F</string>
+				<string>CB8F985D120E86FE00DD0604</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>CBD9106411FF47FF00615B1F</string>
+				<string>CB8F985E120E86FE00DD0604</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -636,17 +636,12 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>CBD9107311FF4B2900615B1F</string>
-		<string>CBD9107411FF4B2900615B1F</string>
-		<string>CBD9107511FF4B2900615B1F</string>
-		<string>1C78EAAD065D492600B07095</string>
-		<string>1CD10A99069EF8BA00B06720</string>
 		<string>CB2358380F4521130030F59C</string>
 		<string>CBD2688A11EE2D2100042CD8</string>
-		<string>/Users/charlie/new/selfcontrol/SelfControl.xcodeproj</string>
+		<string>/Users/charlie/SelfControl/selfcontrol/SelfControl.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>26 59 1280 719 0 0 1280 778 </string>
+	<string>0 59 1280 719 0 0 1280 778 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
@@ -723,7 +718,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>CB2358380F4521130030F59C</string>
-				<string>CBD9106611FF47FF00615B1F</string>
+				<string>CB8F9860120E86FE00DD0604</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>

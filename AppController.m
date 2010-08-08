@@ -681,7 +681,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   
   // We need to pass our UID to the helper tool.  It needs to know whose defaults
   // it should reading in order to properly load the blacklist.
-  char uidString[10];
+  char uidString[32];
   snprintf(uidString, sizeof(uidString), "%d", getuid());
   
   FILE* commPipe;
@@ -781,7 +781,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   
   // We need to pass our UID to the helper tool.  It needs to know whose defaults
   // it should read in order to properly load the blacklist.
-  char uidString[10];
+  char uidString[32];
   snprintf(uidString, sizeof(uidString), "%d", getuid());
   
   FILE* commPipe;
