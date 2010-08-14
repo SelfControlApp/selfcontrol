@@ -143,4 +143,6 @@
 
 - (void)setBlockLength:(int)blockLength;
 
+- (void)switchedToWhitelist:(id)sender;
+
 @end

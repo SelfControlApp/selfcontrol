@@ -110,6 +110,7 @@ int main(int argc, char* argv[]) {
                                [NSNumber numberWithBool: YES], @"AllowLocalNetworks",
                                [NSNumber numberWithInt: 1440], @"MaxBlockLength",
                                [NSNumber numberWithInt: 15], @"BlockLengthInterval",
+                               [NSNumber numberWithBool: NO], @"WhitelistAlertSuppress",
                                nil];
   [defaults registerDefaults:appDefaults];    
   if(!domainList) {

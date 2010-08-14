@@ -47,6 +47,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
                                  [NSNumber numberWithBool: YES], @"AllowLocalNetworks",
                                  [NSNumber numberWithInt: 1440], @"MaxBlockLength",
                                  [NSNumber numberWithInt: 15], @"BlockLengthInterval",
+                                 [NSNumber numberWithBool: NO], @"WhitelistAlertSuppress",
                                  nil];
     
     [defaults_ registerDefaults:appDefaults];
@@ -858,6 +859,19 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 - (void)setBlockLength:(int)blockLength {
   [blockDurationSlider_ setIntValue: blockLength];
   [self updateTimeSliderDisplay];
+}
+
+- (void)switchedToWhitelist:(id)sender {
+  if(![defaults_ boolForKey: @"WhitelistAlertSuppress"]) {
+    NSAlert* a = [NSAlert alertWithMessageText: @"Are you sure you want a whitelist block?" defaultButton: @"OK" alternateButton: @"" otherButton: @"" informativeTextWithFormat: @"A whitelist block means that everything on the internet BESIDES your specified list will be blocked.  This includes the web, email, SSH, and anything else your computer accesses via the internet.  If a web site requires resources such as images or scripts from a site that is not on your whitelist, the site may not work properly."]; 
+    if([a respondsToSelector: @selector(setShowsSuppressionButton:)]) {
+      [a setShowsSuppressionButton: YES];
+    }
+    [a runModal];
+    if([a respondsToSelector: @selector(suppressionButton)] && [[a suppressionButton] state] == NSOnState) {
+      [defaults_ setBool: YES forKey: @"WhitelistAlertSuppress"];
+    }
+  }
 }
 
 @end
