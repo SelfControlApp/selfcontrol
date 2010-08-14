@@ -216,7 +216,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>CBFD38FF1217438300E1AEF6</string>
+						<string>CBFD391E121747F400E1AEF6</string>
 						<key>history</key>
 						<array>
 							<string>CBFD38A81217353100E1AEF6</string>
@@ -256,7 +256,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>CBFD39001217438300E1AEF6</string>
+						<string>CBFD391F121747F400E1AEF6</string>
 						<key>history</key>
 						<array>
 							<string>CB8F9864120F77DA00DD0604</string>
@@ -312,8 +312,6 @@
 			<key>Layout</key>
 			<array>
 				<dict>
-					<key>BecomeActive</key>
-					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -364,7 +362,8 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>10</integer>
+									<integer>17</integer>
+									<integer>14</integer>
 									<integer>2</integer>
 									<integer>0</integer>
 								</array>
@@ -389,7 +388,7 @@
 							<real>179</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>-19 59 1280 719 0 0 1280 778 </string>
+						<string>-52 59 1280 719 0 0 1280 778 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -400,12 +399,14 @@
 					<key>Dock</key>
 					<array>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>AppController.h</string>
+								<string>HelperCommon.h</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -413,11 +414,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>AppController.h</string>
+										<string>HelperCommon.h</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>CBFD38FE1217438300E1AEF6</string>
+										<string>CBFD391D121747F400E1AEF6</string>
 										<key>history</key>
 										<array>
 											<string>CB93672B0F85C15500EF284E</string>
@@ -435,21 +436,14 @@
 											<string>CBD2679711ED968E00042CD8</string>
 											<string>CBD2679811ED968E00042CD8</string>
 											<string>CBD2679911ED968E00042CD8</string>
-											<string>CBD267FC11EDACA500042CD8</string>
-											<string>CBD267FF11EDACA500042CD8</string>
-											<string>CBD2685311EE2AB500042CD8</string>
 											<string>CBD2685A11EE2B6200042CD8</string>
-											<string>CBD2685B11EE2B6200042CD8</string>
 											<string>CBD2689E11EE2F4A00042CD8</string>
 											<string>CBD2689F11EE2F4A00042CD8</string>
 											<string>CBD268A011EE2F4A00042CD8</string>
-											<string>CBD268A111EE2F4A00042CD8</string>
-											<string>CBD268A211EE2F4A00042CD8</string>
 											<string>CBD268A311EE2F4A00042CD8</string>
 											<string>CBD268A411EE2F4A00042CD8</string>
 											<string>CBD268A511EE2F4A00042CD8</string>
 											<string>CBD268A611EE2F4A00042CD8</string>
-											<string>CBD268A711EE2F4A00042CD8</string>
 											<string>CBD268AF11EE306900042CD8</string>
 											<string>CBD268E311EE718D00042CD8</string>
 											<string>CBD268E411EE718D00042CD8</string>
@@ -462,10 +456,17 @@
 											<string>CBB076C611F02F0E0078B5FE</string>
 											<string>CBFD387F121732C000E1AEF6</string>
 											<string>CBFD389B1217349500E1AEF6</string>
-											<string>CBFD38C81217378500E1AEF6</string>
 											<string>CBFD38FB1217438300E1AEF6</string>
-											<string>CBFD38FC1217438300E1AEF6</string>
-											<string>CBFD38FD1217438300E1AEF6</string>
+											<string>CBFD39061217477B00E1AEF6</string>
+											<string>CBFD39071217477B00E1AEF6</string>
+											<string>CBFD39081217477B00E1AEF6</string>
+											<string>CBFD39091217477B00E1AEF6</string>
+											<string>CBFD390A1217477B00E1AEF6</string>
+											<string>CBFD390C1217477B00E1AEF6</string>
+											<string>CBFD390D1217477B00E1AEF6</string>
+											<string>CBFD390E1217477B00E1AEF6</string>
+											<string>CBFD391C121747F400E1AEF6</string>
+											<string>CBFD390B1217477B00E1AEF6</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -479,7 +480,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {1079, 403}}</string>
 								<key>RubberWindowFrame</key>
-								<string>-19 59 1280 719 0 0 1280 778 </string>
+								<string>-52 59 1280 719 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -499,7 +500,7 @@
 								<key>Frame</key>
 								<string>{{0, 408}, {1079, 270}}</string>
 								<key>RubberWindowFrame</key>
-								<string>-19 59 1280 719 0 0 1280 778 </string>
+								<string>-52 59 1280 719 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
@@ -676,19 +677,19 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>CBFD39011217438300E1AEF6</string>
+		<string>CBFD39131217477B00E1AEF6</string>
 		<string>1C530D57069F1CE1000CFCEE</string>
 		<string>CBFD388B121732C000E1AEF6</string>
 		<string>CBFD388C121732C000E1AEF6</string>
 		<string>1C78EAAD065D492600B07095</string>
-		<string>CB2358380F4521130030F59C</string>
 		<string>CBD2688A11EE2D2100042CD8</string>
 		<string>CBFD38B21217368B00E1AEF6</string>
 		<string>1CD10A99069EF8BA00B06720</string>
 		<string>/Users/charlie/SelfControl/selfcontrol/SelfControl.xcodeproj</string>
+		<string>CB2358380F4521130030F59C</string>
 	</array>
 	<key>WindowString</key>
-	<string>-19 59 1280 719 0 0 1280 778 </string>
+	<string>-52 59 1280 719 0 0 1280 778 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
@@ -704,12 +705,14 @@
 					<key>Dock</key>
 					<array>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string></string>
+								<string>HelperCommon.m</string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -718,7 +721,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {1280, 361}}</string>
 								<key>RubberWindowFrame</key>
-								<string>0 60 1280 718 0 0 1280 778 </string>
+								<string>243 60 1280 718 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -742,7 +745,7 @@
 								<key>Frame</key>
 								<string>{{0, 366}, {1280, 311}}</string>
 								<key>RubberWindowFrame</key>
-								<string>0 60 1280 718 0 0 1280 778 </string>
+								<string>243 60 1280 718 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXBuildResultsModule</string>
@@ -772,11 +775,11 @@
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.buildV3</string>
 			<key>WindowString</key>
-			<string>0 60 1280 718 0 0 1280 778 </string>
+			<string>243 60 1280 718 0 0 1280 778 </string>
 			<key>WindowToolGUID</key>
 			<string>CB2358380F4521130030F59C</string>
 			<key>WindowToolIsVisible</key>
-			<false/>
+			<true/>
 		</dict>
 		<dict>
 			<key>FirstTimeWindowDisplayed</key>

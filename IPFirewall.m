@@ -330,7 +330,7 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
                    @"set",
                    [NSString stringWithFormat: @"%d", kIPFirewallRuleSetNumber],
                    @"allow",
-                   @"udp",
+                   @"ip",
                    @"from",
                    @"me",
                    @"to",
@@ -342,6 +342,72 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
   
   [task waitUntilExit];
   int status = [task terminationStatus];
+  
+  selfControlBlockRuleCount_++;
+  
+  args = [NSArray arrayWithObjects:
+                   @"-q",
+                   @"add",
+                   [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + selfControlBlockRuleCount_],
+                   @"set",
+                   [NSString stringWithFormat: @"%d", kIPFirewallRuleSetNumber],
+                   @"allow",
+                   @"udp",
+                   @"from",
+                   @"me",
+                   @"to",
+                   @"any",
+                   @"dst-port",
+                   @"123",
+                   nil];
+  task = [NSTask launchedTaskWithLaunchPath:kIPFirewallExecutablePath arguments:args];
+  
+  [task waitUntilExit];
+  status = [task terminationStatus] && status;
+  
+  selfControlBlockRuleCount_++;  
+  
+  args = [NSArray arrayWithObjects:
+          @"-q",
+          @"add",
+          [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + selfControlBlockRuleCount_],
+          @"set",
+          [NSString stringWithFormat: @"%d", kIPFirewallRuleSetNumber],
+          @"deny",
+          @"ip",
+          @"from",
+          @"me",
+          @"to",
+          @"any",
+          @"dst-port",
+          @"67",
+          nil];
+  task = [NSTask launchedTaskWithLaunchPath:kIPFirewallExecutablePath arguments:args];
+  
+  [task waitUntilExit];
+  status = [task terminationStatus] && status;  
+  
+  selfControlBlockRuleCount_++;
+  
+  args = [NSArray arrayWithObjects:
+          @"-q",
+          @"add",
+          [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + selfControlBlockRuleCount_],
+          @"set",
+          [NSString stringWithFormat: @"%d", kIPFirewallRuleSetNumber],
+          @"deny",
+          @"ip",
+          @"from",
+          @"me",
+          @"to",
+          @"any",
+          @"dst-port",
+          @"68",
+          nil];
+  task = [NSTask launchedTaskWithLaunchPath:kIPFirewallExecutablePath arguments:args];
+  
+  [task waitUntilExit];
+  status = [task terminationStatus] && status;  
   
   selfControlBlockRuleCount_++;
     
