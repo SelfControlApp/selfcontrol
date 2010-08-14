@@ -44,6 +44,7 @@
   IBOutlet TimerWindowController* timerWindowController_;
   NSUserDefaults* defaults_;
   NSLock* blockLock_;
+  NSLock* refreshUILock_;
   BOOL blockIsOn;
 }
 
@@ -141,4 +142,5 @@
 - (int)blockLength;
 
 - (void)setBlockLength:(int)blockLength;
+
 @end

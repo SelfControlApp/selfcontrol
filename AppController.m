@@ -54,6 +54,11 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     // blockLock_ is a lock that allows us to ensure that the user interface will
     // be locked up while we're adding a block.
     blockLock_ = [[NSLock alloc] init];
+    
+    // refreshUILock_ is a lock that prevents a race condition by making the refreshUserInterface
+    // method alter the blockIsOn variable atomically (will no longer be necessary once we can
+    // use properties).
+    refreshUILock_ = [[NSLock alloc] init];
   }
     
   return self;
@@ -171,17 +176,19 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (void)refreshUserInterface {
-  BOOL blockIsReallyOn = [self selfControlLaunchDaemonIsLoaded];
+  [refreshUILock_ lock];
+  BOOL blockWasOn = blockIsOn;
+  blockIsOn = [self selfControlLaunchDaemonIsLoaded];
   
-  if(blockIsReallyOn) { // block is on
-    if(!blockIsOn) { // if we just switched states to on...
+  if(blockIsOn) { // block is on
+    if(!blockWasOn) { // if we just switched states to on...
       [self closeTimerWindow];
       [self showTimerWindow];
       [initialWindow_ close];
       [self closeDomainList];
     }
   } else { // block is off
-    if(blockIsOn) { // if we just switched states to off...
+    if(blockWasOn) { // if we just switched states to off...
       [timerWindowController_ blockEnded];
     
       // Makes sure the domain list will refresh when it comes back
@@ -227,85 +234,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
       [blockLock_ unlock];
     }
   }
-  
-  blockIsOn = blockIsReallyOn;
-    
-/*  if(blockIsReallyOn != blockIsOn) {
-    blockIsOn = blockIsReallyOn;
-    if(blockIsOn) {
-      [timerWindowController_ close];
-      [timerWindowController_ release];
-      timerWindowController_ = nil;
-      [self showTimerWindow];
-      [initialWindow_ close];
-      [self closeDomainList];
-    } else {
-      [self updateTimeSliderDisplay: blockDurationSlider_];
-      
-      [defaults_ synchronize];
-      
-      // We check whether a block is currently being added by trying to lock
-      // blockLock_.
-      BOOL addBlockIsOngoing = ![blockLock_ tryLock];
-          
-      if([blockDurationSlider_ intValue] != 0 && [[defaults_ objectForKey: @"HostBlacklist"] count] != 0 && !addBlockIsOngoing)
-        [submitButton_ setEnabled: YES];
-      else
-        [submitButton_ setEnabled: NO];
-      
-      // If we're adding a block, we want buttons disabled.
-      if(!addBlockIsOngoing) {
-        [blockDurationSlider_ setEnabled: YES];
-        [editBlacklistButton_ setEnabled: YES];
-        [submitButton_ setTitle: @"Start"];
-      }
-      else {
-        [blockDurationSlider_ setEnabled: NO];
-        [editBlacklistButton_ setEnabled: NO];
-        [submitButton_ setTitle: @"Loading"];
-      }
-      
-      // Unlock blockLock_ if we locked it
-      if(!addBlockIsOngoing) {
-        [blockLock_ unlock];
-      }
-            
-      NSWindow* mainWindow = [NSApp mainWindow];
-      // We don't necessarily want the initial window to be key and front,
-      // but no other message seems to show it properly.
-      [initialWindow_ makeKeyAndOrderFront: self];
-      // So we work around it and make key and front whatever was the main window
-      [mainWindow makeKeyAndOrderFront: self];
-      
-      [self closeTimerWindow];
-    }
-  }
-  
-  // We check whether a block is currently being added by trying to lock
-  // blockLock_.
-  BOOL addBlockIsOngoing = ![blockLock_ tryLock];
-  
-  if([blockDurationSlider_ intValue] != 0 && [[defaults_ objectForKey: @"HostBlacklist"] count] != 0 && !addBlockIsOngoing)
-    [submitButton_ setEnabled: YES];
-  else
-    [submitButton_ setEnabled: NO];
-  
-  // If we're adding a block, we want buttons disabled.
-  if(!addBlockIsOngoing) {
-    [blockDurationSlider_ setEnabled: YES];
-    [editBlacklistButton_ setEnabled: YES];
-    [submitButton_ setTitle: @"Start"];
-  }
-  else {
-    [blockDurationSlider_ setEnabled: NO];
-    [editBlacklistButton_ setEnabled: NO];
-    [submitButton_ setTitle: @"Loading"];
-  }
-  
-  // Unlock blockLock_ if we locked it
-  if(!addBlockIsOngoing) {
-    [blockLock_ unlock];
-  }  */
+  [refreshUILock_ unlock];
 }
 
 - (void)showTimerWindow {
