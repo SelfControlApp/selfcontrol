@@ -121,7 +121,7 @@ class Backend():
         
         tempHosts = open('/tmp/etc_hosts.tmp', 'a')
         for line in hostsFile:
-            tempHosts.append(line)
+            tempHosts.write(line)
         
         
         tempHosts.write("\n# PySelfControl Blocklist. NO NOT EDIT OR MODIFY THE CONTENTS OF THIS\n")
