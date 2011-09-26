@@ -6,8 +6,8 @@ SelfRestraint is a cross platform version of Steve Lambert's [SelfControl](http:
 
 Credits
 -------
-SelfRestraint was developed by [Parker Kuivila](http://parker.kuivi.la)
-The UI and features were inspired by (Steve Lambert)[http://visitsteve.com/]
+SelfRestraint was developed by [Parker Kuivila](http://parker.kuivi.la)  
+The UI and features were inspired by [Steve Lambert](http://visitsteve.com/)
 
 License
 -------
