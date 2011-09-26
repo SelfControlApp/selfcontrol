@@ -142,7 +142,7 @@ class Backend():
         os.system("""osascript -e 'do shell script "mv /tmp/etc_hosts.tmp /etc/hosts"  with administrator privileges'""")
         
         
-        self.blockTime = form.timeSlider.value()*  60
+        self.blockTime = form.timeSlider.value()*  60 * 15
         t = Timer(self.blockTime,self.endBlock)
         t.start()
         counter.display(time.strftime('%H:%M.%S', time.gmtime(self.blockTime)))
