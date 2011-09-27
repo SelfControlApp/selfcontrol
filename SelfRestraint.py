@@ -11,7 +11,7 @@ import sys
 import os
 import time
 # Importing only specific modules from Qt will save us about 150MB of space
-from PySide.QtCore import Qt
+from PySide.QtCore import Qt, QTimer, SIGNAL
 from PySide.QtGui import QPushButton, QDialog, QApplication, QSlider, QLabel, QHBoxLayout, \
 QVBoxLayout, QPlainTextEdit, QLCDNumber
 from threading import Timer
@@ -114,17 +114,10 @@ class Backend():
     def startBlock(self):
         """docstring for startBlock"""
         # Append the blacklisted domains to the system hosts file
-        # os.system("""osascript -e 'do shell script "echo true"  with administrator privileges'""")
         form.hide()
         list.close()
         
         hostsFile = open(self.HostsFile, "a")
-        
-        
-        # tempHosts = open('/tmp/etc_hosts.tmp', 'a')
-        # for line in hostsFile:
-        # tempHosts.write(line)
-        
         
         hostsFile.write("\n# PySelfControl Blocklist. NO NOT EDIT OR MODIFY THE CONTENTS OF THIS\n")
         hostsFile.write("# PySelfControl will remove the block when the timer has ended\n")
@@ -136,14 +129,9 @@ class Backend():
         for sites in blockedSites:
             if sites != "# Add one website per line #" and len(sites)>2:
                 hostsFile.write( "0.0.0.0\t"+sites+"\n" )
-            
+
         hostsFile.write("# End Blocklist")
         hostsFile.close()
-        # hostsFile.close()
-        
-        # os.system("""osascript -e 'do shell script "mv /tmp/etc_hosts.tmp /etc/hosts"  with administrator privileges'""")
-        
-        
         self.blockTime = form.timeSlider.value()* 60 * 1
         t = Timer(self.blockTime,self.endBlock)
         t.start()
@@ -188,6 +176,12 @@ class Backend():
 
 
 if __name__ == '__main__':
+    # In OS X we need to run this as root in order to block sites
+    if os.name == "posix":
+        if os.getuid() !=0:
+            os.system("""osascript -e 'do shell script "python SelfRestraint.py"  with administrator privileges'""")
+            sys.exit(1)
+    
     # Create the Qt Application
     app = QApplication(sys.argv)
     backend = Backend()
