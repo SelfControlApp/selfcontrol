@@ -10,8 +10,10 @@
 import sys
 import os
 import time
-from PySide.QtCore import *
-from PySide.QtGui import *
+# Importing only specific modules from Qt will save us about 150MB of space
+from PySide.QtCore import Qt
+from PySide.QtGui import QPushButton, QDialog, QApplication, QSlider, QLabel, QHBoxLayout, \
+QVBoxLayout, QPlainTextEdit, QLCDNumber
 from threading import Timer
 
 class MainForm(QDialog):
@@ -116,33 +118,33 @@ class Backend():
         form.hide()
         list.close()
         
-        hostsFile = open(self.HostsFile, "r")
+        hostsFile = open(self.HostsFile, "a")
         
         
-        tempHosts = open('/tmp/etc_hosts.tmp', 'a')
-        for line in hostsFile:
-            tempHosts.write(line)
+        # tempHosts = open('/tmp/etc_hosts.tmp', 'a')
+        # for line in hostsFile:
+        # tempHosts.write(line)
         
         
-        tempHosts.write("\n# PySelfControl Blocklist. NO NOT EDIT OR MODIFY THE CONTENTS OF THIS\n")
-        tempHosts.write("# PySelfControl will remove the block when the timer has ended\n")
-        tempHosts.write('# Block the following sites:\n')
+        hostsFile.write("\n# PySelfControl Blocklist. NO NOT EDIT OR MODIFY THE CONTENTS OF THIS\n")
+        hostsFile.write("# PySelfControl will remove the block when the timer has ended\n")
+        hostsFile.write('# Block the following sites:\n')
         
         blockedSites = list.tableView.toPlainText()
         blockedSites = blockedSites.split("\n")
         
         for sites in blockedSites:
             if sites != "# Add one website per line #" and len(sites)>2:
-                tempHosts.write( "0.0.0.0\t"+sites+"\n" )
+                hostsFile.write( "0.0.0.0\t"+sites+"\n" )
             
-        tempHosts.write("# End Blocklist")
-        tempHosts.close()
+        hostsFile.write("# End Blocklist")
         hostsFile.close()
+        # hostsFile.close()
         
-        os.system("""osascript -e 'do shell script "mv /tmp/etc_hosts.tmp /etc/hosts"  with administrator privileges'""")
+        # os.system("""osascript -e 'do shell script "mv /tmp/etc_hosts.tmp /etc/hosts"  with administrator privileges'""")
         
         
-        self.blockTime = form.timeSlider.value()*  60 * 15
+        self.blockTime = form.timeSlider.value()* 60 * 1
         t = Timer(self.blockTime,self.endBlock)
         t.start()
         counter.display(time.strftime('%H:%M.%S', time.gmtime(self.blockTime)))

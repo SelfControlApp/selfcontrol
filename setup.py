@@ -7,9 +7,11 @@ Usage:
 
 from setuptools import setup
 
-APP = ['PySelfControl.py']
+APP = ['SelfRestraint.py']
 DATA_FILES = []
 OPTIONS = {'argv_emulation': False, 'includes': ['sys','os','time','threading','PySide.QtCore', 'PySide.QtGui']}
+
+
 
 setup(
     app=APP,
