@@ -129,6 +129,12 @@ class Backend():
         for sites in blockedSites:
             if sites != "# Add one website per line #" and len(sites)>2:
                 hostsFile.write( "0.0.0.0\t"+sites+"\n" )
+                temp = sites
+                if sites.startswith('www.'):
+                    temp = temp.split('www.')[1]
+                    hostsFile.write( "0.0.0.0\t"+temp+"\n" )
+                else:
+                    hostsFile.write( "0.0.0.0\t"+"www."+sites+"\n" )
 
         hostsFile.write("# End Blocklist")
         hostsFile.close()
@@ -179,10 +185,15 @@ if __name__ == '__main__':
     # In OS X we need to run this as root in order to block sites
     if os.name == "posix":
         if os.getuid() !=0:
-            os.system("""osascript -e 'do shell script "python SelfRestraint.py"  with administrator privileges'""")
-            sys.exit(1)
+            old_uid = os.getuid()
+            os.chdir('../MacOS')
+            os.system("""osascript -e 'do shell script "./SelfRestraint"  with administrator privileges'""") 
+            # If running via 'python SelfRestraint.py uncomment out below, and comment out above two lines
+            # os.system("""osascript -e 'do shell script "python SelfRestraint.py"  with administrator privileges'""")
+            # sys.exit(1)
     
     # Create the Qt Application
+        
     app = QApplication(sys.argv)
     backend = Backend()
     # Create and show the forms
