@@ -13,6 +13,23 @@ License
 -------
 SelfRestraint is Free Software under the GPL. You are free to share, modify, and add to the code as you wish.
 
+Installation
+------------
+If you simply want to use the program, just run the included .exe (Windows) or .app (Mac OS X). If you want to help with the project, and build it yourself here's how:  
+  
+1. Download the dependancies  
+    
+    * PySide  
+    * PySide
+    * Qt Library
+    * py2app / py2exe (depending on your system)
+2. In the source directory, run `python setup.py py2app` or `python setup.py py2exe`
+3. If you're on OS X:  
+    
+    * Navigate to SelfRestraint.app/Contents/Resources and open __boot__.py
+    * Add `sys.path = [os.path.join(os.environ['RESOURCEPATH'], 'lib', 'python2.7', 'lib-dynload')] + sys.path` above `sys.frozen = 'macosx_app'`
+
+
 Known Bugs 
 ----------
 * Mac version requires password, once to block, once to unblock
