@@ -32,8 +32,8 @@ If you simply want to use the program, just run the included .exe (Windows) or .
 
 Known Bugs 
 ----------
-* Mac version requires password, once to block, once to unblock
-* Does not work on Windows
+* Mac version requires password, messy workaround
+* Does not work on OS X
 * Quitting means you have to re run the app, and let is finish the countdown
 
 To Do
