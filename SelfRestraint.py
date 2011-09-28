@@ -187,10 +187,10 @@ if __name__ == '__main__':
         if os.getuid() !=0:
             old_uid = os.getuid()
             os.chdir('../MacOS')
-            os.system("""osascript -e 'do shell script "./SelfRestraint"  with administrator privileges'""") 
+            os.system("""osascript -e 'do shell script "./SelfRestraint;"  with administrator privileges'""") 
             # If running via 'python SelfRestraint.py uncomment out below, and comment out above two lines
             # os.system("""osascript -e 'do shell script "python SelfRestraint.py"  with administrator privileges'""")
-            # sys.exit(1)
+            sys.exit(1)
     
     # Create the Qt Application
         
