@@ -17,7 +17,7 @@
     float mBottomBarHeight;
     float mMidBarHeight;
     float mMidBarOriginY;
-	
+
 	id mInnerGradient;
 	id mOuterGradient;
 }

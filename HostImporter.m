@@ -3,17 +3,17 @@
 //  SelfControl
 //
 //  Created by Charlie Stigler on 2/16/09.
-//  Copyright 2009 Eyebeam. 
+//  Copyright 2009 Eyebeam.
 
 // This file is part of SelfControl.
-// 
+//
 // SelfControl is free software:  you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
 // This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of 
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
@@ -25,7 +25,7 @@
 
 @implementation HostImporter
 
-+ (NSArray*)incomingMailHostnamesFromMail { 
++ (NSArray*)incomingMailHostnamesFromMail {
   NSMutableArray* hostnames = [NSMutableArray arrayWithCapacity: 10];
   NSDictionary* defaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName: @"com.apple.Mail"];
   NSArray* incomingAccounts = [defaults objectForKey: @"MailAccounts"];
@@ -56,11 +56,11 @@
           [hostname appendString: @":"];
           [hostname appendString: @"143"];
         }
-      }        
+      }
       [hostnames addObject: hostname];
     }
   }
-  
+
   return hostnames;
 }
 
@@ -80,12 +80,12 @@
         [hostnames addObject: [hostname stringByAppendingString: @":25"]];
         [hostnames addObject: [hostname stringByAppendingString: @":465"]];
         [hostname appendString: @":587"];
-      } 
-      
-      [hostnames addObject: hostname];      
+      }
+
+      [hostnames addObject: hostname];
     }
   }
-  
+
   return hostnames;
 }
 

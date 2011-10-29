@@ -3,17 +3,17 @@
 //  SelfControl
 //
 //  Created by Charlie Stigler on 4/28/09.
-//  Copyright 2009 Eyebeam. 
+//  Copyright 2009 Eyebeam.
 
 // This file is part of SelfControl.
-// 
+//
 // SelfControl is free software:  you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
 // This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of 
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
@@ -34,9 +34,9 @@ NSString* const kHostFileBlockerSelfControlFooter = @"# END SELFCONTROL BLOCK";
     if(!newFileContents)
       return nil;
   }
-    
+
   return self;
-}    
+}
 
 - (BOOL)revertFileContentsToDisk {
   newFileContents = [NSMutableString stringWithContentsOfFile: kHostFileBlockerPath usedEncoding: &stringEnc error: NULL];
@@ -53,27 +53,27 @@ NSString* const kHostFileBlockerSelfControlFooter = @"# END SELFCONTROL BLOCK";
 
   if(![fileMan isReadableFileAtPath: @"/etc/hosts"] || [fileMan fileExistsAtPath: @"/etc/hosts.bak"])
     return NO;
-  
+
   return [fileMan copyPath: @"/etc/hosts" toPath: @"/etc/hosts.bak" handler: nil];
 }
 
 - (BOOL)deleteBackupHostsFile {
   NSFileManager* fileMan = [NSFileManager defaultManager];
-  
+
   if(![fileMan isDeletableFileAtPath: @"/etc/hosts.bak"])
     return NO;
-  
+
   return [fileMan removeFileAtPath: @"/etc/hosts.bak" handler: nil];
 }
 
-- (BOOL)restoreBackupHostsFile {  
+- (BOOL)restoreBackupHostsFile {
   NSFileManager* fileMan = [NSFileManager defaultManager];
-  
+
   if(![fileMan removeFileAtPath: @"/etc/hosts" handler: nil])
     return NO;
   if(![fileMan isReadableFileAtPath: @"/etc/hosts.bak"] || ![fileMan movePath: @"/etc/hosts.bak" toPath: @"/etc/hosts" handler: nil])
     return NO;
-  
+
   return YES;
 }
 
@@ -99,12 +99,12 @@ NSString* const kHostFileBlockerSelfControlFooter = @"# END SELFCONTROL BLOCK";
 - (void)removeSelfControlBlock {
   if(![self containsSelfControlBlock])
     return;
-  
+
   NSRange startRange = [newFileContents rangeOfString: kHostFileBlockerSelfControlHeader];
   NSRange endRange = [newFileContents rangeOfString: kHostFileBlockerSelfControlFooter];
-  
+
   NSRange deleteRange = NSMakeRange(startRange.location - 1, ((endRange.location + endRange.length) - startRange.location) + 2);
-  
+
   [newFileContents deleteCharactersInRange: deleteRange];
 }
 
