@@ -1,8 +1,5 @@
 SelfRestraint
 =============
-Status
-------  
-There are still a few more kinks to work out, but I have resumed working on this program. I got a few of the big issues worked out (compiling for Windows and being able to make a small .exe. ). However there are still some minor bugs remaining. If all goes well this should be done fairly soon! Feel free to poke around and help if you feel inclined to!
 
 About
 -----
@@ -48,11 +45,9 @@ Known Bugs
 * Mac version requires password, messy workaround
 * Does not work on OS X
 * Quitting means you have to re run the app, and let is finish the countdown
-* Permissions don't work on Windows
-* Basically this app isn't working yet. 
 
 To Do
 -----
-* Add compiled .app and .exe
-* Integrate better to use Admin privileges
-* <del> Decrease compiled app's size </del>
+* Linux Support
+* Add compiled .app 
+* Integrate better to use Admin privileges on OSX
