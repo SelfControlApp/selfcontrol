@@ -15,15 +15,24 @@ SelfRestraint is Free Software under the GPL. You are free to share, modify, and
 
 Installation
 ------------
-If you simply want to use the program, just run the included .exe (Windows) or .app (Mac OS X). If you want to help with the project, and build it yourself here's how:  
+If you simply want to use the program, just run the included .exe (Windows) or .app (Mac OS X) (Coming Soon!).
+
+
+Building
+--------
+If you want to help with the project and build it yourself here's how:  
   
 1. Download the dependancies  
-    
-    * PySide  
-    * PySide
-    * Qt Library
-    * py2app / py2exe (depending on your system)
-2. In the source directory, run `python setup.py py2app` or `python setup.py py2exe`
+	* Python
+    * [PyQt4](http://www.riverbankcomputing.co.uk/software/pyqt/download)  
+    * Qt Library (Included in the PyQT4 Installer)
+    * py2app / [PyInstaller](http://www.pyinstaller.org) (depending on your system)
+2. For Windows:  
+	* In the PyInstaller directory run `python Configure.py`  
+	* Then to create the spec file type `python Makespec.py -F -w --icon=<Path_To_Selfrestraint.ico> \path\to\SelfRestraint.py`  
+	* Now a file called `SelfRestraint.spec` should appear  
+	* To build the program type `python Build.py \path\to\SelfRestraint.spec`  
+	
 3. If you're on OS X:  
     
     * Navigate to SelfRestraint.app/Contents/Resources and open __boot__.py
@@ -35,9 +44,11 @@ Known Bugs
 * Mac version requires password, messy workaround
 * Does not work on OS X
 * Quitting means you have to re run the app, and let is finish the countdown
+* Permissions don't work on Windows
+* Basically this app isn't working yet. 
 
 To Do
 -----
 * Add compiled .app and .exe
 * Integrate better to use Admin privileges
-* Decrease compiled app's size
+* <del> Decrease compiled app's size </del>
