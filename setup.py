@@ -7,7 +7,7 @@
 #   Usage (Windows):
 #       python setup.py py2exe
 
-
+# Now that we use PyInstaller, we actually might not need this file...
 import sys
 from setuptools import setup
 
