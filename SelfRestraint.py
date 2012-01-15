@@ -11,8 +11,8 @@ import sys
 import os
 import time
 # Importing only specific modules from Qt will save us about 150MB of space
-from PySide.QtCore import Qt, QTimer, SIGNAL
-from PySide.QtGui import QPushButton, QDialog, QApplication, QSlider, QLabel, QHBoxLayout, \
+from PyQt4.QtCore import Qt, QTimer, SIGNAL
+from PyQt4.QtGui import QPushButton, QDialog, QApplication, QSlider, QLabel, QHBoxLayout, \
 QVBoxLayout, QPlainTextEdit, QLCDNumber
 from threading import Timer
 
@@ -130,7 +130,7 @@ class Backend():
             if sites != "# Add one website per line #" and len(sites)>2:
                 hostsFile.write( "0.0.0.0\t"+sites+"\n" )
                 temp = sites
-                if sites.startswith('www.'):
+                if sites.startsWith('www.'):
                     temp = temp.split('www.')[1]
                     hostsFile.write( "0.0.0.0\t"+temp+"\n" )
                 else:
