@@ -21,7 +21,7 @@ class MainForm(QDialog):
     def __init__(self, parent=None):
         # Create our main`layout for picking duration and such
         super(MainForm, self).__init__(parent)
-        self.setWindowTitle("PySelfControl")
+        self.setWindowTitle("SelfRestraint")
         # Create widgets such as buttons and slider
         self.editButton  = QPushButton("Edit Blocklist")
         self.startButton = QPushButton("Start")    
