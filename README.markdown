@@ -1,5 +1,9 @@
 SelfRestraint
 =============
+Status
+------  
+There are still a few more kinks to work out, but I have resumed working on this program. I got a few of the big issues worked out (compiling for Windows and being able to make a small .exe. ). However there are still some minor bugs remaining. If all goes well this should be done fairly soon! Feel free to poke around and help if you feel inclined to!
+
 About
 -----
 SelfRestraint is a cross platform version of Steve Lambert's [SelfControl](http://github.com/slambert/selfcontrol), written in Python. It allows you to block distracting sites for a set amount of time, so you can use your computer and access the internet without having to worry about distracting sites. 
