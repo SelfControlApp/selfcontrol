@@ -13,7 +13,7 @@ import time
 # Importing only specific modules from Qt will save us about 150MB of space
 from PyQt4.QtCore import Qt, QTimer, SIGNAL
 from PyQt4.QtGui import QPushButton, QDialog, QApplication, QSlider, QLabel, QHBoxLayout, \
-QVBoxLayout, QPlainTextEdit, QLCDNumber
+QVBoxLayout, QPlainTextEdit, QLCDNumber, QMessageBox
 from threading import Timer
 
 class MainForm(QDialog):
@@ -138,7 +138,7 @@ class Backend():
 
         hostsFile.write("# End Blocklist")
         hostsFile.close()
-        self.blockTime = form.timeSlider.value()* 60 * 1
+        self.blockTime = form.timeSlider.value()* 60 * 15
         t = Timer(self.blockTime,self.endBlock)
         t.start()
         counter.display(time.strftime('%H:%M.%S', time.gmtime(self.blockTime)))
@@ -191,12 +191,21 @@ if __name__ == '__main__':
             # If running via 'python SelfRestraint.py uncomment out below, and comment out above two lines
             # os.system("""osascript -e 'do shell script "python SelfRestraint.py"  with administrator privileges'""")
             sys.exit(1)
+            
+    
     
     # Create the Qt Application
         
     app = QApplication(sys.argv)
     backend = Backend()
     # Create and show the forms
+    if os.name == "nt":
+        # Make sure the program is running w/ administrative privileges.
+        from win32com.shell import shell
+        if not shell.IsUserAnAdmin():
+            alertBox = QMessageBox()
+            alertBox.setText ("You may need to run this program as an Administrator. If it doesn't work please close this program, and run it by right clicking and choose 'Run As Administrator' ")
+            alertBox.show()
     form = MainForm()
     form.show()
     list = ListEditor()
@@ -205,5 +214,4 @@ if __name__ == '__main__':
     counter.setSegmentStyle(QLCDNumber.Filled)
     counter.setNumDigits(8)
     counter.resize(150, 60)
-    sys.exit(app.exec_())
-    
+    sys.exit(app.exec_())    
