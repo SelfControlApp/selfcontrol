@@ -51,3 +51,5 @@ To Do
 * Linux Support
 * Add compiled .app 
 * Integrate better to use Admin privileges on OSX
+* Build in update checking
+* Increase robustness, and make workarounds harder
