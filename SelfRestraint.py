@@ -183,7 +183,7 @@ class checkForUpdates():
         self.VERSION = "0.2" # The version of this app
         f = urllib.urlopen("https://raw.github.com/ParkerK/selfrestraint/master/version")
         if os.name == "nt":
-            self.new_version = f.read().split("\n")[1].split(":")[0]
+            self.new_version = f.read().split("\n")[0].split(":")[1]
         else:
             self.new_version = f.read().split("\n")[1].split(":")[1]
         
