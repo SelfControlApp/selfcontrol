@@ -183,13 +183,20 @@ class Backend():
 
 if __name__ == '__main__':
     # In OS X we need to run this as root in order to block sites
-    if os.name == "posix":
+    if os.name == "posix" and sys.platform == "darwin":
         if os.getuid() !=0:
             old_uid = os.getuid()
             os.chdir('../MacOS')
             os.system("""osascript -e 'do shell script "./SelfRestraint;"  with administrator privileges'""") 
             # If running via 'python SelfRestraint.py uncomment out below, and comment out above two lines
             # os.system("""osascript -e 'do shell script "python SelfRestraint.py"  with administrator privileges'""")
+            sys.exit(1)
+    elif os.name == "posix": # If Linux
+        if os.geteuid() !=0: # If not root, run as root
+            print "Script not started as root. Running sudo.." # Debugging stuff
+            args = ['gksudo', sys.executable] + sys.argv + [os.environ]
+            # the next line replaces the currently-running process with the sudo
+            os.execlpe('gksudo', *args)
             sys.exit(1)
             
     
