@@ -7,9 +7,7 @@
 # Lambert's SelfControl app. 
 #
  
-import sys
-import os
-import time
+import sys, os, time, webbrowser, urllib
 # Importing only specific modules from Qt will save us about 150MB of space
 from PyQt4.QtCore import Qt, QTimer, SIGNAL
 from PyQt4.QtGui import QPushButton, QDialog, QApplication, QSlider, QLabel, QHBoxLayout, \
@@ -180,17 +178,38 @@ class Backend():
         form.show()
         counter.hide()
 
-
+class checkForUpdates():
+    def __init__(self, parent=None):
+        self.VERSION = "0.2" # The version of this app
+        f = urllib.urlopen("https://raw.github.com/ParkerK/selfrestraint/master/version")
+        if os.name == "nt":
+            self.new_version = f.read().split("\n")[1].split(":")[0]
+        else:
+            self.new_version = f.read().split("\n")[1].split(":")[1]
+        
+    def check(self):    
+        if self.new_version != self.VERSION:
+            self.alertBox = QMessageBox()
+            self.alertBox.setText ("A new version of SelfRestraint is now available. It's recommended that you download this update")
+            self.alertBox.downloadButton = self.alertBox.addButton("Get The Update",3)
+            self.alertBox.downloadButton.clicked.connect(self.openURL)
+            self.alertBox.addButton("Remind Me Later",1)
+            self.alertBox.show()
+            
+    
+    def openURL(self):
+        webbrowser.open_new("http://parker.kuivi.la/projects/selfrestraint.html")
+    
 if __name__ == '__main__':
     # In OS X we need to run this as root in order to block sites
     if os.name == "posix" and sys.platform == "darwin":
         if os.getuid() !=0:
             old_uid = os.getuid()
-            os.chdir('../MacOS')
-            os.system("""osascript -e 'do shell script "./SelfRestraint;"  with administrator privileges'""") 
-            # If running via 'python SelfRestraint.py uncomment out below, and comment out above two lines
-            # os.system("""osascript -e 'do shell script "python SelfRestraint.py"  with administrator privileges'""")
-            sys.exit(1)
+            # os.chdir('../MacOS')
+            # os.system("""osascript -e 'do shell script "./SelfRestraint;"  with administrator privileges'""") 
+            # # If running via 'python SelfRestraint.py uncomment out below, and comment out above two lines
+            # # os.system("""osascript -e 'do shell script "python SelfRestraint.py"  with administrator privileges'""")
+            # sys.exit(1)
     elif os.name == "posix": # If Linux
         if os.geteuid() !=0: # If not root, run as root
             print "Script not started as root. Running sudo.." # Debugging stuff
@@ -213,8 +232,12 @@ if __name__ == '__main__':
             alertBox = QMessageBox()
             alertBox.setText ("You may need to run this program as an Administrator. If it doesn't work please close this program, and run it by right clicking and choose 'Run As Administrator' ")
             alertBox.show()
+    
+    updater = checkForUpdates()    
+    updater.check()        
     form = MainForm()
     form.show()
+    
     list = ListEditor()
     # Run the main Qt loop
     counter = QLCDNumber()
