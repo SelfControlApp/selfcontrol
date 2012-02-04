@@ -192,20 +192,27 @@
   [timerLabel_ sizeToFit];
   [self resetStrikes];
   
-  if(isLeopard && [[NSUserDefaults standardUserDefaults] boolForKey: @"BadgeApplicationIcon"]) {
-    // We want to round up the minutes--standard when we aren't displaying seconds.
-    if(numSeconds > 0 && numMinutes != 59)
+  
+  if(isLeopard && [[NSUserDefaults standardUserDefaults] boolForKey: @"BadgeApplicationIcon"]) 
+  
+  {
+    // We want to round up the minutes--standard when we aren't displaying seconds. 
+   //previous freeze occuring here after starting time, brackets fixed issue 
+      if(numSeconds > 0 && numMinutes != 59)   {
       numMinutes++;
-    NSString* badgeString = [NSString stringWithFormat: @"%0.2d:%0.2d",
-                                                        numHours,
-                                                        numMinutes];
+      NSString* badgeString = [NSString stringWithFormat: @"%0.2d:%0.2d", numHours, numMinutes];
     [[NSApp dockTile] setBadgeLabel: badgeString];
-  } else if(isLeopard) {
+      
+  } 
+  
+  else if(isLeopard) {
     // If we're on Leopard but aren't using badging, set the badge string to be
     // empty to remove any badge if there is one.
     [[NSApp dockTile] setBadgeLabel: @""];
-  }
+    }
 }
+}
+
 
 - (void)windowShouldClose:(NSNotification *)notification {
   // Hack to make the application terminate after the last window is closed, but
