@@ -385,7 +385,9 @@ int main(int argc, char* argv[]) {
       
       if(blockStartedDate == nil || blockDuration < 1) {    
           // Defaults is broken too!  Let's get out of here!
-        NSLog(@"ERROR: Checkup ran but no block found.  Attempting to remove block.");
+          // NSLog is helpful, but quieting it 
+
+     //   NSLog(@"ERROR: Checkup ran but no block found.  Attempting to remove block.");
         
         // get rid of this block
         removeBlock(controllingUID);
@@ -404,7 +406,8 @@ int main(int argc, char* argv[]) {
     // makes it more likely that an improperly applied block might come right
     // off.
     if( blockStartedDate == nil || blockDuration < 1 || [[NSDate distantFuture] isEqualToDate: blockStartedDate] || timeSinceStarted >= blockDuration) {
-      NSLog(@"INFO: Checkup ran, block expired, removing block.");            
+    //Got rid of log to previent 
+        //NSLog(@"INFO: Checkup ran, block expired, removing block.");            
       
 #ifdef DEBUG
       NSLog(@"BLOCK EXPIRED DUE TO CONDITIONS:");
@@ -450,8 +453,13 @@ int main(int argc, char* argv[]) {
         
         // Perform the re-add of the rules
         addRulesToFirewall(controllingUID);
-        NSLog(@"INFO: Checkup ran, readded block rules.");
-      } else NSLog(@"INFO: Checkup ran, no action needed.");
+      //  NSLog(@"INFO: Checkup ran, readded block rules.");
+      } else 
+          
+#ifdef DEBUG
+          NSLog(@"INFO: Checkup ran, no action needed.");
+#endif
+
       
       // Why would we make sure the defaults are correct even if we can get the
       // info from the lock file?  In case one goes down, we want to make sure

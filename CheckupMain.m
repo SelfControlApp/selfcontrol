@@ -25,7 +25,11 @@ int main(int argc, char* argv[]) {
   
   if(blockStartedDate == nil || [[NSDate distantFuture] isEqualToDate: blockStartedDate] || blockDuration < 1) {    
     // The lock file seems to be broken.  Try defaults.
-    NSLog(@"WARNING: Lock file unreadable or invalid");
+      
+#ifdef DEBUG
+      NSLog(@"WARNING: Lock file unreadable or invalid");
+#endif
+
     [NSUserDefaults resetStandardUserDefaults];
     seteuid(getuid());
     defaults = [NSUserDefaults standardUserDefaults];
@@ -38,7 +42,8 @@ int main(int argc, char* argv[]) {
     
     if(blockStartedDate == nil || [[NSDate distantFuture] isEqualToDate: blockStartedDate] || blockDuration < 1) {    
       // Defaults is broken too!  Let's get out of here!
-      NSLog(@"WARNING: Checkup ran but no block found.  Attempting to remove block.");
+        
+      //NSLog(@"WARNING: Checkup ran but no block found.  Attempting to remove block.");
       
       // get rid of this block
       removeBlock(getuid());
