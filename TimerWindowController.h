@@ -35,6 +35,7 @@
   NSDate* blockEndingDate_;
   NSLock* addToBlockLock;
   BOOL isLeopard;
+  BOOL isLion;
   int numStrikes;
   IBOutlet NSButton* addToBlockButton_;
   IBOutlet NSPanel* addSheet_;

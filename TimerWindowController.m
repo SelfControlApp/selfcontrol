@@ -37,6 +37,12 @@
     else
         isLeopard = YES;
     
+    if(major <= 10 && minor < 7)
+        isLion = NO;
+    else
+        isLion = YES;
+
+    
     // We need a block to prevent us from running multiple copies of the "Add to Block"
     // sheet.
     addToBlockLock = [[NSLock alloc] init];
@@ -158,15 +164,17 @@
     
     if(numSeconds < 0) {
         if(isLeopard)
-            [[NSApp dockTile] setBadgeLabel: @""];    
-        
+            //setting it to nil instead of @""
+            [[NSApp dockTile] setBadgeLabel: nil];    
+       // NSLog(@"on leopard Setting Badge Label to Nothing after completion %d",numSeconds);
+
         // This increments the strike counter.  After four strikes of the timer being
         // at or less than 0 seconds, SelfControl will assume something's wrong and run
         // scheckup.
         numStrikes++;
         
         if(numStrikes >= 4) {
-            NSLog(@"WARNING: Block should have ended four seconds ago, starting scheckup");
+           // NSLog(@"WARNING: Block should have ended four seconds ago, starting scheckup");
             [self runCheckup];
         }
         
@@ -178,6 +186,8 @@
     numMinutes = (numSeconds / 60);
     numSeconds %= 60;
     
+
+    
     NSString* timeString = [NSString stringWithFormat: @"%0.2d:%0.2d:%0.2d",
                             numHours,
                             numMinutes,
@@ -188,37 +198,56 @@
                            convertFont: [timerLabel_ font]
                            toSize: 42]
      ];
+   //this NSLog is pretty bad since it runs every second
+    //NSLog(@"set string numSeconds <  0 %d",numSeconds);
+
     
     [timerLabel_ sizeToFit];
     [self resetStrikes];
     
-    
-    if(isLeopard && [[NSUserDefaults standardUserDefaults] boolForKey: @"BadgeApplicationIcon"]) 
-        
-    {
-        // We want to round up the minutes--standard when we aren't displaying seconds. 
-        //previous freeze occuring here after starting time, brackets fixed issue 
-        if(numSeconds > 0 && numMinutes != 59)   {
+    if(isLeopard && [[NSUserDefaults standardUserDefaults] boolForKey: @"BadgeApplicationIcon"]) {
+        // We want to round up the minutes--standard when we aren't displaying seconds.
+        if(numSeconds > 0 && numMinutes != 59)
             numMinutes++;
-            NSString* badgeString = [NSString stringWithFormat: @"%0.2d:%0.2d", numHours, numMinutes];
-            [[NSApp dockTile] setBadgeLabel: badgeString];
-            
-        } 
+        //NSLog(@"Seconds left > 0  %d",numSeconds);
+
+        NSString* badgeString = [NSString stringWithFormat: @"%0.2d:%0.2d",
+                                 numHours,
+                                 numMinutes];
         
-        else if(isLeopard) {
-            // If we're on Leopard but aren't using badging, set the badge string to be
-            // empty to remove any badge if there is one.
-            [[NSApp dockTile] setBadgeLabel: @""];
+        //fix to make it have no badge in lion, 
+        //correction/ Now not as overzealous. 
+        if(isLion) {
+        [[NSApp dockTile] setBadgeLabel: badgeString];
+           // NSLog(@"On Lion: Set BadgeString to BadgeString %d",numSeconds);
+         //   NSLog(@"On Lion: Set BadgeString to BadgeString: %@",badgeString);
+
+
         }
+        else {
+        [[NSApp dockTile] setBadgeLabel: badgeString];
+      //      NSLog(@"Not on Lion, setting badgestring %@",badgeString);
+
+        }
+
+
+    } else if(isLeopard) {
+        // If we're on Leopard but aren't using badging, set the badge string to be
+        // empty to remove any badge if there is one.
+    //    NSLog(@"Set the string to be nil, remove any badge if there is one %d",numSeconds);
+
+        [[NSApp dockTile] setBadgeLabel: nil];
+
     }
 }
-
 
 - (void)windowShouldClose:(NSNotification *)notification {
     // Hack to make the application terminate after the last window is closed, but
     // INCLUDE the HUD-style timer window.
     if(![[[NSApp delegate] initialWindow] isVisible]) {
         [NSApp terminate: self];
+        
+
     }
 }
 
@@ -235,6 +264,7 @@
           contextInfo: nil];
     
     [addToBlockLock unlock];  
+
 }
 
 - (IBAction) closeAddSheet:(id)sender {
@@ -254,11 +284,15 @@
 // see updateTimerDisplay: for an explanation
 - (void)resetStrikes {
     numStrikes = 0;
+   // NSLog(@"Resetting Strikes ");
+
 }
 
 - (void)runCheckup {
     [NSTask launchedTaskWithLaunchPath: @"/Library/PrivilegedHelperTools/scheckup" arguments: [NSArray array]];
     [self resetStrikes];
+  //  NSLog(@"Running Checkup ");
+
 }
 
 - (void)dealloc {
