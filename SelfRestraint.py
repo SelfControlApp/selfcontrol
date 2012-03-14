@@ -122,17 +122,19 @@ class Backend():
         hostsFile.write('# Block the following sites:\n')
         
         blockedSites = list.tableView.toPlainText()
-        blockedSites = blockedSites.split("\n")
-        
+        # remove whitespace before and after
+        blockedSites = [ site.strip() for site in blockedSites.split("\n") ]
+        # filter out comments and empty rows
+        blockedSites = [ site for site in blockedSites if (not site.startsWith('#')) and site != '' ]
+        # write out
         for sites in blockedSites:
-            if sites != "# Add one website per line #" and len(sites)>2:
-                hostsFile.write( "0.0.0.0\t"+sites+"\n" )
-                temp = sites
-                if sites.startsWith('www.'):
-                    temp = temp.split('www.')[1]
-                    hostsFile.write( "0.0.0.0\t"+temp+"\n" )
-                else:
-                    hostsFile.write( "0.0.0.0\t"+"www."+sites+"\n" )
+            hostsFile.write( "0.0.0.0\t"+sites+"\n" )
+            temp = sites
+            if sites.startsWith('www.'):
+                temp = temp.split('www.')[1]
+                hostsFile.write( "0.0.0.0\t"+temp+"\n" )
+            else:
+                hostsFile.write( "0.0.0.0\t"+"www."+sites+"\n" )
 
         hostsFile.write("# End Blocklist")
         hostsFile.close()
