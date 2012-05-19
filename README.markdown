@@ -27,6 +27,7 @@ If you want to help with the project and build it yourself here's how:
 	* Python
     * [PyQt4](http://www.riverbankcomputing.co.uk/software/pyqt/download)  
     * Qt Library (Included in the PyQT4 Installer)
+    * [Pywin32](http://sourceforge.net/projects/pywin32/)
     * py2app / [PyInstaller](http://www.pyinstaller.org) (depending on your system)
 2. For Windows:  
 	* In the PyInstaller directory run `python Configure.py`  
