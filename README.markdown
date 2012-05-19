@@ -45,6 +45,7 @@ Known Bugs
 * Mac version requires password, messy workaround
 * Does not work on OS X
 * Quitting means you have to re run the app, and let is finish the countdown
+* Sometimes the timer doesn't end and the block lasts forever (until hosts file is changed)
 
 To Do
 -----
@@ -52,3 +53,4 @@ To Do
 * Add compiled .app 
 * Integrate better to use Admin privileges on OSX
 * Increase robustness, and make workarounds harder
+* Add site/config file to prevent constant reentering of sites
