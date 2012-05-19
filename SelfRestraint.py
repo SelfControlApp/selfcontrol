@@ -80,7 +80,10 @@ class ListEditor(QDialog):
         self.setWindowTitle("Website Blocklist")
         # Create widgets
         self.tableView  = QPlainTextEdit()
-        self.tableView.appendPlainText("# Add one website per line #\nexample.com\n")
+
+        if not os.path.isfile(homedir+"\\blocklist"):
+            self.createBlockFile()
+        self.loadBlockFile()
 
         layout = QVBoxLayout()
         layout.addWidget(self.tableView)
@@ -90,9 +93,27 @@ class ListEditor(QDialog):
         
         self.setLayout(layout)
     
+    def loadBlockFile(self):
+        #If a site block file exists, load it
+        file = open(homedir+"blocklist")
+        self.tableView.appendPlainText(file.read())
+        file.close()
+
+    def createBlockFile(self):
+        #Create a new site block file
+        file = open(homedir+"blocklist", 'w')
+        file.write("# Add one website per line #\nexample.com\n")
+        file.close()
+
+    def updateBlocks(self):
+        #Write blocked sites to file
+        file = open(homedir+"blocklist", 'w+')
+        file.write(list.tableView.toPlainText())
+        
     def closeList(self):
         # Hide the list
         """docstring for closeList"""
+        self.updateBlocks()
         list.hide()
     
 
@@ -229,11 +250,17 @@ if __name__ == '__main__':
     # Create and show the forms
     if os.name == "nt":
         # Make sure the program is running w/ administrative privileges.
-        from win32com.shell import shell
+        import win32api
+        from win32com.shell import shell, shellcon
         if not shell.IsUserAnAdmin():
             alertBox = QMessageBox()
             alertBox.setText ("You may need to run this program as an Administrator. If it doesn't work please close this program, and run it by right clicking and choose 'Run As Administrator' ")
             alertBox.show()
+        #get the MS AppData directory to store data in
+        homedir = "{}\\".format(shell.SHGetFolderPath(0, shellcon.CSIDL_APPDATA, 0, 0))
+        if not os.path.isdir("{0}.{1}".format(homedir,"SelfRestraint")):
+            os.mkdir("{0}.{1}".format(homedir,"SelfRestraint"))
+        homedir = homedir + "\\"
     
     updater = checkForUpdates()    
     updater.check()        
