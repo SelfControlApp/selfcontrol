@@ -229,7 +229,7 @@ if __name__ == '__main__':
     # Create and show the forms
     if os.name == "nt":
         # Make sure the program is running w/ administrative privileges.
-        from win64com.shell import shell
+        from win32com.shell import shell
         if not shell.IsUserAnAdmin():
             alertBox = QMessageBox()
             alertBox.setText ("You may need to run this program as an Administrator. If it doesn't work please close this program, and run it by right clicking and choose 'Run As Administrator' ")
