@@ -3,17 +3,17 @@
 //  SelfControl
 //
 //  Created by Charlie Stigler on 1/29/09.
-//  Copyright 2009 Eyebeam. 
+//  Copyright 2009 Eyebeam.
 
 // This file is part of SelfControl.
-// 
+//
 // SelfControl is free software:  you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
 // This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of 
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
@@ -28,13 +28,13 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 - (AppController*) init {
   if(self = [super init]) {
-  
+
     defaults_ = [NSUserDefaults standardUserDefaults];
-    
+
     NSDictionary* appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
                                  [NSNumber numberWithInt: 0], @"BlockDuration",
                                  [NSDate distantFuture], @"BlockStartedDate",
-                                 [NSArray array], @"HostBlacklist", 
+                                 [NSArray array], @"HostBlacklist",
                                  [NSNumber numberWithBool: YES], @"EvaluateCommonSubdomains",
                                  [NSNumber numberWithBool: YES], @"HighlightInvalidHosts",
                                  [NSNumber numberWithBool: YES], @"VerifyInternetConnection",
@@ -49,37 +49,37 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
                                  [NSNumber numberWithInt: 15], @"BlockLengthInterval",
                                  [NSNumber numberWithBool: NO], @"WhitelistAlertSuppress",
                                  nil];
-    
+
     [defaults_ registerDefaults:appDefaults];
-    
+
     // blockLock_ is a lock that allows us to ensure that the user interface will
     // be locked up while we're adding a block.
     blockLock_ = [[NSLock alloc] init];
-    
+
     // refreshUILock_ is a lock that prevents a race condition by making the refreshUserInterface
     // method alter the blockIsOn variable atomically (will no longer be necessary once we can
     // use properties).
     refreshUILock_ = [[NSLock alloc] init];
   }
-    
+
   return self;
 }
 
 - (NSString*)selfControlHelperToolPath {
   static NSString* path;
-  
+
   // Cache the path so it doesn't have to be searched for again.
   if(!path) {
     NSBundle* thisBundle = [NSBundle mainBundle];
     path = [thisBundle pathForAuxiliaryExecutable: @"org.eyebeam.SelfControl"];
   }
-  
+
   return path;
 }
 
 - (char*)selfControlHelperToolPathUTF8String {
   static char* path;
-  
+
   // Cache the converted path so it doesn't have to be converted again
   if(!path) {
     path = malloc(512);
@@ -87,23 +87,23 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
                                        maxLength: 512
                                         encoding: NSUTF8StringEncoding];
   }
-  
+
   return path;
 }
 
 - (IBAction)updateTimeSliderDisplay:(id)sender {
   int numMinutes = floor([blockDurationSlider_ intValue]);
-    
+
   // Time-display code cleaned up thanks to the contributions of many users
-  
+
   NSString* timeString = @"";
 
   int formatDays, formatHours, formatMinutes;
-  
+
   formatDays = numMinutes / 1440;
   formatHours = (numMinutes % 1440) / 60;
   formatMinutes = (numMinutes % 60);
-  
+
   if(numMinutes > 0) {
     if(formatDays > 0) {
       timeString = [NSString stringWithFormat:@"%d %@", formatDays, (formatDays == 1 ? @"day" : @"days")];
@@ -118,7 +118,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   else {
     timeString = @"Disabled";
   }
-    
+
   [blockSliderTimeDisplayLabel_ setStringValue:timeString];
   [submitButton_ setEnabled: (numMinutes > 0) && ([[defaults_ arrayForKey:@"HostBlacklist"] count] > 0)];
 }
@@ -130,30 +130,30 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     // is in the past, not distantFuture) so the Start button should be disabled.
 
     NSLog(@"WARNING: Block started date is in the past (%@)", [defaults_ objectForKey: @"BlockStartedDate"]);
-        
+
    /* NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
                                        code: -101
                                    userInfo: [NSDictionary dictionaryWithObject: @"Error -101: Attempting to add block, but a block appears to be in progress."
                                                                          forKey: NSLocalizedDescriptionKey]];
-    
+
     [NSApp presentError: err];
-    
+
     return; */
   }
   if([[defaults_ arrayForKey:@"HostBlacklist"] count] == 0) {
     // Since the Start button should be disabled when the blacklist has no entries,
     // this should definitely not be happening.  Exit.
-    
+
     NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
                                        code: -102
                                    userInfo: [NSDictionary dictionaryWithObject: @"Error -102: Attempting to add block, but no blocklist is set."
                                                                          forKey: NSLocalizedDescriptionKey]];
-    
-    [NSApp presentError: err];    
-    
+
+    [NSApp presentError: err];
+
     return;
   }
-    
+
   if([defaults_ boolForKey: @"VerifyInternetConnection"] && ![self networkConnectionIsAvailable]) {
     NSAlert* networkUnavailableAlert = [[[NSAlert alloc] init] autorelease];
     [networkUnavailableAlert setMessageText: @"No network connection detected"];
@@ -162,7 +162,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     [networkUnavailableAlert addButtonWithTitle: @"Network Diagnostics..."];
     if([networkUnavailableAlert runModal] == NSAlertFirstButtonReturn)
       return;
-    
+
     // If the user selected Network Diagnostics launch an assisant to help them.
     // apple.com is an arbitrary host chosen to pass to Network Diagnostics.
     CFURLRef url = CFURLCreateWithString(NULL, CFSTR("http://apple.com"), NULL);
@@ -170,9 +170,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     CFNetDiagnosticDiagnoseProblemInteractively(diagRef);
     return;
   }
-  
+
   [timerWindowController_ resetStrikes];
-  
+
   [NSThread detachNewThreadSelector: @selector(installBlock) toTarget: self withObject: nil];
 }
 
@@ -180,7 +180,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   [refreshUILock_ lock];
   BOOL blockWasOn = blockIsOn;
   blockIsOn = [self selfControlLaunchDaemonIsLoaded];
-  
+
   if(blockIsOn) { // block is on
     if(!blockWasOn) { // if we just switched states to on...
       [self closeTimerWindow];
@@ -191,33 +191,33 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   } else { // block is off
     if(blockWasOn) { // if we just switched states to off...
       [timerWindowController_ blockEnded];
-    
+
       // Makes sure the domain list will refresh when it comes back
       [self closeDomainList];
-            
+
       NSWindow* mainWindow = [NSApp mainWindow];
       // We don't necessarily want the initial window to be key and front,
       // but no other message seems to show it properly.
       [initialWindow_ makeKeyAndOrderFront: self];
       // So we work around it and make key and front whatever was the main window
-      [mainWindow makeKeyAndOrderFront: self];          
-      
-      [self closeTimerWindow];    
-    }      
-    
-    [defaults_ synchronize]; 
-      
+      [mainWindow makeKeyAndOrderFront: self];
+
+      [self closeTimerWindow];
+    }
+
+    [defaults_ synchronize];
+
     [self updateTimeSliderDisplay: blockDurationSlider_];
-        
+
     // We check whether a block is currently being added by trying to lock
     // blockLock_.
     BOOL addBlockIsOngoing = ![blockLock_ tryLock];
-    
+
     if([blockDurationSlider_ intValue] != 0 && [[defaults_ objectForKey: @"HostBlacklist"] count] != 0 && !addBlockIsOngoing)
       [submitButton_ setEnabled: YES];
     else
       [submitButton_ setEnabled: NO];
-    
+
     // If we're adding a block, we want buttons disabled.
     if(!addBlockIsOngoing) {
       [blockDurationSlider_ setEnabled: YES];
@@ -229,7 +229,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
       [editBlacklistButton_ setEnabled: NO];
       [submitButton_ setTitle: @"Loading"];
     }
-    
+
     // Unlock blockLock_ if we locked it
     if(!addBlockIsOngoing) {
       [blockLock_ unlock];
@@ -241,9 +241,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 - (void)showTimerWindow {
   if(timerWindowController_ == nil) {
      unsigned int major, minor, bugfix;
-     
+
     [SelfControlUtilities getSystemVersionMajor: &major minor: &minor bugFix: &bugfix];
-    
+
     if(major <= 10 && minor < 5)
       [NSBundle loadNibNamed: @"TigerTimerWindow" owner: self];
     else
@@ -263,7 +263,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
   [NSApp setDelegate: self];
-  
+
   // Register observers on both distributed and normal notification centers
   // to receive notifications from the helper tool and the other parts of the
   // main SelfControl app.  Note that they are divided thusly because distributed
@@ -276,19 +276,19 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
                                            selector: @selector(refreshUserInterface)
                                                name: @"SCConfigurationChangedNotification"
                                              object: nil];
-  
+
   [initialWindow_ center];
-  
+
   // We'll set blockIsOn to whatever is NOT right, so that in refreshUserInterface
   // it'll fix it and properly refresh the user interface.
   blockIsOn = ![self selfControlLaunchDaemonIsLoaded];
-  
+
   // Change block duration slider for hidden user defaults settings
   int numTickMarks = ([defaults_ integerForKey: @"MaxBlockLength"] / [defaults_ integerForKey: @"BlockLengthInterval"]) + 1;
   [blockDurationSlider_ setMaxValue: [defaults_ integerForKey: @"MaxBlockLength"]];
   [blockDurationSlider_ setNumberOfTickMarks: numTickMarks];
-  
-  [self refreshUserInterface];                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+
+  [self refreshUserInterface];
 }
 
 - (BOOL)selfControlLaunchDaemonIsLoaded {
@@ -297,17 +297,17 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   if(hostFileContents != nil && [hostFileContents rangeOfString: @"# BEGIN SELFCONTROL BLOCK"].location != NSNotFound) {
     return YES;
   }
-  
+
   [defaults_ synchronize];
   NSDate* blockStartedDate = [defaults_ objectForKey: @"BlockStartedDate"];
-    
+
   // NSDate* blockStartedDate = [defaults_ objectForKey: @"BlockStartedDate"];
   if(blockStartedDate != nil && ![blockStartedDate isEqualToDate: [NSDate distantFuture]]) {
     return YES;
   }
-  
+
   // If there's no block in the hosts file, no defaults BlockStartedDate, and no lock-file,
-  // we'll assume we're clear of blocks.  Checking ipfw would be nice but usually requires 
+  // we'll assume we're clear of blocks.  Checking ipfw would be nice but usually requires
   // root permissions, so it would be difficult to do here.
   return [[NSFileManager defaultManager] fileExistsAtPath: SelfControlLockFilePath];
 }
@@ -322,18 +322,18 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     [blockInProgressAlert setInformativeText:@"The blacklist cannot be edited while a block is in progress."];
     [blockInProgressAlert addButtonWithTitle: @"OK"];
     [blockInProgressAlert runModal];
-    
+
     if(!addBlockIsOngoing)
       [blockLock_ unlock];
-    
+
     return;
   }
-  
+
   if(domainListWindowController_ == nil)
     [NSBundle loadNibNamed: @"DomainList" owner: self];
   else
     [[domainListWindowController_ window] makeKeyAndOrderFront: self];
-  
+
   if(!addBlockIsOngoing)
     [blockLock_ unlock];
 }
@@ -352,11 +352,11 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (BOOL)networkConnectionIsAvailable {
-  SCNetworkConnectionFlags status; 
-  
+  SCNetworkConnectionFlags status;
+
   // This method goes haywire if Google ever goes down...
   BOOL reachable = SCNetworkCheckReachabilityByName ("google.com", &status);
-  
+
   return reachable && (status & kSCNetworkFlagsReachable) && !(status & kSCNetworkFlagsConnectionRequired);
 }
 
@@ -382,12 +382,12 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   NSSound* alertSound = [NSSound soundNamed: [systemSoundNames objectAtIndex: [defaults_ integerForKey: @"BlockSound"]]];
   if(!alertSound) {
     NSLog(@"WARNING: Alert sound not found.");
-    
+
     NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
                                        code: -901
                                    userInfo: [NSDictionary dictionaryWithObject: @"Error -901: Selected sound not found."
                                                                          forKey: NSLocalizedDescriptionKey]];
-    
+
     [NSApp presentError: err];
 
   }
@@ -395,12 +395,12 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     [alertSound play];
 }
 
-- (void)addToBlockList:(NSString*)host lock:(NSLock*)lock {  
+- (void)addToBlockList:(NSString*)host lock:(NSLock*)lock {
   if(host == nil)
     return;
-  
+
   host = [[host stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];
-  
+
   // Remove "http://" if a user tried to put that in
   NSArray* splitString = [host componentsSeparatedByString: @"http://"];
   for(int i = 0; i < [splitString count]; i++) {
@@ -409,40 +409,40 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
       break;
     }
   }
-  
+
   // Delete anything after a "/" in case a user tried to copy-paste a web address.
   host = [[host componentsSeparatedByString: @"/"] objectAtIndex: 0];
 
   if([host isEqualToString: @""])
     return;
-  
+
   NSMutableArray* list = [[defaults_ arrayForKey: @"HostBlacklist"] mutableCopy];
   [list addObject: host];
   [defaults_ setObject: list forKey: @"HostBlacklist"];
   [defaults_ synchronize];
-  
+
   if(([[defaults_ objectForKey:@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]])) {
     // This method shouldn't be getting called, a block is not on (block started
     // is in the distantFuture) so the Start button should be disabled.
     // Maybe the UI didn't get properly refreshed, so try refreshing it again
     // before we return.
     [self refreshUserInterface];
-    
+
     // Reverse the blacklist change made before we fail
     NSMutableArray* list = [[defaults_ arrayForKey: @"HostBlacklist"] mutableCopy];
     [list removeLastObject];
     [defaults_ setObject: list forKey: @"HostBlacklist"];
-    
+
     NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
                                        code: -103
                                    userInfo: [NSDictionary dictionaryWithObject: @"Error -103: Attempting to add host to block, but no block appears to be in progress."
                                                                          forKey: NSLocalizedDescriptionKey]];
-    
-    [NSApp presentError: err];    
-    
+
+    [NSApp presentError: err];
+
     return;
   }
-  
+
   if([defaults_ boolForKey: @"VerifyInternetConnection"] && ![self networkConnectionIsAvailable]) {
     NSAlert* networkUnavailableAlert = [[[NSAlert alloc] init] autorelease];
     [networkUnavailableAlert setMessageText: @"No network connection detected"];
@@ -454,38 +454,38 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
       // Reverse the blacklist change made before we fail
       NSMutableArray* list = [[defaults_ arrayForKey: @"HostBlacklist"] mutableCopy];
       [list removeLastObject];
-      [defaults_ setObject: list forKey: @"HostBlacklist"];      
-      
+      [defaults_ setObject: list forKey: @"HostBlacklist"];
+
       return;
     }
-    
+
     // If the user selected Network Diagnostics, launch an assisant to help them.
     // apple.com is an arbitrary host chosen to pass to Network Diagnostics.
     CFURLRef url = CFURLCreateWithString(NULL, CFSTR("http://apple.com"), NULL);
     CFNetDiagnosticRef diagRef = CFNetDiagnosticCreateWithURL(NULL, url);
     CFNetDiagnosticDiagnoseProblemInteractively(diagRef);
-    
+
     // Reverse the blacklist change made before we fail
     NSMutableArray* list = [[defaults_ arrayForKey: @"HostBlacklist"] mutableCopy];
     [list removeLastObject];
-    [defaults_ setObject: list forKey: @"HostBlacklist"];    
-    
+    [defaults_ setObject: list forKey: @"HostBlacklist"];
+
     return;
   }
-    
+
   [NSThread detachNewThreadSelector: @selector(refreshBlock:) toTarget: self withObject: lock];
 }
 
 - (void)dealloc {
   [timerWindowController_ release];
-  
+
   [[NSNotificationCenter defaultCenter] removeObserver: self
                                                   name: @"SCConfigurationChangedNotification"
                                                 object: nil];
   [[NSDistributedNotificationCenter defaultCenter] removeObserver: self
                                                              name: @"SCConfigurationChangedNotification"
-                                                           object: nil];  
-  
+                                                           object: nil];
+
   [super dealloc];
 }
 
@@ -565,11 +565,11 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     case -219:
       [description appendString: @"SelfControl lock file already exists.  Please try your block again."];
       break;
-      
-    default: 
+
+    default:
       [description appendString: [NSString stringWithFormat: @"Helper tool failed with unknown error code: %d", status]];
   }
-    
+
   return [NSError errorWithDomain: domain code: status userInfo: [NSDictionary dictionaryWithObject: description
                                                                                                      forKey: NSLocalizedDescriptionKey]];
 }
@@ -596,74 +596,74 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   kAuthorizationFlagExtendRights |
   kAuthorizationFlagInteractionAllowed;
   OSStatus status;
-  
+
   status = AuthorizationCreate (&authRights,
                                 kAuthorizationEmptyEnvironment,
                                 myFlags,
                                 &authorizationRef);
-  
+
   if(status) {
     NSLog(@"ERROR: Failed to authorize block start.");
     [blockLock_ unlock];
     [self refreshUserInterface];
     return;
   }
-  
+
   // We need to pass our UID to the helper tool.  It needs to know whose defaults
   // it should reading in order to properly load the blacklist.
   char uidString[32];
   snprintf(uidString, sizeof(uidString), "%d", getuid());
-  
+
   FILE* commPipe;
-  
+
   char* args[] = { uidString, "--install", NULL };
   status = AuthorizationExecuteWithPrivileges(authorizationRef,
                                               helperToolPath,
                                               kAuthorizationFlagDefaults,
                                               args,
                                               &commPipe);
-  
+
   if(status) {
     NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", status);
-    
+
     NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
                                        code: status
                                    userInfo: [NSDictionary dictionaryWithObject: [NSString stringWithFormat: @"Error %d received from the Security Server.", status]
                                                                          forKey: NSLocalizedDescriptionKey]];
-    
+
     [NSApp presentError: err];
-    
+
     [blockLock_ unlock];
     [self refreshUserInterface];
-    
+
     return;
   }
-  
+
   NSFileHandle* helperToolHandle = [[NSFileHandle alloc] initWithFileDescriptor: fileno(commPipe) closeOnDealloc: YES];
-  
+
   NSData* inData = [helperToolHandle readDataToEndOfFile];
-  
+
   [helperToolHandle release];
-  
+
   NSString* inDataString = [[NSString alloc] initWithData: inData encoding: NSUTF8StringEncoding];
-  
+
   if([inDataString isEqualToString: @""]) {
     NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
                                        code: -104
                                    userInfo: [NSDictionary dictionaryWithObject: @"Error -104: The helper tool crashed.  This may cause unexpected errors."
                                                                          forKey: NSLocalizedDescriptionKey]];
-    
+
     [NSApp presentError: err];
   }
-  
+
   int exitCode = [inDataString intValue];
-  
+
   if(exitCode) {
     NSError* err = [self errorFromHelperToolStatusCode: exitCode];
-    
-    [NSApp presentError: err];    
-  }  
-  
+
+    [NSApp presentError: err];
+  }
+
   [blockLock_ unlock];
   [self refreshUserInterface];
   [pool drain];
@@ -690,73 +690,73 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   kAuthorizationFlagExtendRights |
   kAuthorizationFlagInteractionAllowed;
   OSStatus status;
-  
+
   status = AuthorizationCreate (&authRights,
                                 kAuthorizationEmptyEnvironment,
                                 myFlags,
                                 &authorizationRef);
-  
+
   if(status) {
     NSLog(@"ERROR: Failed to authorize block refresh.");
-    
+
     // Reverse the blacklist change made before we fail
     NSMutableArray* list = [[defaults_ arrayForKey: @"HostBlacklist"] mutableCopy];
     [list removeLastObject];
-    [defaults_ setObject: list forKey: @"HostBlacklist"];    
-    
+    [defaults_ setObject: list forKey: @"HostBlacklist"];
+
     [lockToUse unlock];
-    
+
     return;
   }
-  
+
   // We need to pass our UID to the helper tool.  It needs to know whose defaults
   // it should read in order to properly load the blacklist.
   char uidString[32];
   snprintf(uidString, sizeof(uidString), "%d", getuid());
-  
+
   FILE* commPipe;
-  
+
   char* args[] = { uidString, "--refresh", NULL };
   status = AuthorizationExecuteWithPrivileges(authorizationRef,
                                               helperToolPath,
                                               kAuthorizationFlagDefaults,
                                               args,
                                               &commPipe);
-  
+
   if(status) {
     NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", status);
-    
+
     NSError* err = [self errorFromHelperToolStatusCode: status];
-    
+
     [NSApp presentError: err];
-    
+
     [lockToUse unlock];
-    
+
     return;
   }
-  
+
   NSFileHandle* helperToolHandle = [[NSFileHandle alloc] initWithFileDescriptor: fileno(commPipe) closeOnDealloc: YES];
-  
+
   NSData* inData = [helperToolHandle readDataToEndOfFile];
   NSString* inDataString = [[NSString alloc] initWithData: inData encoding: NSUTF8StringEncoding];
-  
+
   if([inDataString isEqualToString: @""]) {
     NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
                                        code: -105
                                    userInfo: [NSDictionary dictionaryWithObject: @"Error -105: The helper tool crashed.  This may cause unexpected errors."
                                                                          forKey: NSLocalizedDescriptionKey]];
-    
+
     [NSApp presentError: err];
-  }  
-  
+  }
+
   int exitCode = [inDataString intValue];
-  
+
   if(exitCode) {
     NSError* err = [self errorFromHelperToolStatusCode: exitCode];
-    
-    [NSApp presentError: err];    
-  }  
-    
+
+    [NSApp presentError: err];
+  }
+
   [timerWindowController_ closeAddSheet: self];
   [pool drain];
   [lockToUse unlock];
@@ -764,9 +764,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 - (BOOL)isTiger {
   unsigned int major, minor, bugfix;
-  
+
   [SelfControlUtilities getSystemVersionMajor: &major minor: &minor bugFix: &bugfix];
-  
+
   if(major <= 10 && minor < 5)
     return YES;
   else
@@ -776,16 +776,16 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 - (IBAction)save:(id)sender {
   NSSavePanel *sp;
   int runResult;
-  
+
   /* create or get the shared instance of NSSavePanel */
   sp = [NSSavePanel savePanel];
-  
+
   /* set up new attributes */
   [sp setRequiredFileType: @"selfcontrol"];
-  
+
   /* display the NSSavePanel */
   runResult = [sp runModal];
-  
+
   /* if successful, save file under designated name */
   if (runResult == NSOKButton) {
     [defaults_ synchronize];
@@ -813,7 +813,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   int result;
   NSArray *fileTypes = [NSArray arrayWithObject:@"selfcontrol"];
   NSOpenPanel *oPanel = [NSOpenPanel openPanel];
-  
+
   [oPanel setAllowsMultipleSelection: NO];
   result = [oPanel runModalForTypes: fileTypes];
   if (result == NSOKButton) {
@@ -847,8 +847,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   if(domainListIsOpen) {
     [self showDomainList: self];
     [[domainListWindowController_ window] setFrame: frame display: YES];
-  }  
-  
+  }
+
   return YES;
 }
 
@@ -863,7 +863,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 - (void)switchedToWhitelist:(id)sender {
   if(![defaults_ boolForKey: @"WhitelistAlertSuppress"]) {
-    NSAlert* a = [NSAlert alertWithMessageText: @"Are you sure you want a whitelist block?" defaultButton: @"OK" alternateButton: @"" otherButton: @"" informativeTextWithFormat: @"A whitelist block means that everything on the internet BESIDES your specified list will be blocked.  This includes the web, email, SSH, and anything else your computer accesses via the internet.  If a web site requires resources such as images or scripts from a site that is not on your whitelist, the site may not work properly."]; 
+    NSAlert* a = [NSAlert alertWithMessageText: @"Are you sure you want a whitelist block?" defaultButton: @"OK" alternateButton: @"" otherButton: @"" informativeTextWithFormat: @"A whitelist block means that everything on the internet BESIDES your specified list will be blocked.  This includes the web, email, SSH, and anything else your computer accesses via the internet.  If a web site requires resources such as images or scripts from a site that is not on your whitelist, the site may not work properly."];
     if([a respondsToSelector: @selector(setShowsSuppressionButton:)]) {
       [a setShowsSuppressionButton: YES];
     }

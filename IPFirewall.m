@@ -3,17 +3,17 @@
 //  SelfControl
 //
 //  Created by Charlie Stigler on 2/9/09.
-//  Copyright 2009 Eyebeam. 
+//  Copyright 2009 Eyebeam.
 
 // This file is part of SelfControl.
-// 
+//
 // SelfControl is free software:  you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
 // This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of 
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
@@ -47,20 +47,20 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
           @"dst-port",
           [NSString stringWithFormat: @"%d", portNum],
           nil];
-  
+
   NSTask* task = [NSTask launchedTaskWithLaunchPath: kIPFirewallExecutablePath arguments:args];
-  
+
   [task waitUntilExit];
   int status = [task terminationStatus];
-  
+
   // We have to keep track of how many rules we've used to we know at what number
   // to insert new rules.
   selfControlBlockRuleCount_++;
-  
-  return status;  
+
+  return status;
 }
 
-- (int)addSelfControlBlockRuleBlockingIP:(NSString*)ipAddress {    
+- (int)addSelfControlBlockRuleBlockingIP:(NSString*)ipAddress {
   NSArray* args = [NSArray array];
   args = [NSArray arrayWithObjects:
                      @"-q",
@@ -75,20 +75,20 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
                      @"to",
                      [NSString stringWithString: ipAddress],
                      nil];
-  
+
   NSTask* task = [NSTask launchedTaskWithLaunchPath: kIPFirewallExecutablePath arguments:args];
-  
+
   [task waitUntilExit];
   int status = [task terminationStatus];
-  
+
   // We have to keep track of how many rules we've used to we know at what number
   // to insert new rules.
   selfControlBlockRuleCount_++;
-  
+
   return status;
 }
 
-- (int)addSelfControlBlockRuleBlockingIP:(NSString*)ipAddress port:(int)portNum {    
+- (int)addSelfControlBlockRuleBlockingIP:(NSString*)ipAddress port:(int)portNum {
   NSArray* args = [NSArray array];
   args = [NSArray arrayWithObjects:
             @"-q",
@@ -105,20 +105,20 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
             @"dst-port",
             [NSString stringWithFormat: @"%d", portNum],
             nil];
-  
+
   NSTask* task = [NSTask launchedTaskWithLaunchPath: kIPFirewallExecutablePath arguments:args];
-  
+
   [task waitUntilExit];
   int status = [task terminationStatus];
-  
+
   // We have to keep track of how many rules we've used to we know at what number
   // to insert new rules.
   selfControlBlockRuleCount_++;
-  
+
   return status;
 }
 
-- (int)addSelfControlBlockRuleBlockingIP:(NSString*)ipAddress port:(int)portNum maskLength:(int)maskLength {    
+- (int)addSelfControlBlockRuleBlockingIP:(NSString*)ipAddress port:(int)portNum maskLength:(int)maskLength {
   NSArray* args = [NSArray array];
   args = [NSArray arrayWithObjects:
           @"-q",
@@ -135,20 +135,20 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
           @"dst-port",
           [NSString stringWithFormat: @"%d", portNum],
           nil];
-  
+
   NSTask* task = [NSTask launchedTaskWithLaunchPath: kIPFirewallExecutablePath arguments:args];
-  
+
   [task waitUntilExit];
   int status = [task terminationStatus];
-  
+
   // We have to keep track of how many rules we've used to we know at what number
   // to insert new rules.
   selfControlBlockRuleCount_++;
-  
+
   return status;
 }
 
-- (int)addSelfControlBlockRuleBlockingIP:(NSString*)ipAddress maskLength:(int)maskLength {    
+- (int)addSelfControlBlockRuleBlockingIP:(NSString*)ipAddress maskLength:(int)maskLength {
   NSArray* args = [NSArray array];
   args = [NSArray arrayWithObjects:
           @"-q",
@@ -163,16 +163,16 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
           @"to",
           [NSString stringWithFormat: @"%@/%d", ipAddress, maskLength],
           nil];
-  
+
   NSTask* task = [NSTask launchedTaskWithLaunchPath: kIPFirewallExecutablePath arguments:args];
-  
+
   [task waitUntilExit];
   int status = [task terminationStatus];
-  
+
   // We have to keep track of how many rules we've used to we know at what number
   // to insert new rules.
   selfControlBlockRuleCount_++;
-  
+
   return status;
 }
 
@@ -193,20 +193,20 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
           @"dst-port",
           [NSString stringWithFormat: @"%d", portNum],
           nil];
-  
+
   NSTask* task = [NSTask launchedTaskWithLaunchPath: kIPFirewallExecutablePath arguments:args];
-  
+
   [task waitUntilExit];
   int status = [task terminationStatus];
-  
+
   // We have to keep track of how many rules we've used to we know at what number
   // to insert new rules.
   selfControlBlockRuleCount_++;
-  
-  return status;  
+
+  return status;
 }
 
-- (int)addSelfControlBlockRuleAllowingIP:(NSString*)ipAddress {    
+- (int)addSelfControlBlockRuleAllowingIP:(NSString*)ipAddress {
   NSArray* args = [NSArray array];
   args = [NSArray arrayWithObjects:
           @"-q",
@@ -221,20 +221,20 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
           @"to",
           [NSString stringWithString: ipAddress],
           nil];
-  
+
   NSTask* task = [NSTask launchedTaskWithLaunchPath: kIPFirewallExecutablePath arguments:args];
-  
+
   [task waitUntilExit];
   int status = [task terminationStatus];
-  
+
   // We have to keep track of how many rules we've used to we know at what number
   // to insert new rules.
   selfControlBlockRuleCount_++;
-  
+
   return status;
 }
 
-- (int)addSelfControlBlockRuleAllowingIP:(NSString*)ipAddress port:(int)portNum {    
+- (int)addSelfControlBlockRuleAllowingIP:(NSString*)ipAddress port:(int)portNum {
   NSArray* args = [NSArray array];
   args = [NSArray arrayWithObjects:
           @"-q",
@@ -251,20 +251,20 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
           @"dst-port",
           [NSString stringWithFormat: @"%d", portNum],
           nil];
-  
+
   NSTask* task = [NSTask launchedTaskWithLaunchPath: kIPFirewallExecutablePath arguments:args];
-  
+
   [task waitUntilExit];
   int status = [task terminationStatus];
-  
+
   // We have to keep track of how many rules we've used to we know at what number
   // to insert new rules.
   selfControlBlockRuleCount_++;
-  
+
   return status;
 }
 
-- (int)addSelfControlBlockRuleAllowingIP:(NSString*)ipAddress port:(int)portNum maskLength:(int)maskLength {    
+- (int)addSelfControlBlockRuleAllowingIP:(NSString*)ipAddress port:(int)portNum maskLength:(int)maskLength {
   NSArray* args = [NSArray array];
   args = [NSArray arrayWithObjects:
           @"-q",
@@ -281,20 +281,20 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
           @"dst-port",
           [NSString stringWithFormat: @"%d", portNum],
           nil];
-  
+
   NSTask* task = [NSTask launchedTaskWithLaunchPath: kIPFirewallExecutablePath arguments:args];
-  
+
   [task waitUntilExit];
   int status = [task terminationStatus];
-  
+
   // We have to keep track of how many rules we've used to we know at what number
   // to insert new rules.
   selfControlBlockRuleCount_++;
-  
+
   return status;
 }
 
-- (int)addSelfControlBlockRuleAllowingIP:(NSString*)ipAddress maskLength:(int)maskLength {    
+- (int)addSelfControlBlockRuleAllowingIP:(NSString*)ipAddress maskLength:(int)maskLength {
   NSArray* args = [NSArray array];
   args = [NSArray arrayWithObjects:
           @"-q",
@@ -309,16 +309,16 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
           @"to",
           [NSString stringWithFormat: @"%@/%d", ipAddress, maskLength],
           nil];
-  
+
   NSTask* task = [NSTask launchedTaskWithLaunchPath: kIPFirewallExecutablePath arguments:args];
-  
+
   [task waitUntilExit];
   int status = [task terminationStatus];
-  
+
   // We have to keep track of how many rules we've used to we know at what number
   // to insert new rules.
   selfControlBlockRuleCount_++;
-  
+
   return status;
 }
 
@@ -339,12 +339,12 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
                    @"53",
                    nil];
   NSTask* task = [NSTask launchedTaskWithLaunchPath:kIPFirewallExecutablePath arguments:args];
-  
+
   [task waitUntilExit];
   int status = [task terminationStatus];
-  
+
   selfControlBlockRuleCount_++;
-  
+
   args = [NSArray arrayWithObjects:
                    @"-q",
                    @"add",
@@ -361,12 +361,12 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
                    @"123",
                    nil];
   task = [NSTask launchedTaskWithLaunchPath:kIPFirewallExecutablePath arguments:args];
-  
+
   [task waitUntilExit];
   status = [task terminationStatus] && status;
-  
-  selfControlBlockRuleCount_++;  
-  
+
+  selfControlBlockRuleCount_++;
+
   args = [NSArray arrayWithObjects:
           @"-q",
           @"add",
@@ -383,12 +383,12 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
           @"67",
           nil];
   task = [NSTask launchedTaskWithLaunchPath:kIPFirewallExecutablePath arguments:args];
-  
+
   [task waitUntilExit];
-  status = [task terminationStatus] && status;  
-  
+  status = [task terminationStatus] && status;
+
   selfControlBlockRuleCount_++;
-  
+
   args = [NSArray arrayWithObjects:
           @"-q",
           @"add",
@@ -405,12 +405,12 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
           @"68",
           nil];
   task = [NSTask launchedTaskWithLaunchPath:kIPFirewallExecutablePath arguments:args];
-  
+
   [task waitUntilExit];
-  status = [task terminationStatus] && status;  
-  
+  status = [task terminationStatus] && status;
+
   selfControlBlockRuleCount_++;
-    
+
   args = [NSArray arrayWithObjects:
                    @"-q",
                    @"add",
@@ -425,13 +425,13 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
                    @"any",
                    nil];
   task = [NSTask launchedTaskWithLaunchPath:kIPFirewallExecutablePath arguments:args];
-  
+
   [task waitUntilExit];
   status = [task terminationStatus] && status;
-  
+
   selfControlBlockRuleCount_++;
-  
-  return status;  
+
+  return status;
 }
 
 - (int)addSelfControlBlockHeader {
@@ -447,10 +447,10 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
                    @"BLOCK",
                    nil];
   NSTask* task = [NSTask launchedTaskWithLaunchPath:kIPFirewallExecutablePath arguments:args];
-  
+
   [task waitUntilExit];
   int status = [task terminationStatus];
-  
+
   selfControlBlockRuleCount_++;
 
   // This adds a rule to allow any traffic coming on the loopback interface, this
@@ -472,12 +472,12 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
                    @"lo*",
                    nil];
   task = [NSTask launchedTaskWithLaunchPath:kIPFirewallExecutablePath arguments:args];
-  
+
   [task waitUntilExit];
   status = [task terminationStatus] && status;
-  
-  selfControlBlockRuleCount_++;  
-  
+
+  selfControlBlockRuleCount_++;
+
   return status;
 }
 
@@ -492,14 +492,14 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
                    @"END",
                    @"SELFCONTROL",
                    @"BLOCK",
-                   nil];                   
+                   nil];
   NSTask* task = [NSTask launchedTaskWithLaunchPath:kIPFirewallExecutablePath arguments:args];
-  
+
   [task waitUntilExit];
   int status = [task terminationStatus];
-  
+
   selfControlBlockRuleCount_++;
-  
+
   return status;
 }
 
@@ -514,7 +514,7 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
                                           arguments:args];
   [task waitUntilExit];
   int status = [task terminationStatus];
-  
+
   return status;
 }
 
@@ -532,10 +532,10 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
   close([readHandle fileDescriptor]);
   [task waitUntilExit];
   int status = [task terminationStatus];
-  
+
   if(status != 0 || !ruleList)
     return NO;
-  
+
   return [ruleList rangeOfString: kIPFirewallSelfControlHeader].location != NSNotFound;
 }
 
