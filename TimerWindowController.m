@@ -139,7 +139,7 @@
     [timerUpdater_ invalidate];
     timerUpdater_ = nil;
     
-    [timerLabel_ setStringValue: @"Block not active"];
+    [timerLabel_ setStringValue: NSLocalizedString(@"Block not active", @"block not active string")];
     [timerLabel_ setFont: [[NSFontManager sharedFontManager]
                            convertFont: [timerLabel_ font]
                            toSize: 37]
@@ -158,7 +158,7 @@
   
   if(numSeconds < 0) {
     if(isLeopard)
-      [[NSApp dockTile] setBadgeLabel: @""];    
+      [[NSApp dockTile] setBadgeLabel: nil];    
         
     // This increments the strike counter.  After four strikes of the timer being
     // at or less than 0 seconds, SelfControl will assume something's wrong and run
@@ -203,7 +203,7 @@
   } else if(isLeopard) {
     // If we're on Leopard but aren't using badging, set the badge string to be
     // empty to remove any badge if there is one.
-    [[NSApp dockTile] setBadgeLabel: @""];
+    [[NSApp dockTile] setBadgeLabel: nil];
   }
 }
 

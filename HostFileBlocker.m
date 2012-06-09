@@ -89,7 +89,7 @@ NSString* const kHostFileBlockerSelfControlFooter = @"# END SELFCONTROL BLOCK";
 }
 
 - (void)addRuleBlockingDomain:(NSString*)domainName {
-  [newFileContents appendString: [NSString stringWithFormat: @"127.0.0.1\t%@\n", domainName]];
+  [newFileContents appendString: [NSString stringWithFormat: @"0.0.0.0\t%@\n", domainName]];
 }
 
 - (BOOL)containsSelfControlBlock {
