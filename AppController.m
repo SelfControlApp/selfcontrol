@@ -106,17 +106,17 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   
   if(numMinutes > 0) {
     if(formatDays > 0) {
-      timeString = [NSString stringWithFormat:@"%d %@", formatDays, (formatDays == 1 ? @"day" : @"days")];
+      timeString = [NSString stringWithFormat:@"%d %@", formatDays, (formatDays == 1 ? NSLocalizedString(@"day", @"Single day time string") : NSLocalizedString(@"days", @"Plural days time string"))];
     }
     if(formatHours > 0) {
-      timeString = [NSString stringWithFormat: @"%@%@%d %@", timeString, (formatDays > 0 ? @", " : @""), formatHours, (formatHours == 1 ? @"hour" : @"hours")];
+      timeString = [NSString stringWithFormat: @"%@%@%d %@", timeString, (formatDays > 0 ? @", " : @""), formatHours, (formatHours == 1 ? NSLocalizedString(@"hour", @"Single hour time string") : NSLocalizedString(@"hours", @"Plural hours time string"))];
     }
     if(formatMinutes > 0) {
-      timeString = [NSString stringWithFormat:@"%@%@%d %@", timeString, (formatHours > 0 || formatDays > 0 ? @", " : @""), formatMinutes, (formatMinutes == 1 ? @"minute" : @"minutes")];
+      timeString = [NSString stringWithFormat:@"%@%@%d %@", timeString, (formatHours > 0 || formatDays > 0 ? @", " : @""), formatMinutes, (formatMinutes == 1 ? NSLocalizedString(@"minute", @"Single minute time string") : NSLocalizedString(@"minutes", @"Plural minutes time string"))];
     }
   }
   else {
-    timeString = @"Disabled";
+    timeString = NSLocalizedString(@"Disabled", "Shows that SelfControl is disabled");
   }
     
   [blockSliderTimeDisplayLabel_ setStringValue:timeString];
@@ -156,10 +156,10 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     
   if([defaults_ boolForKey: @"VerifyInternetConnection"] && ![self networkConnectionIsAvailable]) {
     NSAlert* networkUnavailableAlert = [[[NSAlert alloc] init] autorelease];
-    [networkUnavailableAlert setMessageText: @"No network connection detected"];
-    [networkUnavailableAlert setInformativeText:@"A block cannot be started without a working network connection.  You can override this setting in Preferences."];
-    [networkUnavailableAlert addButtonWithTitle: @"Cancel"];
-    [networkUnavailableAlert addButtonWithTitle: @"Network Diagnostics..."];
+    [networkUnavailableAlert setMessageText: NSLocalizedString(@"No network connection detected", "No network connection detected message")];
+    [networkUnavailableAlert setInformativeText:NSLocalizedString(@"A block cannot be started without a working network connection.  You can override this setting in Preferences.", @"Message when network connection is unavailable")];
+    [networkUnavailableAlert addButtonWithTitle: NSLocalizedString(@"Cancel", "Cancel button")];
+    [networkUnavailableAlert addButtonWithTitle: NSLocalizedString(@"Network Diagnostics...", @"Network Diagnostics button")];
     if([networkUnavailableAlert runModal] == NSAlertFirstButtonReturn)
       return;
     
@@ -222,12 +222,12 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     if(!addBlockIsOngoing) {
       [blockDurationSlider_ setEnabled: YES];
       [editBlacklistButton_ setEnabled: YES];
-      [submitButton_ setTitle: @"Start"];
+      [submitButton_ setTitle: NSLocalizedString(@"Start", @"Start button")];
     }
     else {
       [blockDurationSlider_ setEnabled: NO];
       [editBlacklistButton_ setEnabled: NO];
-      [submitButton_ setTitle: @"Loading"];
+      [submitButton_ setTitle: NSLocalizedString(@"Loading", @"Loading button")];
     }
     
     // Unlock blockLock_ if we locked it
@@ -318,9 +318,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   BOOL addBlockIsOngoing = ![blockLock_ tryLock];
   if([self selfControlLaunchDaemonIsLoaded] || addBlockIsOngoing) {
     NSAlert* blockInProgressAlert = [[[NSAlert alloc] init] autorelease];
-    [blockInProgressAlert setMessageText: @"Block in progress"];
-    [blockInProgressAlert setInformativeText:@"The blacklist cannot be edited while a block is in progress."];
-    [blockInProgressAlert addButtonWithTitle: @"OK"];
+    [blockInProgressAlert setMessageText: NSLocalizedString(@"Block in progress", @"Block in progress error title")];
+    [blockInProgressAlert setInformativeText:NSLocalizedString(@"The blacklist cannot be edited while a block is in progress.", @"Block in progress explanation")];
+    [blockInProgressAlert addButtonWithTitle: NSLocalizedString(@"OK", @"OK button")];
     [blockInProgressAlert runModal];
     
     if(!addBlockIsOngoing)
@@ -445,10 +445,10 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   
   if([defaults_ boolForKey: @"VerifyInternetConnection"] && ![self networkConnectionIsAvailable]) {
     NSAlert* networkUnavailableAlert = [[[NSAlert alloc] init] autorelease];
-    [networkUnavailableAlert setMessageText: @"No network connection detected"];
-    [networkUnavailableAlert setInformativeText:@"A block cannot be started without a working network connection.  You can override this setting in Preferences."];
-    [networkUnavailableAlert addButtonWithTitle: @"Cancel"];
-    [networkUnavailableAlert addButtonWithTitle: @"Network Diagnostics..."];
+    [networkUnavailableAlert setMessageText: NSLocalizedString(@"No network connection detected", "No network connection detected message")];
+    [networkUnavailableAlert setInformativeText:NSLocalizedString(@"A block cannot be started without a working network connection.  You can override this setting in Preferences.", @"Message when network connection is unavailable")];
+    [networkUnavailableAlert addButtonWithTitle: NSLocalizedString(@"Cancel", "Cancel button")];
+    [networkUnavailableAlert addButtonWithTitle: NSLocalizedString(@"Network Diagnostics...", @"Network Diagnostics button")];
     if([networkUnavailableAlert runModal] == NSAlertFirstButtonReturn) {
       // User clicked cancel
       // Reverse the blacklist change made before we fail
@@ -863,7 +863,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 - (void)switchedToWhitelist:(id)sender {
   if(![defaults_ boolForKey: @"WhitelistAlertSuppress"]) {
-    NSAlert* a = [NSAlert alertWithMessageText: @"Are you sure you want a whitelist block?" defaultButton: @"OK" alternateButton: @"" otherButton: @"" informativeTextWithFormat: @"A whitelist block means that everything on the internet BESIDES your specified list will be blocked.  This includes the web, email, SSH, and anything else your computer accesses via the internet.  If a web site requires resources such as images or scripts from a site that is not on your whitelist, the site may not work properly."]; 
+    NSAlert* a = [NSAlert alertWithMessageText: NSLocalizedString(@"Are you sure you want a whitelist block?", @"Whitelist block confirmation prompt") defaultButton: NSLocalizedString(@"OK", @"OK button") alternateButton: @"" otherButton: @"" informativeTextWithFormat: NSLocalizedString(@"A whitelist block means that everything on the internet BESIDES your specified list will be blocked.  This includes the web, email, SSH, and anything else your computer accesses via the internet.  If a web site requires resources such as images or scripts from a site that is not on your whitelist, the site may not work properly.", @"Whitelist block explanation")]; 
     if([a respondsToSelector: @selector(setShowsSuppressionButton:)]) {
       [a setShowsSuppressionButton: YES];
     }

@@ -504,7 +504,7 @@
 				<nil key="NSUserInterfaceItemIdentifier"/>
 				<string key="NSWindowContentMinSize">{413, 114}</string>
 				<object class="NSView" key="NSWindowView" id="439893737">
-					<nil key="NSNextResponder"/>
+					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">274</int>
 					<object class="NSMutableArray" key="NSSubviews">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -513,6 +513,7 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{18, 41}, {584, 25}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
+							<reference key="NSWindow"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSSliderCell" key="NSCell" id="293656555">
 								<int key="NSCellFlags">67501824</int>
@@ -539,6 +540,7 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{17, 16}, {460, 17}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
+							<reference key="NSWindow"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="541657277">
 								<int key="NSCellFlags">68288064</int>
@@ -575,6 +577,7 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{260, 71}, {100, 25}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
+							<reference key="NSWindow"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="199824051">
 								<int key="NSCellFlags">-2080244224</int>
@@ -593,8 +596,9 @@
 						<object class="NSButton" id="617926098">
 							<reference key="NSNextResponder" ref="439893737"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{482, 9}, {118, 25}}</string>
+							<string key="NSFrame">{{463, 9}, {137, 25}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
+							<reference key="NSWindow"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="912332486">
 								<int key="NSCellFlags">67239424</int>
@@ -612,6 +616,8 @@
 						</object>
 					</object>
 					<string key="NSFrameSize">{620, 111}</string>
+					<reference key="NSSuperview"/>
+					<reference key="NSWindow"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
 				<string key="NSMinSize">{413, 136}</string>
@@ -1724,8 +1730,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="24348247"/>
 							<reference ref="216075432"/>
-							<reference ref="617926098"/>
 							<reference ref="655025507"/>
+							<reference ref="617926098"/>
 						</object>
 						<reference key="parent" ref="972006081"/>
 					</object>

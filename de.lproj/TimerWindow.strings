@@ -1,0 +1,21 @@
+
+/* Class = "NSPanel"; title = "SelfControl"; ObjectID = "31"; */
+"31.title" = "SelfControl";
+
+/* Class = "NSTextFieldCell"; title = "00:00:00"; ObjectID = "34"; */
+"34.title" = "00:00:00";
+
+/* Class = "NSButtonCell"; title = "Add to Blacklist"; ObjectID = "50"; */
+"50.title" = "Add to Blacklist";
+
+/* Class = "NSPanel"; title = "Window"; ObjectID = "63"; */
+"63.title" = "Fenster";
+
+/* Class = "NSButtonCell"; title = "Cancel"; ObjectID = "70"; */
+"70.title" = "Abbruch";
+
+/* Class = "NSButtonCell"; title = "Add"; ObjectID = "71"; */
+"71.title" = "Add";
+
+/* Class = "NSTextFieldCell"; title = "Host: "; ObjectID = "72"; */
+"72.title" = "Host: ";

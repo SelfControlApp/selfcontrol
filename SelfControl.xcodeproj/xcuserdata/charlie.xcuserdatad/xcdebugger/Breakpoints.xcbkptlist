@@ -145,7 +145,9 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "36"
-         endingLineNumber = "36">
+         endingLineNumber = "36"
+         landmarkName = "-init"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -157,7 +159,9 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "300"
-         endingLineNumber = "300">
+         endingLineNumber = "300"
+         landmarkName = "-tableView:willDisplayCell:forTableColumn:row:"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -169,7 +173,9 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "300"
-         endingLineNumber = "300">
+         endingLineNumber = "300"
+         landmarkName = "-tableView:willDisplayCell:forTableColumn:row:"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -181,7 +187,9 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "300"
-         endingLineNumber = "300">
+         endingLineNumber = "300"
+         landmarkName = "-tableView:willDisplayCell:forTableColumn:row:"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -193,7 +201,9 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "229"
-         endingLineNumber = "229">
+         endingLineNumber = "229"
+         landmarkName = "-tableView:willDisplayCell:forTableColumn:row:"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -205,7 +215,9 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "224"
-         endingLineNumber = "224">
+         endingLineNumber = "224"
+         landmarkName = "-addToBlock:"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -217,7 +229,9 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "355"
-         endingLineNumber = "355">
+         endingLineNumber = "355"
+         landmarkName = "@implementation DomainListWindowController"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -241,7 +255,9 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "759"
-         endingLineNumber = "759">
+         endingLineNumber = "759"
+         landmarkName = "-refreshBlock:"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -253,7 +269,9 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "331"
-         endingLineNumber = "331">
+         endingLineNumber = "331"
+         landmarkName = "-showDomainList:"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"

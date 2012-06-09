@@ -53,10 +53,10 @@
 		CBBF4E801582F7A200E364D9 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBBF4E7D1582F7A200E364D9 /* MainMenu.xib */; };
 		CBBF4E8B1582F8BD00E364D9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CBBF4E891582F8BD00E364D9 /* InfoPlist.strings */; };
 		CBBF4E8E1582F8E000E364D9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CBBF4E8C1582F8E000E364D9 /* Localizable.strings */; };
+		CBBF4EE515830D7300E364D9 /* TimerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBBF4EE715830D7300E364D9 /* TimerWindow.xib */; };
+		CBBF4EEC15830D7C00E364D9 /* TigerTimerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBBF4EEE15830D7C00E364D9 /* TigerTimerWindow.xib */; };
 		CBC2F8580F4672FE00CF2A42 /* LaunchctlHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */; };
 		CBC3C0C20F86DDA10055C0B0 /* SelfControlUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC3C0C10F86DDA10055C0B0 /* SelfControlUtilities.m */; };
-		CBC3C17F0F870D480055C0B0 /* TimerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBC3C17E0F870D480055C0B0 /* TimerWindow.xib */; };
-		CBC3C19E0F8713370055C0B0 /* TigerTimerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBC3C19D0F8713370055C0B0 /* TigerTimerWindow.xib */; };
 		CBD266B011ED7D9C00042CD8 /* HelperCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD266AE11ED7D9C00042CD8 /* HelperCommon.m */; };
 		CBD266B111ED7D9C00042CD8 /* HelperCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD266AE11ED7D9C00042CD8 /* HelperCommon.m */; };
 		CBD2672011ED882700042CD8 /* CheckupMain.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD2671F11ED882700042CD8 /* CheckupMain.m */; };
@@ -188,12 +188,20 @@
 		CBBF4E941582F8FC00E364D9 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CBBF4E951582F8FC00E364D9 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CBBF4E961582F8FC00E364D9 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CBBF4EE615830D7300E364D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/TimerWindow.xib; sourceTree = "<group>"; };
+		CBBF4EE815830D7800E364D9 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/TimerWindow.xib; sourceTree = "<group>"; };
+		CBBF4EE915830D7800E364D9 /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/TimerWindow.xib; sourceTree = "<group>"; };
+		CBBF4EEA15830D7800E364D9 /* sv */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = sv; path = sv.lproj/TimerWindow.xib; sourceTree = "<group>"; };
+		CBBF4EEB15830D7800E364D9 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = ja.lproj/TimerWindow.xib; sourceTree = "<group>"; };
+		CBBF4EED15830D7C00E364D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/TigerTimerWindow.xib; sourceTree = "<group>"; };
+		CBBF4EEF15830D8100E364D9 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/TigerTimerWindow.xib; sourceTree = "<group>"; };
+		CBBF4EF015830D8100E364D9 /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/TigerTimerWindow.xib; sourceTree = "<group>"; };
+		CBBF4EF115830D8200E364D9 /* sv */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = sv; path = sv.lproj/TigerTimerWindow.xib; sourceTree = "<group>"; };
+		CBBF4EF215830D8200E364D9 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = ja.lproj/TigerTimerWindow.xib; sourceTree = "<group>"; };
 		CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchctlHelper.m; sourceTree = "<group>"; };
 		CBC2F8650F4674E300CF2A42 /* LaunchctlHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchctlHelper.h; sourceTree = "<group>"; };
 		CBC3C0C00F86DDA10055C0B0 /* SelfControlUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelfControlUtilities.h; sourceTree = "<group>"; };
 		CBC3C0C10F86DDA10055C0B0 /* SelfControlUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelfControlUtilities.m; sourceTree = "<group>"; };
-		CBC3C17E0F870D480055C0B0 /* TimerWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimerWindow.xib; sourceTree = "<group>"; };
-		CBC3C19D0F8713370055C0B0 /* TigerTimerWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TigerTimerWindow.xib; sourceTree = "<group>"; };
 		CBD266AD11ED7D9C00042CD8 /* HelperCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperCommon.h; sourceTree = "<group>"; };
 		CBD266AE11ED7D9C00042CD8 /* HelperCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelperCommon.m; sourceTree = "<group>"; };
 		CBD266E111ED84F700042CD8 /* SelfControlCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelfControlCommon.h; sourceTree = "<group>"; };
@@ -367,8 +375,8 @@
 			children = (
 				CBBF4E7B1582F7A200E364D9 /* DomainList.xib */,
 				CBBF4E7D1582F7A200E364D9 /* MainMenu.xib */,
-				CBC3C17E0F870D480055C0B0 /* TimerWindow.xib */,
-				CBC3C19D0F8713370055C0B0 /* TigerTimerWindow.xib */,
+				CBBF4EE715830D7300E364D9 /* TimerWindow.xib */,
+				CBBF4EEE15830D7C00E364D9 /* TigerTimerWindow.xib */,
 			);
 			name = Interfaces;
 			sourceTree = "<group>";
@@ -484,8 +492,8 @@
 				CB9365780F85846200EF284E /* SelfControlAppcast.xml in Resources */,
 				CB9366E80F85BEF100EF284E /* NSRemoveTemplate.jpg in Resources */,
 				CB9366E90F85BEF100EF284E /* NSAddTemplate.jpg in Resources */,
-				CBC3C17F0F870D480055C0B0 /* TimerWindow.xib in Resources */,
-				CBC3C19E0F8713370055C0B0 /* TigerTimerWindow.xib in Resources */,
+				CBBF4EE515830D7300E364D9 /* TimerWindow.xib in Resources */,
+				CBBF4EEC15830D7C00E364D9 /* TigerTimerWindow.xib in Resources */,
 				CB1E7A6E0F9AEA9B00D158BC /* ERRORS in Resources */,
 				CB40A8680FBC7DE700167727 /* SelfControlBlocklist.icns in Resources */,
 				CBBF4E7F1582F7A200E364D9 /* DomainList.xib in Resources */,
@@ -637,6 +645,30 @@
 				CBBF4E921582F8F500E364D9 /* ja */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		CBBF4EE715830D7300E364D9 /* TimerWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CBBF4EE615830D7300E364D9 /* en */,
+				CBBF4EE815830D7800E364D9 /* de */,
+				CBBF4EE915830D7800E364D9 /* es */,
+				CBBF4EEA15830D7800E364D9 /* sv */,
+				CBBF4EEB15830D7800E364D9 /* ja */,
+			);
+			name = TimerWindow.xib;
+			sourceTree = "<group>";
+		};
+		CBBF4EEE15830D7C00E364D9 /* TigerTimerWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CBBF4EED15830D7C00E364D9 /* en */,
+				CBBF4EEF15830D8100E364D9 /* de */,
+				CBBF4EF015830D8100E364D9 /* es */,
+				CBBF4EF115830D8200E364D9 /* sv */,
+				CBBF4EF215830D8200E364D9 /* ja */,
+			);
+			name = TigerTimerWindow.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
