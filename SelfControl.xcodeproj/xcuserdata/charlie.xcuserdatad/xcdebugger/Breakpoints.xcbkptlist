@@ -283,7 +283,9 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "475"
-         endingLineNumber = "475">
+         endingLineNumber = "475"
+         landmarkName = "main()"
+         landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
@@ -295,7 +297,9 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "475"
-         endingLineNumber = "475">
+         endingLineNumber = "475"
+         landmarkName = "main()"
+         landmarkType = "7">
       </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>

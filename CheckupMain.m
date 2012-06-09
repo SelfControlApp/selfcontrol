@@ -55,15 +55,7 @@ int main(int argc, char* argv[]) {
     
   if( blockStartedDate == nil || blockDuration < 1 || [[NSDate distantFuture] isEqualToDate: blockStartedDate] || timeSinceStarted >= blockDuration) {
     NSLog(@"INFO: Checkup helper ran, block expired, removing block.");            
-    
-#ifdef DEBUG
-    NSLog(@"BLOCK EXPIRED DUE TO CONDITIONS:");
-    NSLog(@"blockStartedDate == nil: %d", blockStartedDate == nil);
-    NSLog(@"[[NSDate distantFuture] isEqualToDate: blockStartedDate]: %d", [[NSDate distantFuture] isEqualToDate: blockStartedDate]);
-    NSLog(@"timeSinceStarted >= blockDuration: %d", timeSinceStarted >= blockDuration);
-    NSLog(@"END CONDITIONS");
-#endif
-    
+        
     removeBlock(getuid());
   }  
     
