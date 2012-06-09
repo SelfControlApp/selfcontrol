@@ -216,8 +216,9 @@ void removeRulesFromFirewall(signed long long int controllingUID) {
   [hostFileBlocker revertFileContentsToDisk];
   // We use ! (NOT) of the method as success because it returns a shell termination status, so 0 is the success code
   BOOL ipfwSuccess = ![firewall clearSelfControlBlockRuleSet];
-  if(hostSuccess && ipfwSuccess && ![hostFileBlocker containsSelfControlBlock] && ![firewall containsSelfControlBlockSet])
-    NSLog(@"INFO: Hostfile block successfully cleared.");
+    if(hostSuccess && ipfwSuccess && ![hostFileBlocker containsSelfControlBlock] && ![firewall containsSelfControlBlockSet]) {
+   // NSLog(@"INFO: Hostfile block successfully cleared.");
+    }
   else {
     NSLog(@"WARNING: Error removing hostfile block.  Attempting to restore host file backup.");
     
