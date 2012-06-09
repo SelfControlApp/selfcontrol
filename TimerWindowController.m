@@ -91,49 +91,6 @@
                                                   repeats: YES];
 }
 
-/* - (void)reloadTimer {  
-  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];  
-  
-  NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
-  
-  if([[lockDict objectForKey: @"BlockAsWhitelist"] boolValue])
-    [addToBlockButton_ setEnabled: NO];
-  else
-    [addToBlockButton_ setEnabled: YES];  
-  
-  NSDate* beginDate = [lockDict objectForKey:@"BlockStartedDate"];
-  NSTimeInterval blockDuration = [[lockDict objectForKey:@"BlockDuration"] intValue] * 60;
-  
-  if(beginDate == nil || [beginDate isEqualToDate: [NSDate distantFuture]]
-     || blockDuration <= 0) {
-    beginDate = [defaults objectForKey:@"BlockStartedDate"];
-    blockDuration = [defaults integerForKey:@"BlockDuration"] * 60;
-  } else {
-    [defaults setObject: beginDate forKey: @"BlockStartedDate"];
-    [defaults setObject: [NSNumber numberWithFloat: (blockDuration / 60)] forKey: @"BlockDuration"];
-  }
-  
-  [blockEndingDate_ release];
-  if(blockDuration)
-    blockEndingDate_ = [[beginDate addTimeInterval: blockDuration] retain];
-  else
-    blockEndingDate_ = [[NSDate date] retain];
-  
-  // Yes, I'm aware the timer should be invalidated.  Something deep inside broke
-  // every time I tried that.
-    
-  [timerUpdater_ invalidate];
-  timerUpdater_ = nil;
-    
-  timerUpdater_ = [NSTimer scheduledTimerWithTimeInterval: 1.0
-                                                   target: self
-                                                 selector: @selector(updateTimerDisplay:)
-                                                 userInfo: nil
-                                                  repeats: YES];
-    
-  [self updateTimerDisplay: timerUpdater_];
-} */
-
 - (void)blockEnded {
   if(![[NSApp delegate] selfControlLaunchDaemonIsLoaded]) {
     [timerUpdater_ invalidate];

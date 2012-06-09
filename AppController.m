@@ -131,14 +131,6 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
     NSLog(@"WARNING: Block started date is in the past (%@)", [defaults_ objectForKey: @"BlockStartedDate"]);
         
-   /* NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
-                                       code: -101
-                                   userInfo: [NSDictionary dictionaryWithObject: @"Error -101: Attempting to add block, but a block appears to be in progress."
-                                                                         forKey: NSLocalizedDescriptionKey]];
-    
-    [NSApp presentError: err];
-    
-    return; */
   }
   if([[defaults_ arrayForKey:@"HostBlacklist"] count] == 0) {
     // Since the Start button should be disabled when the blacklist has no entries,

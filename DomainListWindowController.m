@@ -27,9 +27,7 @@
 
 - (DomainListWindowController*)init {
   if(self = [super initWithWindowNibName:@"DomainList"]) {
-  
-   // [domainListTableView_ retain];
-    
+      
     defaults_ = [NSUserDefaults standardUserDefaults];
     
     NSArray* curArray = [defaults_ arrayForKey: @"HostBlacklist"];
@@ -201,21 +199,6 @@
                                                       object: self];  
 }
 
-/* - (NSCell *)tableView:(NSTableView*)tableView
-dataCellForTableColumn:(NSTableColumn *)tableColumn
-                  row:(int)row {
-  NSTextFieldCell *cell = [tableColumn dataCell];
-  
-  if(row == 0) {
-    [cell setTextColor: [NSColor redColor]];
-  } else {
-    [cell setTextColor: [NSColor blackColor]];
-  }
-  
-  return cell;
-  
-} */
-
 - (void)tableView:(NSTableView *)tableView
   willDisplayCell:(id)cell
    forTableColumn:(NSTableColumn *)tableColumn
@@ -354,7 +337,6 @@ dataCellForTableColumn:(NSTableColumn *)tableColumn
 }
 
 - (void)dealloc {
- // [domainListTableView_ release];
   [super dealloc];
 }
 
