@@ -3,7 +3,7 @@ SelfControl
 
 ABOUT
 -----
-Is email a distraction? SelfControl is an OS X application which blocks access to mail servers and websites for a predetermined period of time. It can not be undone by the app or by a restart Ð you must wait for the timer to run out.
+Is email a distraction? SelfControl is an OS X application which blocks access to mail servers and websites for a predetermined period of time. It can not be undone by the app or by a restart--you must wait for the timer to run out.
 
 CREDITS
 -------
