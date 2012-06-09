@@ -1,0 +1,33 @@
+/* Localized versions of Info.plist keys */
+
+"day" = "day";
+"days" = "days";
+"hour" = "hour";
+"hours" = "hours";
+"minute" = "minute";
+"minutes" = "minutes";
+"Block in progress" = "Block in progress";
+"The blacklist cannot be edited while a block is in progress." = "The blacklist cannot be edited while a block is in progress.";
+"OK" = "OK";
+"Helper tool not launched as root." = "Helper tool not launched as root.";
+"Helper tool launched with insufficient arguments." = "Helper tool launched with insufficient arguments.";
+"Host blocklist not set" = "Host blocklist not set";
+"Could not write launchd plist file to LaunchDaemons folder." = "Could not write launchd plist file to LaunchDaemons folder.";
+"Could not create PrivilegedHelperTools directory." = "Could not create PrivilegedHelperTools directory.";
+"Could not change permissions on PrivilegedHelperTools directory." = "Could not change permissions on PrivilegedHelperTools directory.";
+"Could not delete old helper binary." = "Could not delete old helper binary.";
+"Could not copy SelfControl's helper binary to PrivilegedHelperTools directory." = "Could not copy SelfControl's helper binary to PrivilegedHelperTools directory.";
+"Could not change permissions on SelfControl's helper binary." = "Could not change permissions on SelfControl's helper binary.";
+"Insufficient block information found." = "Insufficient block information found.";
+"Launch daemon load returned a failure status code." = "Launch daemon load returned a failure status code.";
+"Remove option called." = "Remove option called.";
+"Refreshing domain blacklist, but no block is currently ongoing." = "Refreshing domain blacklist, but no block is currently ongoing.";
+"Checkup ran but no block found." = "Checkup ran but no block found.";
+"Could not write lock file." = "Could not write lock file.";
+"Could not remove SelfControl lock file." = "Could not remove SelfControl lock file.";
+"SelfControl lock file already exists. Please try your block again." = "SelfControl lock file already exists. Please try your block again.";
+"Helper tool failed with unknown error code: %d" = "Helper tool failed with unknown error code: %d";
+"Error %d received from the Security Server." = "Error %d received from the Security Server.";
+"Error -104: The helper tool crashed. This may cause unexpected errors." = "Error -104: The helper tool crashed. This may cause unexpected errors.";
+"Are you sure you want a whitelist block?" = "Are you sure you want a whitelist block?";
+"A whitelist block means that everything on the internet BESIDES your specified list will be blocked.  This includes the web, email, SSH, and anything else your computer accesses via the internet.  If a web site requires resources such as images or scripts from a site that is not on your whitelist, the site may not work properly." = "A whitelist block means that everything on the internet BESIDES your specified list will be blocked.  This includes the web, email, SSH, and anything else your computer accesses via the internet.  If a web site requires resources such as images or scripts from a site that is not on your whitelist, the site may not work properly.";
