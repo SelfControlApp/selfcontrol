@@ -22,8 +22,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
-		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		CB1E7A6E0F9AEA9B00D158BC /* ERRORS in Resources */ = {isa = PBXBuildFile; fileRef = CB1E7A6D0F9AEA9B00D158BC /* ERRORS */; };
@@ -35,7 +33,6 @@
 		CB54D44C0F93E33300AA22E9 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9E901D0F397FFA006DE6E4 /* Security.framework */; };
 		CB587E500F50FE8800C66A09 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB587E4F0F50FE8800C66A09 /* SystemConfiguration.framework */; };
 		CB5A306E0F92E582005CCA3E /* SelfControlUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC3C0C10F86DDA10055C0B0 /* SelfControlUtilities.m */; };
-		CB5B40440F3528E100EFBF4A /* DomainList.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB5B40420F3528E100EFBF4A /* DomainList.xib */; };
 		CB90BF830F49F430006D202D /* HostImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB90BF820F49F430006D202D /* HostImporter.m */; };
 		CB93654E0F85802400EF284E /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB93654D0F85802400EF284E /* Sparkle.framework */; };
 		CB93655C0F85806A00EF284E /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CB93654D0F85802400EF284E /* Sparkle.framework */; };
@@ -52,6 +49,10 @@
 		CBB3FD7A0F53834B00244132 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9E901D0F397FFA006DE6E4 /* Security.framework */; };
 		CBB7DEEA0F53313F00ABF3EA /* DomainListWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB637220F3E296000EBD135 /* DomainListWindowController.m */; };
 		CBBCA14B0F54E1B300C75324 /* org.eyebeam.SelfControl.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB4295C20F53EF8C008E10CA /* org.eyebeam.SelfControl.plist */; };
+		CBBF4E7F1582F7A200E364D9 /* DomainList.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBBF4E7B1582F7A200E364D9 /* DomainList.xib */; };
+		CBBF4E801582F7A200E364D9 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBBF4E7D1582F7A200E364D9 /* MainMenu.xib */; };
+		CBBF4E8B1582F8BD00E364D9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CBBF4E891582F8BD00E364D9 /* InfoPlist.strings */; };
+		CBBF4E8E1582F8E000E364D9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CBBF4E8C1582F8E000E364D9 /* Localizable.strings */; };
 		CBC2F8580F4672FE00CF2A42 /* LaunchctlHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */; };
 		CBC3C0C20F86DDA10055C0B0 /* SelfControlUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC3C0C10F86DDA10055C0B0 /* SelfControlUtilities.m */; };
 		CBC3C17F0F870D480055C0B0 /* TimerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBC3C17E0F870D480055C0B0 /* TimerWindow.xib */; };
@@ -128,9 +129,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		1DDD58150DA1D0A300B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
@@ -146,7 +145,6 @@
 		CB529BBD0F32B7ED00564FB8 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		CB529BBE0F32B7ED00564FB8 /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
 		CB587E4F0F50FE8800C66A09 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = /System/Library/Frameworks/SystemConfiguration.framework; sourceTree = "<absolute>"; };
-		CB5B40430F3528E100EFBF4A /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/DomainList.xib; sourceTree = "<group>"; };
 		CB5E20BF0FAE0CDC006DBFC8 /* scheckup */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = scheckup; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB90BF810F49F430006D202D /* HostImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostImporter.h; sourceTree = "<group>"; };
 		CB90BF820F49F430006D202D /* HostImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HostImporter.m; sourceTree = "<group>"; };
@@ -170,6 +168,26 @@
 		CBB0AE290FA74566006229B3 /* HostFileBlocker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HostFileBlocker.m; sourceTree = "<group>"; };
 		CBB637210F3E296000EBD135 /* DomainListWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DomainListWindowController.h; sourceTree = "<group>"; };
 		CBB637220F3E296000EBD135 /* DomainListWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DomainListWindowController.m; sourceTree = "<group>"; };
+		CBBF4E7C1582F7A200E364D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/DomainList.xib; sourceTree = "<group>"; };
+		CBBF4E7E1582F7A200E364D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		CBBF4E811582F7BF00E364D9 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		CBBF4E821582F7C200E364D9 /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		CBBF4E831582F7DD00E364D9 /* sv */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = sv; path = sv.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		CBBF4E841582F7DF00E364D9 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = ja.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		CBBF4E851582F80100E364D9 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/DomainList.xib; sourceTree = "<group>"; };
+		CBBF4E861582F80300E364D9 /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/DomainList.xib; sourceTree = "<group>"; };
+		CBBF4E871582F80400E364D9 /* sv */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = sv; path = sv.lproj/DomainList.xib; sourceTree = "<group>"; };
+		CBBF4E881582F80400E364D9 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = ja.lproj/DomainList.xib; sourceTree = "<group>"; };
+		CBBF4E8A1582F8BD00E364D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CBBF4E8D1582F8E000E364D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CBBF4E8F1582F8F500E364D9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CBBF4E901582F8F500E364D9 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CBBF4E911582F8F500E364D9 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CBBF4E921582F8F500E364D9 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CBBF4E931582F8FC00E364D9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CBBF4E941582F8FC00E364D9 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CBBF4E951582F8FC00E364D9 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CBBF4E961582F8FC00E364D9 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchctlHelper.m; sourceTree = "<group>"; };
 		CBC2F8650F4674E300CF2A42 /* LaunchctlHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchctlHelper.h; sourceTree = "<group>"; };
 		CBC3C0C00F86DDA10055C0B0 /* SelfControlUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelfControlUtilities.h; sourceTree = "<group>"; };
@@ -290,6 +308,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CBBF4E8C1582F8E000E364D9 /* Localizable.strings */,
 				CB40A8670FBC7DE700167727 /* SelfControlBlocklist.icns */,
 				CB9366E60F85BEF100EF284E /* NSRemoveTemplate.jpg */,
 				CB9366E70F85BEF100EF284E /* NSAddTemplate.jpg */,
@@ -297,8 +316,8 @@
 				CB4295C20F53EF8C008E10CA /* org.eyebeam.SelfControl.plist */,
 				CB4C58D90F3F90B000B5D7CB /* Credits.rtf */,
 				8D1107310486CEB800E47090 /* Info.plist */,
-				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				CB4C58D50F3F8F2A00B5D7CB /* SelfControlIcon.icns */,
+				CBBF4E891582F8BD00E364D9 /* InfoPlist.strings */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -346,8 +365,8 @@
 		CB4294F10F53D95D008E10CA /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
-				CB5B40420F3528E100EFBF4A /* DomainList.xib */,
-				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
+				CBBF4E7B1582F7A200E364D9 /* DomainList.xib */,
+				CBBF4E7D1582F7A200E364D9 /* MainMenu.xib */,
 				CBC3C17E0F870D480055C0B0 /* TimerWindow.xib */,
 				CBC3C19D0F8713370055C0B0 /* TigerTimerWindow.xib */,
 			);
@@ -436,6 +455,10 @@
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				en,
+				de,
+				es,
+				sv,
+				ja,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* SelfControl */;
 			projectDirPath = "";
@@ -455,9 +478,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CBBCA14B0F54E1B300C75324 /* org.eyebeam.SelfControl.plist in Resources */,
-				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
-				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
-				CB5B40440F3528E100EFBF4A /* DomainList.xib in Resources */,
 				CB4C58D60F3F8F2A00B5D7CB /* SelfControlIcon.icns in Resources */,
 				CB4C58DA0F3F90B000B5D7CB /* Credits.rtf in Resources */,
 				CB9365620F8581B000EF284E /* dsa_pub.pem in Resources */,
@@ -468,6 +488,10 @@
 				CBC3C19E0F8713370055C0B0 /* TigerTimerWindow.xib in Resources */,
 				CB1E7A6E0F9AEA9B00D158BC /* ERRORS in Resources */,
 				CB40A8680FBC7DE700167727 /* SelfControlBlocklist.icns in Resources */,
+				CBBF4E7F1582F7A200E364D9 /* DomainList.xib in Resources */,
+				CBBF4E801582F7A200E364D9 /* MainMenu.xib in Resources */,
+				CBBF4E8B1582F8BD00E364D9 /* InfoPlist.strings in Resources */,
+				CBBF4E8E1582F8E000E364D9 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -567,28 +591,52 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
+		CBBF4E7B1582F7A200E364D9 /* DomainList.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				089C165DFE840E0CC02AAC07 /* English */,
+				CBBF4E7C1582F7A200E364D9 /* en */,
+				CBBF4E851582F80100E364D9 /* de */,
+				CBBF4E861582F80300E364D9 /* es */,
+				CBBF4E871582F80400E364D9 /* sv */,
+				CBBF4E881582F80400E364D9 /* ja */,
 			);
-			name = InfoPlist.strings;
+			name = DomainList.xib;
 			sourceTree = "<group>";
 		};
-		1DDD58140DA1D0A300B32029 /* MainMenu.xib */ = {
+		CBBF4E7D1582F7A200E364D9 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				1DDD58150DA1D0A300B32029 /* English */,
+				CBBF4E7E1582F7A200E364D9 /* en */,
+				CBBF4E811582F7BF00E364D9 /* de */,
+				CBBF4E821582F7C200E364D9 /* es */,
+				CBBF4E831582F7DD00E364D9 /* sv */,
+				CBBF4E841582F7DF00E364D9 /* ja */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
-		CB5B40420F3528E100EFBF4A /* DomainList.xib */ = {
+		CBBF4E891582F8BD00E364D9 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				CB5B40430F3528E100EFBF4A /* English */,
+				CBBF4E8A1582F8BD00E364D9 /* en */,
+				CBBF4E931582F8FC00E364D9 /* de */,
+				CBBF4E941582F8FC00E364D9 /* es */,
+				CBBF4E951582F8FC00E364D9 /* sv */,
+				CBBF4E961582F8FC00E364D9 /* ja */,
 			);
-			name = DomainList.xib;
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		CBBF4E8C1582F8E000E364D9 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CBBF4E8D1582F8E000E364D9 /* en */,
+				CBBF4E8F1582F8F500E364D9 /* de */,
+				CBBF4E901582F8F500E364D9 /* es */,
+				CBBF4E911582F8F500E364D9 /* sv */,
+				CBBF4E921582F8F500E364D9 /* ja */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -600,11 +648,11 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 				);
-				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -642,14 +690,15 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_VERSION = 4.0;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				ONLY_ACTIVE_ARCH = NO;
 				PREBINDING = YES;
 				SDKROOT = macosx;
@@ -661,13 +710,14 @@
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_VERSION = 4.0;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				ONLY_ACTIVE_ARCH = NO;
 				PREBINDING = NO;
 				SDKROOT = macosx;
@@ -761,7 +811,9 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				GCC_VERSION = "";
 				INSTALL_PATH = /usr/local/bin;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
@@ -785,7 +837,9 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				GCC_VERSION = "";
 				INSTALL_PATH = /usr/local/bin;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,

@@ -1,0 +1,53 @@
+/* Message text when no network connection available */
+"A block cannot be started without a working network connection.  You can override this setting in Preferences." = "Ein Block kann nicht ohne eine funktionierende Internetverbindung gestartet werden. Sie können diese Einstellung in den Einstellungen deaktivieren.";
+
+/* Whitelist block explanation */
+"A whitelist block means that everything on the internet BESIDES your specified list will be blocked.  This includes the web, email, SSH, and anything else your computer accesses via the internet.  If a web site requires resources such as images or scripts from a site that is not on your whitelist, the site may not work properly." = "Ein Whitelist-Block bedeutet, dass alles im Internet AUßER Ihrer angegebenen Liste blockiert werden wird. Wenn eine Website Ressourcen wie Bilder oder Scripts von einer Site benötigt, die nicht auf Ihrer Whitelist steht, benötigt, kann die Site nicht korrekt arbeiten.";
+
+/* Whitelist block confirmation question */
+"Are you sure you want a whitelist block?" = "Möchten Sie wirklich den Whitelist-Block aktivieren?";
+
+/* Block in progress error note */
+"Block in progress" = "Block läuft";
+
+/* Cancel button */
+"Cancel" = "Abbruch";
+
+/* Single day in time strings */
+"day" = "Tag";
+
+/* Plural days in time strings */
+"days" = "Tage";
+
+/* Shows that the slider is at 0 so the block is disabled */
+"Disabled" = "Deaktiviert";
+
+/* Single hour in time strings */
+"hour" = "Stunde";
+
+/* Plural hours in time strings */
+"hours" = "Stunden";
+
+/* Text on Start button when loading */
+"Loading" = "Laden";
+
+/* Single minute in time strings */
+"minute" = "Minute";
+
+/* Plural minutes in time strings */
+"minutes" = "Minuten";
+
+/* Button to open Network Diagnostics */
+"Network Diagnostics..." = "Netzwerk-Diagnose...";
+
+/* Alert text when no network connection available */
+"No network connection detected" = "Es wurde keine Netzwerk-Verbindung erkannt";
+
+/* OK button */
+"OK" = "OK";
+
+/* Start button */
+"Start" = "Start";
+
+/* Block in progress error text */
+"The blacklist cannot be edited while a block is in progress." = "Die Blacklist kann nicht bearbeitet werden, während ein Block läuft.";

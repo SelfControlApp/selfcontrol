@@ -1,0 +1,53 @@
+/* Message text when no network connection available */
+"A block cannot be started without a working network connection.  You can override this setting in Preferences." = "En blockering kan inte startas utan en fungerande nätverksuppkoppling. Du kan ändra detta i Inställningar.";
+
+/* Whitelist block explanation */
+"A whitelist block means that everything on the internet BESIDES your specified list will be blocked.  This includes the web, email, SSH, and anything else your computer accesses via the internet.  If a web site requires resources such as images or scripts from a site that is not on your whitelist, the site may not work properly." = "En vitlista-blockering betyder att allting på internet FÖRRUTOM din lista kommer att blockeras. Detta inbegriper webben, email, SSH och allt annat som din dator kommer åt via internet. Om en hemsida behöver resurser så som bilder eller skript från en sajt som inte finns på din vitlista kan det hända att den inte fungerar korrekt.";
+
+/* Whitelist block confirmation question */
+"Are you sure you want a whitelist block?" = "Är du säker på att du vill ha en vitlista-blockering?";
+
+/* Block in progress error note */
+"Block in progress" = "Blockering pågår.";
+
+/* Cancel button */
+"Cancel" = "Avbryt";
+
+/* Single day in time strings */
+"day" = "dag";
+
+/* Plural days in time strings */
+"days" = "dagar";
+
+/* Shows that the slider is at 0 so the block is disabled */
+"Disabled" = "Avaktiverad";
+
+/* Single hour in time strings */
+"hour" = "timme";
+
+/* Plural hours in time strings */
+"hours" = "timmar";
+
+/* Text on Start button when loading */
+"Loading" = "Laddar";
+
+/* Single minute in time strings */
+"minute" = "minut";
+
+/* Plural minutes in time strings */
+"minutes" = "minuter";
+
+/* Button to open Network Diagnostics */
+"Network Diagnostics..." = "Nätverksdiagnos...";
+
+/* Alert text when no network connection available */
+"No network connection detected" = "Ingen nätverksuppkoppling upptäcktes";
+
+/* OK button */
+"OK" = "OK";
+
+/* Start button */
+"Start" = "Start";
+
+/* Block in progress error text */
+"The blacklist cannot be edited while a block is in progress." = "Svartlistan kan inte ändras medan en blockering pågår.";

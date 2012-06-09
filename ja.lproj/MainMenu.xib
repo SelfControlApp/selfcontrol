@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1040</int>
-		<string key="IBDocument.SystemVersion">11C74</string>
-		<string key="IBDocument.InterfaceBuilderVersion">1617</string>
-		<string key="IBDocument.AppKitVersion">1138.23</string>
-		<string key="IBDocument.HIToolboxVersion">567.00</string>
+		<string key="IBDocument.SystemVersion">11E53</string>
+		<string key="IBDocument.InterfaceBuilderVersion">2182</string>
+		<string key="IBDocument.AppKitVersion">1138.47</string>
+		<string key="IBDocument.HIToolboxVersion">569.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">1617</string>
+			<string key="NS.object.0">2182</string>
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -32,11 +32,8 @@
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 		</object>
 		<object class="NSMutableDictionary" key="IBDocument.Metadata">
-			<bool key="EncodedWithXMLCoder">YES</bool>
-			<object class="NSArray" key="dict.sortedKeys" id="0">
-				<bool key="EncodedWithXMLCoder">YES</bool>
-			</object>
-			<reference key="dict.values" ref="0"/>
+			<string key="NS.key.0">PluginDependencyRecalculationVersion</string>
+			<integer value="1" key="NS.object.0"/>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.RootObjects" id="1048">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -74,7 +71,7 @@
 								<bool key="EncodedWithXMLCoder">YES</bool>
 								<object class="NSMenuItem" id="238522557">
 									<reference key="NSMenu" ref="110575045"/>
-									<string key="NSTitle">Über SelfControl</string>
+									<string key="NSTitle">SelfControl について</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="35465992"/>
@@ -82,7 +79,7 @@
 								</object>
 								<object class="NSMenuItem" id="769007260">
 									<reference key="NSMenu" ref="110575045"/>
-									<string key="NSTitle">Nach Updates suchen</string>
+									<string key="NSTitle">アップデートの確認...</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="35465992"/>
@@ -131,7 +128,7 @@
 								</object>
 								<object class="NSMenuItem" id="542846594">
 									<reference key="NSMenu" ref="110575045"/>
-									<string key="NSTitle">Einstellungen...</string>
+									<string key="NSTitle">環境設定...</string>
 									<string key="NSKeyEquiv">,</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -140,7 +137,7 @@
 								</object>
 								<object class="NSMenuItem" id="187241115">
 									<reference key="NSMenu" ref="110575045"/>
-									<string key="NSTitle">Blacklist bearbeiten...</string>
+									<string key="NSTitle">ブラックリストの編集...</string>
 									<string key="NSKeyEquiv">d</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -160,7 +157,7 @@
 								</object>
 								<object class="NSMenuItem" id="1046388886">
 									<reference key="NSMenu" ref="110575045"/>
-									<string key="NSTitle">Dienste</string>
+									<string key="NSTitle">サービス</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -168,7 +165,7 @@
 									<reference key="NSMixedImage" ref="502551668"/>
 									<string key="NSAction">submenuAction:</string>
 									<object class="NSMenu" key="NSSubmenu" id="752062318">
-										<string key="NSTitle">Dienste</string>
+										<string key="NSTitle">サービス</string>
 										<object class="NSMutableArray" key="NSMenuItems">
 											<bool key="EncodedWithXMLCoder">YES</bool>
 										</object>
@@ -188,7 +185,7 @@
 								</object>
 								<object class="NSMenuItem" id="755159360">
 									<reference key="NSMenu" ref="110575045"/>
-									<string key="NSTitle">SelfControl verstecken</string>
+									<string key="NSTitle">SelfControl を隠す</string>
 									<string key="NSKeyEquiv">h</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -197,7 +194,7 @@
 								</object>
 								<object class="NSMenuItem" id="342932134">
 									<reference key="NSMenu" ref="110575045"/>
-									<string key="NSTitle">Andere verstecken</string>
+									<string key="NSTitle">ほかを隠す</string>
 									<string key="NSKeyEquiv">h</string>
 									<int key="NSKeyEquivModMask">1572864</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -206,7 +203,7 @@
 								</object>
 								<object class="NSMenuItem" id="908899353">
 									<reference key="NSMenu" ref="110575045"/>
-									<string key="NSTitle">Alle zeigen</string>
+									<string key="NSTitle">すべてを表示</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -256,7 +253,7 @@
 								</object>
 								<object class="NSMenuItem" id="632727374">
 									<reference key="NSMenu" ref="110575045"/>
-									<string key="NSTitle">SelfControl beenden</string>
+									<string key="NSTitle">SelfControl を終了</string>
 									<string key="NSKeyEquiv">q</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -269,19 +266,19 @@
 					</object>
 					<object class="NSMenuItem" id="719551672">
 						<reference key="NSMenu" ref="649796088"/>
-						<string key="NSTitle">Datei</string>
+						<string key="NSTitle">ファイル</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="35465992"/>
 						<reference key="NSMixedImage" ref="502551668"/>
 						<string key="NSAction">submenuAction:</string>
 						<object class="NSMenu" key="NSSubmenu" id="690148573">
-							<string key="NSTitle">Datei</string>
+							<string key="NSTitle">ファイル</string>
 							<object class="NSMutableArray" key="NSMenuItems">
 								<bool key="EncodedWithXMLCoder">YES</bool>
 								<object class="NSMenuItem" id="731302426">
 									<reference key="NSMenu" ref="690148573"/>
-									<string key="NSTitle">Fenster schließen</string>
+									<string key="NSTitle">ウィンドウを閉じる</string>
 									<string key="NSKeyEquiv">w</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -300,7 +297,7 @@
 								</object>
 								<object class="NSMenuItem" id="824235870">
 									<reference key="NSMenu" ref="690148573"/>
-									<string key="NSTitle">Öffnen</string>
+									<string key="NSTitle">開く…</string>
 									<string key="NSKeyEquiv">o</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -309,7 +306,7 @@
 								</object>
 								<object class="NSMenuItem" id="366357460">
 									<reference key="NSMenu" ref="690148573"/>
-									<string key="NSTitle">Speichern</string>
+									<string key="NSTitle">保存</string>
 									<string key="NSKeyEquiv">s</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -321,19 +318,19 @@
 					</object>
 					<object class="NSMenuItem" id="209208253">
 						<reference key="NSMenu" ref="649796088"/>
-						<string key="NSTitle">Bearbeiten</string>
+						<string key="NSTitle">編集</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="35465992"/>
 						<reference key="NSMixedImage" ref="502551668"/>
 						<string key="NSAction">submenuAction:</string>
 						<object class="NSMenu" key="NSSubmenu" id="826854830">
-							<string key="NSTitle">Bearbeiten</string>
+							<string key="NSTitle">編集</string>
 							<object class="NSMutableArray" key="NSMenuItems">
 								<bool key="EncodedWithXMLCoder">YES</bool>
 								<object class="NSMenuItem" id="4998080">
 									<reference key="NSMenu" ref="826854830"/>
-									<string key="NSTitle">Rückgängig</string>
+									<string key="NSTitle">取り消す</string>
 									<string key="NSKeyEquiv">z</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -342,7 +339,7 @@
 								</object>
 								<object class="NSMenuItem" id="532638654">
 									<reference key="NSMenu" ref="826854830"/>
-									<string key="NSTitle">Wiederholen</string>
+									<string key="NSTitle">やり直す</string>
 									<string key="NSKeyEquiv">Z</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -361,7 +358,7 @@
 								</object>
 								<object class="NSMenuItem" id="1022354401">
 									<reference key="NSMenu" ref="826854830"/>
-									<string key="NSTitle">Ausschneiden</string>
+									<string key="NSTitle">カット</string>
 									<string key="NSKeyEquiv">x</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -370,7 +367,7 @@
 								</object>
 								<object class="NSMenuItem" id="519538734">
 									<reference key="NSMenu" ref="826854830"/>
-									<string key="NSTitle">Kopieren</string>
+									<string key="NSTitle">コピー</string>
 									<string key="NSKeyEquiv">c</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -379,7 +376,7 @@
 								</object>
 								<object class="NSMenuItem" id="376385263">
 									<reference key="NSMenu" ref="826854830"/>
-									<string key="NSTitle">Einfügen</string>
+									<string key="NSTitle">ペースト</string>
 									<string key="NSKeyEquiv">v</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -388,7 +385,7 @@
 								</object>
 								<object class="NSMenuItem" id="832677908">
 									<reference key="NSMenu" ref="826854830"/>
-									<string key="NSTitle">Löschen</string>
+									<string key="NSTitle">削除</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="35465992"/>
@@ -396,7 +393,7 @@
 								</object>
 								<object class="NSMenuItem" id="706317530">
 									<reference key="NSMenu" ref="826854830"/>
-									<string key="NSTitle">Alle auswählen</string>
+									<string key="NSTitle">すべてを選択</string>
 									<string key="NSKeyEquiv">a</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -415,19 +412,19 @@
 								</object>
 								<object class="NSMenuItem" id="871335347">
 									<reference key="NSMenu" ref="826854830"/>
-									<string key="NSTitle">Sprachausgabe</string>
+									<string key="NSTitle">スピーチ</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="35465992"/>
 									<reference key="NSMixedImage" ref="502551668"/>
 									<string key="NSAction">submenuAction:</string>
 									<object class="NSMenu" key="NSSubmenu" id="589005805">
-										<string key="NSTitle">Sprachausgabe</string>
+										<string key="NSTitle">スピーチ</string>
 										<object class="NSMutableArray" key="NSMenuItems">
 											<bool key="EncodedWithXMLCoder">YES</bool>
 											<object class="NSMenuItem" id="88247308">
 												<reference key="NSMenu" ref="589005805"/>
-												<string key="NSTitle">Sprachausgabe starten</string>
+												<string key="NSTitle">読み上げを開始</string>
 												<string key="NSKeyEquiv"/>
 												<int key="NSMnemonicLoc">2147483647</int>
 												<reference key="NSOnImage" ref="35465992"/>
@@ -435,7 +432,7 @@
 											</object>
 											<object class="NSMenuItem" id="316114679">
 												<reference key="NSMenu" ref="589005805"/>
-												<string key="NSTitle">Sprachausgabe stoppen</string>
+												<string key="NSTitle">読み上げを停止</string>
 												<string key="NSKeyEquiv"/>
 												<int key="NSMnemonicLoc">2147483647</int>
 												<reference key="NSOnImage" ref="35465992"/>
@@ -449,7 +446,7 @@
 					</object>
 					<object class="NSMenuItem" id="713487014">
 						<reference key="NSMenu" ref="649796088"/>
-						<string key="NSTitle">Fenster</string>
+						<string key="NSTitle">ウィンドウ</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSKeyEquivModMask">1048576</int>
 						<int key="NSMnemonicLoc">2147483647</int>
@@ -457,12 +454,12 @@
 						<reference key="NSMixedImage" ref="502551668"/>
 						<string key="NSAction">submenuAction:</string>
 						<object class="NSMenu" key="NSSubmenu" id="835318025">
-							<string key="NSTitle">Fenster</string>
+							<string key="NSTitle">ウィンドウ</string>
 							<object class="NSMutableArray" key="NSMenuItems">
 								<bool key="EncodedWithXMLCoder">YES</bool>
 								<object class="NSMenuItem" id="1011231497">
 									<reference key="NSMenu" ref="835318025"/>
-									<string key="NSTitle">Minimieren</string>
+									<string key="NSTitle">縮小</string>
 									<string key="NSKeyEquiv">m</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -482,7 +479,7 @@
 								</object>
 								<object class="NSMenuItem" id="625202149">
 									<reference key="NSMenu" ref="835318025"/>
-									<string key="NSTitle">Alle nach vorne bringen</string>
+									<string key="NSTitle">すべてを手前に移動</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -507,7 +504,7 @@
 				<nil key="NSUserInterfaceItemIdentifier"/>
 				<string key="NSWindowContentMinSize">{413, 114}</string>
 				<object class="NSView" key="NSWindowView" id="439893737">
-					<reference key="NSNextResponder"/>
+					<nil key="NSNextResponder"/>
 					<int key="NSvFlags">274</int>
 					<object class="NSMutableArray" key="NSSubviews">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -516,8 +513,6 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{18, 41}, {584, 25}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
-							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="24348247"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSSliderCell" key="NSCell" id="293656555">
 								<int key="NSCellFlags">67501824</int>
@@ -544,13 +539,11 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{17, 16}, {460, 17}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
-							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="617926098"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="541657277">
 								<int key="NSCellFlags">68288064</int>
 								<int key="NSCellFlags2">272630784</int>
-								<string key="NSContents">30 Minuten</string>
+								<string key="NSContents">30 分</string>
 								<object class="NSFont" key="NSSupport" id="736984554">
 									<string key="NSName">LucidaGrande</string>
 									<double key="NSSize">13</double>
@@ -582,13 +575,11 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{260, 71}, {100, 25}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
-							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="216075432"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="199824051">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">134217728</int>
-								<string key="NSContents">Start</string>
+								<string key="NSContents">開始</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="655025507"/>
 								<int key="NSButtonFlags">-2038152961</int>
@@ -602,14 +593,13 @@
 						<object class="NSButton" id="617926098">
 							<reference key="NSNextResponder" ref="439893737"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{473, 9}, {137, 25}}</string>
+							<string key="NSFrame">{{482, 9}, {118, 25}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
-							<reference key="NSWindow"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="912332486">
 								<int key="NSCellFlags">67239424</int>
 								<int key="NSCellFlags2">134217728</int>
-								<string key="NSContents">Blacklist bearbeiten</string>
+								<string key="NSContents">ブラックリストの編集</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="617926098"/>
 								<int key="NSButtonFlags">-2038152961</int>
@@ -622,9 +612,6 @@
 						</object>
 					</object>
 					<string key="NSFrameSize">{620, 111}</string>
-					<reference key="NSSuperview"/>
-					<reference key="NSWindow"/>
-					<reference key="NSNextKeyView" ref="655025507"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
 				<string key="NSMinSize">{413, 136}</string>
@@ -634,9 +621,9 @@
 			<object class="NSWindowTemplate" id="1069983487">
 				<int key="NSWindowStyleMask">7</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{196, 293}, {354, 209}}</string>
+				<string key="NSWindowRect">{{196, 293}, {329, 217}}</string>
 				<int key="NSWTFlags">1677721600</int>
-				<string key="NSWindowTitle">Preferences</string>
+				<string key="NSWindowTitle">環境設定</string>
 				<string key="NSWindowClass">NSWindow</string>
 				<nil key="NSViewClass"/>
 				<nil key="NSUserInterfaceItemIdentifier"/>
@@ -648,14 +635,13 @@
 						<object class="NSButton" id="993498988">
 							<reference key="NSNextResponder" ref="1017004010"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{18, 153}, {314, 18}}</string>
+							<string key="NSFrame">{{18, 161}, {314, 18}}</string>
 							<reference key="NSSuperview" ref="1017004010"/>
-							<reference key="NSNextKeyView" ref="1042338180"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="961665558">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Allgemeine Subdomains sperren</string>
+								<string key="NSContents">一般的なサブドメインをブロックする</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="993498988"/>
 								<int key="NSButtonFlags">1211912703</int>
@@ -676,14 +662,13 @@
 						<object class="NSButton" id="549788209">
 							<reference key="NSNextResponder" ref="1017004010"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{18, 113}, {297, 18}}</string>
+							<string key="NSFrame">{{18, 121}, {297, 18}}</string>
 							<reference key="NSSuperview" ref="1017004010"/>
-							<reference key="NSNextKeyView" ref="557701039"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="689156809">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Ungültige Hosts markieren</string>
+								<string key="NSContents">無効なホストを強調表示する</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="549788209"/>
 								<int key="NSButtonFlags">1211912703</int>
@@ -699,14 +684,13 @@
 						<object class="NSButton" id="557701039">
 							<reference key="NSNextResponder" ref="1017004010"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{18, 93}, {314, 18}}</string>
+							<string key="NSFrame">{{18, 101}, {314, 18}}</string>
 							<reference key="NSSuperview" ref="1017004010"/>
-							<reference key="NSNextKeyView" ref="205984878"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="206462659">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Internetverbindung überprüfen</string>
+								<string key="NSContents">インターネット接続を確認する</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="557701039"/>
 								<int key="NSButtonFlags">1211912703</int>
@@ -722,14 +706,13 @@
 						<object class="NSButton" id="867241027">
 							<reference key="NSNextResponder" ref="1017004010"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{18, 53}, {236, 18}}</string>
+							<string key="NSFrame">{{18, 61}, {236, 18}}</string>
 							<reference key="NSSuperview" ref="1017004010"/>
-							<reference key="NSNextKeyView" ref="273203401"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="551150060">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Timerfenster oben zeigen</string>
+								<string key="NSContents">タイマーのウィンドウを手前に表示する</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="867241027"/>
 								<int key="NSButtonFlags">1211912703</int>
@@ -745,7 +728,7 @@
 						<object class="NSPopUpButton" id="132293881">
 							<reference key="NSNextResponder" ref="1017004010"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{249, 8}, {102, 26}}</string>
+							<string key="NSFrame">{{210, 16}, {102, 26}}</string>
 							<reference key="NSSuperview" ref="1017004010"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSPopUpButtonCell" key="NSCell" id="407640971">
@@ -760,16 +743,16 @@
 								<string key="NSKeyEquivalent"/>
 								<int key="NSPeriodicDelay">400</int>
 								<int key="NSPeriodicInterval">75</int>
-								<object class="NSMenuItem" key="NSMenuItem" id="648222324">
+								<object class="NSMenuItem" key="NSMenuItem" id="129849581">
 									<reference key="NSMenu" ref="306671692"/>
-									<string key="NSTitle">Basso</string>
+									<string key="NSTitle">Glass</string>
 									<string key="NSKeyEquiv"/>
-									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<int key="NSState">1</int>
 									<reference key="NSOnImage" ref="35465992"/>
 									<reference key="NSMixedImage" ref="502551668"/>
 									<string key="NSAction">_popUpItemAction:</string>
+									<int key="NSTag">5</int>
 									<reference key="NSTarget" ref="407640971"/>
 								</object>
 								<bool key="NSMenuItemRespectAlignment">YES</bool>
@@ -777,7 +760,17 @@
 									<string key="NSTitle">OtherViews</string>
 									<object class="NSMutableArray" key="NSMenuItems">
 										<bool key="EncodedWithXMLCoder">YES</bool>
-										<reference ref="648222324"/>
+										<object class="NSMenuItem" id="648222324">
+											<reference key="NSMenu" ref="306671692"/>
+											<string key="NSTitle">Basso</string>
+											<string key="NSKeyEquiv"/>
+											<int key="NSKeyEquivModMask">1048576</int>
+											<int key="NSMnemonicLoc">2147483647</int>
+											<reference key="NSOnImage" ref="35465992"/>
+											<reference key="NSMixedImage" ref="502551668"/>
+											<string key="NSAction">_popUpItemAction:</string>
+											<reference key="NSTarget" ref="407640971"/>
+										</object>
 										<object class="NSMenuItem" id="278150895">
 											<reference key="NSMenu" ref="306671692"/>
 											<string key="NSTitle">Blow</string>
@@ -823,17 +816,7 @@
 											<int key="NSTag">4</int>
 											<reference key="NSTarget" ref="407640971"/>
 										</object>
-										<object class="NSMenuItem" id="129849581">
-											<reference key="NSMenu" ref="306671692"/>
-											<string key="NSTitle">Glass</string>
-											<string key="NSKeyEquiv"/>
-											<int key="NSMnemonicLoc">2147483647</int>
-											<reference key="NSOnImage" ref="35465992"/>
-											<reference key="NSMixedImage" ref="502551668"/>
-											<string key="NSAction">_popUpItemAction:</string>
-											<int key="NSTag">5</int>
-											<reference key="NSTarget" ref="407640971"/>
-										</object>
+										<reference ref="129849581"/>
 										<object class="NSMenuItem" id="859080336">
 											<reference key="NSMenu" ref="306671692"/>
 											<string key="NSTitle">Hero</string>
@@ -924,7 +907,7 @@
 										</object>
 									</object>
 								</object>
-								<int key="NSSelectedIndex">-1</int>
+								<int key="NSSelectedIndex">5</int>
 								<int key="NSPreferredEdge">1</int>
 								<bool key="NSUsesItemFromMenu">YES</bool>
 								<bool key="NSAltersState">YES</bool>
@@ -934,14 +917,13 @@
 						<object class="NSButton" id="847847414">
 							<reference key="NSNextResponder" ref="1017004010"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{18, 13}, {228, 18}}</string>
+							<string key="NSFrame">{{18, 21}, {189, 18}}</string>
 							<reference key="NSSuperview" ref="1017004010"/>
-							<reference key="NSNextKeyView" ref="132293881"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="881052891">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Bei Fertigstellung Sound spielen:</string>
+								<string key="NSContents">完了時に音を再生する</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="847847414"/>
 								<int key="NSButtonFlags">1211912703</int>
@@ -957,14 +939,13 @@
 						<object class="NSButton" id="583078105">
 							<reference key="NSNextResponder" ref="1017004010"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{18, 173}, {240, 18}}</string>
+							<string key="NSFrame">{{18, 181}, {225, 18}}</string>
 							<reference key="NSSuperview" ref="1017004010"/>
-							<reference key="NSNextKeyView" ref="993498988"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="767588282">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Automatisch nach Updates suchen</string>
+								<string key="NSContents">アップデートを自動で確認する</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="583078105"/>
 								<int key="NSButtonFlags">1211912703</int>
@@ -980,14 +961,13 @@
 						<object class="NSButton" id="205984878">
 							<reference key="NSNextResponder" ref="1017004010"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{18, 73}, {186, 18}}</string>
+							<string key="NSFrame">{{18, 81}, {186, 18}}</string>
 							<reference key="NSSuperview" ref="1017004010"/>
-							<reference key="NSNextKeyView" ref="867241027"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="642060357">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Browsercache leeren</string>
+								<string key="NSContents">ブラウザのキャッシュを空にする</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="205984878"/>
 								<int key="NSButtonFlags">1211912703</int>
@@ -1003,14 +983,13 @@
 						<object class="NSButton" id="273203401">
 							<reference key="NSNextResponder" ref="1017004010"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{18, 33}, {318, 18}}</string>
+							<string key="NSFrame">{{18, 41}, {318, 18}}</string>
 							<reference key="NSSuperview" ref="1017004010"/>
-							<reference key="NSNextKeyView" ref="847847414"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="1070052610">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Dock Icon mit Countdown anzeigen (Badge)</string>
+								<string key="NSContents">Dock のアイコンにカウントダウンをバッジとして表示する</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="273203401"/>
 								<int key="NSButtonFlags">1211912703</int>
@@ -1026,14 +1005,13 @@
 						<object class="NSButton" id="1042338180">
 							<reference key="NSNextResponder" ref="1017004010"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{18, 133}, {240, 18}}</string>
+							<string key="NSFrame">{{18, 141}, {240, 18}}</string>
 							<reference key="NSSuperview" ref="1017004010"/>
-							<reference key="NSNextKeyView" ref="549788209"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="923645284">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Lokale Netzwerke zulassen</string>
+								<string key="NSContents">ローカルネットワークを許可する</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="1042338180"/>
 								<int key="NSButtonFlags">1211912703</int>
@@ -1047,8 +1025,7 @@
 							</object>
 						</object>
 					</object>
-					<string key="NSFrameSize">{354, 209}</string>
-					<reference key="NSNextKeyView" ref="583078105"/>
+					<string key="NSFrameSize">{329, 217}</string>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
@@ -1069,6 +1046,38 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
+						<string key="label">terminate:</string>
+						<reference key="source" ref="1050"/>
+						<reference key="destination" ref="632727374"/>
+					</object>
+					<int key="connectionID">449</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="1050"/>
+						<reference key="destination" ref="542474807"/>
+					</object>
+					<int key="connectionID">485</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">orderFrontStandardAboutPanel:</string>
+						<reference key="source" ref="1021"/>
+						<reference key="destination" ref="238522557"/>
+					</object>
+					<int key="connectionID">142</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="1021"/>
+						<reference key="destination" ref="542474807"/>
+					</object>
+					<int key="connectionID">486</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
 						<string key="label">performMiniaturize:</string>
 						<reference key="source" ref="1014"/>
 						<reference key="destination" ref="1011231497"/>
@@ -1082,14 +1091,6 @@
 						<reference key="destination" ref="625202149"/>
 					</object>
 					<int key="connectionID">39</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">orderFrontStandardAboutPanel:</string>
-						<reference key="source" ref="1021"/>
-						<reference key="destination" ref="238522557"/>
-					</object>
-					<int key="connectionID">142</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
@@ -1114,334 +1115,6 @@
 						<reference key="destination" ref="908899353"/>
 					</object>
 					<int key="connectionID">370</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">terminate:</string>
-						<reference key="source" ref="1050"/>
-						<reference key="destination" ref="632727374"/>
-					</object>
-					<int key="connectionID">449</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">updateTimeSliderDisplay:</string>
-						<reference key="source" ref="542474807"/>
-						<reference key="destination" ref="216075432"/>
-					</object>
-					<int key="connectionID">481</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">delegate</string>
-						<reference key="source" ref="972006081"/>
-						<reference key="destination" ref="542474807"/>
-					</object>
-					<int key="connectionID">484</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">delegate</string>
-						<reference key="source" ref="1050"/>
-						<reference key="destination" ref="542474807"/>
-					</object>
-					<int key="connectionID">485</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">delegate</string>
-						<reference key="source" ref="1021"/>
-						<reference key="destination" ref="542474807"/>
-					</object>
-					<int key="connectionID">486</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">showDomainList:</string>
-						<reference key="source" ref="542474807"/>
-						<reference key="destination" ref="187241115"/>
-					</object>
-					<int key="connectionID">515</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">showDomainList:</string>
-						<reference key="source" ref="542474807"/>
-						<reference key="destination" ref="617926098"/>
-					</object>
-					<int key="connectionID">547</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">makeKeyAndOrderFront:</string>
-						<reference key="source" ref="1069983487"/>
-						<reference key="destination" ref="542846594"/>
-					</object>
-					<int key="connectionID">635</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: values.EvaluateCommonSubdomains</string>
-						<reference key="source" ref="993498988"/>
-						<reference key="destination" ref="863284654"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="993498988"/>
-							<reference key="NSDestination" ref="863284654"/>
-							<string key="NSLabel">value: values.EvaluateCommonSubdomains</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">values.EvaluateCommonSubdomains</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">646</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: values.HighlightInvalidHosts</string>
-						<reference key="source" ref="549788209"/>
-						<reference key="destination" ref="863284654"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="549788209"/>
-							<reference key="NSDestination" ref="863284654"/>
-							<string key="NSLabel">value: values.HighlightInvalidHosts</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">values.HighlightInvalidHosts</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">649</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: values.VerifyInternetConnection</string>
-						<reference key="source" ref="557701039"/>
-						<reference key="destination" ref="863284654"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="557701039"/>
-							<reference key="NSDestination" ref="863284654"/>
-							<string key="NSLabel">value: values.VerifyInternetConnection</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">values.VerifyInternetConnection</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">661</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">blockDurationSlider_</string>
-						<reference key="source" ref="542474807"/>
-						<reference key="destination" ref="216075432"/>
-					</object>
-					<int key="connectionID">669</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">blockSliderTimeDisplayLabel_</string>
-						<reference key="source" ref="542474807"/>
-						<reference key="destination" ref="24348247"/>
-					</object>
-					<int key="connectionID">670</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">submitButton_</string>
-						<reference key="source" ref="542474807"/>
-						<reference key="destination" ref="655025507"/>
-					</object>
-					<int key="connectionID">671</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">initialWindow_</string>
-						<reference key="source" ref="542474807"/>
-						<reference key="destination" ref="972006081"/>
-					</object>
-					<int key="connectionID">672</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">domainListMenuItem_</string>
-						<reference key="source" ref="542474807"/>
-						<reference key="destination" ref="187241115"/>
-					</object>
-					<int key="connectionID">673</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">addBlock:</string>
-						<reference key="source" ref="542474807"/>
-						<reference key="destination" ref="655025507"/>
-					</object>
-					<int key="connectionID">680</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: values.TimerWindowFloats</string>
-						<reference key="source" ref="867241027"/>
-						<reference key="destination" ref="863284654"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="867241027"/>
-							<reference key="NSDestination" ref="863284654"/>
-							<string key="NSLabel">value: values.TimerWindowFloats</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">values.TimerWindowFloats</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">693</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: values.BlockSoundShouldPlay</string>
-						<reference key="source" ref="847847414"/>
-						<reference key="destination" ref="863284654"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="847847414"/>
-							<reference key="NSDestination" ref="863284654"/>
-							<string key="NSLabel">value: values.BlockSoundShouldPlay</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">values.BlockSoundShouldPlay</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">714</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">enabled: values.BlockSoundShouldPlay</string>
-						<reference key="source" ref="132293881"/>
-						<reference key="destination" ref="863284654"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="132293881"/>
-							<reference key="NSDestination" ref="863284654"/>
-							<string key="NSLabel">enabled: values.BlockSoundShouldPlay</string>
-							<string key="NSBinding">enabled</string>
-							<string key="NSKeyPath">values.BlockSoundShouldPlay</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">724</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">selectedTag: values.BlockSound</string>
-						<reference key="source" ref="132293881"/>
-						<reference key="destination" ref="863284654"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="132293881"/>
-							<reference key="NSDestination" ref="863284654"/>
-							<string key="NSLabel">selectedTag: values.BlockSound</string>
-							<string key="NSBinding">selectedTag</string>
-							<string key="NSKeyPath">values.BlockSound</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">726</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">soundSelectionChanged:</string>
-						<reference key="source" ref="542474807"/>
-						<reference key="destination" ref="132293881"/>
-					</object>
-					<int key="connectionID">730</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">checkForUpdates:</string>
-						<reference key="source" ref="975807847"/>
-						<reference key="destination" ref="769007260"/>
-					</object>
-					<int key="connectionID">733</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: automaticallyChecksForUpdates</string>
-						<reference key="source" ref="583078105"/>
-						<reference key="destination" ref="975807847"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="583078105"/>
-							<reference key="NSDestination" ref="975807847"/>
-							<string key="NSLabel">value: automaticallyChecksForUpdates</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">automaticallyChecksForUpdates</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">736</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: values.ClearCaches</string>
-						<reference key="source" ref="642060357"/>
-						<reference key="destination" ref="863284654"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="642060357"/>
-							<reference key="NSDestination" ref="863284654"/>
-							<string key="NSLabel">value: values.ClearCaches</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">values.ClearCaches</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">746</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">editBlacklistButton_</string>
-						<reference key="source" ref="542474807"/>
-						<reference key="destination" ref="617926098"/>
-					</object>
-					<int key="connectionID">749</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: values.ClearCaches</string>
-						<reference key="source" ref="205984878"/>
-						<reference key="destination" ref="863284654"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="205984878"/>
-							<reference key="NSDestination" ref="863284654"/>
-							<string key="NSLabel">value: values.ClearCaches</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">values.ClearCaches</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">756</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: values.BadgeApplicationIcon</string>
-						<reference key="source" ref="273203401"/>
-						<reference key="destination" ref="863284654"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="273203401"/>
-							<reference key="NSDestination" ref="863284654"/>
-							<string key="NSLabel">value: values.BadgeApplicationIcon</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">values.BadgeApplicationIcon</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">757</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">hidden: isTiger</string>
-						<reference key="source" ref="273203401"/>
-						<reference key="destination" ref="542474807"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="273203401"/>
-							<reference key="NSDestination" ref="542474807"/>
-							<string key="NSLabel">hidden: isTiger</string>
-							<string key="NSBinding">hidden</string>
-							<string key="NSKeyPath">isTiger</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">765</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
@@ -1501,27 +1174,19 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
-						<string key="label">save:</string>
-						<reference key="source" ref="542474807"/>
-						<reference key="destination" ref="366357460"/>
-					</object>
-					<int key="connectionID">882</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">open:</string>
-						<reference key="source" ref="542474807"/>
-						<reference key="destination" ref="824235870"/>
-					</object>
-					<int key="connectionID">884</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
 						<string key="label">performClose:</string>
 						<reference key="source" ref="1014"/>
 						<reference key="destination" ref="731302426"/>
 					</object>
 					<int key="connectionID">886</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="972006081"/>
+						<reference key="destination" ref="542474807"/>
+					</object>
+					<int key="connectionID">484</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -1538,6 +1203,318 @@
 						</object>
 					</object>
 					<int key="connectionID">888</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">updateTimeSliderDisplay:</string>
+						<reference key="source" ref="542474807"/>
+						<reference key="destination" ref="216075432"/>
+					</object>
+					<int key="connectionID">481</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">showDomainList:</string>
+						<reference key="source" ref="542474807"/>
+						<reference key="destination" ref="187241115"/>
+					</object>
+					<int key="connectionID">515</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">showDomainList:</string>
+						<reference key="source" ref="542474807"/>
+						<reference key="destination" ref="617926098"/>
+					</object>
+					<int key="connectionID">547</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">blockDurationSlider_</string>
+						<reference key="source" ref="542474807"/>
+						<reference key="destination" ref="216075432"/>
+					</object>
+					<int key="connectionID">669</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">blockSliderTimeDisplayLabel_</string>
+						<reference key="source" ref="542474807"/>
+						<reference key="destination" ref="24348247"/>
+					</object>
+					<int key="connectionID">670</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">submitButton_</string>
+						<reference key="source" ref="542474807"/>
+						<reference key="destination" ref="655025507"/>
+					</object>
+					<int key="connectionID">671</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">initialWindow_</string>
+						<reference key="source" ref="542474807"/>
+						<reference key="destination" ref="972006081"/>
+					</object>
+					<int key="connectionID">672</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">domainListMenuItem_</string>
+						<reference key="source" ref="542474807"/>
+						<reference key="destination" ref="187241115"/>
+					</object>
+					<int key="connectionID">673</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">addBlock:</string>
+						<reference key="source" ref="542474807"/>
+						<reference key="destination" ref="655025507"/>
+					</object>
+					<int key="connectionID">680</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">soundSelectionChanged:</string>
+						<reference key="source" ref="542474807"/>
+						<reference key="destination" ref="132293881"/>
+					</object>
+					<int key="connectionID">730</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">editBlacklistButton_</string>
+						<reference key="source" ref="542474807"/>
+						<reference key="destination" ref="617926098"/>
+					</object>
+					<int key="connectionID">749</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">save:</string>
+						<reference key="source" ref="542474807"/>
+						<reference key="destination" ref="366357460"/>
+					</object>
+					<int key="connectionID">882</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">open:</string>
+						<reference key="source" ref="542474807"/>
+						<reference key="destination" ref="824235870"/>
+					</object>
+					<int key="connectionID">884</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">makeKeyAndOrderFront:</string>
+						<reference key="source" ref="1069983487"/>
+						<reference key="destination" ref="542846594"/>
+					</object>
+					<int key="connectionID">635</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.EvaluateCommonSubdomains</string>
+						<reference key="source" ref="993498988"/>
+						<reference key="destination" ref="863284654"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="993498988"/>
+							<reference key="NSDestination" ref="863284654"/>
+							<string key="NSLabel">value: values.EvaluateCommonSubdomains</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.EvaluateCommonSubdomains</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">646</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.HighlightInvalidHosts</string>
+						<reference key="source" ref="549788209"/>
+						<reference key="destination" ref="863284654"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="549788209"/>
+							<reference key="NSDestination" ref="863284654"/>
+							<string key="NSLabel">value: values.HighlightInvalidHosts</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.HighlightInvalidHosts</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">649</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.VerifyInternetConnection</string>
+						<reference key="source" ref="557701039"/>
+						<reference key="destination" ref="863284654"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="557701039"/>
+							<reference key="NSDestination" ref="863284654"/>
+							<string key="NSLabel">value: values.VerifyInternetConnection</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.VerifyInternetConnection</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">661</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.TimerWindowFloats</string>
+						<reference key="source" ref="867241027"/>
+						<reference key="destination" ref="863284654"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="867241027"/>
+							<reference key="NSDestination" ref="863284654"/>
+							<string key="NSLabel">value: values.TimerWindowFloats</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.TimerWindowFloats</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">693</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: values.BlockSoundShouldPlay</string>
+						<reference key="source" ref="132293881"/>
+						<reference key="destination" ref="863284654"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="132293881"/>
+							<reference key="NSDestination" ref="863284654"/>
+							<string key="NSLabel">enabled: values.BlockSoundShouldPlay</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">values.BlockSoundShouldPlay</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">724</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">selectedTag: values.BlockSound</string>
+						<reference key="source" ref="132293881"/>
+						<reference key="destination" ref="863284654"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="132293881"/>
+							<reference key="NSDestination" ref="863284654"/>
+							<string key="NSLabel">selectedTag: values.BlockSound</string>
+							<string key="NSBinding">selectedTag</string>
+							<string key="NSKeyPath">values.BlockSound</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">726</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.BlockSoundShouldPlay</string>
+						<reference key="source" ref="847847414"/>
+						<reference key="destination" ref="863284654"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="847847414"/>
+							<reference key="NSDestination" ref="863284654"/>
+							<string key="NSLabel">value: values.BlockSoundShouldPlay</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.BlockSoundShouldPlay</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">714</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">checkForUpdates:</string>
+						<reference key="source" ref="975807847"/>
+						<reference key="destination" ref="769007260"/>
+					</object>
+					<int key="connectionID">733</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: automaticallyChecksForUpdates</string>
+						<reference key="source" ref="583078105"/>
+						<reference key="destination" ref="975807847"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="583078105"/>
+							<reference key="NSDestination" ref="975807847"/>
+							<string key="NSLabel">value: automaticallyChecksForUpdates</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">automaticallyChecksForUpdates</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">736</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.ClearCaches</string>
+						<reference key="source" ref="205984878"/>
+						<reference key="destination" ref="863284654"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="205984878"/>
+							<reference key="NSDestination" ref="863284654"/>
+							<string key="NSLabel">value: values.ClearCaches</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.ClearCaches</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">756</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.ClearCaches</string>
+						<reference key="source" ref="642060357"/>
+						<reference key="destination" ref="863284654"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="642060357"/>
+							<reference key="NSDestination" ref="863284654"/>
+							<string key="NSLabel">value: values.ClearCaches</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.ClearCaches</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">746</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.BadgeApplicationIcon</string>
+						<reference key="source" ref="273203401"/>
+						<reference key="destination" ref="863284654"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="273203401"/>
+							<reference key="NSDestination" ref="863284654"/>
+							<string key="NSLabel">value: values.BadgeApplicationIcon</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.BadgeApplicationIcon</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">757</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">hidden: isTiger</string>
+						<reference key="source" ref="273203401"/>
+						<reference key="destination" ref="542474807"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="273203401"/>
+							<reference key="NSDestination" ref="542474807"/>
+							<string key="NSLabel">hidden: isTiger</string>
+							<string key="NSBinding">hidden</string>
+							<string key="NSKeyPath">isTiger</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">765</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -1561,7 +1538,9 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBObjectRecord">
 						<int key="objectID">0</int>
-						<reference key="object" ref="0"/>
+						<object class="NSArray" key="object" id="0">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+						</object>
 						<reference key="children" ref="1048"/>
 						<nil key="parent"/>
 					</object>
@@ -1744,9 +1723,9 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="24348247"/>
+							<reference ref="216075432"/>
 							<reference ref="617926098"/>
 							<reference ref="655025507"/>
-							<reference ref="216075432"/>
 						</object>
 						<reference key="parent" ref="972006081"/>
 					</object>
@@ -1895,12 +1874,12 @@
 							<reference ref="583078105"/>
 							<reference ref="993498988"/>
 							<reference ref="549788209"/>
+							<reference ref="557701039"/>
 							<reference ref="867241027"/>
 							<reference ref="205984878"/>
 							<reference ref="273203401"/>
 							<reference ref="1042338180"/>
 							<reference ref="847847414"/>
-							<reference ref="557701039"/>
 							<reference ref="132293881"/>
 						</object>
 						<reference key="parent" ref="1069983487"/>
@@ -2408,7 +2387,7 @@
 					<string>890.IBPluginDependency</string>
 					<string>92.IBPluginDependency</string>
 				</object>
-				<object class="NSMutableArray" key="dict.values">
+				<object class="NSArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2549,12 +2528,10 @@
 							<string>save:</string>
 							<string>showDomainList:</string>
 							<string>soundSelectionChanged:</string>
-							<string>switchedToWhitelist:</string>
 							<string>updateTimeSliderDisplay:</string>
 						</object>
-						<object class="NSMutableArray" key="dict.values">
+						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -2572,10 +2549,9 @@
 							<string>save:</string>
 							<string>showDomainList:</string>
 							<string>soundSelectionChanged:</string>
-							<string>switchedToWhitelist:</string>
 							<string>updateTimeSliderDisplay:</string>
 						</object>
-						<object class="NSMutableArray" key="dict.values">
+						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBActionInfo">
 								<string key="name">addBlock:</string>
@@ -2598,10 +2574,6 @@
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
-								<string key="name">switchedToWhitelist:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
 								<string key="name">updateTimeSliderDisplay:</string>
 								<string key="candidateClassName">id</string>
 							</object>
@@ -2620,7 +2592,7 @@
 							<string>submitButton_</string>
 							<string>timerWindowController_</string>
 						</object>
-						<object class="NSMutableArray" key="dict.values">
+						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>id</string>
 							<string>id</string>
@@ -2645,7 +2617,7 @@
 							<string>submitButton_</string>
 							<string>timerWindowController_</string>
 						</object>
-						<object class="NSMutableArray" key="dict.values">
+						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBToOneOutletInfo">
 								<string key="name">blockDurationSlider_</string>
@@ -2700,7 +2672,7 @@
 							<string>importOutgoingMailServersFromThunderbird:</string>
 							<string>removeDomain:</string>
 						</object>
-						<object class="NSMutableArray" key="dict.values">
+						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>id</string>
 							<string>id</string>
@@ -2721,7 +2693,7 @@
 							<string>importOutgoingMailServersFromThunderbird:</string>
 							<string>removeDomain:</string>
 						</object>
-						<object class="NSMutableArray" key="dict.values">
+						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBActionInfo">
 								<string key="name">addDomain:</string>
@@ -2766,24 +2738,6 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">NSPopUpButton</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">myAction1:</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">myAction1:</string>
-						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">myAction1:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/NSPopUpButton.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
 					<string key="className">SUUpdater</string>
 					<string key="superclassName">NSObject</string>
 					<object class="NSMutableDictionary" key="actions">
@@ -2824,7 +2778,7 @@
 							<string>closeAddSheet:</string>
 							<string>performAdd:</string>
 						</object>
-						<object class="NSMutableArray" key="dict.values">
+						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>id</string>
 							<string>id</string>
@@ -2839,7 +2793,7 @@
 							<string>closeAddSheet:</string>
 							<string>performAdd:</string>
 						</object>
-						<object class="NSMutableArray" key="dict.values">
+						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBActionInfo">
 								<string key="name">addToBlock:</string>
@@ -2864,7 +2818,7 @@
 							<string>addToBlockTextField_</string>
 							<string>timerLabel_</string>
 						</object>
-						<object class="NSMutableArray" key="dict.values">
+						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>NSPanel</string>
 							<string>NSButton</string>
@@ -2881,7 +2835,7 @@
 							<string>addToBlockTextField_</string>
 							<string>timerLabel_</string>
 						</object>
-						<object class="NSMutableArray" key="dict.values">
+						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBToOneOutletInfo">
 								<string key="name">addSheet_</string>
@@ -2928,10 +2882,10 @@
 				<string>NSMenuMixedState</string>
 				<string>NSSwitch</string>
 			</object>
-			<object class="NSMutableArray" key="dict.values">
+			<object class="NSArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>{9, 8}</string>
-				<string>{7, 2}</string>
+				<string>{11, 11}</string>
+				<string>{10, 3}</string>
 				<string>{15, 15}</string>
 			</object>
 		</object>

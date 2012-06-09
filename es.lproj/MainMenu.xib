@@ -71,7 +71,7 @@
 								<bool key="EncodedWithXMLCoder">YES</bool>
 								<object class="NSMenuItem" id="238522557">
 									<reference key="NSMenu" ref="110575045"/>
-									<string key="NSTitle">About SelfControl</string>
+									<string key="NSTitle">Sobre SelfControl</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="35465992"/>
@@ -79,7 +79,7 @@
 								</object>
 								<object class="NSMenuItem" id="769007260">
 									<reference key="NSMenu" ref="110575045"/>
-									<string key="NSTitle">Check for updates...</string>
+									<string key="NSTitle">Buscar actualizaciones...</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="35465992"/>
@@ -128,7 +128,7 @@
 								</object>
 								<object class="NSMenuItem" id="542846594">
 									<reference key="NSMenu" ref="110575045"/>
-									<string key="NSTitle">Preferences…</string>
+									<string key="NSTitle">Preferencias…</string>
 									<string key="NSKeyEquiv">,</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -137,7 +137,7 @@
 								</object>
 								<object class="NSMenuItem" id="187241115">
 									<reference key="NSMenu" ref="110575045"/>
-									<string key="NSTitle">Edit Blacklist...</string>
+									<string key="NSTitle">Editar lista negra...</string>
 									<string key="NSKeyEquiv">d</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -157,7 +157,7 @@
 								</object>
 								<object class="NSMenuItem" id="1046388886">
 									<reference key="NSMenu" ref="110575045"/>
-									<string key="NSTitle">Services</string>
+									<string key="NSTitle">Servicios</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -165,7 +165,7 @@
 									<reference key="NSMixedImage" ref="502551668"/>
 									<string key="NSAction">submenuAction:</string>
 									<object class="NSMenu" key="NSSubmenu" id="752062318">
-										<string key="NSTitle">Services</string>
+										<string key="NSTitle">Servicios</string>
 										<object class="NSMutableArray" key="NSMenuItems">
 											<bool key="EncodedWithXMLCoder">YES</bool>
 										</object>
@@ -185,7 +185,7 @@
 								</object>
 								<object class="NSMenuItem" id="755159360">
 									<reference key="NSMenu" ref="110575045"/>
-									<string key="NSTitle">Hide SelfControl</string>
+									<string key="NSTitle">Esconder SelfControl</string>
 									<string key="NSKeyEquiv">h</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -194,7 +194,7 @@
 								</object>
 								<object class="NSMenuItem" id="342932134">
 									<reference key="NSMenu" ref="110575045"/>
-									<string key="NSTitle">Hide Others</string>
+									<string key="NSTitle">Esconder otros</string>
 									<string key="NSKeyEquiv">h</string>
 									<int key="NSKeyEquivModMask">1572864</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -203,7 +203,7 @@
 								</object>
 								<object class="NSMenuItem" id="908899353">
 									<reference key="NSMenu" ref="110575045"/>
-									<string key="NSTitle">Show All</string>
+									<string key="NSTitle">Mostrar todos</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -253,7 +253,7 @@
 								</object>
 								<object class="NSMenuItem" id="632727374">
 									<reference key="NSMenu" ref="110575045"/>
-									<string key="NSTitle">Quit SelfControl</string>
+									<string key="NSTitle">Dejar SelfControl</string>
 									<string key="NSKeyEquiv">q</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -266,19 +266,19 @@
 					</object>
 					<object class="NSMenuItem" id="719551672">
 						<reference key="NSMenu" ref="649796088"/>
-						<string key="NSTitle">File</string>
+						<string key="NSTitle">Archivo</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="35465992"/>
 						<reference key="NSMixedImage" ref="502551668"/>
 						<string key="NSAction">submenuAction:</string>
 						<object class="NSMenu" key="NSSubmenu" id="690148573">
-							<string key="NSTitle">File</string>
+							<string key="NSTitle">Archivo</string>
 							<object class="NSMutableArray" key="NSMenuItems">
 								<bool key="EncodedWithXMLCoder">YES</bool>
 								<object class="NSMenuItem" id="731302426">
 									<reference key="NSMenu" ref="690148573"/>
-									<string key="NSTitle">Close Window</string>
+									<string key="NSTitle">Cerrar ventana</string>
 									<string key="NSKeyEquiv">w</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -297,7 +297,7 @@
 								</object>
 								<object class="NSMenuItem" id="824235870">
 									<reference key="NSMenu" ref="690148573"/>
-									<string key="NSTitle">Open…</string>
+									<string key="NSTitle">Abrir…</string>
 									<string key="NSKeyEquiv">o</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -306,7 +306,7 @@
 								</object>
 								<object class="NSMenuItem" id="366357460">
 									<reference key="NSMenu" ref="690148573"/>
-									<string key="NSTitle">Save</string>
+									<string key="NSTitle">Guardar</string>
 									<string key="NSKeyEquiv">s</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -318,19 +318,19 @@
 					</object>
 					<object class="NSMenuItem" id="209208253">
 						<reference key="NSMenu" ref="649796088"/>
-						<string key="NSTitle">Edit</string>
+						<string key="NSTitle">Editar</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="35465992"/>
 						<reference key="NSMixedImage" ref="502551668"/>
 						<string key="NSAction">submenuAction:</string>
 						<object class="NSMenu" key="NSSubmenu" id="826854830">
-							<string key="NSTitle">Edit</string>
+							<string key="NSTitle">Editar</string>
 							<object class="NSMutableArray" key="NSMenuItems">
 								<bool key="EncodedWithXMLCoder">YES</bool>
 								<object class="NSMenuItem" id="4998080">
 									<reference key="NSMenu" ref="826854830"/>
-									<string key="NSTitle">Undo</string>
+									<string key="NSTitle">Deshacer</string>
 									<string key="NSKeyEquiv">z</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -339,7 +339,7 @@
 								</object>
 								<object class="NSMenuItem" id="532638654">
 									<reference key="NSMenu" ref="826854830"/>
-									<string key="NSTitle">Redo</string>
+									<string key="NSTitle">Rehacer</string>
 									<string key="NSKeyEquiv">Z</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -358,7 +358,7 @@
 								</object>
 								<object class="NSMenuItem" id="1022354401">
 									<reference key="NSMenu" ref="826854830"/>
-									<string key="NSTitle">Cut</string>
+									<string key="NSTitle">Cortar</string>
 									<string key="NSKeyEquiv">x</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -367,7 +367,7 @@
 								</object>
 								<object class="NSMenuItem" id="519538734">
 									<reference key="NSMenu" ref="826854830"/>
-									<string key="NSTitle">Copy</string>
+									<string key="NSTitle">Copiar</string>
 									<string key="NSKeyEquiv">c</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -376,7 +376,7 @@
 								</object>
 								<object class="NSMenuItem" id="376385263">
 									<reference key="NSMenu" ref="826854830"/>
-									<string key="NSTitle">Paste</string>
+									<string key="NSTitle">Pegar</string>
 									<string key="NSKeyEquiv">v</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -385,7 +385,7 @@
 								</object>
 								<object class="NSMenuItem" id="832677908">
 									<reference key="NSMenu" ref="826854830"/>
-									<string key="NSTitle">Delete</string>
+									<string key="NSTitle">Borrar</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="35465992"/>
@@ -393,7 +393,7 @@
 								</object>
 								<object class="NSMenuItem" id="706317530">
 									<reference key="NSMenu" ref="826854830"/>
-									<string key="NSTitle">Select All</string>
+									<string key="NSTitle">Seleccionar todos</string>
 									<string key="NSKeyEquiv">a</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -412,19 +412,19 @@
 								</object>
 								<object class="NSMenuItem" id="871335347">
 									<reference key="NSMenu" ref="826854830"/>
-									<string key="NSTitle">Speech</string>
+									<string key="NSTitle">Habla</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="35465992"/>
 									<reference key="NSMixedImage" ref="502551668"/>
 									<string key="NSAction">submenuAction:</string>
 									<object class="NSMenu" key="NSSubmenu" id="589005805">
-										<string key="NSTitle">Speech</string>
+										<string key="NSTitle">Habla</string>
 										<object class="NSMutableArray" key="NSMenuItems">
 											<bool key="EncodedWithXMLCoder">YES</bool>
 											<object class="NSMenuItem" id="88247308">
 												<reference key="NSMenu" ref="589005805"/>
-												<string key="NSTitle">Start Speaking</string>
+												<string key="NSTitle">Empezar a hablar</string>
 												<string key="NSKeyEquiv"/>
 												<int key="NSMnemonicLoc">2147483647</int>
 												<reference key="NSOnImage" ref="35465992"/>
@@ -432,7 +432,7 @@
 											</object>
 											<object class="NSMenuItem" id="316114679">
 												<reference key="NSMenu" ref="589005805"/>
-												<string key="NSTitle">Stop Speaking</string>
+												<string key="NSTitle">Parar de hablar</string>
 												<string key="NSKeyEquiv"/>
 												<int key="NSMnemonicLoc">2147483647</int>
 												<reference key="NSOnImage" ref="35465992"/>
@@ -446,7 +446,7 @@
 					</object>
 					<object class="NSMenuItem" id="713487014">
 						<reference key="NSMenu" ref="649796088"/>
-						<string key="NSTitle">Window</string>
+						<string key="NSTitle">Ventana</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSKeyEquivModMask">1048576</int>
 						<int key="NSMnemonicLoc">2147483647</int>
@@ -454,12 +454,12 @@
 						<reference key="NSMixedImage" ref="502551668"/>
 						<string key="NSAction">submenuAction:</string>
 						<object class="NSMenu" key="NSSubmenu" id="835318025">
-							<string key="NSTitle">Window</string>
+							<string key="NSTitle">Ventana</string>
 							<object class="NSMutableArray" key="NSMenuItems">
 								<bool key="EncodedWithXMLCoder">YES</bool>
 								<object class="NSMenuItem" id="1011231497">
 									<reference key="NSMenu" ref="835318025"/>
-									<string key="NSTitle">Minimize</string>
+									<string key="NSTitle">Minimizar</string>
 									<string key="NSKeyEquiv">m</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -479,7 +479,7 @@
 								</object>
 								<object class="NSMenuItem" id="625202149">
 									<reference key="NSMenu" ref="835318025"/>
-									<string key="NSTitle">Bring All to Front</string>
+									<string key="NSTitle">Traer todos al frente</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -543,7 +543,7 @@
 							<object class="NSTextFieldCell" key="NSCell" id="541657277">
 								<int key="NSCellFlags">68288064</int>
 								<int key="NSCellFlags2">272630784</int>
-								<string key="NSContents">30 minutes</string>
+								<string key="NSContents">30 minutos</string>
 								<object class="NSFont" key="NSSupport" id="736984554">
 									<string key="NSName">LucidaGrande</string>
 									<double key="NSSize">13</double>
@@ -579,7 +579,7 @@
 							<object class="NSButtonCell" key="NSCell" id="199824051">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">134217728</int>
-								<string key="NSContents">Start</string>
+								<string key="NSContents">Iniciar</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="655025507"/>
 								<int key="NSButtonFlags">-2038152961</int>
@@ -599,7 +599,7 @@
 							<object class="NSButtonCell" key="NSCell" id="912332486">
 								<int key="NSCellFlags">67239424</int>
 								<int key="NSCellFlags2">134217728</int>
-								<string key="NSContents">Edit Blacklist</string>
+								<string key="NSContents">Editar lista negra</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="617926098"/>
 								<int key="NSButtonFlags">-2038152961</int>
@@ -623,7 +623,7 @@
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{196, 293}, {329, 217}}</string>
 				<int key="NSWTFlags">1677721600</int>
-				<string key="NSWindowTitle">Preferences</string>
+				<string key="NSWindowTitle">Preferencias</string>
 				<string key="NSWindowClass">NSWindow</string>
 				<nil key="NSViewClass"/>
 				<nil key="NSUserInterfaceItemIdentifier"/>
@@ -641,7 +641,7 @@
 							<object class="NSButtonCell" key="NSCell" id="961665558">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Block common subdomains</string>
+								<string key="NSContents">Bloquear subdominios comunes</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="993498988"/>
 								<int key="NSButtonFlags">1211912703</int>
@@ -668,7 +668,7 @@
 							<object class="NSButtonCell" key="NSCell" id="689156809">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Highlight invalid hosts</string>
+								<string key="NSContents">Resaltar hosts inválidos</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="549788209"/>
 								<int key="NSButtonFlags">1211912703</int>
@@ -690,7 +690,7 @@
 							<object class="NSButtonCell" key="NSCell" id="206462659">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Verify internet connection</string>
+								<string key="NSContents">Verificar conexión a internet</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="557701039"/>
 								<int key="NSButtonFlags">1211912703</int>
@@ -712,7 +712,7 @@
 							<object class="NSButtonCell" key="NSCell" id="551150060">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Display timer window on top</string>
+								<string key="NSContents">Mostrar ventana del temporizador encima</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="867241027"/>
 								<int key="NSButtonFlags">1211912703</int>
@@ -923,7 +923,7 @@
 							<object class="NSButtonCell" key="NSCell" id="881052891">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Play sound on completion:</string>
+								<string key="NSContents">Tocar sonido cuando termine:</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="847847414"/>
 								<int key="NSButtonFlags">1211912703</int>
@@ -945,7 +945,7 @@
 							<object class="NSButtonCell" key="NSCell" id="767588282">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Automatically check for updates</string>
+								<string key="NSContents">Buscar actualizaciones automáticamente</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="583078105"/>
 								<int key="NSButtonFlags">1211912703</int>
@@ -967,7 +967,7 @@
 							<object class="NSButtonCell" key="NSCell" id="642060357">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Clear browser cache</string>
+								<string key="NSContents">Borrar cache del navegador</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="205984878"/>
 								<int key="NSButtonFlags">1211912703</int>
@@ -989,7 +989,7 @@
 							<object class="NSButtonCell" key="NSCell" id="1070052610">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Badge dock icon with countdown</string>
+								<string key="NSContents">Crear un badge para el ícono en el dock con cuenta regresiva</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="273203401"/>
 								<int key="NSButtonFlags">1211912703</int>
@@ -1011,7 +1011,7 @@
 							<object class="NSButtonCell" key="NSCell" id="923645284">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Allow local networks</string>
+								<string key="NSContents">Permitir redes locales</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="1042338180"/>
 								<int key="NSButtonFlags">1211912703</int>

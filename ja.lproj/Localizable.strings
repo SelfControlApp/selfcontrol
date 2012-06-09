@@ -1,0 +1,53 @@
+/* Message text when no network connection available */
+"A block cannot be started without a working network connection.  You can override this setting in Preferences." = "ネットワーク接続が確認されるまでブロックを開始できません。環境設定にてこの設定を上書きすることができます。";
+
+/* Whitelist block explanation */
+"A whitelist block means that everything on the internet BESIDES your specified list will be blocked.  This includes the web, email, SSH, and anything else your computer accesses via the internet.  If a web site requires resources such as images or scripts from a site that is not on your whitelist, the site may not work properly." = "ホワイトリスト内でのブロックを実行すると、あなたの指定したリスト以外の全てをブロックします。これにはウェブ、電子メール、SSH、およびあなたのコンピュータがインターネットを通してアクセスするもの全てが含まれます。サイトが正常に動作するために、ホワイトリストに含まれていない画像やスクリプトなどの情報を必要とする場合は、問題が生じる可能性があります。";
+
+/* Whitelist block confirmation question */
+"Are you sure you want a whitelist block?" = "ホワイトリスト内のブロックを実行してよろしいですか？";
+
+/* Block in progress error note */
+"Block in progress" = "ブロック進行中です。";
+
+/* Cancel button */
+"Cancel" = "キャンセル";
+
+/* Single day in time strings */
+"day" = "日";
+
+/* Plural days in time strings */
+"days" = "日";
+
+/* Shows that the slider is at 0 so the block is disabled */
+"Disabled" = "";
+
+/* Single hour in time strings */
+"hour" = "時間";
+
+/* Plural hours in time strings */
+"hours" = "時間";
+
+/* Text on Start button when loading */
+"Loading" = "ロード中";
+
+/* Single minute in time strings */
+"minute" = "分";
+
+/* Plural minutes in time strings */
+"minutes" = "分";
+
+/* Button to open Network Diagnostics */
+"Network Diagnostics..." = "ネットワーク診断...";
+
+/* Alert text when no network connection available */
+"No network connection detected" = "ネットワーク接続が検出されませんでした。";
+
+/* OK button */
+"OK" = "OK";
+
+/* Start button */
+"Start" = "開始";
+
+/* Block in progress error text */
+"The blacklist cannot be edited while a block is in progress." = "ブロック進行中はブラックリストの編集を行えません。";
