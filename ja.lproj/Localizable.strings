@@ -8,7 +8,7 @@
 "Are you sure you want a whitelist block?" = "ホワイトリスト内のブロックを実行してよろしいですか？";
 
 /* Block in progress error note */
-"Block in progress" = "ブロック進行中です。";
+"Block in progress" = "ブロック中です。";
 
 /* Cancel button */
 "Cancel" = "キャンセル";
@@ -50,4 +50,4 @@
 "Start" = "開始";
 
 /* Block in progress error text */
-"The blacklist cannot be edited while a block is in progress." = "ブロック進行中はブラックリストの編集を行えません。";
+"The blacklist cannot be edited while a block is in progress." = "ブロック中はブラックリストの編集を行えません。";
