@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -11,7 +11,7 @@
 			isa = PBXAggregateTarget;
 			buildConfigurationList = CB93682C0F85D88C00EF284E /* Build configuration list for PBXAggregateTarget "Distribution" */;
 			buildPhases = (
-				CB9368240F85D84E00EF284E /* ShellScript */,
+				CB505E3415AE2B7500D90367 /* Run Script */,
 			);
 			dependencies = (
 				CB9368290F85D86500EF284E /* PBXTargetDependency */,
@@ -142,6 +142,7 @@
 		CB4295C20F53EF8C008E10CA /* org.eyebeam.SelfControl.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = org.eyebeam.SelfControl.plist; sourceTree = "<group>"; };
 		CB4C58D50F3F8F2A00B5D7CB /* SelfControlIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SelfControlIcon.icns; sourceTree = "<group>"; };
 		CB4C58D90F3F90B000B5D7CB /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
+		CB505E3515AE2C0100D90367 /* config.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = config.yml; sourceTree = "<group>"; };
 		CB529BBD0F32B7ED00564FB8 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		CB529BBE0F32B7ED00564FB8 /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
 		CB587E4F0F50FE8800C66A09 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = /System/Library/Frameworks/SystemConfiguration.framework; sourceTree = "<absolute>"; };
@@ -289,6 +290,7 @@
 		29B97314FDCFA39411CA2CEA /* SelfControl */ = {
 			isa = PBXGroup;
 			children = (
+				CB505E3515AE2C0100D90367 /* config.yml */,
 				CB1E7A6D0F9AEA9B00D158BC /* ERRORS */,
 				CB4294DF0F53D865008E10CA /* Classes */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -406,7 +408,6 @@
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				CB2359D90F4541AB0030F59C /* Copy Helper Tools */,
 				CB93655B0F85805300EF284E /* Copy Frameworks */,
-				CBF2893C10AD3A3300A0102F /* Automate Appcast Build */,
 			);
 			buildRules = (
 			);
@@ -457,8 +458,11 @@
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0430;
+			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "SelfControl" */;
-			compatibilityVersion = "Xcode 3.1";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
@@ -506,32 +510,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		CB9368240F85D84E00EF284E /* ShellScript */ = {
+		CB505E3415AE2B7500D90367 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/bash;
-			shellScript = "#!/bin/bash\n\nset -o errexit\n\n[ $BUILD_STYLE = Release ] || { echo Distribution target requires \"'Release'\" build style; false; }\n\nVERSION=$(defaults read \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app/Contents/Info\" CFBundleVersion)\nDOWNLOAD_BASE_URL=\"http://cloud.github.com/downloads/slambert/selfcontrol\"\nRELEASENOTES_URL=\"http://cloud.github.com/downloads/slambert/selfcontrol/releasenotes.html#version-$VERSION\"\n\nARCHIVE_FILENAME=\"$PROJECT_NAME-$VERSION.zip\"\nDOWNLOAD_URL=\"$DOWNLOAD_BASE_URL/$ARCHIVE_FILENAME\"\nKEYCHAIN_PRIVKEY_NAME=\"Sparkle Private Key 1\"\n\nWD=$PWD\ncd \"$BUILT_PRODUCTS_DIR\"\nrm -f \"$PROJECT_NAME\"*.zip\nzip -qr \"$ARCHIVE_FILENAME\" \"$PROJECT_NAME.app\"\n\nSIZE=$(stat -f %z \"$ARCHIVE_FILENAME\")\nPUBDATE=$(date +\"%a, %d %b %G %T %z\")\nSIGNATURE=$(\n\topenssl dgst -sha1 -binary < \"$ARCHIVE_FILENAME\" \\\n\t| openssl dgst -dss1 -sign <(security find-generic-password -g -s \"$KEYCHAIN_PRIVKEY_NAME\" 2>&1 1>/dev/null | perl -pe '($_) = /\"(.+)\"/; s/\\\\012/\\n/g') \\\n\t| openssl enc -base64\n)\n\n[ $SIGNATURE ] || { echo Unable to load signing private key with name \"'$KEYCHAIN_PRIVKEY_NAME'\" from keychain; false; }\n\ncat <<EOF\n\t\t<item>\n\t\t\t<title>Version $VERSION</title>\n\t\t\t<sparkle:releaseNotesLink>$RELEASENOTES_URL</sparkle:releaseNotesLink>\n\t\t\t<pubDate>$PUBDATE</pubDate>\n\t\t\t<enclosure\n\t\t\t\turl=\"$DOWNLOAD_URL\"\n\t\t\t\tsparkle:version=\"$VERSION\"\n\t\t\t\ttype=\"application/octet-stream\"\n\t\t\t\tlength=\"$SIZE\"\n\t\t\t\tsparkle:dsaSignature=\"$SIGNATURE\"\n\t\t\t/>\n\t\t</item>\nEOF\n\necho $SIGNATURE >> /Users/charlie/log.log\necho $SIZE >> /Users/charlie/log.log\necho  $DOWNLOAD_URL >> /Users/charlie/log.log\necho $VERSION >> /Users/charlie/log.log\n\necho scp \"'$HOME/svn/my-cool-app/build/Release/$ARCHIVE_FILENAME'\" www.example.com:download/\necho scp \"'$WD/appcast.xml'\" www.example.com:web/software/my-cool-app/appcast.xml";
-		};
-		CBF2893C10AD3A3300A0102F /* Automate Appcast Build */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Automate Appcast Build";
+			name = "Run Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /usr/bin/ruby;
-			shellScript = "#!/usr/bin/env ruby -w\n\n#################################################################################\n#                                                                               #\n#     appcast_automation.rb                                                     #\n#                                                                               #\n#     author:   Craig Williams                                                  #\n#     created:  2009-01-09                                                      #\n#                                                                               #\n#################################################################################\n#                                                                               #\n#     This program is free software: you can redistribute it and/or modify      #\n#     it under the terms of the GNU General Public License as published by      #\n#     the Free Software Foundation, either version 3 of the License, or         #\n#     (at your option) any later version.                                       #\n#                                                                               #\n#     This program is distributed in the hope that it will be useful,           #\n#     but WITHOUT ANY WARRANTY; without even the implied warranty of            #\n#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             #\n#     GNU General Public License for more details.                              #\n#                                                                               #\n#     You should have received a copy of the GNU General Public License         #\n#     along with this program.  If not, see <http://www.gnu.org/licenses/>.     #\n#                                                                               #\n#################################################################################\n\n=begin\n  INTRO:\n    In his article, Marc uses a bash script to automate the process of signing your \n    Sparkle enabled app and explains how to put your private and public keys in your \n    keychain. I wrote a Ruby version that extends this functionality to \n    include a few more options‚Ä¶\n\n    IMPORTANT: You will need to read Marc's article first before moving forward. \n\n    Here is a quick list of added features:\n    \n    \t1. config.yaml file for configuration information\n    \t2. build_now option - when set to 'NO' will not run during Release style build\n    \t3. Creates project release folder if it does not exist\n    \t4. Creates sub-folders based on version number\n    \t5. Creates css file\n    \t6. Creates xml file containing the '<item>' info generated by the script\n    \t7. Creates an html template file\n    \t8. Copies the newly created archive to the project folder\n    \n\n    The project release folder is not the 'Release' folder Xcode creates. \n    This is a folder that contains this and future Sparkle release builds. \n    See 'appcast_basefolder' below.\n     \n    INSTRUCTIONS:    \n    \n    Config YAML file\n    A YAML file is easily editable and is a good place for us to set up our \n    configuration information. It also enables us not to have to change the \n    script once we have it the way we want it. \n\n    Create a 'config.yaml' file and place it in your projects 'Release' folder\n    and include the following making the necessary changes.\n    ---\n    build_now:              'YES'\n    download_base_url:      'http://www.your_website.com/app_folder/'\n    appcast_basefolder:     '/users/user_name/desktop/app_name/'\n    appcast_xml_name:       'appcast.xml'\n    keychain_privkey_name:  'Sparkle Private Key'\n    css_file_name:          'rnotes.css'\n\n    IMPORTANT: If you change the variable names here you also \n    need to change them in the script.\n    \n    VARIABLE EXPLANATION\n\n    build_now: \n      Will only include this script in the build process if this is set to 'YES'\n      The script automatically checks that the build style is 'Release'\n\n    download_base_url:      \n      Your website url where you will place your updated project\n\n    appcast_basefolder:   \n      The base file is created for you and a project folder inside that with\n      the name of your project and version number. \n    \teg  - ProjectName \n      \t\t  - ProjectName 1.0\n    \t\t\t    - appcast.xml (contains the '<item>' info)\n    \t\t\t    - 1.0.html\n    \t\t\t    - rnotes.css\n      \t\t\t  - ProjectName 1.0.zip\n      \t\t  - ProjectName 1.1\n      \t\t\t  - appcast.xml (contains the '<item>' info)\n      \t\t\t  - 1.1.html\n      \t\t\t  - rnotes.css\n      \t\t\t  - ProjectName 1.1.zip\n    \n    \n    The following files are created for you if they do not already exist.\n        appcast_xml_name:\n        css_file_name:\n        version_number.html\n\n    Your archived project file is also copied to the project folder\n        AppName 1.1.zip\n\n    appcast_xml_name:\n      This file holds the results of the script. What is between the '' tags that\n      you will copy into your complete appcast.xml file.\n      Name to your liking.\n\n    keychain_privkey_name:\n      You should understand this after reading Marc's article.\n      Name to your liking.\n\n    css_file_name:\n    This name will be used to create your css file and the link in the xml file. \n    If you change this after these are created make sure also change the xml file \n    or if you created the css file first use that name here.\n\n      The css is at the bottom of the script and is in 'flat' form. One liners.\n      When written to file it is expanded to standard format for easy editing.\n\n    Once your config.yaml file is created and placed in your projects 'Release' folder, \n    add this script as a 'Run Script' build phase. Set the bash to /usr/bin/ruby \n    and you are finished!\n\n    If you have questions, ideas or bug reports please post them at:\n    http://allancraig.net/blog/?p=65\n      \n=end\n\nclass AppCast\n  require 'yaml'\n  require 'tmpdir'\n  require 'fileutils'\n  \n  MESSAGE_HEADER    = 'RUN SCRIPT DURING BUILD MESSAGE'\n  \n  def initialize\n    @signature = ''\n    require_release_build\n    instantiate_project_variables\n    load_config_file\n    \n    # the build_now setting in the config.yaml file\n    # determines whether you want to perform this script\n    # set to 'NO' until you are ready to publish\n    exit_if_build_not_set_to_yes\n    instantiate_appcast_variables\n  end\n  \n  def main_worker_bee\n    create_appcast_folder_and_files\n    remove_old_zip_create_new_zip\n    file_stats\n    create_key\n    create_appcast_xml\n    copy_archive_to_appcast_path\n  end\n  \n  # Only works for Release builds\n  # Exits upon failure\n  def require_release_build\n      if ENV[\"BUILD_STYLE\"] == 'Debug'\n        log_message(\"Distribution target requires 'Release' build style\")\n        exit\n      end\n  end\n  \n  # Exits if no config.yaml file found.\n  def load_config_file\n    config_file_path = \"#{@proj_dir}/config.yaml\"\n    if !File.exists?(config_file_path)\n      log_message(\"No 'config.yaml' file found in project directory.\")\n      exit\n    end\n    @config = YAML.load_file(config_file_path)\n  end\n  \n  def exit_if_build_not_set_to_yes\n      if @config['build_now'] != 'YES'\n        log_message(\"The 'build_now' setting in 'config.yaml' set to 'NO'\\nIf you are wanting to include this script in\\nthe build process change this setting to 'YES'\")\n        exit\n      end\n  end\n\n  def instantiate_project_variables\n    @proj_dir               = ENV['BUILT_PRODUCTS_DIR']\n    @proj_name              = ENV['PROJECT_NAME']\n    @version                = `defaults read \"#{@proj_dir}/#{@proj_name}.app/Contents/Info\" CFBundleVersion`\n    @archive_filename       = \"#{@proj_name} #{@version.chomp}.zip\"\n    @archive_path           = \"#{@proj_dir}/#{@archive_filename}\"\n  end\n\n  def instantiate_appcast_variables\n    @appcast_xml_name       = @config['appcast_xml_name'].chomp\n    @appcast_basefolder     = @config['appcast_basefolder'].chomp\n    @appcast_proj_folder    = \"#{@config['appcast_basefolder']}/#{@proj_name}_#{@version}\".chomp\n    @appcast_xml_path       = \"#{@appcast_proj_folder}/#{@appcast_xml_name}\"\n    @download_base_url      = @config['download_base_url']\n    @keychain_privkey_name  = @config['keychain_privkey_name']\n    @css_file_name          = @config['css_file_name']\n    @releasenotes_url       = \"#{@download_base_url}#{@version.chomp}.html\"\n    @download_url           = \"#{@download_base_url}#{@archive_filename}\"\n  end\n\n  def remove_old_zip_create_new_zip\n    Dir.chdir(@proj_dir)\n    `rm -f #{@proj_name}*.zip`\n    `zip -qr \"#{@archive_filename}\" \"#{@proj_name}.app\"`\n  end\n  \n  def copy_archive_to_appcast_path\n    begin\n      FileUtils.cp(@archive_path, @appcast_proj_folder)\n    rescue\n      log_message(\"There was an error copying the zip file to appcast folder\\nError: #{$!}\")\n    end\n  end\n  \n  def file_stats\n    @size     = File.size(@archive_filename)\n    @pubdate  = `date +\"%a, %d %b %G %T %z\"`\n  end\n  \n  def create_key\n    priv_key_path = \"#{Dir.tmpdir}/priv_key.pem\"\n    \n    key = `security find-generic-password -g -s \"#{@keychain_privkey_name}\" 2>&1 1>/dev/null | perl -pe '($_) = /\"(.+)\"/'`\n    \n    if key == ''\n      log_message(\"Unable to load signing private key with name '#{@keychain_privkey_name}' from keychain\\nFor file #{@archive_filename}\")\n      exit\n    end\n\n    File.open(priv_key_path, 'w') { |f| f.puts key.split(\"\\\\012\") }    \n    \n    @signature = `openssl dgst -sha1 -binary < '#{@archive_path}' \\\n                   | openssl dgst -dss1 -sign '#{priv_key_path}' \\\n                   | openssl enc -base64`\n\n    `rm -fP #{priv_key_path}`\n\n    log_message(@signature)\n\n    if @signature == ''\n      log_message(\"Unable to sign file #{@archive_filename}\")\n      exit\n    end\n  end\n  \n  def create_appcast_xml\n    appcast_xml = \n\"<item>\n\t<title>Version #{@version.chomp}</title>\n\t  <sparkle:releaseNotesLink>\n\t    #{@releasenotes_url.chomp}\n\t  </sparkle:releaseNotesLink>\n\t<pubDate>#{@pubdate.chomp}</pubDate>\n\t<enclosure\n\t\turl=\\\"#{@download_url.chomp}\\\"\n\t\tsparkle:version=\\\"#{@version.chomp}\\\"\n\t\ttype=\\\"application/octet-stream\\\"\n\t\tlength=\\\"#{@size}\\\"\n\t\tsparkle:dsaSignature=\\\"#{@signature.chomp}\\\"\n\t/>\n</item>\"\n\n    File.open(@appcast_xml_path, 'w') { |f| f.puts appcast_xml }\n  end\n  \n  # Creates the appcast folder if it does not exist\n  # or is accidently moved or deleted\n  # Creates an html file with generic note template if it does not exist\n  # This way the notes file is named correctly as well\n  # Creates a css file named from yaml file with default css\n  def create_appcast_folder_and_files\n    base_folder = @appcast_basefolder\n    project_folder = @appcast_proj_folder\n    \n    notes_file = \"#{project_folder}/#{File.basename(@releasenotes_url.chomp)}\"\n    css_file_path = \"#{project_folder}/#{@css_file_name}\"\n    \n    Dir.mkdir(base_folder)    if !File.exists?(base_folder)\n    Dir.mkdir(project_folder) if !File.exists?(project_folder)\n    \n    File.open(notes_file, 'w') { |f| f.puts release_notes_generic_text } if !File.exists?(notes_file)\n    File.open(css_file_path, 'w') { |f| f.puts decompressed_css } if !File.exists?(css_file_path)\n  end\n  \n  def log_message(msg)\n    puts \"\\n\\n----------------------------------------------\"\n    puts MESSAGE_HEADER\n    puts msg\n    puts \"----------------------------------------------\\n\\n\"\n  end\n  \n  def decompressed_css\n    return css_text.gsub(/\\{\\s+/, \"{\\n\\t\").gsub(/;/, \";\\n\\t\").gsub(/^\\s+\\}/, \"}\").gsub(/^\\s+/, \"\\t\")\n  end\n  \n  def release_notes_generic_text\n    return \"<html>\n\n    \t<head>\n    \t\t<meta http-equiv=\\\"content-type\\\" content=\\\"text/html;charset=utf-8\\\">\n    \t\t<title>What's new in #{@proj_name}?</title>\n    \t\t<meta name=\\\"robots\\\" content=\\\"anchors\\\">\n    \t\t<link href=\\\"rnotes.css\\\" type=\\\"text/css\\\" rel=\\\"stylesheet\\\" media=\\\"all\\\">\n    \t</head>\n\n    \t<body>\n    \t\t<br />\n    \t\t\t<table class=\\\"dots\\\" width=\\\"100%\\\" border=\\\"0\\\" cellspacing=\\\"0\\\" cellpadding=\\\"0\\\" summary=\\\"Two column table with heading\\\">\n    \t\t\t\t<tr>\n    \t\t\t\t\t<td class=\\\"blue\\\" colspan=\\\"2\\\">\n    \t\t\t\t\t\t<h3>TITLE</h3>\n    \t\t\t\t\t</td>\n    \t\t\t\t</tr>\n    \t\t\t\t<tr>\n    \t\t\t\t\t<td valign=\\\"top\\\" width=\\\"150\\\"><img src=\\\"IMAGE_NAME.png\\\" alt=\\\"ALT_TITLE\\\"  width=\\\"150\\\" border=\\\"0\\\"></td>\n    \t\t\t\t\t<td valign=\\\"top\\\">\n    \t\t\t\t\t\t<p>DESCRIPTION</p>\n    \t\t\t\t\t</td>\n    \t\t\t\t</tr>\n    \t\t\t</table>\n    \t\t\t<br>\n    \t\t\t<table class=\\\"dots\\\" width=\\\"100%\\\" border=\\\"0\\\" cellspacing=\\\"0\\\" cellpadding=\\\"0\\\" summary=\\\"Two column table with heading\\\">\n    \t\t\t\t<tr>\n    \t\t\t\t\t<td class=\\\"blue\\\" colspan=\\\"2\\\">\n    \t\t\t\t\t\t<h3>TITLE</h3>\n    \t\t\t\t\t</td>\n    \t\t\t\t</tr>\n    \t\t\t\t<tr>\n    \t\t\t\t\t<td valign=\\\"top\\\" width=\\\"150\\\"><img src=\\\"IMAGE_NAME.png\\\" alt=\\\"ALT_TITLE\\\"  width=\\\"150\\\" border=\\\"0\\\"></td>\n    \t\t\t\t\t<td valign=\\\"top\\\">\n    \t\t\t\t\t\t<p>DESCRIPTION</p>\n    \t\t\t\t\t</td>\n    \t\t\t\t</tr>\n    \t\t\t</table>\n    \t\t\t<br>\n    \t</body>\n\n    </html>\"    \n  end\n  \n  # This css will be expanded to a normal, easily editable form when written to file\n  def css_text\n    return \"body { margin: 2px 12px 12px; }\nh1 h2 h3 p ol ul a a:hover { font-family: \\\"Lucida Grande\\\", Arial, sans-serif; }\nh1 { font-size: 11pt; margin-bottom: 0; }\nh2 { font-size: 9pt; margin-top: 0; margin-bottom: -10px; }\nh3 { font-size: 9pt; font-weight: bold; margin-top: -4px; margin-bottom: -4px; }\np { font-size: 9pt; line-height: 12pt; text-decoration: none; }\nol { font-size: 9pt; line-height: 12pt; list-style-position: outside; margin-top: 12px; margin-bottom: 12px; margin-left: -18px; padding-left: 40px; }\nol li { margin-top: 6px; margin-bottom: 6px; }\nol p { margin-top: 6px; margin-bottom: 6px; }\nul { font-size: 9pt; line-height: 12pt; list-style-type: square; list-style-position: outside; margin-top: 12px; margin-bottom: 12px; margin-left: -24px; padding-left: 40px; }\nul li { margin-top: 6px; margin-bottom: 6px; }\nul p { margin-top: 6px; margin-bottom: 6px; }\na { color: #00f; font-size: 9pt; line-height: 12pt; text-decoration: none; }\na:hover { color: #00f; text-decoration: underline; }\nhr { text-decoration: none; border: solid 1px #bfbfbf; }\ntd { padding: 6px; }\n#banner { background-color: #f2f2f2; background-repeat: no-repeat; padding: -2px 6px 0; position: fixed; top: 0; left: 0; width: 100%; height: 1.2em; float: left; border: solid 1px #bfbfbf; }\n#caticon { margin-top: 3px; margin-bottom: -3px; margin-right: 5px; float: left; }\n#pagetitle { margin-top: 12px; margin-bottom: 0px; margin-left: 40px; width: 88%; border: solid 1px #fff; }\n#mainbox { margin-top: 2349px; padding-right: 6px; }\n#taskbox { background-color: #e6edff; list-style-type: decimal; list-style-position: outside; margin: 12px 0; padding: 2px 12px; border: solid 1px #bfbfbf; }\n#taskbox h2 { margin-top: 8; margin-bottom: -4px; }\n#machelp { position: absolute; top: 2px; left: 10px ; }\n#index { background-color: #f2f2f2; padding-right: 25px; top: 2px; right: 12px; width: auto; float: right; }\n#next { position: absolute; top: 49px; left: 88%; }\n#asindent { margin-left: 22px; font-size: 9pt; font-family: Verdana, Courier, sans-serif; }\n.bread { color: #00f; font-size: 8pt; margin: -9px 0 -6px; }\n.leftborder { color: #00f; font-size: 8pt; margin: -9px 0 -6px; padding-top: 2px; padding-bottom: 3px; padding-left: 8px; border-left: 1px solid #bfbfbf; }\n.mult { margin-top: -8px; }\n.blue { background-color: #e6edff; margin-top: -3px; margin-bottom: -3px; padding-top: -3px; padding-bottom: -3px; }\n.rightfloater { float: right; margin-left: 15px; }\n.rules { border-bottom: 1px dotted #ccc; }\n.dots { border: dotted 1px #ccc; }\n.seealso { margin-top: 4px; margin-bottom: 4px; }\ncode { color: black; font-size: 9pt; font-family: Verdana, Courier, sans-serif; }\"\n  end\nend\n        \nif __FILE__ == $0\n  newAppcast = AppCast.new\n  newAppcast.main_worker_bee\n  newAppcast.log_message(\"It appears all went well with the build script!\")\nend\n\t            \n\t            \n\t            \n\t            \n\t            \n\t            ";
+			shellScript = "#!/usr/bin/env ruby -w\n#\n#################################################################################\n#                                                                               #\n#     appcast_automation.rb                                                     #\n#                                                                               #\n#     author:   Craig Williams                                                  #\n#     created:  2009-01-09                                                      #\n#                                                                               #\n#################################################################################\n#                                                                               #\n#     This program is free software: you can redistribute it and/or modify      #\n#     it under the terms of the GNU General Public License as published by      #\n#     the Free Software Foundation, either version 3 of the License, or         #\n#     (at your option) any later version.                                       #\n#                                                                               #\n#     This program is distributed in the hope that it will be useful,           #\n#     but WITHOUT ANY WARRANTY; without even the implied warranty of            #\n#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             #\n#     GNU General Public License for more details.                              #\n#                                                                               #\n#     You should have received a copy of the GNU General Public License         #\n#     along with this program.  If not, see <http://www.gnu.org/licenses/>.     #\n#                                                                               #\n#################################################################################\n\nclass AppCast\nrequire 'rubygems'\nrequire 'yaml'\nrequire 'tmpdir'\nrequire 'fileutils'\nrequire 'openssl'\nrequire 'nokogiri'\nrequire 'base64'\n\nMESSAGE_HEADER   = 'RUN SCRIPT DURING BUILD MESSAGE'\nYAML_FOLDER_PATH = \"#{ENV['HOME']}/SelfControl/selfcontrol/\"\n\ndef initialize\n@signature = ''\nrequire_release_build\nproject_setup\nload_config\n\n# the build_now setting in the config.yml file\n# determines whether you want to perform this script\n# set to 'NO' until you are ready to publish\nexit_unless_build\nbase_folder\nappcast_setup\nend\n\ndef execute!\ncreate_appcast_folder_and_files\nremove_old_zip_create_new_zip\nfile_stats\ncreate_key\nputs \"created key\"\ncreate_appcast_xml\nputs \"created appcast xml\"\ncopy_archive_to_appcast_path\nputs \"copied archive to appcast path\"\nend\n\n# Only works for Release builds\n# Exits upon failure\ndef require_release_build\nif ENV[\"BUILD_STYLE\"] == 'Debug'\nlog_message(\"Distribution target requires 'Release' build style\")\nexit\nend\nend\n\n# Exits if no config.yml file found.\ndef load_config\nconfig_file_path = \"#{YAML_FOLDER_PATH}/config.yml\"\nunless File.exists?(config_file_path)\nlog_message(\"No 'config.yml' file found in project directory.\")\nexit\nend\n@config = YAML.load_file(config_file_path)\nend\n\ndef exit_unless_build \nunless @config['build_now'] == 'YES'\nlog_message(\"The 'build_now' setting in 'config.yml' set to 'NO'\\nIf you are wanting to include this script in\\nthe build process change this setting to 'YES'\")\nexit\nend\nend\n\ndef project_setup\n@proj_dir         = ENV['BUILT_PRODUCTS_DIR']\n@proj_name        = ENV['PROJECT_NAME']\n@version          = \"1.4\"\n@build_number     = \"1.4\"\n@archive_filename = \"#{@proj_name}_#{@version.chomp}.zip\" # underline character added\n@archive_path     = \"#{@proj_dir}/#{@archive_filename}\"\nend\n\ndef appcast_setup\n@appcast_xml_name      = @config['appcast_xml_name'].chomp\n@appcast_proj_folder   = \"#{@config['appcast_basefolder']}/#{@proj_name}_#{@version}\".chomp\n@appcast_xml_path      = \"#{@appcast_proj_folder}/#{@appcast_xml_name}\"\n@download_base_url     = @config['download_base_url']\n@keychain_privkey_name = @config['keychain_privkey_name']\n@css_file_name         = @config['css_file_name']\n@releasenotes_url      = \"#{@download_base_url}#{@version.chomp}.html\"\n@download_url          = \"#{@download_base_url}#{@archive_filename}\"\n@appcast_download_url  = \"#{@download_base_url}#{@appcast_xml_name}\"\nend\n\ndef base_folder\n@appcast_basefolder = @config['appcast_basefolder'].chomp\nFile.expand_path(@appcast_basefolder) if @appcast_basefolder.start_with?(\"~\")\nend\n\ndef remove_old_zip_create_new_zip\nDir.chdir(@proj_dir)\n`rm -f #{@proj_name}*.zip`\n`ditto -c -k --keepParent -rsrc \"#{@proj_name}.app\" \"#{@archive_filename}\"`\nend\n\ndef copy_archive_to_appcast_path\nbegin\nFileUtils.cp(@archive_path, @appcast_proj_folder)\nrescue\nlog_message(\"There was an error coplogying the zip file to appcast folder\\nError: #{$!}\")\nend\nend\n\ndef file_stats\n@size     = File.size(@archive_filename)\n@pubdate  = `date +\"%a, %d %b %G %T %z\"`\nend\n\ndef get_key\nkey_xml = `security find-generic-password -g -s \\\"#@keychain_privkey_name\\\" 2>&1 1>/dev/null`\nkey_xml = key_xml.gsub(/\\\\012/, \"\\n\")\nkey_xml = key_xml.split(\"\\\"\")[1]\nend\n\ndef create_key\nkey = get_key\n\nputs \"got key: #{key}\"\n\nif key.empty?\nlog_message(\"Unable to load signing private key with name '#{@keychain_privkey_name}' from keychain\\nFor file #{@archive_filename}\")\nexit\nend\n\nhashed     = OpenSSL::Digest::SHA1.digest(File.read(\"#{@archive_path}\"))\ndsa        = OpenSSL::PKey::DSA.new(key)\ndss1       = OpenSSL::Digest::DSS1.new\nsign       = dsa.sign(dss1, hashed)\n@signature = Base64.encode64(sign)\n@signature = @signature.gsub(\"\\n\", '')\n\nif @signature.empty?\nlog_message(\"Unable to sign file #{@archive_filename}\")\nexit\nelse\nlog_message(\"New signature is \\n#{@signature}\")\nend\nend\n\ndef create_appcast_xml\nappcast_xml =\n\"<?xml version=\\\"1.0\\\" encoding=\\\"utf-8\\\"?>\n<rss version=\\\"2.0\\\" xmlns:sparkle=\\\"http://www.andymatuschak.org/xml-namespaces/sparkle\\\"  xmlns:dc=\\\"http://purl.org/dc/elements/1.1/\\\">\n<title>#{@proj_name}_#{@version.chomp}</title>\n<link>#{@appcast_download_url}</link>\n<description>Most recent changes with links to updates.</description>\n<language>en</language>\n<item>\n<title>Version #{@version.chomp}</title>\n<sparkle:releaseNotesLink>\n#{@releasenotes_url}\n</sparkle:releaseNotesLink>\n<pubDate>#{@pubdate.chomp}</pubDate>\n<enclosure url=\\\"#{@download_url.chomp}\\\"\nlength=\\\"#{@size}\\\"csparkle:shortVersionString=\\\"#{@version.chomp}\\\"\nsparkle:dsaSignature=\\\"#{@signature.chomp}\\\"/>\n</item>\n</channel>\n</rss>\"\n\nFile.open(@appcast_xml_path, 'w') { |f| f.puts appcast_xml }\nend\n\n# Creates the appcast folder if it does not exist\n# or is accidently moved or deleted\n# Creates an html file with generic note template if it does not exist\n# This way the notes file is named correctly as well\n# Creates a css file named from yml file with default css\ndef create_appcast_folder_and_files\nbase_folder = @appcast_basefolder\nproject_folder = @appcast_proj_folder\n\nnotes_file = \"#{project_folder}/#{File.basename(@releasenotes_url.chomp)}\"\ncss_file_path = \"#{project_folder}/#{@css_file_name}\"\n\nDir.mkdir(base_folder)    unless File.exists?(base_folder)\nDir.mkdir(project_folder) unless File.exists?(project_folder)\n\nFile.open(notes_file, 'w') { |f| f.puts release_notes_generic_text } unless File.exists?(notes_file)\nFile.open(css_file_path, 'w') { |f| f.puts decompressed_css } unless File.exists?(css_file_path)\nend\n\ndef log_message(msg)\nputs \"\\n\\n----------------------------------------------\"\nputs MESSAGE_HEADER\nputs msg\nputs \"----------------------------------------------\\n\\n\"\nend\n\ndef decompressed_css\nreturn css_text.gsub(/\\{\\s+/, \"{\\n\\t\").gsub(/;/, \";\\n\\t\").gsub(/^\\s+\\}/, \"}\").gsub(/^\\s+/, \"\\t\")\nend\n\ndef release_notes_generic_text\nreturn \"\n<html>\n<head>\n<meta http-equiv=\\\"content-type\\\" content=\\\"text/html;charset=utf-8\\\">\n<title>What's new in #{@proj_name}?</title>\n<meta name=\\\"robots\\\" content=\\\"anchors\\\">\n<link href=\\\"rnotes.css\\\" type=\\\"text/css\\\" rel=\\\"stylesheet\\\" media=\\\"all\\\">\n</head>\n\n<body>\n<br />\n<table class=\\\"dots\\\" width=\\\"100%\\\" border=\\\"0\\\" cellspacing=\\\"0\\\" cellpadding=\\\"0\\\" summary=\\\"Two column table with heading\\\">\n<tr>\n<td class=\\\"blue\\\" colspan=\\\"2\\\">\n<h3>#{@proj_name} #{@version.chomp} Release Notes</h3>\n</td>\n</tr>\n<tr>\n<td valign=\\\"top\\\">\n<p>\n<ul>\n<li>DESCRIPTION</li>\n</ul>\n</p>\n</td>\n</tr>\n</table>\n<br>\n</body>\n\n</html>\"\nend\n\n# This css will be expanded to a normal, easily editable form when written to file\ndef css_text\nreturn \"\nbody { margin: 2px 12px 12px; }\nh1 h2 h3 p ol ul a a:hover { font-family: \\\"Lucida Grande\\\", Arial, sans-serif; }\n    h1 { font-size: 11pt; margin-bottom: 0; }\n    h2 { font-size: 9pt; margin-top: 0; margin-bottom: -10px; }\n    h3 { font-size: 9pt; font-weight: bold; margin-top: -4px; margin-bottom: -4px; }\n    p { font-size: 9pt; line-height: 12pt; text-decoration: none; }\n    ol { font-size: 9pt; line-height: 12pt; list-style-position: outside; margin-top: 12px; margin-bottom: 12px; margin-left: -18px; padding-left: 40px; }\n    ol li { margin-top: 6px; margin-bottom: 6px; }\n    ol p { margin-top: 6px; margin-bottom: 6px; }\n    ul { font-size: 9pt; line-height: 12pt; list-style-type: square; list-style-position: outside; margin-top: 12px; margin-bottom: 12px; margin-left: -24px; padding-left: 40px; }\n    ul li { margin-top: 6px; margin-bottom: 6px; }\n    ul p { margin-top: 6px; margin-bottom: 6px; }\n    a { color: #00f; font-size: 9pt; line-height: 12pt; text-decoration: none; }\n        a:hover { color: #00f; text-decoration: underline; }\n            hr { text-decoration: none; border: solid 1px #bfbfbf; }\n                td { padding: 6px; }\n                #banner { background-color: #f2f2f2; background-repeat: no-repeat; padding: -2px 6px 0; position: fixed; top: 0; left: 0; width: 100%; height: 1.2em; float: left; border: solid 1px #bfbfbf; }\n                #caticon { margin-top: 3px; margin-bottom: -3px; margin-right: 5px; float: left; }\n                #pagetitle { margin-top: 12px; margin-bottom: 0px; margin-left: 40px; width: 88%; border: solid 1px #fff; }\n                #mainbox { margin-top: 2349px; padding-right: 6px; }\n                #taskbox { background-color: #e6edff; list-style-type: decimal; list-style-position: outside; margin: 12px 0; padding: 2px 12px; border: solid 1px #bfbfbf; }\n                #taskbox h2 { margin-top: 8; margin-bottom: -4px; }\n                #machelp { position: absolute; top: 2px; left: 10px ; }\n                #index { background-color: #f2f2f2; padding-right: 25px; top: 2px; right: 12px; width: auto; float: right; }\n                #next { position: absolute; top: 49px; left: 88%; }\n                #asindent { margin-left: 22px; font-size: 9pt; font-family: Verdana, Courier, sans-serif; }\n                .bread { color: #00f; font-size: 8pt; margin: -9px 0 -6px; }\n                    .leftborder { color: #00f; font-size: 8pt; margin: -9px 0 -6px; padding-top: 2px; padding-bottom: 3px; padding-left: 8px; border-left: 1px solid #bfbfbf; }\n                        .mult { margin-top: -8px; }\n                        .blue { background-color: #e6edff; margin-top: -3px; margin-bottom: -3px; padding-top: -3px; padding-bottom: -3px; }\n                            .rightfloater { float: right; margin-left: 15px; }\n                            .rules { border-bottom: 1px dotted #ccc; }\n                                .dots { border: dotted 1px #ccc; }\n                                    .seealso { margin-top: 4px; margin-bottom: 4px; }\n                                    code { color: black; font-size: 9pt; font-family: Verdana, Courier, sans-serif; }\"\n                                    end\n                                    end\n                                    \n                                    if __FILE__ == $0\n                                    appcast = AppCast.new\n                                    appcast.execute!\n                                    appcast.log_message(\"It appears all went well with the build script!\")\n                                    end\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -685,7 +676,6 @@
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 				);
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -723,6 +713,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CODE_SIGN_IDENTITY = "Developer ID Application: Charlie Stigler";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -732,7 +723,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				ONLY_ACTIVE_ARCH = NO;
-				PREBINDING = YES;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_STYLE = debugging;
@@ -743,6 +734,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CODE_SIGN_IDENTITY = "Developer ID Application: Charlie Stigler";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -751,7 +743,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				ONLY_ACTIVE_ARCH = NO;
-				PREBINDING = NO;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_STYLE = debugging;
@@ -765,7 +757,6 @@
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -777,7 +768,6 @@
 					"-framework",
 					Carbon,
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = scheckup;
 			};
 			name = Debug;
@@ -789,7 +779,6 @@
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
@@ -800,7 +789,6 @@
 					"-framework",
 					Carbon,
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = scheckup;
 				ZERO_LINK = NO;
 			};
@@ -810,7 +798,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				PREBINDING = "";
@@ -821,9 +808,7 @@
 		CB9368270F85D84E00EF284E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				COPY_PHASE_STRIP = YES;
 				PREBINDING = "";
 				PRODUCT_NAME = "Sparkle Distribution";
 				ZERO_LINK = NO;
@@ -838,7 +823,6 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -852,7 +836,6 @@
 					"-framework",
 					AppKit,
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = org.eyebeam.SelfControl;
 				SDKROOT = macosx;
 			};
@@ -865,7 +848,6 @@
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
@@ -878,7 +860,6 @@
 					"-framework",
 					AppKit,
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = org.eyebeam.SelfControl;
 				SDKROOT = macosx;
 				ZERO_LINK = NO;
