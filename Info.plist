@@ -42,7 +42,7 @@
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>SUFeedURL</key>
-	<string>http://cloud.github.com/downloads/slambert/selfcontrol/SelfControlAppcast.xml</string>
+	<string>http://selfcontrolapp.com/SelfControlAppcast.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
 	<key>NSAppleScriptEnabled</key>

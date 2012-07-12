@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
    <channel>
       <title>SelfControl Changelog</title>
-      <link>http://cloud.github.com/downloads/slambert/selfcontrol/SelfControlAppcast.xml</link>
+      <link>http://selfcontrolapp.com/SelfControlAppcast.xml</link>
       <description>Most recent changes with links to updates.</description>
       <language>en</language>
          <item>
             <title>Version 1.0</title>
-            <sparkle:releaseNotesLink>http://cloud.github.com/downloads/slambert/selfcontrol/releasenotes.html#version-1.0</sparkle:releaseNotesLink>
+            <sparkle:releaseNotesLink>http://selfcontrolapp.com/releasenotes.html#version-1.0</sparkle:releaseNotesLink>
             <sparkle:minimumSystemVersion>10.5</sparkle:minimumSystemVersion>
             <pubDate>Thu, 26 Mar 2009 12:00:00 -0700</pubDate>
             <enclosure url="http://cloud.github.com/downloads/slambert/selfcontrol/SelfControl-1.0.zip" sparkle:version="1.0" length="251408" type="application/octet-stream" sparkle:dsaSignature="CwCFG4YqaqHLvet9TgDe2CtB/Bwrlf9AhRpkGIliyBi6/p4fpn1SjjDc8d3Yw==" />
          </item>
         <item>
           <title>Version 1.1</title>
-          <sparkle:releaseNotesLink>http://cloud.github.com/downloads/slambert/selfcontrol/releasenotes.html#version-1.1</sparkle:releaseNotesLink>
+          <sparkle:releaseNotesLink>http://selfcontrolapp.com/releasenotes.html#version-1.1</sparkle:releaseNotesLink>
           <sparkle:minimumSystemVersion>10.4</sparkle:minimumSystemVersion>
           <pubDate>Fri, 03 Apr 2009 11:32:01 -0700</pubDate>
           <enclosure
@@ -27,7 +27,7 @@
         </item>
         <item>
           <title>Version 1.2</title>
-          <sparkle:releaseNotesLink>http://cloud.github.com/downloads/slambert/selfcontrol/releasenotes.html#version-1.2</sparkle:releaseNotesLink>
+          <sparkle:releaseNotesLink>http://selfcontrolapp.com/releasenotes.html#version-1.2</sparkle:releaseNotesLink>
           <pubDate>Mon, 18 May 2009 00:24:41 -0700</pubDate>
           <enclosure
             url="http://cloud.github.com/downloads/slambert/selfcontrol/SelfControl-1.2.zip"
@@ -39,7 +39,7 @@
         </item>
         <item>
           <title>Version 1.2.1</title>
-          <sparkle:releaseNotesLink>http://cloud.github.com/downloads/slambert/selfcontrol/releasenotes.html#version-1.2.1</sparkle:releaseNotesLink>
+          <sparkle:releaseNotesLink>http://selfcontrolapp.com/releasenotes.html#version-1.2.1</sparkle:releaseNotesLink>
           <pubDate>Sun, 07 Jun 2009 17:42:28 -0700</pubDate>
           <enclosure
             url="http://cloud.github.com/downloads/slambert/selfcontrol/SelfControl-1.2.1.zip"
@@ -51,7 +51,7 @@
         </item>
         <item>
           <title>Version 1.2.2</title>
-	<sparkle:releaseNotesLink>http://cloud.github.com/downloads/slambert/selfcontrol/releasenotes.html#version-1.2.2</sparkle:releaseNotesLink>
+	<sparkle:releaseNotesLink>http://selfcontrolapp.com/releasenotes.html#version-1.2.2</sparkle:releaseNotesLink>
           <pubDate>Thu, 12 Nov 2009 21:15:30 -0700</pubDate>
           <enclosure
             url="http://cloud.github.com/downloads/slambert/selfcontrol/SelfControl-1.2.2.zip"
@@ -62,7 +62,7 @@
           />
         </item>
 				<item>
-					<title>Version 1.3</title>		<sparkle:releaseNotesLink>http://cloud.github.com/downloads/slambert/selfcontrol/releasenotes.html#version-1.3</sparkle:releaseNotesLink>
+					<title>Version 1.3</title>		<sparkle:releaseNotesLink>http://selfcontrolapp.com/releasenotes.html#version-1.3</sparkle:releaseNotesLink>
 					<pubDate>Wed, 01 Sep 2010 00:40:19 -0700</pubDate>
 					<enclosure
 						 url="http://cloud.github.com/downloads/slambert/selfcontrol/SelfControl-1.3.zip"
@@ -75,14 +75,14 @@
 				<item>
 					<title>Version 1.4</title>
 					<sparkle:releaseNotesLink>
-					https://github.com/downloads/slambert/selfcontrol/releasenotes.html#version-1.4
+					http://selfcontrolapp.com/releasenotes.html#version-1.4
 					</sparkle:releaseNotesLink>
 					<pubDate>Wed, 11 Jul 2012 20:30:05 -0700</pubDate>
 					<enclosure url="https://github.com/downloads/slambert/selfcontrol/SelfControl-1.4.zip"
 						         sparkle:version="1.4"
 						         type="application/octet-stream"
-						         length="1089039" 
-						         sparkle:dsaSignature="MCwCFHNj7yfBOzcVUwhPLQn9MJuQeNfKAhQKSx97fwSP/FuksNaJ9ysPU9Cfuw=="
+						         length="1089258" 
+						         sparkle:dsaSignature="MCwCFCUSVOm52eI2ewEL4yxWnTQGdU3bAhQsGIga9aDVJ+bwOm81xm/cr0fk2g=="
 					/>
 				</item>
    </channel>
