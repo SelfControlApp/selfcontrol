@@ -9,7 +9,7 @@ CREDITS
 -------
 Developed by [Charlie Stigler](http://charliestigler.com), [Steve Lambert](http://visitsteve.com), and you?
 
-Translations thanks to: Lukas Bestle, Paul Ishii, Cynthia Lawson, and Heather Rasley.
+Translations thanks to: Lukas Bestle, Paul Ishii, Cynthia Lawson, Heather Rasley, and Tian Zheng.
 
 LICENSE
 -------
