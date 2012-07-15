@@ -1,0 +1,54 @@
+/* Message text when no network connection available */
+"A block cannot be started without a working network connection.  You can override this setting in Preferences." = "没有网络连接是没法阻拦任何网站的。你可以再设置里改变这个选项。";
+
+/* Whitelist block explanation */
+"A whitelist block means that everything on the internet BESIDES your specified list will be blocked.  This includes the web, email, SSH, and anything else your computer accesses via the internet.  If a web site requires resources such as images or scripts from a site that is not on your whitelist, the site may not work properly." = "白名单是指除了该名单以外的任何网站都会被阻拦。这将阻拦浏览网站、收发电子邮件、SSH以及任何需要联网的应用。如果一个网站包含任何来自不是你白名单中的地址的内容，这个网站也许不能正常显示。";
+
+/* Whitelist block confirmation question */
+"Are you sure you want a whitelist block?" = "你确定你想通过白名单阻拦？";
+
+/* Block in progress error note */
+"Block in progress" = "正在阻拦";
+
+/* Cancel button */
+"Cancel" = "取消";
+
+/* Single day in time strings */
+"day" = "天";
+
+/* Plural days in time strings */
+"days" = "天";
+
+/* Shows that the slider is at 0 so the block is disabled */
+"Disabled" = "无效";
+
+/* Single hour in time strings */
+"hour" = "小时";
+
+/* Plural hours in time strings */
+"hours" = "小时";
+
+/* Text on Start button when loading */
+"Loading" = "载入中";
+
+/* Single minute in time strings */
+"minute" = "分钟";
+
+/* Plural minutes in time strings */
+"minutes" = "分钟";
+
+/* Button to open Network Diagnostics */
+"Network Diagnostics..." = "打开网络诊断";
+
+/* Alert text when no network connection available */
+"No network connection detected" = "无网络连接";
+
+/* OK button */
+"OK" = "确定";
+
+/* Start button */
+"Start" = "开始";
+
+/* Block in progress error text */
+"The blacklist cannot be edited while a block is in progress." = "正在阻挡时无法编辑黑名单";
+
