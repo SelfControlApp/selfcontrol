@@ -28,12 +28,9 @@ If you want to help with the project and build it yourself here's how:
     * [PyQt4](http://www.riverbankcomputing.co.uk/software/pyqt/download)  
     * Qt Library (Included in the PyQT4 Installer)
     * [Pywin32](http://sourceforge.net/projects/pywin32/)
-    * py2app / [PyInstaller](http://www.pyinstaller.org) (depending on your system)
+    * [PyInstaller](http://www.pyinstaller.org) (depending on your system)
 2. For Windows:  
-	* In the PyInstaller directory run `python Configure.py`  
-	* Then to create the spec file type `python Makespec.py -F -w --icon=<Path_To_Selfrestraint.ico> \path\to\SelfRestraint.py`  
-	* Now a file called `SelfRestraint.spec` should appear  
-	* To build the program type `python Build.py \path\to\SelfRestraint.spec`  
+	* In the PyInstaller directory run  `python pyinstaller.py -F -w --icon=<Path_To_Selfrestraint.ico> \path\to\SelfRestraint.py` 
 	
 3. If you're on OS X:  
     
