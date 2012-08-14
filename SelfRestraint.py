@@ -150,9 +150,8 @@ class Backend():
         # write out
         for sites in blockedSites:
             hostsFile.write( "0.0.0.0\t"+sites+"\n" )
-            temp = sites
             if sites.startswith('www.'):
-                temp = temp.split('www.')[1]
+                temp = sites.split('www.')[1]
                 hostsFile.write( "0.0.0.0\t"+temp+"\n" )
             else:
                 hostsFile.write( "0.0.0.0\t"+"www."+sites+"\n" )
