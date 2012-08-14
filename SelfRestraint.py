@@ -144,14 +144,14 @@ class Backend():
         
         blockedSites = list.tableView.toPlainText()
         # remove whitespace before and after
-        blockedSites = [ site.strip() for site in blockedSites.split("\n") ]
+        blockedSites = [ str(site).strip() for site in blockedSites.split("\n") ]
         # filter out comments and empty rows
-        blockedSites = [ site for site in blockedSites if (not site.startsWith('#')) and site != '' ]
+        blockedSites = [ site for site in blockedSites if (not site.startswith('#')) and site != '' ]
         # write out
         for sites in blockedSites:
             hostsFile.write( "0.0.0.0\t"+sites+"\n" )
             temp = sites
-            if sites.startsWith('www.'):
+            if sites.startswith('www.'):
                 temp = temp.split('www.')[1]
                 hostsFile.write( "0.0.0.0\t"+temp+"\n" )
             else:
@@ -255,6 +255,7 @@ class checkForUpdates():
         f = urllib.urlopen("https://raw.github.com/ParkerK/selfrestraint/master/version")
         if os.name == "nt":
             self.new_version = f.read().split("\n")[0].split(":")[1]
+            self.VERSION = "0.3"
         else:
             self.new_version = f.read().split("\n")[1].split(":")[1]
         
