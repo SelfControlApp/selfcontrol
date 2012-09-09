@@ -47,7 +47,7 @@
 "OK" = "OK";
 
 /* Start button */
-"Start" = "Start";
+"Start" = "Starta";
 
 /* Block in progress error text */
 "The blacklist cannot be edited while a block is in progress." = "Svartlistan kan inte ändras medan en blockering pågår.";
