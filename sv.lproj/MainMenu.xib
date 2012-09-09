@@ -547,7 +547,7 @@
 							<object class="NSTextFieldCell" key="NSCell" id="541657277">
 								<int key="NSCellFlags">68288064</int>
 								<int key="NSCellFlags2">272630784</int>
-								<string key="NSContents">30 Minuten</string>
+								<string key="NSContents">30 minuter</string>
 								<object class="NSFont" key="NSSupport" id="736984554">
 									<string key="NSName">LucidaGrande</string>
 									<double key="NSSize">13</double>
@@ -585,7 +585,7 @@
 							<object class="NSButtonCell" key="NSCell" id="199824051">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">134217728</int>
-								<string key="NSContents">Start</string>
+								<string key="NSContents">Starta</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="655025507"/>
 								<int key="NSButtonFlags">-2038152961</int>
@@ -606,7 +606,7 @@
 							<object class="NSButtonCell" key="NSCell" id="912332486">
 								<int key="NSCellFlags">67239424</int>
 								<int key="NSCellFlags2">134217728</int>
-								<string key="NSContents">Blacklist bearbeiten</string>
+								<string key="NSContents">Redigera svartlista</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="617926098"/>
 								<int key="NSButtonFlags">-2038152961</int>
@@ -653,7 +653,7 @@
 							<object class="NSButtonCell" key="NSCell" id="961665558">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Allgemeine Subdomains sperren</string>
+								<string key="NSContents">Blockera vanliga subdomäner</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="993498988"/>
 								<int key="NSButtonFlags">1211912703</int>
@@ -682,7 +682,7 @@
 							<object class="NSButtonCell" key="NSCell" id="689156809">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Ungültige Hosts markieren</string>
+								<string key="NSContents">Markera ogiltiga värdar</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="549788209"/>
 								<int key="NSButtonFlags">1211912703</int>
@@ -706,7 +706,7 @@
 							<object class="NSButtonCell" key="NSCell" id="206462659">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Internetverbindung überprüfen</string>
+								<string key="NSContents">Verifiera internettanslutning</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="557701039"/>
 								<int key="NSButtonFlags">1211912703</int>
@@ -730,7 +730,7 @@
 							<object class="NSButtonCell" key="NSCell" id="551150060">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Timerfenster oben zeigen</string>
+								<string key="NSContents">Låt timerfönstret flyta överst</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="867241027"/>
 								<int key="NSButtonFlags">1211912703</int>
@@ -944,7 +944,7 @@
 							<object class="NSButtonCell" key="NSCell" id="881052891">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Bei Fertigstellung Sound spielen:</string>
+								<string key="NSContents">Spela upp ljud vid slutförande:</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="847847414"/>
 								<int key="NSButtonFlags">1211912703</int>
@@ -968,7 +968,7 @@
 							<object class="NSButtonCell" key="NSCell" id="767588282">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Automatisch nach Updates suchen</string>
+								<string key="NSContents">Sök automatiskt efter uppdateringar</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="583078105"/>
 								<int key="NSButtonFlags">1211912703</int>
@@ -992,7 +992,7 @@
 							<object class="NSButtonCell" key="NSCell" id="642060357">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Browsercache leeren</string>
+								<string key="NSContents">Töm webbläsarcachen</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="205984878"/>
 								<int key="NSButtonFlags">1211912703</int>
@@ -1016,7 +1016,7 @@
 							<object class="NSButtonCell" key="NSCell" id="1070052610">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Dock Icon mit Countdown anzeigen (Badge)</string>
+								<string key="NSContents">Visa nedräkning på dockikonen</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="273203401"/>
 								<int key="NSButtonFlags">1211912703</int>
@@ -1040,7 +1040,7 @@
 							<object class="NSButtonCell" key="NSCell" id="923645284">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Lokale Netzwerke zulassen</string>
+								<string key="NSContents">Tillåt lokala nätverk</string>
 								<reference key="NSSupport" ref="736984554"/>
 								<reference key="NSControlView" ref="1042338180"/>
 								<int key="NSButtonFlags">1211912703</int>
