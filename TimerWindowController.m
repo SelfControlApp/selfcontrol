@@ -49,6 +49,7 @@
 - (void)awakeFromNib {
   [[self window] center];
   [[self window] makeKeyAndOrderFront: self];
+
   
   NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
   
@@ -84,12 +85,21 @@
     // If the block duration is 0, the ending date is... now!
     blockEndingDate_ = [[NSDate date] retain];
   [self updateTimerDisplay: nil];
-  timerUpdater_ = [NSTimer scheduledTimerWithTimeInterval: 1.0
+
+  timerUpdater_ = [NSTimer timerWithTimeInterval: 1.0
                                                    target: self
                                                  selector: @selector(updateTimerDisplay:)
                                                  userInfo: nil
                                                   repeats: YES];
+
+	//If the dialog isn't focused, instead of getting a NSTimer, we get null.
+	//Scheduling the timer from the main thread seems to work.
+	[self performSelectorOnMainThread:@selector(hackAroundMainThreadtimer:) withObject:timerUpdater_ waitUntilDone:YES];
+	
+	
 }
+
+
 
 - (void)blockEnded {
   if(![[NSApp delegate] selfControlLaunchDaemonIsLoaded]) {
@@ -108,7 +118,13 @@
   }
 }
 
-- (void)updateTimerDisplay:(NSTimer*)timer {  
+
+- (void)hackAroundMainThreadtimer:(NSTimer*)timer{
+	[[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
+}
+
+- (void)updateTimerDisplay:(NSTimer*)timer {
+
   int numSeconds = (int) [blockEndingDate_ timeIntervalSinceNow];
   int numHours;
   int numMinutes;
