@@ -853,6 +853,11 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   [self updateTimeSliderDisplay];
 }
 
+- (IBAction)openFAQ:(id)sender {
+    NSURL *url=[NSURL URLWithString: @"https://github.com/slambert/selfcontrol/wiki/FAQ"];
+    [[NSWorkspace sharedWorkspace] openURL: url];
+}
+
 - (void)switchedToWhitelist:(id)sender {
   if(![defaults_ boolForKey: @"WhitelistAlertSuppress"]) {
     NSAlert* a = [NSAlert alertWithMessageText: NSLocalizedString(@"Are you sure you want a whitelist block?", @"Whitelist block confirmation prompt") defaultButton: NSLocalizedString(@"OK", @"OK button") alternateButton: @"" otherButton: @"" informativeTextWithFormat: NSLocalizedString(@"A whitelist block means that everything on the internet BESIDES your specified list will be blocked.  This includes the web, email, SSH, and anything else your computer accesses via the internet.  If a web site requires resources such as images or scripts from a site that is not on your whitelist, the site may not work properly.", @"Whitelist block explanation")]; 

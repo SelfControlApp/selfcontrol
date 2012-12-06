@@ -122,9 +122,14 @@
     // scheckup.
     numStrikes++;
         
-    if(numStrikes >= 4) {
+    if(numStrikes == 4) {
       NSLog(@"WARNING: Block should have ended four seconds ago, starting scheckup");
       [self runCheckup];
+    } else if(numStrikes == 15) {
+        // OK, so apparently scheckup couldn't remove the block either
+        // The user needs some help, let's open the FAQ for them.
+        NSLog(@"WARNING: Block should have ended fifteen seconds ago! Probable permablock.");
+        [[NSApp delegate] openFAQ: self];
     }
     
     return;
@@ -208,7 +213,6 @@
 
 - (void)runCheckup {
   [NSTask launchedTaskWithLaunchPath: @"/Library/PrivilegedHelperTools/scheckup" arguments: [NSArray array]];
-  [self resetStrikes];
 }
 
 - (void)dealloc {

@@ -143,6 +143,8 @@
 
 - (void)setBlockLength:(int)blockLength;
 
+- (IBAction)openFAQ:(id)sender;
+
 - (void)switchedToWhitelist:(id)sender;
 
 @end

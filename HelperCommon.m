@@ -456,7 +456,7 @@ void removeBlock(signed long long int controllingUID) {
   [defaults synchronize];
   [NSUserDefaults resetStandardUserDefaults];
   seteuid(0);
-  
+      
   removeRulesFromFirewall(controllingUID);
   
   if(![[NSFileManager defaultManager] removeFileAtPath: SelfControlLockFilePath handler: nil] && [[NSFileManager defaultManager] fileExistsAtPath: SelfControlLockFilePath]) {
