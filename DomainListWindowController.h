@@ -34,6 +34,7 @@
   NSMutableArray* domainList_;
   IBOutlet id domainListTableView_;
   NSUserDefaults* defaults_;
+  bool googleWarningFired;
 }
 
 // Called when the add button is clicked.  Adds a new empty string to the domain

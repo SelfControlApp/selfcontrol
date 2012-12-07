@@ -871,4 +871,18 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   }
 }
 
+- (void)showGoogleWarning:(id)sender {
+    if(![defaults_ boolForKey: @"GoogleAlertSuppress"]) {
+        NSAlert* a = [NSAlert alertWithMessageText: NSLocalizedString(@"You're about to block all Google services!", @"Google block confirmation prompt") defaultButton: NSLocalizedString(@"OK", @"OK button") alternateButton: @"" otherButton: @"" informativeTextWithFormat: NSLocalizedString(@"You have a Google website on your block list. Due to the way Google is set up, this may block all Google services (Search, Gmail, YouTube, etc). If you don't want to block all Google services, edit your block list to remove any Google websites.", @"Google block explanation")]; 
+        if([a respondsToSelector: @selector(setShowsSuppressionButton:)]) {
+            [a setShowsSuppressionButton: YES];
+        }
+        [a runModal];
+        if([a respondsToSelector: @selector(suppressionButton)] && [[a suppressionButton] state] == NSOnState) {
+            [defaults_ setBool: YES forKey: @"GoogleAlertSuppress"];
+        }
+    }
+}
+
+
 @end
