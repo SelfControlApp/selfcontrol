@@ -94,7 +94,7 @@
 
 	//If the dialog isn't focused, instead of getting a NSTimer, we get null.
 	//Scheduling the timer from the main thread seems to work.
-	[self performSelectorOnMainThread:@selector(hackAroundMainThreadtimer:) withObject:timerUpdater_ waitUntilDone:YES];
+	[self performSelectorOnMainThread: @selector(hackAroundMainThreadtimer:) withObject: timerUpdater_ waitUntilDone: YES];
 	
 	
 }
@@ -120,7 +120,7 @@
 
 
 - (void)hackAroundMainThreadtimer:(NSTimer*)timer{
-	[[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
+	[[NSRunLoop currentRunLoop] addTimer: timer forMode: NSDefaultRunLoopMode];
 }
 
 - (void)updateTimerDisplay:(NSTimer*)timer {
