@@ -49,5 +49,13 @@
 	<string>dsa_pub.pem</string>
 	<key>NSAppleScriptEnabled</key>
 	<true/>
+	<key>CFBundleShortVersionString</key>
+	<string>1.4.1</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.productivity</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>10.5</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Free and open-source under the GPL</string>
 </dict>
 </plist>
