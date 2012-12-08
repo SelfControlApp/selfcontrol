@@ -84,6 +84,7 @@
   else
     // If the block duration is 0, the ending date is... now!
     blockEndingDate_ = [[NSDate date] retain];
+  
   [self updateTimerDisplay: nil];
 
   timerUpdater_ = [NSTimer timerWithTimeInterval: 1.0
@@ -124,7 +125,10 @@
 }
 
 - (void)updateTimerDisplay:(NSTimer*)timer {
-
+  // update UI for the whole app, in case the block is done with
+  [[NSApp delegate] performSelectorOnMainThread: @selector(refreshUserInterface)
+                                     withObject: nil waitUntilDone: NO];
+  
   int numSeconds = (int) [blockEndingDate_ timeIntervalSinceNow];
   int numHours;
   int numMinutes;
@@ -141,7 +145,7 @@
     if(numStrikes == 4) {
       NSLog(@"WARNING: Block should have ended four seconds ago, starting scheckup");
       [self runCheckup];
-    } else if(numStrikes == 15) {
+    } else if(numStrikes == 20) {
         // OK, so apparently scheckup couldn't remove the block either
         // The user needs some help, let's open the FAQ for them.
         NSLog(@"WARNING: Block should have ended fifteen seconds ago! Probable permablock.");
