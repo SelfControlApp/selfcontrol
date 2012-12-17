@@ -26,6 +26,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 @implementation AppController
 
+@synthesize addingBlock;
+
 - (AppController*) init {
   if(self = [super init]) {
   
@@ -52,9 +54,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     
     [defaults_ registerDefaults:appDefaults];
     
-    // blockLock_ is a lock that allows us to ensure that the user interface will
-    // be locked up while we're adding a block.
-    blockLock_ = [[NSLock alloc] init];
+    self.addingBlock = false;
     
     // refreshUILock_ is a lock that prevents a race condition by making the refreshUserInterface
     // method alter the blockIsOn variable atomically (will no longer be necessary once we can
@@ -201,9 +201,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
       
     [self updateTimeSliderDisplay: blockDurationSlider_];
         
-    // We check whether a block is currently being added by trying to lock
-    // blockLock_.
-    BOOL addBlockIsOngoing = ![blockLock_ tryLock];
+    BOOL addBlockIsOngoing = self.addingBlock;
     
     if([blockDurationSlider_ intValue] != 0 && [[defaults_ objectForKey: @"HostBlacklist"] count] != 0 && !addBlockIsOngoing)
       [submitButton_ setEnabled: YES];
@@ -221,11 +219,6 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
       [editBlacklistButton_ setEnabled: NO];
       [submitButton_ setTitle: NSLocalizedString(@"Loading", @"Loading button")];
     }
-    
-    // Unlock blockLock_ if we locked it
-    if(!addBlockIsOngoing) {
-      [blockLock_ unlock];
-    }
   }
   [refreshUILock_ unlock];
 }
@@ -236,12 +229,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
      
     [SelfControlUtilities getSystemVersionMajor: &major minor: &minor bugFix: &bugfix];
     
-    if(major <= 10 && minor < 5)
-      [NSBundle loadNibNamed: @"TigerTimerWindow" owner: self];
-    else
-      [NSBundle loadNibNamed: @"TimerWindow" owner: self];
-  }
-  else {
+    [NSBundle loadNibNamed: @"TimerWindow" owner: self];
+  } else {
     [[timerWindowController_ window] makeKeyAndOrderFront: self];
     [[timerWindowController_ window] center];
   }
@@ -305,19 +294,14 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (IBAction)showDomainList:(id)sender {
-  // We check whether a block is currently being added by trying to lock
-  // blockLock_.
-  BOOL addBlockIsOngoing = ![blockLock_ tryLock];
+  BOOL addBlockIsOngoing = self.addingBlock;
   if([self selfControlLaunchDaemonIsLoaded] || addBlockIsOngoing) {
     NSAlert* blockInProgressAlert = [[[NSAlert alloc] init] autorelease];
     [blockInProgressAlert setMessageText: NSLocalizedString(@"Block in progress", @"Block in progress error title")];
     [blockInProgressAlert setInformativeText:NSLocalizedString(@"The blacklist cannot be edited while a block is in progress.", @"Block in progress explanation")];
     [blockInProgressAlert addButtonWithTitle: NSLocalizedString(@"OK", @"OK button")];
     [blockInProgressAlert runModal];
-    
-    if(!addBlockIsOngoing)
-      [blockLock_ unlock];
-    
+        
     return;
   }
   
@@ -325,9 +309,6 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     [NSBundle loadNibNamed: @"DomainList" owner: self];
   else
     [[domainListWindowController_ window] makeKeyAndOrderFront: self];
-  
-  if(!addBlockIsOngoing)
-    [blockLock_ unlock];
 }
 
 - (void)closeDomainList {
@@ -568,8 +549,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 - (void)installBlock {
   NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-  // Lock blockLock_ so that refreshUserInterface knows to disable buttons.
-  [blockLock_ lock];
+  self.addingBlock = true;
   [self refreshUserInterface];
   AuthorizationRef authorizationRef;
   char* helperToolPath = [self selfControlHelperToolPathUTF8String];
@@ -596,7 +576,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   
   if(status) {
     NSLog(@"ERROR: Failed to authorize block start.");
-    [blockLock_ unlock];
+    self.addingBlock = false;
     [self refreshUserInterface];
     return;
   }
@@ -625,7 +605,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     
     [NSApp presentError: err];
     
-    [blockLock_ unlock];
+    self.addingBlock = false;
     [self refreshUserInterface];
     
     return;
@@ -656,7 +636,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     [NSApp presentError: err];    
   }  
   
-  [blockLock_ unlock];
+  self.addingBlock = false;
   [self refreshUserInterface];
   [pool drain];
 }
@@ -752,17 +732,6 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   [timerWindowController_ closeAddSheet: self];
   [pool drain];
   [lockToUse unlock];
-}
-
-- (BOOL)isTiger {
-  unsigned int major, minor, bugfix;
-  
-  [SelfControlUtilities getSystemVersionMajor: &major minor: &minor bugFix: &bugfix];
-  
-  if(major <= 10 && minor < 5)
-    return YES;
-  else
-    return NO;
 }
 
 - (IBAction)save:(id)sender {

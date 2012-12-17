@@ -43,10 +43,12 @@
   IBOutlet DomainListWindowController* domainListWindowController_;
   IBOutlet TimerWindowController* timerWindowController_;
   NSUserDefaults* defaults_;
-  NSLock* blockLock_;
   NSLock* refreshUILock_;
   BOOL blockIsOn;
+  BOOL addingBlock;
 }
+
+@property (assign) BOOL addingBlock;
 
 // Returns an autoreleased instance of the path to the helper tool inside
 // SelfControl's bundle
@@ -122,10 +124,6 @@
 // SelfControl's helper tool with the appropriate arguments.  Meant to be called
 // as a separate thread.
 - (void)refreshBlock:(NSLock*)lockToUse;
-
-// Checks the system version and returns YES if the system version is Tiger (10.4)
-// or NO if it is a later version.
-- (BOOL)isTiger;
 
 // Opens a save panel and saves the blocklist.
 - (IBAction)save:(id)sender;

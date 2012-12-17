@@ -28,15 +28,7 @@
 
 - (TimerWindowController*) init {
   [super init];
-  unsigned int major, minor, bugfix;
-  
-  [SelfControlUtilities getSystemVersionMajor: &major minor: &minor bugFix: &bugfix];
-  
-  if(major <= 10 && minor < 5)
-    isLeopard = NO;
-  else
-    isLeopard = YES;
-        
+          
   // We need a block to prevent us from running multiple copies of the "Add to Block"
   // sheet.
   addToBlockLock = [[NSLock alloc] init];
@@ -134,8 +126,7 @@
   int numMinutes;
   
   if(numSeconds < 0) {
-    if(isLeopard)
-      [[NSApp dockTile] setBadgeLabel: nil];    
+    [[NSApp dockTile] setBadgeLabel: nil];    
         
     // This increments the strike counter.  After four strikes of the timer being
     // at or less than 0 seconds, SelfControl will assume something's wrong and run
@@ -174,7 +165,7 @@
   [timerLabel_ sizeToFit];
   [self resetStrikes];
   
-  if(isLeopard && [[NSUserDefaults standardUserDefaults] boolForKey: @"BadgeApplicationIcon"]) {
+  if([[NSUserDefaults standardUserDefaults] boolForKey: @"BadgeApplicationIcon"]) {
     // We want to round up the minutes--standard when we aren't displaying seconds.
     if(numSeconds > 0 && numMinutes != 59)
       numMinutes++;
@@ -182,8 +173,8 @@
                                                         numHours,
                                                         numMinutes];
     [[NSApp dockTile] setBadgeLabel: badgeString];
-  } else if(isLeopard) {
-    // If we're on Leopard but aren't using badging, set the badge string to be
+  } else {
+    // If we aren't using badging, set the badge string to be
     // empty to remove any badge if there is one.
     [[NSApp dockTile] setBadgeLabel: nil];
   }

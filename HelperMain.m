@@ -44,26 +44,6 @@ int main(int argc, char* argv[]) {
   // It's a signed long long int to avoid integer overflow with extra-long UIDs
   signed long long int controllingUID = [[NSString stringWithUTF8String: argv[1]] longLongValue];
   
-  // First things first, let's set up our backup system -- give scheckup the SUID bit
-  NSDictionary* checkupAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     [NSNumber numberWithInt: 0], NSFileOwnerAccountID,
-                                     [NSNumber numberWithLongLong: controllingUID], NSFileGroupOwnerAccountID,
-                                     // 2541 (decimal) = 4755 (octal) = rwsr-xr-x
-                                     [NSNumber numberWithUnsignedLong: 2541], NSFilePosixPermissions,
-                                     nil];
-  NSString* scheckupPath = [[NSString stringWithUTF8String: argv[0]] stringByDeletingLastPathComponent];
-  scheckupPath = [scheckupPath stringByAppendingPathComponent: @"scheckup"];
-  
-  
-  if(![[NSFileManager defaultManager] changeFileAttributes: checkupAttributes atPath: scheckupPath]) {
-    // This is, uh, suuuuper messy.  But pretty much it just checks whether the file already has the right attributes.
-    // If it does already, we don't bother to warn the user about being unable to change attributes.
-    NSDictionary* oldAttributes = [[NSFileManager defaultManager] fileAttributesAtPath: scheckupPath traverseLink: YES];
-    NSString* octalPerms = [NSString stringWithFormat: @"%o", [oldAttributes objectForKey: NSFilePosixPermissions]];
-    if(!([[oldAttributes objectForKey: NSFileOwnerAccountID] longLongValue] == 0 && [octalPerms characterAtIndex: 0] == '4' && [octalPerms characterAtIndex: 3] != 0 && [octalPerms characterAtIndex: 3] != 4))
-      NSLog(@"WARNING: Could not change file attributes on scheckup.  Backup block-removal system may not work.");
-  }
-  
   // For proper security, we need to make sure that SelfControl files are owned
   // by root and only writable by root.  We'll define this here so we can use it
   // throughout the main function.
@@ -207,7 +187,7 @@ int main(int argc, char* argv[]) {
                                        [NSNumber numberWithUnsignedLong: 2541], NSFilePosixPermissions,
                                        nil];    
     
-    if(![[NSFileManager defaultManager] changeFileAttributes: checkupAttributes atPath: scheckupPath]) {
+    if(![[NSFileManager defaultManager] changeFileAttributes: checkupAttributes atPath: @"/Library/PrivilegedHelperTools/scheckup"]) {
       NSLog(@"WARNING: Could not change file attributes on scheckup.  Backup block-removal system may not work.");
     }
     

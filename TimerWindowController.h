@@ -29,12 +29,9 @@
 // which tells the user how much time remains in the block.
 @interface TimerWindowController : NSWindowController {
   IBOutlet id timerLabel_;
-  // The leopardWindow_ and leopardLabel_ IBOutlets are connected to versions of
-  // window and timerLabel_ which are optimized and nicer for Leopard.
   NSTimer* timerUpdater_;
   NSDate* blockEndingDate_;
   NSLock* addToBlockLock;
-  BOOL isLeopard;
   int numStrikes;
   IBOutlet NSButton* addToBlockButton_;
   IBOutlet NSPanel* addSheet_;
