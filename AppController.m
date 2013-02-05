@@ -169,7 +169,11 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (void)refreshUserInterface {
-  [refreshUILock_ lock];
+  if(![refreshUILock_ tryLock]) {
+    // already refreshing the UI, no need to wait and do it again
+    return;
+  }
+  
   BOOL blockWasOn = blockIsOn;
   blockIsOn = [self selfControlLaunchDaemonIsLoaded];
   
@@ -592,11 +596,11 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
                                               &commPipe);
   
   if(status) {
-    NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", status);
+    NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %ld", status);
     
     NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
                                        code: status
-                                   userInfo: [NSDictionary dictionaryWithObject: [NSString stringWithFormat: @"Error %d received from the Security Server.", status]
+                                   userInfo: [NSDictionary dictionaryWithObject: [NSString stringWithFormat: @"Error %ld received from the Security Server.", status]
                                                                          forKey: NSLocalizedDescriptionKey]];
     
     [NSApp presentError: err];
@@ -638,8 +642,10 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (void)refreshBlock:(NSLock*)lockToUse {
-  if(![lockToUse tryLock])
+  if(![lockToUse tryLock]) {
     return;
+  }
+  
   NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
   AuthorizationRef authorizationRef;
   char* helperToolPath = [self selfControlHelperToolPathUTF8String];
@@ -692,7 +698,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
                                               &commPipe);
   
   if(status) {
-    NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", status);
+    NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %ld", status);
     
     NSError* err = [self errorFromHelperToolStatusCode: status];
     
@@ -815,7 +821,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 - (void)setBlockLength:(int)blockLength {
   [blockDurationSlider_ setIntValue: blockLength];
-  [self updateTimeSliderDisplay];
+  [self updateTimeSliderDisplay: blockDurationSlider_];
 }
 
 - (IBAction)openFAQ:(id)sender {
