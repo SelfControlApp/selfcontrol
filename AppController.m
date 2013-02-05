@@ -224,11 +224,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (void)showTimerWindow {
-  if(timerWindowController_ == nil) {
-     unsigned int major, minor, bugfix;
-     
-    [SelfControlUtilities getSystemVersionMajor: &major minor: &minor bugFix: &bugfix];
-    
+  if(timerWindowController_ == nil) {    
     [NSBundle loadNibNamed: @"TimerWindow" owner: self];
   } else {
     [[timerWindowController_ window] makeKeyAndOrderFront: self];
