@@ -38,7 +38,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleVersion</key>
-	<string>1.4.4</string>
+	<string>1.4.5</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
@@ -50,7 +50,7 @@
 	<key>NSAppleScriptEnabled</key>
 	<true/>
 	<key>CFBundleShortVersionString</key>
-	<string>1.4.4</string>
+	<string>1.4.5</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.productivity</string>
 	<key>NSHumanReadableCopyright</key>
