@@ -18,7 +18,7 @@ from threading import Timer
 class MainForm(QDialog):
 
     def __init__(self, parent=None):
-        # Create our main`layout for picking duration and such
+        # Create our main layout for picking duration and such
         super(MainForm, self).__init__(parent)
         self.setWindowTitle("SelfRestraint")
         # Create widgets such as buttons and slider
@@ -55,9 +55,8 @@ class MainForm(QDialog):
         """docstring for openList"""
         list.show()
 
-    # Displays the block time on the label
     def change(self):
-        """docstring for change"""
+        """Displays the block time on the label"""
         if self.timeSlider.value() == 0:
             self.timeLabel.setText("Disabled")
             self.startButton.setEnabled(False)
@@ -77,7 +76,7 @@ class MainForm(QDialog):
 class ListEditor(QDialog):
 
     def __init__(self, parent=None):
-        # Create layout for the blocked domains
+        """Create layout for the blocked domains"""
         super(ListEditor, self).__init__(parent)
         self.setWindowTitle("Website Blocklist")
         # Create widgets
@@ -96,33 +95,31 @@ class ListEditor(QDialog):
         self.setLayout(layout)
 
     def loadBlockFile(self):
-        #If a site block file exists, load it
+        """If a site block file exists, load it"""
         file = open(homedir + "blocklist")
         self.tableView.appendPlainText(file.read())
         file.close()
 
     def createBlockFile(self):
-        #Create a new site block file
+        """Create a new site block file"""
         file = open(homedir + "blocklist", 'w')
         file.write("# Add one website per line #\nexample.com\n")
         file.close()
 
     def updateBlocks(self):
-        #Write blocked sites to file
+        """Write blocked sites to file"""
         file = open(homedir + "blocklist", 'w+')
         file.write(list.tableView.toPlainText())
 
     def closeList(self):
-        # Hide the list
-        """docstring for closeList"""
+        """Hide the list"""
         self.updateBlocks()
         list.hide()
 
 
 class Backend():
-    """docstring for Backend"""
-    # Backend class to deal with parsing the blocked lists
-    # and appending them to the system hosts file
+    """Backend class to deal with parsing the blocked lists
+    and appending them to the system hosts file"""
     def __init__(self, parent=None):
         if os.name == "posix":
             self.HostsFile = "/etc/hosts"
@@ -132,8 +129,7 @@ class Backend():
             sys.exit(1)  # let's try to avoid breaking things
 
     def startBlock(self):
-        """docstring for startBlock"""
-        # Append the blacklisted domains to the system hosts file
+        """Append the blacklisted domains to the system hosts file"""
         form.hide()
         list.close()
 
@@ -174,7 +170,7 @@ class Backend():
         counter.display(timestring)
 
     def endBlock(self):
-        # Traverse host file and remove the site blocks
+        """Traverse host file and remove the site blocks"""
         restoreContents = []
         ignore = False
         f = open(self.HostsFile, "r")  # Open File
@@ -208,7 +204,7 @@ class checkDonation():
         self.loadDonateFile()
 
     def loadDonateFile(self):
-        # If a site block file exists, load it
+        """If a site block file exists, load it"""
         file = open(homedir + "donateinfo", 'r')
         donated = file.read()
         file.close()
@@ -227,7 +223,7 @@ class checkDonation():
             self.generateAlert()
 
     def createDonateFile(self):
-        # Create a new site block file
+        """Create a new site block file"""
         file = open(homedir + "donateinfo", 'w')
         file.write("5")
         file.close()
@@ -281,6 +277,8 @@ if __name__ == '__main__':
             # # os.system("""osascript -e 'do shell script "python SelfRestraint.py"  with administrator privileges'""")
             # sys.exit(1)
     elif os.name == "posix":  # If Linux
+        # I'm just going to default to using the scripts own folder for now.
+        homedir = os.path.dirname(sys.argv[0])
         if os.geteuid() != 0:  # If not root, run as root
             print "Script not started as root. Running sudo.."  # Debugging stuff
             args = ['gksudo', sys.executable] + sys.argv + [os.environ]
