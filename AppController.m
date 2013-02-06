@@ -389,7 +389,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   if([host isEqualToString: @""])
     return;
   
-  NSMutableArray* list = [[defaults_ arrayForKey: @"HostBlacklist"] mutableCopy];
+  NSMutableArray* list = [[[defaults_ arrayForKey: @"HostBlacklist"] mutableCopy] autorelease];
   [list addObject: host];
   [defaults_ setObject: list forKey: @"HostBlacklist"];
   [defaults_ synchronize];
@@ -402,7 +402,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     [self refreshUserInterface];
     
     // Reverse the blacklist change made before we fail
-    NSMutableArray* list = [[defaults_ arrayForKey: @"HostBlacklist"] mutableCopy];
+    NSMutableArray* list = [[[defaults_ arrayForKey: @"HostBlacklist"] mutableCopy] autorelease];
     [list removeLastObject];
     [defaults_ setObject: list forKey: @"HostBlacklist"];
     

@@ -27,14 +27,14 @@
 @implementation TimerWindowController
 
 - (TimerWindowController*) init {
-  [super init];
-          
-  // We need a block to prevent us from running multiple copies of the "Add to Block"
-  // sheet.
-  addToBlockLock = [[NSLock alloc] init];
-      
-  numStrikes = 0;
-  
+  if(self = [super init]) {
+    // We need a block to prevent us from running multiple copies of the "Add to Block"
+    // sheet.
+    addToBlockLock = [[NSLock alloc] init];
+        
+    numStrikes = 0;
+  }
+
   return self;
 }
 

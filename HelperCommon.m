@@ -38,18 +38,20 @@ void addRulesToFirewall(signed long long int controllingUID) {
     blockAsWhitelist = [[curDictionary objectForKey: @"BlockAsWhitelist"] boolValue];
   }
   
-  BlockManager* blockManager = [[[BlockManager alloc] initAsWhitelist: blockAsWhitelist allowLocal: allowLocalNetworks includeCommonSubdomains: shouldEvaluateCommonSubdomains] autorelease];
+  BlockManager* blockManager = [[BlockManager alloc] initAsWhitelist: blockAsWhitelist allowLocal: allowLocalNetworks includeCommonSubdomains: shouldEvaluateCommonSubdomains];
   
   [blockManager prepareToAddBlock];
   [blockManager addBlockEntries: domainList];
   [blockManager finalizeBlock];
+
+  [blockManager release];
 }
 
 void removeRulesFromFirewall(signed long long int controllingUID) {
   IPFirewall* firewall = [[IPFirewall alloc] init];
   if(![firewall containsSelfControlBlockSet])
     NSLog(@"WARNING: SelfControl rules do not appear to be loaded into ipfw.");
-  HostFileBlocker* hostFileBlocker = [[[HostFileBlocker alloc] init] autorelease];
+  HostFileBlocker* hostFileBlocker = [[HostFileBlocker alloc] init];
   [hostFileBlocker removeSelfControlBlock];
   BOOL hostSuccess = [hostFileBlocker writeNewFileContents];
   // Revert the host file blocker's file contents to disk so we can check
@@ -73,8 +75,11 @@ void removeRulesFromFirewall(signed long long int controllingUID) {
     else 
       NSLog(@"INFO: Firewall rules successfully cleared.");
   }
-  
+
+  [firewall release];
+
   [hostFileBlocker deleteBackupHostsFile];
+  [hostFileBlocker release];
   
   // We'll play the sound now rather than putting it in the "defaults block"
   // a few lines ago, because it is important that the UI get updated (by
@@ -245,6 +250,7 @@ void clearCachesIfRequested(signed long long int controllingUID) {
 
 void printStatus(int status) {
   printf("%d", status);
+  fflush(stdout);
 }
 
 void parseHost(NSString* hostName, NSString** baseName, int* maskLength, int* portNumber) {

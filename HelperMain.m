@@ -441,7 +441,10 @@ int main(int argc, char* argv[]) {
     }
   }
 
+  // by putting printStatus first (which tells the app we didn't crash), we fake it to
+  // avoid memory-managment crashes (calling [pool drain] is essentially optional)
   printStatus(0);
+
   [pool drain];
   exit(EXIT_SUCCESS);
 }

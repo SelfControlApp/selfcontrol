@@ -30,9 +30,8 @@
 // designed to make it easier to distinguish SelfControl rules and alter them
 // separately from other ipfw rules.
 @interface IPFirewall : NSObject {
+  NSOperationQueue* opQueue;
   int selfControlBlockRuleCount_;
-  NSMutableArray* allTasks;
-  NSLock* taskLock;
 }
 
 // Calls the ipfw command-line tool to add a rule into the designated
@@ -113,6 +112,8 @@
 // the exit status code of ipfw.
 - (BOOL)containsSelfControlBlockSet;
 
+- (int)runFirewallCommand:(NSArray*)args;
+- (void)enqueueFirewallCommand:(NSArray*)args;
 - (void)waitUntilAllTasksExit;
 
 @end

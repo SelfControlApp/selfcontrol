@@ -39,11 +39,10 @@
 
 - (BlockManager*)initAsWhitelist:(BOOL)whitelist allowLocal:(BOOL)local includeCommonSubdomains:(BOOL)blockCommon {
   if(self = [super init]) {
-    opQueue = [[[NSOperationQueue alloc] init] autorelease];
-    [opQueue setMaxConcurrentOperationCount: 10];
+    opQueue = [[NSOperationQueue alloc] init];
 
-    ipfw = [[[IPFirewall alloc] init] autorelease];
-    hostsBlocker = [[[HostFileBlocker alloc] init] autorelease];
+    ipfw = [[IPFirewall alloc] init];
+    hostsBlocker = [[HostFileBlocker alloc] init];
     hostsBlockingEnabled = NO;
 
     isWhitelist = whitelist;
@@ -52,6 +51,14 @@
   }
 
   return self;
+}
+
+- (void)dealloc {
+  [opQueue release], opQueue = nil;
+  [ipfw release], ipfw = nil;
+  [hostsBlocker release], hostsBlocker = nil;
+  
+  [super dealloc];
 }
 
 
@@ -108,6 +115,7 @@
 }
 
 - (void)addBlockEntryWithHostName:(NSString*)hostName port:(int)portNum maskLen:(int)maskLen {
+  NSLog(@"addEntry: %@", hostName);
   BOOL isIP = [hostName isValidIPAddress];
   BOOL isIPv4 = [hostName isValidIPv4Address];
 
