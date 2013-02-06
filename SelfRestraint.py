@@ -121,12 +121,31 @@ class Backend():
     """Backend class to deal with parsing the blocked lists
     and appending them to the system hosts file"""
     def __init__(self, parent=None):
-        if os.name == "posix":
+        if sys.platform.startswith('linux'):
+            initHosts()
+
+        elif sys.platform.startswith('darwin'):
             self.HostsFile = "/etc/hosts"
-        elif os.name == "nt":
+
+        elif sys.platform.startswith('win'):
             self.HostsFile = "C:\Windows\System32\drivers\etc\hosts"
+
         else:
             sys.exit(1)  # let's try to avoid breaking things
+
+    def initHosts(self):
+        """Copy the system hosts file to our temp version
+
+        For linux, we're going to modify a tmp version of the hosts file,
+        then copy it over the top of /etc/hosts. This allows us to easily
+        just request sudo for the final copy operation, not the whole script.
+
+        """
+        if sys.platform.startswith('linux'):
+            self.realHostsFile = "/etc/hosts"
+            self.tmpHostsFile = "/tmp/etc_hosts.tmp"
+            os.system('cp {0} {1}'.format(self.realHostsFile, self.tmpHostsFile))
+            self.HostsFile = self.tmpHostsFile
 
     def startBlock(self):
         """Append the blacklisted domains to the system hosts file"""
@@ -155,6 +174,11 @@ class Backend():
 
         hostsFile.write("# End Blocklist")
         hostsFile.close()
+
+        if sys.platform.startswith('linux'):
+            # attempt to copy the modified hosts file over the top of the system one.
+            os.system('gksudo cp {0} {1}'.format(self.tmpHostsFile, self.realHostsFile))
+
         self.blockTime = form.timeSlider.value() * 60 * 15
         t = Timer(self.blockTime, self.endBlock)
         t.start()
@@ -173,6 +197,8 @@ class Backend():
         """Traverse host file and remove the site blocks"""
         restoreContents = []
         ignore = False
+        # Do this again here, in case the tmp file went away during the countdown
+        initHosts()
         f = open(self.HostsFile, "r")  # Open File
 
         for line in f:
@@ -185,7 +211,7 @@ class Backend():
 
         f.close()
 
-        #Restore contents
+        # Restore contents
         if restoreContents[len(restoreContents) - 1] == "\n":
             restoreContents.pop()  # prevent adding newlines each time
 
@@ -193,6 +219,11 @@ class Backend():
         for line in restoreContents:
             f.write(line)
         f.close()
+
+        if sys.platform.startswith('linux'):
+            # attempt to copy the modified hosts file over the top of the system one.
+            os.system('gksudo cp {0} {1}'.format(self.tmpHostsFile, self.realHostsFile))
+
         form.show()
         counter.hide()
 
@@ -248,7 +279,7 @@ class checkForUpdates():
     def __init__(self, parent=None):
         self.VERSION = "0.2"  # The version of this app
         f = urllib.urlopen("https://raw.github.com/ParkerK/selfrestraint/master/version")
-        if os.name == "nt":
+        if sys.platform.startswith('win'):
             self.new_version = f.read().split("\n")[0].split(":")[1]
             self.VERSION = "0.3"
         else:
@@ -266,9 +297,10 @@ class checkForUpdates():
     def openURL(self):
         webbrowser.open_new("http://parker.kuivi.la/projects/selfrestraint.html")
 
+
 if __name__ == '__main__':
     # In OS X we need to run this as root in order to block sites
-    if os.name == "posix" and sys.platform == "darwin":
+    if sys.platform.startswith('darwin'):
         if os.getuid() != 0:
             old_uid = os.getuid()
             # os.chdir('../MacOS')
@@ -276,22 +308,20 @@ if __name__ == '__main__':
             # # If running via 'python SelfRestraint.py uncomment out below, and comment out above two lines
             # # os.system("""osascript -e 'do shell script "python SelfRestraint.py"  with administrator privileges'""")
             # sys.exit(1)
-    elif os.name == "posix":  # If Linux
-        # I'm just going to default to using the scripts own folder for now.
-        homedir = os.path.dirname(sys.argv[0])
-        if os.geteuid() != 0:  # If not root, run as root
-            print "Script not started as root. Running sudo.."  # Debugging stuff
-            args = ['gksudo', sys.executable] + sys.argv + [os.environ]
-            # the next line replaces the currently-running process with the sudo
-            os.execlpe('gksudo', *args)
-            sys.exit(1)
+    elif sys.platform.startswith('linux'):
+        from xdg.BaseDirectory import *
+        homedir = os.path.join(xdg_config_home, "SelfRestraint/")
+        # print homedir
+        if not os.path.isdir(homedir):
+            os.mkdir(homedir)
 
     # Create the Qt Application
 
     app = QApplication(sys.argv)
     backend = Backend()
+
     # Create and show the forms
-    if os.name == "nt":
+    if sys.platform.startswith('win'):
         # Make sure the program is running w/ administrative privileges.
         import win32api
         from win32com.shell import shell, shellcon
