@@ -197,21 +197,6 @@
   [aTableView reloadData];
   [[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
     object: self];  
-
-  // fire a warning if the user is blocking Google services. only once per run, to avoid annoyance
-  if(!googleWarningFired) {
-    // todo: make this regex not suck
-    NSString* googleRegex = @"^([a-z0-9]+\\.)*(google|youtube|picasa|sketchup|blogger|blogspot)\\.([a-z]{1,3})(\\.[a-z]{1,3})?$";
-    NSPredicate* googleTester = [NSPredicate
-                                 predicateWithFormat: @"SELF MATCHES %@",
-                                 googleRegex
-                                 ];
-    if([googleTester evaluateWithObject: str]) {
-      // warn the user!
-      googleWarningFired = true;
-      [[NSApp delegate] showGoogleWarning: self];
-    }
-  }
 }
 
 - (void)tableView:(NSTableView *)tableView

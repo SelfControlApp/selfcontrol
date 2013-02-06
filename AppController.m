@@ -603,7 +603,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
                                    userInfo: [NSDictionary dictionaryWithObject: [NSString stringWithFormat: @"Error %ld received from the Security Server.", status]
                                                                          forKey: NSLocalizedDescriptionKey]];
     
-    [NSApp presentError: err];
+    [NSApp performSelectorOnMainThread: @selector(presentError:)
+                            withObject: err
+                         waitUntilDone: YES];
     
     self.addingBlock = false;
     [self refreshUserInterface];
@@ -625,7 +627,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
                                    userInfo: [NSDictionary dictionaryWithObject: @"Error -104: The helper tool crashed.  This may cause unexpected errors."
                                                                          forKey: NSLocalizedDescriptionKey]];
     
-    [NSApp presentError: err];
+    [NSApp performSelectorOnMainThread: @selector(presentError:)
+                            withObject: err
+                         waitUntilDone: YES];
   }
   
   int exitCode = [inDataString intValue];
@@ -633,7 +637,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   if(exitCode) {
     NSError* err = [self errorFromHelperToolStatusCode: exitCode];
     
-    [NSApp presentError: err];    
+    [NSApp performSelectorOnMainThread: @selector(presentError:)
+                            withObject: err
+                         waitUntilDone: YES];
   }  
   
   self.addingBlock = false;
@@ -702,7 +708,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     
     NSError* err = [self errorFromHelperToolStatusCode: status];
     
-    [NSApp presentError: err];
+    [NSApp performSelectorOnMainThread: @selector(presentError:)
+                            withObject: err
+                         waitUntilDone: YES];
     
     [lockToUse unlock];
     
@@ -720,7 +728,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
                                    userInfo: [NSDictionary dictionaryWithObject: @"Error -105: The helper tool crashed.  This may cause unexpected errors."
                                                                          forKey: NSLocalizedDescriptionKey]];
     
-    [NSApp presentError: err];
+    [NSApp performSelectorOnMainThread: @selector(presentError:)
+                            withObject: err
+                         waitUntilDone: YES];
   }  
   
   int exitCode = [inDataString intValue];
@@ -728,7 +738,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   if(exitCode) {
     NSError* err = [self errorFromHelperToolStatusCode: exitCode];
     
-    [NSApp presentError: err];    
+    [NSApp performSelectorOnMainThread: @selector(presentError:)
+                            withObject: err
+                         waitUntilDone: YES];
   }  
     
   [timerWindowController_ closeAddSheet: self];
@@ -841,19 +853,5 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     }
   }
 }
-
-- (void)showGoogleWarning:(id)sender {
-    if(![defaults_ boolForKey: @"GoogleAlertSuppress"]) {
-        NSAlert* a = [NSAlert alertWithMessageText: NSLocalizedString(@"You're about to block all Google services!", @"Google block confirmation prompt") defaultButton: NSLocalizedString(@"OK", @"OK button") alternateButton: @"" otherButton: @"" informativeTextWithFormat: NSLocalizedString(@"You have a Google website on your block list. Due to the way Google is set up, this may block all Google services (Search, Gmail, YouTube, etc). If you don't want to block all Google services, edit your block list to remove any Google websites.", @"Google block explanation")]; 
-        if([a respondsToSelector: @selector(setShowsSuppressionButton:)]) {
-            [a setShowsSuppressionButton: YES];
-        }
-        [a runModal];
-        if([a respondsToSelector: @selector(suppressionButton)] && [[a suppressionButton] state] == NSOnState) {
-            [defaults_ setBool: YES forKey: @"GoogleAlertSuppress"];
-        }
-    }
-}
-
 
 @end

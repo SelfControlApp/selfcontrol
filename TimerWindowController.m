@@ -133,13 +133,13 @@
     // scheckup.
     numStrikes++;
         
-    if(numStrikes == 4) {
-      NSLog(@"WARNING: Block should have ended four seconds ago, starting scheckup");
+    if(numStrikes == 2) {
+      NSLog(@"WARNING: Block should have ended two seconds ago, starting scheckup");
       [self runCheckup];
-    } else if(numStrikes == 20) {
+    } else if(numStrikes == 30) {
         // OK, so apparently scheckup couldn't remove the block either
         // The user needs some help, let's open the FAQ for them.
-        NSLog(@"WARNING: Block should have ended fifteen seconds ago! Probable permablock.");
+        NSLog(@"WARNING: Block should have ended thirty seconds ago! Probable permablock.");
         [[NSApp delegate] openFAQ: self];
     }
     

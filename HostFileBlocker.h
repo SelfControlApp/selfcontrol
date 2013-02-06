@@ -26,6 +26,7 @@
 @interface HostFileBlocker : NSObject {
   NSMutableString* newFileContents;
   NSStringEncoding stringEnc;
+  NSFileManager* fileMan;
 }
 
 - (BOOL)deleteBackupHostsFile;

@@ -30,6 +30,7 @@ NSString* const kHostFileBlockerSelfControlFooter = @"# END SELFCONTROL BLOCK";
 
 - (HostFileBlocker*)init {
   if(self = [super init]) {
+    fileMan = [[[NSFileManager alloc] init] autorelease];
     newFileContents = [NSMutableString stringWithContentsOfFile: kHostFileBlockerPath usedEncoding: &stringEnc error: NULL];
     if(!newFileContents)
       return nil;
@@ -49,29 +50,27 @@ NSString* const kHostFileBlockerSelfControlFooter = @"# END SELFCONTROL BLOCK";
 }
 
 - (BOOL)createBackupHostsFile {
-  NSFileManager* fileMan = [NSFileManager defaultManager];
-
-  if(![fileMan isReadableFileAtPath: @"/etc/hosts"] || [fileMan fileExistsAtPath: @"/etc/hosts.bak"])
-    return NO;
+  NSLog(@"CREATE BACKUP HOSTS FILE!");
+  [self deleteBackupHostsFile];
   
-  return [fileMan copyPath: @"/etc/hosts" toPath: @"/etc/hosts.bak" handler: nil];
+  if(![fileMan isReadableFileAtPath: @"/etc/hosts"] || [fileMan fileExistsAtPath: @"/etc/hosts.bak"]) {
+    return NO;
+  }
+    
+  return [fileMan copyItemAtPath: @"/etc/hosts" toPath: @"/etc/hosts.bak" error: nil];
 }
 
-- (BOOL)deleteBackupHostsFile {
-  NSFileManager* fileMan = [NSFileManager defaultManager];
-  
+- (BOOL)deleteBackupHostsFile {  
   if(![fileMan isDeletableFileAtPath: @"/etc/hosts.bak"])
     return NO;
   
-  return [fileMan removeFileAtPath: @"/etc/hosts.bak" handler: nil];
+  return [fileMan removeItemAtPath: @"/etc/hosts.bak" error: nil];
 }
 
-- (BOOL)restoreBackupHostsFile {  
-  NSFileManager* fileMan = [NSFileManager defaultManager];
-  
-  if(![fileMan removeFileAtPath: @"/etc/hosts" handler: nil])
+- (BOOL)restoreBackupHostsFile {    
+  if(![fileMan removeItemAtPath: @"/etc/hosts" error: nil])
     return NO;
-  if(![fileMan isReadableFileAtPath: @"/etc/hosts.bak"] || ![fileMan movePath: @"/etc/hosts.bak" toPath: @"/etc/hosts" handler: nil])
+  if(![fileMan isReadableFileAtPath: @"/etc/hosts.bak"] || ![fileMan moveItemAtPath: @"/etc/hosts.bak" toPath: @"/etc/hosts" error: nil])
     return NO;
   
   return YES;
@@ -90,6 +89,7 @@ NSString* const kHostFileBlockerSelfControlFooter = @"# END SELFCONTROL BLOCK";
 
 - (void)addRuleBlockingDomain:(NSString*)domainName {
   [newFileContents appendString: [NSString stringWithFormat: @"0.0.0.0\t%@\n", domainName]];
+  [newFileContents appendString: [NSString stringWithFormat: @"::\t%@\n", domainName]];
 }
 
 - (BOOL)containsSelfControlBlock {

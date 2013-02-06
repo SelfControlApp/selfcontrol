@@ -440,8 +440,8 @@ int main(int argc, char* argv[]) {
       seteuid(0);
     }
   }
-  
-  [pool drain];
+
   printStatus(0);
+  [pool drain];
   exit(EXIT_SUCCESS);
 }
