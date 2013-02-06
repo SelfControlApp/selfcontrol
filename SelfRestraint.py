@@ -82,7 +82,7 @@ class ListEditor(QDialog):
         # Create widgets
         self.tableView = QPlainTextEdit()
 
-        if not os.path.isfile(homedir + "\\blocklist"):
+        if not os.path.isfile(os.path.join(config_dir, 'blocklist')):
             self.createBlockFile()
         self.loadBlockFile()
 
