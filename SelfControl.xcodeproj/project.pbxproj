@@ -133,6 +133,11 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* SelfControl_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelfControl_Prefix.pch; sourceTree = "<group>"; };
+		640D40C816D6E962003034B3 /* it */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = it; path = it.lproj/DomainList.xib; sourceTree = "<group>"; };
+		640D40C916D6E962003034B3 /* it */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = it; path = it.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		640D40CA16D6E962003034B3 /* it */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = it; path = it.lproj/TimerWindow.xib; sourceTree = "<group>"; };
+		640D40CB16D6E962003034B3 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
+		640D40CC16D6E962003034B3 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* SelfControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SelfControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		949F9F8815B32EC6007B8B42 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -465,6 +470,7 @@
 				sv,
 				ja,
 				"zh-Hans",
+				it,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* SelfControl */;
 			projectDirPath = "";
@@ -595,6 +601,7 @@
 				CBBF4E871582F80400E364D9 /* sv */,
 				CBBF4E881582F80400E364D9 /* ja */,
 				949F9F8915B33213007B8B42 /* zh-Hans */,
+				640D40C816D6E962003034B3 /* it */,
 			);
 			name = DomainList.xib;
 			sourceTree = "<group>";
@@ -608,6 +615,7 @@
 				CBBF4E831582F7DD00E364D9 /* sv */,
 				CBBF4E841582F7DF00E364D9 /* ja */,
 				949F9F8A15B33267007B8B42 /* zh-Hans */,
+				640D40C916D6E962003034B3 /* it */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
@@ -621,6 +629,7 @@
 				CBBF4E951582F8FC00E364D9 /* sv */,
 				CBBF4E961582F8FC00E364D9 /* ja */,
 				949F9F8D15B333A1007B8B42 /* zh-Hans */,
+				640D40CC16D6E962003034B3 /* it */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -634,6 +643,7 @@
 				CBBF4E911582F8F500E364D9 /* sv */,
 				CBBF4E921582F8F500E364D9 /* ja */,
 				949F9F8815B32EC6007B8B42 /* zh-Hans */,
+				640D40CB16D6E962003034B3 /* it */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -647,6 +657,7 @@
 				CBBF4EEA15830D7800E364D9 /* sv */,
 				CBBF4EEB15830D7800E364D9 /* ja */,
 				949F9F8B15B33339007B8B42 /* zh-Hans */,
+				640D40CA16D6E962003034B3 /* it */,
 			);
 			name = TimerWindow.xib;
 			sourceTree = "<group>";
