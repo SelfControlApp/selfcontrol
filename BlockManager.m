@@ -115,7 +115,6 @@
 }
 
 - (void)addBlockEntryWithHostName:(NSString*)hostName port:(int)portNum maskLen:(int)maskLen {
-  NSLog(@"addEntry: %@", hostName);
   BOOL isIP = [hostName isValidIPAddress];
   BOOL isIPv4 = [hostName isValidIPv4Address];
 

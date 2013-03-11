@@ -46,14 +46,12 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
 // the behind-the-scenes workers of this class
 
 - (int)runFirewallCommand:(NSArray*)args {
-  NSLog(@"runFirewallCommand");
   NSTask* task = [NSTask launchedTaskWithLaunchPath: kIPFirewallExecutablePath arguments:args];
   [task waitUntilExit];
   return [task terminationStatus];
 }
 
 - (void)enqueueFirewallCommand:(NSArray*)args {
-  NSLog(@"enqueueFirewallCommand");
   NSInvocationOperation* op = [[NSInvocationOperation alloc] initWithTarget: self
                                                                    selector: @selector(runFirewallCommand:)
                                                                      object: args];
