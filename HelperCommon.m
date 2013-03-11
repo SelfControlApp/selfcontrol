@@ -205,10 +205,7 @@ void clearCachesIfRequested(signed long long int controllingUID) {
       
       if([task terminationStatus] == 0 && [leopardCacheDirectory length] > 0) {
         NSMutableArray* leopardCacheDirs = [NSMutableArray arrayWithObjects:
-                                            @"org.mozilla.firefox",
                                             @"com.apple.Safari",
-                                            @"jp.hmdt.shiira",
-                                            @"org.mozilla.camino",
                                             nil];
         for(int i = 0; i < [leopardCacheDirs count]; i++) {
           NSString* cacheDir = [leopardCacheDirectory stringByAppendingPathComponent: [leopardCacheDirs objectAtIndex: i]];
@@ -224,15 +221,7 @@ void clearCachesIfRequested(signed long long int controllingUID) {
       
       NSString* userLibraryDirectory = [@"~/Library" stringByExpandingTildeInPath];
       NSMutableArray* cacheDirs = [NSMutableArray arrayWithObjects:
-                                   @"Caches/Camino",
                                    @"Caches/com.apple.Safari",
-                                   @"Caches/Firefox",
-                                   @"Caches/Flock",
-                                   @"Caches/Opera",
-                                   @"Caches/Unison",
-                                   @"Caches/com.omnigroup.OmniWeb5",
-                                   @"Preferences/iCab Preferences/iCab Cache",
-                                   @"Preferences/com.omnigroup.OmniWeb5",
                                    nil];
       
       for(int i = 0; i < [cacheDirs count]; i++) {
