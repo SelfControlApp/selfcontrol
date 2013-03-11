@@ -42,7 +42,7 @@ NSString* const kThunderbirdSupportFolderPath = @"~/Library/Thunderbird";
   if(![[NSFileManager defaultManager] isReadableFileAtPath: profilesIniPath])
     return nil;
   
-  NSString* profilesIniContents = [NSString stringWithContentsOfFile: profilesIniPath];
+  NSString* profilesIniContents = [NSString stringWithContentsOfFile: profilesIniPath encoding: NSUTF8StringEncoding error: NULL];
   NSScanner* profilesIniScanner = [NSScanner scannerWithString: profilesIniContents];
   NSMutableArray* profiles = [NSMutableArray arrayWithCapacity: 1];   
   
@@ -146,7 +146,7 @@ NSString* const kThunderbirdSupportFolderPath = @"~/Library/Thunderbird";
   // The old implementation of this was better.  The new one misses alternative
   // line breaks like \r.  10.4 doesn't have a componentSeparatedByCharactersInSet
   // method though, so this'll have to do.
-  NSArray* prefsJsLines = [[NSString stringWithContentsOfFile: pathToPrefsJsFile] componentsSeparatedByString: @"\n"];
+  NSArray* prefsJsLines = [[NSString stringWithContentsOfFile: pathToPrefsJsFile encoding: NSUTF8StringEncoding error: NULL] componentsSeparatedByString: @"\n"];
   NSMutableArray* hostnames = [NSMutableArray arrayWithCapacity: 10];
   
   for(int i = 0; i < [prefsJsLines count]; i++) {
@@ -181,7 +181,7 @@ NSString* const kThunderbirdSupportFolderPath = @"~/Library/Thunderbird";
   if(![[NSFileManager defaultManager] isReadableFileAtPath: pathToPrefsJsFile])
     return [NSArray array];
   
-  NSArray* prefsJsLines = [[NSString stringWithContentsOfFile: pathToPrefsJsFile]  componentsSeparatedByString: @"\n"];
+  NSArray* prefsJsLines = [[NSString stringWithContentsOfFile: pathToPrefsJsFile encoding: NSUTF8StringEncoding error: NULL]  componentsSeparatedByString: @"\n"];
   NSMutableArray* hostnames = [NSMutableArray arrayWithCapacity: 10];
   
   for(int i = 0; i < [prefsJsLines count]; i++) {

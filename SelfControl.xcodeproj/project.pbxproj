@@ -342,8 +342,6 @@
 			isa = PBXGroup;
 			children = (
 				CBD266E111ED84F700042CD8 /* SelfControlCommon.h */,
-				CBB0AE280FA74566006229B3 /* HostFileBlocker.h */,
-				CBB0AE290FA74566006229B3 /* HostFileBlocker.m */,
 				CB25806416C237F10059C99A /* NSString+IPAddress.h */,
 				CB25806516C237F10059C99A /* NSString+IPAddress.m */,
 				CBE5C4090F4D4531003DB900 /* ButtonWithPopupMenu.h */,
@@ -353,6 +351,8 @@
 				CBB637210F3E296000EBD135 /* DomainListWindowController.h */,
 				CBB637220F3E296000EBD135 /* DomainListWindowController.m */,
 				CBD266C611ED82DB00042CD8 /* Helper Tools */,
+				CBB0AE280FA74566006229B3 /* HostFileBlocker.h */,
+				CBB0AE290FA74566006229B3 /* HostFileBlocker.m */,
 				CBA2E7590F41388800571571 /* IPFirewall.h */,
 				CBA2E75A0F41388800571571 /* IPFirewall.m */,
 				CB25806016C1FDBE0059C99A /* BlockManager.h */,

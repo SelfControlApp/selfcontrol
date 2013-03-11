@@ -24,6 +24,7 @@
 
 
 @interface HostFileBlocker : NSObject {
+  NSLock* strLock;
   NSMutableString* newFileContents;
   NSStringEncoding stringEnc;
   NSFileManager* fileMan;

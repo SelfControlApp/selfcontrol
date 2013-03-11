@@ -274,7 +274,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 - (BOOL)selfControlLaunchDaemonIsLoaded {
   // First we check the host file, and see if a block is in there
-  NSString* hostFileContents = [NSString stringWithContentsOfFile: @"/etc/hosts"];
+  NSString* hostFileContents = [NSString stringWithContentsOfFile: @"/etc/hosts" encoding: NSUTF8StringEncoding error: NULL];
   if(hostFileContents != nil && [hostFileContents rangeOfString: @"# BEGIN SELFCONTROL BLOCK"].location != NSNotFound) {
     return YES;
   }
@@ -779,7 +779,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
       NSBeep();
     } else {
       NSDictionary* attribs = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool: YES], NSFileExtensionHidden, nil];
-      [[NSFileManager defaultManager] changeFileAttributes: attribs atPath: [sp filename]];
+      [[NSFileManager defaultManager] setAttributes: attribs ofItemAtPath: [sp filename] error: NULL];
     }
   }
 }

@@ -31,22 +31,39 @@ NSString* const kHostFileBlockerSelfControlFooter = @"# END SELFCONTROL BLOCK";
 - (HostFileBlocker*)init {
   if(self = [super init]) {
     fileMan = [[[NSFileManager alloc] init] autorelease];
+    strLock = [[NSLock alloc] init];
     newFileContents = [NSMutableString stringWithContentsOfFile: kHostFileBlockerPath usedEncoding: &stringEnc error: NULL];
     if(!newFileContents)
       return nil;
   }
     
   return self;
-}    
+}
+
+- (void)dealloc {
+  [strLock release], strLock = nil;
+  [super dealloc];
+}
 
 - (BOOL)revertFileContentsToDisk {
+  [strLock lock];
   newFileContents = [NSMutableString stringWithContentsOfFile: kHostFileBlockerPath usedEncoding: &stringEnc error: NULL];
-  if(newFileContents) return YES;
-  else return NO;
+
+  BOOL ret;
+  if(newFileContents) ret = YES;
+  else ret = NO;
+
+  [strLock unlock];
+  return ret;
 }
 
 - (BOOL)writeNewFileContents {
-  return [newFileContents writeToFile: kHostFileBlockerPath atomically: YES encoding: stringEnc error: NULL];
+  [strLock lock];
+
+  BOOL ret = [newFileContents writeToFile: kHostFileBlockerPath atomically: YES encoding: stringEnc error: NULL];
+
+  [strLock unlock];
+  return ret;
 }
 
 - (BOOL)createBackupHostsFile {
@@ -56,7 +73,7 @@ NSString* const kHostFileBlockerSelfControlFooter = @"# END SELFCONTROL BLOCK";
   if(![fileMan isReadableFileAtPath: @"/etc/hosts"] || [fileMan fileExistsAtPath: @"/etc/hosts.bak"]) {
     return NO;
   }
-    
+
   return [fileMan copyItemAtPath: @"/etc/hosts" toPath: @"/etc/hosts.bak" error: nil];
 }
 
@@ -77,28 +94,41 @@ NSString* const kHostFileBlockerSelfControlFooter = @"# END SELFCONTROL BLOCK";
 }
 
 - (void)addSelfControlBlockHeader {
+  [strLock lock];
   [newFileContents appendString: @"\n"];
   [newFileContents appendString: kHostFileBlockerSelfControlHeader];
   [newFileContents appendString: @"\n"];
+  [strLock unlock];
 }
 
 - (void)addSelfControlBlockFooter {
+  [strLock lock];
   [newFileContents appendString: kHostFileBlockerSelfControlFooter];
   [newFileContents appendString: @"\n"];
+  [strLock unlock];
 }
 
 - (void)addRuleBlockingDomain:(NSString*)domainName {
+  [strLock lock];
   [newFileContents appendString: [NSString stringWithFormat: @"0.0.0.0\t%@\n", domainName]];
   [newFileContents appendString: [NSString stringWithFormat: @"::\t%@\n", domainName]];
+  [strLock unlock];
 }
 
 - (BOOL)containsSelfControlBlock {
-  return ([newFileContents rangeOfString: kHostFileBlockerSelfControlHeader].location != NSNotFound);
+  [strLock lock];
+  
+  BOOL ret = ([newFileContents rangeOfString: kHostFileBlockerSelfControlHeader].location != NSNotFound);
+  
+  [strLock unlock];
+  return ret;
 }
 
 - (void)removeSelfControlBlock {
   if(![self containsSelfControlBlock])
     return;
+
+  [strLock lock];
   
   NSRange startRange = [newFileContents rangeOfString: kHostFileBlockerSelfControlHeader];
   NSRange endRange = [newFileContents rangeOfString: kHostFileBlockerSelfControlFooter];
@@ -106,6 +136,8 @@ NSString* const kHostFileBlockerSelfControlFooter = @"# END SELFCONTROL BLOCK";
   NSRange deleteRange = NSMakeRange(startRange.location - 1, ((endRange.location + endRange.length) - startRange.location) + 2);
   
   [newFileContents deleteCharactersInRange: deleteRange];
+
+  [strLock unlock];
 }
 
 @end

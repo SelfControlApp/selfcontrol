@@ -114,7 +114,7 @@ int main(int argc, char* argv[]) {
     NSString* plistFormatPath = [[NSBundle mainBundle] pathForResource:@"org.eyebeam.SelfControl"
                                                                 ofType:@"plist"];
     
-    NSString* plistFormatString = [NSString stringWithContentsOfFile: plistFormatPath];
+    NSString* plistFormatString = [NSString stringWithContentsOfFile: plistFormatPath  encoding: NSUTF8StringEncoding error: NULL];
     
     NSString* plistString = [NSString stringWithFormat:
                              plistFormatString,
@@ -156,7 +156,7 @@ int main(int argc, char* argv[]) {
       }
     }
     
-    if(![fileManager copyPath: [NSString stringWithCString: argv[0]]
+    if(![fileManager copyPath: [NSString stringWithCString: argv[0] encoding: NSUTF8StringEncoding]
                              toPath: @"/Library/PrivilegedHelperTools/org.eyebeam.SelfControl"
                               handler: NULL]) {
       NSLog(@"ERROR: Could not copy SelfControl's helper binary to PrivilegedHelperTools directory.");
