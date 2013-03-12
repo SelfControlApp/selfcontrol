@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>HourIntervals</key>
+	<array>
+		<string>00</string>
+		<string>01</string>
+		<string>02</string>
+		<string>03</string>
+		<string>04</string>
+		<string>05</string>
+		<string>06</string>
+		<string>07</string>
+		<string>08</string>
+		<string>10</string>
+		<string>12</string>
+		<string>18</string>
+	</array>
+	<key>MinuteIntervals</key>
+	<array>
+		<string>00</string>
+		<string>01</string>
+		<string>05</string>
+		<string>10</string>
+		<string>15</string>
+		<string>30</string>
+		<string>45</string>
+		<string>50</string>
+	</array>
+</dict>
+</plist>
