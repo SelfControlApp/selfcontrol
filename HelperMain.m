@@ -349,6 +349,7 @@ int main(int argc, char* argv[]) {
     
     NSDate* blockStartedDate = [curDictionary objectForKey: @"BlockStartedDate"];
     NSTimeInterval blockDuration = [[curDictionary objectForKey: @"BlockDuration"] intValue];
+    BOOL blockAsWhitelist = [[curDictionary objectForKey: @"blockAsWhitelist"] boolValue];
     
     if(blockStartedDate == nil || [[NSDate distantFuture] isEqualToDate: blockStartedDate] || blockDuration < 1) {    
       // The lock file seems to be broken.  Read from defaults, then write out a
@@ -397,11 +398,11 @@ int main(int argc, char* argv[]) {
       // re-add them.  Also make sure the user's defaults are set to the correct
       // settings just in case.
       IPFirewall* firewall = [[IPFirewall alloc] init];
-      if(![firewall containsSelfControlBlockSet]) { 
+      HostFileBlocker* hostFileBlocker = [[[HostFileBlocker alloc] init] autorelease];
+      if(![firewall containsSelfControlBlockSet] || (!blockAsWhitelist && ![hostFileBlocker containsSelfControlBlock])) {
         // The firewall is missing at least the block header.  Let's clear everything
         // before we re-add to make sure everything goes smoothly.
         
-        HostFileBlocker* hostFileBlocker = [[[HostFileBlocker alloc] init] autorelease];
         [hostFileBlocker removeSelfControlBlock];
         BOOL success = [hostFileBlocker writeNewFileContents];
         // Revert the host file blocker's file contents to disk so we can check
