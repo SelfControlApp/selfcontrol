@@ -134,7 +134,16 @@
       str = [splitString objectAtIndex: i];
       break;
     }
-  }  
+  }
+    
+  // Remove "telnet://" if a user tried to put that in
+  splitString = [str componentsSeparatedByString: @"telnet://"];
+  for(int i = 0; i < [splitString count]; i++) {
+      if(![[splitString objectAtIndex: i] isEqual: @""]) {
+          str = [splitString objectAtIndex: i];
+          break;
+      }
+  }
   
   // Remove URL login names/passwords (username:password@host) if a user tried to put that in
   splitString = [str componentsSeparatedByString: @"@"];
