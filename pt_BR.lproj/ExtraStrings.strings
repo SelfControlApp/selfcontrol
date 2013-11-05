@@ -16,11 +16,11 @@
 "Could not create PrivilegedHelperTools directory." = "Não foi possível criar o diretório do PrivilegedHelperTools.";
 "Could not change permissions on PrivilegedHelperTools directory." = "Não foi possível modificar as permissões no diretório PrivilegedHelperTools.";
 "Could not delete old helper binary." = "Não foi possível deletar o antigo binário do helper.";
-"Could not copy SelfControl's helper binary to PrivilegedHelperTools directory." = "Não foi possível copiar o binário Could not copy SelfControl's helper binary to PrivilegedHelperTools directory.";
-"Could not change permissions on SelfControl's helper binary." = "Could not change permissions on SelfControl's helper binary.";
+"Could not copy SelfControl's helper binary to PrivilegedHelperTools directory." = "Não foi possível copiar o binário de apoio do SelfControl para o diretório  PrivilegedHelperTools.";
+"Could not change permissions on SelfControl's helper binary." = "Não foi possível modificar as permissões do binário de apoio do SelfControl.";
 "Insufficient block information found." = "Insufficient block information found.";
-"Launch daemon load returned a failure status code." = "Launch daemon load returned a failure status code.";
-"Remove option called." = "Remove option called.";
+"Launch daemon load returned a failure status code." = "A inicialização do daemon retornou um status de erro.";
+"Remove option called." = "Chamado opção de remoção.";
 "Refreshing domain blacklist, but no block is currently ongoing." = "Refreshing domain blacklist, but no block is currently ongoing.";
 "Checkup ran but no block found." = "Checkup ran but no block found.";
 "Could not write lock file." = "Could not write lock file.";
