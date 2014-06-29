@@ -1,7 +1,12 @@
 .DS_Store
+.Trashes
+*.swp
+
+*~.nib
 
 # Xcode
-build/*
+build/
+DerivedData/
 *.pbxuser
 !default.pbxuser
 *.mode1v3
@@ -15,4 +20,8 @@ build/*
 xcuserdata
 profile
 *.moved-aside
-DerivedData
+
+xcuserdata/**/*
+!xcuserdata/**/xcschemes/*
+
+*.moved-aside
