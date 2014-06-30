@@ -1,0 +1,33 @@
+/* Localized versions of Info.plist keys */
+
+"day" = "dia";
+"days" = "dias";
+"hour" = "hora";
+"hours" = "horas";
+"minute" = "minuto";
+"minutes" = "minutos";
+"Block in progress" = "Bloqueio em progesso";
+"The blacklist cannot be edited while a block is in progress." = "A lista negra não pode ser editada quando um bloqueio está sendo processado.";
+"OK" = "OK";
+"Helper tool not launched as root." = "A ferramenta de ajuda não pode ser inicializada como root.";
+"Helper tool launched with insufficient arguments." = "A ferramenta de ajuda foi inicializada com argumentos insuficientes.";
+"Host blocklist not set" = "A lista de bloqueios não foi configurada";
+"Could not write launchd plist file to LaunchDaemons folder." = "Não foi possível escrever o arquivo launchd plist file no diretório do LaunchDaemons.";
+"Could not create PrivilegedHelperTools directory." = "Não foi possível criar o diretório do PrivilegedHelperTools.";
+"Could not change permissions on PrivilegedHelperTools directory." = "Não foi possível modificar as permissões no diretório PrivilegedHelperTools.";
+"Could not delete old helper binary." = "Não foi possível deletar o antigo binário do helper.";
+"Could not copy SelfControl's helper binary to PrivilegedHelperTools directory." = "Não foi possível copiar o binário de apoio do SelfControl para o diretório  PrivilegedHelperTools.";
+"Could not change permissions on SelfControl's helper binary." = "Não foi possível modificar as permissões do binário de apoio do SelfControl.";
+"Insufficient block information found." = "Insufficient block information found.";
+"Launch daemon load returned a failure status code." = "A inicialização do daemon retornou um status de erro.";
+"Remove option called." = "Chamado opção de remoção.";
+"Refreshing domain blacklist, but no block is currently ongoing." = "Recarregando os domínios da lista negra, mas não há nenhum bloqueio acontecendo.";
+"Checkup ran but no block found." = "Checkup ran but no block found.";
+"Could not write lock file." = "Não pudemos escrever o arquivo de lock.";
+"Could not remove SelfControl lock file." = "Não foi possível remover o arquivo de lock do SelfControl";
+"SelfControl lock file already exists. Please try your block again." = "SelfControl lock file already exists. Please try your block again.";
+"Helper tool failed with unknown error code: %d" = "Helper tool failed with unknown error code: %d";
+"Error %d received from the Security Server." = "Error %d received from the Security Server.";
+"Error -104: The helper tool crashed. This may cause unexpected errors." = "Error -104: The helper tool crashed. This may cause unexpected errors.";
+"Are you sure you want a whitelist block?" = "Are you sure you want a whitelist block?";
+"A whitelist block means that everything on the internet BESIDES your specified list will be blocked.  This includes the web, email, SSH, and anything else your computer accesses via the internet.  If a web site requires resources such as images or scripts from a site that is not on your whitelist, the site may not work properly." = "A whitelist block means that everything on the internet BESIDES your specified list will be blocked.  This includes the web, email, SSH, and anything else your computer accesses via the internet.  If a web site requires resources such as images or scripts from a site that is not on your whitelist, the site may not work properly.";
