@@ -34,6 +34,7 @@
 // The main controller for the SelfControl app, which includes several methods
 // to handle command flow and acts as delegate for the initial window.
 @interface AppController : NSObject {
+  IBOutlet id blockTimeUnitsSegmentedControl_;
   IBOutlet id blockDurationSlider_;
   IBOutlet id blockSliderTimeDisplayLabel_;
   IBOutlet id submitButton_;
@@ -57,6 +58,10 @@
 // Returns as a UTF-8 encoded C-string the path to the helper tool inside
 // SelfControl's bundle
 - (char*)selfControlHelperToolPathUTF8String;
+
+// Called when the block time units is updated.  Updates the unit of time that
+// gives the block time units in words (hour, day and week).
+- (IBAction)updateTimeUnitsSelection:(id)sender;
 
 // Called when the block duration slider is moved.  Updates the label that gives
 // the block duration in words (hours and minutes).

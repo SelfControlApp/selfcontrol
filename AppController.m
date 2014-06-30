@@ -91,6 +91,38 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   return path;
 }
 
+- (IBAction)updateTimeUnitsSelection:(id)sender
+{
+    int selectedIndex = [blockTimeUnitsSegmentedControl_ selectedSegment];
+    
+    switch (selectedIndex) {
+        case 0:
+        {
+            [blockDurationSlider_ setMaxValue:1440.0f];
+            [blockDurationSlider_ setNumberOfTickMarks:97];
+        }
+        break;
+        
+        case 1:
+        {
+            [blockDurationSlider_ setMaxValue:(1440.0 * 7)];
+            [blockDurationSlider_ setNumberOfTickMarks:8];
+        }
+        break;
+        
+        case 2:
+        {
+            [blockDurationSlider_ setMaxValue:(1440.0 * 7 * 4)];
+            [blockDurationSlider_ setNumberOfTickMarks:5];
+        }
+        break;
+            
+        default:
+            break;
+    }
+    [self updateTimeSliderDisplay:blockDurationSlider_];
+}
+
 - (IBAction)updateTimeSliderDisplay:(id)sender {
   int numMinutes = floor([blockDurationSlider_ intValue]);
     
@@ -111,7 +143,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     if(formatHours > 0) {
       timeString = [NSString stringWithFormat: @"%@%@%d %@", timeString, (formatDays > 0 ? @", " : @""), formatHours, (formatHours == 1 ? NSLocalizedString(@"hour", @"Single hour time string") : NSLocalizedString(@"hours", @"Plural hours time string"))];
     }
-    if(formatMinutes > 0) {
+    if(formatMinutes > 0 && formatDays <= 0) {
       timeString = [NSString stringWithFormat:@"%@%@%d %@", timeString, (formatHours > 0 || formatDays > 0 ? @", " : @""), formatMinutes, (formatMinutes == 1 ? NSLocalizedString(@"minute", @"Single minute time string") : NSLocalizedString(@"minutes", @"Plural minutes time string"))];
     }
   }
