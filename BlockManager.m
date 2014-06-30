@@ -41,7 +41,7 @@
   if(self = [super init]) {
     opQueue = [[NSOperationQueue alloc] init];
 
-    ipfw = [[IPFirewall alloc] init];
+		pf = [[PacketFilter alloc] initAsWhitelist: whitelist];
     hostsBlocker = [[HostFileBlocker alloc] init];
     hostsBlockingEnabled = NO;
 
@@ -55,7 +55,7 @@
 
 - (void)dealloc {
   [opQueue release], opQueue = nil;
-  [ipfw release], ipfw = nil;
+  [pf release], pf = nil;
   [hostsBlocker release], hostsBlocker = nil;
   
   [super dealloc];
@@ -75,14 +75,11 @@
     hostsBlockingEnabled = NO;
   }
 
-  [ipfw clearSelfControlBlockRuleSet];
-  [ipfw addSelfControlBlockHeader];
-
-  if(allowLocal) {
-    [ipfw addSelfControlBlockRuleAllowingIP: @"10.0.0.0" maskLength: 8];
-    [ipfw addSelfControlBlockRuleAllowingIP: @"172.16.0.0" maskLength: 12];
-    [ipfw addSelfControlBlockRuleAllowingIP: @"192.168.0.0" maskLength: 16];
-  }
+//  if(allowLocal) {
+//    [ipfw addSelfControlBlockRuleAllowingIP: @"10.0.0.0" maskLength: 8];
+//    [ipfw addSelfControlBlockRuleAllowingIP: @"172.16.0.0" maskLength: 12];
+//    [ipfw addSelfControlBlockRuleAllowingIP: @"192.168.0.0" maskLength: 16];
+//  }
 }
 
 - (void)finalizeBlock {
@@ -93,11 +90,7 @@
     [hostsBlocker writeNewFileContents];
   }
 
-  if(isWhitelist) {
-    [ipfw addWhitelistFooter];
-  }
-  [ipfw addSelfControlBlockFooter];
-  [ipfw waitUntilAllTasksExit];
+	[pf startBlock];
 }
 
 - (void)enqueueBlockEntryWithHostName:(NSString*)hostName port:(int)portNum maskLen:(int)maskLen {
@@ -119,17 +112,9 @@
   BOOL isIPv4 = [hostName isValidIPv4Address];
 
   if([hostName isEqualToString: @"*"]) {
-    if(isWhitelist) {
-      [ipfw addSelfControlBlockRuleAllowingPort: portNum];
-    } else {
-      [ipfw addSelfControlBlockRuleBlockingPort: portNum];
-    }
+		[pf addRuleWithIP: nil port: portNum maskLen: 0];
   } else if(isIPv4) { // current we do NOT do ipfw blocking for IPv6
-    if(isWhitelist) {
-      [ipfw addSelfControlBlockRuleAllowingIP: hostName port: portNum maskLength: maskLen];
-    } else {
-      [ipfw addSelfControlBlockRuleBlockingIP: hostName port: portNum maskLength: maskLen];
-    }
+		[pf addRuleWithIP: hostName port: portNum maskLen: maskLen];
   } else if(!isIP && (![self domainIsGoogle: hostName] || isWhitelist)) { // domain name
     // on blacklist blocks where the domain is Google, we don't use ipfw to block
     // because we'd end up blocking more than the user wants (i.e. Search/Reader)
@@ -137,12 +122,8 @@
         
     for(int i = 0; i < [addresses count]; i++) {
       NSString* ip = [addresses objectAtIndex: i];
-      
-      if(isWhitelist) {
-        [ipfw addSelfControlBlockRuleAllowingIP: ip port: portNum maskLength: maskLen];
-      } else {
-        [ipfw addSelfControlBlockRuleBlockingIP: ip port: portNum maskLength: maskLen];
-      }
+
+      [pf addRuleWithIP: ip port: portNum maskLen: maskLen];
     }
   }
 
@@ -187,6 +168,48 @@
   }
 
   [opQueue setMaxConcurrentOperationCount: 10];
+}
+
+- (void)clearBlock {
+	NSLog(@"BlockManager clearing block...");
+	[pf stopBlock: false];
+	BOOL pfSuccess = ![pf containsSelfControlBlock];
+
+	[hostsBlocker removeSelfControlBlock];
+	BOOL hostSuccess = [hostsBlocker writeNewFileContents];
+	// Revert the host file blocker's file contents to disk so we can check
+	// whether or not it still contains the block (aka we messed up).
+	[hostsBlocker revertFileContentsToDisk];
+	hostSuccess = hostSuccess && ![hostsBlocker containsSelfControlBlock];
+
+	if(hostSuccess && pfSuccess)
+		NSLog(@"INFO: Block successfully cleared.");
+	else {
+		if (!pfSuccess) {
+			NSLog(@"WARNING: Error clearing pf block. Tring to clear using force.");
+			[pf stopBlock: true];
+		}
+		if (!hostSuccess) {
+			NSLog(@"WARNING: Error removing hostfile block.  Attempting to restore host file backup.");
+			[hostsBlocker restoreBackupHostsFile];
+		}
+
+		BOOL clearedSuccessfully = TRUE;
+		if ([hostsBlocker containsSelfControlBlock]) {
+			clearedSuccessfully = FALSE;
+			NSLog(@"ERROR: Host file backup could not be restored.  This may result in a permanent block.");
+		}
+		if ([pf containsSelfControlBlock]) {
+			clearedSuccessfully = FALSE;
+			NSLog(@"ERROR: Firewall rules could not be cleared.  This may result in a permanent block.");
+		}
+
+		if (clearedSuccessfully) {
+			NSLog(@"INFO: Firewall rules successfully cleared.");
+		}
+	}
+
+	[hostsBlocker deleteBackupHostsFile];
 }
 
 - (NSArray*)commonSubdomainsForHostName:(NSString*)hostName {

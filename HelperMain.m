@@ -69,30 +69,9 @@ int main(int argc, char* argv[]) {
   // the defaults object cannot be simply kept in a variable and repeatedly
   // referred to, the resets will invalidate it.  For now, we're just re-registering
   // the default settings, since they don't carry over from the main application.
-  // TODO: Factor this code out into a functionf
-  [NSUserDefaults resetStandardUserDefaults];
-  seteuid(controllingUID);
-  defaults = [NSUserDefaults standardUserDefaults];
-  [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
-  NSDictionary* appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
-                               [NSNumber numberWithInt: 0], @"BlockDuration",
-                               [NSDate distantFuture], @"BlockStartedDate",
-                               [NSArray array], @"HostBlacklist", 
-                               [NSNumber numberWithBool: YES], @"EvaluateCommonSubdomains",
-                               [NSNumber numberWithBool: YES], @"HighlightInvalidHosts",
-                               [NSNumber numberWithBool: YES], @"VerifyInternetConnection",
-                               [NSNumber numberWithBool: NO], @"TimerWindowFloats",
-                               [NSNumber numberWithBool: NO], @"BlockSoundShouldPlay",
-                               [NSNumber numberWithInt: 5], @"BlockSound",
-                               [NSNumber numberWithBool: YES], @"ClearCaches",
-                               [NSNumber numberWithBool: NO], @"BlockAsWhitelist",
-                               [NSNumber numberWithBool: YES], @"BadgeApplicationIcon",
-                               [NSNumber numberWithBool: YES], @"AllowLocalNetworks",
-                               [NSNumber numberWithInt: 1440], @"MaxBlockLength",
-                               [NSNumber numberWithInt: 15], @"BlockLengthInterval",
-                               [NSNumber numberWithBool: NO], @"WhitelistAlertSuppress",
-                               nil];
-  [defaults registerDefaults:appDefaults];    
+  // TODO: Factor this code out into a function
+	registerDefaults(controllingUID);
+	NSDictionary* defaults = getDefaultsDict(controllingUID);
   if(!domainList) {
     domainList = [defaults objectForKey:@"HostBlacklist"];
     if([domainList count] <= 0) {
@@ -101,10 +80,7 @@ int main(int argc, char* argv[]) {
       exit(EX_CONFIG);
     }
   }
-  [defaults synchronize];
-  [NSUserDefaults resetStandardUserDefaults];
-  seteuid(0);  
-  
+
   if([modeString isEqual: @"--install"]) {   
     NSFileManager* fileManager = [NSFileManager defaultManager];
         
@@ -199,12 +175,8 @@ int main(int argc, char* argv[]) {
       exit(EX_IOERR);
     }
         
-    [NSUserDefaults resetStandardUserDefaults];
-    seteuid(controllingUID);
-    defaults = [NSUserDefaults standardUserDefaults];
-    [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
-    NSDate* d = [NSDate date];
-    [defaults setObject: d forKey: @"BlockStartedDate"];
+		setDefaultsValue(@"BlockStartedDate", [NSDate date], controllingUID);
+		NSDictionary* defaults = getDefaultsDict(controllingUID);
     // In this case it doesn't make any sense to use an existing lock file (in
     // fact, one shouldn't exist), so we fail if the defaults system has unreasonable
     // settings.
@@ -221,9 +193,6 @@ int main(int argc, char* argv[]) {
       printStatus(-210);
       exit(EX_CONFIG);
     }
-    [defaults synchronize];
-    [NSUserDefaults resetStandardUserDefaults];
-    seteuid(0);
 
     // If perchance another lock is in existence already (which would be weird)
     // we try to remove a block and continue as normal.  This should definitely not be
@@ -274,10 +243,7 @@ int main(int argc, char* argv[]) {
     NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
     NSDictionary* newLockDictionary;
     
-    [NSUserDefaults resetStandardUserDefaults];
-    seteuid(controllingUID);
-    defaults = [NSUserDefaults standardUserDefaults];
-    [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
+		NSDictionary* defaults = getDefaultsDict(controllingUID);
     if(curDictionary == nil) {
       // If there is no block file we just use all information from defaults
       
@@ -309,10 +275,7 @@ int main(int argc, char* argv[]) {
                            [curDictionary objectForKey: @"BlockAsWhitelist"], @"BlockAsWhitelist",
                            nil];      
     }
-    [defaults synchronize];
-    [NSUserDefaults resetStandardUserDefaults];
-    seteuid(0);
-    
+
     if([[newLockDictionary objectForKey: @"HostBlacklist"] count] <= 0 || [[newLockDictionary objectForKey: @"BlockDuration"] intValue] < 1
        || [newLockDictionary objectForKey: @"BlockStartedDate"] == nil
        || [[newLockDictionary objectForKey: @"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]) {
@@ -354,16 +317,10 @@ int main(int argc, char* argv[]) {
     if(blockStartedDate == nil || [[NSDate distantFuture] isEqualToDate: blockStartedDate] || blockDuration < 1) {    
       // The lock file seems to be broken.  Read from defaults, then write out a
       // new lock file while we're at it.
-      [NSUserDefaults resetStandardUserDefaults];
-      seteuid(controllingUID);
-      defaults = [NSUserDefaults standardUserDefaults];
-      [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
+      NSDictionary* defaults = getDefaultsDict(controllingUID);
       blockStartedDate = [defaults objectForKey: @"BlockStartedDate"];
       blockDuration = [[defaults objectForKey: @"BlockDuration"] intValue];
-      [defaults synchronize];
-      [NSUserDefaults resetStandardUserDefaults];
-      seteuid(0);
-      
+
       if(blockStartedDate == nil || blockDuration < 1) {    
           // Defaults is broken too!  Let's get out of here!
         NSLog(@"ERROR: Checkup ran but no block found.  Attempting to remove block.");
@@ -429,16 +386,9 @@ int main(int argc, char* argv[]) {
       // Why would we make sure the defaults are correct even if we can get the
       // info from the lock file?  In case one goes down, we want to make sure
       // we always have a backup.
-      [NSUserDefaults resetStandardUserDefaults];
-      seteuid(controllingUID);
-      defaults = [NSUserDefaults standardUserDefaults];
-      [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
-      [defaults setObject: blockStartedDate forKey: @"BlockStartedDate"];
-      [defaults setObject: [NSNumber numberWithInt: (blockDuration / 60)] forKey: @"BlockDuration"];
-      [defaults setObject: domainList forKey: @"HostBlacklist"];
-      [defaults synchronize];
-      [NSUserDefaults resetStandardUserDefaults];
-      seteuid(0);
+			setDefaultsValue(@"BlockStartedDate", blockStartedDate);
+			setDefaultsValue(@"BlockDuration", [NSNumber numberWithInt: (blockDuration / 60)]);
+			setDefaultsValue(@"HostBlacklist", domainList);
     }
   }
 

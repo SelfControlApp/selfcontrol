@@ -10,30 +10,64 @@
 #include "HelperCommon.h"
 #include "BlockManager.h"
 
+void registerDefaults(signed long long int controllingUID) {
+	[NSUserDefaults resetStandardUserDefaults];
+	seteuid(controllingUID);
+	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+	[defaults addSuiteNamed: @"org.eyebeam.SelfControl"];
+	[defaults synchronize];
+	NSDictionary* appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
+															 [NSNumber numberWithInt: 0], @"BlockDuration",
+															 [NSDate distantFuture], @"BlockStartedDate",
+															 [NSArray array], @"HostBlacklist",
+															 [NSNumber numberWithBool: YES], @"EvaluateCommonSubdomains",
+															 [NSNumber numberWithBool: YES], @"HighlightInvalidHosts",
+															 [NSNumber numberWithBool: YES], @"VerifyInternetConnection",
+															 [NSNumber numberWithBool: NO], @"TimerWindowFloats",
+															 [NSNumber numberWithBool: NO], @"BlockSoundShouldPlay",
+															 [NSNumber numberWithInt: 5], @"BlockSound",
+															 [NSNumber numberWithBool: YES], @"ClearCaches",
+															 [NSNumber numberWithBool: NO], @"BlockAsWhitelist",
+															 [NSNumber numberWithBool: YES], @"BadgeApplicationIcon",
+															 [NSNumber numberWithBool: YES], @"AllowLocalNetworks",
+															 [NSNumber numberWithInt: 1440], @"MaxBlockLength",
+															 [NSNumber numberWithInt: 15], @"BlockLengthInterval",
+															 [NSNumber numberWithBool: NO], @"WhitelistAlertSuppress",
+															 nil];
+	[defaults registerDefaults:appDefaults];
+	[defaults synchronize];
+	seteuid(0);
+}
+NSDictionary* getDefaultsDict(signed long long int controllingUID) {
+	NSLog(@"controllingUID: %lld", controllingUID);
+	[NSUserDefaults resetStandardUserDefaults];
+	seteuid(controllingUID);
+	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+	[defaults addSuiteNamed: @"org.eyebeam.SelfControl"];
+	[defaults synchronize];
+	NSDictionary* dict = [defaults dictionaryRepresentation];
+	seteuid(0);
+	NSLog(@"returning dict: %@", dict);
+	return dict;
+}
+void setDefaultsValue(NSString* prefName, NSString* prefValue, signed long long int controllingUID) {
+	seteuid(controllingUID);
+	CFPreferencesSetAppValue((__bridge CFStringRef)prefName, prefValue, (__bridge CFStringRef)@"org.eyebeam.SelfControl");
+	CFPreferencesAppSynchronize((__bridge CFStringRef)@"org.eyebeam.SelfControl");
+	seteuid(0);
+}
+
 void addRulesToFirewall(signed long long int controllingUID) {
   // get value for EvaluateCommonSubdomains
-  [NSUserDefaults resetStandardUserDefaults];
-  seteuid(controllingUID);
-  defaults = [NSUserDefaults standardUserDefaults];
-  [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
-  BOOL shouldEvaluateCommonSubdomains = [defaults boolForKey: @"EvaluateCommonSubdomains"];
-  BOOL allowLocalNetworks = [defaults boolForKey: @"AllowLocalNetworks"];
-  [defaults synchronize];
-  [NSUserDefaults resetStandardUserDefaults];
-  seteuid(0);
-  
+	NSDictionary* defaults = getDefaultsDict(controllingUID);
+	BOOL shouldEvaluateCommonSubdomains = [[defaults objectForKey: @"EvaluateCommonSubdomains"] boolValue];
+  BOOL allowLocalNetworks = [[defaults objectForKey: @"AllowLocalNetworks"] boolValue];
+
   // get value for BlockAsWhitelist
   BOOL blockAsWhitelist;
   NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
   if(curDictionary == nil || [curDictionary objectForKey: @"BlockAsWhitelist"] == nil) {
-    [NSUserDefaults resetStandardUserDefaults];
-    seteuid(controllingUID);
-    defaults = [NSUserDefaults standardUserDefaults];
-    [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
-    blockAsWhitelist = [defaults boolForKey: @"BlockAsWhitelist"];
-    [defaults synchronize];
-    [NSUserDefaults resetStandardUserDefaults];
-    seteuid(0);
+    blockAsWhitelist = [[defaults objectForKey: @"BlockAsWhitelist"] boolValue];
   } else {
     blockAsWhitelist = [[curDictionary objectForKey: @"BlockAsWhitelist"] boolValue];
   }
@@ -48,48 +82,17 @@ void addRulesToFirewall(signed long long int controllingUID) {
 }
 
 void removeRulesFromFirewall(signed long long int controllingUID) {
-  IPFirewall* firewall = [[IPFirewall alloc] init];
-  if(![firewall containsSelfControlBlockSet])
-    NSLog(@"WARNING: SelfControl rules do not appear to be loaded into ipfw.");
-  HostFileBlocker* hostFileBlocker = [[HostFileBlocker alloc] init];
-  [hostFileBlocker removeSelfControlBlock];
-  BOOL hostSuccess = [hostFileBlocker writeNewFileContents];
-  // Revert the host file blocker's file contents to disk so we can check
-  // whether or not it still contains the block (aka we messed up).
-  [hostFileBlocker revertFileContentsToDisk];
-  // We use ! (NOT) of the method as success because it returns a shell termination status, so 0 is the success code
-  BOOL ipfwSuccess = ![firewall clearSelfControlBlockRuleSet];
-  if(hostSuccess && ipfwSuccess && ![hostFileBlocker containsSelfControlBlock] && ![firewall containsSelfControlBlockSet])
-    NSLog(@"INFO: Hostfile block successfully cleared.");
-  else {
-    NSLog(@"WARNING: Error removing hostfile block.  Attempting to restore host file backup.");
-    
-    [firewall clearSelfControlBlockRuleSet];
-    
-    if([hostFileBlocker restoreBackupHostsFile])
-      NSLog(@"INFO: Host file backup restored.");
-    else if([hostFileBlocker containsSelfControlBlock])
-      NSLog(@"ERROR: Host file backup could not be restored.  This may result in a permanent block.");
-    else if([firewall containsSelfControlBlockSet])
-      NSLog(@"ERROR: Firewall rules could not be cleared.  This may result in a permanent block.");
-    else 
-      NSLog(@"INFO: Firewall rules successfully cleared.");
-  }
-
-  [firewall release];
-
-  [hostFileBlocker deleteBackupHostsFile];
-  [hostFileBlocker release];
+	// options don't really matter because we're only using it to clear
+  BlockManager* blockManager = [[BlockManager alloc] initAsWhitelist: FALSE allowLocal: TRUE includeCommonSubdomains: TRUE];
+	[blockManager clearBlock];
+	[blockManager release];
   
   // We'll play the sound now rather than putting it in the "defaults block"
   // a few lines ago, because it is important that the UI get updated (by
   // the posted notification) before we sleep to play the sound.  Otherwise,
   // the app seems unresponsive and slow.
-  [NSUserDefaults resetStandardUserDefaults];
-  seteuid(controllingUID);
-  defaults = [NSUserDefaults standardUserDefaults];
-  [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
-  if([defaults boolForKey: @"BlockSoundShouldPlay"]) {
+	NSDictionary* defaults = getDefaultsDict(controllingUID);
+  if([[defaults objectForKey: @"BlockSoundShouldPlay"] boolValue]) {
     // Map the tags used in interface builder to the sound
     NSArray* systemSoundNames = [NSArray arrayWithObjects:
                                  @"Basso",
@@ -108,7 +111,7 @@ void removeRulesFromFirewall(signed long long int controllingUID) {
                                  @"Tink",
                                  nil
                                  ];
-    NSSound* alertSound = [NSSound soundNamed: [systemSoundNames objectAtIndex: [defaults integerForKey: @"BlockSound"]]];
+    NSSound* alertSound = [NSSound soundNamed: [systemSoundNames objectAtIndex: [[defaults objectForKey: @"BlockSound"] intValue]]];
     if(!alertSound)
       NSLog(@"WARNING: Alert sound not found.");
     else {
@@ -119,12 +122,6 @@ void removeRulesFromFirewall(signed long long int controllingUID) {
       sleep(1);
     }
   }
-  [defaults synchronize];
-  [NSUserDefaults resetStandardUserDefaults];
-  seteuid(0);    
-  
-  //  } else
-  //    NSLog(@"WARNING: SelfControl rules do not appear to be loaded into ipfw.");
 }
 
 NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, int port) {
@@ -170,11 +167,8 @@ NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, int port) {
 }
 
 void clearCachesIfRequested(signed long long int controllingUID) {
-  [NSUserDefaults resetStandardUserDefaults];
-  seteuid(controllingUID);
-  defaults = [NSUserDefaults standardUserDefaults];
-  [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
-  if([defaults boolForKey: @"ClearCaches"]) {
+	NSDictionary* defaults = getDefaultsDict(controllingUID);
+  if([[defaults objectForKey: @"ClearCaches"] boolValue]) {
     NSFileManager* fileManager = [NSFileManager defaultManager];
     
     unsigned int major, minor, bugfix;
@@ -233,8 +227,6 @@ void clearCachesIfRequested(signed long long int controllingUID) {
       
     }
   }
-  [NSUserDefaults resetStandardUserDefaults];
-  seteuid(0);
 }
 
 void printStatus(int status) {
@@ -284,15 +276,8 @@ void parseHost(NSString* hostName, NSString** baseName, int* maskLength, int* po
 }
 
 void removeBlock(signed long long int controllingUID) {
-  [NSUserDefaults resetStandardUserDefaults];
-  seteuid(controllingUID);
-  defaults = [NSUserDefaults standardUserDefaults];
-  [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
-  [defaults setObject: [NSDate distantFuture] forKey: @"BlockStartedDate"];
-  [defaults synchronize];
-  [NSUserDefaults resetStandardUserDefaults];
-  seteuid(0);
-      
+	setDefaultsValue(@"BlockStartedDate", [NSDate distantFuture], controllingUID);
+
   removeRulesFromFirewall(controllingUID);
   
   if(![[NSFileManager defaultManager] removeItemAtPath: SelfControlLockFilePath error: nil] && [[NSFileManager defaultManager] fileExistsAtPath: SelfControlLockFilePath]) {

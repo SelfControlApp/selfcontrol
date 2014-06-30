@@ -26,16 +26,10 @@ int main(int argc, char* argv[]) {
   if(blockStartedDate == nil || [[NSDate distantFuture] isEqualToDate: blockStartedDate] || blockDuration < 1) {    
     // The lock file seems to be broken.  Try defaults.
     NSLog(@"WARNING: Lock file unreadable or invalid");
-    [NSUserDefaults resetStandardUserDefaults];
-    seteuid(getuid());
-    defaults = [NSUserDefaults standardUserDefaults];
-    [defaults addSuiteNamed:@"org.eyebeam.SelfControl"];
+		NSDictionary* defaults = getDefaultsDict(getuid());
     blockStartedDate = [defaults objectForKey: @"BlockStartedDate"];
     blockDuration = [[defaults objectForKey: @"BlockDuration"] intValue];
-    [defaults synchronize];
-    [NSUserDefaults resetStandardUserDefaults];
-    seteuid(0);
-    
+
     if(blockStartedDate == nil || [[NSDate distantFuture] isEqualToDate: blockStartedDate] || blockDuration < 1) {    
       // Defaults is broken too!  Let's get out of here!
       NSLog(@"WARNING: Checkup ran but no block found.  Attempting to remove block.");

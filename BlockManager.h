@@ -21,13 +21,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #import <Foundation/Foundation.h>
-#import "IPFirewall.h"
+#import "PacketFilter.h"
 #import "HostFileBlocker.h"
 #import "NSString+IPAddress.h"
 
 @interface BlockManager : NSObject {
   NSOperationQueue* opQueue;
-  IPFirewall* ipfw;
+  PacketFilter* pf;
   HostFileBlocker* hostsBlocker;
   BOOL hostsBlockingEnabled;
   BOOL isWhitelist;
@@ -44,6 +44,7 @@
 - (void)addBlockEntryFromString:(NSString*)entry;
 - (void)addBlockEntryWithHostName:(NSString*)hostName port:(int)portNum maskLen:(int)maskLen;
 - (void)addBlockEntries:(NSArray*)blockList;
+- (void)clearBlock;
 
 - (NSArray*)commonSubdomainsForHostName:(NSString*)hostName;
 - (NSArray*)ipAddressesForDomainName:(NSString*)domainName;

@@ -9,50 +9,56 @@
 #ifndef SUUPDATER_H
 #define SUUPDATER_H
 
-#import <Sparkle/SUVersionComparisonProtocol.h>
+#import "SUVersionComparisonProtocol.h"
+#import "SUVersionDisplayProtocol.h"
 
 @class SUUpdateDriver, SUAppcastItem, SUHost, SUAppcast;
-@interface SUUpdater : NSObject {
-	NSTimer *checkTimer;
+
+@protocol SUUpdaterDelegate;
+
+@interface SUUpdater : NSObject
+{
+@private
 	SUUpdateDriver *driver;
-	
+
 	SUHost *host;
-	IBOutlet id delegate;
 }
+@property (assign) IBOutlet id<SUUpdaterDelegate> delegate;
 
 + (SUUpdater *)sharedUpdater;
 + (SUUpdater *)updaterForBundle:(NSBundle *)bundle;
-- (NSBundle *)hostBundle;
+- (instancetype)initForBundle:(NSBundle *)bundle;
 
-- (void)setDelegate:(id)delegate;
-- delegate;
+@property (readonly, strong) NSBundle *hostBundle;
 
-- (void)setAutomaticallyChecksForUpdates:(BOOL)automaticallyChecks;
-- (BOOL)automaticallyChecksForUpdates;
+@property  BOOL automaticallyChecksForUpdates;
 
-- (void)setUpdateCheckInterval:(NSTimeInterval)interval;
-- (NSTimeInterval)updateCheckInterval;
+@property  NSTimeInterval updateCheckInterval;
 
-- (void)setFeedURL:(NSURL *)feedURL;
-- (NSURL *)feedURL;
+/*!
+ * The URL of the appcast used to download update information.
+ *
+ * This property must be called on the main thread.
+ */
+@property (copy) NSURL *feedURL;
 
-- (void)setSendsSystemProfile:(BOOL)sendsSystemProfile;
-- (BOOL)sendsSystemProfile;
+@property (nonatomic, copy) NSString *userAgentString;
 
-- (void)setAutomaticallyDownloadsUpdates:(BOOL)automaticallyDownloadsUpdates;
-- (BOOL)automaticallyDownloadsUpdates;
+@property  BOOL sendsSystemProfile;
+
+@property  BOOL automaticallyDownloadsUpdates;
 
 // This IBAction is meant for a main menu item. Hook up any menu item to this action,
 // and Sparkle will check for updates and report back its findings verbosely.
-- (IBAction)checkForUpdates:sender;
+- (IBAction)checkForUpdates:(id)sender;
 
 // This kicks off an update meant to be programmatically initiated. That is, it will display no UI unless it actually finds an update,
 // in which case it proceeds as usual. If the fully automated updating is turned on, however, this will invoke that behavior, and if an
 // update is found, it will be downloaded and prepped for installation.
 - (void)checkForUpdatesInBackground;
 
-// Date of last update check. Returns null if no check has been performed.
-- (NSDate*)lastUpdateCheckDate;
+// Date of last update check. Returns nil if no check has been performed.
+@property (readonly, copy) NSDate *lastUpdateCheckDate;
 
 // This begins a "probing" check for updates which will not actually offer to update to that version. The delegate methods, though,
 // (up to updater:didFindValidUpdate: and updaterDidNotFindUpdate:), are called, so you can use that information in your UI.
@@ -61,12 +67,41 @@
 // Call this to appropriately schedule or cancel the update checking timer according to the preferences for time interval and automatic checks. This call does not change the date of the next check, but only the internal NSTimer.
 - (void)resetUpdateCycle;
 
-- (BOOL)updateInProgress;
+@property (readonly) BOOL updateInProgress;
+
 @end
 
-@interface NSObject (SUUpdaterDelegateInformalProtocol)
+// -----------------------------------------------------------------------------
+// SUUpdater Notifications for events that might be interesting to more than just the delegate
+// The updater will be the notification object
+// -----------------------------------------------------------------------------
+extern NSString *const SUUpdaterDidFinishLoadingAppCastNotification;
+extern NSString *const SUUpdaterDidFindValidUpdateNotification;
+extern NSString *const SUUpdaterDidNotFindUpdateNotification;
+extern NSString *const SUUpdaterWillRestartNotification;
+#define SUUpdaterWillRelaunchApplicationNotification SUUpdaterWillRestartNotification;
+#define SUUpdaterWillInstallUpdateNotification SUUpdaterWillRestartNotification;
+
+// Key for the SUAppcastItem object in the SUUpdaterDidFindValidUpdateNotification userInfo
+extern NSString *const SUUpdaterAppcastItemNotificationKey;
+// Key for the SUAppcast object in the SUUpdaterDidFinishLoadingAppCastNotification userInfo
+extern NSString *const SUUpdaterAppcastNotificationKey;
+
+// -----------------------------------------------------------------------------
+//	SUUpdater Delegate:
+// -----------------------------------------------------------------------------
+
+@protocol SUUpdaterDelegate <NSObject>
+@optional
+
+// Use this to keep Sparkle from popping up e.g. while your setup assistant is showing:
+- (BOOL)updaterMayCheckForUpdates:(SUUpdater *)bundle;
+
 // This method allows you to add extra parameters to the appcast URL, potentially based on whether or not Sparkle will also be sending along the system profile. This method should return an array of dictionaries with keys: "key", "value", "displayKey", "displayValue", the latter two being specifically for display to the user.
 - (NSArray *)feedParametersForUpdater:(SUUpdater *)updater sendingSystemProfile:(BOOL)sendingProfile;
+
+// Override this to dynamically specify the entire URL.
+- (NSString*)feedURLStringForUpdater:(SUUpdater*)updater;
 
 // Use this to override the default behavior for Sparkle prompting the user about automatic update checks.
 - (BOOL)updaterShouldPromptForPermissionToCheckForUpdates:(SUUpdater *)bundle;
@@ -88,7 +123,13 @@
 - (void)updater:(SUUpdater *)updater willInstallUpdate:(SUAppcastItem *)update;
 
 // Return YES to delay the relaunch until you do some processing; invoke the given NSInvocation to continue.
+//	This is not called if the user didn't relaunch on the previous update, in that case it will immediately
+//	restart.
 - (BOOL)updater:(SUUpdater *)updater shouldPostponeRelaunchForUpdate:(SUAppcastItem *)update untilInvoking:(NSInvocation *)invocation;
+
+// Some apps *can not* be relaunched in certain circumstances. They can use this method
+//	to prevent a relaunch "hard":
+- (BOOL)updaterShouldRelaunchApplication:(SUUpdater *)updater;
 
 // Called immediately before relaunching.
 - (void)updaterWillRelaunchApplication:(SUUpdater *)updater;
@@ -97,19 +138,38 @@
 // If you don't implement this method or return nil, the standard version comparator will be used.
 - (id <SUVersionComparison>)versionComparatorForUpdater:(SUUpdater *)updater;
 
+// This method allows you to provide a custom version comparator.
+// If you don't implement this method or return nil, the standard version displayer will be used.
+- (id <SUVersionDisplay>)versionDisplayerForUpdater:(SUUpdater *)updater;
+
 // Returns the path which is used to relaunch the client after the update is installed. By default, the path of the host bundle.
 - (NSString *)pathToRelaunchForUpdater:(SUUpdater *)updater;
 
+// Called before and after, respectively, an updater shows a modal alert window, to give the host
+//	the opportunity to hide attached windows etc. that may get in the way:
+-(void)	updaterWillShowModalAlert:(SUUpdater *)updater;
+-(void)	updaterDidShowModalAlert:(SUUpdater *)updater;
+
+// Called when an update is scheduled to be silently installed on quit.
+// The invocation can be used to trigger an immediate silent install and relaunch.
+- (void)updater:(SUUpdater *)updater willInstallUpdateOnQuit:(SUAppcastItem *)update immediateInstallationInvocation:(NSInvocation *)invocation;
+- (void)updater:(SUUpdater *)updater didCancelInstallUpdateOnQuit:(SUAppcastItem *)update;
+
 @end
 
+
+// -----------------------------------------------------------------------------
+//	Constants:
+// -----------------------------------------------------------------------------
+
 // Define some minimum intervals to avoid DOS-like checking attacks. These are in seconds.
-#ifdef DEBUG
+#if defined(DEBUG) && DEBUG && 0
 #define SU_MIN_CHECK_INTERVAL 60
 #else
 #define SU_MIN_CHECK_INTERVAL 60*60
 #endif
 
-#ifdef DEBUG
+#if defined(DEBUG) && DEBUG && 0
 #define SU_DEFAULT_CHECK_INTERVAL 60
 #else
 #define SU_DEFAULT_CHECK_INTERVAL 60*60*24

@@ -38,6 +38,10 @@
 NSUserDefaults* defaults;
 NSArray* domainList;
 
+void registerDefaults(signed long long int controllingUID);
+NSDictionary* getDefaultsDict(signed long long int controllingUID);
+void setDefault(NSString* prefName, NSString* prefValue, signed long long int controllingUID);
+
 // Reads the domain block list from the defaults for SelfControl, and adds deny
 // rules for all of the IPs (or the A DNS record IPS for doamin names) to the
 // ipfw firewall.
