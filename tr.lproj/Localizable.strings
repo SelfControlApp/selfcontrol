@@ -1,0 +1,54 @@
+/* Message text when no network connection available */
+"A block cannot be started without a working network connection.  You can override this setting in Preferences." = "Geçerli bir ağ bağlantınız olmadan engelleme başlatamazsınız. Ayarlar sayfasından bunu değiştirebilirsiniz.";
+
+/* Whitelist block explanation */
+"A whitelist block means that everything on the internet BESIDES your specified list will be blocked.  This includes the web, email, SSH, and anything else your computer accesses via the internet.  If a web site requires resources such as images or scripts from a site that is not on your whitelist, the site may not work properly." = "Beyazliste engellemesi yazdığınız liste dışındaki HER ŞEYİN engellenmesi anlamına gelir. Buna bütün web, email, SSH gibi internet erişimi kullanan bütün uygulamalar dahildir. Beyazlistenizdeki bir sitenin başka bir sayfadan yüklediği resimler görüntülenemeyebilir, betikler çalışmayabilir.";
+
+/* Whitelist block confirmation question */
+"Are you sure you want a whitelist block?" = "Beyazliste engellemesi istediğinizden emin misiniz?";
+
+/* Block in progress error note */
+"Block in progress" = "Engelleme aktif";
+
+/* Cancel button */
+"Cancel" = "İptal";
+
+/* Single day in time strings */
+"day" = "gün";
+
+/* Plural days in time strings */
+"days" = "gün";
+
+/* Shows that the slider is at 0 so the block is disabled */
+"Disabled" = "Engellendi";
+
+/* Single hour in time strings */
+"hour" = "saat";
+
+/* Plural hours in time strings */
+"hours" = "saat";
+
+/* Text on Start button when loading */
+"Loading" = "Yükleniyor";
+
+/* Single minute in time strings */
+"minute" = "dakika";
+
+/* Plural minutes in time strings */
+"minutes" = "dakika";
+
+/* Button to open Network Diagnostics */
+"Network Diagnostics..." = "Ağ Sorun Belirleyicisi..";
+
+/* Alert text when no network connection available */
+"No network connection detected" = "Ağ bağlantısı bulunamadı";
+
+/* OK button */
+"OK" = "Tamam";
+
+/* Start button */
+"Start" = "Başlat";
+
+/* Block in progress error text */
+"The blacklist cannot be edited while a block is in progress." = "Engelleme aktif olduğu için karaliste düzenlenemiyor.";
+
