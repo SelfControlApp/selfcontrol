@@ -48,7 +48,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
                                  [NSNumber numberWithBool: YES], @"BadgeApplicationIcon",
                                  [NSNumber numberWithBool: YES], @"AllowLocalNetworks",
                                  [NSNumber numberWithInt: 1440], @"MaxBlockLength",
-                                 [NSNumber numberWithInt: 15], @"BlockLengthInterval",
+                                 [NSNumber numberWithInt: 1], @"BlockLengthInterval",
                                  [NSNumber numberWithBool: NO], @"WhitelistAlertSuppress",
                                  nil];
     
@@ -91,37 +91,20 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   return path;
 }
 
-- (IBAction)updateTimeSliderDisplay:(id)sender {
-  int numMinutes = floor([blockDurationSlider_ intValue]);
-    
-  // Time-display code cleaned up thanks to the contributions of many users
-  
-  NSString* timeString = @"";
 
-  int formatDays, formatHours, formatMinutes;
-  
-  formatDays = numMinutes / 1440;
-  formatHours = (numMinutes % 1440) / 60;
-  formatMinutes = (numMinutes % 60);
-  
-  if(numMinutes > 0) {
-    if(formatDays > 0) {
-      timeString = [NSString stringWithFormat:@"%d %@", formatDays, (formatDays == 1 ? NSLocalizedString(@"day", @"Single day time string") : NSLocalizedString(@"days", @"Plural days time string"))];
-    }
-    if(formatHours > 0) {
-      timeString = [NSString stringWithFormat: @"%@%@%d %@", timeString, (formatDays > 0 ? @", " : @""), formatHours, (formatHours == 1 ? NSLocalizedString(@"hour", @"Single hour time string") : NSLocalizedString(@"hours", @"Plural hours time string"))];
-    }
-    if(formatMinutes > 0) {
-      timeString = [NSString stringWithFormat:@"%@%@%d %@", timeString, (formatHours > 0 || formatDays > 0 ? @", " : @""), formatMinutes, (formatMinutes == 1 ? NSLocalizedString(@"minute", @"Single minute time string") : NSLocalizedString(@"minutes", @"Plural minutes time string"))];
-    }
-  }
-  else {
-    timeString = NSLocalizedString(@"Disabled", "Shows that SelfControl is disabled");
-  }
-    
-  [blockSliderTimeDisplayLabel_ setStringValue:timeString];
-  [submitButton_ setEnabled: (numMinutes > 0) && ([[defaults_ arrayForKey:@"HostBlacklist"] count] > 0)];
+// Triggered by interaction with either PopupButton,
+//  Writes the block length to application defaults
+//  Toggles the state of submitButton_
+- (IBAction) updatedBlockDuration:(id)sender{
+
+    int blockLen = [self blockLength];
+
+    if (blockLen > 0)
+        [defaults_ setInteger:blockLen forKey:@"BlockDuration"];
+
+    [submitButton_ setEnabled: (blockLen > 0) && ([[defaults_ arrayForKey:@"HostBlacklist"] count] > 0)];
 }
+
 
 - (IBAction)addBlock:(id)sender {
   [defaults_ synchronize];
@@ -203,23 +186,26 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     
     [defaults_ synchronize]; 
       
-    [self updateTimeSliderDisplay: blockDurationSlider_];
-        
+//    [self updateTimeSliderDisplay: blockDurationSlider_];
+      
     BOOL addBlockIsOngoing = self.addingBlock;
     
-    if([blockDurationSlider_ intValue] != 0 && [[defaults_ objectForKey: @"HostBlacklist"] count] != 0 && !addBlockIsOngoing)
+    if( [self blockLength] > 0 && [[defaults_ objectForKey: @"HostBlacklist"] count] != 0 && !addBlockIsOngoing)
       [submitButton_ setEnabled: YES];
     else
       [submitButton_ setEnabled: NO];
     
     // If we're adding a block, we want buttons disabled.
     if(!addBlockIsOngoing) {
-      [blockDurationSlider_ setEnabled: YES];
+      
+      [blockHours_ setEnabled: YES];
+      [blockMinutes_ setEnabled: YES];
       [editBlacklistButton_ setEnabled: YES];
       [submitButton_ setTitle: NSLocalizedString(@"Start", @"Start button")];
     }
     else {
-      [blockDurationSlider_ setEnabled: NO];
+      [blockHours_ setEnabled: NO];
+      [blockMinutes_ setEnabled: NO];
       [editBlacklistButton_ setEnabled: NO];
       [submitButton_ setTitle: NSLocalizedString(@"Loading", @"Loading button")];
     }
@@ -264,12 +250,12 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   // it'll fix it and properly refresh the user interface.
   blockIsOn = ![self selfControlLaunchDaemonIsLoaded];
   
-  // Change block duration slider for hidden user defaults settings
-  int numTickMarks = ([defaults_ integerForKey: @"MaxBlockLength"] / [defaults_ integerForKey: @"BlockLengthInterval"]) + 1;
-  [blockDurationSlider_ setMaxValue: [defaults_ integerForKey: @"MaxBlockLength"]];
-  [blockDurationSlider_ setNumberOfTickMarks: numTickMarks];
-  
-  [self refreshUserInterface];                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+// Change block duration slider for hidden user defaults settings
+//  int numTickMarks = ([defaults_ integerForKey: @"MaxBlockLength"] / [defaults_ integerForKey: @"BlockLengthInterval"]) + 1;
+//  [blockDurationSlider_ setMaxValue: [defaults_ integerForKey: @"MaxBlockLength"]];
+//  [blockDurationSlider_ setNumberOfTickMarks: numTickMarks];
+//  
+  [self refreshUserInterface];
 }
 
 - (BOOL)selfControlLaunchDaemonIsLoaded {
@@ -552,6 +538,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (void)installBlock {
+    
   NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
   self.addingBlock = true;
   [self refreshUserInterface];
@@ -832,12 +819,17 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (int)blockLength {
-  return [blockDurationSlider_ intValue];
+  
+  int h = [(NSString*) [blockHours_ titleOfSelectedItem] intValue];
+  int m = [(NSString*) [blockMinutes_ titleOfSelectedItem] intValue];
+    
+  return h * 60 + m;
+    
 }
 
 - (void)setBlockLength:(int)blockLength {
-  [blockDurationSlider_ setIntValue: blockLength];
-  [self updateTimeSliderDisplay: blockDurationSlider_];
+//  [blockDurationSlider_ setIntValue: blockLength];
+//  [self updateTimeSliderDisplay: blockDurationSlider_];
 }
 
 - (IBAction)openFAQ:(id)sender {
@@ -858,4 +850,36 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   }
 }
 
+
+// Automatically called when the window is created from the NIB
+//  Loads the default intervals saved in Intervals.plist
+//  Populates the popup button options using the loaded lists
+-(void) awakeFromNib{
+    
+    NSDictionary *data = [[NSDictionary alloc] initWithContentsOfFile:
+                                [[NSBundle mainBundle] pathForResource:@"Intervals" ofType:@"plist"]];
+    
+    NSArray *hIntervals = [NSArray arrayWithArray:[data objectForKey:@"HourIntervals"]];
+    NSArray *mIntervals = [NSArray arrayWithArray:[data objectForKey:@"MinuteIntervals"]];
+
+    [blockHours_ removeAllItems];
+    [blockHours_ addItemsWithTitles:hIntervals];
+    
+    [blockMinutes_ removeAllItems];
+    [blockMinutes_ addItemsWithTitles:mIntervals];
+    
+    NSString *maxBlockStr = [NSString stringWithFormat:@"%d", [defaults_ integerForKey: @"MaxBlockLength"] / 60 ];
+
+    for (NSString* s in hIntervals )
+        if ( [s isEqualToString: maxBlockStr] )
+            return;
+
+    [blockHours_ addItemWithTitle:maxBlockStr];
+    
+    
+    
+    
+    
+    
+}
 @end

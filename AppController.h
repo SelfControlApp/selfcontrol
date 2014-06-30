@@ -34,8 +34,10 @@
 // The main controller for the SelfControl app, which includes several methods
 // to handle command flow and acts as delegate for the initial window.
 @interface AppController : NSObject {
-  IBOutlet id blockDurationSlider_;
-  IBOutlet id blockSliderTimeDisplayLabel_;
+//  IBOutlet id blockDurationSlider_;
+//  IBOutlet id blockSliderTimeDisplayLabel_;
+  IBOutlet id blockHours_;
+  IBOutlet id blockMinutes_;
   IBOutlet id submitButton_;
   IBOutlet id initialWindow_;
   IBOutlet id domainListMenuItem_;
@@ -58,9 +60,9 @@
 // SelfControl's bundle
 - (char*)selfControlHelperToolPathUTF8String;
 
-// Called when the block duration slider is moved.  Updates the label that gives
-// the block duration in words (hours and minutes).
-- (IBAction)updateTimeSliderDisplay:(id)sender;
+// Called when the block duration popup buttons are used. Disables and enables the
+// start block button
+- (IBAction)updatedBlockDuration:(id)sender;
 
 /* // Gets authorization for and then immediately removes the block by calling
 // SelfControl's helper tool with the appropriate arguments.  This can be used
