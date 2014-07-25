@@ -3,11 +3,11 @@ SelfRestraint
 
 About
 -----
-SelfRestraint is a cross platform version of Steve Lambert's [SelfControl](http://github.com/slambert/selfcontrol), written in Python. It allows you to block distracting sites for a set amount of time, so you can use your computer and access the internet without having to worry about distracting sites. 
+SelfRestraint is a cross platform version of Steve Lambert's [SelfControl](http://github.com/slambert/selfcontrol), written in Python. It allows you to block distracting sites for a set amount of time, so you can use your computer and access the internet without having to worry about distracting sites.
 
 Credits
 -------
-SelfRestraint was developed by [Parker Kuivila](http://parker.kuivi.la)  
+SelfRestraint was developed by [Parker Kuivila](http://parker.kuivi.la)
 The UI and features were inspired by [Steve Lambert](http://visitsteve.com/)
 
 License
@@ -21,24 +21,24 @@ If you simply want to use the program, just run the included .exe (Windows) or .
 
 Building
 --------
-If you want to help with the project and build it yourself here's how:  
-  
-1. Download the dependancies  
+If you want to help with the project and build it yourself here's how:
+
+1. Download the dependancies
 	* Python
-    * [PyQt4](http://www.riverbankcomputing.co.uk/software/pyqt/download)  
+    * [PyQt4](http://www.riverbankcomputing.co.uk/software/pyqt/download)
     * Qt Library (Included in the PyQT4 Installer)
     * [Pywin32](http://sourceforge.net/projects/pywin32/)
     * [PyInstaller](http://www.pyinstaller.org) (depending on your system)
-2. For Windows:  
-	* In the PyInstaller directory run  `python pyinstaller.py -F -w --icon=<Path_To_Selfrestraint.ico> \path\to\SelfRestraint.py` 
-	
-3. If you're on OS X:  
-    
+2. For Windows:
+	* In the PyInstaller directory run  `python pyinstaller.py -F -w --icon=<Path_To_Selfrestraint.ico> \path\to\SelfRestraint.py`
+
+3. If you're on OS X:
+
     * Navigate to SelfRestraint.app/Contents/Resources and open __boot__.py
     * Add `sys.path = [os.path.join(os.environ['RESOURCEPATH'], 'lib', 'python2.7', 'lib-dynload')] + sys.path` above `sys.frozen = 'macosx_app'`
 
 
-Known Bugs 
+Known Bugs
 ----------
 * Mac version requires password, messy workaround
 * Does not work on OS X
@@ -47,8 +47,7 @@ Known Bugs
 
 To Do
 -----
-* Linux Support (Possibly done?)
-* Add compiled .app 
+* Add compiled .app
 * Integrate better to use Admin privileges on OSX
 * Increase robustness, and make workarounds harder
 * Add site/config file to prevent constant reentering of sites
