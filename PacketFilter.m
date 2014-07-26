@@ -48,6 +48,7 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 }
 
 - (void)addRuleWithIP:(NSString*)ip port:(int)port maskLen:(int)maskLen {
+	NSLog(@"add rule with ip %@", ip);
 	NSMutableString* rule = [NSMutableString stringWithString: @"from any to "];
 
 	if (ip) {

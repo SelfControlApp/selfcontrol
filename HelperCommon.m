@@ -39,7 +39,6 @@ void registerDefaults(signed long long int controllingUID) {
 	seteuid(0);
 }
 NSDictionary* getDefaultsDict(signed long long int controllingUID) {
-	NSLog(@"controllingUID: %lld", controllingUID);
 	[NSUserDefaults resetStandardUserDefaults];
 	seteuid(controllingUID);
 	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
@@ -47,7 +46,6 @@ NSDictionary* getDefaultsDict(signed long long int controllingUID) {
 	[defaults synchronize];
 	NSDictionary* dict = [defaults dictionaryRepresentation];
 	seteuid(0);
-	NSLog(@"returning dict: %@", dict);
 	return dict;
 }
 void setDefaultsValue(NSString* prefName, NSString* prefValue, signed long long int controllingUID) {

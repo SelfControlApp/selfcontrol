@@ -32,7 +32,7 @@
 
 - (BOOL)deleteBackupHostsFile;
 
-- (BOOL)revertFileContentsToDisk;
+- (void)revertFileContentsToDisk;
 
 - (BOOL)writeNewFileContents;
 

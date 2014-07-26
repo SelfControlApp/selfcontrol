@@ -91,9 +91,21 @@ int main(int argc, char* argv[]) {
                                                                 ofType:@"plist"];
     
     NSString* plistFormatString = [NSString stringWithContentsOfFile: plistFormatPath  encoding: NSUTF8StringEncoding error: NULL];
-    
+
+		// get the expiration minute, to make sure we run the helper then (if it hasn't run already)
+		NSTimeInterval blockDuration = [[defaults objectForKey: @"BlockDuration"] intValue];
+		NSDate* expirationDate = [[NSDate date] dateByAddingTimeInterval: (blockDuration *60)];
+		NSCalendar* calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+		NSDateComponents* components = [calendar components: NSMinuteCalendarUnit fromDate: expirationDate];
+		int expirationMinute = [components minute];
+		NSLog(@"date: %@", expirationDate);
+		NSLog(@"minute: %d", expirationMinute);
+
     NSString* plistString = [NSString stringWithFormat:
                              plistFormatString,
+														 MAX(expirationMinute - 1, 0),
+														 expirationMinute,
+														 MIN(expirationMinute + 1, 59),
                              controllingUID];
     
     [plistString writeToFile: @"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"
@@ -354,18 +366,18 @@ int main(int argc, char* argv[]) {
       // The block is still on.  Check if anybody removed our rules, and if so
       // re-add them.  Also make sure the user's defaults are set to the correct
       // settings just in case.
-      IPFirewall* firewall = [[IPFirewall alloc] init];
+      PacketFilter* pf = [[[PacketFilter alloc] init] autorelease];
       HostFileBlocker* hostFileBlocker = [[[HostFileBlocker alloc] init] autorelease];
-      if(![firewall containsSelfControlBlockSet] || (!blockAsWhitelist && ![hostFileBlocker containsSelfControlBlock])) {
+      if(![pf containsSelfControlBlock] || (!blockAsWhitelist && ![hostFileBlocker containsSelfControlBlock])) {
         // The firewall is missing at least the block header.  Let's clear everything
         // before we re-add to make sure everything goes smoothly.
         
-        [hostFileBlocker removeSelfControlBlock];
+        [pf stopBlock: false];
+				[hostFileBlocker writeNewFileContents];
         BOOL success = [hostFileBlocker writeNewFileContents];
         // Revert the host file blocker's file contents to disk so we can check
         // whether or not it still contains the block (aka we messed up).
         [hostFileBlocker revertFileContentsToDisk];
-        [firewall clearSelfControlBlockRuleSet];
         if(!success || [hostFileBlocker containsSelfControlBlock]) {
           NSLog(@"WARNING: Error removing host file block.  Attempting to restore backup.");
           

@@ -25,6 +25,16 @@
 NSString* const kHostFileBlockerPath = @"/etc/hosts";
 NSString* const kHostFileBlockerSelfControlHeader = @"# BEGIN SELFCONTROL BLOCK";
 NSString* const kHostFileBlockerSelfControlFooter = @"# END SELFCONTROL BLOCK";
+NSString* const kDefaultHostsFileContents = @"##\n"
+                                             "# Host Database\n"
+                                             "#\n"
+                                             "# localhost is used to configure the loopback interface\n"
+                                             "# when the system is booting.  Do not change this entry.\n"
+                                             "##\n"
+                                             "127.0.0.1	localhost\n"
+                                             "255.255.255.255	broadcasthost\n"
+                                             "::1             localhost\n"
+                                             "fe80::1%lo0	localhost\n\n";
 
 @implementation HostFileBlocker
 
@@ -33,8 +43,10 @@ NSString* const kHostFileBlockerSelfControlFooter = @"# END SELFCONTROL BLOCK";
     fileMan = [[[NSFileManager alloc] init] autorelease];
     strLock = [[NSLock alloc] init];
     newFileContents = [NSMutableString stringWithContentsOfFile: kHostFileBlockerPath usedEncoding: &stringEnc error: NULL];
-    if(!newFileContents)
-      return nil;
+		if(!newFileContents) {
+			// if we lost our hosts file, replace it with the OS X default
+			newFileContents = [NSMutableString stringWithString: kDefaultHostsFileContents];
+		}
   }
     
   return self;
@@ -45,20 +57,21 @@ NSString* const kHostFileBlockerSelfControlFooter = @"# END SELFCONTROL BLOCK";
   [super dealloc];
 }
 
-- (BOOL)revertFileContentsToDisk {
+- (void)revertFileContentsToDisk {
   [strLock lock];
+
   newFileContents = [NSMutableString stringWithContentsOfFile: kHostFileBlockerPath usedEncoding: &stringEnc error: NULL];
 
-  BOOL ret;
-  if(newFileContents) ret = YES;
-  else ret = NO;
+	if(!newFileContents) {
+		newFileContents = [NSMutableString stringWithString: kDefaultHostsFileContents];
+	}
 
   [strLock unlock];
-  return ret;
 }
 
 - (BOOL)writeNewFileContents {
   [strLock lock];
+	NSLog(@"write to %@: %@", kHostFileBlockerPath, newFileContents);
 
   BOOL ret = [newFileContents writeToFile: kHostFileBlockerPath atomically: YES encoding: stringEnc error: NULL];
 
@@ -69,8 +82,13 @@ NSString* const kHostFileBlockerSelfControlFooter = @"# END SELFCONTROL BLOCK";
 - (BOOL)createBackupHostsFile {
   NSLog(@"CREATE BACKUP HOSTS FILE!");
   [self deleteBackupHostsFile];
-  
+
+	if (![fileMan fileExistsAtPath: @"/etc/hosts"]) {
+		[kDefaultHostsFileContents writeToFile: @"/etc/hosts" atomically:true encoding: NSUTF8StringEncoding error: NULL];
+	}
+
   if(![fileMan isReadableFileAtPath: @"/etc/hosts"] || [fileMan fileExistsAtPath: @"/etc/hosts.bak"]) {
+		NSLog(@"cant create backup hosts file =(");
     return NO;
   }
 

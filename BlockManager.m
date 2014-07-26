@@ -69,9 +69,11 @@
   }
 
   if(!isWhitelist && ![hostsBlocker containsSelfControlBlock] && [hostsBlocker createBackupHostsFile]) {
+		NSLog(@"enabled host blocking");
     [hostsBlocker addSelfControlBlockHeader];
     hostsBlockingEnabled = YES;
   } else {
+		NSLog(@"disabled host blocking");
     hostsBlockingEnabled = NO;
   }
 
@@ -119,7 +121,7 @@
     // on blacklist blocks where the domain is Google, we don't use ipfw to block
     // because we'd end up blocking more than the user wants (i.e. Search/Reader)
     NSArray* addresses = [self ipAddressesForDomainName: hostName];
-        
+
     for(int i = 0; i < [addresses count]; i++) {
       NSString* ip = [addresses objectAtIndex: i];
 
@@ -170,8 +172,7 @@
   [opQueue setMaxConcurrentOperationCount: 10];
 }
 
-- (void)clearBlock {
-	NSLog(@"BlockManager clearing block...");
+- (BOOL)clearBlock {
 	[pf stopBlock: false];
 	BOOL pfSuccess = ![pf containsSelfControlBlock];
 
@@ -182,7 +183,9 @@
 	[hostsBlocker revertFileContentsToDisk];
 	hostSuccess = hostSuccess && ![hostsBlocker containsSelfControlBlock];
 
-	if(hostSuccess && pfSuccess)
+	BOOL clearedSuccessfully = hostSuccess && pfSuccess;
+
+	if(clearedSuccessfully)
 		NSLog(@"INFO: Block successfully cleared.");
 	else {
 		if (!pfSuccess) {
@@ -194,22 +197,26 @@
 			[hostsBlocker restoreBackupHostsFile];
 		}
 
-		BOOL clearedSuccessfully = TRUE;
+		clearedSuccessfully = ![self blockIsActive];
+
 		if ([hostsBlocker containsSelfControlBlock]) {
-			clearedSuccessfully = FALSE;
 			NSLog(@"ERROR: Host file backup could not be restored.  This may result in a permanent block.");
 		}
 		if ([pf containsSelfControlBlock]) {
-			clearedSuccessfully = FALSE;
 			NSLog(@"ERROR: Firewall rules could not be cleared.  This may result in a permanent block.");
 		}
-
 		if (clearedSuccessfully) {
 			NSLog(@"INFO: Firewall rules successfully cleared.");
 		}
 	}
 
 	[hostsBlocker deleteBackupHostsFile];
+
+	return clearedSuccessfully;
+}
+
+- (BOOL)blockIsActive {
+	return [hostsBlocker containsSelfControlBlock] || [pf containsSelfControlBlock];
 }
 
 - (NSArray*)commonSubdomainsForHostName:(NSString*)hostName {

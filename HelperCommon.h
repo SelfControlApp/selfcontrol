@@ -23,7 +23,6 @@
 // imports for all helper tools
 #import <Foundation/Foundation.h>
 #import <CoreFoundation/CoreFoundation.h>
-#import "IPFirewall.h"
 #import "LaunchctlHelper.h"
 #import "SelfControlUtilities.h"
 #import <unistd.h>

@@ -273,27 +273,21 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (BOOL)selfControlLaunchDaemonIsLoaded {
-	NSLog(@"Checking SelfControl launch daemon...");
   // First we check the host file, and see if a block is in there
   NSString* hostFileContents = [NSString stringWithContentsOfFile: @"/etc/hosts" encoding: NSUTF8StringEncoding error: NULL];
   if(hostFileContents != nil && [hostFileContents rangeOfString: @"# BEGIN SELFCONTROL BLOCK"].location != NSNotFound) {
-		NSLog(@" --> found stuff in the hosts file");
     return YES;
   }
   
   [defaults_ synchronize];
   NSDate* blockStartedDate = [defaults_ objectForKey: @"BlockStartedDate"];
 	if(blockStartedDate != nil && ![blockStartedDate isEqualToDate: [NSDate distantFuture]]) {
-		NSLog(@" --> found a BlockStartedDate of %@", blockStartedDate);
     return YES;
   }
   
   // If there's no block in the hosts file, no defaults BlockStartedDate, and no lock-file,
   // we'll assume we're clear of blocks.  Checking ipfw would be nice but usually requires 
   // root permissions, so it would be difficult to do here.
-	if ([[NSFileManager defaultManager] fileExistsAtPath: SelfControlLockFilePath]) {
-		NSLog(@" --> found a lock file");
-	}
   return [[NSFileManager defaultManager] fileExistsAtPath: SelfControlLockFilePath];
 }
 

@@ -23,6 +23,7 @@
 // The main class for SelfControl's helper tool to be run by launchd with high
 // privileges in order to handle the root-only configuration.
 
+#import "PacketFilter.h"
 #import "HelperCommon.h"
 
 // The main method which deals which most of the logic flow and execution of 

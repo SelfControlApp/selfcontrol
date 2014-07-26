@@ -20,7 +20,6 @@
 - (void)writeConfigurationWithToken:(NSString*)token;
 - (int)startBlock;
 - (int)stopBlock:(BOOL)force;
-- (void)clearBlock;
 - (void)addSelfControlConfig;
 - (BOOL)containsSelfControlBlock;
 
