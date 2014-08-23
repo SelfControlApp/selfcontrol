@@ -1,0 +1,54 @@
+/* Message text when no network connection available */
+"A block cannot be started without a working network connection.  You can override this setting in Preferences." = "차단 기능은 네트워크가 활성화된 상태에서만 작동합니다. 환경설정에서 해당 설정을 바꿀 수 있습니다.";
+
+/* Whitelist block explanation */
+"A whitelist block means that everything on the internet BESIDES your specified list will be blocked.  This includes the web, email, SSH, and anything else your computer accesses via the internet.  If a web site requires resources such as images or scripts from a site that is not on your whitelist, the site may not work properly." = "화이트리스트를 이용한 차단은 당신이 차단하기 위해 지정한 것 외의 모든 인터넷 연결을 뜻합니다. 웹,이메일, SSH 등과 같은 모든 인터넷을 통한 접근을 포함합니다. 만약 특정 스크립트나 이미지를 필요로 하는 웹사이트에서 화이트리스트에 해당 리소스를 지정하지 않을 경우, 사이트의 작동이 원할하지 않을 수 있습니다.";
+
+/* Whitelist block confirmation question */
+"Are you sure you want a whitelist block?" = "화이트리스트 차단을 진행하시겠습니까?";
+
+/* Block in progress error note */
+"Block in progress" = "차단 진행 중";
+
+/* Cancel button */
+"Cancel" = "취소";
+
+/* Single day in time strings */
+"day" = "일";
+
+/* Plural days in time strings */
+"days" = "일";
+
+/* Shows that the slider is at 0 so the block is disabled */
+"Disabled" = "비활성화";
+
+/* Single hour in time strings */
+"hour" = "시간";
+
+/* Plural hours in time strings */
+"hours" = "시간";
+
+/* Text on Start button when loading */
+"Loading" = "불러오는 중";
+
+/* Single minute in time strings */
+"minute" = "분";
+
+/* Plural minutes in time strings */
+"minutes" = "분";
+
+/* Button to open Network Diagnostics */
+"Network Diagnostics..." = "네트워크 진단...";
+
+/* Alert text when no network connection available */
+"No network connection detected" = "네트워크에 접속되어 있지 않습니다.";
+
+/* OK button */
+"OK" = "확인";
+
+/* Start button */
+"Start" = "시작";
+
+/* Block in progress error text */
+"The blacklist cannot be edited while a block is in progress." = "차단 진행 중에는 블랙리스트를 수정할 수 없습니다.";
+

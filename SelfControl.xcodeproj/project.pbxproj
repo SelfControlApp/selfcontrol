@@ -135,6 +135,11 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* SelfControl_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelfControl_Prefix.pch; sourceTree = "<group>"; };
+		63081ED519A9246B004B3F28 /* ko */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ko; path = ko.lproj/DomainList.xib; sourceTree = "<group>"; };
+		63081ED619A9246B004B3F28 /* ko */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ko; path = ko.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		63081ED719A9246B004B3F28 /* ko */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ko; path = ko.lproj/TimerWindow.xib; sourceTree = "<group>"; };
+		63081ED819A9246B004B3F28 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
+		63081ED919A9246B004B3F28 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		640D40C816D6E962003034B3 /* it */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = it; path = it.lproj/DomainList.xib; sourceTree = "<group>"; };
 		640D40C916D6E962003034B3 /* it */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = it; path = it.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		640D40CA16D6E962003034B3 /* it */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = it; path = it.lproj/TimerWindow.xib; sourceTree = "<group>"; };
@@ -216,11 +221,11 @@
 		CBCA91291961383A00AFD20C /* tr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = tr; path = tr.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		CBCA912A1961383E00AFD20C /* tr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = tr; path = tr.lproj/DomainList.xib; sourceTree = "<group>"; };
 		CBCA912B1961384600AFD20C /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		CBCA915019613CFA00AFD20C /* pt_BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt_BR"; path = "pt_BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
-		CBCA915119613D1900AFD20C /* pt_BR */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "pt_BR"; path = "pt_BR.lproj/MainMenu.xib"; sourceTree = "<group>"; };
-		CBCA915219613D2400AFD20C /* pt_BR */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "pt_BR"; path = "pt_BR.lproj/DomainList.xib"; sourceTree = "<group>"; };
-		CBCA915319613D2800AFD20C /* pt_BR */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "pt_BR"; path = "pt_BR.lproj/TimerWindow.xib"; sourceTree = "<group>"; };
-		CBCA915419613D3100AFD20C /* pt_BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt_BR"; path = "pt_BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		CBCA915019613CFA00AFD20C /* pt_BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt_BR; path = pt_BR.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CBCA915119613D1900AFD20C /* pt_BR */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = pt_BR; path = pt_BR.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		CBCA915219613D2400AFD20C /* pt_BR */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = pt_BR; path = pt_BR.lproj/DomainList.xib; sourceTree = "<group>"; };
+		CBCA915319613D2800AFD20C /* pt_BR */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = pt_BR; path = pt_BR.lproj/TimerWindow.xib; sourceTree = "<group>"; };
+		CBCA915419613D3100AFD20C /* pt_BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt_BR; path = pt_BR.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CBD266AD11ED7D9C00042CD8 /* HelperCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperCommon.h; sourceTree = "<group>"; };
 		CBD266AE11ED7D9C00042CD8 /* HelperCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelperCommon.m; sourceTree = "<group>"; };
 		CBD266E111ED84F700042CD8 /* SelfControlCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelfControlCommon.h; sourceTree = "<group>"; };
@@ -507,7 +512,8 @@
 				"zh-Hans",
 				it,
 				tr,
-				pt_BR
+				pt_BR,
+				ko,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* SelfControl */;
 			projectDirPath = "";
@@ -656,6 +662,7 @@
 				640D40C816D6E962003034B3 /* it */,
 				CBCA912A1961383E00AFD20C /* tr */,
 				CBCA915219613D2400AFD20C /* pt_BR */,
+				63081ED519A9246B004B3F28 /* ko */,
 			);
 			name = DomainList.xib;
 			sourceTree = "<group>";
@@ -672,6 +679,7 @@
 				640D40C916D6E962003034B3 /* it */,
 				CBCA91291961383A00AFD20C /* tr */,
 				CBCA915119613D1900AFD20C /* pt_BR */,
+				63081ED619A9246B004B3F28 /* ko */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
@@ -688,6 +696,7 @@
 				640D40CC16D6E962003034B3 /* it */,
 				CBCA912B1961384600AFD20C /* tr */,
 				CBCA915019613CFA00AFD20C /* pt_BR */,
+				63081ED919A9246B004B3F28 /* ko */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -704,6 +713,7 @@
 				640D40CB16D6E962003034B3 /* it */,
 				CBCA91271961381F00AFD20C /* tr */,
 				CBCA915419613D3100AFD20C /* pt_BR */,
+				63081ED819A9246B004B3F28 /* ko */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -720,6 +730,7 @@
 				640D40CA16D6E962003034B3 /* it */,
 				CBCA91281961383600AFD20C /* tr */,
 				CBCA915319613D2800AFD20C /* pt_BR */,
+				63081ED719A9246B004B3F28 /* ko */,
 			);
 			name = TimerWindow.xib;
 			sourceTree = "<group>";
