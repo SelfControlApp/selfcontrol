@@ -135,52 +135,52 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="편집" id="767">
                         <items>
-                            <menuItem title="Undo" keyEquivalent="z" id="768">
+                            <menuItem title="실행 취소" keyEquivalent="z" id="768">
                                 <connections>
                                     <action selector="undo:" target="-1" id="811"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Redo" keyEquivalent="Z" id="769">
+                            <menuItem title="실행 복귀" keyEquivalent="Z" id="769">
                                 <connections>
                                     <action selector="redo:" target="-1" id="812"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="770"/>
-                            <menuItem title="Cut" keyEquivalent="x" id="771">
+                            <menuItem title="자르기" keyEquivalent="x" id="771">
                                 <connections>
                                     <action selector="cut:" target="-1" id="813"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Copy" keyEquivalent="c" id="772">
+                            <menuItem title="복사" keyEquivalent="c" id="772">
                                 <connections>
                                     <action selector="copy:" target="-1" id="809"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Paste" keyEquivalent="v" id="773">
+                            <menuItem title="붙이기" keyEquivalent="v" id="773">
                                 <connections>
                                     <action selector="paste:" target="-1" id="810"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Delete" id="775">
+                            <menuItem title="삭제" id="775">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="delete:" target="-1" id="814"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Select All" keyEquivalent="a" id="776">
+                            <menuItem title="모두 선택" keyEquivalent="a" id="776">
                                 <connections>
                                     <action selector="selectAll:" target="-1" id="815"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="777"/>
-                            <menuItem title="Speech" id="780">
+                            <menuItem title="음성" id="780">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Speech" id="781">
+                                <menu key="submenu" title="음성" id="781">
                                     <items>
-                                        <menuItem title="Start Speaking" id="782">
+                                        <menuItem title="말하기 시작" id="782">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                         </menuItem>
-                                        <menuItem title="Stop Speaking" id="783">
+                                        <menuItem title="말하기 중단" id="783">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                         </menuItem>
                                     </items>
