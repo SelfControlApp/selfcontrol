@@ -168,6 +168,11 @@
 		CB9366E70F85BEF100EF284E /* NSAddTemplate.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = NSAddTemplate.jpg; sourceTree = "<group>"; };
 		CB9C80DB19CF93EA00CDCAE1 /* SelfControlUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelfControlUtilities.h; sourceTree = "<group>"; };
 		CB9C80DC19CF93EA00CDCAE1 /* SelfControlUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelfControlUtilities.m; sourceTree = "<group>"; };
+		CB9C80EE19CFAAA000CDCAE1 /* ko */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ko; path = ko.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		CB9C80EF19CFAAA700CDCAE1 /* ko */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ko; path = ko.lproj/DomainList.xib; sourceTree = "<group>"; };
+		CB9C80F019CFAAB300CDCAE1 /* ko */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ko; path = ko.lproj/TimerWindow.xib; sourceTree = "<group>"; };
+		CB9C80F119CFAAC600CDCAE1 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CB9C80F219CFAACC00CDCAE1 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CB9E90190F397FF6006DE6E4 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		CB9E901D0F397FFA006DE6E4 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		CBA2AFD20F39EC12005AFEBE /* org.eyebeam.SelfControl */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = org.eyebeam.SelfControl; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -506,6 +511,7 @@
 				it,
 				tr,
 				pt_BR,
+				ko,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* SelfControl */;
 			projectDirPath = "";
@@ -653,6 +659,7 @@
 				640D40C816D6E962003034B3 /* it */,
 				CBCA912A1961383E00AFD20C /* tr */,
 				CBCA915219613D2400AFD20C /* pt_BR */,
+				CB9C80EF19CFAAA700CDCAE1 /* ko */,
 			);
 			name = DomainList.xib;
 			sourceTree = "<group>";
@@ -669,6 +676,7 @@
 				640D40C916D6E962003034B3 /* it */,
 				CBCA91291961383A00AFD20C /* tr */,
 				CBCA915119613D1900AFD20C /* pt_BR */,
+				CB9C80EE19CFAAA000CDCAE1 /* ko */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
@@ -685,6 +693,7 @@
 				640D40CC16D6E962003034B3 /* it */,
 				CBCA912B1961384600AFD20C /* tr */,
 				CBCA915019613CFA00AFD20C /* pt_BR */,
+				CB9C80F219CFAACC00CDCAE1 /* ko */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -701,6 +710,7 @@
 				640D40CB16D6E962003034B3 /* it */,
 				CBCA91271961381F00AFD20C /* tr */,
 				CBCA915419613D3100AFD20C /* pt_BR */,
+				CB9C80F119CFAAC600CDCAE1 /* ko */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -717,6 +727,7 @@
 				640D40CA16D6E962003034B3 /* it */,
 				CBCA91281961383600AFD20C /* tr */,
 				CBCA915319613D2800AFD20C /* pt_BR */,
+				CB9C80F019CFAAB300CDCAE1 /* ko */,
 			);
 			name = TimerWindow.xib;
 			sourceTree = "<group>";
