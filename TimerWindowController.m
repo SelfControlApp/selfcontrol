@@ -72,10 +72,10 @@
   // It is KEY to retain the block ending date , if you forget to retain it
   // you'll end up with a nasty program crash.
   if(blockDuration)
-    blockEndingDate_ = [[beginDate addTimeInterval: blockDuration] retain];
+    blockEndingDate_ = [beginDate addTimeInterval: blockDuration];
   else
     // If the block duration is 0, the ending date is... now!
-    blockEndingDate_ = [[NSDate date] retain];
+    blockEndingDate_ = [NSDate date];
   
   [self updateTimerDisplay: nil];
 
@@ -230,10 +230,7 @@
 }
 
 - (void)dealloc {
-  [addToBlockLock release];
   [timerUpdater_ invalidate];
-  timerUpdater_ = nil;
-  [super dealloc];
 }
 
 @end

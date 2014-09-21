@@ -49,7 +49,7 @@
 
 - (NSArray*)commonSubdomainsForHostName:(NSString*)hostName;
 - (NSArray*)ipAddressesForDomainName:(NSString*)domainName;
-- (NSString*)domainIsGoogle:(NSString*)domainName;
+- (BOOL)domainIsGoogle:(NSString*)domainName;
 - (NSDictionary*)parseHostString:(NSString*)hostString;
 
 @end

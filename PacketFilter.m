@@ -98,22 +98,26 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 
 	NSArray* args = [@"-E -f /etc/pf.conf" componentsSeparatedByString: @" "];
 
-	NSTask* task = [[[NSTask alloc] init] autorelease];
+	NSTask* task = [[NSTask alloc] init];
 	[task setLaunchPath: kPfctlExecutablePath];
 	[task setArguments: args];
 
-	NSPipe* inPipe = [[[NSPipe alloc] init] autorelease];
+	NSPipe* inPipe = [[NSPipe alloc] init];
 	NSFileHandle* readHandle = [inPipe fileHandleForReading];
 	[task setStandardOutput: inPipe];
+    [task setStandardError: inPipe];
 
 	[task launch];
 	NSString* pfctlOutput = [[NSString alloc] initWithData: [readHandle readDataToEndOfFile] encoding: NSUTF8StringEncoding];
 	[readHandle closeFile];
 	[task waitUntilExit];
 
+    NSLog(@"pfctlOutput length: %lu", (unsigned long)[pfctlOutput length]);
+    NSLog(@"pfctlOutput: %@", pfctlOutput);
 	NSArray* lines = [pfctlOutput componentsSeparatedByString: @"\n"];
 	for (NSString* line in lines) {
 		if ([line hasPrefix: @"Token: "]) {
+            NSLog(@"FOUND TOKEN! %@", line);
 			[self writeConfigurationWithToken: line];
 			break;
 		}
@@ -124,7 +128,7 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 
 - (int)stopBlock:(BOOL)force {
 	NSString* currentConfig = [NSString stringWithContentsOfFile: @"/etc/pf.conf" encoding: NSUTF8StringEncoding error: nil];
-	NSString* token;
+    NSString* token = nil;
 
 	NSArray* lines = [currentConfig componentsSeparatedByString: @"\n"];
 	for (NSString* line in lines) {
@@ -148,16 +152,19 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 	[newConf appendString: @"\n"];
 	[newConf writeToFile: @"/etc/pf.conf" atomically: true encoding: NSUTF8StringEncoding error: nil];
 
-	NSArray* args;
-	if (token && !force) {
-		args = [@"-X \(token) -f /etc/pf.conf" componentsSeparatedByString: @" "];
+	NSString* commandString;
+    NSLog(@"Building command string, token is %@", token);
+	if ([token length] && !force) {
+        commandString = [NSString stringWithFormat: @"-X %@ -f /etc/pf.conf", token];
 	} else {
 		NSLog(@"Couldn't find pf token or using force, disabling with -d");
-		args = [@"-d -f /etc/pf.conf" componentsSeparatedByString: @" "];
+		commandString = @"-d -f /etc/pf.conf";
 	}
+    NSArray* args = [commandString componentsSeparatedByString: @" "];
 
 	NSTask* task = [NSTask launchedTaskWithLaunchPath: kPfctlExecutablePath arguments: args];
 	[task waitUntilExit];
+    NSLog(@"SUCCESSFULLY CLEARED SC BLOCK WITH TERMINATION STATUS %d", [task terminationStatus]);
 	return [task terminationStatus];
 }
 

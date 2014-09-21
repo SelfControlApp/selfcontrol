@@ -53,15 +53,6 @@
   return self;
 }
 
-- (void)dealloc {
-  [opQueue release], opQueue = nil;
-  [pf release], pf = nil;
-  [hostsBlocker release], hostsBlocker = nil;
-  
-  [super dealloc];
-}
-
-
 - (void)prepareToAddBlock {
   if([hostsBlocker containsSelfControlBlock]) {
     [hostsBlocker removeSelfControlBlock];
@@ -96,17 +87,18 @@
 }
 
 - (void)enqueueBlockEntryWithHostName:(NSString*)hostName port:(int)portNum maskLen:(int)maskLen {
+  __unsafe_unretained NSString* unsafeHostName = [NSString stringWithString: hostName];
   NSMethodSignature* signature = [self methodSignatureForSelector: @selector(addBlockEntryWithHostName:port:maskLen:)];
   NSInvocation* invocation = [NSInvocation invocationWithMethodSignature: signature];
   [invocation setTarget: self];
   [invocation setSelector: @selector(addBlockEntryWithHostName:port:maskLen:)];
-  [invocation setArgument: &hostName atIndex: 2];
+  [invocation setArgument: &unsafeHostName atIndex: 2];
   [invocation setArgument: &portNum atIndex: 3];
   [invocation setArgument: &maskLen atIndex: 4];
+  [invocation retainArguments];
 
   NSInvocationOperation* op = [[NSInvocationOperation alloc] initWithInvocation: invocation];
   [opQueue addOperation: op];
-  [op release];
 }
 
 - (void)addBlockEntryWithHostName:(NSString*)hostName port:(int)portNum maskLen:(int)maskLen {
@@ -166,7 +158,6 @@
                                                                      selector: @selector(addBlockEntryFromString:)
                                                                        object: [blockList objectAtIndex: i]];
     [opQueue addOperation: op];
-    [op release];
   }
 
   [opQueue setMaxConcurrentOperationCount: 10];
@@ -264,7 +255,7 @@
   return [host addresses];
 }
 
-- (NSString*)domainIsGoogle:(NSString*)domainName {
+- (BOOL)domainIsGoogle:(NSString*)domainName {
   // todo: make this regex not suck
   NSString* googleRegex = @"^([a-z0-9]+\\.)*(google|youtube|picasa|sketchup|blogger|blogspot)\\.([a-z]{1,3})(\\.[a-z]{1,3})?$";
   NSPredicate* googleTester = [NSPredicate

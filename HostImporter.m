@@ -30,7 +30,7 @@
   NSDictionary* defaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName: @"com.apple.Mail"];
   NSArray* incomingAccounts = [defaults objectForKey: @"MailAccounts"];
   for(int i = 0; i < [incomingAccounts count]; i++) {
-    NSMutableString* hostname = [[[[incomingAccounts objectAtIndex: i] objectForKey: @"Hostname"] mutableCopy] autorelease];
+    NSMutableString* hostname = [[[incomingAccounts objectAtIndex: i] objectForKey: @"Hostname"] mutableCopy];
     // The LocalAccountName account has no hostname, so trying to add it would cause an error
     if(hostname != nil) {
       // If it has a defined port number, add it to the host to block for added
@@ -69,7 +69,7 @@
   NSDictionary* defaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName: @"com.apple.Mail"];
   NSArray* outgoingAccounts = [defaults objectForKey: @"DeliveryAccounts"];
   for(int i = 0; i < [outgoingAccounts count]; i++) {
-    NSMutableString* hostname = [[[[outgoingAccounts objectAtIndex: i] objectForKey: @"Hostname"] mutableCopy] autorelease];
+    NSMutableString* hostname = [[[outgoingAccounts objectAtIndex: i] objectForKey: @"Hostname"] mutableCopy];
     if(hostname != nil) {
       if([[outgoingAccounts objectAtIndex: i] objectForKey: @"PortNumber"] != nil) {
         [hostname appendString: @":"];

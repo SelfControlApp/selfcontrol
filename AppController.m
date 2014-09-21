@@ -147,7 +147,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   }
     
   if([defaults_ boolForKey: @"VerifyInternetConnection"] && ![self networkConnectionIsAvailable]) {
-    NSAlert* networkUnavailableAlert = [[[NSAlert alloc] init] autorelease];
+    NSAlert* networkUnavailableAlert = [[NSAlert alloc] init];
     [networkUnavailableAlert setMessageText: NSLocalizedString(@"No network connection detected", "No network connection detected message")];
     [networkUnavailableAlert setInformativeText:NSLocalizedString(@"A block cannot be started without a working network connection.  You can override this setting in Preferences.", @"Message when network connection is unavailable")];
     [networkUnavailableAlert addButtonWithTitle: NSLocalizedString(@"Cancel", "Cancel button")];
@@ -238,7 +238,6 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 - (void)closeTimerWindow {
   [timerWindowController_ close];
-  [timerWindowController_ release];
   timerWindowController_ = nil;
 }
 
@@ -294,7 +293,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 - (IBAction)showDomainList:(id)sender {
   BOOL addBlockIsOngoing = self.addingBlock;
   if([self selfControlLaunchDaemonIsLoaded] || addBlockIsOngoing) {
-    NSAlert* blockInProgressAlert = [[[NSAlert alloc] init] autorelease];
+    NSAlert* blockInProgressAlert = [[NSAlert alloc] init];
     [blockInProgressAlert setMessageText: NSLocalizedString(@"Block in progress", @"Block in progress error title")];
     [blockInProgressAlert setInformativeText:NSLocalizedString(@"The blacklist cannot be edited while a block is in progress.", @"Block in progress explanation")];
     [blockInProgressAlert addButtonWithTitle: NSLocalizedString(@"OK", @"OK button")];
@@ -387,7 +386,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   if([host isEqualToString: @""])
     return;
   
-  NSMutableArray* list = [[[defaults_ arrayForKey: @"HostBlacklist"] mutableCopy] autorelease];
+  NSMutableArray* list = [[defaults_ arrayForKey: @"HostBlacklist"] mutableCopy];
   [list addObject: host];
   [defaults_ setObject: list forKey: @"HostBlacklist"];
   [defaults_ synchronize];
@@ -400,7 +399,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     [self refreshUserInterface];
     
     // Reverse the blacklist change made before we fail
-    NSMutableArray* list = [[[defaults_ arrayForKey: @"HostBlacklist"] mutableCopy] autorelease];
+    NSMutableArray* list = [[defaults_ arrayForKey: @"HostBlacklist"] mutableCopy];
     [list removeLastObject];
     [defaults_ setObject: list forKey: @"HostBlacklist"];
     
@@ -415,7 +414,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   }
   
   if([defaults_ boolForKey: @"VerifyInternetConnection"] && ![self networkConnectionIsAvailable]) {
-    NSAlert* networkUnavailableAlert = [[[NSAlert alloc] init] autorelease];
+    NSAlert* networkUnavailableAlert = [[NSAlert alloc] init];
     [networkUnavailableAlert setMessageText: NSLocalizedString(@"No network connection detected", "No network connection detected message")];
     [networkUnavailableAlert setInformativeText:NSLocalizedString(@"A block cannot be started without a working network connection.  You can override this setting in Preferences.", @"Message when network connection is unavailable")];
     [networkUnavailableAlert addButtonWithTitle: NSLocalizedString(@"Cancel", "Cancel button")];
@@ -448,16 +447,12 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (void)dealloc {
-  [timerWindowController_ release];
-  
   [[NSNotificationCenter defaultCenter] removeObserver: self
                                                   name: @"SCConfigurationChangedNotification"
                                                 object: nil];
   [[NSDistributedNotificationCenter defaultCenter] removeObserver: self
                                                              name: @"SCConfigurationChangedNotification"
-                                                           object: nil];  
-  
-  [super dealloc];
+                                                           object: nil];
 }
 
 // @synthesize initialWindow = initialWindow_;
@@ -470,8 +465,6 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (void)setDomainListWindowController:(id)newController {
-  [newController retain];
-  [domainListWindowController_ release];
   domainListWindowController_ = newController;
 }
 
@@ -546,103 +539,102 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (void)installBlock {
-  NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-  self.addingBlock = true;
-  [self refreshUserInterface];
-  AuthorizationRef authorizationRef;
-  char* helperToolPath = [self selfControlHelperToolPathUTF8String];
-  int helperToolPathSize = strlen(helperToolPath);
-  AuthorizationItem right = {
-    kAuthorizationRightExecute,
-    helperToolPathSize,
-    helperToolPath,
-    0
-  };
-  AuthorizationRights authRights = {
-    1,
-    &right
-  };
-  AuthorizationFlags myFlags = kAuthorizationFlagDefaults |
-  kAuthorizationFlagExtendRights |
-  kAuthorizationFlagInteractionAllowed;
-  OSStatus status;
-  
-  status = AuthorizationCreate (&authRights,
-                                kAuthorizationEmptyEnvironment,
-                                myFlags,
-                                &authorizationRef);
-  
-  if(status) {
-    NSLog(@"ERROR: Failed to authorize block start.");
+  @autoreleasepool {
+    self.addingBlock = true;
+    [self refreshUserInterface];
+    AuthorizationRef authorizationRef;
+    char* helperToolPath = [self selfControlHelperToolPathUTF8String];
+    int helperToolPathSize = strlen(helperToolPath);
+    AuthorizationItem right = {
+      kAuthorizationRightExecute,
+      helperToolPathSize,
+      helperToolPath,
+      0
+    };
+    AuthorizationRights authRights = {
+      1,
+      &right
+    };
+    AuthorizationFlags myFlags = kAuthorizationFlagDefaults |
+    kAuthorizationFlagExtendRights |
+    kAuthorizationFlagInteractionAllowed;
+    OSStatus status;
+    
+    status = AuthorizationCreate (&authRights,
+                                  kAuthorizationEmptyEnvironment,
+                                  myFlags,
+                                  &authorizationRef);
+    
+    if(status) {
+      NSLog(@"ERROR: Failed to authorize block start.");
+      self.addingBlock = false;
+      [self refreshUserInterface];
+      return;
+    }
+    
+    // We need to pass our UID to the helper tool.  It needs to know whose defaults
+    // it should reading in order to properly load the blacklist.
+    char uidString[32];
+    snprintf(uidString, sizeof(uidString), "%d", getuid());
+    
+    FILE* commPipe;
+    
+    char* args[] = { uidString, "--install", NULL };
+    status = AuthorizationExecuteWithPrivileges(authorizationRef,
+                                                helperToolPath,
+                                                kAuthorizationFlagDefaults,
+                                                args,
+                                                &commPipe);
+    
+    if(status) {
+      NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %ld", status);
+      
+      NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
+                                         code: status
+                                     userInfo: [NSDictionary dictionaryWithObject: [NSString stringWithFormat: @"Error %ld received from the Security Server.", status]
+                                                                           forKey: NSLocalizedDescriptionKey]];
+      
+      [NSApp performSelectorOnMainThread: @selector(presentError:)
+                              withObject: err
+                           waitUntilDone: YES];
+      
+      self.addingBlock = false;
+      [self refreshUserInterface];
+      
+      return;
+    }
+    
+    NSFileHandle* helperToolHandle = [[NSFileHandle alloc] initWithFileDescriptor: fileno(commPipe) closeOnDealloc: YES];
+    
+    NSData* inData = [helperToolHandle readDataToEndOfFile];
+    
+    
+    NSString* inDataString = [[NSString alloc] initWithData: inData encoding: NSUTF8StringEncoding];
+    
+    if([inDataString isEqualToString: @""]) {
+      NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
+                                         code: -104
+                                     userInfo: [NSDictionary dictionaryWithObject: @"Error -104: The helper tool crashed.  This may cause unexpected errors."
+                                                                           forKey: NSLocalizedDescriptionKey]];
+      
+      [NSApp performSelectorOnMainThread: @selector(presentError:)
+                              withObject: err
+                           waitUntilDone: YES];
+    }
+    
+    int exitCode = [inDataString intValue];
+    
+    if(exitCode) {
+      NSError* err = [self errorFromHelperToolStatusCode: exitCode];
+      
+      [NSApp performSelectorOnMainThread: @selector(presentError:)
+                              withObject: err
+                           waitUntilDone: YES];
+    }  
+    
     self.addingBlock = false;
     [self refreshUserInterface];
-    return;
   }
-  
-  // We need to pass our UID to the helper tool.  It needs to know whose defaults
-  // it should reading in order to properly load the blacklist.
-  char uidString[32];
-  snprintf(uidString, sizeof(uidString), "%d", getuid());
-  
-  FILE* commPipe;
-  
-  char* args[] = { uidString, "--install", NULL };
-  status = AuthorizationExecuteWithPrivileges(authorizationRef,
-                                              helperToolPath,
-                                              kAuthorizationFlagDefaults,
-                                              args,
-                                              &commPipe);
-  
-  if(status) {
-    NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %ld", status);
-    
-    NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
-                                       code: status
-                                   userInfo: [NSDictionary dictionaryWithObject: [NSString stringWithFormat: @"Error %ld received from the Security Server.", status]
-                                                                         forKey: NSLocalizedDescriptionKey]];
-    
-    [NSApp performSelectorOnMainThread: @selector(presentError:)
-                            withObject: err
-                         waitUntilDone: YES];
-    
-    self.addingBlock = false;
-    [self refreshUserInterface];
-    
-    return;
-  }
-  
-  NSFileHandle* helperToolHandle = [[NSFileHandle alloc] initWithFileDescriptor: fileno(commPipe) closeOnDealloc: YES];
-  
-  NSData* inData = [helperToolHandle readDataToEndOfFile];
-  
-  [helperToolHandle release];
-  
-  NSString* inDataString = [[NSString alloc] initWithData: inData encoding: NSUTF8StringEncoding];
-  
-  if([inDataString isEqualToString: @""]) {
-    NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
-                                       code: -104
-                                   userInfo: [NSDictionary dictionaryWithObject: @"Error -104: The helper tool crashed.  This may cause unexpected errors."
-                                                                         forKey: NSLocalizedDescriptionKey]];
-    
-    [NSApp performSelectorOnMainThread: @selector(presentError:)
-                            withObject: err
-                         waitUntilDone: YES];
-  }
-  
-  int exitCode = [inDataString intValue];
-  
-  if(exitCode) {
-    NSError* err = [self errorFromHelperToolStatusCode: exitCode];
-    
-    [NSApp performSelectorOnMainThread: @selector(presentError:)
-                            withObject: err
-                         waitUntilDone: YES];
-  }  
-  
-  self.addingBlock = false;
-  [self refreshUserInterface];
-  [pool drain];
 }
 
 - (void)refreshBlock:(NSLock*)lockToUse {
@@ -650,99 +642,99 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     return;
   }
   
-  NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-  AuthorizationRef authorizationRef;
-  char* helperToolPath = [self selfControlHelperToolPathUTF8String];
-  int helperToolPathSize = strlen(helperToolPath);
-  AuthorizationItem right = {
-    kAuthorizationRightExecute,
-    helperToolPathSize,
-    helperToolPath,
-    0
-  };
-  AuthorizationRights authRights = {
-    1,
-    &right
-  };
-  AuthorizationFlags myFlags = kAuthorizationFlagDefaults |
-  kAuthorizationFlagExtendRights |
-  kAuthorizationFlagInteractionAllowed;
-  OSStatus status;
-  
-  status = AuthorizationCreate (&authRights,
-                                kAuthorizationEmptyEnvironment,
-                                myFlags,
-                                &authorizationRef);
-  
-  if(status) {
-    NSLog(@"ERROR: Failed to authorize block refresh.");
+  @autoreleasepool {
+    AuthorizationRef authorizationRef;
+    char* helperToolPath = [self selfControlHelperToolPathUTF8String];
+    int helperToolPathSize = strlen(helperToolPath);
+    AuthorizationItem right = {
+      kAuthorizationRightExecute,
+      helperToolPathSize,
+      helperToolPath,
+      0
+    };
+    AuthorizationRights authRights = {
+      1,
+      &right
+    };
+    AuthorizationFlags myFlags = kAuthorizationFlagDefaults |
+    kAuthorizationFlagExtendRights |
+    kAuthorizationFlagInteractionAllowed;
+    OSStatus status;
     
-    // Reverse the blacklist change made before we fail
-    NSMutableArray* list = [[defaults_ arrayForKey: @"HostBlacklist"] mutableCopy];
-    [list removeLastObject];
-    [defaults_ setObject: list forKey: @"HostBlacklist"];    
+    status = AuthorizationCreate (&authRights,
+                                  kAuthorizationEmptyEnvironment,
+                                  myFlags,
+                                  &authorizationRef);
     
-    [lockToUse unlock];
+    if(status) {
+      NSLog(@"ERROR: Failed to authorize block refresh.");
+      
+      // Reverse the blacklist change made before we fail
+      NSMutableArray* list = [[defaults_ arrayForKey: @"HostBlacklist"] mutableCopy];
+      [list removeLastObject];
+      [defaults_ setObject: list forKey: @"HostBlacklist"];    
+      
+      [lockToUse unlock];
+      
+      return;
+    }
     
-    return;
+    // We need to pass our UID to the helper tool.  It needs to know whose defaults
+    // it should read in order to properly load the blacklist.
+    char uidString[32];
+    snprintf(uidString, sizeof(uidString), "%d", getuid());
+    
+    FILE* commPipe;
+    
+    char* args[] = { uidString, "--refresh", NULL };
+    status = AuthorizationExecuteWithPrivileges(authorizationRef,
+                                                helperToolPath,
+                                                kAuthorizationFlagDefaults,
+                                                args,
+                                                &commPipe);
+    
+    if(status) {
+      NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %ld", status);
+      
+      NSError* err = [self errorFromHelperToolStatusCode: status];
+      
+      [NSApp performSelectorOnMainThread: @selector(presentError:)
+                              withObject: err
+                           waitUntilDone: YES];
+      
+      [lockToUse unlock];
+      
+      return;
+    }
+    
+    NSFileHandle* helperToolHandle = [[NSFileHandle alloc] initWithFileDescriptor: fileno(commPipe) closeOnDealloc: YES];
+    
+    NSData* inData = [helperToolHandle readDataToEndOfFile];
+    NSString* inDataString = [[NSString alloc] initWithData: inData encoding: NSUTF8StringEncoding];
+    
+    if([inDataString isEqualToString: @""]) {
+      NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
+                                         code: -105
+                                     userInfo: [NSDictionary dictionaryWithObject: @"Error -105: The helper tool crashed.  This may cause unexpected errors."
+                                                                           forKey: NSLocalizedDescriptionKey]];
+      
+      [NSApp performSelectorOnMainThread: @selector(presentError:)
+                              withObject: err
+                           waitUntilDone: YES];
+    }  
+    
+    int exitCode = [inDataString intValue];
+    
+    if(exitCode) {
+      NSError* err = [self errorFromHelperToolStatusCode: exitCode];
+      
+      [NSApp performSelectorOnMainThread: @selector(presentError:)
+                              withObject: err
+                           waitUntilDone: YES];
+    }  
+      
+    [timerWindowController_ closeAddSheet: self];
   }
-  
-  // We need to pass our UID to the helper tool.  It needs to know whose defaults
-  // it should read in order to properly load the blacklist.
-  char uidString[32];
-  snprintf(uidString, sizeof(uidString), "%d", getuid());
-  
-  FILE* commPipe;
-  
-  char* args[] = { uidString, "--refresh", NULL };
-  status = AuthorizationExecuteWithPrivileges(authorizationRef,
-                                              helperToolPath,
-                                              kAuthorizationFlagDefaults,
-                                              args,
-                                              &commPipe);
-  
-  if(status) {
-    NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %ld", status);
-    
-    NSError* err = [self errorFromHelperToolStatusCode: status];
-    
-    [NSApp performSelectorOnMainThread: @selector(presentError:)
-                            withObject: err
-                         waitUntilDone: YES];
-    
-    [lockToUse unlock];
-    
-    return;
-  }
-  
-  NSFileHandle* helperToolHandle = [[NSFileHandle alloc] initWithFileDescriptor: fileno(commPipe) closeOnDealloc: YES];
-  
-  NSData* inData = [helperToolHandle readDataToEndOfFile];
-  NSString* inDataString = [[NSString alloc] initWithData: inData encoding: NSUTF8StringEncoding];
-  
-  if([inDataString isEqualToString: @""]) {
-    NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
-                                       code: -105
-                                   userInfo: [NSDictionary dictionaryWithObject: @"Error -105: The helper tool crashed.  This may cause unexpected errors."
-                                                                         forKey: NSLocalizedDescriptionKey]];
-    
-    [NSApp performSelectorOnMainThread: @selector(presentError:)
-                            withObject: err
-                         waitUntilDone: YES];
-  }  
-  
-  int exitCode = [inDataString intValue];
-  
-  if(exitCode) {
-    NSError* err = [self errorFromHelperToolStatusCode: exitCode];
-    
-    [NSApp performSelectorOnMainThread: @selector(presentError:)
-                            withObject: err
-                         waitUntilDone: YES];
-  }  
-    
-  [timerWindowController_ closeAddSheet: self];
-  [pool drain];
   [lockToUse unlock];
 }
 

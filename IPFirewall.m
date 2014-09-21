@@ -38,11 +38,6 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
   return self;
 }
 
-- (void)dealloc {
-  [opQueue release], opQueue = nil;
-  [super dealloc];
-}
-
 // the behind-the-scenes workers of this class
 
 - (int)runFirewallCommand:(NSArray*)args {
@@ -56,7 +51,6 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
                                                                    selector: @selector(runFirewallCommand:)
                                                                      object: args];
   [opQueue addOperation: op];
-  [op release];
 }
 
 - (void)waitUntilAllTasksExit {
@@ -353,14 +347,12 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
   NSFileHandle* readHandle = [inPipe fileHandleForReading];
   [task setStandardOutput: inPipe];
   [task launch];
-  NSString* ruleList = [[[NSString alloc] initWithData:[readHandle readDataToEndOfFile]
-                                              encoding: NSUTF8StringEncoding] autorelease];
+  NSString* ruleList = [[NSString alloc] initWithData:[readHandle readDataToEndOfFile]
+                                              encoding: NSUTF8StringEncoding];
   close([readHandle fileDescriptor]);
   [task waitUntilExit];
   int status = [task terminationStatus];
 
-  [inPipe release];
-  [task release];
   
   if(status != 0 || !ruleList)
     return NO;

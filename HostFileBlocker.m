@@ -40,7 +40,7 @@ NSString* const kDefaultHostsFileContents = @"##\n"
 
 - (HostFileBlocker*)init {
   if(self = [super init]) {
-    fileMan = [[[NSFileManager alloc] init] autorelease];
+    fileMan = [[NSFileManager alloc] init];
     strLock = [[NSLock alloc] init];
     newFileContents = [NSMutableString stringWithContentsOfFile: kHostFileBlockerPath usedEncoding: &stringEnc error: NULL];
 		if(!newFileContents) {
@@ -50,11 +50,6 @@ NSString* const kDefaultHostsFileContents = @"##\n"
   }
     
   return self;
-}
-
-- (void)dealloc {
-  [strLock release], strLock = nil;
-  [super dealloc];
 }
 
 - (void)revertFileContentsToDisk {

@@ -50,7 +50,7 @@ NSDictionary* getDefaultsDict(signed long long int controllingUID) {
 }
 void setDefaultsValue(NSString* prefName, NSString* prefValue, signed long long int controllingUID) {
 	seteuid(controllingUID);
-	CFPreferencesSetAppValue((__bridge CFStringRef)prefName, prefValue, (__bridge CFStringRef)@"org.eyebeam.SelfControl");
+	CFPreferencesSetAppValue((__bridge CFStringRef)prefName, (__bridge CFPropertyListRef)(prefValue), (__bridge CFStringRef)@"org.eyebeam.SelfControl");
 	CFPreferencesAppSynchronize((__bridge CFStringRef)@"org.eyebeam.SelfControl");
 	seteuid(0);
 }
@@ -76,14 +76,12 @@ void addRulesToFirewall(signed long long int controllingUID) {
   [blockManager addBlockEntries: domainList];
   [blockManager finalizeBlock];
 
-  [blockManager release];
 }
 
 void removeRulesFromFirewall(signed long long int controllingUID) {
 	// options don't really matter because we're only using it to clear
   BlockManager* blockManager = [[BlockManager alloc] initAsWhitelist: FALSE allowLocal: TRUE includeCommonSubdomains: TRUE];
 	[blockManager clearBlock];
-	[blockManager release];
   
   // We'll play the sound now rather than putting it in the "defaults block"
   // a few lines ago, because it is important that the UI get updated (by
@@ -179,17 +177,17 @@ void clearCachesIfRequested(signed long long int controllingUID) {
     // API to get this path is Leopard-only and we need to have a single version
     // that works on Tiger and Leopard.
     if(major >= 10 && minor >= 5) {
-      NSTask* task = [[[NSTask alloc] init] autorelease];
+      NSTask* task = [[NSTask alloc] init];
       [task setLaunchPath: @"/usr/bin/getconf"];
       [task setArguments: [NSArray arrayWithObject:
                            @"DARWIN_USER_CACHE_DIR"
                            ]];
-      NSPipe* inPipe = [[[NSPipe alloc] init] autorelease];
+      NSPipe* inPipe = [[NSPipe alloc] init];
       NSFileHandle* readHandle = [inPipe fileHandleForReading];
       [task setStandardOutput: inPipe];      
       [task launch];
-      NSString* leopardCacheDirectory = [[[NSString alloc] initWithData:[readHandle readDataToEndOfFile]
-                                                               encoding: NSUTF8StringEncoding] autorelease];
+      NSString* leopardCacheDirectory = [[NSString alloc] initWithData:[readHandle readDataToEndOfFile]
+                                                               encoding: NSUTF8StringEncoding];
       close([readHandle fileDescriptor]);
       [task waitUntilExit];
       

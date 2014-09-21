@@ -25,7 +25,7 @@
 @implementation LaunchctlHelper
 
 + (int)loadLaunchdJobWithPlistAt:(NSString*)pathToLaunchdPlist {
-  NSTask* task = [[[NSTask alloc] init] autorelease];
+  NSTask* task = [[NSTask alloc] init];
   [task setLaunchPath: @"/bin/launchctl"];
   [task setArguments: [NSArray arrayWithObjects:
                        @"load",
@@ -38,7 +38,7 @@
 }
 
 + (int)unloadLaunchdJobWithPlistAt:(NSString*)pathToLaunchdPlist {
-  NSTask* task = [[[NSTask alloc] init] autorelease];
+  NSTask* task = [[NSTask alloc] init];
   [task setLaunchPath: @"/bin/launchctl"];
   [task setArguments: [NSArray arrayWithObjects:
                        @"unload",

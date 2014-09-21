@@ -337,8 +337,5 @@
                                                       object: self];
 }
 
-- (void)dealloc {
-  [super dealloc];
-}
 
 @end

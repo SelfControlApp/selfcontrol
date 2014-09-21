@@ -51,8 +51,6 @@
   [[NSNotificationCenter defaultCenter] removeObserver: self
                                                   name: NSMenuDidEndTrackingNotification
                                                 object: popUpMenu_];
-  [popUpCell_ release];
-  [super dealloc];    
 }
 
 
