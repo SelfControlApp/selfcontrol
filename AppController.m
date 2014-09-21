@@ -33,24 +33,22 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   
     defaults_ = [NSUserDefaults standardUserDefaults];
     
-    NSDictionary* appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
-                                 [NSNumber numberWithInt: 0], @"BlockDuration",
-                                 [NSDate distantFuture], @"BlockStartedDate",
-                                 [NSArray array], @"HostBlacklist", 
-                                 [NSNumber numberWithBool: YES], @"EvaluateCommonSubdomains",
-                                 [NSNumber numberWithBool: YES], @"HighlightInvalidHosts",
-                                 [NSNumber numberWithBool: YES], @"VerifyInternetConnection",
-                                 [NSNumber numberWithBool: NO], @"TimerWindowFloats",
-                                 [NSNumber numberWithBool: NO], @"BlockSoundShouldPlay",
-                                 [NSNumber numberWithInt: 5], @"BlockSound",
-                                 [NSNumber numberWithBool: YES], @"ClearCaches",
-                                 [NSNumber numberWithBool: NO], @"BlockAsWhitelist",
-                                 [NSNumber numberWithBool: YES], @"BadgeApplicationIcon",
-                                 [NSNumber numberWithBool: YES], @"AllowLocalNetworks",
-                                 [NSNumber numberWithInt: 1440], @"MaxBlockLength",
-                                 [NSNumber numberWithInt: 15], @"BlockLengthInterval",
-                                 [NSNumber numberWithBool: NO], @"WhitelistAlertSuppress",
-                                 nil];
+    NSDictionary* appDefaults = @{@"BlockDuration": @0,
+                                 @"BlockStartedDate": [NSDate distantFuture],
+                                 @"HostBlacklist": @[], 
+                                 @"EvaluateCommonSubdomains": @YES,
+                                 @"HighlightInvalidHosts": @YES,
+                                 @"VerifyInternetConnection": @YES,
+                                 @"TimerWindowFloats": @NO,
+                                 @"BlockSoundShouldPlay": @NO,
+                                 @"BlockSound": @5,
+                                 @"ClearCaches": @YES,
+                                 @"BlockAsWhitelist": @NO,
+                                 @"BadgeApplicationIcon": @YES,
+                                 @"AllowLocalNetworks": @YES,
+                                 @"MaxBlockLength": @1440,
+                                 @"BlockLengthInterval": @15,
+                                 @"WhitelistAlertSuppress": @NO};
     
     [defaults_ registerDefaults:appDefaults];
     
@@ -138,8 +136,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     
     NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
                                        code: -102
-                                   userInfo: [NSDictionary dictionaryWithObject: @"Error -102: Attempting to add block, but no blocklist is set."
-                                                                         forKey: NSLocalizedDescriptionKey]];
+                                   userInfo: @{NSLocalizedDescriptionKey: @"Error -102: Attempting to add block, but no blocklist is set."}];
     
     [NSApp presentError: err];    
     
@@ -332,8 +329,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 - (IBAction)soundSelectionChanged:(id)sender {
   // Map the tags used in interface builder to the sound
-  NSArray* systemSoundNames = [NSArray arrayWithObjects:
-                               @"Basso",
+  NSArray* systemSoundNames = @[@"Basso",
                                @"Blow",
                                @"Bottle",
                                @"Frog",
@@ -346,17 +342,14 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
                                @"Purr",
                                @"Sosumi",
                                @"Submarine",
-                               @"Tink",
-                               nil
-                               ];
-  NSSound* alertSound = [NSSound soundNamed: [systemSoundNames objectAtIndex: [defaults_ integerForKey: @"BlockSound"]]];
+                               @"Tink"];
+  NSSound* alertSound = [NSSound soundNamed: systemSoundNames[[defaults_ integerForKey: @"BlockSound"]]];
   if(!alertSound) {
     NSLog(@"WARNING: Alert sound not found.");
     
     NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
                                        code: -901
-                                   userInfo: [NSDictionary dictionaryWithObject: @"Error -901: Selected sound not found."
-                                                                         forKey: NSLocalizedDescriptionKey]];
+                                   userInfo: @{NSLocalizedDescriptionKey: @"Error -901: Selected sound not found."}];
     
     [NSApp presentError: err];
 
@@ -374,14 +367,14 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   // Remove "http://" if a user tried to put that in
   NSArray* splitString = [host componentsSeparatedByString: @"http://"];
   for(int i = 0; i < [splitString count]; i++) {
-    if(![[splitString objectAtIndex: i] isEqual: @""]) {
-      host = [splitString objectAtIndex: i];
+    if(![splitString[i] isEqual: @""]) {
+      host = splitString[i];
       break;
     }
   }
   
   // Delete anything after a "/" in case a user tried to copy-paste a web address.
-  host = [[host componentsSeparatedByString: @"/"] objectAtIndex: 0];
+  host = [host componentsSeparatedByString: @"/"][0];
 
   if([host isEqualToString: @""])
     return;
@@ -405,8 +398,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     
     NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
                                        code: -103
-                                   userInfo: [NSDictionary dictionaryWithObject: @"Error -103: Attempting to add host to block, but no block appears to be in progress."
-                                                                         forKey: NSLocalizedDescriptionKey]];
+                                   userInfo: @{NSLocalizedDescriptionKey: @"Error -103: Attempting to add host to block, but no block appears to be in progress."}];
     
     [NSApp presentError: err];    
     
@@ -534,8 +526,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
       [description appendString: [NSString stringWithFormat: @"Helper tool failed with unknown error code: %d", status]];
   }
     
-  return [NSError errorWithDomain: domain code: status userInfo: [NSDictionary dictionaryWithObject: description
-                                                                                                     forKey: NSLocalizedDescriptionKey]];
+  return [NSError errorWithDomain: domain code: status userInfo: @{NSLocalizedDescriptionKey: description}];
 }
 
 - (void)installBlock {
@@ -591,8 +582,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
       
       NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
                                          code: status
-                                     userInfo: [NSDictionary dictionaryWithObject: [NSString stringWithFormat: @"Error %ld received from the Security Server.", status]
-                                                                           forKey: NSLocalizedDescriptionKey]];
+                                     userInfo: @{NSLocalizedDescriptionKey: [NSString stringWithFormat: @"Error %ld received from the Security Server.", status]}];
       
       [NSApp performSelectorOnMainThread: @selector(presentError:)
                               withObject: err
@@ -614,8 +604,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     if([inDataString isEqualToString: @""]) {
       NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
                                          code: -104
-                                     userInfo: [NSDictionary dictionaryWithObject: @"Error -104: The helper tool crashed.  This may cause unexpected errors."
-                                                                           forKey: NSLocalizedDescriptionKey]];
+                                     userInfo: @{NSLocalizedDescriptionKey: @"Error -104: The helper tool crashed.  This may cause unexpected errors."}];
       
       [NSApp performSelectorOnMainThread: @selector(presentError:)
                               withObject: err
@@ -715,8 +704,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     if([inDataString isEqualToString: @""]) {
       NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
                                          code: -105
-                                     userInfo: [NSDictionary dictionaryWithObject: @"Error -105: The helper tool crashed.  This may cause unexpected errors."
-                                                                           forKey: NSLocalizedDescriptionKey]];
+                                     userInfo: @{NSLocalizedDescriptionKey: @"Error -105: The helper tool crashed.  This may cause unexpected errors."}];
       
       [NSApp performSelectorOnMainThread: @selector(presentError:)
                               withObject: err
@@ -755,20 +743,18 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   if (runResult == NSOKButton) {
     [defaults_ synchronize];
     NSString* err;
-    NSDictionary* saveDict = [NSDictionary dictionaryWithObjectsAndKeys: [defaults_ objectForKey: @"HostBlacklist"], @"HostBlacklist",
-                                                                         [defaults_ objectForKey: @"BlockAsWhitelist"], @"BlockAsWhitelist",
-                                                                         nil];
+    NSDictionary* saveDict = @{@"HostBlacklist": [defaults_ objectForKey: @"HostBlacklist"],
+                                                                         @"BlockAsWhitelist": [defaults_ objectForKey: @"BlockAsWhitelist"]};
     NSData* saveData = [NSPropertyListSerialization dataFromPropertyList: saveDict format: NSPropertyListBinaryFormat_v1_0 errorDescription: &err];
     if(err) {
-      NSError* displayErr = [NSError errorWithDomain: kSelfControlErrorDomain code: -902 userInfo: [NSDictionary dictionaryWithObject: [@"Error 902: " stringByAppendingString: err]
-                                                                                                                               forKey: NSLocalizedDescriptionKey]];
+      NSError* displayErr = [NSError errorWithDomain: kSelfControlErrorDomain code: -902 userInfo: @{NSLocalizedDescriptionKey: [@"Error 902: " stringByAppendingString: err]}];
       [NSApp presentError: displayErr];
       return;
     }
     if (![saveData writeToFile:[sp filename] atomically: YES]) {
       NSBeep();
     } else {
-      NSDictionary* attribs = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool: YES], NSFileExtensionHidden, nil];
+      NSDictionary* attribs = @{NSFileExtensionHidden: @YES};
       [[NSFileManager defaultManager] setAttributes: attribs ofItemAtPath: [sp filename] error: NULL];
     }
   }
@@ -776,7 +762,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 - (IBAction)open:(id)sender {
   int result;
-  NSArray *fileTypes = [NSArray arrayWithObject:@"selfcontrol"];
+  NSArray *fileTypes = @[@"selfcontrol"];
   NSOpenPanel *oPanel = [NSOpenPanel openPanel];
   
   [oPanel setAllowsMultipleSelection: NO];
@@ -784,9 +770,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
   if (result == NSOKButton) {
     NSArray *filesToOpen = [oPanel filenames];
     if([filesToOpen count] > 0) {
-      NSDictionary* openedDict = [NSDictionary dictionaryWithContentsOfFile: [filesToOpen objectAtIndex: 0]];
-      [defaults_ setObject: [openedDict objectForKey: @"HostBlacklist"] forKey: @"HostBlacklist"];
-      [defaults_ setObject: [openedDict objectForKey: @"BlockAsWhitelist"] forKey: @"BlockAsWhitelist"];
+      NSDictionary* openedDict = [NSDictionary dictionaryWithContentsOfFile: filesToOpen[0]];
+      [defaults_ setObject: openedDict[@"HostBlacklist"] forKey: @"HostBlacklist"];
+      [defaults_ setObject: openedDict[@"BlockAsWhitelist"] forKey: @"BlockAsWhitelist"];
       BOOL domainListIsOpen = [[domainListWindowController_ window] isVisible];
       NSRect frame = [[domainListWindowController_ window] frame];
       [self closeDomainList];
@@ -801,8 +787,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 - (BOOL)application:(NSApplication*)theApplication openFile:(NSString*)filename {
   NSDictionary* openedDict = [NSDictionary dictionaryWithContentsOfFile: filename];
   if(openedDict == nil) return NO;
-  NSArray* newBlocklist = [openedDict objectForKey: @"HostBlacklist"];
-  NSNumber* newWhitelistChoice = [openedDict objectForKey: @"BlockAsWhitelist"];
+  NSArray* newBlocklist = openedDict[@"HostBlacklist"];
+  NSNumber* newWhitelistChoice = openedDict[@"BlockAsWhitelist"];
   if(newBlocklist == nil || newWhitelistChoice == nil) return NO;
   [defaults_ setObject: newBlocklist forKey: @"HostBlacklist"];
   [defaults_ setObject: newWhitelistChoice forKey: @"BlockAsWhitelist"];

@@ -77,23 +77,23 @@ NSString* const kThunderbirdSupportFolderPath = @"~/Library/Thunderbird";
         NSString* profileName;
         [subStringScanner scanUpToCharactersFromSet: [NSCharacterSet newlineCharacterSet]
                                          intoString: &profileName];
-        [profile setObject: profileName forKey: @"Name"];
+        profile[@"Name"] = profileName;
       }
       else if([key isEqual: @"IsRelative"]) {
         int isRelative = 1;
         [subStringScanner scanInt: &isRelative];
-        [profile setObject: [NSNumber numberWithInt: isRelative] forKey: @"IsRelative"];
+        profile[@"IsRelative"] = @(isRelative);
       }
       else if([key isEqual: @"Default"]) {
         int isDefault = 0;
         [subStringScanner scanInt: &isDefault];
-        [profile setObject: [NSNumber numberWithInt: isDefault] forKey: @"Default"];
+        profile[@"Default"] = @(isDefault);
       }
       else if([key isEqual: @"Path"]) {
         NSString* path;
         [subStringScanner scanUpToCharactersFromSet: [NSCharacterSet newlineCharacterSet]
                                          intoString: &path];
-        [profile setObject: path forKey: @"Path"];
+        profile[@"Path"] = path;
       }
     }
     
@@ -103,26 +103,26 @@ NSString* const kThunderbirdSupportFolderPath = @"~/Library/Thunderbird";
   NSDictionary* defaultProfile = nil;
   
   for(int i = 0; i < [profiles count]; i++) {
-    NSDictionary* p = [profiles objectAtIndex: i];
-    if([[p objectForKey: @"Default"] isEqual: [NSNumber numberWithInt: 1]]) {
+    NSDictionary* p = profiles[i];
+    if([p[@"Default"] isEqual: @1]) {
       defaultProfile = p;
       break;
     }
-    if([[p objectForKey: @"Name"] isEqual: @"default"])
+    if([p[@"Name"] isEqual: @"default"])
       defaultProfile = p;
   }
   
   if(defaultProfile == nil) {
-    defaultProfile = [profiles objectAtIndex: 0];
+    defaultProfile = profiles[0];
   }
   if(defaultProfile == nil)
     return nil;
   
-  NSString* pathToProfile = [defaultProfile objectForKey: @"Path"];
+  NSString* pathToProfile = defaultProfile[@"Path"];
   if(pathToProfile == nil)
     return nil;
   
-  if([[defaultProfile objectForKey: @"IsRelative"] isEqual: [NSNumber numberWithInt: 0]])
+  if([defaultProfile[@"IsRelative"] isEqual: @0])
     return [pathToProfile stringByStandardizingPath];
   else
     return [[[self pathToSupportFolder] stringByAppendingPathComponent: pathToProfile] stringByStandardizingPath];  
@@ -138,9 +138,9 @@ NSString* const kThunderbirdSupportFolderPath = @"~/Library/Thunderbird";
 + (NSArray*)incomingHostnames {
   NSString* pathToPrefsJsFile = [self pathToPrefsJsFile];
   if(pathToPrefsJsFile == nil)
-    return [NSArray array];
+    return @[];
   if(![[NSFileManager defaultManager] isReadableFileAtPath: pathToPrefsJsFile])
-    return [NSArray array];
+    return @[];
   
   // NSArray* prefsJsLines = [[NSString stringWithContentsOfFile: pathToPrefsJsFile] componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
   // The old implementation of this was better.  The new one misses alternative
@@ -150,24 +150,24 @@ NSString* const kThunderbirdSupportFolderPath = @"~/Library/Thunderbird";
   NSMutableArray* hostnames = [NSMutableArray arrayWithCapacity: 10];
   
   for(int i = 0; i < [prefsJsLines count]; i++) {
-    NSString* line = [prefsJsLines objectAtIndex: i];
+    NSString* line = prefsJsLines[i];
     // All of the asterisks are necessary for globbing so that any amount of
     // whitespace will work.
     if([line isLike: @"*user_pref(*\"mail.server.server*.hostname\"*,*\"*\"*)*;*"]) {
       NSArray* parts = [line  componentsSeparatedByString: @"\""];
       // If the hostname is "Local Folders", it's a special Thunderbird thing,
       // and obviously not something we can block.
-      if([parts count] >= 4 && ![[parts objectAtIndex: 3] isEqual: @"Local Folders"]) {
-        [hostnames addObject: [[parts objectAtIndex: 3] stringByAppendingString: @":110"]];
+      if([parts count] >= 4 && ![parts[3] isEqual: @"Local Folders"]) {
+        [hostnames addObject: [parts[3] stringByAppendingString: @":110"]];
       }
     }
     else if([line isLike: @"*user_pref(*\"mail.server.server*.port\"*,*)*;*"]) {
       NSArray* parts = [line  componentsSeparatedByString: @","];
-      parts = [[parts objectAtIndex: 1]  componentsSeparatedByString: @")"];
-      int portNumber = [[[parts objectAtIndex: 0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] intValue];
-      NSString* alteredHost = [[[hostnames objectAtIndex: ([hostnames count] - 1)]  componentsSeparatedByString: @":"] objectAtIndex: 0];
+      parts = [parts[1]  componentsSeparatedByString: @")"];
+      int portNumber = [[parts[0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] intValue];
+      NSString* alteredHost = [hostnames[([hostnames count] - 1)]  componentsSeparatedByString: @":"][0];
       alteredHost = [alteredHost stringByAppendingFormat: @":%d", portNumber];
-      [hostnames replaceObjectAtIndex: ([hostnames count] - 1) withObject: alteredHost];
+      hostnames[([hostnames count] - 1)] = alteredHost;
     }
   }
   
@@ -177,19 +177,19 @@ NSString* const kThunderbirdSupportFolderPath = @"~/Library/Thunderbird";
 + (NSArray*)outgoingHostnames {
   NSString* pathToPrefsJsFile = [self pathToPrefsJsFile];
   if(pathToPrefsJsFile == nil)
-    return [NSArray array];
+    return @[];
   if(![[NSFileManager defaultManager] isReadableFileAtPath: pathToPrefsJsFile])
-    return [NSArray array];
+    return @[];
   
   NSArray* prefsJsLines = [[NSString stringWithContentsOfFile: pathToPrefsJsFile encoding: NSUTF8StringEncoding error: NULL]  componentsSeparatedByString: @"\n"];
   NSMutableArray* hostnames = [NSMutableArray arrayWithCapacity: 10];
   
   for(int i = 0; i < [prefsJsLines count]; i++) {
-    NSString* line = [prefsJsLines objectAtIndex: i];
+    NSString* line = prefsJsLines[i];
     if([line isLike: @"*user_pref(*\"mail.smtpserver.smtp*.hostname\"*,*\"*\"*)*;*"]) {
       NSArray* parts = [line componentsSeparatedByString: @"\""];
-      if([parts count] >= 4 && ![[parts objectAtIndex: 3] isEqual: @"Local Folders"]) {
-        [hostnames addObject: [[parts objectAtIndex: 3] stringByAppendingString: @":25"]];
+      if([parts count] >= 4 && ![parts[3] isEqual: @"Local Folders"]) {
+        [hostnames addObject: [parts[3] stringByAppendingString: @":25"]];
       }
     }
     // If there's a port number, add it to the last added hostname.  Yes, it could
@@ -197,11 +197,11 @@ NSString* const kThunderbirdSupportFolderPath = @"~/Library/Thunderbird";
     // was manually editing the preferences file and changed it stupidly.
     else if([line isLike: @"*user_pref(*\"mail.smtpserver.smtp*.port\"*,*)*;*"]) {
       NSArray* parts = [line  componentsSeparatedByString: @","];
-      parts = [[parts objectAtIndex: 1] componentsSeparatedByString: @")"];
-      int portNumber = [[[parts objectAtIndex: 0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] intValue];
-      NSString* alteredHost = [[[hostnames objectAtIndex: ([hostnames count] - 1)] componentsSeparatedByString: @":"] objectAtIndex: 0];
+      parts = [parts[1] componentsSeparatedByString: @")"];
+      int portNumber = [[parts[0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] intValue];
+      NSString* alteredHost = [hostnames[([hostnames count] - 1)] componentsSeparatedByString: @":"][0];
       alteredHost = [alteredHost stringByAppendingFormat: @":%d", portNumber];
-      [hostnames replaceObjectAtIndex: ([hostnames count] - 1) withObject: alteredHost];
+      hostnames[([hostnames count] - 1)] = alteredHost;
     }
   }
   

@@ -27,11 +27,9 @@
 + (int)loadLaunchdJobWithPlistAt:(NSString*)pathToLaunchdPlist {
   NSTask* task = [[NSTask alloc] init];
   [task setLaunchPath: @"/bin/launchctl"];
-  [task setArguments: [NSArray arrayWithObjects:
-                       @"load",
+  [task setArguments: @[@"load",
                        @"-w",
-                       pathToLaunchdPlist,
-                       nil]];
+                       pathToLaunchdPlist]];
   [task launch];
   [task waitUntilExit];
   return [task terminationStatus];
@@ -40,11 +38,9 @@
 + (int)unloadLaunchdJobWithPlistAt:(NSString*)pathToLaunchdPlist {
   NSTask* task = [[NSTask alloc] init];
   [task setLaunchPath: @"/bin/launchctl"];
-  [task setArguments: [NSArray arrayWithObjects:
-                       @"unload",
+  [task setArguments: @[@"unload",
                        @"-w",
-                       pathToLaunchdPlist,
-                       nil]];
+                       pathToLaunchdPlist]];
   [task launch];
   [task waitUntilExit];
   return [task terminationStatus];

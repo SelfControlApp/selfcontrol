@@ -115,7 +115,7 @@
     NSArray* addresses = [self ipAddressesForDomainName: hostName];
 
     for(int i = 0; i < [addresses count]; i++) {
-      NSString* ip = [addresses objectAtIndex: i];
+      NSString* ip = addresses[i];
 
       [pf addRuleWithIP: ip port: portNum maskLen: maskLen];
     }
@@ -129,9 +129,9 @@
 - (void)addBlockEntryFromString:(NSString*)entry {
   NSDictionary* hostInfo = [self parseHostString: entry];
 
-  NSString* hostName = [hostInfo objectForKey: @"hostName"];
-  NSNumber* portNumObject = [hostInfo objectForKey: @"port"];
-  NSNumber* maskLenObject = [hostInfo objectForKey: @"maskLen"];
+  NSString* hostName = hostInfo[@"hostName"];
+  NSNumber* portNumObject = hostInfo[@"port"];
+  NSNumber* maskLenObject = hostInfo[@"maskLen"];
   int portNum = portNumObject ? [portNumObject intValue] : 0;
   int maskLen = maskLenObject ? [maskLenObject intValue] : 0;
 
@@ -142,9 +142,9 @@
 
     for(int i = 0; i < [commonSubdomains count]; i++) {
       // we do not pull port, we leave the port number the same as we got it
-      hostInfo = [self parseHostString: [commonSubdomains objectAtIndex: i]];
-      hostName = [hostInfo objectForKey: @"hostName"];
-      maskLenObject = [hostInfo objectForKey: @"maskLen"];
+      hostInfo = [self parseHostString: commonSubdomains[i]];
+      hostName = hostInfo[@"hostName"];
+      maskLenObject = hostInfo[@"maskLen"];
       maskLen = maskLenObject ? [maskLenObject intValue] : 0;
 
       [self enqueueBlockEntryWithHostName: hostName port: portNum maskLen: maskLen];
@@ -156,7 +156,7 @@
   for(int i = 0; i < [blockList count]; i++) {
     NSInvocationOperation* op = [[NSInvocationOperation alloc] initWithTarget: self
                                                                      selector: @selector(addBlockEntryFromString:)
-                                                                       object: [blockList objectAtIndex: i]];
+                                                                       object: blockList[i]];
     [opQueue addOperation: op];
   }
 
@@ -220,8 +220,7 @@
     // pulled list of facebook IP ranges from https://developers.facebook.com/docs/ApplicationSecurity/#facebook_scraper
     // TODO: pull these automatically by running:
     // whois -h whois.radb.net -- '-i origin AS32934' | grep ^route
-    NSArray* facebookIPs = [NSArray arrayWithObjects:
-                            @"31.13.24.0/21",
+    NSArray* facebookIPs = @[@"31.13.24.0/21",
                             @"31.13.64.0/18",
                             @"66.220.144.0/20",
                             @"69.63.176.0/20",
@@ -229,8 +228,7 @@
                             @"74.119.76.0/22",
                             @"103.4.96.0/22",
                             @"173.252.64.0/18",
-                            @"204.15.20.0/22",
-                            nil];
+                            @"204.15.20.0/22"];
 
     [newHosts addObjectsFromArray: facebookIPs];
   }
@@ -249,7 +247,7 @@
   NSHost* host = [NSHost hostWithName: domainName];
 
   if(!host) {
-    return [NSArray array];
+    return @[];
   }
 
   return [host addresses];
@@ -270,33 +268,33 @@
   NSString* hostName;
 
   NSArray* splitString = [hostString componentsSeparatedByString: @"/"];
-  hostName = [splitString objectAtIndex: 0];
+  hostName = splitString[0];
 
-  NSString* stringToSearchForPort = [splitString objectAtIndex: 0];
+  NSString* stringToSearchForPort = splitString[0];
 
   if([splitString count] >= 2) {
-    int maskLen = [[splitString objectAtIndex: 1] intValue];
+    int maskLen = [splitString[1] intValue];
 
     if(maskLen != 0) { // 0 means we could not parse to int value
-      [dict setValue: [NSNumber numberWithInt: maskLen] forKey: @"maskLen"];
+      [dict setValue: @(maskLen) forKey: @"maskLen"];
     }
 
     // we expect the port number to come after the IP/masklen
-    stringToSearchForPort = [splitString objectAtIndex: 1];
+    stringToSearchForPort = splitString[1];
   }
 
   splitString = [stringToSearchForPort componentsSeparatedByString: @":"];
 
   // only if hostName wasn't already split off by the maskLen
   if([stringToSearchForPort isEqualToString: hostName]) {
-    hostName = [splitString objectAtIndex: 0];
+    hostName = splitString[0];
   }
 
   if([splitString count] >= 2) {
-    int portNum = [[splitString objectAtIndex: 1] intValue];
+    int portNum = [splitString[1] intValue];
 
     if(portNum != 0) { // 0 means we could not parse to int value
-      [dict setValue: [NSNumber numberWithInt: portNum] forKey: @"port"];
+      [dict setValue: @(portNum) forKey: @"port"];
     }
   }
 

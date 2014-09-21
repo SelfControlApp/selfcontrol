@@ -60,8 +60,8 @@
   
   NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
       
-  NSDate* beginDate = [lockDict objectForKey:@"BlockStartedDate"];
-  NSTimeInterval blockDuration = [[lockDict objectForKey:@"BlockDuration"] intValue] * 60;
+  NSDate* beginDate = lockDict[@"BlockStartedDate"];
+  NSTimeInterval blockDuration = [lockDict[@"BlockDuration"] intValue] * 60;
   
   if(beginDate == nil || [beginDate isEqualToDate: [NSDate distantFuture]]
      || blockDuration < 1) {
@@ -226,7 +226,7 @@
 }
 
 - (void)runCheckup {
-  [NSTask launchedTaskWithLaunchPath: @"/Library/PrivilegedHelperTools/scheckup" arguments: [NSArray array]];
+  [NSTask launchedTaskWithLaunchPath: @"/Library/PrivilegedHelperTools/scheckup" arguments: @[]];
 }
 
 - (void)dealloc {

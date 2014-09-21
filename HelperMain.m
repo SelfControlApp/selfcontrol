@@ -39,20 +39,18 @@ int main(int argc, char* argv[]) {
       exit(EX_USAGE);
     }
       
-    NSString* modeString = [NSString stringWithUTF8String: argv[2]];
+    NSString* modeString = @(argv[2]);
     // We'll need the controlling UID to know what defaults database to search
     // It's a signed long long int to avoid integer overflow with extra-long UIDs
-    signed long long int controllingUID = [[NSString stringWithUTF8String: argv[1]] longLongValue];
+    signed long long int controllingUID = [@(argv[1]) longLongValue];
     
     // For proper security, we need to make sure that SelfControl files are owned
     // by root and only writable by root.  We'll define this here so we can use it
     // throughout the main function.
-    NSDictionary* fileAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                    [NSNumber numberWithUnsignedLong: 0], NSFileOwnerAccountID,
-                                    [NSNumber numberWithUnsignedLong: 0], NSFileGroupOwnerAccountID,
+    NSDictionary* fileAttributes = @{NSFileOwnerAccountID: @0UL,
+                                    NSFileGroupOwnerAccountID: @0UL,
                                     // 493 (decimal) = 755 (octal) = rwxr-xr-x
-                                    [NSNumber numberWithUnsignedLong: 493], NSFilePosixPermissions,
-                                    nil];
+                                    NSFilePosixPermissions: @493UL};
     
     // This is where we get going with the lockfile system, saving a "lock" in /etc/SelfControl.lock
     // to make a more reliable block detection system.  For most of the program,
@@ -60,8 +58,8 @@ int main(int argc, char* argv[]) {
     // contents, and revert to the user's defaults if the lock file has unreasonable
     // contents.
     NSDictionary* curLockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
-    if(!([[curLockDict objectForKey: @"HostBlacklist"] count] <= 0))
-      domainList = [curLockDict objectForKey: @"HostBlacklist"];
+    if(!([curLockDict[@"HostBlacklist"] count] <= 0))
+      domainList = curLockDict[@"HostBlacklist"];
               
     // You'll see this pattern several times in this file.  The two resets and
     // set of euid to the controlling UID are necessary in order to successfully
@@ -73,7 +71,7 @@ int main(int argc, char* argv[]) {
 	registerDefaults(controllingUID);
 	NSDictionary* defaults = getDefaultsDict(controllingUID);
     if(!domainList) {
-      domainList = [defaults objectForKey:@"HostBlacklist"];
+      domainList = defaults[@"HostBlacklist"];
       if([domainList count] <= 0) {
         NSLog(@"ERROR: Not enough block information.");
         printStatus(-203);
@@ -93,7 +91,7 @@ int main(int argc, char* argv[]) {
       NSString* plistFormatString = [NSString stringWithContentsOfFile: plistFormatPath  encoding: NSUTF8StringEncoding error: NULL];
 
 		// get the expiration minute, to make sure we run the helper then (if it hasn't run already)
-		NSTimeInterval blockDuration = [[defaults objectForKey: @"BlockDuration"] intValue];
+		NSTimeInterval blockDuration = [defaults[@"BlockDuration"] intValue];
 		NSDate* expirationDate = [[NSDate date] dateByAddingTimeInterval: (blockDuration *60)];
 		NSCalendar* calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 		NSDateComponents* components = [calendar components: NSMinuteCalendarUnit fromDate: expirationDate];
@@ -144,7 +142,7 @@ int main(int argc, char* argv[]) {
         }
       }
       
-      if(![fileManager copyPath: [NSString stringWithCString: argv[0] encoding: NSUTF8StringEncoding]
+      if(![fileManager copyPath: @(argv[0])
                                toPath: @"/Library/PrivilegedHelperTools/org.eyebeam.SelfControl"
                                 handler: NULL]) {
         NSLog(@"ERROR: Could not copy SelfControl's helper binary to PrivilegedHelperTools directory.");
@@ -158,7 +156,7 @@ int main(int argc, char* argv[]) {
         }
       }    
       
-      NSString* scheckupPath = [[NSString stringWithUTF8String: argv[0]] stringByDeletingLastPathComponent];
+      NSString* scheckupPath = [@(argv[0]) stringByDeletingLastPathComponent];
       scheckupPath = [scheckupPath stringByAppendingPathComponent: @"scheckup"];
       
       if(![fileManager copyPath: scheckupPath
@@ -168,12 +166,10 @@ int main(int argc, char* argv[]) {
       }
       
       // Let's set up our backup system -- give scheckup the SUID bit
-      NSDictionary* checkupAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                         [NSNumber numberWithInt: 0], NSFileOwnerAccountID,
-                                         [NSNumber numberWithLongLong: controllingUID], NSFileGroupOwnerAccountID,
+      NSDictionary* checkupAttributes = @{NSFileOwnerAccountID: @0,
+                                         NSFileGroupOwnerAccountID: @(controllingUID),
                                          // 2541 (decimal) = 4755 (octal) = rwsr-xr-x
-                                         [NSNumber numberWithUnsignedLong: 2541], NSFilePosixPermissions,
-                                         nil];    
+                                         NSFilePosixPermissions: @2541UL};    
       
       if(![[NSFileManager defaultManager] changeFileAttributes: checkupAttributes atPath: @"/Library/PrivilegedHelperTools/scheckup"]) {
         NSLog(@"WARNING: Could not change file attributes on scheckup.  Backup block-removal system may not work.");
@@ -192,15 +188,13 @@ int main(int argc, char* argv[]) {
       // In this case it doesn't make any sense to use an existing lock file (in
       // fact, one shouldn't exist), so we fail if the defaults system has unreasonable
       // settings.
-      NSDictionary* lockDictionary = [NSDictionary dictionaryWithObjectsAndKeys: 
-                                      [defaults objectForKey: @"HostBlacklist"], @"HostBlacklist",
-                                      [defaults objectForKey: @"BlockDuration"], @"BlockDuration",
-                                      [defaults objectForKey: @"BlockStartedDate"], @"BlockStartedDate",
-                                      [defaults objectForKey: @"BlockAsWhitelist"], @"BlockAsWhitelist",
-                                      nil];        
-      if([[lockDictionary objectForKey: @"HostBlacklist"] count] <= 0 || [[lockDictionary objectForKey: @"BlockDuration"] intValue] < 1
-         || [lockDictionary objectForKey: @"BlockStartedDate"] == nil
-         || [[lockDictionary objectForKey: @"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]) {
+      NSDictionary* lockDictionary = @{@"HostBlacklist": defaults[@"HostBlacklist"],
+                                      @"BlockDuration": defaults[@"BlockDuration"],
+                                      @"BlockStartedDate": defaults[@"BlockStartedDate"],
+                                      @"BlockAsWhitelist": defaults[@"BlockAsWhitelist"]};        
+      if([lockDictionary[@"HostBlacklist"] count] <= 0 || [lockDictionary[@"BlockDuration"] intValue] < 1
+         || lockDictionary[@"BlockStartedDate"] == nil
+         || [lockDictionary[@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]) {
         NSLog(@"ERROR: Not enough block information.");
         printStatus(-210);
         exit(EX_CONFIG);
@@ -259,7 +253,7 @@ int main(int argc, char* argv[]) {
       if(curDictionary == nil) {
         // If there is no block file we just use all information from defaults
         
-        if([[defaults objectForKey: @"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]) {
+        if([defaults[@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]) {
           // But if the block is already over (which is going to happen if the user
           // starts authentication for the host add and then the block expires before
           // they authenticate), we shouldn't do anything at all.
@@ -270,27 +264,23 @@ int main(int argc, char* argv[]) {
         }
         
         NSLog(@"WARNING: Refreshing domain blacklist, but no block is currently ongoing.  Relaunching block.");
-        newLockDictionary = [NSDictionary dictionaryWithObjectsAndKeys: 
-                                          [defaults objectForKey: @"HostBlacklist"], @"HostBlacklist",
-                                          [defaults objectForKey: @"BlockDuration"], @"BlockDuration",
-                                          [defaults objectForKey: @"BlockStartedDate"], @"BlockStartedDate",
-                                          [defaults objectForKey: @"BlockAsWhitelist"], @"BlockAsWhitelist",
-                                          nil];
+        newLockDictionary = @{@"HostBlacklist": defaults[@"HostBlacklist"],
+                                          @"BlockDuration": defaults[@"BlockDuration"],
+                                          @"BlockStartedDate": defaults[@"BlockStartedDate"],
+                                          @"BlockAsWhitelist": defaults[@"BlockAsWhitelist"]};
         // And later on we'll be reloading the launchd daemon if curDictionary
         // was nil, just in case.  Watch for it.
       } else {
         // If there is an existing block file we can save most of it from the old file
-        newLockDictionary = [NSDictionary dictionaryWithObjectsAndKeys: 
-                             [defaults objectForKey: @"HostBlacklist"], @"HostBlacklist",
-                             [curDictionary objectForKey: @"BlockDuration"], @"BlockDuration",
-                             [curDictionary objectForKey: @"BlockStartedDate"], @"BlockStartedDate",
-                             [curDictionary objectForKey: @"BlockAsWhitelist"], @"BlockAsWhitelist",
-                             nil];      
+        newLockDictionary = @{@"HostBlacklist": defaults[@"HostBlacklist"],
+                             @"BlockDuration": curDictionary[@"BlockDuration"],
+                             @"BlockStartedDate": curDictionary[@"BlockStartedDate"],
+                             @"BlockAsWhitelist": curDictionary[@"BlockAsWhitelist"]};      
       }
 
-      if([[newLockDictionary objectForKey: @"HostBlacklist"] count] <= 0 || [[newLockDictionary objectForKey: @"BlockDuration"] intValue] < 1
-         || [newLockDictionary objectForKey: @"BlockStartedDate"] == nil
-         || [[newLockDictionary objectForKey: @"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]) {
+      if([newLockDictionary[@"HostBlacklist"] count] <= 0 || [newLockDictionary[@"BlockDuration"] intValue] < 1
+         || newLockDictionary[@"BlockStartedDate"] == nil
+         || [newLockDictionary[@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]) {
         NSLog(@"ERROR: Not enough block information.");
         printStatus(-214);
         exit(EX_CONFIG);
@@ -303,7 +293,7 @@ int main(int argc, char* argv[]) {
       }
       // Make sure the privileges are correct on our lock file
       [[NSFileManager defaultManager] changeFileAttributes: fileAttributes atPath: SelfControlLockFilePath];    
-      domainList = [newLockDictionary objectForKey: @"HostBlacklist"];
+      domainList = newLockDictionary[@"HostBlacklist"];
       
       // Add and remove the rules to put in any new ones
       removeRulesFromFirewall(controllingUID);
@@ -322,16 +312,16 @@ int main(int argc, char* argv[]) {
     } else if([modeString isEqual: @"--checkup"]) {    
       NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
       
-      NSDate* blockStartedDate = [curDictionary objectForKey: @"BlockStartedDate"];
-      NSTimeInterval blockDuration = [[curDictionary objectForKey: @"BlockDuration"] intValue];
-      BOOL blockAsWhitelist = [[curDictionary objectForKey: @"blockAsWhitelist"] boolValue];
+      NSDate* blockStartedDate = curDictionary[@"BlockStartedDate"];
+      NSTimeInterval blockDuration = [curDictionary[@"BlockDuration"] intValue];
+      BOOL blockAsWhitelist = [curDictionary[@"blockAsWhitelist"] boolValue];
       
       if(blockStartedDate == nil || [[NSDate distantFuture] isEqualToDate: blockStartedDate] || blockDuration < 1) {    
         // The lock file seems to be broken.  Read from defaults, then write out a
         // new lock file while we're at it.
         NSDictionary* defaults = getDefaultsDict(controllingUID);
-        blockStartedDate = [defaults objectForKey: @"BlockStartedDate"];
-        blockDuration = [[defaults objectForKey: @"BlockDuration"] intValue];
+        blockStartedDate = defaults[@"BlockStartedDate"];
+        blockDuration = [defaults[@"BlockDuration"] intValue];
 
         if(blockStartedDate == nil || blockDuration < 1) {    
             // Defaults is broken too!  Let's get out of here!

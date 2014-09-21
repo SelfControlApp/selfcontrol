@@ -87,7 +87,7 @@
 }
 
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex {
-  return [domainList_ objectAtIndex:rowIndex];
+  return domainList_[rowIndex];
 }
 
 - (void)tableView:(NSTableView *)aTableView
@@ -104,11 +104,11 @@
     
     for(int i = 0; i < [listComponents count]; i++) {
       if(i == 0) {
-        [self tableView: aTableView setObjectValue: [listComponents objectAtIndex: i] forTableColumn: aTableColumn row: rowIndex];
+        [self tableView: aTableView setObjectValue: listComponents[i] forTableColumn: aTableColumn row: rowIndex];
       }
       else {
         [domainList_ addObject:@""];
-        [self tableView: aTableView setObjectValue: [listComponents objectAtIndex: i] forTableColumn: aTableColumn row: [domainList_ count] - 1];
+        [self tableView: aTableView setObjectValue: listComponents[i] forTableColumn: aTableColumn row: [domainList_ count] - 1];
       }
     }
     
@@ -121,8 +121,8 @@
   // Remove "http://" if a user tried to put that in
   NSArray* splitString = [str componentsSeparatedByString: @"http://"];
   for(int i = 0; i < [splitString count]; i++) {
-    if(![[splitString objectAtIndex: i] isEqual: @""]) {
-      str = [splitString objectAtIndex: i];
+    if(![splitString[i] isEqual: @""]) {
+      str = splitString[i];
       break;
     }
   }
@@ -130,8 +130,8 @@
   // Remove "https://" if a user tried to put that in
   splitString = [str componentsSeparatedByString: @"https://"];
   for(int i = 0; i < [splitString count]; i++) {
-    if(![[splitString objectAtIndex: i] isEqual: @""]) {
-      str = [splitString objectAtIndex: i];
+    if(![splitString[i] isEqual: @""]) {
+      str = splitString[i];
       break;
     }
   }  
@@ -148,28 +148,28 @@
   
   splitString = [str componentsSeparatedByString: @"/"];
 
-  str = [splitString objectAtIndex: 0];
+  str = splitString[0];
   
   NSString* stringToSearchForPort = str;
   
   if([splitString count] >= 2) {
-    maskLength = [[splitString objectAtIndex: 1] intValue];
+    maskLength = [splitString[1] intValue];
     // If the int value is 0, we couldn't find a valid integer representation
     // in the split off string
     if(maskLength == 0)
       maskLength = -1;
     
-    stringToSearchForPort = [splitString objectAtIndex: 1];
+    stringToSearchForPort = splitString[1];
   }
   
   splitString = [stringToSearchForPort componentsSeparatedByString: @":"];
   
   if(stringToSearchForPort == str) {
-    str = [splitString objectAtIndex: 0];
+    str = splitString[0];
   }
   
   if([splitString count] >= 2) {
-    portNum = [[splitString objectAtIndex: 1] intValue];
+    portNum = [splitString[1] intValue];
     // If the int value is 0, we couldn't find a valid integer representation
     // in the split off string
     if(portNum == 0)
@@ -190,7 +190,7 @@
     else
       portString = [NSString stringWithFormat: @":%d", portNum];
     str = [NSString stringWithFormat: @"%@%@%@", str, maskString, portString];
-    [domainList_ replaceObjectAtIndex:rowIndex withObject:str];
+    domainList_[rowIndex] = str;
   }
   
   [defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
@@ -219,28 +219,28 @@
     
     NSArray* splitString = [str componentsSeparatedByString: @"/"];
     
-    str = [[splitString objectAtIndex: 0] lowercaseString];
+    str = [splitString[0] lowercaseString];
     
     NSString* stringToSearchForPort = str;
     
     if([splitString count] >= 2) {
-      maskLength = [[splitString objectAtIndex: 1] intValue];
+      maskLength = [splitString[1] intValue];
       // If the int value is 0, we couldn't find a valid integer representation
       // in the split off string
       if(maskLength == 0)
         maskLength = -1;
       
-      stringToSearchForPort = [splitString objectAtIndex: 1];
+      stringToSearchForPort = splitString[1];
     }
     
     splitString = [stringToSearchForPort componentsSeparatedByString: @":"];
     
     if(stringToSearchForPort == str) {
-      str = [splitString objectAtIndex: 0];
+      str = splitString[0];
     }
     
     if([splitString count] >= 2) {
-      portNum = [[splitString objectAtIndex: 1] intValue];
+      portNum = [splitString[1] intValue];
       // If the int value is 0, we couldn't find a valid integer representation
       // in the split off string
       if(portNum == 0)
@@ -287,8 +287,8 @@
   NSArray* arr = [HostImporter incomingMailHostnamesFromThunderbird];
   for(int i = 0; i < [arr count]; i++) {
     // Check for dupes
-    if(![domainList_ containsObject: [arr objectAtIndex: i]])
-      [domainList_ addObject: [arr objectAtIndex: i]];
+    if(![domainList_ containsObject: arr[i]])
+      [domainList_ addObject: arr[i]];
   }
   [defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
   [domainListTableView_ reloadData];
@@ -300,8 +300,8 @@
   NSArray* arr = [HostImporter outgoingMailHostnamesFromThunderbird];
   for(int i = 0; i < [arr count]; i++) {
     // Check for dupes
-    if(![domainList_ containsObject: [arr objectAtIndex: i]])
-      [domainList_ addObject: [arr objectAtIndex: i]];
+    if(![domainList_ containsObject: arr[i]])
+      [domainList_ addObject: arr[i]];
   }
   [defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
   [domainListTableView_ reloadData];
@@ -314,8 +314,8 @@
   NSArray* arr = [HostImporter incomingMailHostnamesFromMail];
   for(int i = 0; i < [arr count]; i++) {
     // Check for dupes
-    if(![domainList_ containsObject: [arr objectAtIndex: i]])
-      [domainList_ addObject: [arr objectAtIndex: i]];
+    if(![domainList_ containsObject: arr[i]])
+      [domainList_ addObject: arr[i]];
   }
   [defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
   [domainListTableView_ reloadData];
@@ -328,8 +328,8 @@
   NSArray* arr = [HostImporter outgoingMailHostnamesFromMail];
   for(int i = 0; i < [arr count]; i++) {
     // Check for dupes
-    if(![domainList_ containsObject: [arr objectAtIndex: i]])
-      [domainList_ addObject: [arr objectAtIndex: i]];
+    if(![domainList_ containsObject: arr[i]])
+      [domainList_ addObject: arr[i]];
   }
   [defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
   [domainListTableView_ reloadData];

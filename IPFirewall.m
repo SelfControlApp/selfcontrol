@@ -60,8 +60,7 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
 /* Port blocking/allowing methods */
 
 - (void)addSelfControlBlockRuleBlockingPort:(int)portNum {
-  NSArray* args = [NSArray arrayWithObjects:
-          @"-q",
+  NSArray* args = @[@"-q",
           @"add",
           [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + OSAtomicIncrement32(&selfControlBlockRuleCount_)],
           @"set",
@@ -73,14 +72,12 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
           @"to",
           @"any",
           @"dst-port",
-          [NSString stringWithFormat: @"%d", portNum],
-          nil];
+          [NSString stringWithFormat: @"%d", portNum]];
   [self enqueueFirewallCommand: args];
 }
 
 - (void)addSelfControlBlockRuleAllowingPort:(int)portNum {
-  NSArray* args = [NSArray arrayWithObjects:
-          @"-q",
+  NSArray* args = @[@"-q",
           @"add",
           [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + OSAtomicIncrement32(&selfControlBlockRuleCount_)],
           @"set",
@@ -92,8 +89,7 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
           @"to",
           @"any",
           @"dst-port",
-          [NSString stringWithFormat: @"%d", portNum],
-          nil];
+          [NSString stringWithFormat: @"%d", portNum]];
   [self enqueueFirewallCommand: args];
 }
 
@@ -105,8 +101,7 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
     blockString = [NSString stringWithFormat: @"%@/%d", ipAddress, maskLength];
   }
   
-  NSArray* args = [NSArray arrayWithObjects:
-          @"-q",
+  NSArray* args = @[@"-q",
           @"add",
           [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + OSAtomicIncrement32(&selfControlBlockRuleCount_)],
           @"set",
@@ -116,16 +111,12 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
           @"from",
           @"me",
           @"to",
-          blockString,
-          nil];
+          blockString];
   
   if(portNum) {
     args = [args arrayByAddingObjectsFromArray:
-            [NSArray arrayWithObjects:
-             @"dst-port",
-             [NSString stringWithFormat: @"%d", portNum],
-             nil
-             ]
+            @[@"dst-port",
+             [NSString stringWithFormat: @"%d", portNum]]
             ];
   }
   
@@ -138,8 +129,7 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
     blockString = [NSString stringWithFormat: @"%@/%d", ipAddress, maskLength];
   }
   
-  NSArray* args = [NSArray arrayWithObjects:
-          @"-q",
+  NSArray* args = @[@"-q",
           @"add",
           [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + OSAtomicIncrement32(&selfControlBlockRuleCount_)],
           @"set",
@@ -149,16 +139,12 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
           @"from",
           @"me",
           @"to",
-          blockString,
-          nil];
+          blockString];
   
   if(portNum) {
     args = [args arrayByAddingObjectsFromArray:
-            [NSArray arrayWithObjects:
-             @"dst-port",
-             [NSString stringWithFormat: @"%d", portNum],
-             nil
-             ]
+            @[@"dst-port",
+             [NSString stringWithFormat: @"%d", portNum]]
             ];
   }
   
@@ -194,8 +180,7 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
 /* Misc methods */
 
 - (void)addWhitelistFooter {
-  NSArray* args = [NSArray arrayWithObjects:
-                   @"-q",
+  NSArray* args = @[@"-q",
                    @"add",
                    [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + OSAtomicIncrement32(&selfControlBlockRuleCount_)],
                    @"set",
@@ -207,12 +192,10 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
                    @"to",
                    @"any",
                    @"dst-port",
-                   @"53",
-                   nil];
+                   @"53"];
   [self enqueueFirewallCommand: args];
     
-  args = [NSArray arrayWithObjects:
-                   @"-q",
+  args = @[@"-q",
                    @"add",
                    [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + OSAtomicIncrement32(&selfControlBlockRuleCount_)],
                    @"set",
@@ -224,12 +207,10 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
                    @"to",
                    @"any",
                    @"dst-port",
-                   @"123",
-                   nil];
+                   @"123"];
   [self enqueueFirewallCommand: args];
     
-  args = [NSArray arrayWithObjects:
-          @"-q",
+  args = @[@"-q",
           @"add",
           [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + OSAtomicIncrement32(&selfControlBlockRuleCount_)],
           @"set",
@@ -241,12 +222,10 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
           @"to",
           @"any",
           @"dst-port",
-          @"67",
-          nil];
+          @"67"];
   [self enqueueFirewallCommand: args];
     
-  args = [NSArray arrayWithObjects:
-          @"-q",
+  args = @[@"-q",
           @"add",
           [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + OSAtomicIncrement32(&selfControlBlockRuleCount_)],
           @"set",
@@ -258,12 +237,10 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
           @"to",
           @"any",
           @"dst-port",
-          @"68",
-          nil];
+          @"68"];
   [self enqueueFirewallCommand: args];
       
-  args = [NSArray arrayWithObjects:
-                   @"-q",
+  args = @[@"-q",
                    @"add",
                    [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + OSAtomicIncrement32(&selfControlBlockRuleCount_)],
                    @"set",
@@ -273,14 +250,12 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
                    @"from",
                    @"me",
                    @"to",
-                   @"any",
-                   nil];
+                   @"any"];
   [self enqueueFirewallCommand: args];
 }
 
 - (void)addSelfControlBlockHeader {
-  NSArray* args = [NSArray arrayWithObjects:
-                   @"-q",
+  NSArray* args = @[@"-q",
                    @"add",
                    [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + OSAtomicIncrement32(&selfControlBlockRuleCount_)],
                    @"set",
@@ -288,15 +263,13 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
                    @"//",
                    @"BEGIN",
                    @"SELFCONTROL",
-                   @"BLOCK",
-                   nil];
+                   @"BLOCK"];
   [self enqueueFirewallCommand: args];
   
   // This adds a rule to allow any traffic coming on the loopback interface, this
   // is necessary because if we accidentally blocked localhost it would make the
   // computer go crazy.
-  args = [NSArray arrayWithObjects:
-                   @"-q",
+  args = @[@"-q",
                    @"add",
                    [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + OSAtomicIncrement32(&selfControlBlockRuleCount_)],
                    @"set",
@@ -308,14 +281,12 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
                    @"to",
                    @"any",
                    @"via",
-                   @"lo*",
-                   nil];
+                   @"lo*"];
   [self enqueueFirewallCommand: args];
 }
 
 - (void)addSelfControlBlockFooter {
-  NSArray* args = [NSArray arrayWithObjects:
-                   @"-q",
+  NSArray* args = @[@"-q",
                    @"add",
                    [NSString stringWithFormat: @"%d", kIPFirewallRuleStartNumber + OSAtomicIncrement32(&selfControlBlockRuleCount_)],
                    @"set",
@@ -323,25 +294,22 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
                    @"//",
                    @"END",
                    @"SELFCONTROL",
-                   @"BLOCK",
-                   nil];                   
+                   @"BLOCK"];                   
   [self enqueueFirewallCommand: args];
 }
 
 - (int)clearSelfControlBlockRuleSet {
-  NSArray* args = [NSArray arrayWithObjects:
-                   @"-q",
+  NSArray* args = @[@"-q",
                    @"delete",
                    @"set",
-                   [NSString stringWithFormat: @"%d", kIPFirewallRuleSetNumber],
-                   nil];
+                   [NSString stringWithFormat: @"%d", kIPFirewallRuleSetNumber]];
   return [self runFirewallCommand: args];
 }
 
 - (BOOL)containsSelfControlBlockSet {
   NSTask* task = [[NSTask alloc] init];
   [task setLaunchPath:kIPFirewallExecutablePath];
-  NSArray* args = [NSArray arrayWithObjects: @"-S", @"show", nil];
+  NSArray* args = @[@"-S", @"show"];
   [task setArguments:args];
   NSPipe* inPipe = [[NSPipe alloc] init];
   NSFileHandle* readHandle = [inPipe fileHandleForReading];

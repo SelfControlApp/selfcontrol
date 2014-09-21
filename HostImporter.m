@@ -28,28 +28,28 @@
 + (NSArray*)incomingMailHostnamesFromMail { 
   NSMutableArray* hostnames = [NSMutableArray arrayWithCapacity: 10];
   NSDictionary* defaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName: @"com.apple.Mail"];
-  NSArray* incomingAccounts = [defaults objectForKey: @"MailAccounts"];
+  NSArray* incomingAccounts = defaults[@"MailAccounts"];
   for(int i = 0; i < [incomingAccounts count]; i++) {
-    NSMutableString* hostname = [[[incomingAccounts objectAtIndex: i] objectForKey: @"Hostname"] mutableCopy];
+    NSMutableString* hostname = [incomingAccounts[i][@"Hostname"] mutableCopy];
     // The LocalAccountName account has no hostname, so trying to add it would cause an error
     if(hostname != nil) {
       // If it has a defined port number, add it to the host to block for added
       // block specificity, so only incoming mail is blocked.
-      if([[incomingAccounts objectAtIndex: i] objectForKey: @"PortNumber"] != nil) {
+      if(incomingAccounts[i][@"PortNumber"] != nil) {
         [hostname appendString: @":"];
-        [hostname appendString: [[incomingAccounts objectAtIndex: i] objectForKey: @"PortNumber"]];
+        [hostname appendString: incomingAccounts[i][@"PortNumber"]];
         // If it doesn't have a defined port number, we'll go through and choose
         // the default port for the type of account it is.
-      } else if([[[incomingAccounts objectAtIndex: i] objectForKey: @"AccountType"] isEqual: @"POPAccount"]) {
-        if([[incomingAccounts objectAtIndex: i] objectForKey: @"SSLEnabled"]) {
+      } else if([incomingAccounts[i][@"AccountType"] isEqual: @"POPAccount"]) {
+        if(incomingAccounts[i][@"SSLEnabled"]) {
           [hostname appendString: @":"];
           [hostname appendString: @"995"];
         } else {
           [hostname appendString: @":"];
           [hostname appendString: @"110"];
         }
-      } else if([[[incomingAccounts objectAtIndex: i] objectForKey: @"AccountType"] isEqual: @"IMAPAccount"]) {
-        if([[incomingAccounts objectAtIndex: i] objectForKey: @"SSLEnabled"]) {
+      } else if([incomingAccounts[i][@"AccountType"] isEqual: @"IMAPAccount"]) {
+        if(incomingAccounts[i][@"SSLEnabled"]) {
           [hostname appendString: @":"];
           [hostname appendString: @"993"];
         } else {
@@ -67,13 +67,13 @@
 + (NSArray*)outgoingMailHostnamesFromMail {
   NSMutableArray* hostnames = [NSMutableArray arrayWithCapacity: 10];
   NSDictionary* defaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName: @"com.apple.Mail"];
-  NSArray* outgoingAccounts = [defaults objectForKey: @"DeliveryAccounts"];
+  NSArray* outgoingAccounts = defaults[@"DeliveryAccounts"];
   for(int i = 0; i < [outgoingAccounts count]; i++) {
-    NSMutableString* hostname = [[[outgoingAccounts objectAtIndex: i] objectForKey: @"Hostname"] mutableCopy];
+    NSMutableString* hostname = [outgoingAccounts[i][@"Hostname"] mutableCopy];
     if(hostname != nil) {
-      if([[outgoingAccounts objectAtIndex: i] objectForKey: @"PortNumber"] != nil) {
+      if(outgoingAccounts[i][@"PortNumber"] != nil) {
         [hostname appendString: @":"];
-        [hostname appendString: [[outgoingAccounts objectAtIndex: i] objectForKey: @"PortNumber"]];
+        [hostname appendString: outgoingAccounts[i][@"PortNumber"]];
         // If it doesn't have a defined port number, we'll go through and choose
         // the default port for the type of account it is.
       } else {

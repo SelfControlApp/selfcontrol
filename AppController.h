@@ -52,7 +52,7 @@
 
 // Returns an autoreleased instance of the path to the helper tool inside
 // SelfControl's bundle
-- (NSString*)selfControlHelperToolPath;
+@property (nonatomic, readonly, copy) NSString *selfControlHelperToolPath;
 
 // Returns as a UTF-8 encoded C-string the path to the helper tool inside
 // SelfControl's bundle
@@ -84,7 +84,7 @@
 // Returns YES if, according to a flag set in the user defaults system, the
 // SelfControl launchd daemon (and therefore the block) is loaded.  Returns NO
 // if it is not.
-- (BOOL)selfControlLaunchDaemonIsLoaded;
+@property (nonatomic, readonly) BOOL selfControlLaunchDaemonIsLoaded;
 
 // Allocates a new TimerWindowController if necessary and opens the timer window.
 // Also calls TimerWindowController's reloadTimer method to begin the timer's
@@ -100,7 +100,7 @@
 // Checks whether a network connection is available by checking the reachabilty
 // of google.com  This method may not be correct if the network configuration
 // was just changed a few seconds ago.
-- (BOOL)networkConnectionIsAvailable;
+@property (nonatomic, readonly) BOOL networkConnectionIsAvailable;
 
 // Called whenever the selection of sound to play in the Preferences menu changes.
 // Plays the sound so that the user can "sample" them.
@@ -135,11 +135,10 @@
 // @property (retain, nonatomic, readonly) id initialWindow;
 
 // Changed property to manual accessor for pre-Leopard compatibility
-- (id)initialWindow;
+@property (nonatomic, readonly, strong) id initialWindow;
 
-- (int)blockLength;
+@property (nonatomic) int blockLength;
 
-- (void)setBlockLength:(int)blockLength;
 
 - (IBAction)openFAQ:(id)sender;
 

@@ -16,24 +16,22 @@ void registerDefaults(signed long long int controllingUID) {
 	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
 	[defaults addSuiteNamed: @"org.eyebeam.SelfControl"];
 	[defaults synchronize];
-	NSDictionary* appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
-															 [NSNumber numberWithInt: 0], @"BlockDuration",
-															 [NSDate distantFuture], @"BlockStartedDate",
-															 [NSArray array], @"HostBlacklist",
-															 [NSNumber numberWithBool: YES], @"EvaluateCommonSubdomains",
-															 [NSNumber numberWithBool: YES], @"HighlightInvalidHosts",
-															 [NSNumber numberWithBool: YES], @"VerifyInternetConnection",
-															 [NSNumber numberWithBool: NO], @"TimerWindowFloats",
-															 [NSNumber numberWithBool: NO], @"BlockSoundShouldPlay",
-															 [NSNumber numberWithInt: 5], @"BlockSound",
-															 [NSNumber numberWithBool: YES], @"ClearCaches",
-															 [NSNumber numberWithBool: NO], @"BlockAsWhitelist",
-															 [NSNumber numberWithBool: YES], @"BadgeApplicationIcon",
-															 [NSNumber numberWithBool: YES], @"AllowLocalNetworks",
-															 [NSNumber numberWithInt: 1440], @"MaxBlockLength",
-															 [NSNumber numberWithInt: 15], @"BlockLengthInterval",
-															 [NSNumber numberWithBool: NO], @"WhitelistAlertSuppress",
-															 nil];
+	NSDictionary* appDefaults = @{@"BlockDuration": @0,
+															 @"BlockStartedDate": [NSDate distantFuture],
+															 @"HostBlacklist": @[],
+															 @"EvaluateCommonSubdomains": @YES,
+															 @"HighlightInvalidHosts": @YES,
+															 @"VerifyInternetConnection": @YES,
+															 @"TimerWindowFloats": @NO,
+															 @"BlockSoundShouldPlay": @NO,
+															 @"BlockSound": @5,
+															 @"ClearCaches": @YES,
+															 @"BlockAsWhitelist": @NO,
+															 @"BadgeApplicationIcon": @YES,
+															 @"AllowLocalNetworks": @YES,
+															 @"MaxBlockLength": @1440,
+															 @"BlockLengthInterval": @15,
+															 @"WhitelistAlertSuppress": @NO};
 	[defaults registerDefaults:appDefaults];
 	[defaults synchronize];
 	seteuid(0);
@@ -58,16 +56,16 @@ void setDefaultsValue(NSString* prefName, NSString* prefValue, signed long long 
 void addRulesToFirewall(signed long long int controllingUID) {
   // get value for EvaluateCommonSubdomains
 	NSDictionary* defaults = getDefaultsDict(controllingUID);
-	BOOL shouldEvaluateCommonSubdomains = [[defaults objectForKey: @"EvaluateCommonSubdomains"] boolValue];
-  BOOL allowLocalNetworks = [[defaults objectForKey: @"AllowLocalNetworks"] boolValue];
+	BOOL shouldEvaluateCommonSubdomains = [defaults[@"EvaluateCommonSubdomains"] boolValue];
+  BOOL allowLocalNetworks = [defaults[@"AllowLocalNetworks"] boolValue];
 
   // get value for BlockAsWhitelist
   BOOL blockAsWhitelist;
   NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
-  if(curDictionary == nil || [curDictionary objectForKey: @"BlockAsWhitelist"] == nil) {
-    blockAsWhitelist = [[defaults objectForKey: @"BlockAsWhitelist"] boolValue];
+  if(curDictionary == nil || curDictionary[@"BlockAsWhitelist"] == nil) {
+    blockAsWhitelist = [defaults[@"BlockAsWhitelist"] boolValue];
   } else {
-    blockAsWhitelist = [[curDictionary objectForKey: @"BlockAsWhitelist"] boolValue];
+    blockAsWhitelist = [curDictionary[@"BlockAsWhitelist"] boolValue];
   }
   
   BlockManager* blockManager = [[BlockManager alloc] initAsWhitelist: blockAsWhitelist allowLocal: allowLocalNetworks includeCommonSubdomains: shouldEvaluateCommonSubdomains];
@@ -88,10 +86,9 @@ void removeRulesFromFirewall(signed long long int controllingUID) {
   // the posted notification) before we sleep to play the sound.  Otherwise,
   // the app seems unresponsive and slow.
 	NSDictionary* defaults = getDefaultsDict(controllingUID);
-  if([[defaults objectForKey: @"BlockSoundShouldPlay"] boolValue]) {
+  if([defaults[@"BlockSoundShouldPlay"] boolValue]) {
     // Map the tags used in interface builder to the sound
-    NSArray* systemSoundNames = [NSArray arrayWithObjects:
-                                 @"Basso",
+    NSArray* systemSoundNames = @[@"Basso",
                                  @"Blow",
                                  @"Bottle",
                                  @"Frog",
@@ -104,10 +101,8 @@ void removeRulesFromFirewall(signed long long int controllingUID) {
                                  @"Purr",
                                  @"Sosumi",
                                  @"Submarine",
-                                 @"Tink",
-                                 nil
-                                 ];
-    NSSound* alertSound = [NSSound soundNamed: [systemSoundNames objectAtIndex: [[defaults objectForKey: @"BlockSound"] intValue]]];
+                                 @"Tink"];
+    NSSound* alertSound = [NSSound soundNamed: systemSoundNames[[defaults[@"BlockSound"] intValue]]];
     if(!alertSound)
       NSLog(@"WARNING: Alert sound not found.");
     else {
@@ -139,8 +134,8 @@ NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, int port) {
       
       for(int j = 0; j < [addresses count]; j++) {
         if(port != -1)
-          [evaluatedAddresses addObject: [NSString stringWithFormat: @"%@:%d", [addresses objectAtIndex: j], port]];
-        else [evaluatedAddresses addObject: [addresses objectAtIndex: j]];
+          [evaluatedAddresses addObject: [NSString stringWithFormat: @"%@:%d", addresses[j], port]];
+        else [evaluatedAddresses addObject: addresses[j]];
       }
     }
   }
@@ -153,8 +148,8 @@ NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, int port) {
       
       for(int j = 0; j < [addresses count]; j++) {
         if(port != -1)
-          [evaluatedAddresses addObject: [NSString stringWithFormat: @"%@:%d", [addresses objectAtIndex: j], port]];
-        else [evaluatedAddresses addObject: [addresses objectAtIndex: j]];
+          [evaluatedAddresses addObject: [NSString stringWithFormat: @"%@:%d", addresses[j], port]];
+        else [evaluatedAddresses addObject: addresses[j]];
       }
     }
   }  
@@ -164,7 +159,7 @@ NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, int port) {
 
 void clearCachesIfRequested(signed long long int controllingUID) {
 	NSDictionary* defaults = getDefaultsDict(controllingUID);
-  if([[defaults objectForKey: @"ClearCaches"] boolValue]) {
+  if([defaults[@"ClearCaches"] boolValue]) {
     NSFileManager* fileManager = [NSFileManager defaultManager];
     
     unsigned int major, minor, bugfix;
@@ -179,9 +174,7 @@ void clearCachesIfRequested(signed long long int controllingUID) {
     if(major >= 10 && minor >= 5) {
       NSTask* task = [[NSTask alloc] init];
       [task setLaunchPath: @"/usr/bin/getconf"];
-      [task setArguments: [NSArray arrayWithObject:
-                           @"DARWIN_USER_CACHE_DIR"
-                           ]];
+      [task setArguments: @[@"DARWIN_USER_CACHE_DIR"]];
       NSPipe* inPipe = [[NSPipe alloc] init];
       NSFileHandle* readHandle = [inPipe fileHandleForReading];
       [task setStandardOutput: inPipe];      
@@ -198,7 +191,7 @@ void clearCachesIfRequested(signed long long int controllingUID) {
                                             @"com.apple.Safari",
                                             nil];
         for(int i = 0; i < [leopardCacheDirs count]; i++) {
-          NSString* cacheDir = [leopardCacheDirectory stringByAppendingPathComponent: [leopardCacheDirs objectAtIndex: i]];
+          NSString* cacheDir = [leopardCacheDirectory stringByAppendingPathComponent: leopardCacheDirs[i]];
           if([fileManager isDeletableFileAtPath: cacheDir]) {
             [fileManager removeItemAtPath: cacheDir error: nil];
           }
@@ -215,7 +208,7 @@ void clearCachesIfRequested(signed long long int controllingUID) {
                                    nil];
       
       for(int i = 0; i < [cacheDirs count]; i++) {
-        NSString* cacheDir = [userLibraryDirectory stringByAppendingPathComponent: [cacheDirs objectAtIndex: i]];
+        NSString* cacheDir = [userLibraryDirectory stringByAppendingPathComponent: cacheDirs[i]];
         if([fileManager isDeletableFileAtPath: cacheDir]) {
           [fileManager removeItemAtPath: cacheDir error: nil];
         }
@@ -236,27 +229,27 @@ void parseHost(NSString* hostName, NSString** baseName, int* maskLength, int* po
   
   NSArray* splitString = [hostName componentsSeparatedByString: @"/"];
   
-  hostName = [splitString objectAtIndex: 0];
+  hostName = splitString[0];
   
   NSString* stringToSearchForPort = hostName;
   
   if([splitString count] >= 2) {
-    maskLen = [[splitString objectAtIndex: 1] intValue];
+    maskLen = [splitString[1] intValue];
     // If the int value is 0, we couldn't find a valid integer representation
     // in the split off string
     if(maskLen == 0)
       maskLen = -1;
     
-    stringToSearchForPort = [splitString objectAtIndex: 1];
+    stringToSearchForPort = splitString[1];
   }
   
   splitString = [stringToSearchForPort componentsSeparatedByString: @":"];
   
   if([stringToSearchForPort isEqualToString: hostName])
-    hostName = [splitString objectAtIndex: 0];
+    hostName = splitString[0];
   
   if([splitString count] >= 2) {
-    portNum = [[splitString objectAtIndex: 1] intValue];
+    portNum = [splitString[1] intValue];
     // If the int value is 0, we couldn't find a valid integer representation
     // in the split off string
     if(portNum == 0)

@@ -25,8 +25,8 @@
 
 @interface NSString (IPAddress)
 
-- (BOOL)isValidIPv4Address;
-- (BOOL)isValidIPv6Address;
-- (BOOL)isValidIPAddress;
+@property (nonatomic, getter=isValidIPv4Address, readonly) BOOL validIPv4Address;
+@property (nonatomic, getter=isValidIPv6Address, readonly) BOOL validIPv6Address;
+@property (nonatomic, getter=isValidIPAddress, readonly) BOOL validIPAddress;
 
 @end

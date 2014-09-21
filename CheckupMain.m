@@ -19,16 +19,16 @@ int main(int argc, char* argv[]) {
     }
             
     NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
-    NSDate* blockStartedDate = [curDictionary objectForKey: @"BlockStartedDate"];
-    NSTimeInterval blockDuration = [[curDictionary objectForKey: @"BlockDuration"] intValue];
+    NSDate* blockStartedDate = curDictionary[@"BlockStartedDate"];
+    NSTimeInterval blockDuration = [curDictionary[@"BlockDuration"] intValue];
         
     
     if(blockStartedDate == nil || [[NSDate distantFuture] isEqualToDate: blockStartedDate] || blockDuration < 1) {    
       // The lock file seems to be broken.  Try defaults.
       NSLog(@"WARNING: Lock file unreadable or invalid");
 		NSDictionary* defaults = getDefaultsDict(getuid());
-      blockStartedDate = [defaults objectForKey: @"BlockStartedDate"];
-      blockDuration = [[defaults objectForKey: @"BlockDuration"] intValue];
+      blockStartedDate = defaults[@"BlockStartedDate"];
+      blockDuration = [defaults[@"BlockDuration"] intValue];
 
       if(blockStartedDate == nil || [[NSDate distantFuture] isEqualToDate: blockStartedDate] || blockDuration < 1) {    
         // Defaults is broken too!  Let's get out of here!
