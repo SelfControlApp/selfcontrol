@@ -25,142 +25,142 @@
 @implementation BlockManager
 
 - (BlockManager*)init {
-  return [self initAsWhitelist: NO allowLocal: YES includeCommonSubdomains: YES];
+	return [self initAsWhitelist: NO allowLocal: YES includeCommonSubdomains: YES];
 }
 
 - (BlockManager*)initAsWhitelist:(BOOL)whitelist {
-  return [self initAsWhitelist: whitelist allowLocal: YES includeCommonSubdomains: YES];
+	return [self initAsWhitelist: whitelist allowLocal: YES includeCommonSubdomains: YES];
 }
 
 - (BlockManager*)initAsWhitelist:(BOOL)whitelist allowLocal:(BOOL)local {
-  return [self initAsWhitelist: whitelist allowLocal: local includeCommonSubdomains: YES];
+	return [self initAsWhitelist: whitelist allowLocal: local includeCommonSubdomains: YES];
 }
 
 
 - (BlockManager*)initAsWhitelist:(BOOL)whitelist allowLocal:(BOOL)local includeCommonSubdomains:(BOOL)blockCommon {
-  if(self = [super init]) {
-    opQueue = [[NSOperationQueue alloc] init];
+	if(self = [super init]) {
+		opQueue = [[NSOperationQueue alloc] init];
 
 		pf = [[PacketFilter alloc] initAsWhitelist: whitelist];
-    hostsBlocker = [[HostFileBlocker alloc] init];
-    hostsBlockingEnabled = NO;
+		hostsBlocker = [[HostFileBlocker alloc] init];
+		hostsBlockingEnabled = NO;
 
-    isWhitelist = whitelist;
-    allowLocal = local;
-    includeCommonSubdomains = blockCommon;
-  }
+		isWhitelist = whitelist;
+		allowLocal = local;
+		includeCommonSubdomains = blockCommon;
+	}
 
-  return self;
+	return self;
 }
 
 - (void)prepareToAddBlock {
-  if([hostsBlocker containsSelfControlBlock]) {
-    [hostsBlocker removeSelfControlBlock];
-    [hostsBlocker writeNewFileContents];
-  }
+	if([hostsBlocker containsSelfControlBlock]) {
+		[hostsBlocker removeSelfControlBlock];
+		[hostsBlocker writeNewFileContents];
+	}
 
-  if(!isWhitelist && ![hostsBlocker containsSelfControlBlock] && [hostsBlocker createBackupHostsFile]) {
+	if(!isWhitelist && ![hostsBlocker containsSelfControlBlock] && [hostsBlocker createBackupHostsFile]) {
 		NSLog(@"enabled host blocking");
-    [hostsBlocker addSelfControlBlockHeader];
-    hostsBlockingEnabled = YES;
-  } else {
+		[hostsBlocker addSelfControlBlockHeader];
+		hostsBlockingEnabled = YES;
+	} else {
 		NSLog(@"disabled host blocking");
-    hostsBlockingEnabled = NO;
-  }
+		hostsBlockingEnabled = NO;
+	}
 
-//  if(allowLocal) {
-//    [ipfw addSelfControlBlockRuleAllowingIP: @"10.0.0.0" maskLength: 8];
-//    [ipfw addSelfControlBlockRuleAllowingIP: @"172.16.0.0" maskLength: 12];
-//    [ipfw addSelfControlBlockRuleAllowingIP: @"192.168.0.0" maskLength: 16];
-//  }
+	//  if(allowLocal) {
+	//    [ipfw addSelfControlBlockRuleAllowingIP: @"10.0.0.0" maskLength: 8];
+	//    [ipfw addSelfControlBlockRuleAllowingIP: @"172.16.0.0" maskLength: 12];
+	//    [ipfw addSelfControlBlockRuleAllowingIP: @"192.168.0.0" maskLength: 16];
+	//  }
 }
 
 - (void)finalizeBlock {
-  [opQueue waitUntilAllOperationsAreFinished];
+	[opQueue waitUntilAllOperationsAreFinished];
 
-  if(hostsBlockingEnabled) {
-    [hostsBlocker addSelfControlBlockFooter];
-    [hostsBlocker writeNewFileContents];
-  }
+	if(hostsBlockingEnabled) {
+		[hostsBlocker addSelfControlBlockFooter];
+		[hostsBlocker writeNewFileContents];
+	}
 
 	[pf startBlock];
 }
 
 - (void)enqueueBlockEntryWithHostName:(NSString*)hostName port:(int)portNum maskLen:(int)maskLen {
-  __unsafe_unretained NSString* unsafeHostName = [NSString stringWithString: hostName];
-  NSMethodSignature* signature = [self methodSignatureForSelector: @selector(addBlockEntryWithHostName:port:maskLen:)];
-  NSInvocation* invocation = [NSInvocation invocationWithMethodSignature: signature];
-  [invocation setTarget: self];
-  [invocation setSelector: @selector(addBlockEntryWithHostName:port:maskLen:)];
-  [invocation setArgument: &unsafeHostName atIndex: 2];
-  [invocation setArgument: &portNum atIndex: 3];
-  [invocation setArgument: &maskLen atIndex: 4];
-  [invocation retainArguments];
+	__unsafe_unretained NSString* unsafeHostName = [NSString stringWithString: hostName];
+	NSMethodSignature* signature = [self methodSignatureForSelector: @selector(addBlockEntryWithHostName:port:maskLen:)];
+	NSInvocation* invocation = [NSInvocation invocationWithMethodSignature: signature];
+	[invocation setTarget: self];
+	[invocation setSelector: @selector(addBlockEntryWithHostName:port:maskLen:)];
+	[invocation setArgument: &unsafeHostName atIndex: 2];
+	[invocation setArgument: &portNum atIndex: 3];
+	[invocation setArgument: &maskLen atIndex: 4];
+	[invocation retainArguments];
 
-  NSInvocationOperation* op = [[NSInvocationOperation alloc] initWithInvocation: invocation];
-  [opQueue addOperation: op];
+	NSInvocationOperation* op = [[NSInvocationOperation alloc] initWithInvocation: invocation];
+	[opQueue addOperation: op];
 }
 
 - (void)addBlockEntryWithHostName:(NSString*)hostName port:(int)portNum maskLen:(int)maskLen {
-  BOOL isIP = [hostName isValidIPAddress];
-  BOOL isIPv4 = [hostName isValidIPv4Address];
+	BOOL isIP = [hostName isValidIPAddress];
+	BOOL isIPv4 = [hostName isValidIPv4Address];
 
-  if([hostName isEqualToString: @"*"]) {
+	if([hostName isEqualToString: @"*"]) {
 		[pf addRuleWithIP: nil port: portNum maskLen: 0];
-  } else if(isIPv4) { // current we do NOT do ipfw blocking for IPv6
+	} else if(isIPv4) { // current we do NOT do ipfw blocking for IPv6
 		[pf addRuleWithIP: hostName port: portNum maskLen: maskLen];
-  } else if(!isIP && (![self domainIsGoogle: hostName] || isWhitelist)) { // domain name
-    // on blacklist blocks where the domain is Google, we don't use ipfw to block
-    // because we'd end up blocking more than the user wants (i.e. Search/Reader)
-    NSArray* addresses = [self ipAddressesForDomainName: hostName];
+	} else if(!isIP && (![self domainIsGoogle: hostName] || isWhitelist)) { // domain name
+		// on blacklist blocks where the domain is Google, we don't use ipfw to block
+		// because we'd end up blocking more than the user wants (i.e. Search/Reader)
+		NSArray* addresses = [self ipAddressesForDomainName: hostName];
 
-    for(int i = 0; i < [addresses count]; i++) {
-      NSString* ip = addresses[i];
+		for(int i = 0; i < [addresses count]; i++) {
+			NSString* ip = addresses[i];
 
-      [pf addRuleWithIP: ip port: portNum maskLen: maskLen];
-    }
-  }
+			[pf addRuleWithIP: ip port: portNum maskLen: maskLen];
+		}
+	}
 
-  if(hostsBlockingEnabled && ![hostName isEqualToString: @"*"] && !portNum && !isIP) {
-    [hostsBlocker addRuleBlockingDomain: hostName];
-  }
+	if(hostsBlockingEnabled && ![hostName isEqualToString: @"*"] && !portNum && !isIP) {
+		[hostsBlocker addRuleBlockingDomain: hostName];
+	}
 }
 
 - (void)addBlockEntryFromString:(NSString*)entry {
-  NSDictionary* hostInfo = [self parseHostString: entry];
+	NSDictionary* hostInfo = [self parseHostString: entry];
 
-  NSString* hostName = hostInfo[@"hostName"];
-  NSNumber* portNumObject = hostInfo[@"port"];
-  NSNumber* maskLenObject = hostInfo[@"maskLen"];
-  int portNum = portNumObject ? [portNumObject intValue] : 0;
-  int maskLen = maskLenObject ? [maskLenObject intValue] : 0;
+	NSString* hostName = hostInfo[@"hostName"];
+	NSNumber* portNumObject = hostInfo[@"port"];
+	NSNumber* maskLenObject = hostInfo[@"maskLen"];
+	int portNum = portNumObject ? [portNumObject intValue] : 0;
+	int maskLen = maskLenObject ? [maskLenObject intValue] : 0;
 
-  [self addBlockEntryWithHostName: hostName port: portNum maskLen: maskLen];
+	[self addBlockEntryWithHostName: hostName port: portNum maskLen: maskLen];
 
-  if(![hostName isValidIPAddress] && includeCommonSubdomains) {
-    NSArray* commonSubdomains = [self commonSubdomainsForHostName: hostName];
+	if(![hostName isValidIPAddress] && includeCommonSubdomains) {
+		NSArray* commonSubdomains = [self commonSubdomainsForHostName: hostName];
 
-    for(int i = 0; i < [commonSubdomains count]; i++) {
-      // we do not pull port, we leave the port number the same as we got it
-      hostInfo = [self parseHostString: commonSubdomains[i]];
-      hostName = hostInfo[@"hostName"];
-      maskLenObject = hostInfo[@"maskLen"];
-      maskLen = maskLenObject ? [maskLenObject intValue] : 0;
+		for(int i = 0; i < [commonSubdomains count]; i++) {
+			// we do not pull port, we leave the port number the same as we got it
+			hostInfo = [self parseHostString: commonSubdomains[i]];
+			hostName = hostInfo[@"hostName"];
+			maskLenObject = hostInfo[@"maskLen"];
+			maskLen = maskLenObject ? [maskLenObject intValue] : 0;
 
-      [self enqueueBlockEntryWithHostName: hostName port: portNum maskLen: maskLen];
-    }
-  }
+			[self enqueueBlockEntryWithHostName: hostName port: portNum maskLen: maskLen];
+		}
+	}
 }
 
 - (void)addBlockEntries:(NSArray*)blockList {
-  for(int i = 0; i < [blockList count]; i++) {
-    NSInvocationOperation* op = [[NSInvocationOperation alloc] initWithTarget: self
-                                                                     selector: @selector(addBlockEntryFromString:)
-                                                                       object: blockList[i]];
-    [opQueue addOperation: op];
-  }
+	for(int i = 0; i < [blockList count]; i++) {
+		NSInvocationOperation* op = [[NSInvocationOperation alloc] initWithTarget: self
+																		 selector: @selector(addBlockEntryFromString:)
+																		   object: blockList[i]];
+		[opQueue addOperation: op];
+	}
 
-  [opQueue setMaxConcurrentOperationCount: 10];
+	[opQueue setMaxConcurrentOperationCount: 10];
 }
 
 - (BOOL)clearBlock {
@@ -211,100 +211,100 @@
 }
 
 - (NSArray*)commonSubdomainsForHostName:(NSString*)hostName {
-  NSMutableSet* newHosts = [NSMutableSet set];
+	NSMutableSet* newHosts = [NSMutableSet set];
 
-  // If the domain ends in facebook.com...  Special case for Facebook because
-  // users will often forget to block some of its many mirror subdomains that resolve
-  // to different IPs, i.e. hs.facebook.com.  Thanks to Danielle for raising this issue.
-  if([hostName rangeOfString: @"facebook.com"].location == ([hostName length] - 12)) {
-    // pulled list of facebook IP ranges from https://developers.facebook.com/docs/ApplicationSecurity/#facebook_scraper
-    // TODO: pull these automatically by running:
-    // whois -h whois.radb.net -- '-i origin AS32934' | grep ^route
-    NSArray* facebookIPs = @[@"31.13.24.0/21",
-                            @"31.13.64.0/18",
-                            @"66.220.144.0/20",
-                            @"69.63.176.0/20",
-                            @"69.171.224.0/19",
-                            @"74.119.76.0/22",
-                            @"103.4.96.0/22",
-                            @"173.252.64.0/18",
-                            @"204.15.20.0/22"];
+	// If the domain ends in facebook.com...  Special case for Facebook because
+	// users will often forget to block some of its many mirror subdomains that resolve
+	// to different IPs, i.e. hs.facebook.com.  Thanks to Danielle for raising this issue.
+	if([hostName rangeOfString: @"facebook.com"].location == ([hostName length] - 12)) {
+		// pulled list of facebook IP ranges from https://developers.facebook.com/docs/ApplicationSecurity/#facebook_scraper
+		// TODO: pull these automatically by running:
+		// whois -h whois.radb.net -- '-i origin AS32934' | grep ^route
+		NSArray* facebookIPs = @[@"31.13.24.0/21",
+								 @"31.13.64.0/18",
+								 @"66.220.144.0/20",
+								 @"69.63.176.0/20",
+								 @"69.171.224.0/19",
+								 @"74.119.76.0/22",
+								 @"103.4.96.0/22",
+								 @"173.252.64.0/18",
+								 @"204.15.20.0/22"];
 
-    [newHosts addObjectsFromArray: facebookIPs];
-  }
+		[newHosts addObjectsFromArray: facebookIPs];
+	}
 
-  // Block the domain with no subdomains, if www.domain is blocked
-  if([hostName rangeOfString: @"www."].location == 0) {
-    [newHosts addObject: [hostName substringFromIndex: 4]];
-  } else { // Or block www.domain otherwise
-    [newHosts addObject: [@"www." stringByAppendingString: hostName]];
-  }
+	// Block the domain with no subdomains, if www.domain is blocked
+	if([hostName rangeOfString: @"www."].location == 0) {
+		[newHosts addObject: [hostName substringFromIndex: 4]];
+	} else { // Or block www.domain otherwise
+		[newHosts addObject: [@"www." stringByAppendingString: hostName]];
+	}
 
-  return [newHosts allObjects];
+	return [newHosts allObjects];
 }
 
 - (NSArray*)ipAddressesForDomainName:(NSString*)domainName {
-  NSHost* host = [NSHost hostWithName: domainName];
+	NSHost* host = [NSHost hostWithName: domainName];
 
-  if(!host) {
-    return @[];
-  }
+	if(!host) {
+		return @[];
+	}
 
-  return [host addresses];
+	return [host addresses];
 }
 
 - (BOOL)domainIsGoogle:(NSString*)domainName {
-  // todo: make this regex not suck
-  NSString* googleRegex = @"^([a-z0-9]+\\.)*(google|youtube|picasa|sketchup|blogger|blogspot)\\.([a-z]{1,3})(\\.[a-z]{1,3})?$";
-  NSPredicate* googleTester = [NSPredicate
-                               predicateWithFormat: @"SELF MATCHES %@",
-                               googleRegex
-                               ];
-  return [googleTester evaluateWithObject: domainName];
+	// todo: make this regex not suck
+	NSString* googleRegex = @"^([a-z0-9]+\\.)*(google|youtube|picasa|sketchup|blogger|blogspot)\\.([a-z]{1,3})(\\.[a-z]{1,3})?$";
+	NSPredicate* googleTester = [NSPredicate
+								 predicateWithFormat: @"SELF MATCHES %@",
+								 googleRegex
+								 ];
+	return [googleTester evaluateWithObject: domainName];
 }
 
 - (NSDictionary*)parseHostString:(NSString*)hostString {
-  NSMutableDictionary* dict = [NSMutableDictionary dictionary];
-  NSString* hostName;
+	NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+	NSString* hostName;
 
-  NSArray* splitString = [hostString componentsSeparatedByString: @"/"];
-  hostName = splitString[0];
+	NSArray* splitString = [hostString componentsSeparatedByString: @"/"];
+	hostName = splitString[0];
 
-  NSString* stringToSearchForPort = splitString[0];
+	NSString* stringToSearchForPort = splitString[0];
 
-  if([splitString count] >= 2) {
-    int maskLen = [splitString[1] intValue];
+	if([splitString count] >= 2) {
+		int maskLen = [splitString[1] intValue];
 
-    if(maskLen != 0) { // 0 means we could not parse to int value
-      [dict setValue: @(maskLen) forKey: @"maskLen"];
-    }
+		if(maskLen != 0) { // 0 means we could not parse to int value
+			[dict setValue: @(maskLen) forKey: @"maskLen"];
+		}
 
-    // we expect the port number to come after the IP/masklen
-    stringToSearchForPort = splitString[1];
-  }
+		// we expect the port number to come after the IP/masklen
+		stringToSearchForPort = splitString[1];
+	}
 
-  splitString = [stringToSearchForPort componentsSeparatedByString: @":"];
+	splitString = [stringToSearchForPort componentsSeparatedByString: @":"];
 
-  // only if hostName wasn't already split off by the maskLen
-  if([stringToSearchForPort isEqualToString: hostName]) {
-    hostName = splitString[0];
-  }
+	// only if hostName wasn't already split off by the maskLen
+	if([stringToSearchForPort isEqualToString: hostName]) {
+		hostName = splitString[0];
+	}
 
-  if([splitString count] >= 2) {
-    int portNum = [splitString[1] intValue];
+	if([splitString count] >= 2) {
+		int portNum = [splitString[1] intValue];
 
-    if(portNum != 0) { // 0 means we could not parse to int value
-      [dict setValue: @(portNum) forKey: @"port"];
-    }
-  }
+		if(portNum != 0) { // 0 means we could not parse to int value
+			[dict setValue: @(portNum) forKey: @"port"];
+		}
+	}
 
-  if([hostName isEqualToString: @""]) {
-    hostName = @"*";
-  }
+	if([hostName isEqualToString: @""]) {
+		hostName = @"*";
+	}
 
-  [dict setValue: hostName forKey: @"hostName"];
+	[dict setValue: hostName forKey: @"hostName"];
 
-  return dict;
+	return dict;
 }
 
 @end

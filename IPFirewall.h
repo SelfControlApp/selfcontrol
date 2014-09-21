@@ -3,17 +3,17 @@
 //  SelfControl
 //
 //  Created by Charlie Stigler on 2/9/09.
-//  Copyright 2009 Eyebeam. 
+//  Copyright 2009 Eyebeam.
 
 // This file is part of SelfControl.
-// 
+//
 // SelfControl is free software:  you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
 // This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of 
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
@@ -30,8 +30,8 @@
 // designed to make it easier to distinguish SelfControl rules and alter them
 // separately from other ipfw rules.
 @interface IPFirewall : NSObject {
-  NSOperationQueue* opQueue;
-  int selfControlBlockRuleCount_;
+	NSOperationQueue* opQueue;
+	int selfControlBlockRuleCount_;
 }
 
 // Calls the ipfw command-line tool to add a rule into the designated

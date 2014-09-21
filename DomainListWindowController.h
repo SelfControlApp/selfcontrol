@@ -3,17 +3,17 @@
 //  SelfControl
 //
 //  Created by Charlie Stigler on 2/7/09.
-//  Copyright 2009 Eyebeam. 
+//  Copyright 2009 Eyebeam.
 
 // This file is part of SelfControl.
-// 
+//
 // SelfControl is free software:  you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
 // This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of 
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
@@ -31,9 +31,9 @@
 // and experienced users will figure out they can put in IP addresses) window,
 // and the table view it contains.
 @interface DomainListWindowController : NSWindowController {
-  NSMutableArray* domainList_;
-  IBOutlet id domainListTableView_;
-  NSUserDefaults* defaults_;
+	NSMutableArray* domainList_;
+	IBOutlet id domainListTableView_;
+	NSUserDefaults* defaults_;
 }
 
 // Called when the add button is clicked.  Adds a new empty string to the domain
@@ -62,15 +62,15 @@
 - (void)tableView:(NSTableView *)aTableView
    setObjectValue:(id)theObject
    forTableColumn:(NSTableColumn *)aTableColumn
-              row:(int)rowIndex;
- 
+			  row:(int)rowIndex;
+
 // Called by the table view on it's data source object (this) when a given cell
 // is about to be displayed.  Used to implement invalid domain highlighting if
 // the user has chosen to enable it.
 - (void)tableView:(NSTableView *)tableView
   willDisplayCell:(id)cell
    forTableColumn:(NSTableColumn *)tableColumn
-              row:(int)row;
+			  row:(int)row;
 
 // Called when the button-menu item is clicked to import all incoming mail
 // servers from Thunderbird.  Adds to the domain list array all incoming mail

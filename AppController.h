@@ -3,17 +3,17 @@
 //  SelfControl
 //
 //  Created by Charlie Stigler on 1/29/09.
-//  Copyright 2009 Eyebeam. 
+//  Copyright 2009 Eyebeam.
 
 // This file is part of SelfControl.
-// 
+//
 // SelfControl is free software:  you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
 // This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of 
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
@@ -34,18 +34,18 @@
 // The main controller for the SelfControl app, which includes several methods
 // to handle command flow and acts as delegate for the initial window.
 @interface AppController : NSObject {
-  IBOutlet id blockDurationSlider_;
-  IBOutlet id blockSliderTimeDisplayLabel_;
-  IBOutlet id submitButton_;
-  IBOutlet id initialWindow_;
-  IBOutlet id domainListMenuItem_;
-  IBOutlet id editBlacklistButton_;
-  IBOutlet DomainListWindowController* domainListWindowController_;
-  IBOutlet TimerWindowController* timerWindowController_;
-  NSUserDefaults* defaults_;
-  NSLock* refreshUILock_;
-  BOOL blockIsOn;
-  BOOL addingBlock;
+	IBOutlet id blockDurationSlider_;
+	IBOutlet id blockSliderTimeDisplayLabel_;
+	IBOutlet id submitButton_;
+	IBOutlet id initialWindow_;
+	IBOutlet id domainListMenuItem_;
+	IBOutlet id editBlacklistButton_;
+	IBOutlet DomainListWindowController* domainListWindowController_;
+	IBOutlet TimerWindowController* timerWindowController_;
+	NSUserDefaults* defaults_;
+	NSLock* refreshUILock_;
+	BOOL blockIsOn;
+	BOOL addingBlock;
 }
 
 @property (assign) BOOL addingBlock;
@@ -63,10 +63,10 @@
 - (IBAction)updateTimeSliderDisplay:(id)sender;
 
 /* // Gets authorization for and then immediately removes the block by calling
-// SelfControl's helper tool with the appropriate arguments.  This can be used
-// for testing, but should not be called at all during normal execution of the
-// program.
-- (void)removeBlock; */
+ // SelfControl's helper tool with the appropriate arguments.  This can be used
+ // for testing, but should not be called at all during normal execution of the
+ // program.
+ - (void)removeBlock; */
 
 // Called when the main Start button is clicked.  Launchs installBlock in another
 // thread after some checking and syncing.

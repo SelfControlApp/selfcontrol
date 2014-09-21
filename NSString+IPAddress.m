@@ -28,22 +28,22 @@
 // and licensed under the Attribution-ShareAlike 3.0 Unported license
 // http://stackoverflow.com/questions/1679152/how-to-validate-an-ip-address-with-regular-expression-in-objective-c
 
-- (BOOL)isValidIPv4Address {  
-  struct in_addr throwaway;
-  int success = inet_pton(AF_INET, [self UTF8String], &throwaway);
-  
-  return (success == 1);
+- (BOOL)isValidIPv4Address {
+	struct in_addr throwaway;
+	int success = inet_pton(AF_INET, [self UTF8String], &throwaway);
+
+	return (success == 1);
 }
 
 - (BOOL)isValidIPv6Address {
-  struct in6_addr throwaway;
-  int success = inet_pton(AF_INET6, [self UTF8String], &throwaway);
-  
-  return (success == 1);
+	struct in6_addr throwaway;
+	int success = inet_pton(AF_INET6, [self UTF8String], &throwaway);
+
+	return (success == 1);
 }
 
 - (BOOL)isValidIPAddress {
-  return ([self isValidIPv4Address] || [self isValidIPv6Address]);
+	return ([self isValidIPv4Address] || [self isValidIPv6Address]);
 }
 
 @end

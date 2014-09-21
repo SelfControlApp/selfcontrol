@@ -26,13 +26,13 @@
 #import "NSString+IPAddress.h"
 
 @interface BlockManager : NSObject {
-  NSOperationQueue* opQueue;
-  PacketFilter* pf;
-  HostFileBlocker* hostsBlocker;
-  BOOL hostsBlockingEnabled;
-  BOOL isWhitelist;
-  BOOL allowLocal;
-  BOOL includeCommonSubdomains;
+	NSOperationQueue* opQueue;
+	PacketFilter* pf;
+	HostFileBlocker* hostsBlocker;
+	BOOL hostsBlockingEnabled;
+	BOOL isWhitelist;
+	BOOL allowLocal;
+	BOOL includeCommonSubdomains;
 }
 
 - (BlockManager*)initAsWhitelist:(BOOL)whitelist;

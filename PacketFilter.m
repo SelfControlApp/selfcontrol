@@ -22,19 +22,19 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 
 - (void)addBlockHeader:(NSMutableString*)configText {
 	[configText appendString: @"# Options\n"
-	                            "set block-policy drop\n"
-	                            "set fingerprints \"/etc/pf.os\"\n"
-	                            "set ruleset-optimization basic\n"
-	                            "set skip on lo0\n"
-	                            "\n"
-	                            "#\n"
-	                            "# org.eyebeam ruleset for SelfControl blocks\n"
-															"#\n"];
+	 "set block-policy drop\n"
+	 "set fingerprints \"/etc/pf.os\"\n"
+	 "set ruleset-optimization basic\n"
+	 "set skip on lo0\n"
+	 "\n"
+	 "#\n"
+	 "# org.eyebeam ruleset for SelfControl blocks\n"
+	 "#\n"];
 
 	if (isWhitelist) {
 		[configText appendString: @"deny out proto tcp from any to any\n"
-		                           "deny out proto udp from any to any\n"
-		                           "\n"];
+		 "deny out proto udp from any to any\n"
+		 "\n"];
 	}
 }
 - (void)addWhitelistFooter:(NSMutableString*)configText {
@@ -105,19 +105,19 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 	NSPipe* inPipe = [[NSPipe alloc] init];
 	NSFileHandle* readHandle = [inPipe fileHandleForReading];
 	[task setStandardOutput: inPipe];
-    [task setStandardError: inPipe];
+	[task setStandardError: inPipe];
 
 	[task launch];
 	NSString* pfctlOutput = [[NSString alloc] initWithData: [readHandle readDataToEndOfFile] encoding: NSUTF8StringEncoding];
 	[readHandle closeFile];
 	[task waitUntilExit];
 
-    NSLog(@"pfctlOutput length: %lu", (unsigned long)[pfctlOutput length]);
-    NSLog(@"pfctlOutput: %@", pfctlOutput);
+	NSLog(@"pfctlOutput length: %lu", (unsigned long)[pfctlOutput length]);
+	NSLog(@"pfctlOutput: %@", pfctlOutput);
 	NSArray* lines = [pfctlOutput componentsSeparatedByString: @"\n"];
 	for (NSString* line in lines) {
 		if ([line hasPrefix: @"Token: "]) {
-            NSLog(@"FOUND TOKEN! %@", line);
+			NSLog(@"FOUND TOKEN! %@", line);
 			[self writeConfigurationWithToken: line];
 			break;
 		}
@@ -128,7 +128,7 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 
 - (int)stopBlock:(BOOL)force {
 	NSString* currentConfig = [NSString stringWithContentsOfFile: @"/etc/pf.conf" encoding: NSUTF8StringEncoding error: nil];
-    NSString* token = nil;
+	NSString* token = nil;
 
 	NSArray* lines = [currentConfig componentsSeparatedByString: @"\n"];
 	for (NSString* line in lines) {
@@ -153,18 +153,18 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 	[newConf writeToFile: @"/etc/pf.conf" atomically: true encoding: NSUTF8StringEncoding error: nil];
 
 	NSString* commandString;
-    NSLog(@"Building command string, token is %@", token);
+	NSLog(@"Building command string, token is %@", token);
 	if ([token length] && !force) {
-        commandString = [NSString stringWithFormat: @"-X %@ -f /etc/pf.conf", token];
+		commandString = [NSString stringWithFormat: @"-X %@ -f /etc/pf.conf", token];
 	} else {
 		NSLog(@"Couldn't find pf token or using force, disabling with -d");
 		commandString = @"-d -f /etc/pf.conf";
 	}
-    NSArray* args = [commandString componentsSeparatedByString: @" "];
+	NSArray* args = [commandString componentsSeparatedByString: @" "];
 
 	NSTask* task = [NSTask launchedTaskWithLaunchPath: kPfctlExecutablePath arguments: args];
 	[task waitUntilExit];
-    NSLog(@"SUCCESSFULLY CLEARED SC BLOCK WITH TERMINATION STATUS %d", [task terminationStatus]);
+	NSLog(@"SUCCESSFULLY CLEARED SC BLOCK WITH TERMINATION STATUS %d", [task terminationStatus]);
 	return [task terminationStatus];
 }
 
@@ -173,8 +173,8 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 
 	if ([pfConf rangeOfString: @"/etc/pf.anchors/org.eyebeam"].location == NSNotFound) {
 		[pfConf appendString: @"\n"
-		                       "anchor \"org.eyebeam\"\n"
-                       		 "load anchor \"org.eyebeam\" from \"/etc/pf.anchors/org.eyebeam\"\n"];
+		 "anchor \"org.eyebeam\"\n"
+		 "load anchor \"org.eyebeam\" from \"/etc/pf.anchors/org.eyebeam\"\n"];
 	}
 
 	[pfConf writeToFile: @"/etc/pf.conf" atomically: true encoding: NSUTF8StringEncoding error: nil];
