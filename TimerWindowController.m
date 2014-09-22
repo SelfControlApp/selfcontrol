@@ -136,7 +136,7 @@
 		if(numStrikes == 2) {
 			NSLog(@"WARNING: Block should have ended two seconds ago, starting scheckup");
 			[self runCheckup];
-		} else if(numStrikes == 30) {
+		} else if(numStrikes == 61) {
 			// OK, so apparently scheckup couldn't remove the block either
 			// The user needs some help, let's open the FAQ for them.
 			NSLog(@"WARNING: Block should have ended thirty seconds ago! Probable permablock.");
