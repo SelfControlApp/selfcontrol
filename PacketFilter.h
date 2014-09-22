@@ -17,7 +17,7 @@
 - (void)addBlockHeader:(NSMutableString*)configText;
 - (void)addWhitelistFooter:(NSMutableString*)configText;
 - (void)addRuleWithIP:(NSString*)ip port:(int)port maskLen:(int)maskLen;
-- (void)writeConfigurationWithToken:(NSString*)token;
+- (void)writeConfiguration;
 - (int)startBlock;
 - (int)stopBlock:(BOOL)force;
 - (void)addSelfControlConfig;

@@ -48,7 +48,6 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 }
 
 - (void)addRuleWithIP:(NSString*)ip port:(int)port maskLen:(int)maskLen {
-	NSLog(@"add rule with ip %@", ip);
 	NSMutableString* rule = [NSMutableString stringWithString: @"from any to "];
 
 	if (ip) {
@@ -74,15 +73,10 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 	}
 }
 
-- (void)writeConfigurationWithToken:(NSString*)token {
+- (void)writeConfiguration {
 	NSMutableString* filterConfiguration = [NSMutableString stringWithCapacity: 1000];
 
-	if (token) {
-		[filterConfiguration appendString: [NSString stringWithFormat: @"# %@\n", token]];
-	}
-
 	[self addBlockHeader: filterConfiguration];
-	NSLog(@"Rules: %@", rules);
 	[filterConfiguration appendString: rules];
 
 	if (isWhitelist) {
@@ -94,7 +88,7 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 
 - (int)startBlock {
 	[self addSelfControlConfig];
-	[self writeConfigurationWithToken: nil];
+	[self writeConfiguration];
 
 	NSArray* args = [@"-E -f /etc/pf.conf" componentsSeparatedByString: @" "];
 
@@ -112,13 +106,10 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 	[readHandle closeFile];
 	[task waitUntilExit];
 
-	NSLog(@"pfctlOutput length: %lu", (unsigned long)[pfctlOutput length]);
-	NSLog(@"pfctlOutput: %@", pfctlOutput);
 	NSArray* lines = [pfctlOutput componentsSeparatedByString: @"\n"];
 	for (NSString* line in lines) {
-		if ([line hasPrefix: @"Token: "]) {
-			NSLog(@"FOUND TOKEN! %@", line);
-			[self writeConfigurationWithToken: line];
+		if ([line hasPrefix: @"Token : "]) {
+			[self writePFToken: [line substringFromIndex: [@"Token : " length]] error: nil];
 			break;
 		}
 	}
@@ -126,22 +117,20 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 	return [task terminationStatus];
 }
 
-- (int)stopBlock:(BOOL)force {
-	NSString* currentConfig = [NSString stringWithContentsOfFile: @"/etc/pf.conf" encoding: NSUTF8StringEncoding error: nil];
-	NSString* token = nil;
+- (void)writePFToken:(NSString*)token error:(NSError**)error {
+	[token writeToFile: @"/etc/SelfControlPFToken" atomically: YES encoding: NSUTF8StringEncoding error: error];
+}
+- (NSString*)readPFToken:(NSError**)error {
+	return [NSString stringWithContentsOfFile: @"/etc/SelfControlPFToken" encoding: NSUTF8StringEncoding error: error];
+}
 
-	NSArray* lines = [currentConfig componentsSeparatedByString: @"\n"];
-	for (NSString* line in lines) {
-		if ([line hasPrefix: @"# Token :"]) {
-			token = [line substringFromIndex: [@"# Token : " length]];
-			break;
-		}
-	}
+- (int)stopBlock:(BOOL)force {
+	NSError* err;
+	NSString* token = [self readPFToken: &err];
 
 	[@"" writeToFile: @"/etc/pf.anchors/org.eyebeam" atomically: true encoding: NSUTF8StringEncoding error: nil];
-
 	NSString* mainConf = [NSString stringWithContentsOfFile: @"/etc/pf.conf" encoding: NSUTF8StringEncoding error: nil];
-	lines = [mainConf componentsSeparatedByString: @"\n"];
+	NSArray* lines = [mainConf componentsSeparatedByString: @"\n"];
 	NSMutableString* newConf = [NSMutableString stringWithCapacity: [mainConf length]];
 	for (NSString* line in lines) {
 		if ([line rangeOfString: @"org.eyebeam"].location == NSNotFound) {
@@ -153,18 +142,15 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 	[newConf writeToFile: @"/etc/pf.conf" atomically: true encoding: NSUTF8StringEncoding error: nil];
 
 	NSString* commandString;
-	NSLog(@"Building command string, token is %@", token);
 	if ([token length] && !force) {
 		commandString = [NSString stringWithFormat: @"-X %@ -f /etc/pf.conf", token];
 	} else {
-		NSLog(@"Couldn't find pf token or using force, disabling with -d");
 		commandString = @"-d -f /etc/pf.conf";
 	}
 	NSArray* args = [commandString componentsSeparatedByString: @" "];
 
 	NSTask* task = [NSTask launchedTaskWithLaunchPath: kPfctlExecutablePath arguments: args];
 	[task waitUntilExit];
-	NSLog(@"SUCCESSFULLY CLEARED SC BLOCK WITH TERMINATION STATUS %d", [task terminationStatus]);
 	return [task terminationStatus];
 }
 
