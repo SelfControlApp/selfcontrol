@@ -64,12 +64,14 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 		[rule appendString: [NSString stringWithFormat: @" port %d", port]];
 	}
 
-	if (isWhitelist) {
-		[rules appendString: [NSString stringWithFormat: @"pass out proto tcp %@\n", rule]];
-		[rules appendString: [NSString stringWithFormat: @"pass out proto udp %@\n", rule]];
-	} else {
-		[rules appendString: [NSString stringWithFormat: @"block out proto tcp %@\n", rule]];
-		[rules appendString: [NSString stringWithFormat: @"block out proto udp %@\n", rule]];
+	@synchronized(self) {
+		if (isWhitelist) {
+			[rules appendString: [NSString stringWithFormat: @"pass out proto tcp %@\n", rule]];
+			[rules appendString: [NSString stringWithFormat: @"pass out proto udp %@\n", rule]];
+		} else {
+			[rules appendString: [NSString stringWithFormat: @"block out proto tcp %@\n", rule]];
+			[rules appendString: [NSString stringWithFormat: @"block out proto udp %@\n", rule]];
+		}
 	}
 }
 

@@ -44,6 +44,23 @@
 		CB9366E80F85BEF100EF284E /* NSRemoveTemplate.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB9366E60F85BEF100EF284E /* NSRemoveTemplate.jpg */; };
 		CB9366E90F85BEF100EF284E /* NSAddTemplate.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB9366E70F85BEF100EF284E /* NSAddTemplate.jpg */; };
 		CB9C80DD19CF93EA00CDCAE1 /* SelfControlUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9C80DC19CF93EA00CDCAE1 /* SelfControlUtilities.m */; };
+		CB9C80FC19CFB79700CDCAE1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9C80FB19CFB79700CDCAE1 /* main.m */; };
+		CB9C80FF19CFB79700CDCAE1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9C80FE19CFB79700CDCAE1 /* AppDelegate.m */; };
+		CB9C810119CFB79700CDCAE1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB9C810019CFB79700CDCAE1 /* Images.xcassets */; };
+		CB9C810419CFB79700CDCAE1 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB9C810219CFB79700CDCAE1 /* MainMenu.xib */; };
+		CB9C811E19CFBA8500CDCAE1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9C811D19CFBA8500CDCAE1 /* main.m */; };
+		CB9C812219CFBB3800CDCAE1 /* PacketFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = CBCA91111960D87300AFD20C /* PacketFilter.m */; };
+		CB9C812319CFBB4400CDCAE1 /* LaunchctlHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */; };
+		CB9C812419CFBB4E00CDCAE1 /* HostFileBlocker.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB0AE290FA74566006229B3 /* HostFileBlocker.m */; };
+		CB9C812519CFBB5500CDCAE1 /* HelperCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD266AE11ED7D9C00042CD8 /* HelperCommon.m */; };
+		CB9C812619CFBB5E00CDCAE1 /* BlockManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806116C1FDBE0059C99A /* BlockManager.m */; };
+		CB9C812719CFBB6400CDCAE1 /* NSString+IPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806516C237F10059C99A /* NSString+IPAddress.m */; };
+		CB9C812819CFBB7B00CDCAE1 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9E901D0F397FFA006DE6E4 /* Security.framework */; };
+		CB9C812A19CFBB8000CDCAE1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9C812919CFBB8000CDCAE1 /* Foundation.framework */; };
+		CB9C812C19CFBB8400CDCAE1 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9C812B19CFBB8400CDCAE1 /* Cocoa.framework */; };
+		CB9C812F19CFBBB900CDCAE1 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9C812B19CFBB8400CDCAE1 /* Cocoa.framework */; };
+		CB9C813019CFBBC000CDCAE1 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9E901D0F397FFA006DE6E4 /* Security.framework */; };
+		CB9C813219CFBBE200CDCAE1 /* SCKillerHelper in Copy Helper Tools */ = {isa = PBXBuildFile; fileRef = CB9C811B19CFBA8500CDCAE1 /* SCKillerHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		CBA2AFD90F39EC46005AFEBE /* HelperMain.m in Sources */ = {isa = PBXBuildFile; fileRef = CBA2AFD80F39EC46005AFEBE /* HelperMain.m */; };
 		CBA2E75B0F41388800571571 /* IPFirewall.m in Sources */ = {isa = PBXBuildFile; fileRef = CBA2E75A0F41388800571571 /* IPFirewall.m */; };
 		CBB0AE2A0FA74566006229B3 /* HostFileBlocker.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB0AE290FA74566006229B3 /* HostFileBlocker.m */; };
@@ -78,6 +95,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		CB9C812D19CFBBA300CDCAE1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CB9C811A19CFBA8500CDCAE1;
+			remoteInfo = SCKillerHelper;
+		};
 		CB9F02F216C10CE6003054EE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -123,6 +147,26 @@
 				CB93655C0F85806A00EF284E /* Sparkle.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB9C811919CFBA8500CDCAE1 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		CB9C813119CFBBD300CDCAE1 /* Copy Helper Tools */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 6;
+			files = (
+				CB9C813219CFBBE200CDCAE1 /* SCKillerHelper in Copy Helper Tools */,
+			);
+			name = "Copy Helper Tools";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -173,6 +217,17 @@
 		CB9C80F019CFAAB300CDCAE1 /* ko */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ko; path = ko.lproj/TimerWindow.xib; sourceTree = "<group>"; };
 		CB9C80F119CFAAC600CDCAE1 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CB9C80F219CFAACC00CDCAE1 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CB9C80F719CFB79700CDCAE1 /* SelfControl Killer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SelfControl Killer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB9C80FA19CFB79700CDCAE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CB9C80FB19CFB79700CDCAE1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		CB9C80FD19CFB79700CDCAE1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		CB9C80FE19CFB79700CDCAE1 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		CB9C810019CFB79700CDCAE1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		CB9C810319CFB79700CDCAE1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		CB9C811B19CFBA8500CDCAE1 /* SCKillerHelper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SCKillerHelper; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB9C811D19CFBA8500CDCAE1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		CB9C812919CFBB8000CDCAE1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		CB9C812B19CFBB8400CDCAE1 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		CB9E90190F397FF6006DE6E4 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		CB9E901D0F397FFA006DE6E4 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		CBA2AFD20F39EC12005AFEBE /* org.eyebeam.SelfControl */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = org.eyebeam.SelfControl; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -271,6 +326,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CB9C80F419CFB79700CDCAE1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB9C813019CFBBC000CDCAE1 /* Security.framework in Frameworks */,
+				CB9C812F19CFBBB900CDCAE1 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB9C811819CFBA8500CDCAE1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB9C812C19CFBB8400CDCAE1 /* Cocoa.framework in Frameworks */,
+				CB9C812A19CFBB8000CDCAE1 /* Foundation.framework in Frameworks */,
+				CB9C812819CFBB7B00CDCAE1 /* Security.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -301,6 +375,8 @@
 				8D1107320486CEB800E47090 /* SelfControl.app */,
 				CBA2AFD20F39EC12005AFEBE /* org.eyebeam.SelfControl */,
 				CB5E20BF0FAE0CDC006DBFC8 /* scheckup */,
+				CB9C80F719CFB79700CDCAE1 /* SelfControl Killer.app */,
+				CB9C811B19CFBA8500CDCAE1 /* SCKillerHelper */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -318,6 +394,7 @@
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				CB42939A0F53A819008E10CA /* COPYING */,
+				CB9C80F819CFB79700CDCAE1 /* SelfControl Killer */,
 			);
 			name = SelfControl;
 			sourceTree = "<group>";
@@ -351,6 +428,8 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CB9C812B19CFBB8400CDCAE1 /* Cocoa.framework */,
+				CB9C812919CFBB8000CDCAE1 /* Foundation.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
@@ -400,6 +479,37 @@
 				CBBF4EE715830D7300E364D9 /* TimerWindow.xib */,
 			);
 			name = Interfaces;
+			sourceTree = "<group>";
+		};
+		CB9C80F819CFB79700CDCAE1 /* SelfControl Killer */ = {
+			isa = PBXGroup;
+			children = (
+				CB9C811C19CFBA8500CDCAE1 /* SCKillerHelper */,
+				CB9C80FD19CFB79700CDCAE1 /* AppDelegate.h */,
+				CB9C80FE19CFB79700CDCAE1 /* AppDelegate.m */,
+				CB9C810019CFB79700CDCAE1 /* Images.xcassets */,
+				CB9C810219CFB79700CDCAE1 /* MainMenu.xib */,
+				CB9C80F919CFB79700CDCAE1 /* Supporting Files */,
+			);
+			path = "SelfControl Killer";
+			sourceTree = "<group>";
+		};
+		CB9C80F919CFB79700CDCAE1 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CB9C80FA19CFB79700CDCAE1 /* Info.plist */,
+				CB9C80FB19CFB79700CDCAE1 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CB9C811C19CFBA8500CDCAE1 /* SCKillerHelper */ = {
+			isa = PBXGroup;
+			children = (
+				CB9C811D19CFBA8500CDCAE1 /* main.m */,
+			);
+			name = SCKillerHelper;
+			path = ../SCKillerHelper;
 			sourceTree = "<group>";
 		};
 		CBD266C611ED82DB00042CD8 /* Helper Tools */ = {
@@ -457,6 +567,42 @@
 			productReference = CB5E20BF0FAE0CDC006DBFC8 /* scheckup */;
 			productType = "com.apple.product-type.tool";
 		};
+		CB9C80F619CFB79700CDCAE1 /* SelfControl Killer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CB9C811119CFB79700CDCAE1 /* Build configuration list for PBXNativeTarget "SelfControl Killer" */;
+			buildPhases = (
+				CB9C80F319CFB79700CDCAE1 /* Sources */,
+				CB9C80F419CFB79700CDCAE1 /* Frameworks */,
+				CB9C80F519CFB79700CDCAE1 /* Resources */,
+				CB9C813119CFBBD300CDCAE1 /* Copy Helper Tools */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CB9C812E19CFBBA300CDCAE1 /* PBXTargetDependency */,
+			);
+			name = "SelfControl Killer";
+			productName = "SelfControl Killer";
+			productReference = CB9C80F719CFB79700CDCAE1 /* SelfControl Killer.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CB9C811A19CFBA8500CDCAE1 /* SCKillerHelper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CB9C811F19CFBA8500CDCAE1 /* Build configuration list for PBXNativeTarget "SCKillerHelper" */;
+			buildPhases = (
+				CB9C811719CFBA8500CDCAE1 /* Sources */,
+				CB9C811819CFBA8500CDCAE1 /* Frameworks */,
+				CB9C811919CFBA8500CDCAE1 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SCKillerHelper;
+			productName = SCKillerHelper;
+			productReference = CB9C811B19CFBA8500CDCAE1 /* SCKillerHelper */;
+			productType = "com.apple.product-type.tool";
+		};
 		CBA2AFD10F39EC12005AFEBE /* org.eyebeam.SelfControl */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CBA2AFD60F39EC33005AFEBE /* Build configuration list for PBXNativeTarget "org.eyebeam.SelfControl" */;
@@ -492,6 +638,12 @@
 					CB5E20BE0FAE0CDC006DBFC8 = {
 						DevelopmentTeam = L6W5L88KN7;
 					};
+					CB9C80F619CFB79700CDCAE1 = {
+						CreatedOnToolsVersion = 6.0.1;
+					};
+					CB9C811A19CFBA8500CDCAE1 = {
+						CreatedOnToolsVersion = 6.0.1;
+					};
 					CBA2AFD10F39EC12005AFEBE = {
 						DevelopmentTeam = L6W5L88KN7;
 					};
@@ -512,6 +664,7 @@
 				tr,
 				pt_BR,
 				ko,
+				Base,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* SelfControl */;
 			projectDirPath = "";
@@ -521,6 +674,8 @@
 				CBA2AFD10F39EC12005AFEBE /* org.eyebeam.SelfControl */,
 				CB5E20BE0FAE0CDC006DBFC8 /* SelfControl-checkup */,
 				CB9F02EE16C10CDE003054EE /* Distribution */,
+				CB9C80F619CFB79700CDCAE1 /* SelfControl Killer */,
+				CB9C811A19CFBA8500CDCAE1 /* SCKillerHelper */,
 			);
 		};
 /* End PBXProject section */
@@ -543,6 +698,15 @@
 				CBBF4E801582F7A200E364D9 /* MainMenu.xib in Resources */,
 				CBBF4E8B1582F8BD00E364D9 /* InfoPlist.strings in Resources */,
 				CBBF4E8E1582F8E000E364D9 /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB9C80F519CFB79700CDCAE1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB9C810119CFB79700CDCAE1 /* Images.xcassets in Resources */,
+				CB9C810419CFB79700CDCAE1 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -575,7 +739,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# LOCATION=\"${BUILT_PRODUCTS_DIR}\"/\"${FRAMEWORKS_FOLDER_PATH}\"\n# IDENTITY=\"CBF1D729B7289202914D7B65E0E8871D139E1C93\"\n# codesign --verbose --force --sign \"$IDENTITY\" \"$LOCATION/Sparkle.framework/Versions/A\"";
+			shellScript = "LOCATION=\"${BUILT_PRODUCTS_DIR}\"/\"${FRAMEWORKS_FOLDER_PATH}\"\nIDENTITY=\"CBF1D729B7289202914D7B65E0E8871D139E1C93\"\ncodesign --verbose --force --sign \"$IDENTITY\" \"$LOCATION/Sparkle.framework/Versions/A\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -611,6 +775,29 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CB9C80F319CFB79700CDCAE1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB9C80FF19CFB79700CDCAE1 /* AppDelegate.m in Sources */,
+				CB9C80FC19CFB79700CDCAE1 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB9C811719CFBA8500CDCAE1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB9C811E19CFBA8500CDCAE1 /* main.m in Sources */,
+				CB9C812719CFBB6400CDCAE1 /* NSString+IPAddress.m in Sources */,
+				CB9C812619CFBB5E00CDCAE1 /* BlockManager.m in Sources */,
+				CB9C812519CFBB5500CDCAE1 /* HelperCommon.m in Sources */,
+				CB9C812419CFBB4E00CDCAE1 /* HostFileBlocker.m in Sources */,
+				CB9C812319CFBB4400CDCAE1 /* LaunchctlHelper.m in Sources */,
+				CB9C812219CFBB3800CDCAE1 /* PacketFilter.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CBA2AFCF0F39EC12005AFEBE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -629,6 +816,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		CB9C812E19CFBBA300CDCAE1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CB9C811A19CFBA8500CDCAE1 /* SCKillerHelper */;
+			targetProxy = CB9C812D19CFBBA300CDCAE1 /* PBXContainerItemProxy */;
+		};
 		CB9F02F316C10CE6003054EE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8D1107260486CEB800E47090 /* SelfControl */;
@@ -647,6 +839,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		CB9C810219CFB79700CDCAE1 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CB9C810319CFB79700CDCAE1 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
 		CBBF4E7B1582F7A200E364D9 /* DomainList.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -740,7 +940,6 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_ENTITLEMENTS = SelfControl.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -764,7 +963,6 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_ENTITLEMENTS = SelfControl.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -784,6 +982,7 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = SelfControl.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer: Charles Stigler (22JB4UZFSZ)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -793,7 +992,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -804,6 +1003,7 @@
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = SelfControl.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer: Charles Stigler (22JB4UZFSZ)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -825,7 +1025,6 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_MODEL_TUNING = G5;
@@ -849,7 +1048,6 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_MODEL_TUNING = G5;
@@ -865,6 +1063,154 @@
 				PRODUCT_NAME = scheckup;
 				PROVISIONING_PROFILE = "";
 				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		CB9C811219CFB79700CDCAE1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "SelfControl Killer/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		CB9C811319CFB79700CDCAE1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "SelfControl Killer/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		CB9C812019CFBA8500CDCAE1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		CB9C812119CFBA8500CDCAE1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -969,6 +1315,22 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		CB9C811119CFB79700CDCAE1 /* Build configuration list for PBXNativeTarget "SelfControl Killer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB9C811219CFB79700CDCAE1 /* Debug */,
+				CB9C811319CFB79700CDCAE1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		CB9C811F19CFBA8500CDCAE1 /* Build configuration list for PBXNativeTarget "SCKillerHelper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB9C812019CFBA8500CDCAE1 /* Debug */,
+				CB9C812119CFBA8500CDCAE1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		CB9F02EF16C10CDE003054EE /* Build configuration list for PBXAggregateTarget "Distribution" */ = {
 			isa = XCConfigurationList;

@@ -47,9 +47,9 @@ NSString* const kIPFirewallSelfControlFooter = @"// END SELFCONTROL BLOCK";
 }
 
 - (void)enqueueFirewallCommand:(NSArray*)args {
-	NSInvocationOperation* op = [[NSInvocationOperation alloc] initWithTarget: self
-																	 selector: @selector(runFirewallCommand:)
-																	   object: args];
+	NSBlockOperation* op = [NSBlockOperation blockOperationWithBlock:^{
+		[self runFirewallCommand: args];
+	}];
 	[opQueue addOperation: op];
 }
 

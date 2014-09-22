@@ -568,7 +568,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 									  &authorizationRef);
 
 		if(status) {
-			NSLog(@"ERROR: Failed to authorize block start.");
+			NSLog(@"ERROR: Failed to authorize block, start.");
 			self.addingBlock = false;
 			[self refreshUserInterface];
 			return;

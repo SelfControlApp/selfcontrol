@@ -31,14 +31,29 @@
 	<string>org.eyebeam.${PRODUCT_NAME:identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
-	<key>LSHasLocalizedDisplayName</key>
-	<true/>
 	<key>CFBundleName</key>
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.5.2a2</string>
 	<key>CFBundleVersion</key>
-	<string>1.5.1</string>
+	<string>1.5.2 alpha 2</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.productivity</string>
+	<key>LSHasLocalizedDisplayName</key>
+	<true/>
+	<key>LSMinimumSystemVersionByArchitecture</key>
+	<dict>
+		<key>i386</key>
+		<string>10.5</string>
+		<key>x86_64</key>
+		<string>10.6</string>
+	</dict>
+	<key>NSAppleScriptEnabled</key>
+	<true/>
+	<key>NSHumanReadableCopyright</key>
+	<string>Free and open-source under the GPL</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
@@ -47,20 +62,5 @@
 	<string>http://selfcontrolapp.com/SelfControlAppcast.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
-	<key>NSAppleScriptEnabled</key>
-	<true/>
-	<key>CFBundleShortVersionString</key>
-	<string>1.5.1</string>
-	<key>LSApplicationCategoryType</key>
-	<string>public.app-category.productivity</string>
-	<key>NSHumanReadableCopyright</key>
-	<string>Free and open-source under the GPL</string>
-	<key>LSMinimumSystemVersionByArchitecture</key>
-	<dict>
-		<key>i386</key>
-		<string>10.5</string>
-		<key>x86_64</key>
-		<string>10.6</string>
-	</dict>
 </dict>
 </plist>

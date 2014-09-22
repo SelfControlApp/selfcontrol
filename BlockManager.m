@@ -40,6 +40,7 @@
 - (BlockManager*)initAsWhitelist:(BOOL)whitelist allowLocal:(BOOL)local includeCommonSubdomains:(BOOL)blockCommon {
 	if(self = [super init]) {
 		opQueue = [[NSOperationQueue alloc] init];
+		[opQueue setMaxConcurrentOperationCount: 10];
 
 		pf = [[PacketFilter alloc] initAsWhitelist: whitelist];
 		hostsBlocker = [[HostFileBlocker alloc] init];
@@ -87,17 +88,9 @@
 }
 
 - (void)enqueueBlockEntryWithHostName:(NSString*)hostName port:(int)portNum maskLen:(int)maskLen {
-	__unsafe_unretained NSString* unsafeHostName = [NSString stringWithString: hostName];
-	NSMethodSignature* signature = [self methodSignatureForSelector: @selector(addBlockEntryWithHostName:port:maskLen:)];
-	NSInvocation* invocation = [NSInvocation invocationWithMethodSignature: signature];
-	[invocation setTarget: self];
-	[invocation setSelector: @selector(addBlockEntryWithHostName:port:maskLen:)];
-	[invocation setArgument: &unsafeHostName atIndex: 2];
-	[invocation setArgument: &portNum atIndex: 3];
-	[invocation setArgument: &maskLen atIndex: 4];
-	[invocation retainArguments];
-
-	NSInvocationOperation* op = [[NSInvocationOperation alloc] initWithInvocation: invocation];
+	NSBlockOperation* op = [NSBlockOperation blockOperationWithBlock:^{
+		[self addBlockEntryWithHostName: hostName port: portNum maskLen: maskLen];
+	}];
 	[opQueue addOperation: op];
 }
 
@@ -154,13 +147,11 @@
 
 - (void)addBlockEntries:(NSArray*)blockList {
 	for(int i = 0; i < [blockList count]; i++) {
-		NSInvocationOperation* op = [[NSInvocationOperation alloc] initWithTarget: self
-																		 selector: @selector(addBlockEntryFromString:)
-																		   object: blockList[i]];
+		NSBlockOperation* op = [NSBlockOperation blockOperationWithBlock:^{
+			[self addBlockEntryFromString: blockList[i]];
+		}];
 		[opQueue addOperation: op];
 	}
-
-	[opQueue setMaxConcurrentOperationCount: 10];
 }
 
 - (BOOL)clearBlock {
@@ -202,6 +193,43 @@
 	}
 
 	[hostsBlocker deleteBackupHostsFile];
+
+	return clearedSuccessfully;
+}
+
+- (BOOL)forceClearBlock {
+	[pf stopBlock: YES];
+	BOOL pfSuccess = ![pf containsSelfControlBlock];
+
+	[hostsBlocker removeSelfControlBlock];
+	BOOL hostSuccess = [hostsBlocker writeNewFileContents];
+	// Revert the host file blocker's file contents to disk so we can check
+	// whether or not it still contains the block (aka we messed up).
+	[hostsBlocker revertFileContentsToDisk];
+	hostSuccess = hostSuccess && ![hostsBlocker containsSelfControlBlock];
+
+	BOOL clearedSuccessfully = hostSuccess && pfSuccess;
+
+	if(clearedSuccessfully)
+		NSLog(@"INFO: Block successfully cleared.");
+	else {
+		if (!pfSuccess) {
+			NSLog(@"ERROR: Error clearing pf block. This may result in a permanent block.");
+		}
+		if (!hostSuccess) {
+			NSLog(@"WARNING: Error removing hostfile block.  Attempting to restore host file backup.");
+			[hostsBlocker restoreBackupHostsFile];
+		}
+
+		clearedSuccessfully = ![self blockIsActive];
+
+		if ([hostsBlocker containsSelfControlBlock]) {
+			NSLog(@"ERROR: Host file backup could not be restored.  This may result in a permanent block.");
+		}
+		if (clearedSuccessfully) {
+			NSLog(@"INFO: Firewall rules successfully cleared.");
+		}
+	}
 
 	return clearedSuccessfully;
 }

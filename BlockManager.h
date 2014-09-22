@@ -45,6 +45,7 @@
 - (void)addBlockEntryWithHostName:(NSString*)hostName port:(int)portNum maskLen:(int)maskLen;
 - (void)addBlockEntries:(NSArray*)blockList;
 - (BOOL)clearBlock;
+- (BOOL)forceClearBlock;
 - (BOOL)blockIsActive;
 
 - (NSArray*)commonSubdomainsForHostName:(NSString*)hostName;
