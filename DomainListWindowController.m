@@ -65,7 +65,7 @@
 	// This isn't the most efficient way to do this, but the code is much cleaner
 	// than other methods and the domain blacklist will probably never be large
 	// enough for it to be an issue.
-	unsigned int index = [selected firstIndex];
+	NSUInteger index = [selected firstIndex];
 	int shift = 0;
 	while (index != NSNotFound) {
 		if ((index - shift) >= [domainList_ count])
