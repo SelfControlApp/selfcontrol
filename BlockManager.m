@@ -68,12 +68,6 @@
 		NSLog(@"disabled host blocking");
 		hostsBlockingEnabled = NO;
 	}
-
-	//  if(allowLocal) {
-	//    [ipfw addSelfControlBlockRuleAllowingIP: @"10.0.0.0" maskLength: 8];
-	//    [ipfw addSelfControlBlockRuleAllowingIP: @"172.16.0.0" maskLength: 12];
-	//    [ipfw addSelfControlBlockRuleAllowingIP: @"192.168.0.0" maskLength: 16];
-	//  }
 }
 
 - (void)finalizeBlock {
@@ -120,6 +114,12 @@
 }
 
 - (void)addBlockEntryFromString:(NSString*)entry {
+	// don't do anything with blank hostnames, however they got on the list...
+	// otherwise they could end up screwing up the block
+	if (![[entry stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]] length]) {
+		return;
+	}
+
 	NSDictionary* hostInfo = [self parseHostString: entry];
 
 	NSString* hostName = hostInfo[@"hostName"];
@@ -127,6 +127,12 @@
 	NSNumber* maskLenObject = hostInfo[@"maskLen"];
 	int portNum = portNumObject ? [portNumObject intValue] : 0;
 	int maskLen = maskLenObject ? [maskLenObject intValue] : 0;
+
+	// we won't block host * (everywhere) without a port number... it's just too likely to be mistaken.
+	// Use a whitelist if that's what you want!
+	if ([hostName isEqualToString: @"*"] && !portNum) {
+		return;
+	}
 
 	[self addBlockEntryWithHostName: hostName port: portNum maskLen: maskLen];
 

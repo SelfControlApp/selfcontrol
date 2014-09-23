@@ -211,47 +211,6 @@ void printStatus(int status) {
 	fflush(stdout);
 }
 
-void parseHost(NSString* hostName, NSString** baseName, int* maskLength, int* portNumber) {
-	int maskLen = -1;
-	int portNum = -1;
-
-	NSArray* splitString = [hostName componentsSeparatedByString: @"/"];
-
-	hostName = splitString[0];
-
-	NSString* stringToSearchForPort = hostName;
-
-	if([splitString count] >= 2) {
-		maskLen = [splitString[1] intValue];
-		// If the int value is 0, we couldn't find a valid integer representation
-		// in the split off string
-		if(maskLen == 0)
-			maskLen = -1;
-
-		stringToSearchForPort = splitString[1];
-	}
-
-	splitString = [stringToSearchForPort componentsSeparatedByString: @":"];
-
-	if([stringToSearchForPort isEqualToString: hostName])
-		hostName = splitString[0];
-
-	if([splitString count] >= 2) {
-		portNum = [splitString[1] intValue];
-		// If the int value is 0, we couldn't find a valid integer representation
-		// in the split off string
-		if(portNum == 0)
-			portNum = -1;
-	}
-
-	if([hostName isEqualToString: @""])
-		hostName = @"*";
-
-	if(baseName) *baseName = hostName;
-	if(portNumber) *portNumber = portNum;
-	if(maskLength) *maskLength = maskLen;
-}
-
 void removeBlock(signed long long int controllingUID) {
 	setDefaultsValue(@"BlockStartedDate", [NSDate distantFuture], controllingUID);
 

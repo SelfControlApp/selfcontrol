@@ -749,7 +749,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#LOCATION=\"${BUILT_PRODUCTS_DIR}\"/\"${FRAMEWORKS_FOLDER_PATH}\"\n#IDENTITY=\"CBF1D729B7289202914D7B65E0E8871D139E1C93\"\n#codesign --verbose --force --sign \"$IDENTITY\" \"$LOCATION/Sparkle.framework/Versions/A\"";
+			shellScript = "LOCATION=\"${BUILT_PRODUCTS_DIR}\"/\"${FRAMEWORKS_FOLDER_PATH}\"\nIDENTITY=\"CBF1D729B7289202914D7B65E0E8871D139E1C93\"\ncodesign --verbose --force --sign \"$IDENTITY\" \"$LOCATION/Sparkle.framework/Versions/A\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -998,7 +998,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = SelfControl.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer: Charles Stigler (22JB4UZFSZ)";
+				CODE_SIGN_IDENTITY = "Developer ID Application: Charlie Stigler";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -1019,7 +1019,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = SelfControl.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer: Charles Stigler (22JB4UZFSZ)";
+				CODE_SIGN_IDENTITY = "Developer ID Application: Charlie Stigler";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = c99;

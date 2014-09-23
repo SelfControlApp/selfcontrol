@@ -126,9 +126,11 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	if(([[defaults_ objectForKey:@"BlockStartedDate"] timeIntervalSinceNow] < 0)) {
 		// This method shouldn't be getting called, a block is on (block started date
 		// is in the past, not distantFuture) so the Start button should be disabled.
-
-		NSLog(@"WARNING: Block started date is in the past (%@)", [defaults_ objectForKey: @"BlockStartedDate"]);
-
+		NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
+										   code: -102
+									   userInfo: @{NSLocalizedDescriptionKey: @"We can't start a block, because one is currently ongoing."}];
+		[NSApp presentError: err];
+		return;
 	}
 	if([[defaults_ arrayForKey:@"HostBlacklist"] count] == 0) {
 		// Since the Start button should be disabled when the blacklist has no entries,

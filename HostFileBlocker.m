@@ -66,7 +66,6 @@ NSString* const kDefaultHostsFileContents = @"##\n"
 
 - (BOOL)writeNewFileContents {
 	[strLock lock];
-	NSLog(@"write to %@: %@", kHostFileBlockerPath, newFileContents);
 
 	BOOL ret = [newFileContents writeToFile: kHostFileBlockerPath atomically: YES encoding: stringEnc error: NULL];
 
