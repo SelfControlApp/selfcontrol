@@ -34,6 +34,7 @@
 	NSLock* addToBlockLock;
 	int numStrikes;
 	IBOutlet NSButton* addToBlockButton_;
+	IBOutlet NSButton* killBlockButton_;
 	IBOutlet NSPanel* addSheet_;
 	IBOutlet NSTextField* addToBlockTextField_;
 }
@@ -65,6 +66,8 @@
 // Run specialized SelfControl checkup program to make sure timer should still be on,
 // and remove it if it isn't supposed to be on.
 - (void)runCheckup;
+
+- (IBAction)killBlock:(id)sender;
 
 - (void)resetStrikes;
 

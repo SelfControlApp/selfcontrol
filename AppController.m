@@ -265,6 +265,13 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	[blockDurationSlider_ setMaxValue: [defaults_ integerForKey: @"MaxBlockLength"]];
 	[blockDurationSlider_ setNumberOfTickMarks: numTickMarks];
 
+	[blockDurationSlider_ bind: @"value"
+					  toObject: [NSUserDefaultsController sharedUserDefaultsController]
+				   withKeyPath: @"values.BlockDuration"
+					   options: @{
+								  NSContinuouslyUpdatesValueBindingOption: @YES
+								  }];
+
 	[self refreshUserInterface];
 
 	unsigned int major, minor, bugfix;

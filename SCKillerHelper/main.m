@@ -117,7 +117,8 @@ int main(int argc, char* argv[]) {
 		seteuid(controllingUID);
 		task = [NSTask launchedTaskWithLaunchPath: @"/usr/bin/defaults"
 										arguments: @[@"delete",
-													 @"org.eyebeam.SelfControl"]];
+													 @"org.eyebeam.SelfControl",
+													 @"BlockStartedDate"]];
 		[task waitUntilExit];
 		status = [task terminationStatus];
 		[log appendFormat: @"Deleting the defaults returned: %d\n", status];

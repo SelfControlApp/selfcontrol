@@ -42,7 +42,6 @@
 	[[self window] center];
 	[[self window] makeKeyAndOrderFront: self];
 
-
 	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
 
 	NSWindow* window = [self window];
@@ -57,6 +56,9 @@
 	[window setHidesOnDeactivate: NO];
 
 	[window makeKeyAndOrderFront: self];
+
+	killBlockButton_.hidden = YES;
+	addToBlockButton_.hidden = NO;
 
 	NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
 
@@ -88,8 +90,6 @@
 	//If the dialog isn't focused, instead of getting a NSTimer, we get null.
 	//Scheduling the timer from the main thread seems to work.
 	[self performSelectorOnMainThread: @selector(hackAroundMainThreadtimer:) withObject: timerUpdater_ waitUntilDone: YES];
-
-
 }
 
 
@@ -133,14 +133,15 @@
 		// scheckup.
 		numStrikes++;
 
+		NSLog(@"numStrikes: %d", numStrikes);
 		if(numStrikes == 2) {
 			NSLog(@"WARNING: Block should have ended two seconds ago, starting scheckup");
 			[self runCheckup];
-		} else if(numStrikes == 61) {
-			// OK, so apparently scheckup couldn't remove the block either
-			// The user needs some help, let's open the FAQ for them.
-			NSLog(@"WARNING: Block should have ended thirty seconds ago! Probable permablock.");
-			[[NSApp delegate] openFAQ: self];
+		} else if(numStrikes > 10) {
+			// OK, so apparently scheckup couldn't remove the block either. Enable manual block removal.
+			if (numStrikes == 10) NSLog(@"WARNING: Block should have ended a minute ago! Probable permablock.");
+			addToBlockButton_.hidden = YES;
+			killBlockButton_.hidden = NO;
 		}
 
 		return;
@@ -226,7 +227,93 @@
 }
 
 - (void)runCheckup {
-	[NSTask launchedTaskWithLaunchPath: @"/Library/PrivilegedHelperTools/scheckup" arguments: @[]];
+	@try {
+		[NSTask launchedTaskWithLaunchPath: @"/Library/PrivilegedHelperTools/scheckup" arguments: @[]];
+	}
+	@catch (NSException* exception) {
+		NSLog(@"ERROR: exception %@ caught while trying to launch scheckup", exception);
+	}
+}
+
+- (IBAction)killBlock:(id)sender {
+	AuthorizationRef authorizationRef;
+	char* helperToolPath = [self selfControlKillerHelperToolPathUTF8String];
+	int helperToolPathSize = strlen(helperToolPath);
+	AuthorizationItem right = {
+		kAuthorizationRightExecute,
+		helperToolPathSize,
+		helperToolPath,
+		0
+	};
+	AuthorizationRights authRights = {
+		1,
+		&right
+	};
+	AuthorizationFlags myFlags = kAuthorizationFlagDefaults |
+	kAuthorizationFlagExtendRights |
+	kAuthorizationFlagInteractionAllowed;
+	OSStatus status;
+
+	status = AuthorizationCreate (&authRights,
+								  kAuthorizationEmptyEnvironment,
+								  myFlags,
+								  &authorizationRef);
+
+	if(status) {
+		NSLog(@"ERROR: Failed to authorize block kill.");
+		return;
+	}
+
+	char uidString[10];
+	snprintf(uidString, sizeof(uidString), "%d", getuid());
+
+	char* args[] = { uidString, NULL };
+
+	status = AuthorizationExecuteWithPrivileges(authorizationRef,
+												helperToolPath,
+												kAuthorizationFlagDefaults,
+												args,
+												NULL);
+	if(status) {
+		NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", status);
+
+		NSError* err = [NSError errorWithDomain: @"org.eyebeam.SelfControl-Killer" code: status userInfo: @{NSLocalizedDescriptionKey: @"Error executing privileged helper tool."}];
+
+		[NSApp presentError: err];
+
+		return;
+	} else {
+		NSAlert* alert = [[NSAlert alloc] init];
+		[alert setMessageText: @"Success!"];
+		[alert setInformativeText:@"The block was cleared successfully.  You can find the log file, named SelfControl-Killer.log, in your Documents folder. If you're still having issues, please check out the SelfControl FAQ on GitHub."];
+		[alert addButtonWithTitle: @"OK"];
+		[alert runModal];
+	}
+}
+
+- (NSString*)selfControlKillerHelperToolPath {
+	static NSString* path;
+
+	// Cache the path so it doesn't have to be searched for again.
+	if(!path) {
+		NSBundle* thisBundle = [NSBundle mainBundle];
+		path = [thisBundle pathForAuxiliaryExecutable: @"SCKillerHelper"];
+	}
+
+	return path;
+}
+- (char*)selfControlKillerHelperToolPathUTF8String {
+	static char* path;
+
+	// Cache the converted path so it doesn't have to be converted again
+	if(!path) {
+		path = malloc(512);
+		[[self selfControlKillerHelperToolPath] getCString: path
+												 maxLength: 512
+												  encoding: NSUTF8StringEncoding];
+	}
+
+	return path;
 }
 
 - (void)dealloc {

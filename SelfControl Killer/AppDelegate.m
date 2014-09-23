@@ -97,7 +97,6 @@
 
 	return path;
 }
-
 - (char*)selfControlKillerHelperToolPathUTF8String {
 	static char* path;
 

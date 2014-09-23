@@ -60,7 +60,7 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 		[rule appendString: [NSString stringWithFormat: @"/%d", maskLen]];
 	}
 
-	if (maskLen) {
+	if (port) {
 		[rule appendString: [NSString stringWithFormat: @" port %d", port]];
 	}
 

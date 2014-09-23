@@ -89,6 +89,7 @@
 		CBD2677411ED92F700042CD8 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		CBD2677511ED92F800042CD8 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		CBD2677811ED932D00042CD8 /* scheckup in Copy Helper Tools */ = {isa = PBXBuildFile; fileRef = CB5E20BF0FAE0CDC006DBFC8 /* scheckup */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		CBE2BB5619D10CCC0077124F /* SCKillerHelper in Copy Helper Tools */ = {isa = PBXBuildFile; fileRef = CB9C811B19CFBA8500CDCAE1 /* SCKillerHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		CBE4401B0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE4401A0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m */; };
 		CBE5C40B0F4D4531003DB900 /* ButtonWithPopupMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE5C40A0F4D4531003DB900 /* ButtonWithPopupMenu.m */; };
 		CBEE50C10F48C21F00F5DF1C /* TimerWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */; };
@@ -116,6 +117,13 @@
 			remoteGlobalIDString = CB5E20BE0FAE0CDC006DBFC8;
 			remoteInfo = "SelfControl-checkup";
 		};
+		CBE2BB5419D10CBB0077124F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CB9C811A19CFBA8500CDCAE1;
+			remoteInfo = SCKillerHelper;
+		};
 		CBEF43CF0F7BB7F6009A9FDF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -132,6 +140,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 6;
 			files = (
+				CBE2BB5619D10CCC0077124F /* SCKillerHelper in Copy Helper Tools */,
 				CB1ED4480F56686400EFECEE /* org.eyebeam.SelfControl in Copy Helper Tools */,
 				CBD2677811ED932D00042CD8 /* scheckup in Copy Helper Tools */,
 			);
@@ -542,6 +551,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				CBE2BB5519D10CBB0077124F /* PBXTargetDependency */,
 				CBEF43D00F7BB7F6009A9FDF /* PBXTargetDependency */,
 				CBD2676811ED921A00042CD8 /* PBXTargetDependency */,
 			);
@@ -739,7 +749,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "LOCATION=\"${BUILT_PRODUCTS_DIR}\"/\"${FRAMEWORKS_FOLDER_PATH}\"\nIDENTITY=\"CBF1D729B7289202914D7B65E0E8871D139E1C93\"\ncodesign --verbose --force --sign \"$IDENTITY\" \"$LOCATION/Sparkle.framework/Versions/A\"";
+			shellScript = "#LOCATION=\"${BUILT_PRODUCTS_DIR}\"/\"${FRAMEWORKS_FOLDER_PATH}\"\n#IDENTITY=\"CBF1D729B7289202914D7B65E0E8871D139E1C93\"\n#codesign --verbose --force --sign \"$IDENTITY\" \"$LOCATION/Sparkle.framework/Versions/A\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -830,6 +840,11 @@
 			isa = PBXTargetDependency;
 			target = CB5E20BE0FAE0CDC006DBFC8 /* SelfControl-checkup */;
 			targetProxy = CBD2676711ED921A00042CD8 /* PBXContainerItemProxy */;
+		};
+		CBE2BB5519D10CBB0077124F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CB9C811A19CFBA8500CDCAE1 /* SCKillerHelper */;
+			targetProxy = CBE2BB5419D10CBB0077124F /* PBXContainerItemProxy */;
 		};
 		CBEF43D00F7BB7F6009A9FDF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1323,6 +1338,7 @@
 				CB9C811319CFB79700CDCAE1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CB9C811F19CFBA8500CDCAE1 /* Build configuration list for PBXNativeTarget "SCKillerHelper" */ = {
 			isa = XCConfigurationList;
@@ -1331,6 +1347,7 @@
 				CB9C812119CFBA8500CDCAE1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CB9F02EF16C10CDE003054EE /* Build configuration list for PBXAggregateTarget "Distribution" */ = {
 			isa = XCConfigurationList;
