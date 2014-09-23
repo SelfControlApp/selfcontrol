@@ -32,8 +32,8 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 	 "#\n"];
 
 	if (isWhitelist) {
-		[configText appendString: @"deny out proto tcp from any to any\n"
-		 "deny out proto udp from any to any\n"
+		[configText appendString: @"block return out proto tcp from any to any\n"
+		 "block return out proto udp from any to any\n"
 		 "\n"];
 	}
 }
@@ -69,8 +69,8 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 			[rules appendString: [NSString stringWithFormat: @"pass out proto tcp %@\n", rule]];
 			[rules appendString: [NSString stringWithFormat: @"pass out proto udp %@\n", rule]];
 		} else {
-			[rules appendString: [NSString stringWithFormat: @"block out proto tcp %@\n", rule]];
-			[rules appendString: [NSString stringWithFormat: @"block out proto udp %@\n", rule]];
+			[rules appendString: [NSString stringWithFormat: @"block return out proto tcp %@\n", rule]];
+			[rules appendString: [NSString stringWithFormat: @"block return out proto udp %@\n", rule]];
 		}
 	}
 }
