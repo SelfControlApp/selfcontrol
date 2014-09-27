@@ -28,13 +28,13 @@
 		CB0385E219D77051004614B6 /* PreferencesGeneralViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB0385DF19D77051004614B6 /* PreferencesGeneralViewController.xib */; };
 		CB1E7A6E0F9AEA9B00D158BC /* ERRORS in Resources */ = {isa = PBXBuildFile; fileRef = CB1E7A6D0F9AEA9B00D158BC /* ERRORS */; };
 		CB1ED4480F56686400EFECEE /* org.eyebeam.SelfControl in Copy Helper Tools */ = {isa = PBXBuildFile; fileRef = CBA2AFD20F39EC12005AFEBE /* org.eyebeam.SelfControl */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		CB249FED19D782230087BBB6 /* SelfControlIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = CB249FEC19D782230087BBB6 /* SelfControlIcon.icns */; };
 		CB25806216C1FDBE0059C99A /* BlockManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806116C1FDBE0059C99A /* BlockManager.m */; };
 		CB25806316C1FDBE0059C99A /* BlockManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806116C1FDBE0059C99A /* BlockManager.m */; };
 		CB25806616C237F10059C99A /* NSString+IPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806516C237F10059C99A /* NSString+IPAddress.m */; };
 		CB25806716C237F10059C99A /* NSString+IPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806516C237F10059C99A /* NSString+IPAddress.m */; };
 		CB25806816C237F10059C99A /* NSString+IPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806516C237F10059C99A /* NSString+IPAddress.m */; };
 		CB40A8680FBC7DE700167727 /* SelfControlBlocklist.icns in Resources */ = {isa = PBXBuildFile; fileRef = CB40A8670FBC7DE700167727 /* SelfControlBlocklist.icns */; };
-		CB4C58D60F3F8F2A00B5D7CB /* SelfControlIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = CB4C58D50F3F8F2A00B5D7CB /* SelfControlIcon.icns */; };
 		CB4C58DA0F3F90B000B5D7CB /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = CB4C58D90F3F90B000B5D7CB /* Credits.rtf */; };
 		CB529BBF0F32B7ED00564FB8 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB529BBE0F32B7ED00564FB8 /* AppController.m */; };
 		CB54D44C0F93E33300AA22E9 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9E901D0F397FFA006DE6E4 /* Security.framework */; };
@@ -223,6 +223,7 @@
 		CB03862219D77C91004614B6 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "pt-BR"; path = "pt-BR.lproj/PreferencesGeneralViewController.xib"; sourceTree = "<group>"; };
 		CB03862319D77EB2004614B6 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		CB1E7A6D0F9AEA9B00D158BC /* ERRORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ERRORS; sourceTree = "<group>"; };
+		CB249FEC19D782230087BBB6 /* SelfControlIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SelfControlIcon.icns; sourceTree = "<group>"; };
 		CB25806016C1FDBE0059C99A /* BlockManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockManager.h; sourceTree = "<group>"; };
 		CB25806116C1FDBE0059C99A /* BlockManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockManager.m; sourceTree = "<group>"; };
 		CB25806416C237F10059C99A /* NSString+IPAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+IPAddress.h"; sourceTree = "<group>"; };
@@ -230,7 +231,6 @@
 		CB40A8670FBC7DE700167727 /* SelfControlBlocklist.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SelfControlBlocklist.icns; sourceTree = "<group>"; };
 		CB42939A0F53A819008E10CA /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
 		CB4295C20F53EF8C008E10CA /* org.eyebeam.SelfControl.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = org.eyebeam.SelfControl.plist; sourceTree = "<group>"; };
-		CB4C58D50F3F8F2A00B5D7CB /* SelfControlIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SelfControlIcon.icns; sourceTree = "<group>"; };
 		CB4C58D90F3F90B000B5D7CB /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		CB505E3515AE2C0100D90367 /* config.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = config.yml; sourceTree = "<group>"; };
 		CB529BBD0F32B7ED00564FB8 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
@@ -459,7 +459,7 @@
 				CB4295C20F53EF8C008E10CA /* org.eyebeam.SelfControl.plist */,
 				CB4C58D90F3F90B000B5D7CB /* Credits.rtf */,
 				8D1107310486CEB800E47090 /* Info.plist */,
-				CB4C58D50F3F8F2A00B5D7CB /* SelfControlIcon.icns */,
+				CB249FEC19D782230087BBB6 /* SelfControlIcon.icns */,
 				CBBF4E891582F8BD00E364D9 /* InfoPlist.strings */,
 			);
 			name = Resources;
@@ -733,7 +733,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CBBCA14B0F54E1B300C75324 /* org.eyebeam.SelfControl.plist in Resources */,
-				CB4C58D60F3F8F2A00B5D7CB /* SelfControlIcon.icns in Resources */,
 				CB4C58DA0F3F90B000B5D7CB /* Credits.rtf in Resources */,
 				CB9365620F8581B000EF284E /* dsa_pub.pem in Resources */,
 				CB9366E80F85BEF100EF284E /* NSRemoveTemplate.jpg in Resources */,
@@ -745,6 +744,7 @@
 				CBBF4E7F1582F7A200E364D9 /* DomainList.xib in Resources */,
 				CBBF4E801582F7A200E364D9 /* MainMenu.xib in Resources */,
 				CBBF4E8B1582F8BD00E364D9 /* InfoPlist.strings in Resources */,
+				CB249FED19D782230087BBB6 /* SelfControlIcon.icns in Resources */,
 				CBBF4E8E1582F8E000E364D9 /* Localizable.strings in Resources */,
 				CB0385E119D77051004614B6 /* PreferencesAdvancedViewController.xib in Resources */,
 			);
@@ -1323,6 +1323,7 @@
 		CB9F02F016C10CDE003054EE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -1330,6 +1331,7 @@
 		CB9F02F116C10CDE003054EE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
