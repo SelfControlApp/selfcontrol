@@ -395,7 +395,7 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						<object class="NSMatrix" id="485477882">
 							<reference key="NSNextResponder" ref="1006"/>
 							<int key="NSvFlags">290</int>
-							<string key="NSFrame">{{285, 12}, {95, 30}}</string>
+							<string key="NSFrame">{{274, 8}, {117, 36}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
 							<bool key="NSEnabled">YES</bool>
@@ -439,7 +439,7 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 									<int key="NSPeriodicInterval">75</int>
 								</object>
 							</array>
-							<string key="NSCellSize">{95, 14}</string>
+							<string key="NSCellSize">{117, 17}</string>
 							<string key="NSIntercellSpacing">{4, 2}</string>
 							<int key="NSMatrixFlags">1151868928</int>
 							<string key="NSCellClass">NSActionCell</string>
@@ -475,7 +475,7 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="130181475"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1680, 1028}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
 				<string key="NSMinSize">{400, 337}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<bool key="NSWindowIsRestorable">YES</bool>
@@ -1100,13 +1100,13 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					</dictionary>
 					<object class="NSMutableDictionary" key="outlets">
 						<string key="NS.key.0">domainListTableView_</string>
-						<string key="NS.object.0">id</string>
+						<string key="NS.object.0">NSTableView</string>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<string key="NS.key.0">domainListTableView_</string>
 						<object class="IBToOneOutletInfo" key="NS.object.0">
 							<string key="name">domainListTableView_</string>
-							<string key="candidateClassName">id</string>
+							<string key="candidateClassName">NSTableView</string>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
