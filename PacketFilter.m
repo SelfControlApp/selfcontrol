@@ -92,7 +92,7 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 	[self addSelfControlConfig];
 	[self writeConfiguration];
 
-	NSArray* args = [@"-E -f /etc/pf.conf" componentsSeparatedByString: @" "];
+	NSArray* args = [@"-E -f /etc/pf.conf -F states" componentsSeparatedByString: @" "];
 
 	NSTask* task = [[NSTask alloc] init];
 	[task setLaunchPath: kPfctlExecutablePath];
