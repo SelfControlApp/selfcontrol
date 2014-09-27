@@ -1,0 +1,28 @@
+-101 - Attempting to add block, but a block appears to be in progress.
+-102 - Attempting to add block, but no blocklist is set.
+-103 - Attempting to add host to block, but no block appears to be in progress.
+-104 - The helper tool crashed.  This may cause unexpected errors.
+-105 - The helper tool crashed.  This may cause unexpected errors.
+
+-201 - Helper tool not launched as root.
+-202 - Helper tool launched with insufficient arguments.
+-203 - Host blocklist not set
+-204 - Could not write launchd plist file to LaunchDaemons folder.
+-205 - Could not create PrivilegedHelperTools directory.
+-206 - Could not change permissions on PrivilegedHelperTools directory.
+-207 - Could not delete old helper binary.
+-208 - Could not copy SelfControl's helper binary to PrivilegedHelperTools directory.
+-209 - Could not change permissions on SelfControl's helper binary.
+-210 - Insufficient block information found.
+-211 - Launch daemon load returned a failure status code.
+-212 - Remove option called
+-213 - Refreshing domain blacklist, but no block is currently ongoing.
+-214 - Insufficient block information found.
+-215 - Checkup ran but no block found.
+-216 - Could not write lock file.
+-217 - Could not write lock file.
+-218 - Could not remove lock file.
+-219 - Trying to add block but lock file already found.  Please try again.
+
+-901 - Selected sound not found.
+-902 - Error serializing blacklist for save

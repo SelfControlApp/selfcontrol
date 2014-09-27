@@ -1,0 +1,41 @@
+[config]
+project = SelfControl
+
+[master_files]
+en.lproj/Localizable.strings = d003a5111aad658a5eface51d3f1e18b
+
+[locale_map]
+SCKillerHelper/en.lproj/Localizable.strings/de = SCKillerHelper/de.lproj/Localizable.strings
+SelfControl Killer/en.lproj/Localizable.strings/de = SelfControl Killer/de.lproj/Localizable.strings
+en.lproj/Localizable.strings/de = de.lproj/Localizable.strings
+SCKillerHelper/en.lproj/Localizable.strings/es = SCKillerHelper/es.lproj/Localizable.strings
+SelfControl Killer/en.lproj/Localizable.strings/es = SelfControl Killer/es.lproj/Localizable.strings
+en.lproj/Localizable.strings/es = es.lproj/Localizable.strings
+SCKillerHelper/en.lproj/Localizable.strings/sv = SCKillerHelper/sv.lproj/Localizable.strings
+SelfControl Killer/en.lproj/Localizable.strings/sv = SelfControl Killer/sv.lproj/Localizable.strings
+en.lproj/Localizable.strings/sv = sv.lproj/Localizable.strings
+SCKillerHelper/en.lproj/Localizable.strings/ja = SCKillerHelper/ja.lproj/Localizable.strings
+SelfControl Killer/en.lproj/Localizable.strings/ja = SelfControl Killer/ja.lproj/Localizable.strings
+en.lproj/Localizable.strings/ja = ja.lproj/Localizable.strings
+SCKillerHelper/en.lproj/Localizable.strings/zh-Hans = SCKillerHelper/zh-Hans.lproj/Localizable.strings
+SelfControl Killer/en.lproj/Localizable.strings/zh-Hans = SelfControl Killer/zh-Hans.lproj/Localizable.strings
+en.lproj/Localizable.strings/zh-Hans = zh-Hans.lproj/Localizable.strings
+SCKillerHelper/en.lproj/Localizable.strings/it = SCKillerHelper/it.lproj/Localizable.strings
+SelfControl Killer/en.lproj/Localizable.strings/it = SelfControl Killer/it.lproj/Localizable.strings
+en.lproj/Localizable.strings/it = it.lproj/Localizable.strings
+SCKillerHelper/en.lproj/Localizable.strings/tr = SCKillerHelper/tr.lproj/Localizable.strings
+SelfControl Killer/en.lproj/Localizable.strings/tr = SelfControl Killer/tr.lproj/Localizable.strings
+en.lproj/Localizable.strings/tr = tr.lproj/Localizable.strings
+SCKillerHelper/en.lproj/Localizable.strings/pt_BR = SCKillerHelper/pt_BR.lproj/Localizable.strings
+SelfControl Killer/en.lproj/Localizable.strings/pt_BR = SelfControl Killer/pt_BR.lproj/Localizable.strings
+en.lproj/Localizable.strings/pt_BR = pt_BR.lproj/Localizable.strings
+SCKillerHelper/en.lproj/Localizable.strings/ko = SCKillerHelper/ko.lproj/Localizable.strings
+SelfControl Killer/en.lproj/Localizable.strings/ko = SelfControl Killer/ko.lproj/Localizable.strings
+en.lproj/Localizable.strings/ko = ko.lproj/Localizable.strings
+SCKillerHelper/en.lproj/Localizable.strings/Base = SCKillerHelper/Base.lproj/Localizable.strings
+SelfControl Killer/en.lproj/Localizable.strings/Base = SelfControl Killer/Base.lproj/Localizable.strings
+en.lproj/Localizable.strings/Base = Base.lproj/Localizable.strings
+
+[status]
+data = []
+

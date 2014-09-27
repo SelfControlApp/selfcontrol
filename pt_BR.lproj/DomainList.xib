@@ -62,7 +62,7 @@
 					</object>
 					<object class="NSMenuItem" id="757550507">
 						<reference key="NSMenu" ref="858794104"/>
-						<string key="NSTitle">From Mail</string>
+						<string key="NSTitle">Do Email</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="962547820"/>
@@ -70,11 +70,11 @@
 						<string key="NSAction">submenuAction:</string>
 						<reference key="NSTarget" ref="608908632"/>
 						<object class="NSMenu" key="NSSubmenu" id="608908632">
-							<string key="NSTitle">From Mail</string>
+							<string key="NSTitle">Do Email</string>
 							<array class="NSMutableArray" key="NSMenuItems">
 								<object class="NSMenuItem" id="511159420">
 									<reference key="NSMenu" ref="608908632"/>
-									<string key="NSTitle">Incoming mail servers</string>
+									<string key="NSTitle">Servidores de entrada de correio</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="962547820"/>
@@ -82,7 +82,7 @@
 								</object>
 								<object class="NSMenuItem" id="149543870">
 									<reference key="NSMenu" ref="608908632"/>
-									<string key="NSTitle">Outgoing mail servers</string>
+									<string key="NSTitle">Servidores de saída de correio</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="962547820"/>
@@ -93,7 +93,7 @@
 					</object>
 					<object class="NSMenuItem" id="234071714">
 						<reference key="NSMenu" ref="858794104"/>
-						<string key="NSTitle">From Thunderbird</string>
+						<string key="NSTitle">Do Thunderbird</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="962547820"/>
@@ -101,11 +101,11 @@
 						<string key="NSAction">submenuAction:</string>
 						<reference key="NSTarget" ref="979691912"/>
 						<object class="NSMenu" key="NSSubmenu" id="979691912">
-							<string key="NSTitle">From Thunderbird</string>
+							<string key="NSTitle">Do Thunderbird</string>
 							<array class="NSMutableArray" key="NSMenuItems">
 								<object class="NSMenuItem" id="1047535082">
 									<reference key="NSMenu" ref="979691912"/>
-									<string key="NSTitle">Incoming mail servers</string>
+									<string key="NSTitle">Servidores de entrada de correio</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="962547820"/>
@@ -113,7 +113,7 @@
 								</object>
 								<object class="NSMenuItem" id="20402428">
 									<reference key="NSMenu" ref="979691912"/>
-									<string key="NSTitle">Outgoing mail servers</string>
+									<string key="NSTitle">Servidores de saída de correio</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="962547820"/>
@@ -129,7 +129,7 @@
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{342, 259}, {400, 315}}</string>
 				<int key="NSWTFlags">1618478080</int>
-				<string key="NSWindowTitle">Domain Blacklist</string>
+				<string key="NSWindowTitle">Lista negra de Domínios</string>
 				<string key="NSWindowClass">NSWindow</string>
 				<nil key="NSViewClass"/>
 				<nil key="NSUserInterfaceItemIdentifier"/>
@@ -360,7 +360,7 @@
 							<object class="NSButtonCell" key="NSCell" id="533928521">
 								<int key="NSCellFlags">-2080374784</int>
 								<int key="NSCellFlags2">134217728</int>
-								<string key="NSContents">Import</string>
+								<string key="NSContents">Importar</string>
 								<reference key="NSSupport" ref="621900050"/>
 								<reference key="NSControlView" ref="938727056"/>
 								<int key="NSButtonFlags">-2033434624</int>
@@ -395,9 +395,10 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						<object class="NSMatrix" id="485477882">
 							<reference key="NSNextResponder" ref="1006"/>
 							<int key="NSvFlags">290</int>
-							<string key="NSFrame">{{300, 12}, {80, 30}}</string>
+							<string key="NSFrame">{{300, 6}, {93, 36}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView"/>
 							<bool key="NSEnabled">YES</bool>
 							<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 							<int key="NSNumRows">2</int>
@@ -406,7 +407,7 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 								<object class="NSButtonCell" id="387359892">
 									<int key="NSCellFlags">-2080374784</int>
 									<int key="NSCellFlags2">0</int>
-									<string key="NSContents">Blacklist</string>
+									<string key="NSContents">Lista Negra</string>
 									<reference key="NSSupport" ref="621900050"/>
 									<reference key="NSControlView" ref="485477882"/>
 									<int key="NSTag">1</int>
@@ -423,7 +424,7 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 								<object class="NSButtonCell" id="37274100">
 									<int key="NSCellFlags">67108864</int>
 									<int key="NSCellFlags2">0</int>
-									<string key="NSContents">Whitelist</string>
+									<string key="NSContents">Lista Branca</string>
 									<reference key="NSSupport" ref="621900050"/>
 									<reference key="NSControlView" ref="485477882"/>
 									<int key="NSButtonFlags">1211912448</int>
@@ -524,7 +525,7 @@ QXBwbGUgQ29tcHV0ZXIsIEluYy4sIDIwMDUAAAAAA</bytes>
 									<int key="NSPeriodicInterval">75</int>
 								</object>
 							</array>
-							<string key="NSCellSize">{80, 14}</string>
+							<string key="NSCellSize">{93, 17}</string>
 							<string key="NSIntercellSpacing">{4, 2}</string>
 							<int key="NSMatrixFlags">1151868928</int>
 							<string key="NSCellClass">NSActionCell</string>
@@ -1087,6 +1088,7 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 						<string key="addBlock:">id</string>
 						<string key="open:">id</string>
 						<string key="openFAQ:">id</string>
+						<string key="openPreferences:">id</string>
 						<string key="save:">id</string>
 						<string key="showDomainList:">id</string>
 						<string key="soundSelectionChanged:">id</string>
@@ -1103,6 +1105,10 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 						</object>
 						<object class="IBActionInfo" key="openFAQ:">
 							<string key="name">openFAQ:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="openPreferences:">
+							<string key="name">openPreferences:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="save:">
@@ -1168,7 +1174,7 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../AppController.h</string>
+						<string key="minorKey">AppController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1177,9 +1183,9 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 						<string key="addBlock:">id</string>
 						<string key="open:">id</string>
 						<string key="openFAQ:">id</string>
+						<string key="openPreferences:">id</string>
 						<string key="save:">id</string>
 						<string key="showDomainList:">id</string>
-						<string key="soundSelectionChanged:">id</string>
 						<string key="updateTimeSliderDisplay:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
@@ -1195,16 +1201,16 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 							<string key="name">openFAQ:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="openPreferences:">
+							<string key="name">openPreferences:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="save:">
 							<string key="name">save:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="showDomainList:">
 							<string key="name">showDomainList:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="soundSelectionChanged:">
-							<string key="name">soundSelectionChanged:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="updateTimeSliderDisplay:">
@@ -1214,7 +1220,7 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../AppController.m</string>
+						<string key="minorKey">AppController.m</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1233,7 +1239,7 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../ButtonWithPopupMenu.h</string>
+						<string key="minorKey">ButtonWithPopupMenu.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1275,18 +1281,18 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 					</dictionary>
 					<object class="NSMutableDictionary" key="outlets">
 						<string key="NS.key.0">domainListTableView_</string>
-						<string key="NS.object.0">id</string>
+						<string key="NS.object.0">NSTableView</string>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<string key="NS.key.0">domainListTableView_</string>
 						<object class="IBToOneOutletInfo" key="NS.object.0">
 							<string key="name">domainListTableView_</string>
-							<string key="candidateClassName">id</string>
+							<string key="candidateClassName">NSTableView</string>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../DomainListWindowController.h</string>
+						<string key="minorKey">DomainListWindowController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1327,7 +1333,7 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../DomainListWindowController.m</string>
+						<string key="minorKey">DomainListWindowController.m</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1388,7 +1394,7 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../TimerWindowController.h</string>
+						<string key="minorKey">TimerWindowController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1419,7 +1425,7 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../TimerWindowController.m</string>
+						<string key="minorKey">TimerWindowController.m</string>
 					</object>
 				</object>
 			</array>

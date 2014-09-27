@@ -21,6 +21,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "AppController.h"
+#import "MASPreferencesWindowController.h"
+#import "PreferencesGeneralViewController.h"
+#import "PreferencesAdvancedViewController.h"
 
 NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
@@ -242,6 +245,17 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	timerWindowController_ = nil;
 }
 
+- (IBAction)openPreferences:(id)sender {
+	if (preferencesWindowController_ == nil) {
+		NSViewController* generalViewController = [[PreferencesGeneralViewController alloc] init];
+		NSViewController* advancedViewController = [[PreferencesAdvancedViewController alloc] init];
+		NSString* title = NSLocalizedString(@"Preferences", @"Common title for Preferences window");
+
+		preferencesWindowController_ = [[MASPreferencesWindowController alloc] initWithViewControllers: @[generalViewController, advancedViewController] title: title];
+	}
+	[preferencesWindowController_ showWindow: nil];
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	[NSApp setDelegate: self];
 
@@ -347,37 +361,6 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	BOOL reachable = SCNetworkCheckReachabilityByName ("google.com", &status);
 
 	return reachable && (status & kSCNetworkFlagsReachable) && !(status & kSCNetworkFlagsConnectionRequired);
-}
-
-- (IBAction)soundSelectionChanged:(id)sender {
-	// Map the tags used in interface builder to the sound
-	NSArray* systemSoundNames = @[@"Basso",
-								  @"Blow",
-								  @"Bottle",
-								  @"Frog",
-								  @"Funk",
-								  @"Glass",
-								  @"Hero",
-								  @"Morse",
-								  @"Ping",
-								  @"Pop",
-								  @"Purr",
-								  @"Sosumi",
-								  @"Submarine",
-								  @"Tink"];
-	NSSound* alertSound = [NSSound soundNamed: systemSoundNames[[defaults_ integerForKey: @"BlockSound"]]];
-	if(!alertSound) {
-		NSLog(@"WARNING: Alert sound not found.");
-
-		NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
-										   code: -901
-									   userInfo: @{NSLocalizedDescriptionKey: @"Error -901: Selected sound not found."}];
-
-		[NSApp presentError: err];
-
-	}
-	else
-		[alertSound play];
 }
 
 - (void)addToBlockList:(NSString*)host lock:(NSLock*)lock {

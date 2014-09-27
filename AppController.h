@@ -42,6 +42,7 @@
 	IBOutlet id editBlacklistButton_;
 	IBOutlet DomainListWindowController* domainListWindowController_;
 	IBOutlet TimerWindowController* timerWindowController_;
+	NSWindowController* preferencesWindowController_;
 	NSUserDefaults* defaults_;
 	NSLock* refreshUILock_;
 	BOOL blockIsOn;
@@ -102,10 +103,6 @@
 // was just changed a few seconds ago.
 @property (nonatomic, readonly) BOOL networkConnectionIsAvailable;
 
-// Called whenever the selection of sound to play in the Preferences menu changes.
-// Plays the sound so that the user can "sample" them.
-- (IBAction)soundSelectionChanged:(id)sender;
-
 // Called by timerWindowController_ after its sheet returns, to add a specified
 // host to the blacklist (and refresh the block to use the new blacklist).  Launches
 // a new thread with refreshBlock:
@@ -124,6 +121,9 @@
 // SelfControl's helper tool with the appropriate arguments.  Meant to be called
 // as a separate thread.
 - (void)refreshBlock:(NSLock*)lockToUse;
+
+// open preferences panel
+- (IBAction)openPreferences:(id)sender;
 
 // Opens a save panel and saves the blocklist.
 - (IBAction)save:(id)sender;
