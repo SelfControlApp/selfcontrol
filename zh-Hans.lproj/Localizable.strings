@@ -20,7 +20,7 @@
 "days" = "天";
 
 /* Shows that the slider is at 0 so the block is disabled */
-"Disabled" = "无效";
+"disabled" = "无效";
 
 /* Single hour in time strings */
 "hour" = "小时";

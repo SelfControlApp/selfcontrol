@@ -114,7 +114,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		}
 	}
 	else {
-		timeString = NSLocalizedString(@"Disabled", "Shows that SelfControl is disabled");
+		timeString = [NSString stringWithFormat: @"0 %@ (%@)",
+					  NSLocalizedString(@"minutes", @"Plural minutes time string"),
+					  NSLocalizedString(@"disabled", "Shows that SelfControl is disabled")];
 	}
 
 	[blockSliderTimeDisplayLabel_ setStringValue:timeString];

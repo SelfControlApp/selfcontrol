@@ -20,7 +20,7 @@
 "days" = "gün";
 
 /* Shows that the slider is at 0 so the block is disabled */
-"Disabled" = "Engellendi";
+"disabled" = "engellendi";
 
 /* Single hour in time strings */
 "hour" = "saat";

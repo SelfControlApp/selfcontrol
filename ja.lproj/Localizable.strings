@@ -19,9 +19,6 @@
 /* Plural days in time strings */
 "days" = "日";
 
-/* Shows that the slider is at 0 so the block is disabled */
-"Disabled" = "";
-
 /* Single hour in time strings */
 "hour" = "時間";
 

@@ -20,7 +20,7 @@
 "days" = "일";
 
 /* Shows that the slider is at 0 so the block is disabled */
-"Disabled" = "비활성화";
+"disabled" = "비활성화";
 
 /* Single hour in time strings */
 "hour" = "시간";
