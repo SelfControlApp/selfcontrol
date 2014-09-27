@@ -62,7 +62,6 @@
 		CB9C813019CFBBC000CDCAE1 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9E901D0F397FFA006DE6E4 /* Security.framework */; };
 		CB9C813219CFBBE200CDCAE1 /* SCKillerHelper in Copy Helper Tools */ = {isa = PBXBuildFile; fileRef = CB9C811B19CFBA8500CDCAE1 /* SCKillerHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		CBA2AFD90F39EC46005AFEBE /* HelperMain.m in Sources */ = {isa = PBXBuildFile; fileRef = CBA2AFD80F39EC46005AFEBE /* HelperMain.m */; };
-		CBA2E75B0F41388800571571 /* IPFirewall.m in Sources */ = {isa = PBXBuildFile; fileRef = CBA2E75A0F41388800571571 /* IPFirewall.m */; };
 		CBB0AE2A0FA74566006229B3 /* HostFileBlocker.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB0AE290FA74566006229B3 /* HostFileBlocker.m */; };
 		CBB3FD7A0F53834B00244132 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9E901D0F397FFA006DE6E4 /* Security.framework */; };
 		CBB7DEEA0F53313F00ABF3EA /* DomainListWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB637220F3E296000EBD135 /* DomainListWindowController.m */; };
@@ -80,7 +79,6 @@
 		CBD2672011ED882700042CD8 /* CheckupMain.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD2671F11ED882700042CD8 /* CheckupMain.m */; };
 		CBD2676911ED924700042CD8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9E901D0F397FFA006DE6E4 /* Security.framework */; };
 		CBD2676A11ED925700042CD8 /* HostFileBlocker.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB0AE290FA74566006229B3 /* HostFileBlocker.m */; };
-		CBD2676B11ED925700042CD8 /* IPFirewall.m in Sources */ = {isa = PBXBuildFile; fileRef = CBA2E75A0F41388800571571 /* IPFirewall.m */; };
 		CBD2676C11ED926300042CD8 /* LaunchctlHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */; };
 		CBD2677011ED92DE00042CD8 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9E90190F397FF6006DE6E4 /* CoreFoundation.framework */; };
 		CBD2677111ED92DF00042CD8 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9E90190F397FF6006DE6E4 /* CoreFoundation.framework */; };
@@ -266,8 +264,6 @@
 		CBA2AFD20F39EC12005AFEBE /* org.eyebeam.SelfControl */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = org.eyebeam.SelfControl; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBA2AFD70F39EC46005AFEBE /* HelperMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperMain.h; sourceTree = "<group>"; };
 		CBA2AFD80F39EC46005AFEBE /* HelperMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelperMain.m; sourceTree = "<group>"; };
-		CBA2E7590F41388800571571 /* IPFirewall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPFirewall.h; sourceTree = "<group>"; };
-		CBA2E75A0F41388800571571 /* IPFirewall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IPFirewall.m; sourceTree = "<group>"; };
 		CBB0AE280FA74566006229B3 /* HostFileBlocker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostFileBlocker.h; sourceTree = "<group>"; };
 		CBB0AE290FA74566006229B3 /* HostFileBlocker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HostFileBlocker.m; sourceTree = "<group>"; };
 		CBB637210F3E296000EBD135 /* DomainListWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DomainListWindowController.h; sourceTree = "<group>"; };
@@ -500,8 +496,6 @@
 				CBD266C611ED82DB00042CD8 /* Helper Tools */,
 				CBB0AE280FA74566006229B3 /* HostFileBlocker.h */,
 				CBB0AE290FA74566006229B3 /* HostFileBlocker.m */,
-				CBA2E7590F41388800571571 /* IPFirewall.h */,
-				CBA2E75A0F41388800571571 /* IPFirewall.m */,
 				CBCA91101960D87300AFD20C /* PacketFilter.h */,
 				CBCA91111960D87300AFD20C /* PacketFilter.m */,
 				CB25806016C1FDBE0059C99A /* BlockManager.h */,
@@ -841,7 +835,6 @@
 				CBD266B111ED7D9C00042CD8 /* HelperCommon.m in Sources */,
 				CBD2672011ED882700042CD8 /* CheckupMain.m in Sources */,
 				CBD2676A11ED925700042CD8 /* HostFileBlocker.m in Sources */,
-				CBD2676B11ED925700042CD8 /* IPFirewall.m in Sources */,
 				CB25806316C1FDBE0059C99A /* BlockManager.m in Sources */,
 				CBCA91131960FF0100AFD20C /* PacketFilter.m in Sources */,
 				CB25806816C237F10059C99A /* NSString+IPAddress.m in Sources */,
@@ -877,7 +870,6 @@
 			files = (
 				CBA2AFD90F39EC46005AFEBE /* HelperMain.m in Sources */,
 				CBCA91121960D87300AFD20C /* PacketFilter.m in Sources */,
-				CBA2E75B0F41388800571571 /* IPFirewall.m in Sources */,
 				CBC2F8580F4672FE00CF2A42 /* LaunchctlHelper.m in Sources */,
 				CBB0AE2A0FA74566006229B3 /* HostFileBlocker.m in Sources */,
 				CBD266B011ED7D9C00042CD8 /* HelperCommon.m in Sources */,
