@@ -32,7 +32,7 @@
 // and the table view it contains.
 @interface DomainListWindowController : NSWindowController {
 	NSMutableArray* domainList_;
-	IBOutlet id domainListTableView_;
+	IBOutlet NSTableView* domainListTableView_;
 	NSUserDefaults* defaults_;
 }
 

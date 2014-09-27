@@ -43,13 +43,16 @@ NSDictionary* getDefaultsDict(uid_t controllingUID) {
 	[defaults addSuiteNamed: @"org.eyebeam.SelfControl"];
 	[defaults synchronize];
 	NSDictionary* dict = [defaults dictionaryRepresentation];
+	[NSUserDefaults resetStandardUserDefaults];
 	seteuid(0);
 	return dict;
 }
 void setDefaultsValue(NSString* prefName, id prefValue, uid_t controllingUID) {
+	[NSUserDefaults resetStandardUserDefaults];
 	seteuid(controllingUID);
 	CFPreferencesSetAppValue((__bridge CFStringRef)prefName, (__bridge CFPropertyListRef)(prefValue), (__bridge CFStringRef)@"org.eyebeam.SelfControl");
 	CFPreferencesAppSynchronize((__bridge CFStringRef)@"org.eyebeam.SelfControl");
+	[NSUserDefaults resetStandardUserDefaults];
 	seteuid(0);
 }
 

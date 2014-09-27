@@ -51,8 +51,9 @@
 	[domainList_ addObject:@""];
 	[defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
 	[domainListTableView_ reloadData];
-	[domainListTableView_ selectRow:([domainList_ count] - 1)
-			   byExtendingSelection:NO];
+	NSIndexSet* rowIndex = [NSIndexSet indexSetWithIndex: [domainList_ count] - 1];
+	[domainListTableView_ selectRowIndexes: rowIndex
+					  byExtendingSelection: NO];
 	[domainListTableView_ editColumn: 0 row:([domainList_ count] - 1)
 						   withEvent:nil
 							  select:YES];
@@ -97,6 +98,15 @@
 	// All of this is just code to standardize and clean up the input value.
 	// This'll remove whitespace and lowercase the string.
 	NSString* str = [[theObject stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];
+
+	if (![str length]) {
+		NSIndexSet* indexSet = [NSIndexSet indexSetWithIndex: rowIndex];
+		[domainListTableView_ beginUpdates];
+		[domainListTableView_ removeRowsAtIndexes: indexSet withAnimation: NSTableViewAnimationSlideUp];
+		[domainList_ removeObjectAtIndex: rowIndex];
+		[domainListTableView_ endUpdates];
+		return;
+	}
 
 	if([str rangeOfCharacterFromSet: [NSCharacterSet newlineCharacterSet]].location != NSNotFound) {
 		// only hits LF linebreaks, but componentsSeparatedByCharacterSet won't work on 10.4
