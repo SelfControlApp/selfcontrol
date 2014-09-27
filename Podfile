@@ -1,0 +1,1 @@
+pod 'MASPreferences', '~> 1.1.2'

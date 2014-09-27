@@ -1,0 +1,1 @@
+MASPreferences is licensed under the BSD license.
