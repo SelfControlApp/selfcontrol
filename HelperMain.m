@@ -41,8 +41,7 @@ int main(int argc, char* argv[]) {
 
 		NSString* modeString = @(argv[2]);
 		// We'll need the controlling UID to know what defaults database to search
-		// It's a signed long long int to avoid integer overflow with extra-long UIDs
-		signed long long int controllingUID = [@(argv[1]) longLongValue];
+		uid_t controllingUID = [@(argv[1]) intValue];
 
 		// For proper security, we need to make sure that SelfControl files are owned
 		// by root and only writable by root.  We'll define this here so we can use it
@@ -119,14 +118,15 @@ int main(int argc, char* argv[]) {
 
 			if(![fileManager fileExistsAtPath: @"/Library/PrivilegedHelperTools"]) {
 				if(![fileManager createDirectoryAtPath: @"/Library/PrivilegedHelperTools"
-											attributes: fileAttributes]) {
+						   withIntermediateDirectories: NO
+											attributes: fileAttributes
+												 error: nil]) {
 					NSLog(@"ERROR: Could not create PrivilegedHelperTools directory.");
 					printStatus(-205);
 					exit(EX_IOERR);
 				}
 			} else {
-				if(![fileManager changeFileAttributes: fileAttributes
-											   atPath:  @"/Library/PrivilegedHelperTools"]) {
+				if(![fileManager setAttributes: fileAttributes ofItemAtPath: @"/Library/PrivilegedHelperTools" error: nil]) {
 					NSLog(@"ERROR: Could not change permissions on PrivilegedHelperTools directory.");
 					printStatus(-206);
 					exit(EX_IOERR);
@@ -135,23 +135,23 @@ int main(int argc, char* argv[]) {
 			// We should delete the old file if it exists and copy the new binary in,
 			// because it might be a new version of the helper if we've upgraded SelfControl
 			if([fileManager fileExistsAtPath: @"/Library/PrivilegedHelperTools/org.eyebeam.SelfControl"]) {
-				if(![fileManager removeFileAtPath: @"/Library/PrivilegedHelperTools/org.eyebeam.SelfControl" handler: nil]) {
+				if(![fileManager removeItemAtPath: @"/Library/PrivilegedHelperTools/org.eyebeam.SelfControl" error: nil]) {
 					NSLog(@"ERROR: Could not delete old helper binary.");
 					printStatus(-207);
 					exit(EX_IOERR);
 				}
 			}
 
-			if(![fileManager copyPath: @(argv[0])
+			if(![fileManager copyItemAtPath: @(argv[0])
 							   toPath: @"/Library/PrivilegedHelperTools/org.eyebeam.SelfControl"
-							  handler: NULL]) {
+							  error: nil]) {
 				NSLog(@"ERROR: Could not copy SelfControl's helper binary to PrivilegedHelperTools directory.");
 				printStatus(-208);
 				exit(EX_IOERR);
 			}
 
 			if([fileManager fileExistsAtPath: @"/Library/PrivilegedHelperTools/scheckup"]) {
-				if(![fileManager removeFileAtPath: @"/Library/PrivilegedHelperTools/scheckup" handler: nil]) {
+				if(![fileManager removeItemAtPath: @"/Library/PrivilegedHelperTools/scheckup" error: nil]) {
 					NSLog(@"WARNING: Could not delete old scheckup binary.");
 				}
 			}
@@ -159,9 +159,9 @@ int main(int argc, char* argv[]) {
 			NSString* scheckupPath = [@(argv[0]) stringByDeletingLastPathComponent];
 			scheckupPath = [scheckupPath stringByAppendingPathComponent: @"scheckup"];
 
-			if(![fileManager copyPath: scheckupPath
+			if(![fileManager copyItemAtPath: scheckupPath
 							   toPath: @"/Library/PrivilegedHelperTools/scheckup"
-							  handler: NULL]) {
+									  error: nil]) {
 				NSLog(@"WARNING: Could not copy scheckup to PrivilegedHelperTools directory.");
 			}
 
@@ -171,13 +171,12 @@ int main(int argc, char* argv[]) {
 												// 2541 (decimal) = 4755 (octal) = rwsr-xr-x
 												NSFilePosixPermissions: @2541UL};
 
-			if(![[NSFileManager defaultManager] changeFileAttributes: checkupAttributes atPath: @"/Library/PrivilegedHelperTools/scheckup"]) {
+			if(![fileManager setAttributes: checkupAttributes ofItemAtPath: @"/Library/PrivilegedHelperTools/scheckup" error: nil]) {
 				NSLog(@"WARNING: Could not change file attributes on scheckup.  Backup block-removal system may not work.");
 			}
 
 
-			if(![fileManager changeFileAttributes: fileAttributes
-										   atPath:  @"/Library/PrivilegedHelperTools/org.eyebeam.SelfControl"]) {
+			if(![fileManager setAttributes: fileAttributes ofItemAtPath: @"/Library/PrivilegedHelperTools/org.eyebeam.SelfControl" error: nil]) {
 				NSLog(@"ERROR: Could not change permissions on SelfControl's helper binary.");
 				printStatus(-209);
 				exit(EX_IOERR);
@@ -219,7 +218,7 @@ int main(int argc, char* argv[]) {
 				exit(EX_IOERR);
 			}
 			// Make sure the privileges are correct on our lock file
-			[fileManager changeFileAttributes: fileAttributes atPath: SelfControlLockFilePath];
+			[fileManager setAttributes: fileAttributes ofItemAtPath: SelfControlLockFilePath error: nil];
 
 			addRulesToFirewall(controllingUID);
 
@@ -292,7 +291,7 @@ int main(int argc, char* argv[]) {
 				exit(EX_IOERR);
 			}
 			// Make sure the privileges are correct on our lock file
-			[[NSFileManager defaultManager] changeFileAttributes: fileAttributes atPath: SelfControlLockFilePath];
+			[[NSFileManager defaultManager] setAttributes: fileAttributes ofItemAtPath: SelfControlLockFilePath error: nil];
 			domainList = newLockDictionary[@"HostBlacklist"];
 
 			// Add and remove the rules to put in any new ones
@@ -388,9 +387,9 @@ int main(int argc, char* argv[]) {
 				// Why would we make sure the defaults are correct even if we can get the
 				// info from the lock file?  In case one goes down, we want to make sure
 				// we always have a backup.
-				setDefaultsValue(@"BlockStartedDate", blockStartedDate);
-				setDefaultsValue(@"BlockDuration", [NSNumber numberWithInt: (blockDuration / 60)]);
-				setDefaultsValue(@"HostBlacklist", domainList);
+				setDefaultsValue(@"BlockStartedDate", blockStartedDate, controllingUID);
+				setDefaultsValue(@"BlockDuration", [NSNumber numberWithInt: (blockDuration / 60)], controllingUID);
+				setDefaultsValue(@"HostBlacklist", domainList, controllingUID);
 			}
 		}
 

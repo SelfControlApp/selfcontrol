@@ -10,7 +10,7 @@
 #include "HelperCommon.h"
 #include "BlockManager.h"
 
-void registerDefaults(signed long long int controllingUID) {
+void registerDefaults(uid_t controllingUID) {
 	[NSUserDefaults resetStandardUserDefaults];
 	seteuid(controllingUID);
 	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
@@ -36,7 +36,7 @@ void registerDefaults(signed long long int controllingUID) {
 	[defaults synchronize];
 	seteuid(0);
 }
-NSDictionary* getDefaultsDict(signed long long int controllingUID) {
+NSDictionary* getDefaultsDict(uid_t controllingUID) {
 	[NSUserDefaults resetStandardUserDefaults];
 	seteuid(controllingUID);
 	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
@@ -46,14 +46,14 @@ NSDictionary* getDefaultsDict(signed long long int controllingUID) {
 	seteuid(0);
 	return dict;
 }
-void setDefaultsValue(NSString* prefName, NSString* prefValue, signed long long int controllingUID) {
+void setDefaultsValue(NSString* prefName, id prefValue, uid_t controllingUID) {
 	seteuid(controllingUID);
 	CFPreferencesSetAppValue((__bridge CFStringRef)prefName, (__bridge CFPropertyListRef)(prefValue), (__bridge CFStringRef)@"org.eyebeam.SelfControl");
 	CFPreferencesAppSynchronize((__bridge CFStringRef)@"org.eyebeam.SelfControl");
 	seteuid(0);
 }
 
-void addRulesToFirewall(signed long long int controllingUID) {
+void addRulesToFirewall(uid_t controllingUID) {
 	// get value for EvaluateCommonSubdomains
 	NSDictionary* defaults = getDefaultsDict(controllingUID);
 	BOOL shouldEvaluateCommonSubdomains = [defaults[@"EvaluateCommonSubdomains"] boolValue];
@@ -76,7 +76,7 @@ void addRulesToFirewall(signed long long int controllingUID) {
 
 }
 
-void removeRulesFromFirewall(signed long long int controllingUID) {
+void removeRulesFromFirewall(uid_t controllingUID) {
 	// options don't really matter because we're only using it to clear
 	BlockManager* blockManager = [[BlockManager alloc] initAsWhitelist: FALSE allowLocal: TRUE includeCommonSubdomains: TRUE];
 	[blockManager clearBlock];
@@ -157,7 +157,7 @@ NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, int port) {
 	return evaluatedAddresses;
 }
 
-void clearCachesIfRequested(signed long long int controllingUID) {
+void clearCachesIfRequested(uid_t controllingUID) {
 	NSDictionary* defaults = getDefaultsDict(controllingUID);
 	if([defaults[@"ClearCaches"] boolValue]) {
 		NSFileManager* fileManager = [NSFileManager defaultManager];
@@ -211,7 +211,7 @@ void printStatus(int status) {
 	fflush(stdout);
 }
 
-void removeBlock(signed long long int controllingUID) {
+void removeBlock(uid_t controllingUID) {
 	setDefaultsValue(@"BlockStartedDate", [NSDate distantFuture], controllingUID);
 
 	removeRulesFromFirewall(controllingUID);

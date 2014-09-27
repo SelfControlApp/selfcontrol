@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment version="1050" defaultVersion="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6245"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="AppController">
@@ -11,7 +11,7 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <menu title="Import" id="84">
             <items>
                 <menuItem id="85">
@@ -75,7 +75,7 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" columnResizing="NO" autosaveColumns="NO" typeSelect="NO" id="15">
-                                    <rect key="frame" x="0.0" y="0.0" width="400" height="264"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="400" height="19"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <size key="intercellSpacing" width="3" height="2"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="deviceWhite"/>
@@ -146,7 +146,7 @@ CA
                     <button verticalHuggingPriority="750" id="79" customClass="ButtonWithPopupMenu">
                         <rect key="frame" x="143" y="19" width="113" height="24"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <buttonCell key="cell" type="smallSquare" title="가져오기" bezelStyle="smallSquare" image="85CAD5E2-0EF8-4FF1-AAC6-B6C880C18C71" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" inset="2" id="80">
+                        <buttonCell key="cell" type="smallSquare" title="가져오기" bezelStyle="smallSquare" image="02ABBFB2-DD58-4E3D-ABD5-8199418F01CA" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" inset="2" id="80">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
@@ -160,17 +160,17 @@ CA
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         <size key="cellSize" width="92" height="14"/>
                         <size key="intercellSpacing" width="4" height="2"/>
-                        <buttonCell key="prototype" type="radio" title="Radio" imagePosition="left" alignment="left" imageScaling="proportionallyDown" inset="2" id="112">
+                        <buttonCell key="prototype" type="radio" title="Radio" imagePosition="left" alignment="left" inset="2" id="112">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <cells>
                             <column>
-                                <buttonCell type="radio" title="블랙리스트" imagePosition="left" alignment="left" state="on" tag="1" imageScaling="proportionallyDown" inset="2" id="110">
+                                <buttonCell type="radio" title="블랙리스트" imagePosition="left" alignment="left" state="on" tag="1" inset="2" id="110">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
-                                <buttonCell type="radio" title="화이트리스트" imagePosition="left" alignment="left" imageScaling="proportionallyDown" inset="2" id="111">
+                                <buttonCell type="radio" title="화이트리스트" imagePosition="left" alignment="left" inset="2" id="111">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                     <connections>
@@ -195,7 +195,7 @@ CA
         <userDefaultsController representsSharedInstance="YES" id="113"/>
     </objects>
     <resources>
-        <image name="85CAD5E2-0EF8-4FF1-AAC6-B6C880C18C71" width="1" height="1">
+        <image name="02ABBFB2-DD58-4E3D-ABD5-8199418F01CA" width="1" height="1">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

@@ -598,11 +598,11 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 													&commPipe);
 
 		if(status) {
-			NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %ld", status);
+			NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", (int)status);
 
 			NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
 											   code: status
-										   userInfo: @{NSLocalizedDescriptionKey: [NSString stringWithFormat: @"Error %ld received from the Security Server.", status]}];
+										   userInfo: @{NSLocalizedDescriptionKey: [NSString stringWithFormat: @"Error %d received from the Security Server.", (int)status]}];
 
 			[NSApp performSelectorOnMainThread: @selector(presentError:)
 									withObject: err
@@ -703,7 +703,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 													&commPipe);
 
 		if(status) {
-			NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %ld", status);
+			NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", (int)status);
 
 			NSError* err = [self errorFromHelperToolStatusCode: status];
 
@@ -752,9 +752,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 	/* create or get the shared instance of NSSavePanel */
 	sp = [NSSavePanel savePanel];
-
-	/* set up new attributes */
-	[sp setRequiredFileType: @"selfcontrol"];
+	sp.allowedFileTypes = @[@"selfcontrol"];
 
 	/* display the NSSavePanel */
 	runResult = [sp runModal];
@@ -771,26 +769,24 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 			[NSApp presentError: displayErr];
 			return;
 		}
-		if (![saveData writeToFile:[sp filename] atomically: YES]) {
+		if (![saveData writeToURL: sp.URL atomically: YES]) {
 			NSBeep();
 		} else {
 			NSDictionary* attribs = @{NSFileExtensionHidden: @YES};
-			[[NSFileManager defaultManager] setAttributes: attribs ofItemAtPath: [sp filename] error: NULL];
+			[[NSFileManager defaultManager] setAttributes: attribs ofItemAtPath: [sp.URL path] error: NULL];
 		}
 	}
 }
 
 - (IBAction)open:(id)sender {
-	int result;
-	NSArray *fileTypes = @[@"selfcontrol"];
-	NSOpenPanel *oPanel = [NSOpenPanel openPanel];
+	NSOpenPanel* oPanel = [NSOpenPanel openPanel];
+	oPanel.allowedFileTypes = @[@"selfcontrol"];
+	oPanel.allowsMultipleSelection = NO;
 
-	[oPanel setAllowsMultipleSelection: NO];
-	result = [oPanel runModalForTypes: fileTypes];
+	int result = [oPanel runModal];
 	if (result == NSOKButton) {
-		NSArray *filesToOpen = [oPanel filenames];
-		if([filesToOpen count] > 0) {
-			NSDictionary* openedDict = [NSDictionary dictionaryWithContentsOfFile: filesToOpen[0]];
+		if([oPanel.URLs count] > 0) {
+			NSDictionary* openedDict = [NSDictionary dictionaryWithContentsOfURL: oPanel.URLs[0]];
 			[defaults_ setObject: openedDict[@"HostBlacklist"] forKey: @"HostBlacklist"];
 			[defaults_ setObject: openedDict[@"BlockAsWhitelist"] forKey: @"BlockAsWhitelist"];
 			BOOL domainListIsOpen = [[domainListWindowController_ window] isVisible];

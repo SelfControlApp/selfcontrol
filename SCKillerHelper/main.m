@@ -73,8 +73,10 @@ int main(int argc, char* argv[]) {
 		}
 		seteuid(0);
 
+		NSFileManager* fileManager = [NSFileManager defaultManager];
+
 		// print lockfile
-		if([[NSFileManager defaultManager] fileExistsAtPath: @"/etc/SelfControl.lock"]) {
+		if([fileManager fileExistsAtPath: @"/etc/SelfControl.lock"]) {
 			[log appendString: [NSString stringWithFormat: @"Found lock file with contents:\n\n%@\n\n", [NSString stringWithContentsOfFile: @"/etc/SelfControl.lock" encoding: NSUTF8StringEncoding error: NULL]]];
 		} else {
 			[log appendString: @"Could not find lock file.\n"];
@@ -89,7 +91,7 @@ int main(int argc, char* argv[]) {
 		}
 
 		// print org.eyebeam pf anchors
-		if([[NSFileManager defaultManager] fileExistsAtPath: @"/etc/pf.anchors/org.eyebeam"]) {
+		if([fileManager fileExistsAtPath: @"/etc/pf.anchors/org.eyebeam"]) {
 			[log appendString: [NSString stringWithFormat: @"Found anchor file with contents:\n\n%@\n\n", [NSString stringWithContentsOfFile: @"/etc/pf.anchors/org.eyebeam" encoding: NSUTF8StringEncoding error: nil]]];
 		}
 
@@ -125,23 +127,23 @@ int main(int argc, char* argv[]) {
 		seteuid(0);
 
 		// remove PF token
-		if([[NSFileManager defaultManager] removeFileAtPath: @"/etc/SelfControlPFToken" handler: nil]) {
+		if([fileManager removeItemAtPath: @"/etc/SelfControlPFToken" error: nil]) {
 			[log appendString: @"\nRemoved PF token file successfully.\n"];
 		} else {
 			[log appendString: @"\nFailed to remove PF token file.\n"];
 		}
 
 		// remove SC pf anchors
-		if([[NSFileManager defaultManager] fileExistsAtPath: @"/etc/pf.anchors/org.eyebeam"]) {
-			if([[NSFileManager defaultManager] removeFileAtPath: @"/etc/pf.anchors/org.eyebeam" handler: nil])
+		if([fileManager fileExistsAtPath: @"/etc/pf.anchors/org.eyebeam"]) {
+			if([fileManager removeItemAtPath: @"/etc/pf.anchors/org.eyebeam" error: nil])
 				[log appendString: @"\nRemoved anchor file successfully.\n"];
 			else
 				[log appendString: @"\nFailed to remove anchor file.\n"];
 		}
 
 		// remove lockfile
-		if([[NSFileManager defaultManager] fileExistsAtPath: @"/etc/SelfControl.lock"]) {
-			if([[NSFileManager defaultManager] removeFileAtPath: @"/etc/SelfControl.lock" handler: nil])
+		if([fileManager fileExistsAtPath: @"/etc/SelfControl.lock"]) {
+			if([fileManager removeItemAtPath: @"/etc/SelfControl.lock" error: nil])
 				[log appendString: @"\nRemoved lock file successfully.\n"];
 			else
 				[log appendString: @"\nFailed to remove lock file.\n"];
@@ -149,8 +151,8 @@ int main(int argc, char* argv[]) {
 
 		/* FINAL TASK: print any crashlogs we've got */
 
-		if([[NSFileManager defaultManager] fileExistsAtPath: @"/Library/Logs/CrashReporter"]) {
-			NSArray* fileNames = [[NSFileManager defaultManager] directoryContentsAtPath: @"/Library/Logs/CrashReporter"];
+		if([fileManager fileExistsAtPath: @"/Library/Logs/CrashReporter"]) {
+			NSArray* fileNames = [fileManager contentsOfDirectoryAtPath: @"/Library/Logs/CrashReporter" error: nil];
 			for(int i = 0; i < [fileNames count]; i++) {
 				NSString* fileName = fileNames[i];
 				if([fileName rangeOfString: @"SelfControl"].location != NSNotFound) {
@@ -158,8 +160,8 @@ int main(int argc, char* argv[]) {
 				}
 			}
 		}
-		if([[NSFileManager defaultManager] fileExistsAtPath: [@"~/Library/Logs/CrashReporter" stringByExpandingTildeInPath]]) {
-			NSArray* fileNames = [[NSFileManager defaultManager] directoryContentsAtPath: [@"~/Library/Logs/CrashReporter" stringByExpandingTildeInPath]];
+		if([fileManager fileExistsAtPath: [@"~/Library/Logs/CrashReporter" stringByExpandingTildeInPath]]) {
+			NSArray* fileNames = [fileManager contentsOfDirectoryAtPath: [@"~/Library/Logs/CrashReporter" stringByExpandingTildeInPath] error: nil];
 			for(int i = 0; i < [fileNames count]; i++) {
 				NSString* fileName = fileNames[i];
 				if([fileName rangeOfString: @"SelfControl"].location != NSNotFound) {
@@ -170,6 +172,9 @@ int main(int argc, char* argv[]) {
 
 		[log appendString: @"\n===SelfControl-Killer complete!==="];
 
-		[log writeToFile: logFilePath atomically: YES];
+		[log writeToFile: logFilePath
+			  atomically: YES
+				encoding: NSUTF8StringEncoding
+				   error: nil];
 	}
 }
