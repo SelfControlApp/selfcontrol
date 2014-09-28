@@ -27,7 +27,8 @@
 
 + (NSArray*)incomingMailHostnamesFromMail {
 	NSMutableArray* hostnames = [NSMutableArray arrayWithCapacity: 10];
-	NSDictionary* defaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName: @"com.apple.Mail"];
+	NSString* sandboxedPreferences = [@"~/Library/Containers/com.apple.mail/Data/Library/Preferences/com.apple.mail" stringByExpandingTildeInPath];
+	NSDictionary* defaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName: sandboxedPreferences];
 	NSArray* incomingAccounts = defaults[@"MailAccounts"];
 	for(int i = 0; i < [incomingAccounts count]; i++) {
 		NSMutableString* hostname = [incomingAccounts[i][@"Hostname"] mutableCopy];
@@ -66,7 +67,8 @@
 
 + (NSArray*)outgoingMailHostnamesFromMail {
 	NSMutableArray* hostnames = [NSMutableArray arrayWithCapacity: 10];
-	NSDictionary* defaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName: @"com.apple.Mail"];
+	NSString* sandboxedPreferences = [@"~/Library/Containers/com.apple.mail/Data/Library/Preferences/com.apple.mail" stringByExpandingTildeInPath];
+	NSDictionary* defaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName: sandboxedPreferences];
 	NSArray* outgoingAccounts = defaults[@"DeliveryAccounts"];
 	for(int i = 0; i < [outgoingAccounts count]; i++) {
 		NSMutableString* hostname = [outgoingAccounts[i][@"Hostname"] mutableCopy];
@@ -74,9 +76,8 @@
 			if(outgoingAccounts[i][@"PortNumber"] != nil) {
 				[hostname appendString: @":"];
 				[hostname appendString: outgoingAccounts[i][@"PortNumber"]];
-				// If it doesn't have a defined port number, we'll go through and choose
-				// the default port for the type of account it is.
 			} else {
+				// If it doesn't have a defined port number, we'll block all the default outoging ports
 				[hostnames addObject: [hostname stringByAppendingString: @":25"]];
 				[hostnames addObject: [hostname stringByAppendingString: @":465"]];
 				[hostname appendString: @":587"];
