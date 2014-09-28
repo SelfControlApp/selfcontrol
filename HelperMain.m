@@ -60,13 +60,6 @@ int main(int argc, char* argv[]) {
 		if(!([curLockDict[@"HostBlacklist"] count] <= 0))
 			domainList = curLockDict[@"HostBlacklist"];
 
-		// You'll see this pattern several times in this file.  The two resets and
-		// set of euid to the controlling UID are necessary in order to successfully
-		// return the NSUserDefaults object for the controlling user.  Also note that
-		// the defaults object cannot be simply kept in a variable and repeatedly
-		// referred to, the resets will invalidate it.  For now, we're just re-registering
-		// the default settings, since they don't carry over from the main application.
-		// TODO: Factor this code out into a function
 		registerDefaults(controllingUID);
 		NSDictionary* defaults = getDefaultsDict(controllingUID);
 		if(!domainList) {

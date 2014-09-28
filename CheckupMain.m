@@ -18,10 +18,11 @@ int main(int argc, char* argv[]) {
 			exit(EX_NOPERM);
 		}
 
+		registerDefaults(getuid());
+
 		NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
 		NSDate* blockStartedDate = curDictionary[@"BlockStartedDate"];
 		NSTimeInterval blockDuration = [curDictionary[@"BlockDuration"] intValue];
-
 
 		if(blockStartedDate == nil || [[NSDate distantFuture] isEqualToDate: blockStartedDate] || blockDuration < 1) {
 			// The lock file seems to be broken.  Try defaults.
