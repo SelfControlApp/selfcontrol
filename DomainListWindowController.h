@@ -96,4 +96,7 @@
 // Sends a SCConfigurationChangedNotification.
 - (IBAction)importOutgoingMailServersFromMail:(id)sender;
 
+- (IBAction)importIncomingMailServersFromMailMate:(id)sender;
+- (IBAction)importOutgoingMailServersFromMailMate:(id)sender;
+
 @end

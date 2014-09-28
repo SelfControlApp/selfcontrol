@@ -91,6 +91,37 @@
 							</array>
 						</object>
 					</object>
+					<object class="NSMenuItem" id="472437821">
+						<reference key="NSMenu" ref="858794104"/>
+						<string key="NSTitle">Von MailMate</string>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="962547820"/>
+						<reference key="NSMixedImage" ref="285023695"/>
+						<string key="NSAction">submenuAction:</string>
+						<reference key="NSTarget" ref="194353641"/>
+						<object class="NSMenu" key="NSSubmenu" id="194353641">
+							<string key="NSTitle">Von MailMate</string>
+							<array class="NSMutableArray" key="NSMenuItems">
+								<object class="NSMenuItem" id="638158599">
+									<reference key="NSMenu" ref="194353641"/>
+									<string key="NSTitle">Eingehende Mailserver</string>
+									<string key="NSKeyEquiv"/>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="962547820"/>
+									<reference key="NSMixedImage" ref="285023695"/>
+								</object>
+								<object class="NSMenuItem" id="585481283">
+									<reference key="NSMenu" ref="194353641"/>
+									<string key="NSTitle">Ausgehende Mailserver</string>
+									<string key="NSKeyEquiv"/>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="962547820"/>
+									<reference key="NSMixedImage" ref="285023695"/>
+								</object>
+							</array>
+						</object>
+					</object>
 					<object class="NSMenuItem" id="234071714">
 						<reference key="NSMenu" ref="858794104"/>
 						<string key="NSTitle">Von Thunderbird</string>
@@ -135,7 +166,7 @@
 				<nil key="NSUserInterfaceItemIdentifier"/>
 				<string key="NSWindowContentMinSize">{400, 315}</string>
 				<object class="NSView" key="NSWindowView" id="1006">
-					<reference key="NSNextResponder"/>
+					<nil key="NSNextResponder"/>
 					<int key="NSvFlags">274</int>
 					<array class="NSMutableArray" key="NSSubviews">
 						<object class="NSScrollView" id="130181475">
@@ -151,7 +182,6 @@
 											<int key="NSvFlags">274</int>
 											<string key="NSFrameSize">{400, 264}</string>
 											<reference key="NSSuperview" ref="227961985"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="76135189"/>
 											<bool key="NSEnabled">YES</bool>
 											<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
@@ -249,7 +279,6 @@
 									</array>
 									<string key="NSFrame">{{1, 1}, {400, 264}}</string>
 									<reference key="NSSuperview" ref="130181475"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="206820569"/>
 									<reference key="NSDocView" ref="206820569"/>
 									<reference key="NSBGColor" ref="769795172"/>
@@ -260,7 +289,6 @@
 									<int key="NSvFlags">-2147483392</int>
 									<string key="NSFrame">{{344, 1}, {15, 249}}</string>
 									<reference key="NSSuperview" ref="130181475"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="110786986"/>
 									<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 									<reference key="NSTarget" ref="130181475"/>
@@ -273,7 +301,6 @@
 									<int key="NSvFlags">-2147483392</int>
 									<string key="NSFrame">{{1, 250}, {343, 15}}</string>
 									<reference key="NSSuperview" ref="130181475"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="451991981"/>
 									<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 									<int key="NSsFlags">1</int>
@@ -284,7 +311,6 @@
 							</array>
 							<string key="NSFrame">{{-1, 50}, {402, 266}}</string>
 							<reference key="NSSuperview" ref="1006"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="227961985"/>
 							<int key="NSsFlags">133682</int>
 							<reference key="NSVScroller" ref="76135189"/>
@@ -300,7 +326,6 @@
 							<int key="NSvFlags">256</int>
 							<string key="NSFrame">{{20, 19}, {24, 24}}</string>
 							<reference key="NSSuperview" ref="1006"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="411407026"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="863044076">
@@ -327,7 +352,6 @@
 							<int key="NSvFlags">256</int>
 							<string key="NSFrame">{{52, 19}, {24, 24}}</string>
 							<reference key="NSSuperview" ref="1006"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="938727056"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="455684004">
@@ -354,7 +378,6 @@
 							<int key="NSvFlags">256</int>
 							<string key="NSFrame">{{143, 19}, {113, 24}}</string>
 							<reference key="NSSuperview" ref="1006"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="485477882"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="533928521">
@@ -397,7 +420,6 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<int key="NSvFlags">290</int>
 							<string key="NSFrame">{{296, 8}, {104, 38}}</string>
 							<reference key="NSSuperview" ref="1006"/>
-							<reference key="NSWindow"/>
 							<bool key="NSEnabled">YES</bool>
 							<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 							<int key="NSNumRows">2</int>
@@ -471,8 +493,6 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						</object>
 					</array>
 					<string key="NSFrameSize">{400, 315}</string>
-					<reference key="NSSuperview"/>
-					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="130181475"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
@@ -584,6 +604,22 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						<reference key="destination" ref="1005"/>
 					</object>
 					<int key="connectionID">124</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">importIncomingMailServersFromMailMate:</string>
+						<reference key="source" ref="888103330"/>
+						<reference key="destination" ref="638158599"/>
+					</object>
+					<int key="connectionID">135</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">importOutgoingMailServersFromMailMate:</string>
+						<reference key="source" ref="888103330"/>
+						<reference key="destination" ref="585481283"/>
+					</object>
+					<int key="connectionID">136</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -749,6 +785,7 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<reference ref="356304010"/>
 							<reference ref="757550507"/>
 							<reference ref="234071714"/>
+							<reference ref="472437821"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -841,6 +878,33 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						<reference key="object" ref="387359892"/>
 						<reference key="parent" ref="485477882"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">131</int>
+						<reference key="object" ref="472437821"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="194353641"/>
+						</array>
+						<reference key="parent" ref="858794104"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">132</int>
+						<reference key="object" ref="194353641"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="638158599"/>
+							<reference ref="585481283"/>
+						</array>
+						<reference key="parent" ref="472437821"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">133</int>
+						<reference key="object" ref="638158599"/>
+						<reference key="parent" ref="194353641"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">134</int>
+						<reference key="object" ref="585481283"/>
+						<reference key="parent" ref="194353641"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -857,6 +921,10 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 				<string key="113.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="12.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="13.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="131.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="132.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="133.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="134.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="14.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="15.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="17.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -902,7 +970,7 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">126</int>
+			<int key="maxID">136</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -913,9 +981,9 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						<string key="addBlock:">id</string>
 						<string key="open:">id</string>
 						<string key="openFAQ:">id</string>
+						<string key="openPreferences:">id</string>
 						<string key="save:">id</string>
 						<string key="showDomainList:">id</string>
-						<string key="soundSelectionChanged:">id</string>
 						<string key="updateTimeSliderDisplay:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
@@ -931,16 +999,16 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<string key="name">openFAQ:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="openPreferences:">
+							<string key="name">openPreferences:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="save:">
 							<string key="name">save:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="showDomainList:">
 							<string key="name">showDomainList:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="soundSelectionChanged:">
-							<string key="name">soundSelectionChanged:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="updateTimeSliderDisplay:">
@@ -994,7 +1062,7 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../AppController.h</string>
+						<string key="minorKey">AppController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1003,9 +1071,9 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						<string key="addBlock:">id</string>
 						<string key="open:">id</string>
 						<string key="openFAQ:">id</string>
+						<string key="openPreferences:">id</string>
 						<string key="save:">id</string>
 						<string key="showDomainList:">id</string>
-						<string key="soundSelectionChanged:">id</string>
 						<string key="updateTimeSliderDisplay:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
@@ -1021,16 +1089,16 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<string key="name">openFAQ:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="openPreferences:">
+							<string key="name">openPreferences:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="save:">
 							<string key="name">save:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="showDomainList:">
 							<string key="name">showDomainList:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="soundSelectionChanged:">
-							<string key="name">soundSelectionChanged:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="updateTimeSliderDisplay:">
@@ -1040,7 +1108,7 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../AppController.m</string>
+						<string key="minorKey">AppController.m</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1059,7 +1127,7 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../ButtonWithPopupMenu.h</string>
+						<string key="minorKey">ButtonWithPopupMenu.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1068,8 +1136,10 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="addDomain:">id</string>
 						<string key="importIncomingMailServersFromMail:">id</string>
+						<string key="importIncomingMailServersFromMailMate:">id</string>
 						<string key="importIncomingMailServersFromThunderbird:">id</string>
 						<string key="importOutgoingMailServersFromMail:">id</string>
+						<string key="importOutgoingMailServersFromMailMate:">id</string>
 						<string key="importOutgoingMailServersFromThunderbird:">id</string>
 						<string key="removeDomain:">id</string>
 					</dictionary>
@@ -1082,12 +1152,20 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<string key="name">importIncomingMailServersFromMail:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="importIncomingMailServersFromMailMate:">
+							<string key="name">importIncomingMailServersFromMailMate:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="importIncomingMailServersFromThunderbird:">
 							<string key="name">importIncomingMailServersFromThunderbird:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="importOutgoingMailServersFromMail:">
 							<string key="name">importOutgoingMailServersFromMail:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="importOutgoingMailServersFromMailMate:">
+							<string key="name">importOutgoingMailServersFromMailMate:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="importOutgoingMailServersFromThunderbird:">
@@ -1112,7 +1190,7 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../DomainListWindowController.h</string>
+						<string key="minorKey">DomainListWindowController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1120,8 +1198,10 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="addDomain:">id</string>
 						<string key="importIncomingMailServersFromMail:">id</string>
+						<string key="importIncomingMailServersFromMailMate:">id</string>
 						<string key="importIncomingMailServersFromThunderbird:">id</string>
 						<string key="importOutgoingMailServersFromMail:">id</string>
+						<string key="importOutgoingMailServersFromMailMate:">id</string>
 						<string key="importOutgoingMailServersFromThunderbird:">id</string>
 						<string key="removeDomain:">id</string>
 					</dictionary>
@@ -1134,12 +1214,20 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<string key="name">importIncomingMailServersFromMail:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="importIncomingMailServersFromMailMate:">
+							<string key="name">importIncomingMailServersFromMailMate:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="importIncomingMailServersFromThunderbird:">
 							<string key="name">importIncomingMailServersFromThunderbird:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="importOutgoingMailServersFromMail:">
 							<string key="name">importOutgoingMailServersFromMail:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="importOutgoingMailServersFromMailMate:">
+							<string key="name">importOutgoingMailServersFromMailMate:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="importOutgoingMailServersFromThunderbird:">
@@ -1153,7 +1241,7 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../DomainListWindowController.m</string>
+						<string key="minorKey">DomainListWindowController.m</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1214,7 +1302,7 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../TimerWindowController.h</string>
+						<string key="minorKey">TimerWindowController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1245,7 +1333,7 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../TimerWindowController.m</string>
+						<string key="minorKey">TimerWindowController.m</string>
 					</object>
 				</object>
 			</array>

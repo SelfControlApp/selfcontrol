@@ -36,26 +36,22 @@
 		if(hostname != nil) {
 			// If it has a defined port number, add it to the host to block for added
 			// block specificity, so only incoming mail is blocked.
-			if(incomingAccounts[i][@"PortNumber"] != nil) {
+			if([incomingAccounts[i][@"PortNumber"] length]) {
 				[hostname appendString: @":"];
 				[hostname appendString: incomingAccounts[i][@"PortNumber"]];
 				// If it doesn't have a defined port number, we'll go through and choose
 				// the default port for the type of account it is.
 			} else if([incomingAccounts[i][@"AccountType"] isEqual: @"POPAccount"]) {
 				if(incomingAccounts[i][@"SSLEnabled"]) {
-					[hostname appendString: @":"];
-					[hostname appendString: @"995"];
+					[hostname appendString: @":995"];
 				} else {
-					[hostname appendString: @":"];
-					[hostname appendString: @"110"];
+					[hostname appendString: @":110"];
 				}
 			} else if([incomingAccounts[i][@"AccountType"] isEqual: @"IMAPAccount"]) {
 				if(incomingAccounts[i][@"SSLEnabled"]) {
-					[hostname appendString: @":"];
-					[hostname appendString: @"993"];
+					[hostname appendString: @":993"];
 				} else {
-					[hostname appendString: @":"];
-					[hostname appendString: @"143"];
+					[hostname appendString: @":143"];
 				}
 			}
 			[hostnames addObject: hostname];
@@ -73,14 +69,15 @@
 	for(int i = 0; i < [outgoingAccounts count]; i++) {
 		NSMutableString* hostname = [outgoingAccounts[i][@"Hostname"] mutableCopy];
 		if(hostname != nil) {
-			if(outgoingAccounts[i][@"PortNumber"] != nil) {
+			if([outgoingAccounts[i][@"PortNumber"] length]) {
 				[hostname appendString: @":"];
 				[hostname appendString: outgoingAccounts[i][@"PortNumber"]];
-			} else {
+			} else if (outgoingAccounts[i][@"SSLEnabled"]) {
 				// If it doesn't have a defined port number, we'll block all the default outoging ports
-				[hostnames addObject: [hostname stringByAppendingString: @":25"]];
 				[hostnames addObject: [hostname stringByAppendingString: @":465"]];
 				[hostname appendString: @":587"];
+			} else {
+				[hostname appendString: @":25"];
 			}
 
 			[hostnames addObject: hostname];
@@ -89,6 +86,77 @@
 
 	return hostnames;
 }
+
++ (NSArray*)incomingMailHostnamesFromMailMate {
+	NSMutableArray* hostnames = [NSMutableArray arrayWithCapacity: 10];
+
+	NSString* sourcesPath = [@"~/Library/Application Support/MailMate/Sources.plist" stringByExpandingTildeInPath];
+	NSData* plistData = [NSData dataWithContentsOfFile: sourcesPath];
+	if (!plistData) return hostnames;
+
+	NSDictionary* prefs = [NSPropertyListSerialization propertyListWithData: plistData options: NSPropertyListImmutable format: nil error: nil];
+	if (!prefs) return hostnames;
+
+	NSArray* accounts = prefs[@"sources"];
+	for(int i = 0; i < [accounts count]; i++) {
+		NSURL* serverURL = [NSURL URLWithString: accounts[i][@"serverURL"]];
+		if (!serverURL) continue;
+
+		NSMutableString* hostname = [serverURL.host mutableCopy];
+		if (![hostname length]) continue;
+
+		// If it has a defined port number, add it to the host to block for added
+		// block specificity, so only incoming mail is blocked.
+		if([accounts[i][@"port"] length]) {
+			[hostname appendString: @":"];
+			[hostname appendString: accounts[i][@"port"]];
+		} else if([serverURL.scheme isEqualToString: @"imap"]) {
+			[hostname appendString: @":993"];
+			[hostnames addObject: [hostname stringByAppendingString: @":143"]];
+		} else if([serverURL.scheme isEqualToString: @"pop"]) {
+			[hostname appendString: @":995"];
+			[hostnames addObject: [hostname stringByAppendingString: @":110"]];
+		}
+
+		[hostnames addObject: hostname];
+	}
+
+	return hostnames;
+}
++ (NSArray*)outgoingMailHostnamesFromMailMate {
+	NSMutableArray* hostnames = [NSMutableArray arrayWithCapacity: 10];
+
+	NSString* submissionPath = [@"~/Library/Application Support/MailMate/Submission.plist" stringByExpandingTildeInPath];
+	NSData* plistData = [NSData dataWithContentsOfFile: submissionPath];
+	if (!plistData) return hostnames;
+
+	NSDictionary* prefs = [NSPropertyListSerialization propertyListWithData: plistData options: NSPropertyListImmutable format: nil error: nil];
+	if (!prefs) return hostnames;
+
+	NSArray* smtpServers = prefs[@"smtpServers"];
+	for(int i = 0; i < [smtpServers count]; i++) {
+		NSURL* serverURL = [NSURL URLWithString: smtpServers[i][@"serverURL"]];
+		if (!serverURL) continue;
+
+		NSMutableString* hostname = [serverURL.host mutableCopy];
+		if (![hostname length]) continue;
+
+		// If it has a defined port number, add it to the host to block for added
+		// block specificity, so only incoming mail is blocked.
+		if([smtpServers[i][@"port"] length]) {
+			[hostname appendString: @":"];
+			[hostname appendString: smtpServers[i][@"port"]];
+		} else {
+			[hostname appendString: @":25"];
+			[hostnames addObject: [hostname stringByAppendingString: @":587"]];
+		}
+
+		[hostnames addObject: hostname];
+	}
+
+	return hostnames;
+}
+
 
 + (NSArray*)incomingMailHostnamesFromThunderbird {
 	return [ThunderbirdPreferenceParser incomingHostnames];

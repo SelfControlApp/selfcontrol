@@ -319,7 +319,6 @@
 														object: self];
 }
 
-
 - (IBAction)importIncomingMailServersFromMail:(id)sender {
 	NSArray* arr = [HostImporter incomingMailHostnamesFromMail];
 	for(int i = 0; i < [arr count]; i++) {
@@ -332,7 +331,6 @@
 	[[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
 														object: self];
 }
-
 
 - (IBAction)importOutgoingMailServersFromMail:(id)sender {
 	NSArray* arr = [HostImporter outgoingMailHostnamesFromMail];
@@ -347,5 +345,30 @@
 														object: self];
 }
 
+- (IBAction)importIncomingMailServersFromMailMate:(id)sender {
+	NSArray* arr = [HostImporter incomingMailHostnamesFromMailMate];
+	for(int i = 0; i < [arr count]; i++) {
+		// Check for dupes
+		if(![domainList_ containsObject: arr[i]])
+			[domainList_ addObject: arr[i]];
+	}
+	[defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
+	[domainListTableView_ reloadData];
+	[[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
+														object: self];
+}
+
+- (IBAction)importOutgoingMailServersFromMailMate:(id)sender {
+	NSArray* arr = [HostImporter outgoingMailHostnamesFromMailMate];
+	for(int i = 0; i < [arr count]; i++) {
+		// Check for dupes
+		if(![domainList_ containsObject: arr[i]])
+			[domainList_ addObject: arr[i]];
+	}
+	[defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
+	[domainListTableView_ reloadData];
+	[[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
+														object: self];
+}
 
 @end

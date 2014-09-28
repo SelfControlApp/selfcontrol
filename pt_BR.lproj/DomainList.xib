@@ -91,6 +91,37 @@
 							</array>
 						</object>
 					</object>
+					<object class="NSMenuItem" id="710741841">
+						<reference key="NSMenu" ref="858794104"/>
+						<string key="NSTitle">Do MailMate</string>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="962547820"/>
+						<reference key="NSMixedImage" ref="285023695"/>
+						<string key="NSAction">submenuAction:</string>
+						<reference key="NSTarget" ref="524555381"/>
+						<object class="NSMenu" key="NSSubmenu" id="524555381">
+							<string key="NSTitle">Do MailMate</string>
+							<array class="NSMutableArray" key="NSMenuItems">
+								<object class="NSMenuItem" id="429188154">
+									<reference key="NSMenu" ref="524555381"/>
+									<string key="NSTitle">Servidores de entrada de correio</string>
+									<string key="NSKeyEquiv"/>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="962547820"/>
+									<reference key="NSMixedImage" ref="285023695"/>
+								</object>
+								<object class="NSMenuItem" id="803101708">
+									<reference key="NSMenu" ref="524555381"/>
+									<string key="NSTitle">Servidores de saída de correio</string>
+									<string key="NSKeyEquiv"/>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="962547820"/>
+									<reference key="NSMixedImage" ref="285023695"/>
+								</object>
+							</array>
+						</object>
+					</object>
 					<object class="NSMenuItem" id="234071714">
 						<reference key="NSMenu" ref="858794104"/>
 						<string key="NSTitle">Do Thunderbird</string>
@@ -395,10 +426,9 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						<object class="NSMatrix" id="485477882">
 							<reference key="NSNextResponder" ref="1006"/>
 							<int key="NSvFlags">290</int>
-							<string key="NSFrame">{{300, 6}, {93, 36}}</string>
+							<string key="NSFrame">{{294, 6}, {106, 42}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<bool key="NSEnabled">YES</bool>
 							<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 							<int key="NSNumRows">2</int>
@@ -525,7 +555,7 @@ QXBwbGUgQ29tcHV0ZXIsIEluYy4sIDIwMDUAAAAAA</bytes>
 									<int key="NSPeriodicInterval">75</int>
 								</object>
 							</array>
-							<string key="NSCellSize">{93, 17}</string>
+							<string key="NSCellSize">{106, 20}</string>
 							<string key="NSIntercellSpacing">{4, 2}</string>
 							<int key="NSMatrixFlags">1151868928</int>
 							<string key="NSCellClass">NSActionCell</string>
@@ -762,6 +792,22 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 					<int key="connectionID">124</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">importIncomingMailServersFromMailMate:</string>
+						<reference key="source" ref="888103330"/>
+						<reference key="destination" ref="429188154"/>
+					</object>
+					<int key="connectionID">131</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">importOutgoingMailServersFromMailMate:</string>
+						<reference key="source" ref="888103330"/>
+						<reference key="destination" ref="803101708"/>
+					</object>
+					<int key="connectionID">132</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">popUpMenu_</string>
 						<reference key="source" ref="938727056"/>
@@ -826,9 +872,9 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 						<array class="NSMutableArray" key="children">
 							<reference ref="130181475"/>
 							<reference ref="411407026"/>
-							<reference ref="485477882"/>
 							<reference ref="938727056"/>
 							<reference ref="451991981"/>
+							<reference ref="485477882"/>
 						</array>
 						<reference key="parent" ref="1005"/>
 					</object>
@@ -925,6 +971,7 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 							<reference ref="356304010"/>
 							<reference ref="757550507"/>
 							<reference ref="234071714"/>
+							<reference ref="710741841"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -1017,6 +1064,33 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 						<reference key="object" ref="387359892"/>
 						<reference key="parent" ref="485477882"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">127</int>
+						<reference key="object" ref="710741841"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="524555381"/>
+						</array>
+						<reference key="parent" ref="858794104"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">128</int>
+						<reference key="object" ref="524555381"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="803101708"/>
+							<reference ref="429188154"/>
+						</array>
+						<reference key="parent" ref="710741841"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">129</int>
+						<reference key="object" ref="803101708"/>
+						<reference key="parent" ref="524555381"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">130</int>
+						<reference key="object" ref="429188154"/>
+						<reference key="parent" ref="524555381"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -1032,10 +1106,15 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 				<string key="112.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="113.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="12.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="127.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="128.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="129.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="13.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="130.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="14.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="15.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="17.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<reference key="2.IBNSViewMetadataGestureRecognizers" ref="0"/>
 				<string key="2.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="20.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<object class="NSMutableDictionary" key="42.IBAttributePlaceholdersKey">
@@ -1077,7 +1156,7 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">126</int>
+			<int key="maxID">132</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1091,7 +1170,6 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 						<string key="openPreferences:">id</string>
 						<string key="save:">id</string>
 						<string key="showDomainList:">id</string>
-						<string key="soundSelectionChanged:">id</string>
 						<string key="updateTimeSliderDisplay:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
@@ -1117,10 +1195,6 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 						</object>
 						<object class="IBActionInfo" key="showDomainList:">
 							<string key="name">showDomainList:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="soundSelectionChanged:">
-							<string key="name">soundSelectionChanged:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="updateTimeSliderDisplay:">
@@ -1248,8 +1322,10 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="addDomain:">id</string>
 						<string key="importIncomingMailServersFromMail:">id</string>
+						<string key="importIncomingMailServersFromMailMate:">id</string>
 						<string key="importIncomingMailServersFromThunderbird:">id</string>
 						<string key="importOutgoingMailServersFromMail:">id</string>
+						<string key="importOutgoingMailServersFromMailMate:">id</string>
 						<string key="importOutgoingMailServersFromThunderbird:">id</string>
 						<string key="removeDomain:">id</string>
 					</dictionary>
@@ -1262,12 +1338,20 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 							<string key="name">importIncomingMailServersFromMail:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="importIncomingMailServersFromMailMate:">
+							<string key="name">importIncomingMailServersFromMailMate:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="importIncomingMailServersFromThunderbird:">
 							<string key="name">importIncomingMailServersFromThunderbird:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="importOutgoingMailServersFromMail:">
 							<string key="name">importOutgoingMailServersFromMail:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="importOutgoingMailServersFromMailMate:">
+							<string key="name">importOutgoingMailServersFromMailMate:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="importOutgoingMailServersFromThunderbird:">
@@ -1300,8 +1384,10 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="addDomain:">id</string>
 						<string key="importIncomingMailServersFromMail:">id</string>
+						<string key="importIncomingMailServersFromMailMate:">id</string>
 						<string key="importIncomingMailServersFromThunderbird:">id</string>
 						<string key="importOutgoingMailServersFromMail:">id</string>
+						<string key="importOutgoingMailServersFromMailMate:">id</string>
 						<string key="importOutgoingMailServersFromThunderbird:">id</string>
 						<string key="removeDomain:">id</string>
 					</dictionary>
@@ -1314,12 +1400,20 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 							<string key="name">importIncomingMailServersFromMail:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="importIncomingMailServersFromMailMate:">
+							<string key="name">importIncomingMailServersFromMailMate:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="importIncomingMailServersFromThunderbird:">
 							<string key="name">importIncomingMailServersFromThunderbird:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="importOutgoingMailServersFromMail:">
 							<string key="name">importOutgoingMailServersFromMail:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="importOutgoingMailServersFromMailMate:">
+							<string key="name">importOutgoingMailServersFromMailMate:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="importOutgoingMailServersFromThunderbird:">

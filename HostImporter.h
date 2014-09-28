@@ -37,6 +37,9 @@
 // imported from the user's instance of Mail.app
 + (NSArray*)outgoingMailHostnamesFromMail;
 
++ (NSArray*)incomingMailHostnamesFromMailMate;
++ (NSArray*)outgoingMailHostnamesFromMailMate;
+
 // Returns an autoreleased instance of NSArray containing all incoming hostnames
 // imported from the default profile of the user's instance of Thunderbird
 + (NSArray*)incomingMailHostnamesFromThunderbird;
