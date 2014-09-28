@@ -216,9 +216,7 @@ void printStatus(int status) {
 
 void removeBlock(uid_t controllingUID) {
 	setDefaultsValue(@"BlockStartedDate", [NSDate distantFuture], controllingUID);
-
 	removeRulesFromFirewall(controllingUID);
-
 	if(![[NSFileManager defaultManager] removeItemAtPath: SelfControlLockFilePath error: nil] && [[NSFileManager defaultManager] fileExistsAtPath: SelfControlLockFilePath]) {
 		NSLog(@"ERROR: Could not remove SelfControl lock file.");
 		printStatus(-218);
@@ -226,7 +224,6 @@ void removeBlock(uid_t controllingUID) {
 
 	[[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
 																   object: nil];
-
 	clearCachesIfRequested(controllingUID);
 
 	NSLog(@"INFO: Block cleared.");

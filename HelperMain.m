@@ -95,8 +95,6 @@ int main(int argc, char* argv[]) {
 			NSCalendar* calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 			NSDateComponents* components = [calendar components: NSMinuteCalendarUnit fromDate: expirationDate];
 			int expirationMinute = [components minute];
-			NSLog(@"date: %@", expirationDate);
-			NSLog(@"minute: %d", expirationMinute);
 
 			NSString* plistString = [NSString stringWithFormat:
 									 plistFormatString,
@@ -104,7 +102,6 @@ int main(int argc, char* argv[]) {
 									 expirationMinute,
 									 MIN(expirationMinute + 1, 59),
 									 controllingUID];
-
 			[plistString writeToFile: @"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"
 						  atomically: YES
 							encoding: NSUTF8StringEncoding
@@ -155,7 +152,6 @@ int main(int argc, char* argv[]) {
 					NSLog(@"WARNING: Could not delete old scheckup binary.");
 				}
 			}
-
 			NSString* scheckupPath = [@(argv[0]) stringByDeletingLastPathComponent];
 			scheckupPath = [scheckupPath stringByAppendingPathComponent: @"scheckup"];
 
@@ -221,7 +217,6 @@ int main(int argc, char* argv[]) {
 			[fileManager setAttributes: fileAttributes ofItemAtPath: SelfControlLockFilePath error: nil];
 
 			addRulesToFirewall(controllingUID);
-
 			int result = [LaunchctlHelper loadLaunchdJobWithPlistAt: @"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
 
 			[[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"

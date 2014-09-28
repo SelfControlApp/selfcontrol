@@ -37,8 +37,7 @@ int main(int argc, char* argv[]) {
 				// get rid of this block
 				removeBlock(getuid());
 
-				printStatus(-215);
-				exit(EX_SOFTWARE);
+				exit(EXIT_SUCCESS);
 			}
 		}
 
