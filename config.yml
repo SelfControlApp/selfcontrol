@@ -1,5 +1,5 @@
 build_now:              'YES'  
-download_base_url:      'https://github.com/downloads/slambert/selfcontrol/'  
+download_base_url:      'http://downloads.selfcontrolapp.com/'
 appcast_basefolder:     '/Users/charlie/SelfControl/selfcontrol/'  
 appcast_xml_name:       'SelfControlAppcast.xml'  
 keychain_privkey_name:  'Sparkle Private Key 1'  

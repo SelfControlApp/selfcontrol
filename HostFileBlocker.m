@@ -74,7 +74,6 @@ NSString* const kDefaultHostsFileContents = @"##\n"
 }
 
 - (BOOL)createBackupHostsFile {
-	NSLog(@"CREATE BACKUP HOSTS FILE!");
 	[self deleteBackupHostsFile];
 
 	if (![fileMan fileExistsAtPath: @"/etc/hosts"]) {
@@ -82,7 +81,6 @@ NSString* const kDefaultHostsFileContents = @"##\n"
 	}
 
 	if(![fileMan isReadableFileAtPath: @"/etc/hosts"] || [fileMan fileExistsAtPath: @"/etc/hosts.bak"]) {
-		NSLog(@"cant create backup hosts file =(");
 		return NO;
 	}
 

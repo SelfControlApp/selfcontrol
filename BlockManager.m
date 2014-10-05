@@ -61,11 +61,9 @@
 	}
 
 	if(!isWhitelist && ![hostsBlocker containsSelfControlBlock] && [hostsBlocker createBackupHostsFile]) {
-		NSLog(@"enabled host blocking");
 		[hostsBlocker addSelfControlBlockHeader];
 		hostsBlockingEnabled = YES;
 	} else {
-		NSLog(@"disabled host blocking");
 		hostsBlockingEnabled = NO;
 	}
 }

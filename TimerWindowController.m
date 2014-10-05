@@ -133,7 +133,6 @@
 		// scheckup.
 		numStrikes++;
 
-		NSLog(@"numStrikes: %d", numStrikes);
 		if(numStrikes == 2) {
 			NSLog(@"WARNING: Block should have ended two seconds ago, starting scheckup");
 			[self runCheckup];
