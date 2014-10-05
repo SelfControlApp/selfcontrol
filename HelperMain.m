@@ -171,7 +171,6 @@ int main(int argc, char* argv[]) {
 				exit(EX_IOERR);
 			}
 
-			setDefaultsValue(@"BlockStartedDate", [NSDate date], controllingUID);
 			NSDictionary* defaults = getDefaultsDict(controllingUID);
 			// In this case it doesn't make any sense to use an existing lock file (in
 			// fact, one shouldn't exist), so we fail if the defaults system has unreasonable

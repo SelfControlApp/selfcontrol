@@ -568,6 +568,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 			return;
 		}
 
+		[defaults_ setObject: [NSDate date] forKey: @"BlockStartedDate"];
+		[defaults_ synchronize];
+
 		// We need to pass our UID to the helper tool.  It needs to know whose defaults
 		// it should reading in order to properly load the blacklist.
 		char uidString[32];
@@ -584,6 +587,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 		if(status) {
 			NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", (int)status);
+
+			// reset BlockStartedDate on failure
+			[defaults_ removeObjectForKey: @"BlockStartedDate"];
 
 			NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
 											   code: status
@@ -607,6 +613,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		NSString* inDataString = [[NSString alloc] initWithData: inData encoding: NSUTF8StringEncoding];
 
 		if([inDataString isEqualToString: @""]) {
+			// reset BlockStartedDate on failure
+			[defaults_ removeObjectForKey: @"BlockStartedDate"];
+
 			NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
 											   code: -104
 										   userInfo: @{NSLocalizedDescriptionKey: @"Error -104: The helper tool crashed.  This may cause unexpected errors."}];
@@ -619,6 +628,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		int exitCode = [inDataString intValue];
 
 		if(exitCode) {
+			// reset BlockStartedDate on failure
+			[defaults_ removeObjectForKey: @"BlockStartedDate"];
+
 			NSError* err = [self errorFromHelperToolStatusCode: exitCode];
 
 			[NSApp performSelectorOnMainThread: @selector(presentError:)
