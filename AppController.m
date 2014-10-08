@@ -40,6 +40,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 									  @"BlockStartedDate": [NSDate distantFuture],
 									  @"HostBlacklist": @[],
 									  @"EvaluateCommonSubdomains": @YES,
+									  @"IncludeLinkedDomains": @YES,
 									  @"HighlightInvalidHosts": @YES,
 									  @"VerifyInternetConnection": @YES,
 									  @"TimerWindowFloats": @NO,

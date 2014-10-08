@@ -21,6 +21,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "BlockManager.h"
+#import "WhitelistScraper.h"
 
 @implementation BlockManager
 
@@ -35,12 +36,14 @@
 - (BlockManager*)initAsWhitelist:(BOOL)whitelist allowLocal:(BOOL)local {
 	return [self initAsWhitelist: whitelist allowLocal: local includeCommonSubdomains: YES];
 }
-
-
 - (BlockManager*)initAsWhitelist:(BOOL)whitelist allowLocal:(BOOL)local includeCommonSubdomains:(BOOL)blockCommon {
+	return [self initAsWhitelist: whitelist allowLocal: local includeCommonSubdomains: blockCommon includeLinkedDomains: YES];
+}
+
+- (BlockManager*)initAsWhitelist:(BOOL)whitelist allowLocal:(BOOL)local includeCommonSubdomains:(BOOL)blockCommon includeLinkedDomains:(BOOL)includeLinked {
 	if(self = [super init]) {
 		opQueue = [[NSOperationQueue alloc] init];
-		[opQueue setMaxConcurrentOperationCount: 10];
+		[opQueue setMaxConcurrentOperationCount: 20];
 
 		pf = [[PacketFilter alloc] initAsWhitelist: whitelist];
 		hostsBlocker = [[HostFileBlocker alloc] init];
@@ -49,6 +52,7 @@
 		isWhitelist = whitelist;
 		allowLocal = local;
 		includeCommonSubdomains = blockCommon;
+		includeLinkedDomains = includeLinked;
 	}
 
 	return self;
@@ -133,6 +137,13 @@
 	}
 
 	[self addBlockEntryWithHostName: hostName port: portNum maskLen: maskLen];
+
+	if (isWhitelist && includeLinkedDomains) {
+		NSSet* relatedDomains = [WhitelistScraper relatedDomains: hostName];
+		[relatedDomains enumerateObjectsUsingBlock:^(NSString* host, BOOL* stop) {
+			[self enqueueBlockEntryWithHostName: host port: 0 maskLen: 0];
+		}];
+	}
 
 	if(![hostName isValidIPAddress] && includeCommonSubdomains) {
 		NSArray* commonSubdomains = [self commonSubdomainsForHostName: hostName];

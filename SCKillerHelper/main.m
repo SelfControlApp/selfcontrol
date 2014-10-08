@@ -107,7 +107,7 @@ int main(int argc, char* argv[]) {
 		status = [task terminationStatus];
 		[log appendFormat: @"Unloading the launchd daemon returned: %d\n\n", status];
 
-		BlockManager* bm = [[BlockManager alloc] initAsWhitelist: NO];
+		BlockManager* bm = [[BlockManager alloc] init];
 		BOOL cleared = [bm forceClearBlock];
 		if (cleared) {
 			[log appendString: @"SUCCESSFULLY CLEARED BLOCK!!! Used [BlockManager forceClearBlock]\n"];

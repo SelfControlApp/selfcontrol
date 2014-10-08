@@ -39,6 +39,8 @@
 		CB529BBF0F32B7ED00564FB8 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB529BBE0F32B7ED00564FB8 /* AppController.m */; };
 		CB54D44C0F93E33300AA22E9 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9E901D0F397FFA006DE6E4 /* Security.framework */; };
 		CB587E500F50FE8800C66A09 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB587E4F0F50FE8800C66A09 /* SystemConfiguration.framework */; };
+		CB73616119E5086900E0924F /* WhitelistScraper.m in Sources */ = {isa = PBXBuildFile; fileRef = CB73615F19E4FDA000E0924F /* WhitelistScraper.m */; };
+		CB73616219E5086A00E0924F /* WhitelistScraper.m in Sources */ = {isa = PBXBuildFile; fileRef = CB73615F19E4FDA000E0924F /* WhitelistScraper.m */; };
 		CB90BF830F49F430006D202D /* HostImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB90BF820F49F430006D202D /* HostImporter.m */; };
 		CB9365620F8581B000EF284E /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = CB9365610F8581B000EF284E /* dsa_pub.pem */; };
 		CB9366E80F85BEF100EF284E /* NSRemoveTemplate.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB9366E60F85BEF100EF284E /* NSRemoveTemplate.jpg */; };
@@ -93,6 +95,7 @@
 		CBD4848F19D768C90020F949 /* PreferencesAdvancedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD4848D19D768C90020F949 /* PreferencesAdvancedViewController.m */; };
 		CBE2BB5619D10CCC0077124F /* SCKillerHelper in Copy Helper Tools */ = {isa = PBXBuildFile; fileRef = CB9C811B19CFBA8500CDCAE1 /* SCKillerHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		CBE4401B0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE4401A0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m */; };
+		CBE44FEB19E50900004E9706 /* WhitelistScraper.m in Sources */ = {isa = PBXBuildFile; fileRef = CB73615F19E4FDA000E0924F /* WhitelistScraper.m */; };
 		CBE5C40B0F4D4531003DB900 /* ButtonWithPopupMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE5C40A0F4D4531003DB900 /* ButtonWithPopupMenu.m */; };
 		CBEE50C10F48C21F00F5DF1C /* TimerWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */; };
 		CF32FCC0BE72492A9CC7BE68 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF4C56EF9E741B8994020A7 /* libPods.a */; };
@@ -237,6 +240,8 @@
 		CB529BBE0F32B7ED00564FB8 /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
 		CB587E4F0F50FE8800C66A09 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = /System/Library/Frameworks/SystemConfiguration.framework; sourceTree = "<absolute>"; };
 		CB5E20BF0FAE0CDC006DBFC8 /* scheckup */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = scheckup; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB73615E19E4FDA000E0924F /* WhitelistScraper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WhitelistScraper.h; sourceTree = "<group>"; };
+		CB73615F19E4FDA000E0924F /* WhitelistScraper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WhitelistScraper.m; sourceTree = "<group>"; };
 		CB90BF810F49F430006D202D /* HostImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostImporter.h; sourceTree = "<group>"; };
 		CB90BF820F49F430006D202D /* HostImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HostImporter.m; sourceTree = "<group>"; };
 		CB9365610F8581B000EF284E /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
@@ -314,7 +319,7 @@
 		CBD2671E11ED882700042CD8 /* CheckupMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckupMain.h; sourceTree = "<group>"; };
 		CBD2671F11ED882700042CD8 /* CheckupMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckupMain.m; sourceTree = "<group>"; };
 		CBD4848219D75F6D0020F949 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
-		CBD4848519D7611F0020F949 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		CBD4848519D7611F0020F949 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		CBD4848619D7611F0020F949 /* TemplateIcon2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TemplateIcon2x.png; sourceTree = "<group>"; };
 		CBD4848719D764440020F949 /* PreferencesGeneralViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesGeneralViewController.h; sourceTree = "<group>"; };
 		CBD4848819D764440020F949 /* PreferencesGeneralViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesGeneralViewController.m; sourceTree = "<group>"; };
@@ -504,6 +509,8 @@
 				CBE4401A0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m */,
 				CB90BF810F49F430006D202D /* HostImporter.h */,
 				CB90BF820F49F430006D202D /* HostImporter.m */,
+				CB73615E19E4FDA000E0924F /* WhitelistScraper.h */,
+				CB73615F19E4FDA000E0924F /* WhitelistScraper.m */,
 				CBEE50BF0F48C21F00F5DF1C /* TimerWindowController.h */,
 				CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */,
 				CBC2F8650F4674E300CF2A42 /* LaunchctlHelper.h */,
@@ -833,6 +840,7 @@
 			files = (
 				CBD2676C11ED926300042CD8 /* LaunchctlHelper.m in Sources */,
 				CBD266B111ED7D9C00042CD8 /* HelperCommon.m in Sources */,
+				CB73616119E5086900E0924F /* WhitelistScraper.m in Sources */,
 				CBD2672011ED882700042CD8 /* CheckupMain.m in Sources */,
 				CBD2676A11ED925700042CD8 /* HostFileBlocker.m in Sources */,
 				CB25806316C1FDBE0059C99A /* BlockManager.m in Sources */,
@@ -856,6 +864,7 @@
 			files = (
 				CB9C811E19CFBA8500CDCAE1 /* main.m in Sources */,
 				CB9C812719CFBB6400CDCAE1 /* NSString+IPAddress.m in Sources */,
+				CBE44FEB19E50900004E9706 /* WhitelistScraper.m in Sources */,
 				CB9C812619CFBB5E00CDCAE1 /* BlockManager.m in Sources */,
 				CB9C812519CFBB5500CDCAE1 /* HelperCommon.m in Sources */,
 				CB9C812419CFBB4E00CDCAE1 /* HostFileBlocker.m in Sources */,
@@ -870,6 +879,7 @@
 			files = (
 				CBA2AFD90F39EC46005AFEBE /* HelperMain.m in Sources */,
 				CBCA91121960D87300AFD20C /* PacketFilter.m in Sources */,
+				CB73616219E5086A00E0924F /* WhitelistScraper.m in Sources */,
 				CBC2F8580F4672FE00CF2A42 /* LaunchctlHelper.m in Sources */,
 				CBB0AE2A0FA74566006229B3 /* HostFileBlocker.m in Sources */,
 				CBD266B011ED7D9C00042CD8 /* HelperCommon.m in Sources */,

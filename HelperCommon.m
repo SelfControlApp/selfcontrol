@@ -20,6 +20,7 @@ void registerDefaults(uid_t controllingUID) {
 								  @"BlockStartedDate": [NSDate distantFuture],
 								  @"HostBlacklist": @[],
 								  @"EvaluateCommonSubdomains": @YES,
+								  @"IncludeLinkedDomains": @YES,
 								  @"HighlightInvalidHosts": @YES,
 								  @"VerifyInternetConnection": @YES,
 								  @"TimerWindowFloats": @NO,
@@ -61,6 +62,7 @@ void addRulesToFirewall(uid_t controllingUID) {
 	NSDictionary* defaults = getDefaultsDict(controllingUID);
 	BOOL shouldEvaluateCommonSubdomains = [defaults[@"EvaluateCommonSubdomains"] boolValue];
 	BOOL allowLocalNetworks = [defaults[@"AllowLocalNetworks"] boolValue];
+	BOOL includeLinkedDomains = [defaults[@"IncludeLinkedDomains"] boolValue];
 
 	// get value for BlockAsWhitelist
 	BOOL blockAsWhitelist;
@@ -71,7 +73,7 @@ void addRulesToFirewall(uid_t controllingUID) {
 		blockAsWhitelist = [curDictionary[@"BlockAsWhitelist"] boolValue];
 	}
 
-	BlockManager* blockManager = [[BlockManager alloc] initAsWhitelist: blockAsWhitelist allowLocal: allowLocalNetworks includeCommonSubdomains: shouldEvaluateCommonSubdomains];
+	BlockManager* blockManager = [[BlockManager alloc] initAsWhitelist: blockAsWhitelist allowLocal: allowLocalNetworks includeCommonSubdomains: shouldEvaluateCommonSubdomains includeLinkedDomains: includeLinkedDomains];
 
 	[blockManager prepareToAddBlock];
 	[blockManager addBlockEntries: domainList];
@@ -81,7 +83,7 @@ void addRulesToFirewall(uid_t controllingUID) {
 
 void removeRulesFromFirewall(uid_t controllingUID) {
 	// options don't really matter because we're only using it to clear
-	BlockManager* blockManager = [[BlockManager alloc] initAsWhitelist: FALSE allowLocal: TRUE includeCommonSubdomains: TRUE];
+	BlockManager* blockManager = [[BlockManager alloc] init];
 	[blockManager clearBlock];
 
 	// We'll play the sound now rather than putting it in the "defaults block"
