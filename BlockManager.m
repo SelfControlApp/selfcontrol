@@ -138,7 +138,7 @@
 
 	[self addBlockEntryWithHostName: hostName port: portNum maskLen: maskLen];
 
-	if (isWhitelist && includeLinkedDomains) {
+	if (isWhitelist && includeLinkedDomains && ![hostName isValidIPAddress]) {
 		NSSet* relatedDomains = [WhitelistScraper relatedDomains: hostName];
 		[relatedDomains enumerateObjectsUsingBlock:^(NSString* host, BOOL* stop) {
 			[self enqueueBlockEntryWithHostName: host port: 0 maskLen: 0];
