@@ -142,11 +142,7 @@ NSString* const kThunderbirdSupportFolderPath = @"~/Library/Thunderbird";
   if(![[NSFileManager defaultManager] isReadableFileAtPath: pathToPrefsJsFile])
     return @[];
   
-  // NSArray* prefsJsLines = [[NSString stringWithContentsOfFile: pathToPrefsJsFile] componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
-  // The old implementation of this was better.  The new one misses alternative
-  // line breaks like \r.  10.4 doesn't have a componentSeparatedByCharactersInSet
-  // method though, so this'll have to do.
-  NSArray* prefsJsLines = [[NSString stringWithContentsOfFile: pathToPrefsJsFile encoding: NSUTF8StringEncoding error: NULL] componentsSeparatedByString: @"\n"];
+  NSArray* prefsJsLines = [[NSString stringWithContentsOfFile: pathToPrefsJsFile encoding: NSUTF8StringEncoding error: NULL] componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
   NSMutableArray* hostnames = [NSMutableArray arrayWithCapacity: 10];
   
   for(int i = 0; i < [prefsJsLines count]; i++) {

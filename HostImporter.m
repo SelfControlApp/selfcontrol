@@ -25,6 +25,39 @@
 
 @implementation HostImporter
 
++ (NSArray*)commonDistractingWebsites {
+	return @[
+			 @"facebook.com",
+			 @"twitter.com",
+			 @"reddit.com",
+			 @"tumblr.com",
+			 @"youtube.com",
+			 @"9gag.com",
+			 @"netflix.com",
+			 @"hulu.com",
+			 @"buzzfeed.com"
+			 ];
+}
++ (NSArray*)newsAndPublications {
+	return @[
+			 @"cnn.com",
+			 @"huffingtonpost.com",
+			 @"foxnews.com",
+			 @"nytimes.com",
+			 @"bbc.com",
+			 @"bbc.co.uk",
+			 @"telegraph.co.uk",
+			 @"news.google.com",
+			 @"buzzfeed.com",
+			 @"vice.com",
+			 @"gawker.com",
+			 @"tumblr.com",
+			 @"forbes.com",
+			 @"gothamist.com",
+			 @"jezebel.com"
+			 ];
+}
+
 + (NSArray*)incomingMailHostnamesFromMail {
 	NSMutableArray* hostnames = [NSMutableArray arrayWithCapacity: 10];
 	NSString* sandboxedPreferences = [@"~/Library/Containers/com.apple.mail/Data/Library/Preferences/com.apple.mail" stringByExpandingTildeInPath];

@@ -125,6 +125,8 @@
 // open preferences panel
 - (IBAction)openPreferences:(id)sender;
 
+- (IBAction)showGetStartedWindow:(id)sender;
+
 // Opens a save panel and saves the blocklist.
 - (IBAction)save:(id)sender;
 

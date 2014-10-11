@@ -212,6 +212,12 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="도움말" systemMenu="help" id="900">
                         <items>
+                            <menuItem title="Get Started" id="eZH-Xe-4UE">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="showGetStartedWindow:" target="469" id="6L7-eN-ahG"/>
+                                </connections>
+                            </menuItem>
                             <menuItem title="SelfControl FAQ" keyEquivalent="?" id="901">
                                 <connections>
                                     <action selector="openFAQ:" target="469" id="903"/>

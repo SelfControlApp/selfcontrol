@@ -17,6 +17,18 @@
                 <menuItem id="85">
                     <modifierMask key="keyEquivalentModifierMask"/>
                 </menuItem>
+                <menuItem title="Common Distracting Sites" id="1wQ-eD-C24">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="importCommonDistractingWebsites:" target="48" id="Ayn-sX-f1P"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="News &amp; Publications" id="e0U-ZG-P8L">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="importNewsAndPublications:" target="48" id="MO6-6j-dC2"/>
+                    </connections>
+                </menuItem>
                 <menuItem title="Mail ile" id="91">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Mail ile" id="92">
@@ -165,7 +177,7 @@ CA
                     <button verticalHuggingPriority="750" id="79" customClass="ButtonWithPopupMenu">
                         <rect key="frame" x="143" y="19" width="113" height="24"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <buttonCell key="cell" type="smallSquare" title="İçe aktar" bezelStyle="smallSquare" image="CB8B91C7-4CFF-4E2A-8EFF-ACD6C3F437FD" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" inset="2" id="80">
+                        <buttonCell key="cell" type="smallSquare" title="İçe aktar" bezelStyle="smallSquare" image="F57DF432-FA8B-453A-9AA6-30955F595CCE" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" inset="2" id="80">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
@@ -214,7 +226,7 @@ CA
         <userDefaultsController representsSharedInstance="YES" id="113"/>
     </objects>
     <resources>
-        <image name="CB8B91C7-4CFF-4E2A-8EFF-ACD6C3F437FD" width="1" height="1">
+        <image name="F57DF432-FA8B-453A-9AA6-30955F595CCE" width="1" height="1">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

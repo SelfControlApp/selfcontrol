@@ -32,7 +32,8 @@ void registerDefaults(uid_t controllingUID) {
 								  @"AllowLocalNetworks": @YES,
 								  @"MaxBlockLength": @1440,
 								  @"BlockLengthInterval": @15,
-								  @"WhitelistAlertSuppress": @NO};
+								  @"WhitelistAlertSuppress": @NO,
+								  @"GetStartedShown": @NO};
 	[defaults registerDefaults:appDefaults];
 	[defaults synchronize];
 	seteuid(0);

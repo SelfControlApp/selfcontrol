@@ -60,6 +60,22 @@
 							<string key="NSResourceName">NSMenuMixedState</string>
 						</object>
 					</object>
+					<object class="NSMenuItem" id="1057094581">
+						<reference key="NSMenu" ref="858794104"/>
+						<string key="NSTitle">Common Distracting Sites</string>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="962547820"/>
+						<reference key="NSMixedImage" ref="285023695"/>
+					</object>
+					<object class="NSMenuItem" id="694061092">
+						<reference key="NSMenu" ref="858794104"/>
+						<string key="NSTitle">News &amp; Publications</string>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="962547820"/>
+						<reference key="NSMixedImage" ref="285023695"/>
+					</object>
 					<object class="NSMenuItem" id="757550507">
 						<reference key="NSMenu" ref="858794104"/>
 						<string key="NSTitle">Från e-post</string>
@@ -633,6 +649,22 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					<int key="connectionID">132</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">importCommonDistractingWebsites:</string>
+						<reference key="source" ref="888103330"/>
+						<reference key="destination" ref="1057094581"/>
+					</object>
+					<int key="connectionID">137</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">importNewsAndPublications:</string>
+						<reference key="source" ref="888103330"/>
+						<reference key="destination" ref="694061092"/>
+					</object>
+					<int key="connectionID">138</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">popUpMenu_</string>
 						<reference key="source" ref="938727056"/>
@@ -797,6 +829,8 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<reference ref="757550507"/>
 							<reference ref="234071714"/>
 							<reference ref="243048034"/>
+							<reference ref="1057094581"/>
+							<reference ref="694061092"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -916,6 +950,16 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						<reference key="object" ref="831727908"/>
 						<reference key="parent" ref="95597707"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">135</int>
+						<reference key="object" ref="1057094581"/>
+						<reference key="parent" ref="858794104"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">136</int>
+						<reference key="object" ref="694061092"/>
+						<reference key="parent" ref="858794104"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -936,6 +980,8 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 				<string key="129.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="13.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="130.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="135.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="136.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="14.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="15.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="17.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -981,7 +1027,7 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">132</int>
+			<int key="maxID">138</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -995,6 +1041,7 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						<string key="openPreferences:">id</string>
 						<string key="save:">id</string>
 						<string key="showDomainList:">id</string>
+						<string key="showGetStartedWindow:">id</string>
 						<string key="updateTimeSliderDisplay:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
@@ -1020,6 +1067,10 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						</object>
 						<object class="IBActionInfo" key="showDomainList:">
 							<string key="name">showDomainList:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="showGetStartedWindow:">
+							<string key="name">showGetStartedWindow:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="updateTimeSliderDisplay:">
@@ -1085,6 +1136,7 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						<string key="openPreferences:">id</string>
 						<string key="save:">id</string>
 						<string key="showDomainList:">id</string>
+						<string key="showGetStartedWindow:">id</string>
 						<string key="updateTimeSliderDisplay:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
@@ -1110,6 +1162,10 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						</object>
 						<object class="IBActionInfo" key="showDomainList:">
 							<string key="name">showDomainList:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="showGetStartedWindow:">
+							<string key="name">showGetStartedWindow:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="updateTimeSliderDisplay:">
@@ -1146,9 +1202,11 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					<string key="superclassName">NSWindowController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="addDomain:">id</string>
+						<string key="importCommonDistractingWebsites:">id</string>
 						<string key="importIncomingMailServersFromMail:">id</string>
 						<string key="importIncomingMailServersFromMailMate:">id</string>
 						<string key="importIncomingMailServersFromThunderbird:">id</string>
+						<string key="importNewsAndPublications:">id</string>
 						<string key="importOutgoingMailServersFromMail:">id</string>
 						<string key="importOutgoingMailServersFromMailMate:">id</string>
 						<string key="importOutgoingMailServersFromThunderbird:">id</string>
@@ -1157,6 +1215,10 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="addDomain:">
 							<string key="name">addDomain:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="importCommonDistractingWebsites:">
+							<string key="name">importCommonDistractingWebsites:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="importIncomingMailServersFromMail:">
@@ -1169,6 +1231,10 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						</object>
 						<object class="IBActionInfo" key="importIncomingMailServersFromThunderbird:">
 							<string key="name">importIncomingMailServersFromThunderbird:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="importNewsAndPublications:">
+							<string key="name">importNewsAndPublications:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="importOutgoingMailServersFromMail:">
@@ -1208,9 +1274,11 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					<string key="className">DomainListWindowController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="addDomain:">id</string>
+						<string key="importCommonDistractingWebsites:">id</string>
 						<string key="importIncomingMailServersFromMail:">id</string>
 						<string key="importIncomingMailServersFromMailMate:">id</string>
 						<string key="importIncomingMailServersFromThunderbird:">id</string>
+						<string key="importNewsAndPublications:">id</string>
 						<string key="importOutgoingMailServersFromMail:">id</string>
 						<string key="importOutgoingMailServersFromMailMate:">id</string>
 						<string key="importOutgoingMailServersFromThunderbird:">id</string>
@@ -1219,6 +1287,10 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="addDomain:">
 							<string key="name">addDomain:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="importCommonDistractingWebsites:">
+							<string key="name">importCommonDistractingWebsites:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="importIncomingMailServersFromMail:">
@@ -1231,6 +1303,10 @@ ARcABAAAAAEAAAACARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						</object>
 						<object class="IBActionInfo" key="importIncomingMailServersFromThunderbird:">
 							<string key="name">importIncomingMailServersFromThunderbird:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="importNewsAndPublications:">
+							<string key="name">importNewsAndPublications:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="importOutgoingMailServersFromMail:">

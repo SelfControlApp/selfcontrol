@@ -27,7 +27,9 @@
 
 NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
-@implementation AppController
+@implementation AppController {
+	NSWindowController* getStartedWindowController;
+}
 
 @synthesize addingBlock;
 
@@ -52,7 +54,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 									  @"AllowLocalNetworks": @YES,
 									  @"MaxBlockLength": @1440,
 									  @"BlockLengthInterval": @15,
-									  @"WhitelistAlertSuppress": @NO};
+									  @"WhitelistAlertSuppress": @NO,
+									  @"GetStartedShown": @NO};
 
 		[defaults_ registerDefaults:appDefaults];
 
@@ -228,6 +231,12 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 			[editBlacklistButton_ setEnabled: NO];
 			[submitButton_ setTitle: NSLocalizedString(@"Loading", @"Loading button")];
 		}
+
+		// if block's off, and we haven't shown it yet, show the first-time modal
+		if (![defaults_ boolForKey: @"GetStartedShown"]) {
+			[self showGetStartedWindow: self];
+			[defaults_ setBool: YES forKey: @"GetStartedShown"];
+		}
 	}
 	[refreshUILock_ unlock];
 }
@@ -255,6 +264,15 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		preferencesWindowController_ = [[MASPreferencesWindowController alloc] initWithViewControllers: @[generalViewController, advancedViewController] title: title];
 	}
 	[preferencesWindowController_ showWindow: nil];
+}
+
+- (IBAction)showGetStartedWindow:(id)sender {
+	if (!getStartedWindowController) {
+		getStartedWindowController = [[NSWindowController alloc] initWithWindowNibName: @"FirstTime"];
+	}
+	[getStartedWindowController.window center];
+	[getStartedWindowController.window makeKeyAndOrderFront: nil];
+	[getStartedWindowController showWindow: nil];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
@@ -453,7 +471,6 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 															 object: nil];
 }
 
-// @synthesize initialWindow = initialWindow_;
 - (id)initialWindow {
 	return initialWindow_;
 }

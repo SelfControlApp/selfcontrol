@@ -212,6 +212,12 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Yardım" systemMenu="help" id="900">
                         <items>
+                            <menuItem title="Get Started" id="rrS-VB-fKU">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="showGetStartedWindow:" target="469" id="o4H-Z1-hNy"/>
+                                </connections>
+                            </menuItem>
                             <menuItem title="SelfControl SSS (İngilizce)" keyEquivalent="?" id="901">
                                 <connections>
                                     <action selector="openFAQ:" target="469" id="903"/>

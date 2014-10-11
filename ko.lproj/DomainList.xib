@@ -17,6 +17,18 @@
                 <menuItem id="85">
                     <modifierMask key="keyEquivalentModifierMask"/>
                 </menuItem>
+                <menuItem title="Common Distracting Sites" id="HuZ-sb-Bso">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="importCommonDistractingWebsites:" target="48" id="l7g-y1-dNK"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="News &amp; Publications" id="1Z2-HC-qpp">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="importNewsAndPublications:" target="48" id="sX1-U3-ikq"/>
+                    </connections>
+                </menuItem>
                 <menuItem title="Mail 로 부터" id="91">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Mail 로 부터" id="92">
@@ -165,7 +177,7 @@ CA
                     <button verticalHuggingPriority="750" id="79" customClass="ButtonWithPopupMenu">
                         <rect key="frame" x="143" y="19" width="113" height="24"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <buttonCell key="cell" type="smallSquare" title="가져오기" bezelStyle="smallSquare" image="CF9344B2-82C6-4606-B769-008255BC5141" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" inset="2" id="80">
+                        <buttonCell key="cell" type="smallSquare" title="가져오기" bezelStyle="smallSquare" image="B4CD3894-5640-4F0D-B68C-377806D4E5D1" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" inset="2" id="80">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
@@ -214,7 +226,7 @@ CA
         <userDefaultsController representsSharedInstance="YES" id="113"/>
     </objects>
     <resources>
-        <image name="CF9344B2-82C6-4606-B769-008255BC5141" width="1" height="1">
+        <image name="B4CD3894-5640-4F0D-B68C-377806D4E5D1" width="1" height="1">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

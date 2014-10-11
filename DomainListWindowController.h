@@ -72,6 +72,9 @@
    forTableColumn:(NSTableColumn *)tableColumn
 			  row:(int)row;
 
+- (IBAction)importCommonDistractingWebsites:(id)sender;
+- (IBAction)importNewsAndPublications:(id)sender;
+
 // Called when the button-menu item is clicked to import all incoming mail
 // servers from Thunderbird.  Adds to the domain list array all incoming mail
 // servers from the Thunderbird default profile that haven't already been added,

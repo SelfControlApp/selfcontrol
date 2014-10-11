@@ -29,6 +29,9 @@
 @interface HostImporter : NSObject {
 }
 
++ (NSArray*)commonDistractingWebsites;
++ (NSArray*)newsAndPublications;
+
 // Returns an autoreleased instance of NSArray containing all incoming hostnames
 // imported from the user's instance of Mail.app
 + (NSArray*)incomingMailHostnamesFromMail;

@@ -293,82 +293,41 @@
 	}
 }
 
+- (void)addHostArray:(NSArray*)arr {
+	for(int i = 0; i < [arr count]; i++) {
+		// Check for dupes
+		if(![domainList_ containsObject: arr[i]])
+			[domainList_ addObject: arr[i]];
+	}
+	[defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
+	[domainListTableView_ reloadData];
+	[[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
+														object: self];
+}
+
+- (IBAction)importCommonDistractingWebsites:(id)sender {
+	[self addHostArray: [HostImporter commonDistractingWebsites]];
+}
+- (IBAction)importNewsAndPublications:(id)sender {
+	[self addHostArray: [HostImporter newsAndPublications]];
+}
 - (IBAction)importIncomingMailServersFromThunderbird:(id)sender {
-	NSArray* arr = [HostImporter incomingMailHostnamesFromThunderbird];
-	for(int i = 0; i < [arr count]; i++) {
-		// Check for dupes
-		if(![domainList_ containsObject: arr[i]])
-			[domainList_ addObject: arr[i]];
-	}
-	[defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
-	[domainListTableView_ reloadData];
-	[[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
-														object: self];
+	[self addHostArray: [HostImporter incomingMailHostnamesFromThunderbird]];
 }
-
 - (IBAction)importOutgoingMailServersFromThunderbird:(id)sender {
-	NSArray* arr = [HostImporter outgoingMailHostnamesFromThunderbird];
-	for(int i = 0; i < [arr count]; i++) {
-		// Check for dupes
-		if(![domainList_ containsObject: arr[i]])
-			[domainList_ addObject: arr[i]];
-	}
-	[defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
-	[domainListTableView_ reloadData];
-	[[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
-														object: self];
+	[self addHostArray: [HostImporter outgoingMailHostnamesFromThunderbird]];
 }
-
 - (IBAction)importIncomingMailServersFromMail:(id)sender {
-	NSArray* arr = [HostImporter incomingMailHostnamesFromMail];
-	for(int i = 0; i < [arr count]; i++) {
-		// Check for dupes
-		if(![domainList_ containsObject: arr[i]])
-			[domainList_ addObject: arr[i]];
-	}
-	[defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
-	[domainListTableView_ reloadData];
-	[[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
-														object: self];
+	[self addHostArray: [HostImporter incomingMailHostnamesFromMail]];
 }
-
 - (IBAction)importOutgoingMailServersFromMail:(id)sender {
-	NSArray* arr = [HostImporter outgoingMailHostnamesFromMail];
-	for(int i = 0; i < [arr count]; i++) {
-		// Check for dupes
-		if(![domainList_ containsObject: arr[i]])
-			[domainList_ addObject: arr[i]];
-	}
-	[defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
-	[domainListTableView_ reloadData];
-	[[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
-														object: self];
+	[self addHostArray: [HostImporter outgoingMailHostnamesFromMail]];
 }
-
 - (IBAction)importIncomingMailServersFromMailMate:(id)sender {
-	NSArray* arr = [HostImporter incomingMailHostnamesFromMailMate];
-	for(int i = 0; i < [arr count]; i++) {
-		// Check for dupes
-		if(![domainList_ containsObject: arr[i]])
-			[domainList_ addObject: arr[i]];
-	}
-	[defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
-	[domainListTableView_ reloadData];
-	[[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
-														object: self];
+	[self addHostArray: [HostImporter incomingMailHostnamesFromMailMate]];
 }
-
 - (IBAction)importOutgoingMailServersFromMailMate:(id)sender {
-	NSArray* arr = [HostImporter outgoingMailHostnamesFromMailMate];
-	for(int i = 0; i < [arr count]; i++) {
-		// Check for dupes
-		if(![domainList_ containsObject: arr[i]])
-			[domainList_ addObject: arr[i]];
-	}
-	[defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
-	[domainListTableView_ reloadData];
-	[[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
-														object: self];
+	[self addHostArray: [HostImporter outgoingMailHostnamesFromMailMate]];
 }
 
 @end

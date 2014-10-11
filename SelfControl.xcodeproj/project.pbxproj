@@ -24,6 +24,7 @@
 /* Begin PBXBuildFile section */
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		CB02347219E9B6D0008E2473 /* FirstTime.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB02347119E9B6D0008E2473 /* FirstTime.xib */; };
 		CB0385E119D77051004614B6 /* PreferencesAdvancedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB0385DD19D77051004614B6 /* PreferencesAdvancedViewController.xib */; };
 		CB0385E219D77051004614B6 /* PreferencesGeneralViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB0385DF19D77051004614B6 /* PreferencesGeneralViewController.xib */; };
 		CB1E7A6E0F9AEA9B00D158BC /* ERRORS in Resources */ = {isa = PBXBuildFile; fileRef = CB1E7A6D0F9AEA9B00D158BC /* ERRORS */; };
@@ -206,6 +207,7 @@
 		949F9F8A15B33267007B8B42 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hans"; path = "zh-Hans.lproj/MainMenu.xib"; sourceTree = "<group>"; };
 		949F9F8B15B33339007B8B42 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hans"; path = "zh-Hans.lproj/TimerWindow.xib"; sourceTree = "<group>"; };
 		949F9F8D15B333A1007B8B42 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		CB02347119E9B6D0008E2473 /* FirstTime.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FirstTime.xib; sourceTree = "<group>"; };
 		CB03860D19D777B0004614B6 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/PreferencesGeneralViewController.xib; sourceTree = "<group>"; };
 		CB03860E19D777B2004614B6 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/PreferencesGeneralViewController.xib; sourceTree = "<group>"; };
 		CB03860F19D777B4004614B6 /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/PreferencesGeneralViewController.xib; sourceTree = "<group>"; };
@@ -524,6 +526,7 @@
 		CB4294F10F53D95D008E10CA /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
+				CB02347119E9B6D0008E2473 /* FirstTime.xib */,
 				CBBF4E7D1582F7A200E364D9 /* MainMenu.xib */,
 				CBBF4E7B1582F7A200E364D9 /* DomainList.xib */,
 				CBBF4EE715830D7300E364D9 /* TimerWindow.xib */,
@@ -744,6 +747,7 @@
 				CB9365620F8581B000EF284E /* dsa_pub.pem in Resources */,
 				CB9366E80F85BEF100EF284E /* NSRemoveTemplate.jpg in Resources */,
 				CB9366E90F85BEF100EF284E /* NSAddTemplate.jpg in Resources */,
+				CB02347219E9B6D0008E2473 /* FirstTime.xib in Resources */,
 				CBBF4EE515830D7300E364D9 /* TimerWindow.xib in Resources */,
 				CB0385E219D77051004614B6 /* PreferencesGeneralViewController.xib in Resources */,
 				CB1E7A6E0F9AEA9B00D158BC /* ERRORS in Resources */,

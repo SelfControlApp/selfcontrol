@@ -259,7 +259,7 @@
 	// If the domain ends in facebook.com...  Special case for Facebook because
 	// users will often forget to block some of its many mirror subdomains that resolve
 	// to different IPs, i.e. hs.facebook.com.  Thanks to Danielle for raising this issue.
-	if([hostName rangeOfString: @"facebook.com"].location == ([hostName length] - 12)) {
+	if([hostName hasSuffix: @"facebook.com"]) {
 		// pulled list of facebook IP ranges from https://developers.facebook.com/docs/ApplicationSecurity/#facebook_scraper
 		// TODO: pull these automatically by running:
 		// whois -h whois.radb.net -- '-i origin AS32934' | grep ^route
@@ -274,6 +274,9 @@
 								 @"204.15.20.0/22"];
 
 		[newHosts addObjectsFromArray: facebookIPs];
+	}
+	if ([hostName hasSuffix: @"twitter.com"]) {
+		[newHosts addObject: @"api.twitter.com"];
 	}
 
 	// Block the domain with no subdomains, if www.domain is blocked
