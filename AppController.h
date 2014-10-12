@@ -34,12 +34,12 @@
 // The main controller for the SelfControl app, which includes several methods
 // to handle command flow and acts as delegate for the initial window.
 @interface AppController : NSObject {
-	IBOutlet id blockDurationSlider_;
-	IBOutlet id blockSliderTimeDisplayLabel_;
-	IBOutlet id submitButton_;
-	IBOutlet id initialWindow_;
-	IBOutlet id domainListMenuItem_;
-	IBOutlet id editBlacklistButton_;
+	IBOutlet NSSlider* blockDurationSlider_;
+	IBOutlet NSTextField* blockSliderTimeDisplayLabel_;
+	IBOutlet NSButton* submitButton_;
+	IBOutlet NSWindow* initialWindow_;
+	IBOutlet NSMenuItem* domainListMenuItem_;
+	IBOutlet NSButton* editBlacklistButton_;
 	IBOutlet DomainListWindowController* domainListWindowController_;
 	IBOutlet TimerWindowController* timerWindowController_;
 	NSWindowController* preferencesWindowController_;

@@ -16,7 +16,7 @@ void registerDefaults(uid_t controllingUID) {
 	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
 	[defaults addSuiteNamed: @"org.eyebeam.SelfControl"];
 	[defaults synchronize];
-	NSDictionary* appDefaults = @{@"BlockDuration": @0,
+	NSDictionary* appDefaults = @{@"BlockDuration": @15,
 								  @"BlockStartedDate": [NSDate distantFuture],
 								  @"HostBlacklist": @[],
 								  @"EvaluateCommonSubdomains": @YES,

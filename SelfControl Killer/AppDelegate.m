@@ -76,8 +76,7 @@
 		[alert runModal];
 	}
 
-	[self.
-	 viewButton setEnabled: YES];
+	[self.viewButton setEnabled: YES];
 }
 
 - (void)updateUserInterface {

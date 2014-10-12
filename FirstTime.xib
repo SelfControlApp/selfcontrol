@@ -31,7 +31,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="243" height="133"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <size key="minSize" width="5" height="0.0"/>
+                                    <size key="minSize" width="465" height="340"/>
                                     <size key="maxSize" width="494" height="10000000"/>
                                     <attributedString key="textStorage">
                                         <fragment content="SelfControl helps you block your own access to distracting websites.">
@@ -354,7 +354,7 @@ CgoKCg
                                         </fragment>
                                     </attributedString>
                                     <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <size key="minSize" width="5" height="0.0"/>
+                                    <size key="minSize" width="465" height="340"/>
                                     <size key="maxSize" width="494" height="10000000"/>
                                 </textView>
                             </subviews>

@@ -28,7 +28,7 @@
 // A subclass of NSWindowController created to manage the floating timer window
 // which tells the user how much time remains in the block.
 @interface TimerWindowController : NSWindowController {
-	IBOutlet id timerLabel_;
+	IBOutlet NSTextField* timerLabel_;
 	NSTimer* timerUpdater_;
 	NSDate* blockEndingDate_;
 	NSLock* addToBlockLock;

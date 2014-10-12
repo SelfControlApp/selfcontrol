@@ -38,7 +38,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 		defaults_ = [NSUserDefaults standardUserDefaults];
 
-		NSDictionary* appDefaults = @{@"BlockDuration": @0,
+		NSDictionary* appDefaults = @{@"BlockDuration": @15,
 									  @"BlockStartedDate": [NSDate distantFuture],
 									  @"HostBlacklist": @[],
 									  @"EvaluateCommonSubdomains": @YES,
@@ -215,18 +215,18 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 		BOOL addBlockIsOngoing = self.addingBlock;
 
-		if([blockDurationSlider_ intValue] != 0 && [[defaults_ objectForKey: @"HostBlacklist"] count] != 0 && !addBlockIsOngoing)
+		if([blockDurationSlider_ intValue] != 0 && [[defaults_ objectForKey: @"HostBlacklist"] count] != 0 && !addBlockIsOngoing) {
 			[submitButton_ setEnabled: YES];
-		else
+		} else {
 			[submitButton_ setEnabled: NO];
+		}
 
 		// If we're adding a block, we want buttons disabled.
 		if(!addBlockIsOngoing) {
 			[blockDurationSlider_ setEnabled: YES];
 			[editBlacklistButton_ setEnabled: YES];
 			[submitButton_ setTitle: NSLocalizedString(@"Start", @"Start button")];
-		}
-		else {
+		} else {
 			[blockDurationSlider_ setEnabled: NO];
 			[editBlacklistButton_ setEnabled: NO];
 			[submitButton_ setTitle: NSLocalizedString(@"Loading", @"Loading button")];
