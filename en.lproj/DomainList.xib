@@ -89,7 +89,7 @@
                 </menuItem>
             </items>
         </menu>
-        <window title="Domain Blacklist" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="default" id="1">
+        <window title="Domain Blacklist" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="1">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="342" y="259" width="400" height="315"/>
@@ -178,7 +178,7 @@ CA
                     <button verticalHuggingPriority="750" id="79" customClass="ButtonWithPopupMenu">
                         <rect key="frame" x="143" y="19" width="113" height="24"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <buttonCell key="cell" type="smallSquare" title="Import" bezelStyle="smallSquare" image="A09AEFE3-2F85-4D07-BA51-453CA9781EB4" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" inset="2" id="80">
+                        <buttonCell key="cell" type="smallSquare" title="Import" bezelStyle="smallSquare" image="1396E0ED-C6A7-4712-9C1B-538CE235015E" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" inset="2" id="80">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
@@ -227,7 +227,7 @@ CA
         <userDefaultsController representsSharedInstance="YES" id="113"/>
     </objects>
     <resources>
-        <image name="A09AEFE3-2F85-4D07-BA51-453CA9781EB4" width="1" height="1">
+        <image name="1396E0ED-C6A7-4712-9C1B-538CE235015E" width="1" height="1">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

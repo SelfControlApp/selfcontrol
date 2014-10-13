@@ -50,7 +50,7 @@
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wSe-TV-7lB">
                     <rect key="frame" x="18" y="27" width="444" height="18"/>
-                    <buttonCell key="cell" type="check" title="Badge dock icon with countdown" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="deK-DV-3UF">
+                    <buttonCell key="cell" type="check" title="Show countdown in Dock" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="deK-DV-3UF">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>

@@ -337,7 +337,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	}
 
 	// If there's no block in the hosts file, no defaults BlockStartedDate, and no lock-file,
-	// we'll assume we're clear of blocks.  Checking ipfw would be nice but usually requires
+	// we'll assume we're clear of blocks.  Checking pf would be nice but usually requires
 	// root permissions, so it would be difficult to do here.
 	return [[NSFileManager defaultManager] fileExistsAtPath: SelfControlLockFilePath];
 }
@@ -354,10 +354,10 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		return;
 	}
 
-	if(domainListWindowController_ == nil)
+	if(domainListWindowController_ == nil) {
 		[NSBundle loadNibNamed: @"DomainList" owner: self];
-	else
-		[[domainListWindowController_ window] makeKeyAndOrderFront: self];
+	}
+	[domainListWindowController_ showWindow: self];
 }
 
 - (void)closeDomainList {

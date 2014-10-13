@@ -12,17 +12,17 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window title="Get Started" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
+        <window title="Welcome to SelfControl" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="240" width="465" height="292"/>
+            <rect key="contentRect" x="196" y="240" width="465" height="360"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
             <view key="contentView" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="465" height="292"/>
+                <rect key="frame" x="0.0" y="0.0" width="465" height="360"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <scrollView fixedFrame="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ndr-PC-7a6">
-                        <rect key="frame" x="-1" y="-49" width="467" height="342"/>
+                        <rect key="frame" x="-1" y="-22" width="467" height="383"/>
                         <clipView key="contentView" ambiguous="YES" misplaced="YES" id="v0r-HM-zNc">
                             <rect key="frame" x="1" y="1" width="238" height="133"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -31,11 +31,36 @@
                                     <rect key="frame" x="0.0" y="0.0" width="243" height="133"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <size key="minSize" width="465" height="340"/>
+                                    <size key="minSize" width="465" height="381"/>
                                     <size key="maxSize" width="494" height="10000000"/>
                                     <attributedString key="textStorage">
+                                        <fragment>
+                                            <string key="content" base64-UTF8="YES">
+Cg
+</string>
+                                            <attributes>
+                                                <font key="NSFont" size="12" name="Helvetica"/>
+                                                <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.3">
+                                                    <tabStops>
+                                                        <textTab alignment="left" location="36"/>
+                                                        <textTab alignment="left" location="72"/>
+                                                        <textTab alignment="left" location="108"/>
+                                                        <textTab alignment="left" location="144"/>
+                                                        <textTab alignment="left" location="180"/>
+                                                        <textTab alignment="left" location="216"/>
+                                                        <textTab alignment="left" location="252"/>
+                                                        <textTab alignment="left" location="288"/>
+                                                        <textTab alignment="left" location="324"/>
+                                                        <textTab alignment="left" location="360"/>
+                                                        <textTab alignment="left" location="396"/>
+                                                        <textTab alignment="left" location="432"/>
+                                                    </tabStops>
+                                                </paragraphStyle>
+                                            </attributes>
+                                        </fragment>
                                         <fragment content="SelfControl helps you block your own access to distracting websites.">
                                             <attributes>
+                                                <color key="NSColor" red="0.30196078431372547" green="0.30196078431372547" blue="0.30196078431372547" alpha="1" colorSpace="calibratedRGB"/>
                                                 <font key="NSFont" size="24" name="Helvetica"/>
                                                 <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.0999999999999999">
                                                     <tabStops>
@@ -60,6 +85,7 @@
 Cg
 </string>
                                             <attributes>
+                                                <color key="NSColor" red="0.10196078431372549" green="0.10196078431372549" blue="0.10196078431372549" alpha="1" colorSpace="calibratedRGB"/>
                                                 <font key="NSFont" size="12" name="Helvetica"/>
                                                 <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.0999999999999999">
                                                     <tabStops>
@@ -104,6 +130,56 @@ Cg
                                             </attributes>
                                         </fragment>
                                         <fragment>
+                                            <string key="content">Quick Start Guide
+</string>
+                                            <attributes>
+                                                <font key="NSFont" size="18" name="Helvetica"/>
+                                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.3">
+                                                    <tabStops>
+                                                        <textTab alignment="left" location="36"/>
+                                                        <textTab alignment="left" location="72"/>
+                                                        <textTab alignment="left" location="108"/>
+                                                        <textTab alignment="left" location="144"/>
+                                                        <textTab alignment="left" location="180"/>
+                                                        <textTab alignment="left" location="216"/>
+                                                        <textTab alignment="left" location="252"/>
+                                                        <textTab alignment="left" location="288"/>
+                                                        <textTab alignment="left" location="324"/>
+                                                        <textTab alignment="left" location="360"/>
+                                                        <textTab alignment="left" location="396"/>
+                                                        <textTab alignment="left" location="432"/>
+                                                    </tabStops>
+                                                </paragraphStyle>
+                                                <integer key="NSUnderline" value="1"/>
+                                                <color key="NSUnderlineColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            </attributes>
+                                        </fragment>
+                                        <fragment>
+                                            <string key="content" base64-UTF8="YES">
+Cg
+</string>
+                                            <attributes>
+                                                <font key="NSFont" size="8" name="Helvetica"/>
+                                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.3">
+                                                    <tabStops>
+                                                        <textTab alignment="left" location="36"/>
+                                                        <textTab alignment="left" location="72"/>
+                                                        <textTab alignment="left" location="108"/>
+                                                        <textTab alignment="left" location="144"/>
+                                                        <textTab alignment="left" location="180"/>
+                                                        <textTab alignment="left" location="216"/>
+                                                        <textTab alignment="left" location="252"/>
+                                                        <textTab alignment="left" location="288"/>
+                                                        <textTab alignment="left" location="324"/>
+                                                        <textTab alignment="left" location="360"/>
+                                                        <textTab alignment="left" location="396"/>
+                                                        <textTab alignment="left" location="432"/>
+                                                    </tabStops>
+                                                </paragraphStyle>
+                                                <color key="NSUnderlineColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            </attributes>
+                                        </fragment>
+                                        <fragment>
                                             <string key="content">	1.	</string>
                                             <attributes>
                                                 <font key="NSFont" size="12" name="Helvetica"/>
@@ -124,6 +200,7 @@ Cg
                                                         <textTab alignment="left" location="432"/>
                                                     </tabStops>
                                                 </paragraphStyle>
+                                                <color key="NSUnderlineColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             </attributes>
                                         </fragment>
                                         <fragment content="Click &quot;Edit Blacklist&quot;">
@@ -146,6 +223,7 @@ Cg
                                                         <textTab alignment="left" location="432"/>
                                                     </tabStops>
                                                 </paragraphStyle>
+                                                <color key="NSUnderlineColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             </attributes>
                                         </fragment>
                                         <fragment>
@@ -170,6 +248,7 @@ Cg
                                                         <textTab alignment="left" location="432"/>
                                                     </tabStops>
                                                 </paragraphStyle>
+                                                <color key="NSUnderlineColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             </attributes>
                                         </fragment>
                                         <fragment content="Move the slider">
@@ -192,6 +271,7 @@ Cg
                                                         <textTab alignment="left" location="432"/>
                                                     </tabStops>
                                                 </paragraphStyle>
+                                                <color key="NSUnderlineColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             </attributes>
                                         </fragment>
                                         <fragment>
@@ -216,6 +296,7 @@ Cg
                                                         <textTab alignment="left" location="432"/>
                                                     </tabStops>
                                                 </paragraphStyle>
+                                                <color key="NSUnderlineColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             </attributes>
                                         </fragment>
                                         <fragment content="Click &quot;Start&quot;">
@@ -238,10 +319,11 @@ Cg
                                                         <textTab alignment="left" location="432"/>
                                                     </tabStops>
                                                 </paragraphStyle>
+                                                <color key="NSUnderlineColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             </attributes>
                                         </fragment>
                                         <fragment>
-                                            <string key="content">, type your password to start the block, and get studying!
+                                            <string key="content">, type your password to start the block, and get to work!
 </string>
                                             <attributes>
                                                 <font key="NSFont" size="12" name="Helvetica"/>
@@ -262,6 +344,7 @@ Cg
                                                         <textTab alignment="left" location="432"/>
                                                     </tabStops>
                                                 </paragraphStyle>
+                                                <color key="NSUnderlineColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             </attributes>
                                         </fragment>
                                         <fragment>
@@ -286,9 +369,35 @@ CgoKCg
                                                         <textTab alignment="left" location="432"/>
                                                     </tabStops>
                                                 </paragraphStyle>
+                                                <color key="NSUnderlineColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             </attributes>
                                         </fragment>
-                                        <fragment content="Want to learn more? Go to SelfControl's ">
+                                        <fragment>
+                                            <string key="content" base64-UTF8="YES">
+Cg
+</string>
+                                            <attributes>
+                                                <font key="NSFont" size="12" name="Helvetica"/>
+                                                <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural">
+                                                    <tabStops>
+                                                        <textTab alignment="left" location="36"/>
+                                                        <textTab alignment="left" location="72"/>
+                                                        <textTab alignment="left" location="108"/>
+                                                        <textTab alignment="left" location="144"/>
+                                                        <textTab alignment="left" location="180"/>
+                                                        <textTab alignment="left" location="216"/>
+                                                        <textTab alignment="left" location="252"/>
+                                                        <textTab alignment="left" location="288"/>
+                                                        <textTab alignment="left" location="324"/>
+                                                        <textTab alignment="left" location="360"/>
+                                                        <textTab alignment="left" location="396"/>
+                                                        <textTab alignment="left" location="432"/>
+                                                    </tabStops>
+                                                </paragraphStyle>
+                                                <color key="NSUnderlineColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            </attributes>
+                                        </fragment>
+                                        <fragment content="Want to learn more? See our ">
                                             <attributes>
                                                 <font key="NSFont" size="12" name="Helvetica"/>
                                                 <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural">
@@ -309,7 +418,7 @@ CgoKCg
                                                 </paragraphStyle>
                                             </attributes>
                                         </fragment>
-                                        <fragment content="FAQ page">
+                                        <fragment content="Frequently Asked Questions">
                                             <attributes>
                                                 <font key="NSFont" size="12" name="Helvetica"/>
                                                 <url key="NSLink" string="https://github.com/SelfControlApp/selfcontrol/wiki/FAQ"/>
@@ -331,7 +440,7 @@ CgoKCg
                                                 </paragraphStyle>
                                             </attributes>
                                         </fragment>
-                                        <fragment content=" on GitHub.">
+                                        <fragment content=".">
                                             <attributes>
                                                 <font key="NSFont" size="12" name="Helvetica"/>
                                                 <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural">
@@ -354,7 +463,7 @@ CgoKCg
                                         </fragment>
                                     </attributedString>
                                     <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <size key="minSize" width="465" height="340"/>
+                                    <size key="minSize" width="465" height="381"/>
                                     <size key="maxSize" width="494" height="10000000"/>
                                 </textView>
                             </subviews>
@@ -364,30 +473,30 @@ CgoKCg
                             <rect key="frame" x="-100" y="-100" width="87" height="18"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
-                        <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="3yw-16-jfa">
+                        <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="3yw-16-jfa">
                             <rect key="frame" x="223" y="1" width="16" height="133"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
                     <box autoresizesSubviews="NO" verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="S4K-lv-cZS">
-                        <rect key="frame" x="0.0" y="37" width="465" height="5"/>
+                        <rect key="frame" x="0.0" y="31" width="465" height="4"/>
                         <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                         <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <font key="titleFont" metaFont="system"/>
                     </box>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nI7-We-rak">
-                        <rect key="frame" x="162" y="52" width="140" height="39"/>
-                        <buttonCell key="cell" type="smallSquare" title="Cool! I got it." bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="DFD-23-in8">
+                        <rect key="frame" x="158" y="52" width="148" height="39"/>
+                        <buttonCell key="cell" type="smallSquare" title="Continue" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="DFD-23-in8">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system" size="18"/>
                         </buttonCell>
                         <connections>
-                            <action selector="performClose:" target="QvC-M9-y7g" id="zoB-DQ-sJw"/>
+                            <action selector="performClose:" target="QvC-M9-y7g" id="8xC-vL-YNw"/>
                         </connections>
                     </button>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="153.5" y="164"/>
+            <point key="canvasLocation" x="153.5" y="198"/>
         </window>
     </objects>
 </document>

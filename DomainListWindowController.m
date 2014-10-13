@@ -42,8 +42,12 @@
 	return self;
 }
 
-- (void)awakeFromNib {
+- (void)showWindow:(id)sender {
 	[[self window] makeKeyAndOrderFront: self];
+
+	if ([domainList_ count] == 0) {
+		[self addDomain: self];
+	}
 }
 
 - (IBAction)addDomain:(id)sender
@@ -62,6 +66,7 @@
 - (IBAction)removeDomain:(id)sender
 {
 	NSIndexSet* selected = [domainListTableView_ selectedRowIndexes];
+	[domainListTableView_ abortEditing];
 
 	// This isn't the most efficient way to do this, but the code is much cleaner
 	// than other methods and the domain blacklist will probably never be large
@@ -88,25 +93,36 @@
 }
 
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex {
+	if (rowIndex < 0 || rowIndex + 1 > [domainList_ count]) return nil;
 	return domainList_[rowIndex];
 }
 
-- (void)tableView:(NSTableView *)aTableView
-   setObjectValue:(id)theObject
-   forTableColumn:(NSTableColumn *)aTableColumn
-			  row:(int)rowIndex {
-	// All of this is just code to standardize and clean up the input value.
-	// This'll remove whitespace and lowercase the string.
-	NSString* str = [[theObject stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];
+- (void)controlTextDidEndEditing:(NSNotification *)note {
+	NSInteger editedRow = [domainListTableView_ editedRow];
+	NSString* editedString = [[[[note userInfo] objectForKey: @"NSFieldEditor"] textStorage] string];
+	editedString = [editedString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
-	if (![str length]) {
-		NSIndexSet* indexSet = [NSIndexSet indexSetWithIndex: rowIndex];
+	if (![editedString length]) {
+		NSIndexSet* indexSet = [NSIndexSet indexSetWithIndex: editedRow];
 		[domainListTableView_ beginUpdates];
 		[domainListTableView_ removeRowsAtIndexes: indexSet withAnimation: NSTableViewAnimationSlideUp];
-		[domainList_ removeObjectAtIndex: rowIndex];
+		[domainList_ removeObjectAtIndex: editedRow];
+		[domainListTableView_ reloadData];
 		[domainListTableView_ endUpdates];
 		return;
 	}
+}
+
+- (void)tableView:(NSTableView *)aTableView
+   setObjectValue:(NSString*)newString
+   forTableColumn:(NSTableColumn *)aTableColumn
+			  row:(int)rowIndex {
+	if (rowIndex < 0 || rowIndex + 1 > [domainList_ count]) {
+		return;
+	}
+	// All of this is just code to standardize and clean up the input value.
+	// This'll remove whitespace and lowercase the string.
+	NSString* str = [[newString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];
 
 	if([str rangeOfCharacterFromSet: [NSCharacterSet newlineCharacterSet]].location != NSNotFound) {
 		// only hits LF linebreaks, but componentsSeparatedByCharacterSet won't work on 10.4
@@ -186,9 +202,7 @@
 			portNum = -1;
 	}
 
-	if([str isEqual: @""] && portNum == -1)
-		[domainList_ removeObjectAtIndex: rowIndex];
-	else {
+	if ([str length] || portNum >= 0){
 		NSString* maskString;
 		NSString* portString;
 		if(maskLength == -1)
