@@ -236,6 +236,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		if (![defaults_ boolForKey: @"GetStartedShown"]) {
 			[self showGetStartedWindow: self];
 			[defaults_ setBool: YES forKey: @"GetStartedShown"];
+			[defaults_ synchronize];
 		}
 	}
 	[refreshUILock_ unlock];
