@@ -1,10 +1,13 @@
 PODS:
+  - FormatterKit/TimeIntervalFormatter (1.7.1)
   - MASPreferences (1.1.2)
 
 DEPENDENCIES:
+  - FormatterKit/TimeIntervalFormatter (~> 1.7)
   - MASPreferences (~> 1.1.2)
 
 SPEC CHECKSUMS:
+  FormatterKit: 877ff970af3feb2f602ced0a9420e9fbc25f568c
   MASPreferences: 48debf3a161039bb979e617b7416bc07bd879f75
 
 COCOAPODS: 0.34.4
