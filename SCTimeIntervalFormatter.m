@@ -67,6 +67,7 @@
     formatMinutes = (numMinutes % 60);
 
     NSString* timeString;
+    NSString* timeString = @"";
 
     if(numMinutes > 0) {
         if(formatDays > 0) {
