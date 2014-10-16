@@ -1,10 +1,7 @@
 .DS_Store
 .Trashes
 *.swp
-
 *~.nib
-
-# Xcode
 build/
 DerivedData/
 *.pbxuser
@@ -15,13 +12,14 @@ DerivedData/
 !default.mode2v3
 *.perspectivev3
 !default.perspectivev3
-*.xcworkspace
-!default.xcworkspace
 xcuserdata
 profile
 *.moved-aside
-
+xcshareddata/*
+*.xccheckout
 xcuserdata/**/*
 !xcuserdata/**/xcschemes/*
-
 *.moved-aside
+SelfControl.xccheckout
+*/xcshareddata/SelfControl.xccheckout
+SelfControl.xcodeproj/project.xcworkspace/xcshareddata/*
