@@ -24,6 +24,7 @@
 #import "MASPreferencesWindowController.h"
 #import "PreferencesGeneralViewController.h"
 #import "PreferencesAdvancedViewController.h"
+#import "SCTimeIntervalFormatter.h"
 
 NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
@@ -97,37 +98,42 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (IBAction)updateTimeSliderDisplay:(id)sender {
-	int numMinutes = floor([blockDurationSlider_ intValue]);
+	NSInteger numMinutes = floor([blockDurationSlider_ integerValue]);
 
 	// Time-display code cleaned up thanks to the contributions of many users
 
-	NSString* timeString = @"";
-
-	int formatDays, formatHours, formatMinutes;
-
-	formatDays = numMinutes / 1440;
-	formatHours = (numMinutes % 1440) / 60;
-	formatMinutes = (numMinutes % 60);
-
-	if(numMinutes > 0) {
-		if(formatDays > 0) {
-			timeString = [NSString stringWithFormat:@"%d %@", formatDays, (formatDays == 1 ? NSLocalizedString(@"day", @"Single day time string") : NSLocalizedString(@"days", @"Plural days time string"))];
-		}
-		if(formatHours > 0) {
-			timeString = [NSString stringWithFormat: @"%@%@%d %@", timeString, (formatDays > 0 ? @", " : @""), formatHours, (formatHours == 1 ? NSLocalizedString(@"hour", @"Single hour time string") : NSLocalizedString(@"hours", @"Plural hours time string"))];
-		}
-		if(formatMinutes > 0) {
-			timeString = [NSString stringWithFormat:@"%@%@%d %@", timeString, (formatHours > 0 || formatDays > 0 ? @", " : @""), formatMinutes, (formatMinutes == 1 ? NSLocalizedString(@"minute", @"Single minute time string") : NSLocalizedString(@"minutes", @"Plural minutes time string"))];
-		}
-	}
-	else {
-		timeString = [NSString stringWithFormat: @"0 %@ (%@)",
-					  NSLocalizedString(@"minutes", @"Plural minutes time string"),
-					  NSLocalizedString(@"disabled", "Shows that SelfControl is disabled")];
-	}
+	NSString* timeString = [self timeSliderDisplayStringFromNumberOfMinutes:numMinutes];
 
 	[blockSliderTimeDisplayLabel_ setStringValue:timeString];
 	[submitButton_ setEnabled: (numMinutes > 0) && ([[defaults_ arrayForKey:@"HostBlacklist"] count] > 0)];
+}
+
+- (NSString *)timeSliderDisplayStringFromNumberOfMinutes:(NSInteger)numberOfMinutes {
+    static NSCalendar* gregorian = nil;
+    if (gregorian == nil) {
+        gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    }
+
+    NSRange secondsRangePerMinute = [gregorian
+                                     rangeOfUnit:NSSecondCalendarUnit
+                                     inUnit:NSMinuteCalendarUnit
+                                     forDate:[NSDate date]];
+    NSUInteger numberOfSecondsPerMinute = NSMaxRange(secondsRangePerMinute);
+
+    NSTimeInterval numberOfSecondsSelected = (NSTimeInterval)(numberOfSecondsPerMinute * numberOfMinutes);
+
+    NSString* displayString = [self timeSliderDisplayStringFromTimeInterval:numberOfSecondsSelected];
+    return displayString;
+}
+
+- (NSString *)timeSliderDisplayStringFromTimeInterval:(NSTimeInterval)numberOfSeconds {
+    static SCTimeIntervalFormatter* formatter = nil;
+    if (formatter == nil) {
+        formatter = [[SCTimeIntervalFormatter alloc] init];
+    }
+
+    NSString* formatted = [formatter stringForObjectValue:@(numberOfSeconds)];
+    return formatted;
 }
 
 - (IBAction)addBlock:(id)sender {

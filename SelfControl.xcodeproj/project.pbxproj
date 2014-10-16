@@ -100,6 +100,7 @@
 		CBE5C40B0F4D4531003DB900 /* ButtonWithPopupMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE5C40A0F4D4531003DB900 /* ButtonWithPopupMenu.m */; };
 		CBEE50C10F48C21F00F5DF1C /* TimerWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */; };
 		CF32FCC0BE72492A9CC7BE68 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF4C56EF9E741B8994020A7 /* libPods.a */; };
+		F5B8CBEE19EE21C30026F3A5 /* SCTimeIntervalFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F5B8CBED19EE21C30026F3A5 /* SCTimeIntervalFormatter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -333,6 +334,8 @@
 		CBE5C40A0F4D4531003DB900 /* ButtonWithPopupMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonWithPopupMenu.m; sourceTree = "<group>"; };
 		CBEE50BF0F48C21F00F5DF1C /* TimerWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerWindowController.h; sourceTree = "<group>"; };
 		CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerWindowController.m; sourceTree = "<group>"; };
+		F5B8CBEC19EE21C30026F3A5 /* SCTimeIntervalFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCTimeIntervalFormatter.h; sourceTree = "<group>"; };
+		F5B8CBED19EE21C30026F3A5 /* SCTimeIntervalFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCTimeIntervalFormatter.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -519,6 +522,7 @@
 				CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */,
 				CB9C80DB19CF93EA00CDCAE1 /* SelfControlUtilities.h */,
 				CB9C80DC19CF93EA00CDCAE1 /* SelfControlUtilities.m */,
+				F5B8CBEB19EE21340026F3A5 /* Formatters */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -578,6 +582,15 @@
 				CBD2671F11ED882700042CD8 /* CheckupMain.m */,
 			);
 			name = "Helper Tools";
+			sourceTree = "<group>";
+		};
+		F5B8CBEB19EE21340026F3A5 /* Formatters */ = {
+			isa = PBXGroup;
+			children = (
+				F5B8CBEC19EE21C30026F3A5 /* SCTimeIntervalFormatter.h */,
+				F5B8CBED19EE21C30026F3A5 /* SCTimeIntervalFormatter.m */,
+			);
+			name = Formatters;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -826,6 +839,7 @@
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				CB529BBF0F32B7ED00564FB8 /* AppController.m in Sources */,
+				F5B8CBEE19EE21C30026F3A5 /* SCTimeIntervalFormatter.m in Sources */,
 				CBD4848A19D764440020F949 /* PreferencesGeneralViewController.m in Sources */,
 				CBEE50C10F48C21F00F5DF1C /* TimerWindowController.m in Sources */,
 				CB9C80DD19CF93EA00CDCAE1 /* SelfControlUtilities.m in Sources */,
