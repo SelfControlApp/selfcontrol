@@ -10,6 +10,7 @@
 #import <Cocoa/Cocoa.h>
 #import <unistd.h>
 #import "BlockManager.h"
+#import "SelfControlUtilities.h"
 
 #define LOG_FILE @"~/Documents/SelfControl-Killer.log"
 
@@ -32,6 +33,16 @@ int main(int argc, char* argv[]) {
 		NSMutableString* log = [NSMutableString stringWithString: @"===SelfControl-Killer Log File===\n\n"];
 
 		/* FIRST TASK: print debug info */
+
+		// print SC version:
+		NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
+		NSString* version = [infoDict objectForKey:@"CFBundleShortVersionString"];
+		[log appendFormat: @"SelfControl Version: %@\n", version];
+
+		// print system version
+		unsigned int major, minor, bugfix;
+		[SelfControlUtilities getSystemVersionMajor: &major minor: &minor bugFix: &bugfix];
+		[log appendFormat: @"System Version: Mac OS X %d.%d.%d\n\n", major, minor, bugfix];
 
 		// print launchd daemons
 		int status;
@@ -79,7 +90,7 @@ int main(int argc, char* argv[]) {
 		if([fileManager fileExistsAtPath: @"/etc/SelfControl.lock"]) {
 			[log appendString: [NSString stringWithFormat: @"Found lock file with contents:\n\n%@\n\n", [NSString stringWithContentsOfFile: @"/etc/SelfControl.lock" encoding: NSUTF8StringEncoding error: NULL]]];
 		} else {
-			[log appendString: @"Could not find lock file.\n"];
+			[log appendString: @"Could not find lock file.\n\n"];
 		}
 
 		// print pf.conf
