@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" promptedForUpgradeToXcode5="NO">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6245" systemVersion="14A389" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1070" identifier="macosx"/>
         <development version="5100" identifier="xcode"/>
@@ -12,7 +12,7 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window title="SelfControl" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" hidesOnDeactivate="YES" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="31" userLabel="Panel (SelfControl)" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" utility="YES" HUD="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" bottomStrut="YES"/>
@@ -34,7 +34,7 @@
                     <button verticalHuggingPriority="750" id="49">
                         <rect key="frame" x="46" y="10" width="119" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="roundRect" title="Add to Blacklist" bezelStyle="roundedRect" image="D4675D41-24F9-43FA-9121-0850AF97813E" imagePosition="overlaps" alignment="center" controlSize="small" state="on" borderStyle="border" inset="2" id="50">
+                        <buttonCell key="cell" type="roundRect" title="Add to Blacklist" bezelStyle="roundedRect" image="723DB989-8970-4713-AB13-76AD3ED60C20" imagePosition="overlaps" alignment="center" controlSize="small" state="on" borderStyle="border" inset="2" id="50">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="smallSystem"/>
                         </buttonCell>
@@ -47,20 +47,15 @@
                             </binding>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" id="100">
+                    <button hidden="YES" verticalHuggingPriority="750" id="100">
                         <rect key="frame" x="28" y="10" width="159" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="roundRect" title="Stuck? Stop block manually" bezelStyle="roundedRect" image="21DA903D-A965-4DF0-A04D-67D0C32660DD" imagePosition="overlaps" alignment="center" controlSize="small" state="on" borderStyle="border" inset="2" id="101">
+                        <buttonCell key="cell" type="roundRect" title="Stuck? Stop block manually" bezelStyle="roundedRect" image="FA3177CA-5427-4E53-B8C1-1E4403E137CA" imagePosition="overlaps" alignment="center" controlSize="small" state="on" borderStyle="border" inset="2" id="101">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="smallSystem"/>
                         </buttonCell>
                         <connections>
                             <action selector="killBlock:" target="7" id="104"/>
-                            <binding destination="77" name="enabled" keyPath="values.BlockAsWhitelist" id="102">
-                                <dictionary key="options">
-                                    <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                </dictionary>
-                            </binding>
                         </connections>
                     </button>
                 </subviews>
@@ -134,7 +129,7 @@ DQ
         <userDefaultsController representsSharedInstance="YES" id="77"/>
     </objects>
     <resources>
-        <image name="21DA903D-A965-4DF0-A04D-67D0C32660DD" width="1" height="1">
+        <image name="723DB989-8970-4713-AB13-76AD3ED60C20" width="1" height="1">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -152,7 +147,7 @@ AhACGAIlAioCLAIuAjMCOwI+AkMCSwJOAmACYwJoAAAAAAAAAgEAAAAAAAAAQgAAAAAAAAAAAAAAAAAA
 Amo
 </mutableData>
         </image>
-        <image name="D4675D41-24F9-43FA-9121-0850AF97813E" width="1" height="1">
+        <image name="FA3177CA-5427-4E53-B8C1-1E4403E137CA" width="1" height="1">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

@@ -115,6 +115,7 @@ int main(int argc, char* argv[]) {
 										arguments: @[@"unload",
 													 @"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"]];
 		[task waitUntilExit];
+		
 		status = [task terminationStatus];
 		[log appendFormat: @"Unloading the launchd daemon returned: %d\n\n", status];
 
