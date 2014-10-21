@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6245" systemVersion="14A389" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <deployment defaultVersion="1070" identifier="macosx"/>
+        <deployment identifier="macosx"/>
         <development version="5100" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6245"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="AppController">
@@ -34,7 +34,7 @@
                     <button verticalHuggingPriority="750" id="49">
                         <rect key="frame" x="46" y="10" width="119" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="roundRect" title="Add to Blacklist" bezelStyle="roundedRect" image="E1553DE6-3957-4957-9E06-3A03CFA88EC7" imagePosition="overlaps" alignment="center" controlSize="small" state="on" borderStyle="border" inset="2" id="50">
+                        <buttonCell key="cell" type="roundRect" title="Add to Blacklist" bezelStyle="roundedRect" image="2A0AE7DC-EB87-413A-9E1C-E58EE76E904A" imagePosition="overlaps" alignment="center" controlSize="small" state="on" borderStyle="border" inset="2" id="50">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="smallSystem"/>
                         </buttonCell>
@@ -50,7 +50,7 @@
                     <button verticalHuggingPriority="750" id="100">
                         <rect key="frame" x="28" y="10" width="159" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="roundRect" title="Stuck? Stop block manually" bezelStyle="roundedRect" image="A69CA2C2-C4E1-49E1-94EB-45CA2A88C424" imagePosition="overlaps" alignment="center" controlSize="small" state="on" borderStyle="border" inset="2" id="101">
+                        <buttonCell key="cell" type="roundRect" title="Stuck? Stop block manually" bezelStyle="roundedRect" image="B93C280D-9802-426D-8E4B-00606E1332E1" imagePosition="overlaps" alignment="center" controlSize="small" state="on" borderStyle="border" inset="2" id="101">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="smallSystem"/>
                         </buttonCell>
@@ -129,7 +129,7 @@ DQ
         <userDefaultsController representsSharedInstance="YES" id="77"/>
     </objects>
     <resources>
-        <image name="A69CA2C2-C4E1-49E1-94EB-45CA2A88C424" width="1" height="1">
+        <image name="2A0AE7DC-EB87-413A-9E1C-E58EE76E904A" width="1" height="1">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -147,7 +147,7 @@ AhACGAIlAioCLAIuAjMCOwI+AkMCSwJOAmACYwJoAAAAAAAAAgEAAAAAAAAAQgAAAAAAAAAAAAAAAAAA
 Amo
 </mutableData>
         </image>
-        <image name="E1553DE6-3957-4957-9E06-3A03CFA88EC7" width="1" height="1">
+        <image name="B93C280D-9802-426D-8E4B-00606E1332E1" width="1" height="1">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
