@@ -33,7 +33,7 @@
 
 // The main controller for the SelfControl app, which includes several methods
 // to handle command flow and acts as delegate for the initial window.
-@interface AppController : NSObject {
+@interface AppController : NSObject <NSApplicationDelegate> {
 	IBOutlet NSSlider* blockDurationSlider_;
 	IBOutlet NSTextField* blockSliderTimeDisplayLabel_;
 	IBOutlet NSButton* submitButton_;

@@ -95,7 +95,7 @@
 
 
 - (void)blockEnded {
-	if(![[NSApp delegate] selfControlLaunchDaemonIsLoaded]) {
+	if(![(AppController*)[NSApplication sharedApplication].delegate selfControlLaunchDaemonIsLoaded]) {
 		[timerUpdater_ invalidate];
 		timerUpdater_ = nil;
 
@@ -118,7 +118,7 @@
 
 - (void)updateTimerDisplay:(NSTimer*)timer {
 	// update UI for the whole app, in case the block is done with
-	[[NSApp delegate] performSelectorOnMainThread: @selector(refreshUserInterface)
+	[(AppController*)[NSApplication sharedApplication].delegate performSelectorOnMainThread: @selector(refreshUserInterface)
 									   withObject: nil waitUntilDone: NO];
 
 	int numSeconds = (int) [blockEndingDate_ timeIntervalSinceNow];
@@ -185,7 +185,7 @@
 - (void)windowShouldClose:(NSNotification *)notification {
 	// Hack to make the application terminate after the last window is closed, but
 	// INCLUDE the HUD-style timer window.
-	if(![[[NSApp delegate] initialWindow] isVisible]) {
+	if(![[(AppController*)[NSApplication sharedApplication].delegate initialWindow] isVisible]) {
 		[NSApp terminate: self];
 	}
 }
@@ -212,7 +212,7 @@
 
 - (IBAction) performAdd:(id)sender {
 	NSString* addToBlockTextFieldContents = [addToBlockTextField_ stringValue];
-	[[NSApp delegate] addToBlockList: addToBlockTextFieldContents lock: addToBlockLock];
+	[(AppController*)[NSApplication sharedApplication].delegate addToBlockList: addToBlockTextFieldContents lock: addToBlockLock];
 	[NSApp endSheet: addSheet_];
 }
 

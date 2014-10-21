@@ -277,7 +277,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	[NSApp setDelegate: self];
+	[NSApplication sharedApplication].delegate = self;
 
 	// Register observers on both distributed and normal notification centers
 	// to receive notifications from the helper tool and the other parts of the
