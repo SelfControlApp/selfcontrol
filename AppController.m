@@ -240,9 +240,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 		// if block's off, and we haven't shown it yet, show the first-time modal
 		if (![defaults_ boolForKey: @"GetStartedShown"]) {
-			[self showGetStartedWindow: self];
 			[defaults_ setBool: YES forKey: @"GetStartedShown"];
 			[defaults_ synchronize];
+			[self showGetStartedWindow: self];
 		}
 	}
 	[refreshUILock_ unlock];
@@ -283,7 +283,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	[NSApp setDelegate: self];
+	[NSApplication sharedApplication].delegate = self;
 
 	// Register observers on both distributed and normal notification centers
 	// to receive notifications from the helper tool and the other parts of the
