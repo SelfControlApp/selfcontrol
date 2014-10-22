@@ -189,8 +189,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		069A77829BB040CB88DA0A8E /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		1E6FD5BEA5F7B6CF75BCA00D /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
@@ -208,6 +208,7 @@
 		949F9F8A15B33267007B8B42 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hans"; path = "zh-Hans.lproj/MainMenu.xib"; sourceTree = "<group>"; };
 		949F9F8B15B33339007B8B42 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hans"; path = "zh-Hans.lproj/TimerWindow.xib"; sourceTree = "<group>"; };
 		949F9F8D15B333A1007B8B42 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		A59D865C434C80486660F59E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		CB02347119E9B6D0008E2473 /* FirstTime.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FirstTime.xib; sourceTree = "<group>"; };
 		CB03860D19D777B0004614B6 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/PreferencesGeneralViewController.xib; sourceTree = "<group>"; };
 		CB03860E19D777B2004614B6 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/PreferencesGeneralViewController.xib; sourceTree = "<group>"; };
@@ -225,8 +226,6 @@
 		CB03861A19D777CE004614B6 /* it */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = it; path = it.lproj/PreferencesAdvancedViewController.xib; sourceTree = "<group>"; };
 		CB03861B19D777D0004614B6 /* tr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = tr; path = tr.lproj/PreferencesAdvancedViewController.xib; sourceTree = "<group>"; };
 		CB03861C19D777D3004614B6 /* ko */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ko; path = ko.lproj/PreferencesAdvancedViewController.xib; sourceTree = "<group>"; };
-		CB03861F19D77C3E004614B6 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "pt-BR"; path = "pt-BR.lproj/PreferencesAdvancedViewController.xib"; sourceTree = "<group>"; };
-		CB03862219D77C91004614B6 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "pt-BR"; path = "pt-BR.lproj/PreferencesGeneralViewController.xib"; sourceTree = "<group>"; };
 		CB03862319D77EB2004614B6 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		CB1E7A6D0F9AEA9B00D158BC /* ERRORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ERRORS; sourceTree = "<group>"; };
 		CB249FEC19D782230087BBB6 /* SelfControlIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SelfControlIcon.icns; sourceTree = "<group>"; };
@@ -301,6 +300,13 @@
 		CBBF4EE915830D7800E364D9 /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/TimerWindow.xib; sourceTree = "<group>"; };
 		CBBF4EEA15830D7800E364D9 /* sv */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = sv; path = sv.lproj/TimerWindow.xib; sourceTree = "<group>"; };
 		CBBF4EEB15830D7800E364D9 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = ja.lproj/TimerWindow.xib; sourceTree = "<group>"; };
+		CBC25B1319F6CBDE0013E190 /* pt-BR */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		CBC25B1419F6CBE40013E190 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "pt-BR"; path = "pt-BR.lproj/PreferencesAdvancedViewController.xib"; sourceTree = "<group>"; };
+		CBC25B1519F6CBE90013E190 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "pt-BR"; path = "pt-BR.lproj/PreferencesGeneralViewController.xib"; sourceTree = "<group>"; };
+		CBC25B1619F6CBF00013E190 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "pt-BR"; path = "pt-BR.lproj/TimerWindow.xib"; sourceTree = "<group>"; };
+		CBC25B1719F6CBF50013E190 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "pt-BR"; path = "pt-BR.lproj/DomainList.xib"; sourceTree = "<group>"; };
+		CBC25B1819F6CBF90013E190 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "pt-BR"; path = "pt-BR.lproj/MainMenu.xib"; sourceTree = "<group>"; };
+		CBC25B1919F6CC030013E190 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchctlHelper.m; sourceTree = "<group>"; };
 		CBC2F8650F4674E300CF2A42 /* LaunchctlHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchctlHelper.h; sourceTree = "<group>"; };
 		CBCA91101960D87300AFD20C /* PacketFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketFilter.h; sourceTree = "<group>"; };
@@ -311,11 +317,6 @@
 		CBCA91291961383A00AFD20C /* tr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = tr; path = tr.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		CBCA912A1961383E00AFD20C /* tr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = tr; path = tr.lproj/DomainList.xib; sourceTree = "<group>"; };
 		CBCA912B1961384600AFD20C /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		CBCA915019613CFA00AFD20C /* pt_BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt_BR; path = pt_BR.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		CBCA915119613D1900AFD20C /* pt_BR */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = pt_BR; path = pt_BR.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		CBCA915219613D2400AFD20C /* pt_BR */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = pt_BR; path = pt_BR.lproj/DomainList.xib; sourceTree = "<group>"; };
-		CBCA915319613D2800AFD20C /* pt_BR */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = pt_BR; path = pt_BR.lproj/TimerWindow.xib; sourceTree = "<group>"; };
-		CBCA915419613D3100AFD20C /* pt_BR */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = pt_BR; path = pt_BR.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CBD266AD11ED7D9C00042CD8 /* HelperCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperCommon.h; sourceTree = "<group>"; };
 		CBD266AE11ED7D9C00042CD8 /* HelperCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelperCommon.m; sourceTree = "<group>"; };
 		CBD266E111ED84F700042CD8 /* SelfControlCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelfControlCommon.h; sourceTree = "<group>"; };
@@ -442,7 +443,7 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				CB42939A0F53A819008E10CA /* COPYING */,
 				CB9C80F819CFB79700CDCAE1 /* SelfControl Killer */,
-				069A77829BB040CB88DA0A8E /* Pods.xcconfig */,
+				2C876B01430E036D3D0A3B52 /* Pods */,
 			);
 			name = SelfControl;
 			sourceTree = "<group>";
@@ -483,6 +484,15 @@
 				5BF4C56EF9E741B8994020A7 /* libPods.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2C876B01430E036D3D0A3B52 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				1E6FD5BEA5F7B6CF75BCA00D /* Pods.debug.xcconfig */,
+				A59D865C434C80486660F59E /* Pods.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 		CB4294DF0F53D865008E10CA /* Classes */ = {
@@ -801,7 +811,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /usr/bin/ruby;
-			shellScript = "#!/usr/bin/env ruby -w\n#\n#################################################################################\n#                                                                               #\n#     appcast_automation.rb                                                     #\n#                                                                               #\n#     author:   Craig Williams                                                  #\n#     created:  2009-01-09                                                      #\n#                                                                               #\n#################################################################################\n#                                                                               #\n#     This program is free software: you can redistribute it and/or modify      #\n#     it under the terms of the GNU General Public License as published by      #\n#     the Free Software Foundation, either version 3 of the License, or         #\n#     (at your option) any later version.                                       #\n#                                                                               #\n#     This program is distributed in the hope that it will be useful,           #\n#     but WITHOUT ANY WARRANTY; without even the implied warranty of            #\n#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             #\n#     GNU General Public License for more details.                              #\n#                                                                               #\n#     You should have received a copy of the GNU General Public License         #\n#     along with this program.  If not, see <http://www.gnu.org/licenses/>.     #\n#                                                                               #\n#################################################################################\n\nclass AppCast\nrequire 'rubygems'\nrequire 'yaml'\nrequire 'tmpdir'\nrequire 'fileutils'\nrequire 'openssl'\nrequire 'nokogiri'\nrequire 'base64'\n\nMESSAGE_HEADER   = 'RUN SCRIPT DURING BUILD MESSAGE'\nYAML_FOLDER_PATH = \"#{ENV['HOME']}/SelfControl/selfcontrol/\"\n\ndef initialize\n@signature = ''\nrequire_release_build\nproject_setup\nload_config\n\n# the build_now setting in the config.yml file\n# determines whether you want to perform this script\n# set to 'NO' until you are ready to publish\nexit_unless_build\nbase_folder\nappcast_setup\nend\n\ndef execute!\ncreate_appcast_folder_and_files\nremove_old_zip_create_new_zip\nfile_stats\ncreate_key\nputs \"created key\"\ncreate_appcast_xml\nputs \"created appcast xml\"\ncopy_archive_to_appcast_path\nputs \"copied archive to appcast path\"\nend\n\n# Only works for Release builds\n# Exits upon failure\ndef require_release_build\nif ENV[\"BUILD_STYLE\"] == 'Debug'\nlog_message(\"Distribution target requires 'Release' build style\")\nexit\nend\nend\n\n# Exits if no config.yml file found.\ndef load_config\nconfig_file_path = \"#{YAML_FOLDER_PATH}/config.yml\"\nunless File.exists?(config_file_path)\nlog_message(\"No 'config.yml' file found in project directory.\")\nexit\nend\n@config = YAML.load_file(config_file_path)\nend\n\ndef exit_unless_build\nunless @config['build_now'] == 'YES'\nlog_message(\"The 'build_now' setting in 'config.yml' set to 'NO'\\nIf you are wanting to include this script in\\nthe build process change this setting to 'YES'\")\nexit\nend\nend\n\ndef project_setup\n@proj_dir         = ENV['BUILT_PRODUCTS_DIR']\n@proj_name        = ENV['PROJECT_NAME']\n@version          = \"2.0\"\n@build_number     = \"2.0\"\n@archive_filename = \"#{@proj_name}_#{@version.chomp}.zip\" # underline character added\n@archive_path     = \"#{@proj_dir}/#{@archive_filename}\"\nend\n\ndef appcast_setup\n@appcast_xml_name      = @config['appcast_xml_name'].chomp\n@appcast_proj_folder   = \"#{@config['appcast_basefolder']}/#{@proj_name}_#{@version}\".chomp\n@appcast_xml_path      = \"#{@appcast_proj_folder}/#{@appcast_xml_name}\"\n@download_base_url     = @config['download_base_url']\n@keychain_privkey_name = @config['keychain_privkey_name']\n@css_file_name         = @config['css_file_name']\n@releasenotes_url      = \"#{@download_base_url}#{@version.chomp}.html\"\n@download_url          = \"#{@download_base_url}#{@archive_filename}\"\n@appcast_download_url  = \"#{@download_base_url}#{@appcast_xml_name}\"\nend\n\ndef base_folder\n@appcast_basefolder = @config['appcast_basefolder'].chomp\nFile.expand_path(@appcast_basefolder) if @appcast_basefolder.start_with?(\"~\")\nend\n\ndef remove_old_zip_create_new_zip\nDir.chdir(@proj_dir)\n`rm -f #{@proj_name}*.zip`\n`ditto -ck --keepParent --rsrc --sequesterRsrc \"#{@proj_name}.app\" \"#{@archive_filename}\"`\nend\n\ndef copy_archive_to_appcast_path\nbegin\nFileUtils.cp(@archive_path, @appcast_proj_folder)\nrescue\nlog_message(\"There was an error coplogying the zip file to appcast folder\\nError: #{$!}\")\nend\nend\n\ndef file_stats\n@size     = File.size(@archive_filename)\n@pubdate  = `date +\"%a, %d %b %G %T %z\"`\nend\n\ndef get_key\nkey_xml = `security find-generic-password -g -s \\\"#@keychain_privkey_name\\\" 2>&1 1>/dev/null`\nkey_xml = key_xml.gsub(/\\\\012/, \"\\n\")\nkey_xml = key_xml.split(\"\\\"\")[1]\nend\n\ndef create_key\nkey = get_key\n\nputs \"got key: #{key}\"\n\nif key.empty?\nlog_message(\"Unable to load signing private key with name '#{@keychain_privkey_name}' from keychain\\nFor file #{@archive_filename}\")\nexit\nend\n\nhashed     = OpenSSL::Digest::SHA1.digest(File.read(\"#{@archive_path}\"))\ndsa        = OpenSSL::PKey::DSA.new(key)\ndss1       = OpenSSL::Digest::DSS1.new\nsign       = dsa.sign(dss1, hashed)\n@signature = Base64.encode64(sign)\n@signature = @signature.gsub(\"\\n\", '')\n\nif @signature.empty?\nlog_message(\"Unable to sign file #{@archive_filename}\")\nexit\nelse\nlog_message(\"New signature is \\n#{@signature}\")\nend\nend\n\ndef create_appcast_xml\nappcast_xml =\n\"<?xml version=\\\"1.0\\\" encoding=\\\"utf-8\\\"?>\n<rss version=\\\"2.0\\\" xmlns:sparkle=\\\"http://www.andymatuschak.org/xml-namespaces/sparkle\\\"  xmlns:dc=\\\"http://purl.org/dc/elements/1.1/\\\">\n<title>#{@proj_name}_#{@version.chomp}</title>\n<link>#{@appcast_download_url}</link>\n<description>Most recent changes with links to updates.</description>\n<language>en</language>\n<item>\n<title>Version #{@version.chomp}</title>\n<sparkle:releaseNotesLink>\n#{@releasenotes_url}\n</sparkle:releaseNotesLink>\n<pubDate>#{@pubdate.chomp}</pubDate>\n<enclosure url=\\\"#{@download_url.chomp}\\\"\nlength=\\\"#{@size}\\\"csparkle:shortVersionString=\\\"#{@version.chomp}\\\"\nsparkle:dsaSignature=\\\"#{@signature.chomp}\\\"/>\n</item>\n</channel>\n</rss>\"\n\nFile.open(@appcast_xml_path, 'w') { |f| f.puts appcast_xml }\nend\n\n# Creates the appcast folder if it does not exist\n# or is accidently moved or deleted\n# Creates an html file with generic note template if it does not exist\n# This way the notes file is named correctly as well\n# Creates a css file named from yml file with default css\ndef create_appcast_folder_and_files\nbase_folder = @appcast_basefolder\nproject_folder = @appcast_proj_folder\n\nnotes_file = \"#{project_folder}/#{File.basename(@releasenotes_url.chomp)}\"\ncss_file_path = \"#{project_folder}/#{@css_file_name}\"\n\nDir.mkdir(base_folder)    unless File.exists?(base_folder)\nDir.mkdir(project_folder) unless File.exists?(project_folder)\n\nFile.open(notes_file, 'w') { |f| f.puts release_notes_generic_text } unless File.exists?(notes_file)\nFile.open(css_file_path, 'w') { |f| f.puts decompressed_css } unless File.exists?(css_file_path)\nend\n\ndef log_message(msg)\nputs \"\\n\\n----------------------------------------------\"\nputs MESSAGE_HEADER\nputs msg\nputs \"----------------------------------------------\\n\\n\"\nend\n\ndef decompressed_css\nreturn css_text.gsub(/\\{\\s+/, \"{\\n\\t\").gsub(/;/, \";\\n\\t\").gsub(/^\\s+\\}/, \"}\").gsub(/^\\s+/, \"\\t\")\nend\n\ndef release_notes_generic_text\nreturn \"\n<html>\n<head>\n<meta http-equiv=\\\"content-type\\\" content=\\\"text/html;charset=utf-8\\\">\n<title>What's new in #{@proj_name}?</title>\n<meta name=\\\"robots\\\" content=\\\"anchors\\\">\n<link href=\\\"rnotes.css\\\" type=\\\"text/css\\\" rel=\\\"stylesheet\\\" media=\\\"all\\\">\n</head>\n\n<body>\n<br />\n<table class=\\\"dots\\\" width=\\\"100%\\\" border=\\\"0\\\" cellspacing=\\\"0\\\" cellpadding=\\\"0\\\" summary=\\\"Two column table with heading\\\">\n<tr>\n<td class=\\\"blue\\\" colspan=\\\"2\\\">\n<h3>#{@proj_name} #{@version.chomp} Release Notes</h3>\n</td>\n</tr>\n<tr>\n<td valign=\\\"top\\\">\n<p>\n<ul>\n<li>DESCRIPTION</li>\n</ul>\n</p>\n</td>\n</tr>\n</table>\n<br>\n</body>\n\n</html>\"\nend\n\n# This css will be expanded to a normal, easily editable form when written to file\ndef css_text\nreturn \"\nbody { margin: 2px 12px 12px; }\nh1 h2 h3 p ol ul a a:hover { font-family: \\\"Lucida Grande\\\", Arial, sans-serif; }\n    h1 { font-size: 11pt; margin-bottom: 0; }\n    h2 { font-size: 9pt; margin-top: 0; margin-bottom: -10px; }\n    h3 { font-size: 9pt; font-weight: bold; margin-top: -4px; margin-bottom: -4px; }\n    p { font-size: 9pt; line-height: 12pt; text-decoration: none; }\n    ol { font-size: 9pt; line-height: 12pt; list-style-position: outside; margin-top: 12px; margin-bottom: 12px; margin-left: -18px; padding-left: 40px; }\n    ol li { margin-top: 6px; margin-bottom: 6px; }\n    ol p { margin-top: 6px; margin-bottom: 6px; }\n    ul { font-size: 9pt; line-height: 12pt; list-style-type: square; list-style-position: outside; margin-top: 12px; margin-bottom: 12px; margin-left: -24px; padding-left: 40px; }\n    ul li { margin-top: 6px; margin-bottom: 6px; }\n    ul p { margin-top: 6px; margin-bottom: 6px; }\n    a { color: #00f; font-size: 9pt; line-height: 12pt; text-decoration: none; }\n        a:hover { color: #00f; text-decoration: underline; }\n            hr { text-decoration: none; border: solid 1px #bfbfbf; }\n                td { padding: 6px; }\n                #banner { background-color: #f2f2f2; background-repeat: no-repeat; padding: -2px 6px 0; position: fixed; top: 0; left: 0; width: 100%; height: 1.2em; float: left; border: solid 1px #bfbfbf; }\n                #caticon { margin-top: 3px; margin-bottom: -3px; margin-right: 5px; float: left; }\n                #pagetitle { margin-top: 12px; margin-bottom: 0px; margin-left: 40px; width: 88%; border: solid 1px #fff; }\n                #mainbox { margin-top: 2349px; padding-right: 6px; }\n                #taskbox { background-color: #e6edff; list-style-type: decimal; list-style-position: outside; margin: 12px 0; padding: 2px 12px; border: solid 1px #bfbfbf; }\n                #taskbox h2 { margin-top: 8; margin-bottom: -4px; }\n                #machelp { position: absolute; top: 2px; left: 10px ; }\n                #index { background-color: #f2f2f2; padding-right: 25px; top: 2px; right: 12px; width: auto; float: right; }\n                #next { position: absolute; top: 49px; left: 88%; }\n                #asindent { margin-left: 22px; font-size: 9pt; font-family: Verdana, Courier, sans-serif; }\n                .bread { color: #00f; font-size: 8pt; margin: -9px 0 -6px; }\n                    .leftborder { color: #00f; font-size: 8pt; margin: -9px 0 -6px; padding-top: 2px; padding-bottom: 3px; padding-left: 8px; border-left: 1px solid #bfbfbf; }\n                        .mult { margin-top: -8px; }\n                        .blue { background-color: #e6edff; margin-top: -3px; margin-bottom: -3px; padding-top: -3px; padding-bottom: -3px; }\n                            .rightfloater { float: right; margin-left: 15px; }\n                            .rules { border-bottom: 1px dotted #ccc; }\n                                .dots { border: dotted 1px #ccc; }\n                                    .seealso { margin-top: 4px; margin-bottom: 4px; }\n                                    code { color: black; font-size: 9pt; font-family: Verdana, Courier, sans-serif; }\"\n                                    end\n                                    end\n                                    \n                                    if __FILE__ == $0\n                                    appcast = AppCast.new\n                                    appcast.execute!\n                                    appcast.log_message(\"It appears all went well with the build script!\")\n                                    end\n";
+			shellScript = "#!/usr/bin/env ruby -w\n#\n#################################################################################\n#                                                                               #\n#     appcast_automation.rb                                                     #\n#                                                                               #\n#     author:   Craig Williams                                                  #\n#     created:  2009-01-09                                                      #\n#                                                                               #\n#################################################################################\n#                                                                               #\n#     This program is free software: you can redistribute it and/or modify      #\n#     it under the terms of the GNU General Public License as published by      #\n#     the Free Software Foundation, either version 3 of the License, or         #\n#     (at your option) any later version.                                       #\n#                                                                               #\n#     This program is distributed in the hope that it will be useful,           #\n#     but WITHOUT ANY WARRANTY; without even the implied warranty of            #\n#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             #\n#     GNU General Public License for more details.                              #\n#                                                                               #\n#     You should have received a copy of the GNU General Public License         #\n#     along with this program.  If not, see <http://www.gnu.org/licenses/>.     #\n#                                                                               #\n#################################################################################\n\nclass AppCast\nrequire 'rubygems'\nrequire 'yaml'\nrequire 'tmpdir'\nrequire 'fileutils'\nrequire 'openssl'\nrequire 'nokogiri'\nrequire 'base64'\n\nMESSAGE_HEADER   = 'RUN SCRIPT DURING BUILD MESSAGE'\nYAML_FOLDER_PATH = \"#{ENV['HOME']}/SelfControl/selfcontrol/\"\n\ndef initialize\n@signature = ''\nrequire_release_build\nproject_setup\nload_config\n\n# the build_now setting in the config.yml file\n# determines whether you want to perform this script\n# set to 'NO' until you are ready to publish\nexit_unless_build\nbase_folder\nappcast_setup\nend\n\ndef execute!\ncreate_appcast_folder_and_files\nremove_old_zip_create_new_zip\nfile_stats\ncreate_key\nputs \"created key\"\ncreate_appcast_xml\nputs \"created appcast xml\"\ncopy_archive_to_appcast_path\nputs \"copied archive to appcast path\"\nend\n\n# Only works for Release builds\n# Exits upon failure\ndef require_release_build\nif ENV[\"BUILD_STYLE\"] == 'Debug'\nlog_message(\"Distribution target requires 'Release' build style\")\nexit\nend\nend\n\n# Exits if no config.yml file found.\ndef load_config\nconfig_file_path = \"#{YAML_FOLDER_PATH}/config.yml\"\nunless File.exists?(config_file_path)\nlog_message(\"No 'config.yml' file found in project directory.\")\nexit\nend\n@config = YAML.load_file(config_file_path)\nend\n\ndef exit_unless_build\nunless @config['build_now'] == 'YES'\nlog_message(\"The 'build_now' setting in 'config.yml' set to 'NO'\\nIf you are wanting to include this script in\\nthe build process change this setting to 'YES'\")\nexit\nend\nend\n\ndef project_setup\n@proj_dir         = ENV['BUILT_PRODUCTS_DIR']\n@proj_name        = ENV['PROJECT_NAME']\n@version          = \"2.0.2\"\n@build_number     = \"2.0.2\"\n@archive_filename = \"#{@proj_name}_#{@version.chomp}.zip\" # underline character added\n@archive_path     = \"#{@proj_dir}/#{@archive_filename}\"\nend\n\ndef appcast_setup\n@appcast_xml_name      = @config['appcast_xml_name'].chomp\n@appcast_proj_folder   = \"#{@config['appcast_basefolder']}/#{@proj_name}_#{@version}\".chomp\n@appcast_xml_path      = \"#{@appcast_proj_folder}/#{@appcast_xml_name}\"\n@download_base_url     = @config['download_base_url']\n@keychain_privkey_name = @config['keychain_privkey_name']\n@css_file_name         = @config['css_file_name']\n@releasenotes_url      = \"#{@download_base_url}#{@version.chomp}.html\"\n@download_url          = \"#{@download_base_url}#{@archive_filename}\"\n@appcast_download_url  = \"#{@download_base_url}#{@appcast_xml_name}\"\nend\n\ndef base_folder\n@appcast_basefolder = @config['appcast_basefolder'].chomp\nFile.expand_path(@appcast_basefolder) if @appcast_basefolder.start_with?(\"~\")\nend\n\ndef remove_old_zip_create_new_zip\nDir.chdir(@proj_dir)\n`rm -f #{@proj_name}*.zip`\n`ditto -ck --keepParent --rsrc --sequesterRsrc \"#{@proj_name}.app\" \"#{@archive_filename}\"`\nend\n\ndef copy_archive_to_appcast_path\nbegin\nFileUtils.cp(@archive_path, @appcast_proj_folder)\nrescue\nlog_message(\"There was an error coplogying the zip file to appcast folder\\nError: #{$!}\")\nend\nend\n\ndef file_stats\n@size     = File.size(@archive_filename)\n@pubdate  = `date +\"%a, %d %b %G %T %z\"`\nend\n\ndef get_key\nkey_xml = `security find-generic-password -g -s \\\"#@keychain_privkey_name\\\" 2>&1 1>/dev/null`\nkey_xml = key_xml.gsub(/\\\\012/, \"\\n\")\nkey_xml = key_xml.split(\"\\\"\")[1]\nend\n\ndef create_key\nkey = get_key\n\nputs \"got key: #{key}\"\n\nif key.empty?\nlog_message(\"Unable to load signing private key with name '#{@keychain_privkey_name}' from keychain\\nFor file #{@archive_filename}\")\nexit\nend\n\nhashed     = OpenSSL::Digest::SHA1.digest(File.read(\"#{@archive_path}\"))\ndsa        = OpenSSL::PKey::DSA.new(key)\ndss1       = OpenSSL::Digest::DSS1.new\nsign       = dsa.sign(dss1, hashed)\n@signature = Base64.encode64(sign)\n@signature = @signature.gsub(\"\\n\", '')\n\nif @signature.empty?\nlog_message(\"Unable to sign file #{@archive_filename}\")\nexit\nelse\nlog_message(\"New signature is \\n#{@signature}\")\nend\nend\n\ndef create_appcast_xml\nappcast_xml =\n\"<?xml version=\\\"1.0\\\" encoding=\\\"utf-8\\\"?>\n<rss version=\\\"2.0\\\" xmlns:sparkle=\\\"http://www.andymatuschak.org/xml-namespaces/sparkle\\\"  xmlns:dc=\\\"http://purl.org/dc/elements/1.1/\\\">\n<title>#{@proj_name}_#{@version.chomp}</title>\n<link>#{@appcast_download_url}</link>\n<description>Most recent changes with links to updates.</description>\n<language>en</language>\n<item>\n<title>Version #{@version.chomp}</title>\n<sparkle:releaseNotesLink>\n#{@releasenotes_url}\n</sparkle:releaseNotesLink>\n<pubDate>#{@pubdate.chomp}</pubDate>\n<enclosure url=\\\"#{@download_url.chomp}\\\"\nlength=\\\"#{@size}\\\"csparkle:shortVersionString=\\\"#{@version.chomp}\\\"\nsparkle:dsaSignature=\\\"#{@signature.chomp}\\\"/>\n</item>\n</channel>\n</rss>\"\n\nFile.open(@appcast_xml_path, 'w') { |f| f.puts appcast_xml }\nend\n\n# Creates the appcast folder if it does not exist\n# or is accidently moved or deleted\n# Creates an html file with generic note template if it does not exist\n# This way the notes file is named correctly as well\n# Creates a css file named from yml file with default css\ndef create_appcast_folder_and_files\nbase_folder = @appcast_basefolder\nproject_folder = @appcast_proj_folder\n\nnotes_file = \"#{project_folder}/#{File.basename(@releasenotes_url.chomp)}\"\ncss_file_path = \"#{project_folder}/#{@css_file_name}\"\n\nDir.mkdir(base_folder)    unless File.exists?(base_folder)\nDir.mkdir(project_folder) unless File.exists?(project_folder)\n\nFile.open(notes_file, 'w') { |f| f.puts release_notes_generic_text } unless File.exists?(notes_file)\nFile.open(css_file_path, 'w') { |f| f.puts decompressed_css } unless File.exists?(css_file_path)\nend\n\ndef log_message(msg)\nputs \"\\n\\n----------------------------------------------\"\nputs MESSAGE_HEADER\nputs msg\nputs \"----------------------------------------------\\n\\n\"\nend\n\ndef decompressed_css\nreturn css_text.gsub(/\\{\\s+/, \"{\\n\\t\").gsub(/;/, \";\\n\\t\").gsub(/^\\s+\\}/, \"}\").gsub(/^\\s+/, \"\\t\")\nend\n\ndef release_notes_generic_text\nreturn \"\n<html>\n<head>\n<meta http-equiv=\\\"content-type\\\" content=\\\"text/html;charset=utf-8\\\">\n<title>What's new in #{@proj_name}?</title>\n<meta name=\\\"robots\\\" content=\\\"anchors\\\">\n<link href=\\\"rnotes.css\\\" type=\\\"text/css\\\" rel=\\\"stylesheet\\\" media=\\\"all\\\">\n</head>\n\n<body>\n<br />\n<table class=\\\"dots\\\" width=\\\"100%\\\" border=\\\"0\\\" cellspacing=\\\"0\\\" cellpadding=\\\"0\\\" summary=\\\"Two column table with heading\\\">\n<tr>\n<td class=\\\"blue\\\" colspan=\\\"2\\\">\n<h3>#{@proj_name} #{@version.chomp} Release Notes</h3>\n</td>\n</tr>\n<tr>\n<td valign=\\\"top\\\">\n<p>\n<ul>\n<li>DESCRIPTION</li>\n</ul>\n</p>\n</td>\n</tr>\n</table>\n<br>\n</body>\n\n</html>\"\nend\n\n# This css will be expanded to a normal, easily editable form when written to file\ndef css_text\nreturn \"\nbody { margin: 2px 12px 12px; }\nh1 h2 h3 p ol ul a a:hover { font-family: \\\"Lucida Grande\\\", Arial, sans-serif; }\n    h1 { font-size: 11pt; margin-bottom: 0; }\n    h2 { font-size: 9pt; margin-top: 0; margin-bottom: -10px; }\n    h3 { font-size: 9pt; font-weight: bold; margin-top: -4px; margin-bottom: -4px; }\n    p { font-size: 9pt; line-height: 12pt; text-decoration: none; }\n    ol { font-size: 9pt; line-height: 12pt; list-style-position: outside; margin-top: 12px; margin-bottom: 12px; margin-left: -18px; padding-left: 40px; }\n    ol li { margin-top: 6px; margin-bottom: 6px; }\n    ol p { margin-top: 6px; margin-bottom: 6px; }\n    ul { font-size: 9pt; line-height: 12pt; list-style-type: square; list-style-position: outside; margin-top: 12px; margin-bottom: 12px; margin-left: -24px; padding-left: 40px; }\n    ul li { margin-top: 6px; margin-bottom: 6px; }\n    ul p { margin-top: 6px; margin-bottom: 6px; }\n    a { color: #00f; font-size: 9pt; line-height: 12pt; text-decoration: none; }\n        a:hover { color: #00f; text-decoration: underline; }\n            hr { text-decoration: none; border: solid 1px #bfbfbf; }\n                td { padding: 6px; }\n                #banner { background-color: #f2f2f2; background-repeat: no-repeat; padding: -2px 6px 0; position: fixed; top: 0; left: 0; width: 100%; height: 1.2em; float: left; border: solid 1px #bfbfbf; }\n                #caticon { margin-top: 3px; margin-bottom: -3px; margin-right: 5px; float: left; }\n                #pagetitle { margin-top: 12px; margin-bottom: 0px; margin-left: 40px; width: 88%; border: solid 1px #fff; }\n                #mainbox { margin-top: 2349px; padding-right: 6px; }\n                #taskbox { background-color: #e6edff; list-style-type: decimal; list-style-position: outside; margin: 12px 0; padding: 2px 12px; border: solid 1px #bfbfbf; }\n                #taskbox h2 { margin-top: 8; margin-bottom: -4px; }\n                #machelp { position: absolute; top: 2px; left: 10px ; }\n                #index { background-color: #f2f2f2; padding-right: 25px; top: 2px; right: 12px; width: auto; float: right; }\n                #next { position: absolute; top: 49px; left: 88%; }\n                #asindent { margin-left: 22px; font-size: 9pt; font-family: Verdana, Courier, sans-serif; }\n                .bread { color: #00f; font-size: 8pt; margin: -9px 0 -6px; }\n                    .leftborder { color: #00f; font-size: 8pt; margin: -9px 0 -6px; padding-top: 2px; padding-bottom: 3px; padding-left: 8px; border-left: 1px solid #bfbfbf; }\n                        .mult { margin-top: -8px; }\n                        .blue { background-color: #e6edff; margin-top: -3px; margin-bottom: -3px; padding-top: -3px; padding-bottom: -3px; }\n                            .rightfloater { float: right; margin-left: 15px; }\n                            .rules { border-bottom: 1px dotted #ccc; }\n                                .dots { border: dotted 1px #ccc; }\n                                    .seealso { margin-top: 4px; margin-bottom: 4px; }\n                                    code { color: black; font-size: 9pt; font-family: Verdana, Courier, sans-serif; }\"\n                                    end\n                                    end\n                                    \n                                    if __FILE__ == $0\n                                    appcast = AppCast.new\n                                    appcast.execute!\n                                    appcast.log_message(\"It appears all went well with the build script!\")\n                                    end\n";
 		};
 		E388D89B9A8D4BB49E5F775F /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -815,7 +825,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -936,7 +946,7 @@
 				CB03861A19D777CE004614B6 /* it */,
 				CB03861B19D777D0004614B6 /* tr */,
 				CB03861C19D777D3004614B6 /* ko */,
-				CB03861F19D77C3E004614B6 /* pt-BR */,
+				CBC25B1419F6CBE40013E190 /* pt-BR */,
 			);
 			name = PreferencesAdvancedViewController.xib;
 			sourceTree = "<group>";
@@ -952,7 +962,7 @@
 				CB03861219D777BA004614B6 /* it */,
 				CB03861319D777BC004614B6 /* tr */,
 				CB03861419D777BE004614B6 /* ko */,
-				CB03862219D77C91004614B6 /* pt-BR */,
+				CBC25B1519F6CBE90013E190 /* pt-BR */,
 			);
 			name = PreferencesGeneralViewController.xib;
 			sourceTree = "<group>";
@@ -976,8 +986,8 @@
 				949F9F8915B33213007B8B42 /* zh-Hans */,
 				640D40C816D6E962003034B3 /* it */,
 				CBCA912A1961383E00AFD20C /* tr */,
-				CBCA915219613D2400AFD20C /* pt_BR */,
 				CB9C80EF19CFAAA700CDCAE1 /* ko */,
+				CBC25B1719F6CBF50013E190 /* pt-BR */,
 			);
 			name = DomainList.xib;
 			sourceTree = "<group>";
@@ -993,8 +1003,8 @@
 				949F9F8A15B33267007B8B42 /* zh-Hans */,
 				640D40C916D6E962003034B3 /* it */,
 				CBCA91291961383A00AFD20C /* tr */,
-				CBCA915119613D1900AFD20C /* pt_BR */,
 				CB9C80EE19CFAAA000CDCAE1 /* ko */,
+				CBC25B1819F6CBF90013E190 /* pt-BR */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
@@ -1010,8 +1020,8 @@
 				949F9F8D15B333A1007B8B42 /* zh-Hans */,
 				640D40CC16D6E962003034B3 /* it */,
 				CBCA912B1961384600AFD20C /* tr */,
-				CBCA915019613CFA00AFD20C /* pt_BR */,
 				CB9C80F219CFAACC00CDCAE1 /* ko */,
+				CBC25B1919F6CC030013E190 /* pt-BR */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1027,8 +1037,8 @@
 				949F9F8815B32EC6007B8B42 /* zh-Hans */,
 				640D40CB16D6E962003034B3 /* it */,
 				CBCA91271961381F00AFD20C /* tr */,
-				CBCA915419613D3100AFD20C /* pt_BR */,
 				CB9C80F119CFAAC600CDCAE1 /* ko */,
+				CBC25B1319F6CBDE0013E190 /* pt-BR */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1044,8 +1054,8 @@
 				949F9F8B15B33339007B8B42 /* zh-Hans */,
 				640D40CA16D6E962003034B3 /* it */,
 				CBCA91281961383600AFD20C /* tr */,
-				CBCA915319613D2800AFD20C /* pt_BR */,
 				CB9C80F019CFAAB300CDCAE1 /* ko */,
+				CBC25B1619F6CBF00013E190 /* pt-BR */,
 			);
 			name = TimerWindow.xib;
 			sourceTree = "<group>";
@@ -1055,7 +1065,7 @@
 /* Begin XCBuildConfiguration section */
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 069A77829BB040CB88DA0A8E /* Pods.xcconfig */;
+			baseConfigurationReference = 1E6FD5BEA5F7B6CF75BCA00D /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -1080,7 +1090,7 @@
 		};
 		C01FCF4C08A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 069A77829BB040CB88DA0A8E /* Pods.xcconfig */;
+			baseConfigurationReference = A59D865C434C80486660F59E /* Pods.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -1339,7 +1349,7 @@
 		CB9F02F016C10CDE003054EE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -1347,7 +1357,7 @@
 		CB9F02F116C10CDE003054EE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

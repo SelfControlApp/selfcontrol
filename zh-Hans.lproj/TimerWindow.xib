@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" promptedForUpgradeToXcode5="NO">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6245" systemVersion="14A389" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1070" identifier="macosx"/>
         <development version="5100" identifier="xcode"/>
@@ -12,7 +12,7 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window title="SelfControl" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" hidesOnDeactivate="YES" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="31" userLabel="Panel (SelfControl)" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" utility="YES" HUD="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" bottomStrut="YES"/>
@@ -34,7 +34,7 @@
                     <button verticalHuggingPriority="750" id="49">
                         <rect key="frame" x="46" y="10" width="119" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="roundRect" title="添加到黑名单" bezelStyle="roundedRect" image="0485EA0E-7C22-4B65-85C5-7E4AB1A452EF" imagePosition="overlaps" alignment="center" controlSize="small" state="on" borderStyle="border" inset="2" id="50">
+                        <buttonCell key="cell" type="roundRect" title="添加到黑名单" bezelStyle="roundedRect" image="520BE438-92AB-4E58-A72D-BBEC5C562C19" imagePosition="overlaps" alignment="center" controlSize="small" state="on" borderStyle="border" inset="2" id="50">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" size="11" name="STHeitiSC-Light"/>
                         </buttonCell>
@@ -47,6 +47,17 @@
                             </binding>
                         </connections>
                     </button>
+                    <button hidden="YES" verticalHuggingPriority="750" id="L7T-VJ-9Z5">
+                        <rect key="frame" x="26" y="10" width="159" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="roundRect" title="Stuck? Stop block manually" bezelStyle="roundedRect" image="97DBD7E4-BFD5-4799-9E10-A7E2A578F4B1" imagePosition="overlaps" alignment="center" controlSize="small" state="on" borderStyle="border" inset="2" id="VNG-wW-KpT">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="smallSystem"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="killBlock:" target="7" id="uJt-fA-tPB"/>
+                        </connections>
+                    </button>
                 </subviews>
             </view>
         </window>
@@ -55,6 +66,7 @@
                 <outlet property="addSheet_" destination="63" id="85"/>
                 <outlet property="addToBlockButton_" destination="49" id="90"/>
                 <outlet property="addToBlockTextField_" destination="68" id="86"/>
+                <outlet property="killBlockButton_" destination="L7T-VJ-9Z5" id="NAk-Y5-uxb"/>
                 <outlet property="timerLabel_" destination="33" id="91"/>
                 <outlet property="window" destination="31" id="89"/>
             </connections>
@@ -117,7 +129,25 @@ DQ
         <userDefaultsController representsSharedInstance="YES" id="77"/>
     </objects>
     <resources>
-        <image name="0485EA0E-7C22-4B65-85C5-7E4AB1A452EF" width="1" height="1">
+        <image name="520BE438-92AB-4E58-A72D-BBEC5C562C19" width="1" height="1">
+            <mutableData key="keyedArchiveRepresentation">
+YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
+GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
+c1dOU0NvbG9ygAKADRIgwwAAgAOAC1Z7MSwgMX3SFQoWGFpOUy5vYmplY3RzoReABIAK0hUKGh2iGxyA
+BYAGgAkQANIgCiEiXxAUTlNUSUZGUmVwcmVzZW50YXRpb26AB4AITxCsTU0AKgAAAAoAAAANAQAAAwAA
+AAEAAQAAAQEAAwAAAAEAAQAAAQIAAwAAAAIACAAIAQMAAwAAAAEAAQAAAQYAAwAAAAEAAQAAAREABAAA
+AAEAAAAIARIAAwAAAAEAAQAAARUAAwAAAAEAAgAAARYAAwAAAAEAAQAAARcABAAAAAEAAAACARwAAwAA
+AAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAANIlJicoWiRjbGFzc25hbWVYJGNsYXNzZXNf
+EBBOU0JpdG1hcEltYWdlUmVwoykqK18QEE5TQml0bWFwSW1hZ2VSZXBaTlNJbWFnZVJlcFhOU09iamVj
+dNIlJi0uV05TQXJyYXmiLSvSJSYwMV5OU011dGFibGVBcnJheaMwLSvTMzQKNTY3V05TV2hpdGVcTlND
+b2xvclNwYWNlRDAgMAAQA4AM0iUmOTpXTlNDb2xvcqI5K9IlJjw9V05TSW1hZ2WiPCtfEA9OU0tleWVk
+QXJjaGl2ZXLRQEFUcm9vdIABAAgAEQAaACMALQAyADcARgBMAFcAXgBlAHIAeQCBAIMAhQCKAIwAjgCV
+AJoApQCnAKkAqwCwALMAtQC3ALkAuwDAANcA2QDbAYoBjwGaAaMBtgG6Ac0B2AHhAeYB7gHxAfYCBQIJ
+AhACGAIlAioCLAIuAjMCOwI+AkMCSwJOAmACYwJoAAAAAAAAAgEAAAAAAAAAQgAAAAAAAAAAAAAAAAAA
+Amo
+</mutableData>
+        </image>
+        <image name="97DBD7E4-BFD5-4799-9E10-A7E2A578F4B1" width="1" height="1">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
