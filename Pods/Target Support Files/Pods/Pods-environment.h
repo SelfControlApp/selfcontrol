@@ -6,6 +6,12 @@
 // project.
 
 
+// FormatterKit/TimeIntervalFormatter
+#define COCOAPODS_POD_AVAILABLE_FormatterKit_TimeIntervalFormatter
+#define COCOAPODS_VERSION_MAJOR_FormatterKit_TimeIntervalFormatter 1
+#define COCOAPODS_VERSION_MINOR_FormatterKit_TimeIntervalFormatter 7
+#define COCOAPODS_VERSION_PATCH_FormatterKit_TimeIntervalFormatter 1
+
 // MASPreferences
 #define COCOAPODS_POD_AVAILABLE_MASPreferences
 #define COCOAPODS_VERSION_MAJOR_MASPreferences 1

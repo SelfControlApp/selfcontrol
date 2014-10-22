@@ -1,0 +1,183 @@
+/* List separator */
+" " = " ";
+
+/* List delimiter */
+"," = ",";
+
+/* Coordinate format */
+"(%@, %@)" = "(%1$@, %2$@)";
+
+/* No comment provided by engineer. */
+"&" = "&";
+
+/* #{Dimensional Quantity} #{Direction}
+   #{Distance} #{Unit}
+   #{Speed} #{Unit}
+   Deictic Expression Format (#{Time} #{Ago/From Now} */
+"%@ %@" = "%1$@ %2$@";
+
+/* Approximate Qualifier Format */
+"about %@" = "ongeveer %@";
+
+/* Past Deictic Expression */
+"ago" = "geleden";
+
+/* List conjunction */
+"and" = "en";
+
+/* Error converting to NSArray */
+"Couldn’t convert to NSArray" = "Converteren naar NSArray mislukt";
+
+/* Day Unit (Singular)
+   Day Unit (Singular, Abbreviated) */
+"day" = "dag";
+
+/* Day Unit (Plural)
+   Day Unit (Plural, Abbreviated) */
+"days" = "dagen";
+
+/* East Direction Abbreviation */
+"E" = "O";
+
+/* East Direction */
+"East" = "Oost";
+
+/* Future Deictic Expression */
+"from now" = "vanaf nu";
+
+/* Feet Unit */
+"ft" = "ft";
+
+/* Hour Unit (Singular) */
+"hour" = "uur";
+
+/* Hour Unit (Plural) */
+"hours" = "uur";
+
+/* Hour Unit (Singular, Abbreviated) */
+"hr" = "u";
+
+/* Hour Unit (Plural, Abbreviated) */
+"hrs" = "u";
+
+/* Present Deictic Expression */
+"just now" = "zojuist";
+
+/* No comment provided by engineer. */
+"Method Not Implemented" = "Methode niet geïmplementeerd";
+
+/* Mile Unit (Singular) */
+"mile" = "mijl";
+
+/* Mile Unit (Plural) */
+"miles" = "mijlen";
+
+/* Minute Unit (Singular, Abbreviated) */
+"min" = "min.";
+
+/* Minute Unit (Plural, Abbreviated) */
+"mins" = "min.";
+
+/* Minute Unit (Singular) */
+"minute" = "minuut";
+
+/* Minute Unit (Plural) */
+"minutes" = "minuten";
+
+/* Month Unit (Singular, Abbreviated) */
+"mo" = "mnd.";
+
+/* Month Unit (Singular) */
+"month" = "maand";
+
+/* Month Unit (Plural) */
+"months" = "maanden";
+
+/* Month Unit (Plural, Abbreviated) */
+"mos" = "mnd.";
+
+/* Miles Per Hour Unit */
+"mph" = "mph";
+
+/* North Direction Abbreviation */
+"N" = "N";
+
+/* Northeast Direction Abbreviation */
+"NE" = "NO";
+
+/* North Direction */
+"North" = "Noord";
+
+/* Northeast Direction */
+"Northeast" = "Noordoost";
+
+/* Northwest Direction */
+"Northwest" = "Noordwest";
+
+/* Northwest Direction Abbreviation */
+"NW" = "NW";
+
+/* Second Unit (Plural, Abbreviated)
+   Second Unit (Singular, Abbreviated) */
+"s" = "s";
+
+/* South Direction Abbreviation */
+"S" = "Z";
+
+/* Southeast Direction Abbreviation */
+"SE" = "ZO";
+
+/* Second Unit (Singular) */
+"second" = "seconde";
+
+/* Second Unit (Plural) */
+"seconds" = "seconden";
+
+/* South Direction */
+"South" = "Zuid";
+
+/* Southeast Direction */
+"Southeast" = "Zuidoost";
+
+/* Southwest Direction */
+"Southwest" = "Zuidwest";
+
+/* Southwest Direction Abbreviation */
+"SW" = "ZW";
+
+/* #{Value} #{Unit} */
+"Unit of Information Format String" = "%1$@ %2$@";
+
+/* West Direction Abbreviation */
+"W" = "W";
+
+/* Week Unit (Singular) */
+"week" = "week";
+
+/* Week Unit (Plural) */
+"weeks" = "weken";
+
+/* West Direction */
+"West" = "West";
+
+/* Week Unit (Singular, Abbreviated) */
+"wk" = "wk,";
+
+/* Week Unit (Plural, Abbreviated) */
+"wks" = "wkn.";
+
+/* Yard Unit */
+"yds" = "yds";
+
+/* Year Unit (Singular) */
+"year" = "jaar";
+
+/* Year Unit (Plural) */
+"years" = "jaren";
+
+/* Year Unit (Singular, Abbreviated) */
+"yr" = "jr.";
+
+/* Year Unit (Plural, Abbreviated) */
+"yrs" = "jr.";
+
