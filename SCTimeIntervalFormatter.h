@@ -9,20 +9,10 @@
 #import <Foundation/Foundation.h>
 
 /**
- Formats a time interval (provided in seconds wrapped in an NSNumber) using the following format 
- template:
- 0 minutes
- 15 minutes
- 30 minutes
- 45 minutes
- 1 hour
- 1 hour, 15 minutes
- 15 hours, 30 minutes
- 23 hours, 45 minutes
- 1 day
+ Formats a time interval (provided in seconds wrapped in an NSNumber).
  
- @discussion This is a façade that will allow us to conditionally take advantage of OS X 10.10 
- Yosemite's new @c NSDateIntervalFormatter when it is available.
+ @discussion This is a façade that will allow us to conditionally take advantage of better time
+ interval formatting methods as they become available.
  */
 @interface SCTimeIntervalFormatter : NSFormatter
 
