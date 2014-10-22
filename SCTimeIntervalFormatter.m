@@ -34,9 +34,8 @@
     return formatted;
 }
 
-- (NSString *)formatSecondsUsingModernBehavior:(NSTimeInterval)seconds {
-    // TODO: Have this use NSDateIntervalFormatter on OS X 10.10 'Yosemite' and above.
-
+- (NSString *)formatSecondsUsingModernBehavior:(NSTimeInterval)seconds
+{
     static TTTTimeIntervalFormatter* timeIntervalFormatter = nil;
     if (timeIntervalFormatter == nil) {
         timeIntervalFormatter = [[TTTTimeIntervalFormatter alloc] init];
@@ -56,6 +55,7 @@
     if ([formatted length] == 0) {
         formatted = [self stringIndicatingZeroMinutes];
     }
+
     return formatted;
 }
 
