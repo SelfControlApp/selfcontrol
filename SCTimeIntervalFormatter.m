@@ -45,6 +45,7 @@
         timeIntervalFormatter.futureDeicticExpression = @"";
         timeIntervalFormatter.significantUnits = (NSCalendarUnitYear |
                                                   NSCalendarUnitMonth |
+                                                  NSCalendarUnitDay |
                                                   NSCalendarUnitHour |
                                                   NSCalendarUnitMinute);
         timeIntervalFormatter.numberOfSignificantUnits = 0;
