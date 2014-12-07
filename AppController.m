@@ -24,6 +24,7 @@
 #import "MASPreferencesWindowController.h"
 #import "PreferencesGeneralViewController.h"
 #import "PreferencesAdvancedViewController.h"
+#import <SystemConfiguration/SystemConfiguration.h>
 
 NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
@@ -375,12 +376,14 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (BOOL)networkConnectionIsAvailable {
-	SCNetworkConnectionFlags status;
+	SCNetworkReachabilityFlags flags;
 
 	// This method goes haywire if Google ever goes down...
-	BOOL reachable = SCNetworkCheckReachabilityByName ("google.com", &status);
+	SCNetworkReachabilityRef target = SCNetworkReachabilityCreateWithName (kCFAllocatorDefault, "google.com");
 
-	return reachable && (status & kSCNetworkFlagsReachable) && !(status & kSCNetworkFlagsConnectionRequired);
+    BOOL reachable = SCNetworkReachabilityGetFlags (target, &flags);
+    
+	return reachable && (flags & kSCNetworkFlagsReachable) && !(flags & kSCNetworkFlagsConnectionRequired);
 }
 
 - (void)addToBlockList:(NSString*)host lock:(NSLock*)lock {
