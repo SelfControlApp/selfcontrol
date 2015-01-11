@@ -163,6 +163,7 @@
 	 ];
 
 	[timerLabel_ sizeToFit];
+	[timerLabel_ setFrame:NSRectFromCGRect(CGRectMake(0, timerLabel_.frame.origin.y, self.window.frame.size.width, timerLabel_.frame.size.height))];
 	[self resetStrikes];
 
 	if([[NSUserDefaults standardUserDefaults] boolForKey: @"BadgeApplicationIcon"]) {
