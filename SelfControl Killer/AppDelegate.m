@@ -16,7 +16,7 @@
 @implementation AppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	[NSApp setDelegate: self];
+	[NSApplication sharedApplication].delegate = self;
 
 	[self updateUserInterface];
 }
