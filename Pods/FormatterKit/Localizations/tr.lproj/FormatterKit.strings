@@ -1,0 +1,300 @@
+/* List separator */
+" " = " ";
+
+/* No comment provided by engineer. */
+"&" = "&";
+
+/* Coordinate format */
+"(%@, %@)" = "(%1$@, %2$@)";
+
+/* List delimiter */
+"," = ",";
+
+/* Approximate Qualifier Format */
+"about %@" = "yaklaşık %@";
+
+/* Past Deictic Expression */
+"ago" = "önce";
+
+/* List conjunction */
+"and" = "ve";
+
+/* Bit Unit */
+"bits" = "bit";
+
+/* Byte Unit */
+"bytes" = "bayt";
+
+/* Error converting to NSArray */
+"Couldn’t convert to NSArray" = "Couldn’t convert to NSArray";
+
+/* Day Unit (Singular, Abbreviated)
+   Day Unit (Singular) */
+"day" = "gün";
+
+/* Day Unit (Plural, Abbreviated)
+   Day Unit (Plural) */
+"days" = "gün";
+
+/* Deictic Expression Format (#{Time} #{Ago/From Now} */
+"Deictic Expression Format String" = "%1$@ %2$@";
+
+/* #{Dimensional Quantity} #{Direction} */
+"Dimension Format String" = "%1$@ %2$@";
+
+/* #{Distance} #{Unit} */
+"Distance Format String" = "%1$@ %2$@";
+
+/* East Direction Abbreviation */
+"E" = "D";
+
+/* East Direction */
+"East" = "Doğu";
+
+/* Exabyte Unit */
+"EB" = "EB";
+
+/* Exbibyte Unit */
+"EiB" = "EiB";
+
+/* Future Deictic Expression */
+"from now" = "from now";
+
+/* Feet Unit */
+"ft" = "fit";
+
+/* Feet Per Second Unit */
+"ft/s" = "ft/s";
+
+/* Gigabyte Unit */
+"GB" = "GB";
+
+/* Gigabit Unit */
+"Gbit" = "Gbit";
+
+/* Gibibyte Unit */
+"GiB" = "GiB";
+
+/* Gibibit Unit */
+"Gibit" = "Gibit";
+
+/* Hour Unit (Singular) */
+"hour" = "saat";
+
+/* Hour Unit (Plural) */
+"hours" = "saat";
+
+/* Hour Unit (Singular, Abbreviated) */
+"hr" = "sa";
+
+/* Hour Unit (Plural, Abbreviated) */
+"hrs" = "sa";
+
+/* Present Deictic Expression */
+"just now" = "az önce";
+
+/* Kilobyte Unit */
+"KB" = "KB";
+
+/* Kilobit Unit */
+"kbit" = "kbit";
+
+/* Kibibyte Unit */
+"KiB" = "KiB";
+
+/* Kibibit Unit */
+"Kibit" = "Kibit";
+
+/* Kilometer Unit */
+"km" = "km";
+
+/* Kilometers Per Hour Unit */
+"km/h" = "km/sa";
+
+/* No comment provided by engineer. */
+"last month" = "geçen ay";
+
+/* No comment provided by engineer. */
+"last week" = "geçen hafta";
+
+/* No comment provided by engineer. */
+"last year" = "geçen yıl";
+
+/* Meter Unit */
+"m" = "m";
+
+/* Meters Per Second Unit */
+"m/s" = "m/s";
+
+/* Megabyte Unit */
+"MB" = "MB";
+
+/* Megabit Unit */
+"Mbit" = "Mbit";
+
+/* No comment provided by engineer. */
+"Method Not Implemented" = "Metod Tamamlanmadı";
+
+/* Mebibyte Unit */
+"MiB" = "MiB";
+
+/* Mebibit Unit */
+"Mibit" = "Mibit";
+
+/* Mile Unit (Singular) */
+"mile" = "mil";
+
+/* Mile Unit (Plural) */
+"miles" = "mil";
+
+/* Minute Unit (Singular, Abbreviated) */
+"min" = "dak";
+
+/* Minute Unit (Plural, Abbreviated) */
+"mins" = "dak";
+
+/* Minute Unit (Singular) */
+"minute" = "dakika";
+
+/* Minute Unit (Plural) */
+"minutes" = "dakika";
+
+/* Month Unit (Singular, Abbreviated) */
+"mo" = "ay";
+
+/* Month Unit (Singular) */
+"month" = "ay";
+
+/* Month Unit (Plural) */
+"months" = "ay";
+
+/* Month Unit (Plural, Abbreviated) */
+"mos" = "ay";
+
+/* Miles Per Hour Unit */
+"mph" = "mil/s";
+
+/* North Direction Abbreviation */
+"N" = "K";
+
+/* Northeast Direction Abbreviation */
+"NE" = "KD";
+
+/* No comment provided by engineer. */
+"next month" = "sonraki ay";
+
+/* No comment provided by engineer. */
+"next week" = "sonraki hafta";
+
+/* No comment provided by engineer. */
+"next year" = "sonraki yıl";
+
+/* North Direction */
+"North" = "Kuzey";
+
+/* Northeast Direction */
+"Northeast" = "Kuzeydoğu";
+
+/* Northwest Direction */
+"Northwest" = "Kuzeybatı";
+
+/* Northwest Direction Abbreviation */
+"NW" = "KB";
+
+/* Petabyte Unit */
+"PB" = "PB";
+
+/* Petabit Unit */
+"Pbit" = "Pbit";
+
+/* Pebibyte Unit */
+"PiB" = "PiB";
+
+/* Pebibit Unit */
+"Pibit" = "Pibit";
+
+/* South Direction Abbreviation */
+"S" = "G";
+
+/* Second Unit (Plural, Abbreviated)
+   Second Unit (Singular, Abbreviated) */
+"s" = "s";
+
+/* Southeast Direction Abbreviation */
+"SE" = "GD";
+
+/* Second Unit (Singular) */
+"second" = "saniye";
+
+/* Second Unit (Plural) */
+"seconds" = "saniye";
+
+/* South Direction */
+"South" = "Güney";
+
+/* Southeast Direction */
+"Southeast" = "Güneydoğu";
+
+/* Southwest Direction */
+"Southwest" = "Güneybatı";
+
+/* #{Speed} #{Unit} */
+"Speed Format String" = "%1$@ %2$@";
+
+/* Southwest Direction Abbreviation */
+"SW" = "GB";
+
+/* Terabyte Unit */
+"TB" = "TB";
+
+/* Terabit Unit */
+"Tbit" = "Tbit";
+
+/* Tebibyte Unit */
+"TiB" = "TiB";
+
+/* Tebibit Unit */
+"Tibit" = "Tibit";
+
+/* No comment provided by engineer. */
+"tomorrow" = "yarın";
+
+/* #{Value} #{Unit} */
+"Unit of Information Format String" = "%1$@ %2$@";
+
+/* West Direction Abbreviation */
+"W" = "B";
+
+/* Week Unit (Singular) */
+"week" = "hafta";
+
+/* Week Unit (Plural) */
+"weeks" = "hafta";
+
+/* West Direction */
+"West" = "Batı";
+
+/* Week Unit (Singular, Abbreviated) */
+"wk" = "h";
+
+/* Week Unit (Plural, Abbreviated) */
+"wks" = "h";
+
+/* Yard Unit */
+"yds" = "yarda";
+
+/* Year Unit (Singular) */
+"year" = "yıl";
+
+/* Year Unit (Plural) */
+"years" = "yıl";
+
+/* No comment provided by engineer. */
+"yesterday" = "dün";
+
+/* Year Unit (Singular, Abbreviated) */
+"yr" = "y";
+
+/* Year Unit (Plural, Abbreviated) */
+"yrs" = "y";
+

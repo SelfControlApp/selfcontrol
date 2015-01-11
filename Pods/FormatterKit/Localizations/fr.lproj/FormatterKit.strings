@@ -1,0 +1,300 @@
+/* List separator */
+" " = " ";
+
+/* No comment provided by engineer. */
+"&" = "&";
+
+/* Coordinate format */
+"(%@, %@)" = "(%1$@, %2$@)";
+
+/* List delimiter */
+"," = ",";
+
+/* Approximate Qualifier Format */
+"about %@" = "environ %@";
+
+/* Past Deictic Expression */
+"ago" = "il y a";
+
+/* List conjunction */
+"and" = "et";
+
+/* Bit Unit */
+"bits" = "bits";
+
+/* Byte Unit */
+"bytes" = "octets";
+
+/* Error converting to NSArray */
+"Couldn’t convert to NSArray" = "Impossible de convertir à NSArray";
+
+/* Day Unit (Singular, Abbreviated)
+   Day Unit (Singular) */
+"day" = "jour";
+
+/* Day Unit (Plural, Abbreviated)
+   Day Unit (Plural) */
+"days" = "jours";
+
+/* Deictic Expression Format (#{Time} #{Ago/From Now} */
+"Deictic Expression Format String" = "%2$@ %1$@";
+
+/* #{Dimensional Quantity} #{Direction} */
+"Dimension Format String" = "%1$@ %2$@";
+
+/* #{Distance} #{Unit} */
+"Distance Format String" = "%1$@ %2$@";
+
+/* East Direction Abbreviation */
+"E" = "E";
+
+/* East Direction */
+"East" = "Est";
+
+/* Exabyte Unit */
+"EB" = "Eo";
+
+/* Exbibyte Unit */
+"EiB" = "Eio";
+
+/* Future Deictic Expression */
+"from now" = "dans";
+
+/* Feet Unit */
+"ft" = "pi";
+
+/* Feet Per Second Unit */
+"ft/s" = "pi/s";
+
+/* Gigabyte Unit */
+"GB" = "Go";
+
+/* Gigabit Unit */
+"Gbit" = "Gb";
+
+/* Gibibyte Unit */
+"GiB" = "Gio";
+
+/* Gibibit Unit */
+"Gibit" = "Gibit";
+
+/* Hour Unit (Singular) */
+"hour" = "heure";
+
+/* Hour Unit (Plural) */
+"hours" = "heures";
+
+/* Hour Unit (Singular, Abbreviated) */
+"hr" = "h";
+
+/* Hour Unit (Plural, Abbreviated) */
+"hrs" = "h";
+
+/* Present Deictic Expression */
+"just now" = "à l’instant";
+
+/* Kilobyte Unit */
+"KB" = "ko";
+
+/* Kilobit Unit */
+"kbit" = "kb";
+
+/* Kibibyte Unit */
+"KiB" = "kibioctet";
+
+/* Kibibit Unit */
+"Kibit" = "Kibit";
+
+/* Kilometer Unit */
+"km" = "km";
+
+/* Kilometers Per Hour Unit */
+"km/h" = "km/h";
+
+/* No comment provided by engineer. */
+"last month" = "le mois dernier";
+
+/* No comment provided by engineer. */
+"last week" = "la semaine dernière";
+
+/* No comment provided by engineer. */
+"last year" = "l’année dernière";
+
+/* Meter Unit */
+"m" = "m";
+
+/* Meters Per Second Unit */
+"m/s" = "m/s";
+
+/* Megabyte Unit */
+"MB" = "Mo";
+
+/* Megabit Unit */
+"Mbit" = "Mb";
+
+/* No comment provided by engineer. */
+"Method Not Implemented" = "Méthode non implémentée";
+
+/* Mebibyte Unit */
+"MiB" = "Mio";
+
+/* Mebibit Unit */
+"Mibit" = "Mibit";
+
+/* Mile Unit (Singular) */
+"mile" = "mile";
+
+/* Mile Unit (Plural) */
+"miles" = "miles";
+
+/* Minute Unit (Singular, Abbreviated) */
+"min" = "min";
+
+/* Minute Unit (Plural, Abbreviated) */
+"mins" = "mins";
+
+/* Minute Unit (Singular) */
+"minute" = "minute";
+
+/* Minute Unit (Plural) */
+"minutes" = "minutes";
+
+/* Month Unit (Singular, Abbreviated) */
+"mo" = "mois";
+
+/* Month Unit (Singular) */
+"month" = "mois";
+
+/* Month Unit (Plural) */
+"months" = "mois";
+
+/* Month Unit (Plural, Abbreviated) */
+"mos" = "mois";
+
+/* Miles Per Hour Unit */
+"mph" = "mph";
+
+/* North Direction Abbreviation */
+"N" = "N";
+
+/* Northeast Direction Abbreviation */
+"NE" = "NE";
+
+/* No comment provided by engineer. */
+"next month" = "le mois prochain";
+
+/* No comment provided by engineer. */
+"next week" = "la semaine prochaine";
+
+/* No comment provided by engineer. */
+"next year" = "l’année prochaine";
+
+/* North Direction */
+"North" = "Nord";
+
+/* Northeast Direction */
+"Northeast" = "Nord-est";
+
+/* Northwest Direction */
+"Northwest" = "Nord-ouest";
+
+/* Northwest Direction Abbreviation */
+"NW" = "NO";
+
+/* Petabyte Unit */
+"PB" = "Po";
+
+/* Petabit Unit */
+"Pbit" = "Pb";
+
+/* Pebibyte Unit */
+"PiB" = "Pio";
+
+/* Pebibit Unit */
+"Pibit" = "Pibit";
+
+/* South Direction Abbreviation */
+"S" = "S";
+
+/* Second Unit (Plural, Abbreviated)
+   Second Unit (Singular, Abbreviated) */
+"s" = "s";
+
+/* Southeast Direction Abbreviation */
+"SE" = "SE";
+
+/* Second Unit (Singular) */
+"second" = "seconde";
+
+/* Second Unit (Plural) */
+"seconds" = "secondes";
+
+/* South Direction */
+"South" = "Sud";
+
+/* Southeast Direction */
+"Southeast" = "Sud-est";
+
+/* Southwest Direction */
+"Southwest" = "Sud-ouest";
+
+/* #{Speed} #{Unit} */
+"Speed Format String" = "%1$@ %2$@";
+
+/* Southwest Direction Abbreviation */
+"SW" = "SO";
+
+/* Terabyte Unit */
+"TB" = "To";
+
+/* Terabit Unit */
+"Tbit" = "Tb";
+
+/* Tebibyte Unit */
+"TiB" = "Tio";
+
+/* Tebibit Unit */
+"Tibit" = "Tibit";
+
+/* No comment provided by engineer. */
+"tomorrow" = "demain";
+
+/* #{Value} #{Unit} */
+"Unit of Information Format String" = "%1$@ %2$@";
+
+/* West Direction Abbreviation */
+"W" = "O";
+
+/* Week Unit (Singular) */
+"week" = "semaine";
+
+/* Week Unit (Plural) */
+"weeks" = "semaines";
+
+/* West Direction */
+"West" = "Ouest";
+
+/* Week Unit (Singular, Abbreviated) */
+"wk" = "sem";
+
+/* Week Unit (Plural, Abbreviated) */
+"wks" = "sem";
+
+/* Yard Unit */
+"yds" = "vg";
+
+/* Year Unit (Singular) */
+"year" = "an";
+
+/* Year Unit (Plural) */
+"years" = "ans";
+
+/* No comment provided by engineer. */
+"yesterday" = "hier";
+
+/* Year Unit (Singular, Abbreviated) */
+"yr" = "an";
+
+/* Year Unit (Plural, Abbreviated) */
+"yrs" = "ans";
+

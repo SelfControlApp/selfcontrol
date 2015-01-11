@@ -1,0 +1,45 @@
+/*
+ Localizable.strings - Norwegian Bokmål
+ 
+ 
+ Created by André Bonkowski on 07.03.13.
+ 
+ */
+
+"ago" = "siden";
+"just now" = "Akkurat nå";
+"from now" = "fra nå";
+
+"%@ %@" = "%1$@ %2$@";
+"about %@" = "om %@";
+
+"yr." = "år";
+"yrs." = "år";
+
+"mo." = "mnd";
+"mos." = "mnd";
+"wk." = "u";
+"wks." = "u";
+"day" = "d";
+"days" = "d";
+"hr" = "t";
+"hrs." = "t";
+"min." = "m";
+"mins." = "m";
+"s." = "s";
+"s." = "s";
+
+"year" = "år";
+"years" = "år";
+"month" = "måned";
+"months" = "måneder";
+"week" = "uke";
+"weeks" = "uker";
+"day" = "dag";
+"days" = "dager";
+"hour" = "time";
+"hours" = "timer";
+"minute" = "minutt";
+"minutes" = "minutter";
+"second" = "sekund";
+"seconds" = "sekunder";
