@@ -260,7 +260,7 @@
 	// users will often forget to block some of its many mirror subdomains that resolve
 	// to different IPs, i.e. hs.facebook.com.  Thanks to Danielle for raising this issue.
 	if([hostName hasSuffix: @"facebook.com"]) {
-		// pulled list of facebook IP ranges from https://developers.facebook.com/docs/ApplicationSecurity/#facebook_scraper
+		// pulled list of facebook IP ranges from https://developers.facebook.com/docs/sharing/webmasters/crawler
 		// TODO: pull these automatically by running:
 		// whois -h whois.radb.net -- '-i origin AS32934' | grep ^route
 		NSArray* facebookIPs = @[@"31.13.24.0/21",
