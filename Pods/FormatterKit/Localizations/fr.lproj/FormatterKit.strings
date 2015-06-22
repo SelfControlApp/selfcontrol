@@ -151,7 +151,7 @@
 "min" = "min";
 
 /* Minute Unit (Plural, Abbreviated) */
-"mins" = "mins";
+"mins" = "min";
 
 /* Minute Unit (Singular) */
 "minute" = "minute";
