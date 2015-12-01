@@ -55,20 +55,10 @@ Because the App Store automatically attempts to determine supported locales, and
 If you are using CocoaPods, you may want to remove unwanted localizations using the pre install script below. Modify the supported_locales array to match your supported locales and paste it into your Podfile.
 
 ```ruby
-pre_install do |installer|
-    supported_locales = ['base', 'da', 'en']
-
-    installer.pods.each do |pod|
-        if (pod.name == 'FormatterKit')
-            Dir.glob(File.join(pod.root, '**', '*.lproj')).each do |bundle|
-                if (!supported_locales.include?(File.basename(bundle, ".lproj").downcase))
-                    puts "Removing #{bundle}"
-                    FileUtils.rm_rf(bundle)
-                end
-            end
-        end
-    end
-end
+prepare_command = <<-CMD
+    SUPPORTED_LOCALES="['base', 'da', 'en']"
+    find . -type d ! -name "*$SUPPORTED_LOCALES.lproj" | grep .lproj | xargs rm -rf
+CMD
 ```
 
 ## Demo
