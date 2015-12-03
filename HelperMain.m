@@ -170,6 +170,11 @@ int main(int argc, char* argv[]) {
 				printStatus(-209);
 				exit(EX_IOERR);
 			}
+            
+            // Update BlockStartedDate as the helper utility was probably started by command line and not through the AppController.
+            if(defaults[@"BlockStartedDate"] != nil && [defaults[@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]){
+                setDefaultsValue(@"BlockStartedDate", [NSDate date], controllingUID);
+            }
 
 			NSDictionary* defaults = getDefaultsDict(controllingUID);
 			// In this case it doesn't make any sense to use an existing lock file (in
