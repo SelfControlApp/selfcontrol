@@ -177,8 +177,8 @@ int main(int argc, char* argv[]) {
 			// settings.
 			NSDictionary* lockDictionary = @{@"HostBlacklist": defaults[@"HostBlacklist"],
 											 @"BlockDuration": defaults[@"BlockDuration"],
-											 @"BlockStartedDate": [NSDate date],
-											 @"BlockAsWhitelist": defaults[@"BlockAsWhitelist"]};            
+											 @"BlockStartedDate": defaults[@"BlockStartedDate"],
+											 @"BlockAsWhitelist": defaults[@"BlockAsWhitelist"]};
 			if([lockDictionary[@"HostBlacklist"] count] <= 0 || [lockDictionary[@"BlockDuration"] intValue] < 1
 			   || lockDictionary[@"BlockStartedDate"] == nil
 			   || [lockDictionary[@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]) {
