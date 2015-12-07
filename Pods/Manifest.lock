@@ -7,7 +7,7 @@ DEPENDENCIES:
   - MASPreferences (~> 1.1.2)
 
 SPEC CHECKSUMS:
-  FormatterKit: 877ff970af3feb2f602ced0a9420e9fbc25f568c
-  MASPreferences: 48debf3a161039bb979e617b7416bc07bd879f75
+  FormatterKit: 03b5d827cf91fa0f1398c00ab0d558bcb69ee168
+  MASPreferences: 32d8a2c5ef1d60b63240f5676b011ff72e194cb1
 
-COCOAPODS: 0.34.4
+COCOAPODS: 0.39.0
