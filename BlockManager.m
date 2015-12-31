@@ -296,7 +296,18 @@
 		return @[];
 	}
 
-	return [host addresses];
+	NSDate* startedResolving = [NSDate date];
+	NSArray* addresses = [host addresses];
+
+	// log slow resolutions
+	// TODO: present this back to the user somehow, even help them remove slow-resolving hosts?
+	NSDate* finishedResolving  = [NSDate date];
+	NSTimeInterval resolutionTime = [finishedResolving timeIntervalSinceDate: startedResolving];
+	if (resolutionTime > 2.5) {
+		NSLog(@"Warning: took %f seconds to resolve %@", resolutionTime, host.name);
+	}
+
+	return addresses;
 }
 
 - (BOOL)domainIsGoogle:(NSString*)domainName {
