@@ -35,7 +35,14 @@
 			 @"9gag.com",
 			 @"netflix.com",
 			 @"hulu.com",
-			 @"buzzfeed.com"
+			 @"buzzfeed.com",
+			 @"vimeo.com",
+			 @"dailymotion.com",
+			 @"collegehumor.com",
+			 @"funnyordie.com",
+			 @"vine.co",
+			 @"pinterest.com",
+			 @"stumbleupon.com",
 			 ];
 }
 + (NSArray*)newsAndPublications {
@@ -54,7 +61,30 @@
 			 @"tumblr.com",
 			 @"forbes.com",
 			 @"gothamist.com",
-			 @"jezebel.com"
+			 @"jezebel.com",
+			 @"usatoday.com",
+			 @"nbcnews.com",
+			 @"theonion.com",
+			 @"abcnews.go.com",
+			 @"news.yahoo.com",
+			 @"washingtonpost.com",
+			 @"wsj.com",
+			 @"theguardian.com",
+			 @"latimes.com",
+			 @"nydailynews.com",
+			 @"salon.com",
+			 @"msnbc.com",
+			 @"rt.com",
+			 @"bloomberg.com",
+			 @"reuters.com",
+			 @"aol.com",
+			 @"drudgereport.com",
+			 @"nationalgeographic.com",
+			 @"vice.com"
+			 @"nypost.com",
+			 @"chicagotribune.com",
+			 @"msn.com",
+			 @"usnews.com",
 			 ];
 }
 
