@@ -7,17 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		24141F1957845C3F68CC8B4B45102FEB /* MASPreferencesViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = C92E4DCB9EAEBD158F20C14C3EB635F5 /* MASPreferencesViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		24AA18F7AFE16DF31967513C56E755BF /* MASPreferences-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EFBD853BCBE9672CFCF1B7E9EA87BA0 /* MASPreferences-dummy.m */; };
-		59E9CD5963C6BCD0C737974CE0386A4A /* FormatterKit-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 11957DA98190EF6610D782857CD2453F /* FormatterKit-dummy.m */; };
-		5A558B3F0DA3AAFED5B2A981DC763733 /* MASPreferencesWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = 752E52EB1B81DD6A5D2C2E76E115C9C7 /* MASPreferencesWindowController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		653DA8FCDBCAAB7F52CD4450C1529422 /* TTTTimeIntervalFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CD9B899E7DDE29A81BEBE8ACF1AD692 /* TTTTimeIntervalFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		24141F1957845C3F68CC8B4B45102FEB /* MASPreferencesViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = C7F055C6F81AB9092BB95E4B96EAF2EA /* MASPreferencesViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		24AA18F7AFE16DF31967513C56E755BF /* MASPreferences-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDED108B53167172FF07471FC435736 /* MASPreferences-dummy.m */; };
+		59E9CD5963C6BCD0C737974CE0386A4A /* FormatterKit-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C733AB227AC17B58592551DE370E265 /* FormatterKit-dummy.m */; };
+		5A558B3F0DA3AAFED5B2A981DC763733 /* MASPreferencesWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = F52057A043A4437980A66D2400FFE942 /* MASPreferencesWindowController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		653DA8FCDBCAAB7F52CD4450C1529422 /* TTTTimeIntervalFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B9891FE9E3BF91BA544959556346A73 /* TTTTimeIntervalFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6D33F09979576180680A4666FD43E429 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CA6EBC2E57D96052268211209D6AA52 /* Cocoa.framework */; };
 		C65665FB67838B0F0DECF55B066EC59C /* Pods-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 272643F56613CA0D336AE3DBF19DC404 /* Pods-dummy.m */; };
 		D294B5FBBD9ACC423CF64C7073098E75 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CA6EBC2E57D96052268211209D6AA52 /* Cocoa.framework */; };
-		D8197C98AAA4A9A2DF606077061EDECC /* TTTTimeIntervalFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = D79B33A12D12382089A65EDE4CC03E4E /* TTTTimeIntervalFormatter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		D8197C98AAA4A9A2DF606077061EDECC /* TTTTimeIntervalFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2046C3A15F4A4E34301127903D9AC078 /* TTTTimeIntervalFormatter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		E204BBA804A8AC5EC58CE78E12CE3F26 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CA6EBC2E57D96052268211209D6AA52 /* Cocoa.framework */; };
-		EB6016494E330D597157FC8335D5C94A /* MASPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A2A6E67E960F4E7D9459CF62BB0991 /* MASPreferencesWindowController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		EB6016494E330D597157FC8335D5C94A /* MASPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 806678EE02DA260D46716786C8E503A5 /* MASPreferencesWindowController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,40 +38,41 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0942D139CCD221DE841E8FA07BB6CC1A /* FormatterKit.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FormatterKit.xcconfig; sourceTree = "<group>"; };
+		021D8C2A1C6878BC0CD4064E9CE08EAD /* FormatterKit.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FormatterKit.xcconfig; sourceTree = "<group>"; };
+		0A9197ABB06EC5B327872137A4572C4F /* tr.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = tr.lproj; path = Localizations/tr.lproj; sourceTree = "<group>"; };
+		0FBFB9CBDFDBB527E3AD95AC9E457743 /* zh-Hans.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = "zh-Hans.lproj"; path = "Localizations/zh-Hans.lproj"; sourceTree = "<group>"; };
 		10834806BD7B412BC24F347361FA2C8E /* Pods-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-acknowledgements.plist"; sourceTree = "<group>"; };
-		11957DA98190EF6610D782857CD2453F /* FormatterKit-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "FormatterKit-dummy.m"; sourceTree = "<group>"; };
+		1C733AB227AC17B58592551DE370E265 /* FormatterKit-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "FormatterKit-dummy.m"; sourceTree = "<group>"; };
 		1CA6EBC2E57D96052268211209D6AA52 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		2046C3A15F4A4E34301127903D9AC078 /* TTTTimeIntervalFormatter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = TTTTimeIntervalFormatter.m; path = FormatterKit/TTTTimeIntervalFormatter.m; sourceTree = "<group>"; };
+		23198480854852FF996118BEAE0A7FE2 /* FormatterKit-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "FormatterKit-prefix.pch"; sourceTree = "<group>"; };
 		272643F56613CA0D336AE3DBF19DC404 /* Pods-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-dummy.m"; sourceTree = "<group>"; };
-		31EC7FDC200F16D5E747A972EF380FEE /* it.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = it.lproj; path = Localizations/it.lproj; sourceTree = "<group>"; };
+		2B9891FE9E3BF91BA544959556346A73 /* TTTTimeIntervalFormatter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TTTTimeIntervalFormatter.h; path = FormatterKit/TTTTimeIntervalFormatter.h; sourceTree = "<group>"; };
 		37DB56D75062CC75FCB0966E1C6E8A8E /* Pods-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-acknowledgements.markdown"; sourceTree = "<group>"; };
-		4063F48067488D5B0CDDDAF4369B3863 /* pt_BR.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = pt_BR.lproj; path = Localizations/pt_BR.lproj; sourceTree = "<group>"; };
 		40938AD3E54ADF5FFBAFE80EB203C8A6 /* libMASPreferences.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMASPreferences.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		4B361BDDA9D265C4F3E0068F89798673 /* MASPreferences.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MASPreferences.xcconfig; sourceTree = "<group>"; };
 		4E762F23EC34ED4A6FF3312D84E33A40 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.debug.xcconfig; sourceTree = "<group>"; };
-		4EE6E3EDC9228158B2CF6EC79D87CB21 /* es.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = es.lproj; path = Localizations/es.lproj; sourceTree = "<group>"; };
-		55E655D058ACA04799B4F03EFC20DF9C /* zh-Hans.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = "zh-Hans.lproj"; path = "Localizations/zh-Hans.lproj"; sourceTree = "<group>"; };
-		58A2A6E67E960F4E7D9459CF62BB0991 /* MASPreferencesWindowController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MASPreferencesWindowController.m; sourceTree = "<group>"; };
-		5EFBD853BCBE9672CFCF1B7E9EA87BA0 /* MASPreferences-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "MASPreferences-dummy.m"; sourceTree = "<group>"; };
-		63C44F763CA23D846C889B87B6816F0E /* MASPreferencesWindow.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = MASPreferencesWindow.xib; sourceTree = "<group>"; };
+		5426B837DA9AB7F025B8274CF52673FF /* ko.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = ko.lproj; path = Localizations/ko.lproj; sourceTree = "<group>"; };
+		5FDED108B53167172FF07471FC435736 /* MASPreferences-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "MASPreferences-dummy.m"; sourceTree = "<group>"; };
 		6911BECA35E7518D864239B7E898EEF3 /* Pods-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-frameworks.sh"; sourceTree = "<group>"; };
-		69AAB58D14A50071F5B2D5E0C89A63C5 /* tr.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = tr.lproj; path = Localizations/tr.lproj; sourceTree = "<group>"; };
-		73F7F82EEE4F5C3B54E503A382ED10CF /* ja.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = ja.lproj; path = Localizations/ja.lproj; sourceTree = "<group>"; };
-		752E52EB1B81DD6A5D2C2E76E115C9C7 /* MASPreferencesWindowController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MASPreferencesWindowController.h; sourceTree = "<group>"; };
-		76FF155082AEA5B6DFDC8F6BC1199223 /* FormatterKit-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "FormatterKit-prefix.pch"; sourceTree = "<group>"; };
-		95B3FF495021AFD3573AD620CB8C4074 /* MASPreferences-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MASPreferences-prefix.pch"; sourceTree = "<group>"; };
-		9609B02E8E130DCD6C3F5F4A9BC0042B /* sv.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = sv.lproj; path = Localizations/sv.lproj; sourceTree = "<group>"; };
+		80116EE1355927D7F303128DD6695CA3 /* ja.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = ja.lproj; path = Localizations/ja.lproj; sourceTree = "<group>"; };
+		806678EE02DA260D46716786C8E503A5 /* MASPreferencesWindowController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MASPreferencesWindowController.m; sourceTree = "<group>"; };
+		84FF5DBFC29A71520334B988C6BCC60B /* en.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = en.lproj; path = Localizations/en.lproj; sourceTree = "<group>"; };
+		8C69BC9E6FA1A37E26E92C8A0BEF9CAB /* it.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = it.lproj; path = Localizations/it.lproj; sourceTree = "<group>"; };
 		9662FB385EE0FA5FEB2BBB32BC59D2A0 /* libFormatterKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFormatterKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		98C98CDFB3F20F2925F6CD1F141BB14F /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.release.xcconfig; sourceTree = "<group>"; };
-		9CD9B899E7DDE29A81BEBE8ACF1AD692 /* TTTTimeIntervalFormatter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TTTTimeIntervalFormatter.h; path = FormatterKit/TTTTimeIntervalFormatter.h; sourceTree = "<group>"; };
 		A1A36D34413696BE466E2CA0AFF194DA /* Pods-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-resources.sh"; sourceTree = "<group>"; };
-		AD6131FA9539FAB70550F5610EC1BC8E /* ko.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = ko.lproj; path = Localizations/ko.lproj; sourceTree = "<group>"; };
-		AE8EF83255E4D89F592AA901E4A8CB30 /* de.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = de.lproj; path = Localizations/de.lproj; sourceTree = "<group>"; };
+		AE778E28DB5947B20920D6AD9D8F0B1F /* de.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = de.lproj; path = Localizations/de.lproj; sourceTree = "<group>"; };
 		AFD127231EDF16D60C03D8EF74212AEE /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B634F5A95495F7636A1D6C48DA8CED2E /* pt_BR.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = pt_BR.lproj; path = Localizations/pt_BR.lproj; sourceTree = "<group>"; };
 		BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		C92E4DCB9EAEBD158F20C14C3EB635F5 /* MASPreferencesViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MASPreferencesViewController.h; sourceTree = "<group>"; };
-		D79B33A12D12382089A65EDE4CC03E4E /* TTTTimeIntervalFormatter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = TTTTimeIntervalFormatter.m; path = FormatterKit/TTTTimeIntervalFormatter.m; sourceTree = "<group>"; };
-		E9800152A2C3E859683863F8E0532CED /* en.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = en.lproj; path = Localizations/en.lproj; sourceTree = "<group>"; };
+		C5012A4C469129832239511AA9A00FBE /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
+		C5452A970912CDBC9CBCBEDF65B9776C /* es.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = es.lproj; path = Localizations/es.lproj; sourceTree = "<group>"; };
+		C7F055C6F81AB9092BB95E4B96EAF2EA /* MASPreferencesViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MASPreferencesViewController.h; sourceTree = "<group>"; };
+		D253298D58CA36334384510F04F194C6 /* MASPreferences.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MASPreferences.xcconfig; sourceTree = "<group>"; };
+		D92B31AF42D87A37366A3C2AF346D40D /* MASPreferencesWindow.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = MASPreferencesWindow.xib; sourceTree = "<group>"; };
+		EA00E98BCFA783C637ABF2AAF7D29758 /* sv.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = sv.lproj; path = Localizations/sv.lproj; sourceTree = "<group>"; };
+		F52057A043A4437980A66D2400FFE942 /* MASPreferencesWindowController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MASPreferencesWindowController.h; sourceTree = "<group>"; };
+		FDE94F0FA42C8A5E629678523402EC31 /* MASPreferences-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MASPreferences-prefix.pch"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,36 +111,23 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		14628198B835816DA661ED2FBC5D8CAD /* Pods */ = {
+		0CBC8B3B875658B8A53EDADEDCCB50C4 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				342DC9CB41036EE674F9AB61AF91792F /* FormatterKit */,
-				1E008FB3B68673D7E9B8036F8CAE57D2 /* MASPreferences */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		1E008FB3B68673D7E9B8036F8CAE57D2 /* MASPreferences */ = {
-			isa = PBXGroup;
-			children = (
-				C92E4DCB9EAEBD158F20C14C3EB635F5 /* MASPreferencesViewController.h */,
-				752E52EB1B81DD6A5D2C2E76E115C9C7 /* MASPreferencesWindowController.h */,
-				58A2A6E67E960F4E7D9459CF62BB0991 /* MASPreferencesWindowController.m */,
-				C7F6ED3553A01F0F7934D723EC5ABEDE /* Resources */,
-				25ED7D17CDB24214D7A85581ED64AB92 /* Support Files */,
-			);
-			path = MASPreferences;
-			sourceTree = "<group>";
-		};
-		25ED7D17CDB24214D7A85581ED64AB92 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				4B361BDDA9D265C4F3E0068F89798673 /* MASPreferences.xcconfig */,
-				5EFBD853BCBE9672CFCF1B7E9EA87BA0 /* MASPreferences-dummy.m */,
-				95B3FF495021AFD3573AD620CB8C4074 /* MASPreferences-prefix.pch */,
+				021D8C2A1C6878BC0CD4064E9CE08EAD /* FormatterKit.xcconfig */,
+				1C733AB227AC17B58592551DE370E265 /* FormatterKit-dummy.m */,
+				23198480854852FF996118BEAE0A7FE2 /* FormatterKit-prefix.pch */,
 			);
 			name = "Support Files";
-			path = "../Target Support Files/MASPreferences";
+			path = "../Target Support Files/FormatterKit";
+			sourceTree = "<group>";
+		};
+		15CDD6674FA0F63026C8B73ABFE71FCD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C5012A4C469129832239511AA9A00FBE /* Sparkle.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		28C17CEF104526ACA07B6EEE217EC43E /* OS X */ = {
@@ -148,6 +136,16 @@
 				1CA6EBC2E57D96052268211209D6AA52 /* Cocoa.framework */,
 			);
 			name = "OS X";
+			sourceTree = "<group>";
+		};
+		2A5DC996DD7DD61F455F04BC18166CD9 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5BFF8B5BECE3AB9F93DEBEB6D295AD45 /* FormatterKit */,
+				850F1B7E7D9F8A2588711F050F4AB5E3 /* MASPreferences */,
+				C6E68DFB330CDD965862D2DDE3532DCC /* Sparkle */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 		2ED74AADEE7FFA227AF082CD205C5DC7 /* Products */ = {
@@ -160,15 +158,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		342DC9CB41036EE674F9AB61AF91792F /* FormatterKit */ = {
-			isa = PBXGroup;
-			children = (
-				3FC2DF1B0BC7FDE458BC019ED77D8890 /* Support Files */,
-				7B00FC3837EB25BDB1854E6CF80AF0CB /* TimeIntervalFormatter */,
-			);
-			path = FormatterKit;
-			sourceTree = "<group>";
-		};
 		39E9EE8210D861DFD82346C1F5EB7218 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -177,42 +166,13 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		3FC2DF1B0BC7FDE458BC019ED77D8890 /* Support Files */ = {
+		5BFF8B5BECE3AB9F93DEBEB6D295AD45 /* FormatterKit */ = {
 			isa = PBXGroup;
 			children = (
-				0942D139CCD221DE841E8FA07BB6CC1A /* FormatterKit.xcconfig */,
-				11957DA98190EF6610D782857CD2453F /* FormatterKit-dummy.m */,
-				76FF155082AEA5B6DFDC8F6BC1199223 /* FormatterKit-prefix.pch */,
+				0CBC8B3B875658B8A53EDADEDCCB50C4 /* Support Files */,
+				DAD5A840F01EB29841C185FEADD98ABB /* TimeIntervalFormatter */,
 			);
-			name = "Support Files";
-			path = "../Target Support Files/FormatterKit";
-			sourceTree = "<group>";
-		};
-		47958DE4DC9082329F8D8521F66581E8 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				AE8EF83255E4D89F592AA901E4A8CB30 /* de.lproj */,
-				E9800152A2C3E859683863F8E0532CED /* en.lproj */,
-				4EE6E3EDC9228158B2CF6EC79D87CB21 /* es.lproj */,
-				31EC7FDC200F16D5E747A972EF380FEE /* it.lproj */,
-				73F7F82EEE4F5C3B54E503A382ED10CF /* ja.lproj */,
-				AD6131FA9539FAB70550F5610EC1BC8E /* ko.lproj */,
-				4063F48067488D5B0CDDDAF4369B3863 /* pt_BR.lproj */,
-				9609B02E8E130DCD6C3F5F4A9BC0042B /* sv.lproj */,
-				69AAB58D14A50071F5B2D5E0C89A63C5 /* tr.lproj */,
-				55E655D058ACA04799B4F03EFC20DF9C /* zh-Hans.lproj */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-		};
-		7B00FC3837EB25BDB1854E6CF80AF0CB /* TimeIntervalFormatter */ = {
-			isa = PBXGroup;
-			children = (
-				9CD9B899E7DDE29A81BEBE8ACF1AD692 /* TTTTimeIntervalFormatter.h */,
-				D79B33A12D12382089A65EDE4CC03E4E /* TTTTimeIntervalFormatter.m */,
-				47958DE4DC9082329F8D8521F66581E8 /* Resources */,
-			);
-			name = TimeIntervalFormatter;
+			path = FormatterKit;
 			sourceTree = "<group>";
 		};
 		7DB346D0F39D3F0E887471402A8071AB = {
@@ -220,10 +180,50 @@
 			children = (
 				BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */,
 				39E9EE8210D861DFD82346C1F5EB7218 /* Frameworks */,
-				14628198B835816DA661ED2FBC5D8CAD /* Pods */,
+				2A5DC996DD7DD61F455F04BC18166CD9 /* Pods */,
 				2ED74AADEE7FFA227AF082CD205C5DC7 /* Products */,
 				037C0CA694176A3C0915F62C9D20B3E6 /* Targets Support Files */,
 			);
+			sourceTree = "<group>";
+		};
+		850F1B7E7D9F8A2588711F050F4AB5E3 /* MASPreferences */ = {
+			isa = PBXGroup;
+			children = (
+				C7F055C6F81AB9092BB95E4B96EAF2EA /* MASPreferencesViewController.h */,
+				F52057A043A4437980A66D2400FFE942 /* MASPreferencesWindowController.h */,
+				806678EE02DA260D46716786C8E503A5 /* MASPreferencesWindowController.m */,
+				D48D5A66EF527C1419755C0FCA238215 /* Resources */,
+				B271E9DAB18C636BAFA690003A8145BC /* Support Files */,
+			);
+			path = MASPreferences;
+			sourceTree = "<group>";
+		};
+		8744453C11C7EE2E2DC7EF0ADDD8FD5C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				AE778E28DB5947B20920D6AD9D8F0B1F /* de.lproj */,
+				84FF5DBFC29A71520334B988C6BCC60B /* en.lproj */,
+				C5452A970912CDBC9CBCBEDF65B9776C /* es.lproj */,
+				8C69BC9E6FA1A37E26E92C8A0BEF9CAB /* it.lproj */,
+				80116EE1355927D7F303128DD6695CA3 /* ja.lproj */,
+				5426B837DA9AB7F025B8274CF52673FF /* ko.lproj */,
+				B634F5A95495F7636A1D6C48DA8CED2E /* pt_BR.lproj */,
+				EA00E98BCFA783C637ABF2AAF7D29758 /* sv.lproj */,
+				0A9197ABB06EC5B327872137A4572C4F /* tr.lproj */,
+				0FBFB9CBDFDBB527E3AD95AC9E457743 /* zh-Hans.lproj */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		B271E9DAB18C636BAFA690003A8145BC /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				D253298D58CA36334384510F04F194C6 /* MASPreferences.xcconfig */,
+				5FDED108B53167172FF07471FC435736 /* MASPreferences-dummy.m */,
+				FDE94F0FA42C8A5E629678523402EC31 /* MASPreferences-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/MASPreferences";
 			sourceTree = "<group>";
 		};
 		B3D1D13E0C6553800746CB8FD61CF946 /* Pods */ = {
@@ -241,12 +241,30 @@
 			path = "Target Support Files/Pods";
 			sourceTree = "<group>";
 		};
-		C7F6ED3553A01F0F7934D723EC5ABEDE /* Resources */ = {
+		C6E68DFB330CDD965862D2DDE3532DCC /* Sparkle */ = {
 			isa = PBXGroup;
 			children = (
-				63C44F763CA23D846C889B87B6816F0E /* MASPreferencesWindow.xib */,
+				15CDD6674FA0F63026C8B73ABFE71FCD /* Frameworks */,
+			);
+			path = Sparkle;
+			sourceTree = "<group>";
+		};
+		D48D5A66EF527C1419755C0FCA238215 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D92B31AF42D87A37366A3C2AF346D40D /* MASPreferencesWindow.xib */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		DAD5A840F01EB29841C185FEADD98ABB /* TimeIntervalFormatter */ = {
+			isa = PBXGroup;
+			children = (
+				2B9891FE9E3BF91BA544959556346A73 /* TTTTimeIntervalFormatter.h */,
+				2046C3A15F4A4E34301127903D9AC078 /* TTTTimeIntervalFormatter.m */,
+				8744453C11C7EE2E2DC7EF0ADDD8FD5C /* Resources */,
+			);
+			name = TimeIntervalFormatter;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -433,7 +451,7 @@
 		};
 		9C2F38A21C9FFD7203C7C164A5FA9396 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4B361BDDA9D265C4F3E0068F89798673 /* MASPreferences.xcconfig */;
+			baseConfigurationReference = D253298D58CA36334384510F04F194C6 /* MASPreferences.xcconfig */;
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -452,7 +470,7 @@
 		};
 		9C62334569718C9C4960170DBB220FB9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4B361BDDA9D265C4F3E0068F89798673 /* MASPreferences.xcconfig */;
+			baseConfigurationReference = D253298D58CA36334384510F04F194C6 /* MASPreferences.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
@@ -470,7 +488,7 @@
 		};
 		AE2CC14F7ECB1D820DAF536CFA1A3AAA /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0942D139CCD221DE841E8FA07BB6CC1A /* FormatterKit.xcconfig */;
+			baseConfigurationReference = 021D8C2A1C6878BC0CD4064E9CE08EAD /* FormatterKit.xcconfig */;
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -507,7 +525,7 @@
 		};
 		C81E42AF011FFBE144435FF89224B28C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0942D139CCD221DE841E8FA07BB6CC1A /* FormatterKit.xcconfig */;
+			baseConfigurationReference = 021D8C2A1C6878BC0CD4064E9CE08EAD /* FormatterKit.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;

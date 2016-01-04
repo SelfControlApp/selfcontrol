@@ -1,5 +1,7 @@
+FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Sparkle" "${PODS_ROOT}/Sparkle"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/FormatterKit" "${PODS_ROOT}/Headers/Public/MASPreferences"
-OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/FormatterKit" -isystem "${PODS_ROOT}/Headers/Public/MASPreferences"
-OTHER_LDFLAGS = $(inherited) -ObjC -l"FormatterKit" -l"MASPreferences"
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/FormatterKit" "${PODS_ROOT}/Headers/Public/MASPreferences" "${PODS_ROOT}/Headers/Public/Sparkle"
+LD_RUNPATH_SEARCH_PATHS = @loader_path/../Frameworks
+OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/FormatterKit" -isystem "${PODS_ROOT}/Headers/Public/MASPreferences" -isystem "${PODS_ROOT}/Headers/Public/Sparkle"
+OTHER_LDFLAGS = $(inherited) -ObjC -l"FormatterKit" -l"MASPreferences" -framework "Sparkle"
 PODS_ROOT = ${SRCROOT}/Pods

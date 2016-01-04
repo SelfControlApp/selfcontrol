@@ -1,13 +1,16 @@
 PODS:
   - FormatterKit/TimeIntervalFormatter (1.8.0)
   - MASPreferences (1.1.2)
+  - Sparkle (1.13.0)
 
 DEPENDENCIES:
   - FormatterKit/TimeIntervalFormatter (~> 1.7)
   - MASPreferences (~> 1.1.2)
+  - Sparkle
 
 SPEC CHECKSUMS:
   FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
   MASPreferences: 32d8a2c5ef1d60b63240f5676b011ff72e194cb1
+  Sparkle: d04d17a32eaddab19471d0c3d9db15164afdbc6e
 
 COCOAPODS: 0.39.0
