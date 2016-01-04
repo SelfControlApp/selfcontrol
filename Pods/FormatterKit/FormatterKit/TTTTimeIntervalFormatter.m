@@ -1,6 +1,6 @@
 // TTTTimeIntervalFormatter.m
 //
-// Copyright (c) 2011 Mattt Thompson (http://mattt.me)
+// Copyright (c) 2011–2015 Mattt Thompson (http://mattt.me)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -49,7 +49,7 @@ static inline NSCalendarUnit NSCalendarUnitFromString(NSString *string) {
         return TTTCalendarUnitYear;
     } else if ([string isEqualToString:@"month"]) {
         return TTTCalendarUnitMonth;
-    } else if ([string isEqualToString:@"week"]) {
+    } else if ([string isEqualToString:@"weekOfYear"]) {
         return TTTCalendarUnitWeek;
     } else if ([string isEqualToString:@"day"]) {
         return TTTCalendarUnitDay;
@@ -65,12 +65,32 @@ static inline NSCalendarUnit NSCalendarUnitFromString(NSString *string) {
 }
 
 static inline NSComparisonResult NSCalendarUnitCompareSignificance(NSCalendarUnit a, NSCalendarUnit b) {
-    if (a > b) {
-        return NSOrderedAscending;
-    } else if (a < b) {
-        return NSOrderedDescending;
+    if ((a == TTTCalendarUnitWeek) ^ (b == TTTCalendarUnitWeek)) {
+        if (a == TTTCalendarUnitWeek) {
+            switch (a) {
+                case TTTCalendarUnitYear:
+                case TTTCalendarUnitMonth:
+                    return NSOrderedAscending;
+                default:
+                    return NSOrderedDescending;
+            }
+        } else {
+            switch (b) {
+                case TTTCalendarUnitYear:
+                case TTTCalendarUnitMonth:
+                    return NSOrderedDescending;
+                default:
+                    return NSOrderedAscending;
+            }
+        }
     } else {
-        return NSOrderedSame;
+        if (a > b) {
+            return NSOrderedAscending;
+        } else if (a < b) {
+            return NSOrderedDescending;
+        } else {
+            return NSOrderedSame;
+        }
     }
 }
 
@@ -142,7 +162,7 @@ static inline NSComparisonResult NSCalendarUnitCompareSignificance(NSCalendarUni
     NSString *string = nil;
     BOOL isApproximate = NO;
     NSUInteger numberOfUnits = 0;
-    for (NSString *unitName in @[@"year", @"month", @"week", @"day", @"hour", @"minute", @"second"]) {
+    for (NSString *unitName in @[@"year", @"month", @"weekOfYear", @"day", @"hour", @"minute", @"second"]) {
         NSCalendarUnit unit = NSCalendarUnitFromString(unitName);
         if ((self.significantUnits & unit) && NSCalendarUnitCompareSignificance(self.leastSignificantUnit, unit) != NSOrderedDescending) {
             NSNumber *number = @(abs((int)[[components valueForKey:unitName] integerValue]));
@@ -155,12 +175,12 @@ static inline NSComparisonResult NSCalendarUnitCompareSignificance(NSCalendarUni
                 } else {
                     isApproximate = YES;
                 }
-                
+
                 numberOfUnits++;
             }
         }
     }
-    
+
     if (string) {
         if (seconds > 0) {
             if ([self.pastDeicticExpression length]) {
@@ -175,8 +195,10 @@ static inline NSComparisonResult NSCalendarUnitCompareSignificance(NSCalendarUni
         if (isApproximate && self.usesApproximateQualifier) {
             string = [NSString stringWithFormat:self.approximateQualifierFormat, string];
         }
+    } else {
+        string = self.presentDeicticExpression;
     }
-    
+
     return string;
 }
 
@@ -189,8 +211,10 @@ static inline NSComparisonResult NSCalendarUnitCompareSignificance(NSCalendarUni
                 return singular ? NSLocalizedStringFromTable(@"yr", @"FormatterKit", @"Year Unit (Singular, Abbreviated)") : NSLocalizedStringFromTable(@"yrs", @"FormatterKit", @"Year Unit (Plural, Abbreviated)");
             case TTTCalendarUnitMonth:
                 return singular ? NSLocalizedStringFromTable(@"mo", @"FormatterKit", @"Month Unit (Singular, Abbreviated)") : NSLocalizedStringFromTable(@"mos", @"FormatterKit", @"Month Unit (Plural, Abbreviated)");
+            case TTTCalendarUnitWeek:
+                return singular ? NSLocalizedStringFromTable(@"wk", @"FormatterKit", @"Week Unit (Singular, Abbreviated)") : NSLocalizedStringFromTable(@"wks", @"FormatterKit", @"Week Unit (Plural, Abbreviated)");
             case TTTCalendarUnitDay:
-                return singular ? NSLocalizedStringFromTable(@"day", @"FormatterKit", @"Day Unit (Singular, Abbreviated)") : NSLocalizedStringFromTable(@"days", @"FormatterKit", @"Day Unit (Plural, Abbreviated)");
+                return singular ? NSLocalizedStringFromTable(@"d", @"FormatterKit", @"Day Unit (Singular, Abbreviated)") : NSLocalizedStringFromTable(@"days", @"FormatterKit", @"Day Unit (Plural, Abbreviated)");
             case TTTCalendarUnitHour:
                 return singular ? NSLocalizedStringFromTable(@"hr", @"FormatterKit", @"Hour Unit (Singular, Abbreviated)") : NSLocalizedStringFromTable(@"hrs", @"FormatterKit", @"Hour Unit (Plural, Abbreviated)");
             case TTTCalendarUnitMinute:
@@ -206,6 +230,8 @@ static inline NSComparisonResult NSCalendarUnitCompareSignificance(NSCalendarUni
                 return singular ? NSLocalizedStringFromTable(@"year", @"FormatterKit", @"Year Unit (Singular)") : NSLocalizedStringFromTable(@"years", @"FormatterKit", @"Year Unit (Plural)");
             case TTTCalendarUnitMonth:
                 return singular ? NSLocalizedStringFromTable(@"month", @"FormatterKit", @"Month Unit (Singular)") : NSLocalizedStringFromTable(@"months", @"FormatterKit", @"Month Unit (Plural)");
+            case TTTCalendarUnitWeek:
+                return singular ? NSLocalizedStringFromTable(@"week", @"FormatterKit", @"Week Unit (Singular)") : NSLocalizedStringFromTable(@"weeks", @"FormatterKit", @"Week Unit (Plural)");
             case TTTCalendarUnitDay:
                 return singular ? NSLocalizedStringFromTable(@"day", @"FormatterKit", @"Day Unit (Singular)") : NSLocalizedStringFromTable(@"days", @"FormatterKit", @"Day Unit (Plural)");
             case TTTCalendarUnitHour:
@@ -224,22 +250,24 @@ static inline NSComparisonResult NSCalendarUnitCompareSignificance(NSCalendarUni
 
 - (NSString *)localizedIdiomaticDeicticExpressionForComponents:(NSDateComponents *)components {
     NSString *languageCode = [self.locale objectForKey:NSLocaleLanguageCode];
-    if ([languageCode isEqualToString:@"en"]) {
-        return [self enRelativeDateStringForComponents:components];
-    } else if ([languageCode isEqualToString:@"es"]){
-        return [self esRelativeDateStringForComponents:components];
-    } else if ([languageCode isEqualToString:@"nl"]){
-        return [self nlRelativeDateStringForComponents:components];
-    } else if ([languageCode isEqualToString:@"ca"]){
+    if ([languageCode isEqualToString:@"ca"]) {
         return [self caRelativeDateStringForComponents:components];
-    } else if ([languageCode isEqualToString:@"pl"]) {
-        return [self plRelativeDateStringForComponents:components];
     } else if ([languageCode isEqualToString:@"cs"]) {
         return [self csRelativeDateStringForComponents:components];
-    } else if ([languageCode isEqualToString:@"ja"]) {
-        return [self jaRelativeDateStringForComponents:components];
+    } else if ([languageCode isEqualToString:@"es"]) {
+        return [self esRelativeDateStringForComponents:components];
+    } else if ([languageCode isEqualToString:@"en"]) {
+        return [self enRelativeDateStringForComponents:components];
     } else if ([languageCode isEqualToString:@"fr"]) {
         return [self frRelativeDateStringForComponents:components];
+    } else if ([languageCode isEqualToString:@"it"]) {
+        return [self itRelativeDateStringForComponents:components];
+    } else if ([languageCode isEqualToString:@"ja"]) {
+        return [self jaRelativeDateStringForComponents:components];
+    } else if ([languageCode isEqualToString:@"nl"]) {
+        return [self nlRelativeDateStringForComponents:components];
+    } else if ([languageCode isEqualToString:@"pl"]) {
+        return [self plRelativeDateStringForComponents:components];
     }
 
     return nil;
@@ -257,7 +285,7 @@ static inline NSComparisonResult NSCalendarUnitCompareSignificance(NSCalendarUni
     } else if ([components day] == -2 && [components year] == 0 && [components month] == 0 && [components weekOfYear] == 0) {
         return @"abans d'ahir";
     }
-    
+
     if ([components year] == 1) {
         return @"pròxim any";
     } else if ([components month] == 1 && [components year] == 0) {
@@ -269,7 +297,7 @@ static inline NSComparisonResult NSCalendarUnitCompareSignificance(NSCalendarUni
     } else if ([components day] == 2 && [components year] == 0 && [components month] == 0 && [components weekOfYear] == 0) {
         return @"passat demà";
     }
-    
+
     return nil;
 }
 
@@ -337,7 +365,7 @@ static inline NSComparisonResult NSCalendarUnitCompareSignificance(NSCalendarUni
     } else if ([components day] == -2 && [components year] == 0 && [components month] == 0 && [components weekOfYear] == 0) {
         return @"eergisteren";
     }
-    
+
     if ([components year] == 1) {
         return @"volgend jaar";
     } else if ([components month] == 1 && [components year] == 0) {
@@ -349,7 +377,7 @@ static inline NSComparisonResult NSCalendarUnitCompareSignificance(NSCalendarUni
     } else if ([components day] == 2 && [components year] == 0 && [components month] == 0 && [components weekOfYear] == 0) {
         return @"overmorgen";
     }
-    
+
     return nil;
 }
 
@@ -393,7 +421,7 @@ static inline NSComparisonResult NSCalendarUnitCompareSignificance(NSCalendarUni
     } else if ([components day] == -2 && [components weekOfYear] == 0 && [components month] == 0 && [components year] == 0) {
         return @"předevčírem";
     }
-    
+
     if ([components year] == 1) {
         return @"příští rok";
     } else if ([components month] == 1 && [components year] == 0) {
@@ -405,7 +433,7 @@ static inline NSComparisonResult NSCalendarUnitCompareSignificance(NSCalendarUni
     } else if ([components day] == 2 && [components weekOfYear] == 0 && [components month] == 0 && [components year] == 0) {
         return @"pozítří";
     }
-    
+
     return nil;
 }
 
@@ -419,7 +447,7 @@ static inline NSComparisonResult NSCalendarUnitCompareSignificance(NSCalendarUni
     } else if ([components day] == -1 && [components year] == 0 && [components month] == 0 && [components weekOfYear] == 0) {
         return @"昨日";
     }
-    
+
     if ([components year] == 1) {
         return @"来年";
     } else if ([components month] == 1 && [components year] == 0) {
@@ -429,7 +457,7 @@ static inline NSComparisonResult NSCalendarUnitCompareSignificance(NSCalendarUni
     } else if ([components day] == 1 && [components weekOfYear] == 0 && [components month] == 0 && [components year] == 0) {
         return @"明日";
     }
-    
+
     return nil;
 }
 
@@ -443,7 +471,7 @@ static inline NSComparisonResult NSCalendarUnitCompareSignificance(NSCalendarUni
     } else if ([components day] == -1 && [components weekOfYear] == 0 && [components month] == 0 && [components year] == 0) {
         return @"hier";
     }
-    
+
     if ([components year] == 1) {
         return @"l'année prochaine";
     } else if ([components month] == 1 && [components year] == 0) {
@@ -453,7 +481,31 @@ static inline NSComparisonResult NSCalendarUnitCompareSignificance(NSCalendarUni
     } else if ([components day] == 1 && [components weekOfYear] == 0 && [components month] == 0 && [components year] == 0) {
         return @"demain";
     }
-    
+
+    return nil;
+}
+
+- (NSString *)itRelativeDateStringForComponents:(NSDateComponents *)components {
+    if ([components year] == -1) {
+        return @"un anno fa";
+    } else if ([components month] == -1 && [components year] == 0) {
+        return @"un mese fa";
+    } else if ([components weekOfYear] == -1 && [components year] == 0 && [components month] == 0) {
+        return @"una settimana fa";
+    } else if ([components day] == -1 && [components year] == 0 && [components month] == 0 && [components weekOfYear] == 0) {
+        return @"ieri";
+    }
+
+    if ([components year] == 1) {
+        return @"l'anno prossimo";
+    } else if ([components month] == 1 && [components year] == 0) {
+        return @"il mese prossimo";
+    } else if ([components weekOfYear] == 1 && [components year] == 0 && [components month] == 0) {
+        return @"la prossima settimana";
+    } else if ([components day] == 1 && [components year] == 0 && [components month] == 0 && [components weekOfYear] == 0) {
+        return @"domani";
+    }
+
     return nil;
 }
 

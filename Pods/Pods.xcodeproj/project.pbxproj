@@ -11,11 +11,11 @@
 		24AA18F7AFE16DF31967513C56E755BF /* MASPreferences-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EFBD853BCBE9672CFCF1B7E9EA87BA0 /* MASPreferences-dummy.m */; };
 		59E9CD5963C6BCD0C737974CE0386A4A /* FormatterKit-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 11957DA98190EF6610D782857CD2453F /* FormatterKit-dummy.m */; };
 		5A558B3F0DA3AAFED5B2A981DC763733 /* MASPreferencesWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = 752E52EB1B81DD6A5D2C2E76E115C9C7 /* MASPreferencesWindowController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		653DA8FCDBCAAB7F52CD4450C1529422 /* TTTTimeIntervalFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 812917CF18C3076108DB6151CBFA1652 /* TTTTimeIntervalFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		653DA8FCDBCAAB7F52CD4450C1529422 /* TTTTimeIntervalFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CD9B899E7DDE29A81BEBE8ACF1AD692 /* TTTTimeIntervalFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6D33F09979576180680A4666FD43E429 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CA6EBC2E57D96052268211209D6AA52 /* Cocoa.framework */; };
 		C65665FB67838B0F0DECF55B066EC59C /* Pods-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 272643F56613CA0D336AE3DBF19DC404 /* Pods-dummy.m */; };
 		D294B5FBBD9ACC423CF64C7073098E75 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CA6EBC2E57D96052268211209D6AA52 /* Cocoa.framework */; };
-		D8197C98AAA4A9A2DF606077061EDECC /* TTTTimeIntervalFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7CABC2B29656333CF25213B32DE70F /* TTTTimeIntervalFormatter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		D8197C98AAA4A9A2DF606077061EDECC /* TTTTimeIntervalFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = D79B33A12D12382089A65EDE4CC03E4E /* TTTTimeIntervalFormatter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		E204BBA804A8AC5EC58CE78E12CE3F26 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CA6EBC2E57D96052268211209D6AA52 /* Cocoa.framework */; };
 		EB6016494E330D597157FC8335D5C94A /* MASPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A2A6E67E960F4E7D9459CF62BB0991 /* MASPreferencesWindowController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 /* End PBXBuildFile section */
@@ -42,51 +42,36 @@
 		10834806BD7B412BC24F347361FA2C8E /* Pods-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-acknowledgements.plist"; sourceTree = "<group>"; };
 		11957DA98190EF6610D782857CD2453F /* FormatterKit-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "FormatterKit-dummy.m"; sourceTree = "<group>"; };
 		1CA6EBC2E57D96052268211209D6AA52 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
-		1F9788381B713F9989EDBB3BBC3FCDBA /* pt.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = pt.lproj; path = Localizations/pt.lproj; sourceTree = "<group>"; };
-		26F12FC454FDE5D4E7CC0854C81B038C /* zh-Hant.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = "zh-Hant.lproj"; path = "Localizations/zh-Hant.lproj"; sourceTree = "<group>"; };
 		272643F56613CA0D336AE3DBF19DC404 /* Pods-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-dummy.m"; sourceTree = "<group>"; };
-		3110309561A74DD53652D6B49FF49504 /* ko.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = ko.lproj; path = Localizations/ko.lproj; sourceTree = "<group>"; };
+		31EC7FDC200F16D5E747A972EF380FEE /* it.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = it.lproj; path = Localizations/it.lproj; sourceTree = "<group>"; };
 		37DB56D75062CC75FCB0966E1C6E8A8E /* Pods-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-acknowledgements.markdown"; sourceTree = "<group>"; };
+		4063F48067488D5B0CDDDAF4369B3863 /* pt_BR.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = pt_BR.lproj; path = Localizations/pt_BR.lproj; sourceTree = "<group>"; };
 		40938AD3E54ADF5FFBAFE80EB203C8A6 /* libMASPreferences.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMASPreferences.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B361BDDA9D265C4F3E0068F89798673 /* MASPreferences.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MASPreferences.xcconfig; sourceTree = "<group>"; };
 		4E762F23EC34ED4A6FF3312D84E33A40 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.debug.xcconfig; sourceTree = "<group>"; };
-		53CFAB3B685FB660D276B0174F17FEF6 /* id.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = id.lproj; path = Localizations/id.lproj; sourceTree = "<group>"; };
+		4EE6E3EDC9228158B2CF6EC79D87CB21 /* es.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = es.lproj; path = Localizations/es.lproj; sourceTree = "<group>"; };
+		55E655D058ACA04799B4F03EFC20DF9C /* zh-Hans.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = "zh-Hans.lproj"; path = "Localizations/zh-Hans.lproj"; sourceTree = "<group>"; };
 		58A2A6E67E960F4E7D9459CF62BB0991 /* MASPreferencesWindowController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MASPreferencesWindowController.m; sourceTree = "<group>"; };
 		5EFBD853BCBE9672CFCF1B7E9EA87BA0 /* MASPreferences-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "MASPreferences-dummy.m"; sourceTree = "<group>"; };
-		61CAC1B80E576A5FF1A8D14CB50978E2 /* ca.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = ca.lproj; path = Localizations/ca.lproj; sourceTree = "<group>"; };
 		63C44F763CA23D846C889B87B6816F0E /* MASPreferencesWindow.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = MASPreferencesWindow.xib; sourceTree = "<group>"; };
-		65BB84DAADC51C63A7A818DFD57D902C /* zh-Hans.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = "zh-Hans.lproj"; path = "Localizations/zh-Hans.lproj"; sourceTree = "<group>"; };
-		667642146E8D6BFA1CB0F3AFE4E27648 /* pt_BR.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = pt_BR.lproj; path = Localizations/pt_BR.lproj; sourceTree = "<group>"; };
 		6911BECA35E7518D864239B7E898EEF3 /* Pods-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-frameworks.sh"; sourceTree = "<group>"; };
-		70EAFE597EFD27169D1E2E14FDA2F83B /* cs.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = cs.lproj; path = Localizations/cs.lproj; sourceTree = "<group>"; };
+		69AAB58D14A50071F5B2D5E0C89A63C5 /* tr.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = tr.lproj; path = Localizations/tr.lproj; sourceTree = "<group>"; };
+		73F7F82EEE4F5C3B54E503A382ED10CF /* ja.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = ja.lproj; path = Localizations/ja.lproj; sourceTree = "<group>"; };
 		752E52EB1B81DD6A5D2C2E76E115C9C7 /* MASPreferencesWindowController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MASPreferencesWindowController.h; sourceTree = "<group>"; };
 		76FF155082AEA5B6DFDC8F6BC1199223 /* FormatterKit-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "FormatterKit-prefix.pch"; sourceTree = "<group>"; };
-		812917CF18C3076108DB6151CBFA1652 /* TTTTimeIntervalFormatter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TTTTimeIntervalFormatter.h; path = FormatterKit/TTTTimeIntervalFormatter.h; sourceTree = "<group>"; };
-		88D27C8A24A1ABD478AA363C270747D2 /* sv.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = sv.lproj; path = Localizations/sv.lproj; sourceTree = "<group>"; };
-		8B90610F9B9BF96B83809346AB5E80DE /* vi.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = vi.lproj; path = Localizations/vi.lproj; sourceTree = "<group>"; };
-		8F7CABC2B29656333CF25213B32DE70F /* TTTTimeIntervalFormatter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = TTTTimeIntervalFormatter.m; path = FormatterKit/TTTTimeIntervalFormatter.m; sourceTree = "<group>"; };
-		91D596D36235CF4D1C4FEC44B8157C39 /* el.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = el.lproj; path = Localizations/el.lproj; sourceTree = "<group>"; };
 		95B3FF495021AFD3573AD620CB8C4074 /* MASPreferences-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MASPreferences-prefix.pch"; sourceTree = "<group>"; };
+		9609B02E8E130DCD6C3F5F4A9BC0042B /* sv.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = sv.lproj; path = Localizations/sv.lproj; sourceTree = "<group>"; };
 		9662FB385EE0FA5FEB2BBB32BC59D2A0 /* libFormatterKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFormatterKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		98C98CDFB3F20F2925F6CD1F141BB14F /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.release.xcconfig; sourceTree = "<group>"; };
-		A0A99E08E0A191B1761F0D5C9493BD6B /* pl.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = pl.lproj; path = Localizations/pl.lproj; sourceTree = "<group>"; };
+		9CD9B899E7DDE29A81BEBE8ACF1AD692 /* TTTTimeIntervalFormatter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TTTTimeIntervalFormatter.h; path = FormatterKit/TTTTimeIntervalFormatter.h; sourceTree = "<group>"; };
 		A1A36D34413696BE466E2CA0AFF194DA /* Pods-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-resources.sh"; sourceTree = "<group>"; };
-		A4024F611EBB9E50951C66909AC66A7B /* fr.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = fr.lproj; path = Localizations/fr.lproj; sourceTree = "<group>"; };
-		A5E0FDC49059FA4F24E5EB79A8BF0E45 /* ru.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = ru.lproj; path = Localizations/ru.lproj; sourceTree = "<group>"; };
-		AA1EC82C645EF57C6C3B88816A3362AF /* it.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = it.lproj; path = Localizations/it.lproj; sourceTree = "<group>"; };
-		AAAE8282CE9A77DA873361AA662D28E6 /* en.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = en.lproj; path = Localizations/en.lproj; sourceTree = "<group>"; };
-		AE1A7E446BE7083AF5BA2CB18BA73AE9 /* uk.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = uk.lproj; path = Localizations/uk.lproj; sourceTree = "<group>"; };
+		AD6131FA9539FAB70550F5610EC1BC8E /* ko.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = ko.lproj; path = Localizations/ko.lproj; sourceTree = "<group>"; };
+		AE8EF83255E4D89F592AA901E4A8CB30 /* de.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = de.lproj; path = Localizations/de.lproj; sourceTree = "<group>"; };
 		AFD127231EDF16D60C03D8EF74212AEE /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		C1FCE8E19A2080DEB34DAB53595F7BD7 /* ja.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = ja.lproj; path = Localizations/ja.lproj; sourceTree = "<group>"; };
-		C8B2AC6CD326A0A55D9A055027479EE8 /* nn.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = nn.lproj; path = Localizations/nn.lproj; sourceTree = "<group>"; };
 		C92E4DCB9EAEBD158F20C14C3EB635F5 /* MASPreferencesViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MASPreferencesViewController.h; sourceTree = "<group>"; };
-		CD2CAD944CD6983EA097067A8F6FB7F6 /* da.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = da.lproj; path = Localizations/da.lproj; sourceTree = "<group>"; };
-		D83F1134695B2BCDF71305EBF54DB368 /* tr.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = tr.lproj; path = Localizations/tr.lproj; sourceTree = "<group>"; };
-		E3A8B90AC092EE08C36DE59A7A0773A8 /* nb.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = nb.lproj; path = Localizations/nb.lproj; sourceTree = "<group>"; };
-		E86E64551EB88BDFD0517B3E8382C976 /* es.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = es.lproj; path = Localizations/es.lproj; sourceTree = "<group>"; };
-		F50EA26EB2147E9F3C810BF81801CA7B /* de.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = de.lproj; path = Localizations/de.lproj; sourceTree = "<group>"; };
-		FE5D6D645B0EEF299E5191436434EC23 /* nl.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = nl.lproj; path = Localizations/nl.lproj; sourceTree = "<group>"; };
+		D79B33A12D12382089A65EDE4CC03E4E /* TTTTimeIntervalFormatter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = TTTTimeIntervalFormatter.m; path = FormatterKit/TTTTimeIntervalFormatter.m; sourceTree = "<group>"; };
+		E9800152A2C3E859683863F8E0532CED /* en.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = en.lproj; path = Localizations/en.lproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,7 +164,7 @@
 			isa = PBXGroup;
 			children = (
 				3FC2DF1B0BC7FDE458BC019ED77D8890 /* Support Files */,
-				ED5F212BC14DAFEAE1B6FB62013EEC22 /* TimeIntervalFormatter */,
+				7B00FC3837EB25BDB1854E6CF80AF0CB /* TimeIntervalFormatter */,
 			);
 			path = FormatterKit;
 			sourceTree = "<group>";
@@ -203,36 +188,31 @@
 			path = "../Target Support Files/FormatterKit";
 			sourceTree = "<group>";
 		};
-		69D33275B06B9DAFB9720906D774F880 /* Resources */ = {
+		47958DE4DC9082329F8D8521F66581E8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				61CAC1B80E576A5FF1A8D14CB50978E2 /* ca.lproj */,
-				70EAFE597EFD27169D1E2E14FDA2F83B /* cs.lproj */,
-				CD2CAD944CD6983EA097067A8F6FB7F6 /* da.lproj */,
-				F50EA26EB2147E9F3C810BF81801CA7B /* de.lproj */,
-				91D596D36235CF4D1C4FEC44B8157C39 /* el.lproj */,
-				AAAE8282CE9A77DA873361AA662D28E6 /* en.lproj */,
-				E86E64551EB88BDFD0517B3E8382C976 /* es.lproj */,
-				A4024F611EBB9E50951C66909AC66A7B /* fr.lproj */,
-				53CFAB3B685FB660D276B0174F17FEF6 /* id.lproj */,
-				AA1EC82C645EF57C6C3B88816A3362AF /* it.lproj */,
-				C1FCE8E19A2080DEB34DAB53595F7BD7 /* ja.lproj */,
-				3110309561A74DD53652D6B49FF49504 /* ko.lproj */,
-				E3A8B90AC092EE08C36DE59A7A0773A8 /* nb.lproj */,
-				FE5D6D645B0EEF299E5191436434EC23 /* nl.lproj */,
-				C8B2AC6CD326A0A55D9A055027479EE8 /* nn.lproj */,
-				A0A99E08E0A191B1761F0D5C9493BD6B /* pl.lproj */,
-				1F9788381B713F9989EDBB3BBC3FCDBA /* pt.lproj */,
-				667642146E8D6BFA1CB0F3AFE4E27648 /* pt_BR.lproj */,
-				A5E0FDC49059FA4F24E5EB79A8BF0E45 /* ru.lproj */,
-				88D27C8A24A1ABD478AA363C270747D2 /* sv.lproj */,
-				D83F1134695B2BCDF71305EBF54DB368 /* tr.lproj */,
-				AE1A7E446BE7083AF5BA2CB18BA73AE9 /* uk.lproj */,
-				8B90610F9B9BF96B83809346AB5E80DE /* vi.lproj */,
-				65BB84DAADC51C63A7A818DFD57D902C /* zh-Hans.lproj */,
-				26F12FC454FDE5D4E7CC0854C81B038C /* zh-Hant.lproj */,
+				AE8EF83255E4D89F592AA901E4A8CB30 /* de.lproj */,
+				E9800152A2C3E859683863F8E0532CED /* en.lproj */,
+				4EE6E3EDC9228158B2CF6EC79D87CB21 /* es.lproj */,
+				31EC7FDC200F16D5E747A972EF380FEE /* it.lproj */,
+				73F7F82EEE4F5C3B54E503A382ED10CF /* ja.lproj */,
+				AD6131FA9539FAB70550F5610EC1BC8E /* ko.lproj */,
+				4063F48067488D5B0CDDDAF4369B3863 /* pt_BR.lproj */,
+				9609B02E8E130DCD6C3F5F4A9BC0042B /* sv.lproj */,
+				69AAB58D14A50071F5B2D5E0C89A63C5 /* tr.lproj */,
+				55E655D058ACA04799B4F03EFC20DF9C /* zh-Hans.lproj */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		7B00FC3837EB25BDB1854E6CF80AF0CB /* TimeIntervalFormatter */ = {
+			isa = PBXGroup;
+			children = (
+				9CD9B899E7DDE29A81BEBE8ACF1AD692 /* TTTTimeIntervalFormatter.h */,
+				D79B33A12D12382089A65EDE4CC03E4E /* TTTTimeIntervalFormatter.m */,
+				47958DE4DC9082329F8D8521F66581E8 /* Resources */,
+			);
+			name = TimeIntervalFormatter;
 			sourceTree = "<group>";
 		};
 		7DB346D0F39D3F0E887471402A8071AB = {
@@ -267,16 +247,6 @@
 				63C44F763CA23D846C889B87B6816F0E /* MASPreferencesWindow.xib */,
 			);
 			name = Resources;
-			sourceTree = "<group>";
-		};
-		ED5F212BC14DAFEAE1B6FB62013EEC22 /* TimeIntervalFormatter */ = {
-			isa = PBXGroup;
-			children = (
-				812917CF18C3076108DB6151CBFA1652 /* TTTTimeIntervalFormatter.h */,
-				8F7CABC2B29656333CF25213B32DE70F /* TTTTimeIntervalFormatter.m */,
-				69D33275B06B9DAFB9720906D774F880 /* Resources */,
-			);
-			name = TimeIntervalFormatter;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
