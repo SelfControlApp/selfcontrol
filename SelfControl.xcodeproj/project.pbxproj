@@ -91,8 +91,6 @@
 		CBD2677411ED92F700042CD8 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		CBD2677511ED92F800042CD8 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		CBD2677811ED932D00042CD8 /* scheckup in Copy Helper Tools */ = {isa = PBXBuildFile; fileRef = CB5E20BF0FAE0CDC006DBFC8 /* scheckup */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		CBD4848319D75F6D0020F949 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBD4848219D75F6D0020F949 /* Sparkle.framework */; };
-		CBD4848419D75FC00020F949 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CBD4848219D75F6D0020F949 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CBD4848A19D764440020F949 /* PreferencesGeneralViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD4848819D764440020F949 /* PreferencesGeneralViewController.m */; };
 		CBD4848F19D768C90020F949 /* PreferencesAdvancedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD4848D19D768C90020F949 /* PreferencesAdvancedViewController.m */; };
 		CBE2BB5619D10CCC0077124F /* SCKillerHelper in Copy Helper Tools */ = {isa = PBXBuildFile; fileRef = CB9C811B19CFBA8500CDCAE1 /* SCKillerHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -154,17 +152,6 @@
 				CBD2677811ED932D00042CD8 /* scheckup in Copy Helper Tools */,
 			);
 			name = "Copy Helper Tools";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CB93655B0F85805300EF284E /* Copy Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				CBD4848419D75FC00020F949 /* Sparkle.framework in Copy Frameworks */,
-			);
-			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		CB9C811919CFBA8500CDCAE1 /* CopyFiles */ = {
@@ -348,7 +335,6 @@
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				CB587E500F50FE8800C66A09 /* SystemConfiguration.framework in Frameworks */,
 				CBB3FD7A0F53834B00244132 /* Security.framework in Frameworks */,
-				CBD4848319D75F6D0020F949 /* Sparkle.framework in Frameworks */,
 				CF32FCC0BE72492A9CC7BE68 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -616,8 +602,8 @@
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				CB2359D90F4541AB0030F59C /* Copy Helper Tools */,
-				CB93655B0F85805300EF284E /* Copy Frameworks */,
 				E388D89B9A8D4BB49E5F775F /* Copy Pods Resources */,
+				CB5E5FF81C3A5FD10038F331 /* ShellScript */,
 				815BD74738A5A74C943DF69B /* Embed Pods Frameworks */,
 			);
 			buildRules = (
@@ -827,6 +813,19 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		CB5E5FF81C3A5FD10038F331 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "LOCATION=\"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\n\n# Usually set by Xcode\nCODE_SIGN_IDENTITY=\"Developer ID Application: Charlie Stigler\"\n\ncodesign --verbose --force --sign \"$CODE_SIGN_IDENTITY\" \"$LOCATION/Sparkle.framework/Versions/A\"";
 		};
 		CB9F02F416C10CEE003054EE /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;

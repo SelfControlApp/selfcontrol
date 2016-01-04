@@ -6,7 +6,7 @@ PODS:
 DEPENDENCIES:
   - FormatterKit/TimeIntervalFormatter (~> 1.7)
   - MASPreferences (~> 1.1.2)
-  - Sparkle
+  - Sparkle (~> 1.13)
 
 SPEC CHECKSUMS:
   FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
