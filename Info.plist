@@ -36,9 +36,9 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.1</string>
+	<string>2.1.1</string>
 	<key>CFBundleVersion</key>
-	<string>2.1</string>
+	<string>2.1.1</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.productivity</string>
 	<key>LSHasLocalizedDisplayName</key>
@@ -61,7 +61,7 @@
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUFeedURL</key>
-	<string>http://selfcontrolapp.com/SelfControlAppcast.xml</string>
+	<string>https://selfcontrolapp.com/SelfControlAppcast.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
 </dict>
