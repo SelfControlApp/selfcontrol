@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <development version="5100" identifier="xcode"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="PreferencesAdvancedViewController">
+            <connections>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="480" height="226"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dSg-wR-arw">
+                    <rect key="frame" x="18" y="156" width="444" height="18"/>
+                    <buttonCell key="cell" type="check" title="Clear browser cache" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="Y7x-Zc-xZU">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="ELT-Ca-Hib" name="value" keyPath="values.ClearCaches" id="o8X-nc-1Za"/>
+                    </connections>
+                </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tez-LB-kje">
+                    <rect key="frame" x="18" y="88" width="444" height="18"/>
+                    <buttonCell key="cell" type="check" title="Block common subdomains" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="gOx-e1-ZUm">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="ELT-Ca-Hib" name="value" keyPath="values.EvaluateCommonSubdomains" id="ccm-uL-bJe"/>
+                    </connections>
+                </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q9x-EI-6xR">
+                    <rect key="frame" x="18" y="54" width="444" height="18"/>
+                    <buttonCell key="cell" type="check" title="Highlight invalid hosts" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="x53-JT-2sG">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="ELT-Ca-Hib" name="value" keyPath="values.HighlightInvalidHosts" id="zWk-Ht-uhJ"/>
+                    </connections>
+                </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gkT-O1-AZS">
+                    <rect key="frame" x="18" y="122" width="444" height="18"/>
+                    <buttonCell key="cell" type="check" title="Allow local networks" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="4wN-EQ-U6a">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="ELT-Ca-Hib" name="value" keyPath="values.AllowLocalNetworks" id="4ed-B0-uwO"/>
+                    </connections>
+                </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YfV-CO-6Ud">
+                    <rect key="frame" x="18" y="190" width="444" height="18"/>
+                    <buttonCell key="cell" type="check" title="Verify internet connection" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="QeK-Oh-Gga">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="ELT-Ca-Hib" name="value" keyPath="values.VerifyInternetConnection" id="23Y-uI-JTZ"/>
+                    </connections>
+                </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="P7c-ml-UCV">
+                    <rect key="frame" x="18" y="18" width="444" height="18"/>
+                    <buttonCell key="cell" type="check" title="Whitelist blocks should include linked sites (slow)" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="b7a-fO-pJq">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="ELT-Ca-Hib" name="value" keyPath="values.IncludeLinkedDomains" id="FGV-zm-NWL"/>
+                    </connections>
+                </button>
+            </subviews>
+            <point key="canvasLocation" x="345" y="339"/>
+        </customView>
+        <userDefaultsController representsSharedInstance="YES" id="ELT-Ca-Hib"/>
+    </objects>
+</document>
