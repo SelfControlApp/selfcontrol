@@ -719,7 +719,7 @@
 					};
 					CB9C811A19CFBA8500CDCAE1 = {
 						CreatedOnToolsVersion = 6.0.1;
-						DevelopmentTeam = A38K8DULEP;
+						DevelopmentTeam = L6W5L88KN7;
 					};
 					CBA2AFD10F39EC12005AFEBE = {
 						DevelopmentTeam = L6W5L88KN7;
