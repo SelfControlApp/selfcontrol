@@ -43,6 +43,8 @@
 		CB587E500F50FE8800C66A09 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB587E4F0F50FE8800C66A09 /* SystemConfiguration.framework */; };
 		CB73616119E5086900E0924F /* WhitelistScraper.m in Sources */ = {isa = PBXBuildFile; fileRef = CB73615F19E4FDA000E0924F /* WhitelistScraper.m */; };
 		CB73616219E5086A00E0924F /* WhitelistScraper.m in Sources */ = {isa = PBXBuildFile; fileRef = CB73615F19E4FDA000E0924F /* WhitelistScraper.m */; };
+		CB8A338B1CD7196B00AD6B8B /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB8A338A1CD7196B00AD6B8B /* Sparkle.framework */; };
+		CB8A338C1CD7196B00AD6B8B /* Sparkle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB8A338A1CD7196B00AD6B8B /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CB90BF830F49F430006D202D /* HostImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB90BF820F49F430006D202D /* HostImporter.m */; };
 		CB9365620F8581B000EF284E /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = CB9365610F8581B000EF284E /* dsa_pub.pem */; };
 		CB9366E80F85BEF100EF284E /* NSRemoveTemplate.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB9366E60F85BEF100EF284E /* NSRemoveTemplate.jpg */; };
@@ -154,6 +156,17 @@
 			name = "Copy Helper Tools";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CB8A338D1CD7196B00AD6B8B /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				CB8A338C1CD7196B00AD6B8B /* Sparkle.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CB9C811919CFBA8500CDCAE1 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -238,8 +251,16 @@
 		CB529BBE0F32B7ED00564FB8 /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
 		CB587E4F0F50FE8800C66A09 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = /System/Library/Frameworks/SystemConfiguration.framework; sourceTree = "<absolute>"; };
 		CB5E20BF0FAE0CDC006DBFC8 /* scheckup */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = scheckup; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB7026131CD7177300D7C7F0 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		CB7026141CD7177300D7C7F0 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/DomainList.xib; sourceTree = "<group>"; };
+		CB7026151CD7177400D7C7F0 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/TimerWindow.xib; sourceTree = "<group>"; };
+		CB7026161CD7177400D7C7F0 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/PreferencesGeneralViewController.xib; sourceTree = "<group>"; };
+		CB7026171CD7177400D7C7F0 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/PreferencesAdvancedViewController.xib; sourceTree = "<group>"; };
+		CB7026181CD7177400D7C7F0 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CB7026191CD7177400D7C7F0 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CB73615E19E4FDA000E0924F /* WhitelistScraper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WhitelistScraper.h; sourceTree = "<group>"; };
 		CB73615F19E4FDA000E0924F /* WhitelistScraper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WhitelistScraper.m; sourceTree = "<group>"; };
+		CB8A338A1CD7196B00AD6B8B /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Pods/Sparkle/Sparkle.framework; sourceTree = "<group>"; };
 		CB90BF810F49F430006D202D /* HostImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostImporter.h; sourceTree = "<group>"; };
 		CB90BF820F49F430006D202D /* HostImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HostImporter.m; sourceTree = "<group>"; };
 		CB9365610F8581B000EF284E /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
@@ -342,6 +363,7 @@
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				CB587E500F50FE8800C66A09 /* SystemConfiguration.framework in Frameworks */,
+				CB8A338B1CD7196B00AD6B8B /* Sparkle.framework in Frameworks */,
 				CBB3FD7A0F53834B00244132 /* Security.framework in Frameworks */,
 				CF32FCC0BE72492A9CC7BE68 /* libPods.a in Frameworks */,
 			);
@@ -427,6 +449,7 @@
 		29B97314FDCFA39411CA2CEA /* SelfControl */ = {
 			isa = PBXGroup;
 			children = (
+				CB8A338A1CD7196B00AD6B8B /* Sparkle.framework */,
 				CBD4848519D7611F0020F949 /* Podfile */,
 				CBD4848619D7611F0020F949 /* TemplateIcon2x.png */,
 				CBCA9116196123E600AFD20C /* SelfControl.entitlements */,
@@ -613,6 +636,7 @@
 				E388D89B9A8D4BB49E5F775F /* Copy Pods Resources */,
 				CB5E5FF81C3A5FD10038F331 /* ShellScript */,
 				815BD74738A5A74C943DF69B /* Embed Pods Frameworks */,
+				CB8A338D1CD7196B00AD6B8B /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -743,6 +767,7 @@
 				ko,
 				"pt-BR",
 				nl,
+				fr,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* SelfControl */;
 			projectDirPath = "";
@@ -987,6 +1012,7 @@
 				CB03861C19D777D3004614B6 /* ko */,
 				CBC25B1419F6CBE40013E190 /* pt-BR */,
 				3EF418F61CC7F7FA002D99E8 /* nl */,
+				CB7026171CD7177400D7C7F0 /* fr */,
 			);
 			name = PreferencesAdvancedViewController.xib;
 			sourceTree = "<group>";
@@ -1004,6 +1030,7 @@
 				CB03861419D777BE004614B6 /* ko */,
 				CBC25B1519F6CBE90013E190 /* pt-BR */,
 				3EF418F51CC7F7FA002D99E8 /* nl */,
+				CB7026161CD7177400D7C7F0 /* fr */,
 			);
 			name = PreferencesGeneralViewController.xib;
 			sourceTree = "<group>";
@@ -1031,6 +1058,7 @@
 				CB9C80EF19CFAAA700CDCAE1 /* ko */,
 				CBC25B1719F6CBF50013E190 /* pt-BR */,
 				3EF418F31CC7F7FA002D99E8 /* nl */,
+				CB7026141CD7177300D7C7F0 /* fr */,
 			);
 			name = DomainList.xib;
 			sourceTree = "<group>";
@@ -1049,6 +1077,7 @@
 				CB9C80EE19CFAAA000CDCAE1 /* ko */,
 				CBC25B1819F6CBF90013E190 /* pt-BR */,
 				3EF418F21CC7F7FA002D99E8 /* nl */,
+				CB7026131CD7177300D7C7F0 /* fr */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
@@ -1067,6 +1096,7 @@
 				CB9C80F219CFAACC00CDCAE1 /* ko */,
 				CBC25B1919F6CC030013E190 /* pt-BR */,
 				3EF418F81CC7F7FA002D99E8 /* nl */,
+				CB7026191CD7177400D7C7F0 /* fr */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1085,6 +1115,7 @@
 				CB9C80F119CFAAC600CDCAE1 /* ko */,
 				CBC25B1319F6CBDE0013E190 /* pt-BR */,
 				3EF418F71CC7F7FA002D99E8 /* nl */,
+				CB7026181CD7177400D7C7F0 /* fr */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1103,6 +1134,7 @@
 				CB9C80F019CFAAB300CDCAE1 /* ko */,
 				CBC25B1619F6CBF00013E190 /* pt-BR */,
 				3EF418F41CC7F7FA002D99E8 /* nl */,
+				CB7026151CD7177400D7C7F0 /* fr */,
 			);
 			name = TimerWindow.xib;
 			sourceTree = "<group>";
@@ -1124,6 +1156,7 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Pods/Sparkle",
 				);
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1131,6 +1164,7 @@
 				GCC_PREFIX_HEADER = SelfControl_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = SelfControl;
 				SDKROOT = macosx;
 			};
@@ -1149,12 +1183,14 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Pods/Sparkle",
 				);
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = SelfControl_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = SelfControl;
 				SDKROOT = macosx;
 			};
