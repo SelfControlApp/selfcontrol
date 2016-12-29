@@ -1,8 +1,10 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
-pod 'MASPreferences', '~> 1.1.2'
-pod 'FormatterKit/TimeIntervalFormatter', '~> 1.7'
-pod 'Sparkle', '~> 1.13'
+target "SelfControl" do
+	pod 'MASPreferences', '~> 1.1.2'
+	pod 'FormatterKit/TimeIntervalFormatter', '~> 1.7'
+	pod 'Sparkle', '~> 1.14'
+end
 
 pre_install do |installer|
 	supported_locales = ['base', 'en', 'de', 'es', 'it', 'ja', 'ko', 'pt', 'pt-br', 'pt_br', 'sv', 'tr', 'zh-hans', 'zh_hans', 'zh-cn', 'zh_cn']

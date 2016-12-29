@@ -22,6 +22,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		4E71677BF7C94DB980557038 /* libPods-SelfControl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7998DF77DD84DD8940C6F482 /* libPods-SelfControl.a */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		CB02347219E9B6D0008E2473 /* FirstTime.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB02347119E9B6D0008E2473 /* FirstTime.xib */; };
@@ -100,7 +101,6 @@
 		CBE44FEB19E50900004E9706 /* WhitelistScraper.m in Sources */ = {isa = PBXBuildFile; fileRef = CB73615F19E4FDA000E0924F /* WhitelistScraper.m */; };
 		CBE5C40B0F4D4531003DB900 /* ButtonWithPopupMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE5C40A0F4D4531003DB900 /* ButtonWithPopupMenu.m */; };
 		CBEE50C10F48C21F00F5DF1C /* TimerWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */; };
-		CF32FCC0BE72492A9CC7BE68 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF4C56EF9E741B8994020A7 /* libPods.a */; };
 		F5B8CBEE19EE21C30026F3A5 /* SCTimeIntervalFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F5B8CBED19EE21C30026F3A5 /* SCTimeIntervalFormatter.m */; };
 /* End PBXBuildFile section */
 
@@ -191,7 +191,6 @@
 
 /* Begin PBXFileReference section */
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		1E6FD5BEA5F7B6CF75BCA00D /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
@@ -204,12 +203,13 @@
 		3EF418F71CC7F7FA002D99E8 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3EF418F81CC7F7FA002D99E8 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3EF418F91CC7F7FA002D99E8 /* nl */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = nl; path = nl.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		5BF4C56EF9E741B8994020A7 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5F489F28028DC38C046B36D3 /* Pods-SelfControl.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SelfControl.release.xcconfig"; path = "Pods/Target Support Files/Pods-SelfControl/Pods-SelfControl.release.xcconfig"; sourceTree = "<group>"; };
 		640D40C816D6E962003034B3 /* it */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = it; path = it.lproj/DomainList.xib; sourceTree = "<group>"; };
 		640D40C916D6E962003034B3 /* it */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = it; path = it.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		640D40CA16D6E962003034B3 /* it */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = it; path = it.lproj/TimerWindow.xib; sourceTree = "<group>"; };
 		640D40CB16D6E962003034B3 /* it */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		640D40CC16D6E962003034B3 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7998DF77DD84DD8940C6F482 /* libPods-SelfControl.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SelfControl.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* SelfControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SelfControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		949F9F8815B32EC6007B8B42 /* zh-Hans */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -217,7 +217,6 @@
 		949F9F8A15B33267007B8B42 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hans"; path = "zh-Hans.lproj/MainMenu.xib"; sourceTree = "<group>"; };
 		949F9F8B15B33339007B8B42 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hans"; path = "zh-Hans.lproj/TimerWindow.xib"; sourceTree = "<group>"; };
 		949F9F8D15B333A1007B8B42 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
-		A59D865C434C80486660F59E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		CB02347119E9B6D0008E2473 /* FirstTime.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FirstTime.xib; sourceTree = "<group>"; };
 		CB03860D19D777B0004614B6 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/PreferencesGeneralViewController.xib; sourceTree = "<group>"; };
 		CB03860E19D777B2004614B6 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/PreferencesGeneralViewController.xib; sourceTree = "<group>"; };
@@ -352,6 +351,7 @@
 		CBE5C40A0F4D4531003DB900 /* ButtonWithPopupMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonWithPopupMenu.m; sourceTree = "<group>"; };
 		CBEE50BF0F48C21F00F5DF1C /* TimerWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerWindowController.h; sourceTree = "<group>"; };
 		CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerWindowController.m; sourceTree = "<group>"; };
+		DBA01017E61D6B843CA3758D /* Pods-SelfControl.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SelfControl.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SelfControl/Pods-SelfControl.debug.xcconfig"; sourceTree = "<group>"; };
 		F5B8CBEC19EE21C30026F3A5 /* SCTimeIntervalFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCTimeIntervalFormatter.h; sourceTree = "<group>"; };
 		F5B8CBED19EE21C30026F3A5 /* SCTimeIntervalFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCTimeIntervalFormatter.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -365,7 +365,7 @@
 				CB587E500F50FE8800C66A09 /* SystemConfiguration.framework in Frameworks */,
 				CB8A338B1CD7196B00AD6B8B /* Sparkle.framework in Frameworks */,
 				CBB3FD7A0F53834B00244132 /* Security.framework in Frameworks */,
-				CF32FCC0BE72492A9CC7BE68 /* libPods.a in Frameworks */,
+				4E71677BF7C94DB980557038 /* libPods-SelfControl.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -446,7 +446,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA /* SelfControl */ = {
+		29B97314FDCFA39411CA2CEA = {
 			isa = PBXGroup;
 			children = (
 				CB8A338A1CD7196B00AD6B8B /* Sparkle.framework */,
@@ -463,7 +463,7 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				CB42939A0F53A819008E10CA /* COPYING */,
 				CB9C80F819CFB79700CDCAE1 /* SelfControl Killer */,
-				2C876B01430E036D3D0A3B52 /* Pods */,
+				DDDC709FF9E9196A96CA7BCF /* Pods */,
 			);
 			name = SelfControl;
 			sourceTree = "<group>";
@@ -501,18 +501,9 @@
 				CB9C812919CFBB8000CDCAE1 /* Foundation.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
-				5BF4C56EF9E741B8994020A7 /* libPods.a */,
+				7998DF77DD84DD8940C6F482 /* libPods-SelfControl.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		2C876B01430E036D3D0A3B52 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				1E6FD5BEA5F7B6CF75BCA00D /* Pods.debug.xcconfig */,
-				A59D865C434C80486660F59E /* Pods.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 		CB4294DF0F53D865008E10CA /* Classes */ = {
@@ -612,6 +603,15 @@
 			name = "Helper Tools";
 			sourceTree = "<group>";
 		};
+		DDDC709FF9E9196A96CA7BCF /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DBA01017E61D6B843CA3758D /* Pods-SelfControl.debug.xcconfig */,
+				5F489F28028DC38C046B36D3 /* Pods-SelfControl.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		F5B8CBEB19EE21340026F3A5 /* Formatters */ = {
 			isa = PBXGroup;
 			children = (
@@ -628,15 +628,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "SelfControl" */;
 			buildPhases = (
-				3CA8C21D02B541F8A673FE9E /* Check Pods Manifest.lock */,
+				10CA088CE7CF641F4F172445 /* [CP] Check Pods Manifest.lock */,
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				CB2359D90F4541AB0030F59C /* Copy Helper Tools */,
-				E388D89B9A8D4BB49E5F775F /* Copy Pods Resources */,
 				CB5E5FF81C3A5FD10038F331 /* ShellScript */,
-				815BD74738A5A74C943DF69B /* Embed Pods Frameworks */,
 				CB8A338D1CD7196B00AD6B8B /* Embed Frameworks */,
+				2E664A3856970AD32B5CC7B9 /* [CP] Embed Pods Frameworks */,
+				22C9B7A8C5E18DC6FADD451C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -769,7 +769,8 @@
 				nl,
 				fr,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA /* SelfControl */;
+			mainGroup = 29B97314FDCFA39411CA2CEA;
+			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -819,34 +820,49 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3CA8C21D02B541F8A673FE9E /* Check Pods Manifest.lock */ = {
+		10CA088CE7CF641F4F172445 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		815BD74738A5A74C943DF69B /* Embed Pods Frameworks */ = {
+		22C9B7A8C5E18DC6FADD451C /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SelfControl/Pods-SelfControl-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2E664A3856970AD32B5CC7B9 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SelfControl/Pods-SelfControl-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		CB5E5FF81C3A5FD10038F331 /* ShellScript */ = {
@@ -875,21 +891,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /usr/bin/ruby;
 			shellScript = "#!/usr/bin/env ruby -w\n#\n#################################################################################\n#                                                                               #\n#     appcast_automation.rb                                                     #\n#                                                                               #\n#     author:   Craig Williams                                                  #\n#     created:  2009-01-09                                                      #\n#                                                                               #\n#################################################################################\n#                                                                               #\n#     This program is free software: you can redistribute it and/or modify      #\n#     it under the terms of the GNU General Public License as published by      #\n#     the Free Software Foundation, either version 3 of the License, or         #\n#     (at your option) any later version.                                       #\n#                                                                               #\n#     This program is distributed in the hope that it will be useful,           #\n#     but WITHOUT ANY WARRANTY; without even the implied warranty of            #\n#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             #\n#     GNU General Public License for more details.                              #\n#                                                                               #\n#     You should have received a copy of the GNU General Public License         #\n#     along with this program.  If not, see <http://www.gnu.org/licenses/>.     #\n#                                                                               #\n#################################################################################\n\nclass AppCast\nrequire 'rubygems'\nrequire 'yaml'\nrequire 'tmpdir'\nrequire 'fileutils'\nrequire 'openssl'\nrequire 'nokogiri'\nrequire 'base64'\n\nMESSAGE_HEADER   = 'RUN SCRIPT DURING BUILD MESSAGE'\nYAML_FOLDER_PATH = \"#{ENV['HOME']}/SelfControl/selfcontrol/\"\n\ndef initialize\n@signature = ''\nrequire_release_build\nproject_setup\nload_config\n\n# the build_now setting in the config.yml file\n# determines whether you want to perform this script\n# set to 'NO' until you are ready to publish\nexit_unless_build\nbase_folder\nappcast_setup\nend\n\ndef execute!\ncreate_appcast_folder_and_files\nremove_old_zip_create_new_zip\nfile_stats\ncreate_key\nputs \"created key\"\ncreate_appcast_xml\nputs \"created appcast xml\"\ncopy_archive_to_appcast_path\nputs \"copied archive to appcast path\"\nend\n\n# Only works for Release builds\n# Exits upon failure\ndef require_release_build\nif ENV[\"BUILD_STYLE\"] == 'Debug'\nlog_message(\"Distribution target requires 'Release' build style\")\nexit\nend\nend\n\n# Exits if no config.yml file found.\ndef load_config\nconfig_file_path = \"#{YAML_FOLDER_PATH}/config.yml\"\nunless File.exists?(config_file_path)\nlog_message(\"No 'config.yml' file found in project directory.\")\nexit\nend\n@config = YAML.load_file(config_file_path)\nend\n\ndef exit_unless_build\nunless @config['build_now'] == 'YES'\nlog_message(\"The 'build_now' setting in 'config.yml' set to 'NO'\\nIf you are wanting to include this script in\\nthe build process change this setting to 'YES'\")\nexit\nend\nend\n\ndef project_setup\n@proj_dir         = ENV['BUILT_PRODUCTS_DIR']\n@proj_name        = ENV['PROJECT_NAME']\n@version          = \"2.1\"\n@build_number     = \"2.1\"\n@archive_filename = \"#{@proj_name}_#{@version.chomp}.zip\" # underline character added\n@archive_path     = \"#{@proj_dir}/#{@archive_filename}\"\nend\n\ndef appcast_setup\n@appcast_xml_name      = @config['appcast_xml_name'].chomp\n@appcast_proj_folder   = \"#{@config['appcast_basefolder']}/#{@proj_name}_#{@version}\".chomp\n@appcast_xml_path      = \"#{@appcast_proj_folder}/#{@appcast_xml_name}\"\n@download_base_url     = @config['download_base_url']\n@keychain_privkey_name = @config['keychain_privkey_name']\n@css_file_name         = @config['css_file_name']\n@releasenotes_url      = \"#{@download_base_url}#{@version.chomp}.html\"\n@download_url          = \"#{@download_base_url}#{@archive_filename}\"\n@appcast_download_url  = \"#{@download_base_url}#{@appcast_xml_name}\"\nend\n\ndef base_folder\n@appcast_basefolder = @config['appcast_basefolder'].chomp\nFile.expand_path(@appcast_basefolder) if @appcast_basefolder.start_with?(\"~\")\nend\n\ndef remove_old_zip_create_new_zip\nDir.chdir(@proj_dir)\n`rm -f #{@proj_name}*.zip`\n`ditto -ck --keepParent --rsrc --sequesterRsrc \"#{@proj_name}.app\" \"#{@archive_filename}\"`\nend\n\ndef copy_archive_to_appcast_path\nbegin\nFileUtils.cp(@archive_path, @appcast_proj_folder)\nrescue\nlog_message(\"There was an error coplogying the zip file to appcast folder\\nError: #{$!}\")\nend\nend\n\ndef file_stats\n@size     = File.size(@archive_filename)\n@pubdate  = `date +\"%a, %d %b %G %T %z\"`\nend\n\ndef get_key\nkey_xml = `security find-generic-password -g -s \\\"#@keychain_privkey_name\\\" 2>&1 1>/dev/null`\nkey_xml = key_xml.gsub(/\\\\012/, \"\\n\")\nkey_xml = key_xml.split(\"\\\"\")[1]\nend\n\ndef create_key\nkey = get_key\n\nputs \"got key: #{key}\"\n\nif key.empty?\nlog_message(\"Unable to load signing private key with name '#{@keychain_privkey_name}' from keychain\\nFor file #{@archive_filename}\")\nexit\nend\n\nhashed     = OpenSSL::Digest::SHA1.digest(File.read(\"#{@archive_path}\"))\ndsa        = OpenSSL::PKey::DSA.new(key)\ndss1       = OpenSSL::Digest::DSS1.new\nsign       = dsa.sign(dss1, hashed)\n@signature = Base64.encode64(sign)\n@signature = @signature.gsub(\"\\n\", '')\n\nif @signature.empty?\nlog_message(\"Unable to sign file #{@archive_filename}\")\nexit\nelse\nlog_message(\"New signature is \\n#{@signature}\")\nend\nend\n\ndef create_appcast_xml\nappcast_xml =\n\"<?xml version=\\\"1.0\\\" encoding=\\\"utf-8\\\"?>\n<rss version=\\\"2.0\\\" xmlns:sparkle=\\\"http://www.andymatuschak.org/xml-namespaces/sparkle\\\"  xmlns:dc=\\\"http://purl.org/dc/elements/1.1/\\\">\n<title>#{@proj_name}_#{@version.chomp}</title>\n<link>#{@appcast_download_url}</link>\n<description>Most recent changes with links to updates.</description>\n<language>en</language>\n<item>\n<title>Version #{@version.chomp}</title>\n<sparkle:releaseNotesLink>\n#{@releasenotes_url}\n</sparkle:releaseNotesLink>\n<pubDate>#{@pubdate.chomp}</pubDate>\n<enclosure url=\\\"#{@download_url.chomp}\\\"\nlength=\\\"#{@size}\\\"csparkle:shortVersionString=\\\"#{@version.chomp}\\\"\nsparkle:dsaSignature=\\\"#{@signature.chomp}\\\"/>\n</item>\n</channel>\n</rss>\"\n\nFile.open(@appcast_xml_path, 'w') { |f| f.puts appcast_xml }\nend\n\n# Creates the appcast folder if it does not exist\n# or is accidently moved or deleted\n# Creates an html file with generic note template if it does not exist\n# This way the notes file is named correctly as well\n# Creates a css file named from yml file with default css\ndef create_appcast_folder_and_files\nbase_folder = @appcast_basefolder\nproject_folder = @appcast_proj_folder\n\nnotes_file = \"#{project_folder}/#{File.basename(@releasenotes_url.chomp)}\"\ncss_file_path = \"#{project_folder}/#{@css_file_name}\"\n\nDir.mkdir(base_folder)    unless File.exists?(base_folder)\nDir.mkdir(project_folder) unless File.exists?(project_folder)\n\nFile.open(notes_file, 'w') { |f| f.puts release_notes_generic_text } unless File.exists?(notes_file)\nFile.open(css_file_path, 'w') { |f| f.puts decompressed_css } unless File.exists?(css_file_path)\nend\n\ndef log_message(msg)\nputs \"\\n\\n----------------------------------------------\"\nputs MESSAGE_HEADER\nputs msg\nputs \"----------------------------------------------\\n\\n\"\nend\n\ndef decompressed_css\nreturn css_text.gsub(/\\{\\s+/, \"{\\n\\t\").gsub(/;/, \";\\n\\t\").gsub(/^\\s+\\}/, \"}\").gsub(/^\\s+/, \"\\t\")\nend\n\ndef release_notes_generic_text\nreturn \"\n<html>\n<head>\n<meta http-equiv=\\\"content-type\\\" content=\\\"text/html;charset=utf-8\\\">\n<title>What's new in #{@proj_name}?</title>\n<meta name=\\\"robots\\\" content=\\\"anchors\\\">\n<link href=\\\"rnotes.css\\\" type=\\\"text/css\\\" rel=\\\"stylesheet\\\" media=\\\"all\\\">\n</head>\n\n<body>\n<br />\n<table class=\\\"dots\\\" width=\\\"100%\\\" border=\\\"0\\\" cellspacing=\\\"0\\\" cellpadding=\\\"0\\\" summary=\\\"Two column table with heading\\\">\n<tr>\n<td class=\\\"blue\\\" colspan=\\\"2\\\">\n<h3>#{@proj_name} #{@version.chomp} Release Notes</h3>\n</td>\n</tr>\n<tr>\n<td valign=\\\"top\\\">\n<p>\n<ul>\n<li>DESCRIPTION</li>\n</ul>\n</p>\n</td>\n</tr>\n</table>\n<br>\n</body>\n\n</html>\"\nend\n\n# This css will be expanded to a normal, easily editable form when written to file\ndef css_text\nreturn \"\nbody { margin: 2px 12px 12px; }\nh1 h2 h3 p ol ul a a:hover { font-family: \\\"Lucida Grande\\\", Arial, sans-serif; }\n    h1 { font-size: 11pt; margin-bottom: 0; }\n    h2 { font-size: 9pt; margin-top: 0; margin-bottom: -10px; }\n    h3 { font-size: 9pt; font-weight: bold; margin-top: -4px; margin-bottom: -4px; }\n    p { font-size: 9pt; line-height: 12pt; text-decoration: none; }\n    ol { font-size: 9pt; line-height: 12pt; list-style-position: outside; margin-top: 12px; margin-bottom: 12px; margin-left: -18px; padding-left: 40px; }\n    ol li { margin-top: 6px; margin-bottom: 6px; }\n    ol p { margin-top: 6px; margin-bottom: 6px; }\n    ul { font-size: 9pt; line-height: 12pt; list-style-type: square; list-style-position: outside; margin-top: 12px; margin-bottom: 12px; margin-left: -24px; padding-left: 40px; }\n    ul li { margin-top: 6px; margin-bottom: 6px; }\n    ul p { margin-top: 6px; margin-bottom: 6px; }\n    a { color: #00f; font-size: 9pt; line-height: 12pt; text-decoration: none; }\n        a:hover { color: #00f; text-decoration: underline; }\n            hr { text-decoration: none; border: solid 1px #bfbfbf; }\n                td { padding: 6px; }\n                #banner { background-color: #f2f2f2; background-repeat: no-repeat; padding: -2px 6px 0; position: fixed; top: 0; left: 0; width: 100%; height: 1.2em; float: left; border: solid 1px #bfbfbf; }\n                #caticon { margin-top: 3px; margin-bottom: -3px; margin-right: 5px; float: left; }\n                #pagetitle { margin-top: 12px; margin-bottom: 0px; margin-left: 40px; width: 88%; border: solid 1px #fff; }\n                #mainbox { margin-top: 2349px; padding-right: 6px; }\n                #taskbox { background-color: #e6edff; list-style-type: decimal; list-style-position: outside; margin: 12px 0; padding: 2px 12px; border: solid 1px #bfbfbf; }\n                #taskbox h2 { margin-top: 8; margin-bottom: -4px; }\n                #machelp { position: absolute; top: 2px; left: 10px ; }\n                #index { background-color: #f2f2f2; padding-right: 25px; top: 2px; right: 12px; width: auto; float: right; }\n                #next { position: absolute; top: 49px; left: 88%; }\n                #asindent { margin-left: 22px; font-size: 9pt; font-family: Verdana, Courier, sans-serif; }\n                .bread { color: #00f; font-size: 8pt; margin: -9px 0 -6px; }\n                    .leftborder { color: #00f; font-size: 8pt; margin: -9px 0 -6px; padding-top: 2px; padding-bottom: 3px; padding-left: 8px; border-left: 1px solid #bfbfbf; }\n                        .mult { margin-top: -8px; }\n                        .blue { background-color: #e6edff; margin-top: -3px; margin-bottom: -3px; padding-top: -3px; padding-bottom: -3px; }\n                            .rightfloater { float: right; margin-left: 15px; }\n                            .rules { border-bottom: 1px dotted #ccc; }\n                                .dots { border: dotted 1px #ccc; }\n                                    .seealso { margin-top: 4px; margin-bottom: 4px; }\n                                    code { color: black; font-size: 9pt; font-family: Verdana, Courier, sans-serif; }\"\n                                    end\n                                    end\n                                    \n                                    if __FILE__ == $0\n                                    appcast = AppCast.new\n                                    appcast.execute!\n                                    appcast.log_message(\"It appears all went well with the build script!\")\n                                    end\n";
-		};
-		E388D89B9A8D4BB49E5F775F /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1144,7 +1145,7 @@
 /* Begin XCBuildConfiguration section */
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1E6FD5BEA5F7B6CF75BCA00D /* Pods.debug.xcconfig */;
+			baseConfigurationReference = DBA01017E61D6B843CA3758D /* Pods-SelfControl.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -1172,7 +1173,7 @@
 		};
 		C01FCF4C08A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A59D865C434C80486660F59E /* Pods.release.xcconfig */;
+			baseConfigurationReference = 5F489F28028DC38C046B36D3 /* Pods-SelfControl.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
