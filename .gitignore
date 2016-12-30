@@ -21,6 +21,9 @@ xcuserdata
 profile
 *.moved-aside
 
+Podfile.lock
+Pods/
+
 xcuserdata/**/*
 !xcuserdata/**/xcschemes/*
 
