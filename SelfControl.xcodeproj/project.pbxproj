@@ -633,8 +633,8 @@
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				CB2359D90F4541AB0030F59C /* Copy Helper Tools */,
-				CB5E5FF81C3A5FD10038F331 /* ShellScript */,
 				CB8A338D1CD7196B00AD6B8B /* Embed Frameworks */,
+				CB5E5FF81C3A5FD10038F331 /* ShellScript */,
 				2E664A3856970AD32B5CC7B9 /* [CP] Embed Pods Frameworks */,
 				22C9B7A8C5E18DC6FADD451C /* [CP] Copy Pods Resources */,
 			);
@@ -877,7 +877,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "LOCATION=\"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\n\n# Usually set by Xcode\nCODE_SIGN_IDENTITY=\"Developer ID Application: Charlie Stigler\"\n\ncodesign --verbose --force --sign \"$CODE_SIGN_IDENTITY\" \"$LOCATION/Sparkle.framework/Versions/A\"";
+			shellScript = "LOCATION=\"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\n\n# Usually set by Xcode\nCODE_SIGN_IDENTITY=\"Mac Developer: Charles Stigler (22JB4UZFSZ)\"\n\ncodesign --verbose --force --sign \"$CODE_SIGN_IDENTITY\" \"$LOCATION/Sparkle.framework/Versions/A\"";
 		};
 		CB9F02F416C10CEE003054EE /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
