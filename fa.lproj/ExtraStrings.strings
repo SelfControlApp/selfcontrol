@@ -1,0 +1,33 @@
+/* Localized versions of Info.plist keys */
+
+"day" = "روز";
+"days" = "روزها";
+"hour" = "ساعت";
+"hours" = "ساعات";
+"minute" = "دقیقه";
+"minutes" = "دقایق";
+"Block in progress" = "بلوک در حال پیشرفت";
+"The blacklist cannot be edited while a block is in progress." = ".لیست سیاه قابل ویرایش نیست در حالی که یک بلوک در حال پیشرفت است";
+"OK" = "باشه";
+"Helper tool not launched as root." = ".ابزار کمکی به عنوان ریشه راه اندازی نشده است";
+"Helper tool launched with insufficient arguments." = ".ابزار کمکی راه اندازی با استدلال کافی نیست";
+"Host blocklist not set" = "تناسب اندام، تندرستی میزبان تنظیم نشده";
+"Could not write launchd plist file to LaunchDaemons folder." = ".می تواند فایل رو با یه launchd به پوشه LaunchDaemons ارسال نشده است";
+"Could not create PrivilegedHelperTools directory." = ".ساخت پوشه امکان پذیر نیست";
+"Could not change permissions on PrivilegedHelperTools directory." = ".می تواند مجوز در دایرکتوری PrivilegedHelperTools را تغییر دهید";
+"Could not delete old helper binary." = ".می تواند یاور دودویی قدیمی را حذف کنید";
+"Could not copy SelfControl's helper binary to PrivilegedHelperTools directory." = ".می تواند یاور دودویی SelfControl به دایرکتوری PrivilegedHelperTools کپی کنید";
+"Could not change permissions on SelfControl's helper binary." = ".می تواند مجوز در باینری یاور SelfControl را تغییر نمیدهد";
+"Insufficient block information found." = ".اطلاعات بلوک کافی یافت می شود";
+"Launch daemon load returned a failure status code." = ".بار راه اندازی شبح یک کد وضعیت شکست بازگشت";
+"Remove option called." = ".حذف گزینه ای به نام";
+"Refreshing domain blacklist, but no block is currently ongoing." = ".تازه کردن لیست سیاه دامنه، اما هیچ بلوک در حال حاضر در حال انجام است";
+"Checkup ran but no block found." = ".بازرسی فنی زد اما هیچ بلوک یافت"
+"Could not write lock file." = ".فایل قفل نوشتن نیست";
+"Could not remove SelfControl lock file." = ".می تواند SelfControl فایل قفل را حذف کنید";
+"SelfControl lock file already exists. Please try your block again." = ".SelfControl فایل قفل قبل وجود دارد. لطفا دوباره بلوک خود را امتحان کنید";
+"Helper tool failed with unknown error code: %d" = "%d :ابزار کمکی با کد خطای ناشناخته شکست خورده";
+"Error %d received from the Security Server." = ".خطا از ٪d از سرور امنیت را دریافت کرد";
+"Error -104: The helper tool crashed. This may cause unexpected errors." = "خطا -104: ابزار کمکی سقوط کرد. این ممکن است اشتباهات غیر منتظره می شود.";
+"Are you sure you want a whitelist block?" = "آیا مطمئن هستید که می خواهید یک بلوک لیست سفید؟";
+"A whitelist block means that everything on the internet BESIDES your specified list will be blocked.  This includes the web, email, SSH, and anything else your computer accesses via the internet.  If a web site requires resources such as images or scripts from a site that is not on your whitelist, the site may not work properly." = ".بلوک لیست سفید این معنی است که همه چیز را در اینترنت علاوه بر لیست مشخص شده خود را مسدود خواهد شد. این شامل وب، ایمیل، SSH، و هر چیز دیگری از کامپیوتر خود را دسترسی از طریق اینترنت. اگر یک وب سایت نیاز به منابع مانند تصاویر یا اسکریپت از یک سایت است که در لیست سفید شما نیست، سایت ممکن است به درستی کار نمی کند";
