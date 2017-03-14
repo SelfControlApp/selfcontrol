@@ -170,6 +170,11 @@ int main(int argc, char* argv[]) {
 				printStatus(-209);
 				exit(EX_IOERR);
 			}
+            
+            // Update BlockStartedDate as the helper utility was probably started by command line and not through the AppController.
+            if(defaults[@"BlockStartedDate"] != nil && [defaults[@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]){
+                setDefaultsValue(@"BlockStartedDate", [NSDate date], controllingUID);
+            }
 
             // Update BlockStartedDate as the helper utility was probably started by command line and not through the AppController.
             if(defaults[@"BlockStartedDate"] != nil && [defaults[@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]){
