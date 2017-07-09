@@ -10,31 +10,35 @@
 #include "HelperCommon.h"
 #include "BlockManager.h"
 
+
+NSDictionary* getAppDefaultsDictionary() {
+    return @{@"BlockDuration": @15,
+             @"BlockStartedDate": [NSDate distantFuture],
+             @"HostBlacklist": @[],
+             @"EvaluateCommonSubdomains": @YES,
+             @"IncludeLinkedDomains": @YES,
+             @"HighlightInvalidHosts": @YES,
+             @"VerifyInternetConnection": @YES,
+             @"TimerWindowFloats": @NO,
+             @"BlockSoundShouldPlay": @NO,
+             @"BlockSound": @5,
+             @"ClearCaches": @YES,
+             @"BlockAsWhitelist": @NO,
+             @"BadgeApplicationIcon": @YES,
+             @"AllowLocalNetworks": @YES,
+             @"MaxBlockLength": @1440,
+             @"BlockLengthInterval": @15,
+             @"WhitelistAlertSuppress": @NO,
+             @"GetStartedShown": @NO};
+}
+
 void registerDefaults(uid_t controllingUID) {
 	[NSUserDefaults resetStandardUserDefaults];
 	seteuid(controllingUID);
 	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
 	[defaults addSuiteNamed: @"org.eyebeam.SelfControl"];
 	[defaults synchronize];
-	NSDictionary* appDefaults = @{@"BlockDuration": @15,
-								  @"BlockStartedDate": [NSDate distantFuture],
-								  @"HostBlacklist": @[],
-								  @"EvaluateCommonSubdomains": @YES,
-								  @"IncludeLinkedDomains": @YES,
-								  @"HighlightInvalidHosts": @YES,
-								  @"VerifyInternetConnection": @YES,
-								  @"TimerWindowFloats": @NO,
-								  @"BlockSoundShouldPlay": @NO,
-								  @"BlockSound": @5,
-								  @"ClearCaches": @YES,
-								  @"BlockAsWhitelist": @NO,
-								  @"BadgeApplicationIcon": @YES,
-								  @"AllowLocalNetworks": @YES,
-								  @"MaxBlockLength": @1440,
-								  @"BlockLengthInterval": @15,
-								  @"WhitelistAlertSuppress": @NO,
-								  @"GetStartedShown": @NO};
-	[defaults registerDefaults:appDefaults];
+	[defaults registerDefaults: getAppDefaultsDictionary()];
 	[defaults synchronize];
 	seteuid(0);
 }
@@ -44,6 +48,11 @@ NSDictionary* getDefaultsDict(uid_t controllingUID) {
 	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
 	[defaults addSuiteNamed: @"org.eyebeam.SelfControl"];
 	[defaults synchronize];
+
+	// in the 10.13 High Sierra public beta (as of build 17A291m) registering defaults needs to be done immediately
+	// before pulling the dictionary representation, or the default values won't be returned (we'll get nils instead and crash)
+	[defaults registerDefaults: getAppDefaultsDictionary()];
+
 	NSDictionary* dict = [defaults dictionaryRepresentation];
 	[NSUserDefaults resetStandardUserDefaults];
 	seteuid(0);
