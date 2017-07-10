@@ -245,7 +245,7 @@
 - (IBAction)killBlock:(id)sender {
 	AuthorizationRef authorizationRef;
 	char* helperToolPath = [self selfControlKillerHelperToolPathUTF8String];
-	int helperToolPathSize = strlen(helperToolPath);
+	NSUInteger helperToolPathSize = strlen(helperToolPath);
 	AuthorizationItem right = {
 		kAuthorizationRightExecute,
 		helperToolPathSize,

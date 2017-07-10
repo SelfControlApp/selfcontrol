@@ -28,7 +28,7 @@
 	<key>CFBundleIconFile</key>
 	<string>SelfControlIcon</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.eyebeam.${PRODUCT_NAME:identifier}</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -60,11 +60,11 @@
 	<string>NSApplication</string>
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
+	<key>SUEnableJavaScript</key>
+	<true/>
 	<key>SUFeedURL</key>
 	<string>https://selfcontrolapp.com/SelfControlAppcast.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
-	<key>SUEnableJavaScript</key>
-	<true/>
 </dict>
 </plist>

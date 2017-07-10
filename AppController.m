@@ -173,7 +173,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		// If the user selected Network Diagnostics launch an assisant to help them.
 		// apple.com is an arbitrary host chosen to pass to Network Diagnostics.
 		CFURLRef url = CFURLCreateWithString(NULL, CFSTR("http://apple.com"), NULL);
-		CFNetDiagnosticRef diagRef = CFNetDiagnosticCreateWithURL(NULL, url);
+		CFNetDiagnosticRef diagRef = CFNetDiagnosticCreateWithURL(kCFAllocatorDefault, url);
 		CFNetDiagnosticDiagnoseProblemInteractively(diagRef);
 		return;
 	}
@@ -306,7 +306,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	blockIsOn = ![self selfControlLaunchDaemonIsLoaded];
 
 	// Change block duration slider for hidden user defaults settings
-	int numTickMarks = ([defaults_ integerForKey: @"MaxBlockLength"] / [defaults_ integerForKey: @"BlockLengthInterval"]) + 1;
+	long numTickMarks = ([defaults_ integerForKey: @"MaxBlockLength"] / [defaults_ integerForKey: @"BlockLengthInterval"]) + 1;
 	[blockDurationSlider_ setMaxValue: [defaults_ integerForKey: @"MaxBlockLength"]];
 	[blockDurationSlider_ setNumberOfTickMarks: numTickMarks];
 
@@ -458,7 +458,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		// If the user selected Network Diagnostics, launch an assisant to help them.
 		// apple.com is an arbitrary host chosen to pass to Network Diagnostics.
 		CFURLRef url = CFURLCreateWithString(NULL, CFSTR("http://apple.com"), NULL);
-		CFNetDiagnosticRef diagRef = CFNetDiagnosticCreateWithURL(NULL, url);
+		CFNetDiagnosticRef diagRef = CFNetDiagnosticCreateWithURL(kCFAllocatorDefault, url);
 		CFNetDiagnosticDiagnoseProblemInteractively(diagRef);
 
 		// Reverse the blacklist change made before we fail
@@ -568,7 +568,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		[self refreshUserInterface];
 		AuthorizationRef authorizationRef;
 		char* helperToolPath = [self selfControlHelperToolPathUTF8String];
-		int helperToolPathSize = strlen(helperToolPath);
+		NSUInteger helperToolPathSize = strlen(helperToolPath);
 		AuthorizationItem right = {
 			kAuthorizationRightExecute,
 			helperToolPathSize,
@@ -679,7 +679,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	@autoreleasepool {
 		AuthorizationRef authorizationRef;
 		char* helperToolPath = [self selfControlHelperToolPathUTF8String];
-		int helperToolPathSize = strlen(helperToolPath);
+		long helperToolPathSize = strlen(helperToolPath);
 		AuthorizationItem right = {
 			kAuthorizationRightExecute,
 			helperToolPathSize,
@@ -773,7 +773,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 - (IBAction)save:(id)sender {
 	NSSavePanel *sp;
-	int runResult;
+	long runResult;
 
 	/* create or get the shared instance of NSSavePanel */
 	sp = [NSSavePanel savePanel];
@@ -808,7 +808,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	oPanel.allowedFileTypes = @[@"selfcontrol"];
 	oPanel.allowsMultipleSelection = NO;
 
-	int result = [oPanel runModal];
+	long result = [oPanel runModal];
 	if (result == NSOKButton) {
 		if([oPanel.URLs count] > 0) {
 			NSDictionary* openedDict = [NSDictionary dictionaryWithContentsOfURL: oPanel.URLs[0]];

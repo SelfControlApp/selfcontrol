@@ -10,7 +10,6 @@
 #include "HelperCommon.h"
 #include "BlockManager.h"
 
-
 NSDictionary* getAppDefaultsDictionary() {
     return @{@"BlockDuration": @15,
              @"BlockStartedDate": [NSDate distantFuture],

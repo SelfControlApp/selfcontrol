@@ -87,7 +87,7 @@ int main(int argc, char* argv[]) {
 			NSDate* expirationDate = [[NSDate date] dateByAddingTimeInterval: (blockDuration *60)];
 			NSCalendar* calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 			NSDateComponents* components = [calendar components: NSMinuteCalendarUnit fromDate: expirationDate];
-			int expirationMinute = [components minute];
+			long expirationMinute = [components minute];
 
 			NSString* plistString = [NSString stringWithFormat:
 									 plistFormatString,
@@ -225,8 +225,8 @@ int main(int argc, char* argv[]) {
 
 			if(result) {
 				printStatus(-211);
+                NSLog(@"WARNING: Launch daemon load returned a failure status code.");
 				exit(EX_UNAVAILABLE);
-				NSLog(@"WARNING: Launch daemon load returned a failure status code.");
 			} else NSLog(@"INFO: Block successfully added.");
 		}
 		if([modeString isEqual: @"--remove"]) {

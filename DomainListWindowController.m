@@ -88,7 +88,7 @@
 														object: self];
 }
 
-- (int)numberOfRowsInTableView:(NSTableView *)aTableView {
+- (NSUInteger)numberOfRowsInTableView:(NSTableView *)aTableView {
 	return [domainList_ count];
 }
 
@@ -134,7 +134,7 @@
 			}
 			else {
 				[domainList_ addObject:@""];
-				[self tableView: aTableView setObjectValue: listComponents[i] forTableColumn: aTableColumn row: [domainList_ count] - 1];
+				[self tableView: aTableView setObjectValue: listComponents[i] forTableColumn: aTableColumn row: (int)[domainList_ count] - 1];
 			}
 		}
 

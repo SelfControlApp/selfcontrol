@@ -48,7 +48,7 @@
 // Called by the table view on it's data source object (this) to determine how
 // many rows are in the table view to be displayed.  Returns the number of
 // objects in the domain list array.
-- (int)numberOfRowsInTableView:(NSTableView *)aTableView;
+- (NSUInteger)numberOfRowsInTableView:(NSTableView *)aTableView;
 
 // Called by the table view on it's data source object (this) to determine what
 // value should be displayed for a given row index.  Returns the corresponding
