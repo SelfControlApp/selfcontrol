@@ -1,9 +1,10 @@
 source 'https://github.com/CocoaPods/Specs.git'
+platform :osx, '10.7'
 
 target "SelfControl" do
 	pod 'MASPreferences', '~> 1.1.4'
 	pod 'FormatterKit/TimeIntervalFormatter', '~> 1.7'
-	pod 'Sparkle', '~> 1.14'
+	pod 'Sparkle', '~> 1.17'
 end
 
 pre_install do |installer|

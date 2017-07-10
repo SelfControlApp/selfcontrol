@@ -54,8 +54,6 @@ class AppCast
         create_appcast_folder_and_files
         remove_old_zip_create_new_zip
         file_stats
-        create_key
-        puts "created key"
         create_appcast_xml
         puts "created appcast xml"
         copy_archive_to_appcast_path
@@ -89,26 +87,25 @@ class AppCast
     end
     
     def project_setup
-        @str = ENV.to_h.to_yaml
-        puts @str
         @proj_dir         = ENV['BUILT_PRODUCTS_DIR']
         @proj_name        = ENV['PROJECT_NAME']
         @version          = "2.1.1"
         @build_number     = "2.1.1"
-        @archive_filename = "#{@proj_name}_#{@version.chomp}.zip" # underline character added
+        @archive_filename = "#{@proj_name}-#{@version.chomp}.zip" # underline character added
         @archive_path     = "#{@proj_dir}/#{@archive_filename}"
     end
     
     def appcast_setup
         @appcast_xml_name      = @config['appcast_xml_name'].chomp
-        @appcast_proj_folder   = "#{@config['appcast_basefolder']}/#{@proj_name}_#{@version}".chomp
+        @appcast_proj_folder   = "#{@config['appcast_basefolder']}/#{@proj_name}-#{@version}".chomp
         @appcast_xml_path      = "#{@appcast_proj_folder}/#{@appcast_xml_name}"
+        @min_system_version    = @config['min_system_version']
         @download_base_url     = @config['download_base_url']
-        @keychain_privkey_name = @config['keychain_privkey_name']
+        @web_base_url          = @config['web_base_url']
         @css_file_name         = @config['css_file_name']
-        @releasenotes_url      = "#{@download_base_url}#{@version.chomp}.html"
+        @releasenotes_url      = "#{@web_base_url}/releasenotes.html#collapse-#{@version.chomp.gsub('.', '-')}"
         @download_url          = "#{@download_base_url}#{@archive_filename}"
-        @appcast_download_url  = "#{@download_base_url}#{@appcast_xml_name}"
+        @appcast_download_url  = "#{@web_base_url}#{@appcast_xml_name}"
     end
     
     def base_folder
@@ -136,58 +133,37 @@ class AppCast
         @pubdate  = `date +"%a, %d %b %G %T %z"`
     end
     
-    def get_key
-        key_xml = `security find-generic-password -g -s \"#@keychain_privkey_name\" 2>&1 1>/dev/null`
-        key_xml = key_xml.gsub(/\\012/, "\n")
-        key_xml = key_xml.split("\"")[1]
-    end
-    
-    def create_key
-        key = get_key
-        
-        puts "got key: #{key}"
-        
-        if !key || key.empty?
-            log_message("Unable to load signing private key with name '#{@keychain_privkey_name}' from keychain\nFor file #{@archive_filename}")
-            exit
-        end
-        
-        hashed     = OpenSSL::Digest::SHA1.digest(File.read("#{@archive_path}"))
-        dsa        = OpenSSL::PKey::DSA.new(key)
-        dss1       = OpenSSL::Digest::DSS1.new
-        sign       = dsa.sign(dss1, hashed)
-        @signature = Base64.encode64(sign)
-        @signature = @signature.gsub("\n", '')
-        
-        if @signature.empty?
-            log_message("Unable to sign file #{@archive_filename}")
-            exit
-            else
-            log_message("New signature is \n#{@signature}")
-        end
+    def get_signature
+        puts "Generating signature for archive at path #{@archive_path}"
+        puts "Command: /usr/local/bin/sparkle/sign_update \"#{@archive_path}\" /Volumes/SelfControl\ Keys\ and\ Secrets/Sparkle\ Signing\ Keys/dsa_priv.pem"
+        return `/usr/local/bin/sparkle/sign_update \"#{@archive_path}\" \"/Volumes/SelfControl\ Keys\ and\ Secrets/Sparkle\ Signing\ Keys/dsa_priv.pem\"`.chomp
     end
     
     def create_appcast_xml
         appcast_xml =
         "<?xml version=\"1.0\" encoding=\"utf-8\"?>
-        <rss version=\"2.0\" xmlns:sparkle=\"http://www.andymatuschak.org/xml-namespaces/sparkle\"  xmlns:dc=\"http://purl.org/dc/elements/1.1/\">
-        <title>#{@proj_name}_#{@version.chomp}</title>
-        <link>#{@appcast_download_url}</link>
-        <description>Most recent changes with links to updates.</description>
-        <language>en</language>
-        <item>
+<rss version=\"2.0\" xmlns:sparkle=\"http://www.andymatuschak.org/xml-namespaces/sparkle\"  xmlns:dc=\"http://purl.org/dc/elements/1.1/\">
+    <title>#{@proj_name}</title>
+    <link>#{@appcast_download_url}</link>
+    <description>Most recent changes with links to updates.</description>
+    <language>en</language>
+    <item>
         <title>Version #{@version.chomp}</title>
         <sparkle:releaseNotesLink>
-        #{@releasenotes_url}
+            #{@releasenotes_url}
         </sparkle:releaseNotesLink>
         <pubDate>#{@pubdate.chomp}</pubDate>
         <enclosure url=\"#{@download_url.chomp}\"
-        length=\"#{@size}\"csparkle:shortVersionString=\"#{@version.chomp}\"
-        sparkle:dsaSignature=\"#{@signature.chomp}\"/>
-        </item>
-        </channel>
-        </rss>"
-        
+            length=\"#{@size}\"
+            sparkle:version=\"#{@version.chomp}\"
+            sparkle:shortVersionString=\"#{@version.chomp}\"
+            sparkle:dsaSignature=\"#{get_signature}\"
+            type=\"application/octet-stream\"
+        />
+        <sparkle:minimumSystemVersion>#{@min_system_version}</sparkle:minimumSystemVersion>
+    </item>
+</rss>"
+
         File.open(@appcast_xml_path, 'w') { |f| f.puts appcast_xml }
     end
     

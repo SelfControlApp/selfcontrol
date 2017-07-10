@@ -241,6 +241,7 @@
 		CB25806116C1FDBE0059C99A /* BlockManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockManager.m; sourceTree = "<group>"; };
 		CB25806416C237F10059C99A /* NSString+IPAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+IPAddress.h"; sourceTree = "<group>"; };
 		CB25806516C237F10059C99A /* NSString+IPAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+IPAddress.m"; sourceTree = "<group>"; };
+		CB395A051F134C6C00F55018 /* SelfControl copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "SelfControl copy-Info.plist"; path = "/Users/charlie/dev/selfcontrol/SelfControl copy-Info.plist"; sourceTree = "<absolute>"; };
 		CB40A8670FBC7DE700167727 /* SelfControlBlocklist.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SelfControlBlocklist.icns; sourceTree = "<group>"; };
 		CB42939A0F53A819008E10CA /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
 		CB4295C20F53EF8C008E10CA /* org.eyebeam.SelfControl.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = org.eyebeam.SelfControl.plist; sourceTree = "<group>"; };
@@ -450,12 +451,10 @@
 		29B97314FDCFA39411CA2CEA /* SelfControl */ = {
 			isa = PBXGroup;
 			children = (
-				CBB60BE31F12F19E00DCB597 /* distribution-build.rb */,
 				CB8A338A1CD7196B00AD6B8B /* Sparkle.framework */,
 				CBD4848519D7611F0020F949 /* Podfile */,
 				CBD4848619D7611F0020F949 /* TemplateIcon2x.png */,
 				CBCA9116196123E600AFD20C /* SelfControl.entitlements */,
-				CB505E3515AE2C0100D90367 /* config.yml */,
 				CB1E7A6D0F9AEA9B00D158BC /* ERRORS */,
 				CB4294DF0F53D865008E10CA /* Classes */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -464,8 +463,10 @@
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				CB42939A0F53A819008E10CA /* COPYING */,
+				CBB60BE41F13441F00DCB597 /* Distribution Build */,
 				CB9C80F819CFB79700CDCAE1 /* SelfControl Killer */,
 				DDDC709FF9E9196A96CA7BCF /* Pods */,
+				CB395A051F134C6C00F55018 /* SelfControl copy-Info.plist */,
 			);
 			name = SelfControl;
 			sourceTree = "<group>";
@@ -486,7 +487,6 @@
 				CB40A8670FBC7DE700167727 /* SelfControlBlocklist.icns */,
 				CB9366E60F85BEF100EF284E /* NSRemoveTemplate.jpg */,
 				CB9366E70F85BEF100EF284E /* NSAddTemplate.jpg */,
-				CB9365610F8581B000EF284E /* dsa_pub.pem */,
 				CB4295C20F53EF8C008E10CA /* org.eyebeam.SelfControl.plist */,
 				CB4C58D90F3F90B000B5D7CB /* Credits.rtf */,
 				8D1107310486CEB800E47090 /* Info.plist */,
@@ -590,6 +590,16 @@
 			);
 			name = SCKillerHelper;
 			path = ../SCKillerHelper;
+			sourceTree = "<group>";
+		};
+		CBB60BE41F13441F00DCB597 /* Distribution Build */ = {
+			isa = PBXGroup;
+			children = (
+				CB9365610F8581B000EF284E /* dsa_pub.pem */,
+				CB505E3515AE2C0100D90367 /* config.yml */,
+				CBB60BE31F12F19E00DCB597 /* distribution-build.rb */,
+			);
+			name = "Distribution Build";
 			sourceTree = "<group>";
 		};
 		CBD266C611ED82DB00042CD8 /* Helper Tools */ = {
@@ -731,6 +741,7 @@
 				TargetAttributes = {
 					8D1107260486CEB800E47090 = {
 						DevelopmentTeam = L6W5L88KN7;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.Mac = {
 								enabled = 1;
@@ -739,17 +750,24 @@
 					};
 					CB5E20BE0FAE0CDC006DBFC8 = {
 						DevelopmentTeam = L6W5L88KN7;
+						ProvisioningStyle = Manual;
 					};
 					CB9C80F619CFB79700CDCAE1 = {
 						CreatedOnToolsVersion = 6.0.1;
 						DevelopmentTeam = L6W5L88KN7;
+						ProvisioningStyle = Manual;
 					};
 					CB9C811A19CFBA8500CDCAE1 = {
 						CreatedOnToolsVersion = 6.0.1;
 						DevelopmentTeam = L6W5L88KN7;
+						ProvisioningStyle = Manual;
+					};
+					CB9F02EE16C10CDE003054EE = {
+						DevelopmentTeam = L6W5L88KN7;
 					};
 					CBA2AFD10F39EC12005AFEBE = {
 						DevelopmentTeam = L6W5L88KN7;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -835,7 +853,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		22C9B7A8C5E18DC6FADD451C /* [CP] Copy Pods Resources */ = {
@@ -879,7 +897,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "LOCATION=\"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\n\n# Usually set by Xcode\nCODE_SIGN_IDENTITY=\"Mac Developer: Charles Stigler (22JB4UZFSZ)\"\n\ncodesign --verbose --force --sign \"$CODE_SIGN_IDENTITY\" \"$LOCATION/Sparkle.framework/Versions/A\"";
+			shellScript = "LOCATION=\"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\n\n# Usually set by Xcode\nCODE_SIGN_IDENTITY=\"Developer ID Application: Charlie Stigler (L6W5L88KN7)\"\n\necho \"location: \"\necho $LOCATION\n\ncodesign --verbose --force --sign \"$CODE_SIGN_IDENTITY\" \"$LOCATION/Sparkle.framework/Versions/A\"";
 		};
 		CB9F02F416C10CEE003054EE /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1152,6 +1170,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1170,6 +1189,7 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = SelfControl;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -1180,6 +1200,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = L6W5L88KN7;
@@ -1196,6 +1217,7 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = SelfControl;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -1207,6 +1229,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = L6W5L88KN7;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_VERSION = "";
@@ -1228,6 +1251,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = L6W5L88KN7;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_VERSION = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1262,6 +1286,7 @@
 				);
 				PRODUCT_NAME = scheckup;
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
@@ -1270,6 +1295,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = L6W5L88KN7;
@@ -1285,6 +1311,7 @@
 				);
 				PRODUCT_NAME = scheckup;
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -1328,6 +1355,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
@@ -1349,6 +1377,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEVELOPMENT_TEAM = L6W5L88KN7;
@@ -1364,6 +1393,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};
@@ -1386,6 +1416,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
+				DEVELOPMENT_TEAM = L6W5L88KN7;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1404,6 +1435,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
@@ -1424,9 +1456,10 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				COPY_PHASE_STRIP = YES;
+				DEVELOPMENT_TEAM = L6W5L88KN7;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1438,6 +1471,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};
@@ -1482,6 +1516,7 @@
 				);
 				PRODUCT_NAME = org.eyebeam.SelfControl;
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = "org.eyebeam.SelfControl-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1494,6 +1529,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = L6W5L88KN7;
@@ -1511,6 +1547,7 @@
 				);
 				PRODUCT_NAME = org.eyebeam.SelfControl;
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = "org.eyebeam.SelfControl-Bridging-Header.h";
 				ZERO_LINK = NO;
