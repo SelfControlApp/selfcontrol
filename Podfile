@@ -5,6 +5,7 @@ target "SelfControl" do
 	pod 'MASPreferences', '~> 1.1.4'
 	pod 'FormatterKit/TimeIntervalFormatter', '~> 1.7'
 	pod 'Sparkle', '~> 1.17'
+    pod 'LetsMove', '~> 1.22'
 end
 
 pre_install do |installer|

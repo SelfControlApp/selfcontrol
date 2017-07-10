@@ -26,6 +26,7 @@
 #import "PreferencesAdvancedViewController.h"
 #import "SCTimeIntervalFormatter.h"
 #import <SystemConfiguration/SystemConfiguration.h>
+#import <LetsMove/PFMoveApplication.h>
 
 NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
@@ -281,6 +282,10 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	[getStartedWindowController.window center];
 	[getStartedWindowController.window makeKeyAndOrderFront: nil];
 	[getStartedWindowController showWindow: nil];
+}
+
+- (void)applicationWillFinishLaunching:(NSNotification *)notification {
+    PFMoveToApplicationsFolderIfNecessary();
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
