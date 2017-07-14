@@ -383,6 +383,10 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	// INCLUDE the HUD-style timer window.
 	if([[timerWindowController_ window] isVisible])
 		return NO;
+    
+    if (PFMoveIsInProgress())
+        return NO;
+    
 	return YES;
 }
 
