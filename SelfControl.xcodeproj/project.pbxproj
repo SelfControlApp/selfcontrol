@@ -241,7 +241,6 @@
 		CB25806116C1FDBE0059C99A /* BlockManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockManager.m; sourceTree = "<group>"; };
 		CB25806416C237F10059C99A /* NSString+IPAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+IPAddress.h"; sourceTree = "<group>"; };
 		CB25806516C237F10059C99A /* NSString+IPAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+IPAddress.m"; sourceTree = "<group>"; };
-		CB395A051F134C6C00F55018 /* SelfControl copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "SelfControl copy-Info.plist"; path = "/Users/charlie/dev/selfcontrol/SelfControl copy-Info.plist"; sourceTree = "<absolute>"; };
 		CB40A8670FBC7DE700167727 /* SelfControlBlocklist.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SelfControlBlocklist.icns; sourceTree = "<group>"; };
 		CB42939A0F53A819008E10CA /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
 		CB4295C20F53EF8C008E10CA /* org.eyebeam.SelfControl.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = org.eyebeam.SelfControl.plist; sourceTree = "<group>"; };
@@ -466,7 +465,6 @@
 				CBB60BE41F13441F00DCB597 /* Distribution Build */,
 				CB9C80F819CFB79700CDCAE1 /* SelfControl Killer */,
 				DDDC709FF9E9196A96CA7BCF /* Pods */,
-				CB395A051F134C6C00F55018 /* SelfControl copy-Info.plist */,
 			);
 			name = SelfControl;
 			sourceTree = "<group>";
