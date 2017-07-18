@@ -647,6 +647,7 @@
 				CB5E5FF81C3A5FD10038F331 /* ShellScript */,
 				2E664A3856970AD32B5CC7B9 /* [CP] Embed Pods Frameworks */,
 				22C9B7A8C5E18DC6FADD451C /* [CP] Copy Pods Resources */,
+				CBB9C7A51F1DEDA8004D04ED /* Delete Unlocalized Languages */,
 			);
 			buildRules = (
 			);
@@ -910,6 +911,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "ruby ./distribution-build.rb";
+		};
+		CBB9C7A51F1DEDA8004D04ED /* Delete Unlocalized Languages */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Delete Unlocalized Languages";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# It is critical to delete unlocalized languages that get copied in\n# by Pod resources. Otherwise the folders get created, but have no MainMenu\n# nib file, and the app crashes on launch. This shouldn't happen but I'm not\n# sure how to fix it more elegantly. The long-term solution is moving to\n# base localization, but that's not supported on our target 10.7.\n\ncd ${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\n\nfor dir in *.lproj/\ndo\n    if [ ! -f $dir/MainMenu.xib ] && [ ! -f $dir/MainMenu.nib ]\n    then\n        echo \"Deleted unused localization $dir\"\n        rm -r $dir\n    fi\ndone";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
