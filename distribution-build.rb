@@ -89,8 +89,8 @@ class AppCast
     def project_setup
         @proj_dir         = ENV['BUILT_PRODUCTS_DIR']
         @proj_name        = ENV['PROJECT_NAME']
-        @version          = "2.2"
-        @build_number     = "2.2"
+        @version          = "2.2.1"
+        @build_number     = "2.2.1"
         @archive_filename = "#{@proj_name}-#{@version.chomp}.zip" # underline character added
         @archive_path     = "#{@proj_dir}/#{@archive_filename}"
     end
