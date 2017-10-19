@@ -185,6 +185,14 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (void)refreshUserInterface {
+    // UI updates are for the main thread only!
+    if (![NSThread isMainThread]) {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self refreshUserInterface];
+        });
+        return;
+    }
+
 	if(![refreshUILock_ tryLock]) {
 		// already refreshing the UI, no need to wait and do it again
 		return;
