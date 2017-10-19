@@ -143,7 +143,19 @@ NSString* const kDefaultHostsFileContents = @"##\n"
 	NSRange startRange = [newFileContents rangeOfString: kHostFileBlockerSelfControlHeader];
 	NSRange endRange = [newFileContents rangeOfString: kHostFileBlockerSelfControlFooter];
 
-	NSRange deleteRange = NSMakeRange(startRange.location - 1, ((endRange.location + endRange.length) - startRange.location) + 2);
+    // generate a delete range that properly removes the block from the hosts file
+    // the -1 and +1 are to remove the newlines before/after the header/footer
+    // the MAX/MIN prevent us from trying to delete beyond the file boundaries
+    NSUInteger deleteRangeStart = MAX(0, startRange.location - 1);
+    NSUInteger deleteRangeLength;
+    // if we lost the block footer somehow... well, crap, just delete everything below the header
+    if (endRange.location == NSNotFound) {
+        deleteRangeLength = [newFileContents length] - deleteRangeStart;
+    } else {
+        deleteRangeLength = MIN([newFileContents length] - deleteRangeStart, (endRange.location + endRange.length) - deleteRangeStart + 1);
+    }
+
+	NSRange deleteRange = NSMakeRange(deleteRangeStart, deleteRangeLength);
 
 	[newFileContents deleteCharactersInRange: deleteRange];
 
