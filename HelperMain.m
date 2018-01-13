@@ -300,7 +300,45 @@ int main(int argc, char* argv[]) {
 			// need to do this again even if it's only a refresh because there might be
 			// caches for the new host blocked.
 			clearCachesIfRequested(controllingUID);
-		} else if([modeString isEqual: @"--checkup"]) {
+        } else if([modeString isEqual: @"--rewrite-lock-file"]) {
+            NSDictionary* newLockDictionary;
+            NSDictionary* defaults = getDefaultsDict(controllingUID);
+
+            if([defaults[@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]) {
+                // But if the block is already over (which is going to happen if the user
+                // starts authentication for the extension and then the block expires before
+                // they authenticate), we shouldn't do anything at all.
+                
+                NSLog(@"ERROR: Extending block timer, but no block is currently ongoing.");
+                printStatus(-213);
+                exit(EX_SOFTWARE);
+            }
+
+            newLockDictionary = @{@"HostBlacklist": defaults[@"HostBlacklist"],
+                              @"BlockDuration": defaults[@"BlockDuration"],
+                              @"BlockStartedDate": defaults[@"BlockStartedDate"],
+                              @"BlockAsWhitelist": defaults[@"BlockAsWhitelist"]};
+            
+            if([newLockDictionary[@"HostBlacklist"] count] <= 0 || [newLockDictionary[@"BlockDuration"] intValue] < 1
+               || newLockDictionary[@"BlockStartedDate"] == nil
+               || [newLockDictionary[@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]) {
+                NSLog(@"ERROR: Not enough block information.");
+                printStatus(-214);
+                exit(EX_CONFIG);
+            }
+            
+            if(![newLockDictionary writeToFile: SelfControlLockFilePath atomically: YES]) {
+                NSLog(@"ERROR: Could not write lock file.");
+                printStatus(-217);
+                exit(EX_IOERR);
+            }
+            // Make sure the privileges are correct on our lock file
+            [[NSFileManager defaultManager] setAttributes: fileAttributes ofItemAtPath: SelfControlLockFilePath error: nil];
+            domainList = newLockDictionary[@"HostBlacklist"];
+            
+            // Reload the launchd job just in case
+            [LaunchctlHelper loadLaunchdJobWithPlistAt: @"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
+        } else if([modeString isEqual: @"--checkup"]) {
 			NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
 
 			NSDate* blockStartedDate = curDictionary[@"BlockStartedDate"];
