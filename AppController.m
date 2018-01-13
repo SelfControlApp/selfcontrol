@@ -489,6 +489,44 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	[NSThread detachNewThreadSelector: @selector(refreshBlock:) toTarget: self withObject: lock];
 }
 
+- (void)extendBlockTime:(NSInteger)minutesToAdd lock:(NSLock*)lock {
+    // sanity check: extending a block for 0 minutes is useless; 24 hour should be impossible
+    NSInteger MINUTES_IN_DAY = 24 * 60 * 60;
+    if(minutesToAdd < 1 || minutesToAdd > MINUTES_IN_DAY)
+        return;
+    
+    // ensure block health before we try to change it
+    if(([[defaults_ objectForKey:@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]])) {
+        // This method shouldn't be getting called, a block is not on (block started
+        // is in the distantFuture) so the Start button should be disabled.
+        // Maybe the UI didn't get properly refreshed, so try refreshing it again
+        // before we return.
+        [self refreshUserInterface];
+        
+        NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
+                                           code: -103
+                                       userInfo: @{NSLocalizedDescriptionKey: @"Error -103: Attempting to add host to block, but no block appears to be in progress."}];
+        
+        [NSApp presentError: err];
+        
+        return;
+    }
+    
+    NSInteger currentBlockDuration = [defaults_ integerForKey: @"BlockDuration"];
+    if (currentBlockDuration < 0) {
+        // we're done! so just let it expire
+        return;
+    }
+    NSInteger newBlockDuration = currentBlockDuration + minutesToAdd;
+        
+    [NSThread detachNewThreadSelector: @selector(setBlockDuration:)
+                             toTarget: self
+                           withObject: @{
+                                         @"lock": lock,
+                                         @"duration": @(newBlockDuration)
+                                                                                                    }];
+}
+
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver: self
 													name: @"SCConfigurationChangedNotification"
@@ -786,6 +824,112 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		[timerWindowController_ closeAddSheet: self];
 	}
 	[lockToUse unlock];
+}
+
+- (void)setBlockDuration:(NSDictionary*)options {
+    NSLock* lock = options[@"lock"];
+    NSInteger newDuration = [options[@"duration"] integerValue];
+    if(![lock tryLock]) {
+        return;
+    }
+    
+    NSInteger oldDuration = [defaults_ integerForKey: @"BlockDuration"];
+    [defaults_ setInteger: newDuration forKey: @"BlockDuration"];
+    [defaults_ synchronize];
+
+    @autoreleasepool {
+        AuthorizationRef authorizationRef;
+        char* helperToolPath = [self selfControlHelperToolPathUTF8String];
+        long helperToolPathSize = strlen(helperToolPath);
+        AuthorizationItem right = {
+            kAuthorizationRightExecute,
+            helperToolPathSize,
+            helperToolPath,
+            0
+        };
+        AuthorizationRights authRights = {
+            1,
+            &right
+        };
+        AuthorizationFlags myFlags = kAuthorizationFlagDefaults |
+        kAuthorizationFlagExtendRights |
+        kAuthorizationFlagInteractionAllowed;
+        OSStatus status;
+        
+        status = AuthorizationCreate (&authRights,
+                                      kAuthorizationEmptyEnvironment,
+                                      myFlags,
+                                      &authorizationRef);
+        
+        if(status) {
+            NSLog(@"ERROR: Failed to authorize setting new block duration.");
+            
+            // Reverse the block duration change made before we fail
+            [defaults_ setInteger: oldDuration forKey: @"BlockDuration"];
+            
+            [lock unlock];
+            
+            return;
+        }
+        
+        // We need to pass our UID to the helper tool.  It needs to know whose defaults
+        // it should read in order to properly load the blacklist.
+        char uidString[32];
+        snprintf(uidString, sizeof(uidString), "%d", getuid());
+        
+        FILE* commPipe;
+        
+        char* args[] = { uidString, "--rewrite-lock-file", NULL };
+        status = AuthorizationExecuteWithPrivileges(authorizationRef,
+                                                    helperToolPath,
+                                                    kAuthorizationFlagDefaults,
+                                                    args,
+                                                    &commPipe);
+        
+        if(status) {
+            NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", (int)status);
+            
+            NSError* err = [self errorFromHelperToolStatusCode: status];
+            
+            [NSApp performSelectorOnMainThread: @selector(presentError:)
+                                    withObject: err
+                                 waitUntilDone: YES];
+            
+            [lock unlock];
+            
+            return;
+        }
+        
+        NSFileHandle* helperToolHandle = [[NSFileHandle alloc] initWithFileDescriptor: fileno(commPipe) closeOnDealloc: YES];
+        
+        NSData* inData = [helperToolHandle readDataToEndOfFile];
+        NSString* inDataString = [[NSString alloc] initWithData: inData encoding: NSUTF8StringEncoding];
+        
+        if([inDataString isEqualToString: @""]) {
+            NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
+                                               code: -105
+                                           userInfo: @{NSLocalizedDescriptionKey: @"Error -105: The helper tool crashed.  This may cause unexpected errors."}];
+            
+            [NSApp performSelectorOnMainThread: @selector(presentError:)
+                                    withObject: err
+                                 waitUntilDone: YES];
+        }
+        
+        int exitCode = [inDataString intValue];
+        
+        if(exitCode) {
+            NSError* err = [self errorFromHelperToolStatusCode: exitCode];
+            
+            [NSApp performSelectorOnMainThread: @selector(presentError:)
+                                    withObject: err
+                                 waitUntilDone: YES];
+        }
+        
+        [timerWindowController_ performSelectorOnMainThread:@selector(blockDurationUpdated)
+                                                 withObject: nil
+                                              waitUntilDone: YES];
+    }
+    [lock unlock];
 }
 
 - (IBAction)save:(id)sender {

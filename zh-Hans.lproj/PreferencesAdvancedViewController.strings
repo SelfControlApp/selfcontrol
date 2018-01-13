@@ -1,0 +1,18 @@
+
+/* Class = "NSButtonCell"; title = "Allow local networks"; ObjectID = "4wN-EQ-U6a"; */
+"4wN-EQ-U6a.title" = "Allow local networks";
+
+/* Class = "NSButtonCell"; title = "Verify internet connection"; ObjectID = "QeK-Oh-Gga"; */
+"QeK-Oh-Gga.title" = "Verify internet connection";
+
+/* Class = "NSButtonCell"; title = "Clear browser cache"; ObjectID = "Y7x-Zc-xZU"; */
+"Y7x-Zc-xZU.title" = "Clear browser cache";
+
+/* Class = "NSButtonCell"; title = "Whitelist blocks should include linked sites (slow)"; ObjectID = "b7a-fO-pJq"; */
+"b7a-fO-pJq.title" = "Whitelist blocks should include linked sites (slow)";
+
+/* Class = "NSButtonCell"; title = "Block common subdomains"; ObjectID = "gOx-e1-ZUm"; */
+"gOx-e1-ZUm.title" = "Block common subdomains";
+
+/* Class = "NSButtonCell"; title = "Highlight invalid hosts"; ObjectID = "x53-JT-2sG"; */
+"x53-JT-2sG.title" = "Highlight invalid hosts";

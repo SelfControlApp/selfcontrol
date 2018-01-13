@@ -36,7 +36,7 @@
 	if(self = [super init]) {
 		// We need a block to prevent us from running multiple copies of the "Add to Block"
 		// sheet.
-		addToBlockLock = [[NSLock alloc] init];
+		modifyBlockLock = [[NSLock alloc] init];
 
 		numStrikes = 0;
 	}
@@ -199,9 +199,9 @@
 }
 
 - (IBAction) addToBlock:(id)sender {
-	// Check if there's already a thread trying to add a host.  If so, don't make
+	// Check if there's already a thread trying to modify the block.  If so, don't make
 	// another.
-	if(![addToBlockLock tryLock]) {
+	if(![modifyBlockLock tryLock]) {
 		return;
 	}
 
@@ -211,17 +211,67 @@
 	   didEndSelector: @selector(didEndSheet:returnCode:contextInfo:)
 		  contextInfo: nil];
 
-	[addToBlockLock unlock];
+	[modifyBlockLock unlock];
+}
+
+- (IBAction) extendBlockTime:(id)sender {
+    // Check if there's already a thread trying to modify the block.  If so, don't make
+    // another.
+    if(![modifyBlockLock tryLock]) {
+        return;
+    }
+    
+    [NSApp beginSheet: extendBlockTimeSheet_
+       modalForWindow: [self window]
+        modalDelegate: self
+       didEndSelector: @selector(didEndSheet:returnCode:contextInfo:)
+          contextInfo: nil];
+    
+    [modifyBlockLock unlock];
 }
 
 - (IBAction) closeAddSheet:(id)sender {
 	[NSApp endSheet: addSheet_];
 }
+- (IBAction) closeExtendSheet:(id)sender {
+    [NSApp endSheet: extendBlockTimeSheet_];
+}
 
-- (IBAction) performAdd:(id)sender {
+- (IBAction) performAddSite:(id)sender {
 	NSString* addToBlockTextFieldContents = [addToBlockTextField_ stringValue];
-	[self.appController addToBlockList: addToBlockTextFieldContents lock: addToBlockLock];
+	[self.appController addToBlockList: addToBlockTextFieldContents lock: modifyBlockLock];
 	[NSApp endSheet: addSheet_];
+}
+
+- (IBAction) performExtendBlock:(id)sender {
+    NSInteger extendBlockHours = [extendBlockTimeHoursTextField_ integerValue];
+    NSInteger extendBlockMinutes = (extendBlockHours * 60) + [extendBlockTimeMinutesTextField_ integerValue];
+        
+    [self.appController extendBlockTime: extendBlockMinutes lock: modifyBlockLock];
+    [NSApp endSheet: extendBlockTimeSheet_];
+}
+
+- (void) blockDurationUpdated {
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
+    
+    NSDate* beginDate = lockDict[@"BlockStartedDate"];
+    NSTimeInterval blockDuration = [lockDict[@"BlockDuration"] intValue] * 60;
+    
+    if(beginDate == nil || [beginDate isEqualToDate: [NSDate distantFuture]]
+       || blockDuration < 1) {
+        beginDate = [defaults objectForKey:@"BlockStartedDate"];
+        blockDuration = [defaults integerForKey:@"BlockDuration"] * 60;
+    }
+
+    if(blockDuration) {
+        blockEndingDate_ = [beginDate dateByAddingTimeInterval: blockDuration];
+    } else {
+        // If the block duration is 0, the ending date is... now!
+        blockEndingDate_ = [NSDate date];
+    }
+    
+    [self updateTimerDisplay: nil];
 }
 
 - (void)didEndSheet:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
@@ -230,6 +280,7 @@
 
 // see updateTimerDisplay: for an explanation
 - (void)resetStrikes {
+    
 	numStrikes = 0;
 }
 
