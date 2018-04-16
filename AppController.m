@@ -332,7 +332,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 	[self refreshUserInterface];
 
-    NSOperatingSystemVersion minRequiredVersion = (NSOperatingSystemVersion){10,14,0}; // Mountain Lion
+    NSOperatingSystemVersion minRequiredVersion = (NSOperatingSystemVersion){10,8,0}; // Mountain Lion
     NSString* minRequiredVersionString = @"10.8 (Mountain Lion)";
 	if (![[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion: minRequiredVersion]) {
 		NSLog(@"ERROR: Unsupported version for SelfControl");

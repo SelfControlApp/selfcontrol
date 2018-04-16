@@ -343,6 +343,15 @@
 		CBDB118A2084238E0010397E /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/PreferencesAdvancedViewController.strings; sourceTree = "<group>"; };
 		CBDB118B208423900010397E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/PreferencesAdvancedViewController.strings; sourceTree = "<group>"; };
 		CBDB118D2084239D0010397E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/FirstTime.xib; sourceTree = "<group>"; };
+		CBDB11902084801B0010397E /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/MainMenu.strings; sourceTree = "<group>"; };
+		CBDB11912084801B0010397E /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/DomainList.strings; sourceTree = "<group>"; };
+		CBDB11922084801B0010397E /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/TimerWindow.strings; sourceTree = "<group>"; };
+		CBDB11932084801B0010397E /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/PreferencesGeneralViewController.strings; sourceTree = "<group>"; };
+		CBDB11942084801B0010397E /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/PreferencesAdvancedViewController.strings; sourceTree = "<group>"; };
+		CBDB11952084801B0010397E /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/MainMenu.strings; sourceTree = "<group>"; };
+		CBDB11962084801B0010397E /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CBDB11972084801C0010397E /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CBDB1199208485AF0010397E /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/FirstTime.strings; sourceTree = "<group>"; };
 		CBE440190F4BE0670062A1FE /* ThunderbirdPreferenceParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThunderbirdPreferenceParser.h; sourceTree = "<group>"; };
 		CBE4401A0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThunderbirdPreferenceParser.m; sourceTree = "<group>"; };
 		CBE5C4090F4D4531003DB900 /* ButtonWithPopupMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonWithPopupMenu.h; sourceTree = "<group>"; };
@@ -783,6 +792,7 @@
 				nl,
 				fr,
 				Base,
+				da,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* SelfControl */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
@@ -1027,6 +1037,7 @@
 				CBDB11892084238C0010397E /* ko */,
 				CBDB118A2084238E0010397E /* nl */,
 				CBDB118B208423900010397E /* fr */,
+				CBDB11942084801B0010397E /* da */,
 			);
 			name = PreferencesAdvancedViewController.xib;
 			sourceTree = "<group>";
@@ -1046,6 +1057,7 @@
 				CBDB117F2084237A0010397E /* ko */,
 				CBDB11802084237C0010397E /* nl */,
 				CBDB11812084237E0010397E /* fr */,
+				CBDB11932084801B0010397E /* da */,
 			);
 			name = PreferencesGeneralViewController.xib;
 			sourceTree = "<group>";
@@ -1055,6 +1067,7 @@
 			children = (
 				3EF418F91CC7F7FA002D99E8 /* nl */,
 				CBDB11542084225A0010397E /* Base */,
+				CBDB11952084801B0010397E /* da */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
@@ -1074,6 +1087,7 @@
 				CBDB11682084233D0010397E /* ko */,
 				CBDB11692084233F0010397E /* nl */,
 				CBDB116A208423410010397E /* fr */,
+				CBDB11912084801B0010397E /* da */,
 			);
 			name = DomainList.xib;
 			sourceTree = "<group>";
@@ -1093,6 +1107,7 @@
 				CBDB115D2084231A0010397E /* ko */,
 				CBDB115E2084231C0010397E /* nl */,
 				CBDB115F208423200010397E /* fr */,
+				CBDB11902084801B0010397E /* da */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
@@ -1112,6 +1127,7 @@
 				CBC25B1919F6CC030013E190 /* pt-BR */,
 				3EF418F81CC7F7FA002D99E8 /* nl */,
 				CB7026191CD7177400D7C7F0 /* fr */,
+				CBDB11972084801C0010397E /* da */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1131,6 +1147,7 @@
 				CBC25B1319F6CBDE0013E190 /* pt-BR */,
 				3EF418F71CC7F7FA002D99E8 /* nl */,
 				CB7026181CD7177400D7C7F0 /* fr */,
+				CBDB11962084801B0010397E /* da */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1150,6 +1167,7 @@
 				CBDB1173208423580010397E /* ko */,
 				CBDB11742084235A0010397E /* nl */,
 				CBDB11752084235C0010397E /* fr */,
+				CBDB11922084801B0010397E /* da */,
 			);
 			name = TimerWindow.xib;
 			sourceTree = "<group>";
@@ -1158,6 +1176,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				CBDB118D2084239D0010397E /* Base */,
+				CBDB1199208485AF0010397E /* da */,
 			);
 			name = FirstTime.xib;
 			sourceTree = "<group>";

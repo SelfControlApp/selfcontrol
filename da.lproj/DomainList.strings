@@ -1,0 +1,75 @@
+
+/* Class = "NSWindow"; title = "Domain Blacklist"; ObjectID = "1"; */
+"1.title" = "Domæne Blackliste";
+
+/* Class = "NSTableColumn"; headerCell.title = "Domain Name"; ObjectID = "17"; */
+"17.headerCell.title" = "Domæne Navn";
+
+/* Class = "NSTextFieldCell"; placeholderString = "example.com"; ObjectID = "20"; */
+"20.placeholderString" = "example.com";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "20"; */
+"20.title" = "Tekst Celle";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Add (⇧=)"; ObjectID = "42"; */
+"42.ibShadowedToolTip" = "Add (⇧=)";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Remove (⌫)"; ObjectID = "46"; */
+"46.ibShadowedToolTip" = "Fjern (⌫)";
+
+/* Class = "NSButtonCell"; title = "Import"; ObjectID = "80"; */
+"80.title" = "Import";
+
+/* Class = "NSMenu"; title = "Import"; ObjectID = "84"; */
+"84.title" = "Import";
+
+/* Class = "NSMenuItem"; title = "From Mail"; ObjectID = "91"; */
+"91.title" = "Fra Mail";
+
+/* Class = "NSMenu"; title = "From Mail"; ObjectID = "92"; */
+"92.title" = "Fra Mail";
+
+/* Class = "NSMenuItem"; title = "Incoming mail servers"; ObjectID = "93"; */
+"93.title" = "Indkommende mail servere";
+
+/* Class = "NSMenuItem"; title = "From Thunderbird"; ObjectID = "94"; */
+"94.title" = "Fra Thunderbird";
+
+/* Class = "NSMenu"; title = "From Thunderbird"; ObjectID = "95"; */
+"95.title" = "Fra Thunderbird";
+
+/* Class = "NSMenuItem"; title = "Incoming mail servers"; ObjectID = "96"; */
+"96.title" = "Indkommende mail servere";
+
+/* Class = "NSMenuItem"; title = "Outgoing mail servers"; ObjectID = "97"; */
+"97.title" = "Udgående mail servere";
+
+/* Class = "NSMenuItem"; title = "Outgoing mail servers"; ObjectID = "98"; */
+"98.title" = "Udgående mail servere";
+
+/* Class = "NSButtonCell"; title = "Blacklist"; ObjectID = "110"; */
+"110.title" = "Blackliste";
+
+/* Class = "NSButtonCell"; title = "Whitelist"; ObjectID = "111"; */
+"111.title" = "Whiteliste";
+
+/* Class = "NSButtonCell"; title = "Radio"; ObjectID = "112"; */
+"112.title" = "Radio";
+
+/* Class = "NSMenuItem"; title = "From MailMate"; ObjectID = "133"; */
+"133.title" = "Fra MailMate";
+
+/* Class = "NSMenu"; title = "From MailMate"; ObjectID = "134"; */
+"134.title" = "Fra MailMate";
+
+/* Class = "NSMenuItem"; title = "Outgoing mail servers"; ObjectID = "135"; */
+"135.title" = "Udgående mail servere";
+
+/* Class = "NSMenuItem"; title = "Incoming mail servers"; ObjectID = "136"; */
+"136.title" = "Indkommende mail servere";
+
+/* Class = "NSMenuItem"; title = "Common Distracting Sites"; ObjectID = "141"; */
+"141.title" = "Fælles Distraherende Hjemmesider";
+
+/* Class = "NSMenuItem"; title = "News & Publications"; ObjectID = "143"; */
+"143.title" = "Nyheder & Publikationer";

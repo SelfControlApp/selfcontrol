@@ -1,0 +1,147 @@
+
+/* Class = "NSMenuItem"; title = "Bring All to Front"; ObjectID = "5"; */
+"5.title" = "Bring alle forrest";
+
+/* Class = "NSMenuItem"; title = "Window"; ObjectID = "19"; */
+"19.title" = "Vindue";
+
+/* Class = "NSMenuItem"; title = "Minimize"; ObjectID = "23"; */
+"23.title" = "Minimer";
+
+/* Class = "NSMenu"; title = "Window"; ObjectID = "24"; */
+"24.title" = "Vindue";
+
+/* Class = "NSMenu"; title = "AMainMenu"; ObjectID = "29"; */
+"29.title" = "AMainMenu";
+
+/* Class = "NSMenuItem"; title = "SelfControl"; ObjectID = "56"; */
+"56.title" = "SelfControl";
+
+/* Class = "NSMenu"; title = "SelfControl"; ObjectID = "57"; */
+"57.title" = "SelfControl";
+
+/* Class = "NSMenuItem"; title = "About SelfControl"; ObjectID = "58"; */
+"58.title" = "Om SelfControl";
+
+/* Class = "NSMenu"; title = "Services"; ObjectID = "130"; */
+"130.title" = "Services";
+
+/* Class = "NSMenuItem"; title = "Services"; ObjectID = "131"; */
+"131.title" = "Services";
+
+/* Class = "NSMenuItem"; title = "Hide SelfControl"; ObjectID = "134"; */
+"134.title" = "Skjul SelfControl";
+
+/* Class = "NSMenuItem"; title = "Quit SelfControl"; ObjectID = "136"; */
+"136.title" = "Afslut SelfControl";
+
+/* Class = "NSMenuItem"; title = "Hide Others"; ObjectID = "145"; */
+"145.title" = "Skjul andre";
+
+/* Class = "NSMenuItem"; title = "Show All"; ObjectID = "150"; */
+"150.title" = "Vis alle";
+
+/* Class = "NSWindow"; title = "SelfControl"; ObjectID = "371"; */
+"371.title" = "SelfControl";
+
+/* Class = "NSTextFieldCell"; title = "30 minutes"; ObjectID = "479"; */
+"479.title" = "30 minutter";
+
+/* Class = "NSMenuItem"; title = "Edit Blacklist..."; ObjectID = "503"; */
+"503.title" = "Rediger Blackliste...";
+
+/* Class = "NSMenuItem"; title = "Item 1"; ObjectID = "505"; */
+"505.title" = "Emne 1";
+
+/* Class = "NSMenuItem"; title = "Item 2"; ObjectID = "506"; */
+"506.title" = "Emne 2";
+
+/* Class = "NSMenuItem"; title = "Item 3"; ObjectID = "507"; */
+"507.title" = "Emne 3";
+
+/* Class = "NSMenuItem"; title = "Item 1"; ObjectID = "509"; */
+"509.title" = "Emne 1";
+
+/* Class = "NSMenuItem"; title = "Item 2"; ObjectID = "510"; */
+"510.title" = "Emne 2";
+
+/* Class = "NSMenuItem"; title = "Item 3"; ObjectID = "511"; */
+"511.title" = "Emne 3";
+
+/* Class = "NSButtonCell"; title = "Start"; ObjectID = "542"; */
+"542.title" = "Start";
+
+/* Class = "NSButtonCell"; title = "Edit Blacklist"; ObjectID = "544"; */
+"544.title" = "Rediger Blackliste";
+
+/* Class = "NSMenuItem"; title = "Preferences…"; ObjectID = "614"; */
+"614.title" = "Indstillinger…";
+
+/* Class = "NSMenuItem"; title = "Check for updates..."; ObjectID = "732"; */
+"732.title" = "Søg efter opdateringer...";
+
+/* Class = "NSMenuItem"; title = "Edit"; ObjectID = "766"; */
+"766.title" = "Rediger";
+
+/* Class = "NSMenu"; title = "Edit"; ObjectID = "767"; */
+"767.title" = "Rediger";
+
+/* Class = "NSMenuItem"; title = "Undo"; ObjectID = "768"; */
+"768.title" = "Fortryd";
+
+/* Class = "NSMenuItem"; title = "Redo"; ObjectID = "769"; */
+"769.title" = "Gør igen";
+
+/* Class = "NSMenuItem"; title = "Cut"; ObjectID = "771"; */
+"771.title" = "Klip";
+
+/* Class = "NSMenuItem"; title = "Copy"; ObjectID = "772"; */
+"772.title" = "Kopier";
+
+/* Class = "NSMenuItem"; title = "Paste"; ObjectID = "773"; */
+"773.title" = "Indsæt";
+
+/* Class = "NSMenuItem"; title = "Delete"; ObjectID = "775"; */
+"775.title" = "Slet";
+
+/* Class = "NSMenuItem"; title = "Select All"; ObjectID = "776"; */
+"776.title" = "Vælg alt";
+
+/* Class = "NSMenuItem"; title = "Speech"; ObjectID = "780"; */
+"780.title" = "Tale";
+
+/* Class = "NSMenu"; title = "Speech"; ObjectID = "781"; */
+"781.title" = "Tale";
+
+/* Class = "NSMenuItem"; title = "Start Speaking"; ObjectID = "782"; */
+"782.title" = "Start tale";
+
+/* Class = "NSMenuItem"; title = "Stop Speaking"; ObjectID = "783"; */
+"783.title" = "Stop tale";
+
+/* Class = "NSMenuItem"; title = "File"; ObjectID = "865"; */
+"865.title" = "Fil";
+
+/* Class = "NSMenu"; title = "File"; ObjectID = "866"; */
+"866.title" = "Fil";
+
+/* Class = "NSMenuItem"; title = "Close Window"; ObjectID = "867"; */
+"867.title" = "Luk vindue";
+
+/* Class = "NSMenuItem"; title = "Save Blocklist..."; ObjectID = "873"; */
+"873.title" = "Gem Blackliste...";
+
+/* Class = "NSMenuItem"; title = "Open Blocklist…"; ObjectID = "877"; */
+"877.title" = "Åben Blocklist…";
+
+/* Class = "NSMenuItem"; title = "Help"; ObjectID = "899"; */
+"899.title" = "Help";
+
+/* Class = "NSMenu"; title = "Help"; ObjectID = "900"; */
+"900.title" = "Help";
+
+/* Class = "NSMenuItem"; title = "SelfControl FAQ"; ObjectID = "901"; */
+"901.title" = "SelfControl FAQ";
+
+/* Class = "NSMenuItem"; title = "Get Started"; ObjectID = "908"; */
+"908.title" = "Get Started";
