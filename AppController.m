@@ -334,11 +334,11 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 	unsigned int major, minor, bugfix;
 	[SelfControlUtilities getSystemVersionMajor: &major minor: &minor bugFix: &bugfix];
-	if (major < 10 || minor < 7) {
+	if (major < 10 || minor < 8) {
 		NSLog(@"ERROR: Unsupported version for SelfControl");
 		NSAlert* unsupportedVersionAlert = [[NSAlert alloc] init];
 		[unsupportedVersionAlert setMessageText: NSLocalizedString(@"Unsupported version", nil)];
-		[unsupportedVersionAlert setInformativeText: NSLocalizedString(@"This version of SelfControl only supports Mac OS X version 10.7 (Lion) or higher. To download a version for older operating systems, please go to www.selfcontrolapp.com", nil)];
+		[unsupportedVersionAlert setInformativeText: NSLocalizedString(@"This version of SelfControl only supports Mac OS X version 10.8 (Mountain Lion) or higher. To download a version for older operating systems, please go to www.selfcontrolapp.com", nil)];
 		[unsupportedVersionAlert addButtonWithTitle: NSLocalizedString(@"OK", nil)];
 		[unsupportedVersionAlert runModal];
 	}

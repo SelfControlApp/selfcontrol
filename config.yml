@@ -1,5 +1,5 @@
 build_now:              'YES'
-min_system_version:     '10.7'
+min_system_version:     '10.8'
 download_base_url:      'https://downloads.selfcontrolapp.com/'
 web_base_url:           'https://selfcontrolapp.com'
 appcast_basefolder:     '/Users/charlie/dev/selfcontrol/'
