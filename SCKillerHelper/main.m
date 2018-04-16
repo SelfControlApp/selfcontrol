@@ -10,7 +10,6 @@
 #import <Cocoa/Cocoa.h>
 #import <unistd.h>
 #import "BlockManager.h"
-#import "SelfControlUtilities.h"
 
 #define LOG_FILE @"~/Documents/SelfControl-Killer.log"
 
@@ -40,9 +39,7 @@ int main(int argc, char* argv[]) {
 		[log appendFormat: @"SelfControl Version: %@\n", version];
 
 		// print system version
-		unsigned int major, minor, bugfix;
-		[SelfControlUtilities getSystemVersionMajor: &major minor: &minor bugFix: &bugfix];
-		[log appendFormat: @"System Version: Mac OS X %d.%d.%d\n\n", major, minor, bugfix];
+		[log appendFormat: @"System Version: Mac OS X %@", [[NSProcessInfo processInfo] operatingSystemVersionString]];
 
 		// print launchd daemons
 		int status;

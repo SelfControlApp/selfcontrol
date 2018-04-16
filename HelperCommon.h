@@ -24,7 +24,6 @@
 #import <Foundation/Foundation.h>
 #import <CoreFoundation/CoreFoundation.h>
 #import "LaunchctlHelper.h"
-#import "SelfControlUtilities.h"
 #import <unistd.h>
 #import <Cocoa/Cocoa.h>
 #import <sysexits.h>

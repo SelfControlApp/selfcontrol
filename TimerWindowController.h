@@ -22,7 +22,6 @@
 
 #import <Cocoa/Cocoa.h>
 #import "AppController.h"
-#import "SelfControlUtilities.h"
 #import "SelfControlCommon.h"
 
 // A subclass of NSWindowController created to manage the floating timer window

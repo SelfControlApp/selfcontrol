@@ -332,13 +332,13 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 	[self refreshUserInterface];
 
-	unsigned int major, minor, bugfix;
-	[SelfControlUtilities getSystemVersionMajor: &major minor: &minor bugFix: &bugfix];
-	if (major < 10 || minor < 8) {
+    NSOperatingSystemVersion minRequiredVersion = (NSOperatingSystemVersion){10,14,0}; // Mountain Lion
+    NSString* minRequiredVersionString = @"10.8 (Mountain Lion)";
+	if (![[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion: minRequiredVersion]) {
 		NSLog(@"ERROR: Unsupported version for SelfControl");
 		NSAlert* unsupportedVersionAlert = [[NSAlert alloc] init];
 		[unsupportedVersionAlert setMessageText: NSLocalizedString(@"Unsupported version", nil)];
-		[unsupportedVersionAlert setInformativeText: NSLocalizedString(@"This version of SelfControl only supports Mac OS X version 10.8 (Mountain Lion) or higher. To download a version for older operating systems, please go to www.selfcontrolapp.com", nil)];
+        [unsupportedVersionAlert setInformativeText: [NSString stringWithFormat: NSLocalizedString(@"This version of SelfControl only supports Mac OS X version %@ or higher. To download a version for older operating systems, please go to www.selfcontrolapp.com", nil), minRequiredVersionString]];
 		[unsupportedVersionAlert addButtonWithTitle: NSLocalizedString(@"OK", nil)];
 		[unsupportedVersionAlert runModal];
 	}

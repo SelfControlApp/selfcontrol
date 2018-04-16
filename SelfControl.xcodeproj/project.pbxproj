@@ -37,7 +37,6 @@
 		CB25806816C237F10059C99A /* NSString+IPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806516C237F10059C99A /* NSString+IPAddress.m */; };
 		CB40A8680FBC7DE700167727 /* SelfControlBlocklist.icns in Resources */ = {isa = PBXBuildFile; fileRef = CB40A8670FBC7DE700167727 /* SelfControlBlocklist.icns */; };
 		CB4C58DA0F3F90B000B5D7CB /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = CB4C58D90F3F90B000B5D7CB /* Credits.rtf */; };
-		CB4ECC2419EF3A2A004E0F90 /* SelfControlUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9C80DC19CF93EA00CDCAE1 /* SelfControlUtilities.m */; };
 		CB529BBF0F32B7ED00564FB8 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB529BBE0F32B7ED00564FB8 /* AppController.m */; };
 		CB54D44C0F93E33300AA22E9 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9E901D0F397FFA006DE6E4 /* Security.framework */; };
 		CB587E500F50FE8800C66A09 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB587E4F0F50FE8800C66A09 /* SystemConfiguration.framework */; };
@@ -49,7 +48,6 @@
 		CB9365620F8581B000EF284E /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = CB9365610F8581B000EF284E /* dsa_pub.pem */; };
 		CB9366E80F85BEF100EF284E /* NSRemoveTemplate.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB9366E60F85BEF100EF284E /* NSRemoveTemplate.jpg */; };
 		CB9366E90F85BEF100EF284E /* NSAddTemplate.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB9366E70F85BEF100EF284E /* NSAddTemplate.jpg */; };
-		CB9C80DD19CF93EA00CDCAE1 /* SelfControlUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9C80DC19CF93EA00CDCAE1 /* SelfControlUtilities.m */; };
 		CB9C80FC19CFB79700CDCAE1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9C80FB19CFB79700CDCAE1 /* main.m */; };
 		CB9C80FF19CFB79700CDCAE1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9C80FE19CFB79700CDCAE1 /* AppDelegate.m */; };
 		CB9C810119CFB79700CDCAE1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB9C810019CFB79700CDCAE1 /* Images.xcassets */; };
@@ -231,8 +229,6 @@
 		CB9365610F8581B000EF284E /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		CB9366E60F85BEF100EF284E /* NSRemoveTemplate.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = NSRemoveTemplate.jpg; sourceTree = "<group>"; };
 		CB9366E70F85BEF100EF284E /* NSAddTemplate.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = NSAddTemplate.jpg; sourceTree = "<group>"; };
-		CB9C80DB19CF93EA00CDCAE1 /* SelfControlUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelfControlUtilities.h; sourceTree = "<group>"; };
-		CB9C80DC19CF93EA00CDCAE1 /* SelfControlUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelfControlUtilities.m; sourceTree = "<group>"; };
 		CB9C80F119CFAAC600CDCAE1 /* ko */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CB9C80F219CFAACC00CDCAE1 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CB9C80F719CFB79700CDCAE1 /* SelfControl Killer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SelfControl Killer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -540,8 +536,6 @@
 				CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */,
 				CBC2F8650F4674E300CF2A42 /* LaunchctlHelper.h */,
 				CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */,
-				CB9C80DB19CF93EA00CDCAE1 /* SelfControlUtilities.h */,
-				CB9C80DC19CF93EA00CDCAE1 /* SelfControlUtilities.m */,
 				F5B8CBEB19EE21340026F3A5 /* Formatters */,
 			);
 			name = Classes;
@@ -925,7 +919,6 @@
 				F5B8CBEE19EE21C30026F3A5 /* SCTimeIntervalFormatter.m in Sources */,
 				CBD4848A19D764440020F949 /* PreferencesGeneralViewController.m in Sources */,
 				CBEE50C10F48C21F00F5DF1C /* TimerWindowController.m in Sources */,
-				CB9C80DD19CF93EA00CDCAE1 /* SelfControlUtilities.m in Sources */,
 				CB90BF830F49F430006D202D /* HostImporter.m in Sources */,
 				CBE4401B0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m in Sources */,
 				CBE5C40B0F4D4531003DB900 /* ButtonWithPopupMenu.m in Sources */,
@@ -966,7 +959,6 @@
 				CB9C811E19CFBA8500CDCAE1 /* main.m in Sources */,
 				CB9C812719CFBB6400CDCAE1 /* NSString+IPAddress.m in Sources */,
 				CBE44FEB19E50900004E9706 /* WhitelistScraper.m in Sources */,
-				CB4ECC2419EF3A2A004E0F90 /* SelfControlUtilities.m in Sources */,
 				CB9C812619CFBB5E00CDCAE1 /* BlockManager.m in Sources */,
 				CB9C812519CFBB5500CDCAE1 /* HelperCommon.m in Sources */,
 				CB9C812419CFBB4E00CDCAE1 /* HostFileBlocker.m in Sources */,
