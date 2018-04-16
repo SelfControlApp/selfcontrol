@@ -1,0 +1,24 @@
+
+/* Class = "NSWindow"; title = "SelfControl"; ObjectID = "31"; */
+"31.title" = "SelfControl";
+
+/* Class = "NSTextFieldCell"; title = "00:00:00"; ObjectID = "34"; */
+"34.title" = "00:00:00";
+
+/* Class = "NSButtonCell"; title = "블랙리스트 추가"; ObjectID = "50"; */
+"50.title" = "블랙리스트 추가";
+
+/* Class = "NSWindow"; title = "Window"; ObjectID = "63"; */
+"63.title" = "Window";
+
+/* Class = "NSButtonCell"; title = "취소"; ObjectID = "70"; */
+"70.title" = "취소";
+
+/* Class = "NSButtonCell"; title = "추가"; ObjectID = "71"; */
+"71.title" = "추가";
+
+/* Class = "NSTextFieldCell"; title = "호스트: "; ObjectID = "72"; */
+"72.title" = "호스트: ";
+
+/* Class = "NSButtonCell"; title = "Stuck? Stop block manually"; ObjectID = "3SL-1M-RsD"; */
+"3SL-1M-RsD.title" = "Stuck? Stop block manually";

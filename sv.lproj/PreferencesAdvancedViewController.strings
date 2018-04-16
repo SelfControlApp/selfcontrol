@@ -1,0 +1,18 @@
+
+/* Class = "NSButtonCell"; title = "Tillåt lokala nätverk"; ObjectID = "4wN-EQ-U6a"; */
+"4wN-EQ-U6a.title" = "Tillåt lokala nätverk";
+
+/* Class = "NSButtonCell"; title = "Verifiera internettanslutning"; ObjectID = "QeK-Oh-Gga"; */
+"QeK-Oh-Gga.title" = "Verifiera internettanslutning";
+
+/* Class = "NSButtonCell"; title = "Whitelist blocks should include linked sites (slow)"; ObjectID = "Ry1-Dp-iUT"; */
+"Ry1-Dp-iUT.title" = "Whitelist blocks should include linked sites (slow)";
+
+/* Class = "NSButtonCell"; title = "Töm webbläsarcachen"; ObjectID = "Y7x-Zc-xZU"; */
+"Y7x-Zc-xZU.title" = "Töm webbläsarcachen";
+
+/* Class = "NSButtonCell"; title = "Blockera vanliga subdomäner"; ObjectID = "gOx-e1-ZUm"; */
+"gOx-e1-ZUm.title" = "Blockera vanliga subdomäner";
+
+/* Class = "NSButtonCell"; title = "Markera ogiltiga värdar"; ObjectID = "x53-JT-2sG"; */
+"x53-JT-2sG.title" = "Markera ogiltiga värdar";

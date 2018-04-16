@@ -1,0 +1,147 @@
+
+/* Class = "NSMenuItem"; title = "모두 앞으로 가져오기"; ObjectID = "5"; */
+"5.title" = "모두 앞으로 가져오기";
+
+/* Class = "NSMenuItem"; title = "윈도우"; ObjectID = "19"; */
+"19.title" = "윈도우";
+
+/* Class = "NSMenuItem"; title = "최소화"; ObjectID = "23"; */
+"23.title" = "최소화";
+
+/* Class = "NSMenu"; title = "윈도우"; ObjectID = "24"; */
+"24.title" = "윈도우";
+
+/* Class = "NSMenu"; title = "AMainMenu"; ObjectID = "29"; */
+"29.title" = "AMainMenu";
+
+/* Class = "NSMenuItem"; title = "SelfControl"; ObjectID = "56"; */
+"56.title" = "SelfControl";
+
+/* Class = "NSMenu"; title = "SelfControl"; ObjectID = "57"; */
+"57.title" = "SelfControl";
+
+/* Class = "NSMenuItem"; title = "SelfControl에 관하여"; ObjectID = "58"; */
+"58.title" = "SelfControl에 관하여";
+
+/* Class = "NSMenu"; title = "서비스"; ObjectID = "130"; */
+"130.title" = "서비스";
+
+/* Class = "NSMenuItem"; title = "서비스"; ObjectID = "131"; */
+"131.title" = "서비스";
+
+/* Class = "NSMenuItem"; title = "SelfControl 가리기"; ObjectID = "134"; */
+"134.title" = "SelfControl 가리기";
+
+/* Class = "NSMenuItem"; title = "SelfControl 종료"; ObjectID = "136"; */
+"136.title" = "SelfControl 종료";
+
+/* Class = "NSMenuItem"; title = "기타 가리기"; ObjectID = "145"; */
+"145.title" = "기타 가리기";
+
+/* Class = "NSMenuItem"; title = "모두 보기"; ObjectID = "150"; */
+"150.title" = "모두 보기";
+
+/* Class = "NSWindow"; title = "SelfControl"; ObjectID = "371"; */
+"371.title" = "SelfControl";
+
+/* Class = "NSTextFieldCell"; title = "30 분"; ObjectID = "479"; */
+"479.title" = "30 분";
+
+/* Class = "NSMenuItem"; title = "블랙리스트 편집..."; ObjectID = "503"; */
+"503.title" = "블랙리스트 편집...";
+
+/* Class = "NSMenuItem"; title = "Item 1"; ObjectID = "505"; */
+"505.title" = "Item 1";
+
+/* Class = "NSMenuItem"; title = "Item 2"; ObjectID = "506"; */
+"506.title" = "Item 2";
+
+/* Class = "NSMenuItem"; title = "Item 3"; ObjectID = "507"; */
+"507.title" = "Item 3";
+
+/* Class = "NSMenuItem"; title = "Item 1"; ObjectID = "509"; */
+"509.title" = "Item 1";
+
+/* Class = "NSMenuItem"; title = "Item 2"; ObjectID = "510"; */
+"510.title" = "Item 2";
+
+/* Class = "NSMenuItem"; title = "Item 3"; ObjectID = "511"; */
+"511.title" = "Item 3";
+
+/* Class = "NSButtonCell"; title = "시작"; ObjectID = "542"; */
+"542.title" = "시작";
+
+/* Class = "NSButtonCell"; title = "블랙리스트 편집"; ObjectID = "544"; */
+"544.title" = "블랙리스트 편집";
+
+/* Class = "NSMenuItem"; title = "환경설정…"; ObjectID = "614"; */
+"614.title" = "환경설정…";
+
+/* Class = "NSMenuItem"; title = "업데이트 체크..."; ObjectID = "732"; */
+"732.title" = "업데이트 체크...";
+
+/* Class = "NSMenuItem"; title = "편집"; ObjectID = "766"; */
+"766.title" = "편집";
+
+/* Class = "NSMenu"; title = "편집"; ObjectID = "767"; */
+"767.title" = "편집";
+
+/* Class = "NSMenuItem"; title = "실행 취소"; ObjectID = "768"; */
+"768.title" = "실행 취소";
+
+/* Class = "NSMenuItem"; title = "실행 복귀"; ObjectID = "769"; */
+"769.title" = "실행 복귀";
+
+/* Class = "NSMenuItem"; title = "자르기"; ObjectID = "771"; */
+"771.title" = "자르기";
+
+/* Class = "NSMenuItem"; title = "복사"; ObjectID = "772"; */
+"772.title" = "복사";
+
+/* Class = "NSMenuItem"; title = "붙이기"; ObjectID = "773"; */
+"773.title" = "붙이기";
+
+/* Class = "NSMenuItem"; title = "삭제"; ObjectID = "775"; */
+"775.title" = "삭제";
+
+/* Class = "NSMenuItem"; title = "모두 선택"; ObjectID = "776"; */
+"776.title" = "모두 선택";
+
+/* Class = "NSMenuItem"; title = "음성"; ObjectID = "780"; */
+"780.title" = "음성";
+
+/* Class = "NSMenu"; title = "음성"; ObjectID = "781"; */
+"781.title" = "음성";
+
+/* Class = "NSMenuItem"; title = "말하기 시작"; ObjectID = "782"; */
+"782.title" = "말하기 시작";
+
+/* Class = "NSMenuItem"; title = "말하기 중단"; ObjectID = "783"; */
+"783.title" = "말하기 중단";
+
+/* Class = "NSMenuItem"; title = "파일"; ObjectID = "865"; */
+"865.title" = "파일";
+
+/* Class = "NSMenu"; title = "파일"; ObjectID = "866"; */
+"866.title" = "파일";
+
+/* Class = "NSMenuItem"; title = "윈도우 닫기"; ObjectID = "867"; */
+"867.title" = "윈도우 닫기";
+
+/* Class = "NSMenuItem"; title = "차단리스트 저장..."; ObjectID = "873"; */
+"873.title" = "차단리스트 저장...";
+
+/* Class = "NSMenuItem"; title = "차단리스트 열기…"; ObjectID = "877"; */
+"877.title" = "차단리스트 열기…";
+
+/* Class = "NSMenuItem"; title = "도움말"; ObjectID = "899"; */
+"899.title" = "도움말";
+
+/* Class = "NSMenu"; title = "도움말"; ObjectID = "900"; */
+"900.title" = "도움말";
+
+/* Class = "NSMenuItem"; title = "SelfControl FAQ"; ObjectID = "901"; */
+"901.title" = "SelfControl FAQ";
+
+/* Class = "NSMenuItem"; title = "Get Started"; ObjectID = "eZH-Xe-4UE"; */
+"eZH-Xe-4UE.title" = "Get Started";

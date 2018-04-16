@@ -1,0 +1,147 @@
+
+/* Class = "NSMenuItem"; title = "前置全部窗口"; ObjectID = "5"; */
+"5.title" = "前置全部窗口";
+
+/* Class = "NSMenuItem"; title = "窗口"; ObjectID = "19"; */
+"19.title" = "窗口";
+
+/* Class = "NSMenuItem"; title = "最小化"; ObjectID = "23"; */
+"23.title" = "最小化";
+
+/* Class = "NSMenu"; title = "窗口"; ObjectID = "24"; */
+"24.title" = "窗口";
+
+/* Class = "NSMenu"; title = "AMainMenu"; ObjectID = "29"; */
+"29.title" = "AMainMenu";
+
+/* Class = "NSMenuItem"; title = "自我控制"; ObjectID = "56"; */
+"56.title" = "自我控制";
+
+/* Class = "NSMenu"; title = "自我控制"; ObjectID = "57"; */
+"57.title" = "自我控制";
+
+/* Class = "NSMenuItem"; title = "关于自我控制"; ObjectID = "58"; */
+"58.title" = "关于自我控制";
+
+/* Class = "NSMenu"; title = "服务"; ObjectID = "130"; */
+"130.title" = "服务";
+
+/* Class = "NSMenuItem"; title = "服务"; ObjectID = "131"; */
+"131.title" = "服务";
+
+/* Class = "NSMenuItem"; title = "隐藏自我控制"; ObjectID = "134"; */
+"134.title" = "隐藏自我控制";
+
+/* Class = "NSMenuItem"; title = "退出自我控制"; ObjectID = "136"; */
+"136.title" = "退出自我控制";
+
+/* Class = "NSMenuItem"; title = "隐藏其他"; ObjectID = "145"; */
+"145.title" = "隐藏其他";
+
+/* Class = "NSMenuItem"; title = "显示全部"; ObjectID = "150"; */
+"150.title" = "显示全部";
+
+/* Class = "NSWindow"; title = "SelfControl"; ObjectID = "371"; */
+"371.title" = "SelfControl";
+
+/* Class = "NSTextFieldCell"; title = "30 minutes"; ObjectID = "479"; */
+"479.title" = "30 minutes";
+
+/* Class = "NSMenuItem"; title = "编辑黑名单"; ObjectID = "503"; */
+"503.title" = "编辑黑名单";
+
+/* Class = "NSMenuItem"; title = "Item 1"; ObjectID = "505"; */
+"505.title" = "Item 1";
+
+/* Class = "NSMenuItem"; title = "Item 2"; ObjectID = "506"; */
+"506.title" = "Item 2";
+
+/* Class = "NSMenuItem"; title = "Item 3"; ObjectID = "507"; */
+"507.title" = "Item 3";
+
+/* Class = "NSMenuItem"; title = "Item 1"; ObjectID = "509"; */
+"509.title" = "Item 1";
+
+/* Class = "NSMenuItem"; title = "Item 2"; ObjectID = "510"; */
+"510.title" = "Item 2";
+
+/* Class = "NSMenuItem"; title = "Item 3"; ObjectID = "511"; */
+"511.title" = "Item 3";
+
+/* Class = "NSButtonCell"; title = "Start"; ObjectID = "542"; */
+"542.title" = "Start";
+
+/* Class = "NSButtonCell"; title = "编辑黑名单"; ObjectID = "544"; */
+"544.title" = "编辑黑名单";
+
+/* Class = "NSMenuItem"; title = "偏好设置"; ObjectID = "614"; */
+"614.title" = "偏好设置";
+
+/* Class = "NSMenuItem"; title = "检查更新"; ObjectID = "732"; */
+"732.title" = "检查更新";
+
+/* Class = "NSMenuItem"; title = "编辑"; ObjectID = "766"; */
+"766.title" = "编辑";
+
+/* Class = "NSMenu"; title = "编辑"; ObjectID = "767"; */
+"767.title" = "编辑";
+
+/* Class = "NSMenuItem"; title = "撤销"; ObjectID = "768"; */
+"768.title" = "撤销";
+
+/* Class = "NSMenuItem"; title = "重做"; ObjectID = "769"; */
+"769.title" = "重做";
+
+/* Class = "NSMenuItem"; title = "剪切"; ObjectID = "771"; */
+"771.title" = "剪切";
+
+/* Class = "NSMenuItem"; title = "复制"; ObjectID = "772"; */
+"772.title" = "复制";
+
+/* Class = "NSMenuItem"; title = "粘贴"; ObjectID = "773"; */
+"773.title" = "粘贴";
+
+/* Class = "NSMenuItem"; title = "删除"; ObjectID = "775"; */
+"775.title" = "删除";
+
+/* Class = "NSMenuItem"; title = "全选"; ObjectID = "776"; */
+"776.title" = "全选";
+
+/* Class = "NSMenuItem"; title = "发声"; ObjectID = "780"; */
+"780.title" = "发声";
+
+/* Class = "NSMenu"; title = "发声"; ObjectID = "781"; */
+"781.title" = "发声";
+
+/* Class = "NSMenuItem"; title = "开始发声"; ObjectID = "782"; */
+"782.title" = "开始发声";
+
+/* Class = "NSMenuItem"; title = "停止发声"; ObjectID = "783"; */
+"783.title" = "停止发声";
+
+/* Class = "NSMenuItem"; title = "文件"; ObjectID = "865"; */
+"865.title" = "文件";
+
+/* Class = "NSMenu"; title = "文件"; ObjectID = "866"; */
+"866.title" = "文件";
+
+/* Class = "NSMenuItem"; title = "关闭窗口"; ObjectID = "867"; */
+"867.title" = "关闭窗口";
+
+/* Class = "NSMenuItem"; title = "保存"; ObjectID = "873"; */
+"873.title" = "保存";
+
+/* Class = "NSMenuItem"; title = "打开"; ObjectID = "877"; */
+"877.title" = "打开";
+
+/* Class = "NSMenuItem"; title = "帮助"; ObjectID = "899"; */
+"899.title" = "帮助";
+
+/* Class = "NSMenu"; title = "帮助"; ObjectID = "900"; */
+"900.title" = "帮助";
+
+/* Class = "NSMenuItem"; title = "SelfControl FAQ"; ObjectID = "901"; */
+"901.title" = "SelfControl FAQ";
+
+/* Class = "NSMenuItem"; title = "Get Started"; ObjectID = "905"; */
+"905.title" = "Get Started";

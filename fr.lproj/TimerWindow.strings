@@ -5,8 +5,8 @@
 /* Class = "NSTextFieldCell"; title = "00:00:00"; ObjectID = "34"; */
 "34.title" = "00:00:00";
 
-/* Class = "NSButtonCell"; title = "Add to Blacklist"; ObjectID = "50"; */
-"50.title" = "Add to Blacklist";
+/* Class = "NSButtonCell"; title = "Ajouter à la liste noire"; ObjectID = "50"; */
+"50.title" = "Ajouter à la liste noire";
 
 /* Class = "NSWindow"; title = "Window"; ObjectID = "63"; */
 "63.title" = "Window";
@@ -20,5 +20,5 @@
 /* Class = "NSTextFieldCell"; title = "Host: "; ObjectID = "72"; */
 "72.title" = "Host: ";
 
-/* Class = "NSButtonCell"; title = "Stuck? Stop block manually"; ObjectID = "WWa-f1-gdW"; */
-"WWa-f1-gdW.title" = "Stuck? Stop block manually";
+/* Class = "NSButtonCell"; title = "Planté? Arrêter le blocage à la main"; ObjectID = "101"; */
+"101.title" = "Planté? Arrêter le blocage à la main";

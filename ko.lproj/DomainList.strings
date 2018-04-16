@@ -1,0 +1,72 @@
+
+/* Class = "NSWindow"; title = "Domain Blacklist"; ObjectID = "1"; */
+"1.title" = "Domain Blacklist";
+
+/* Class = "NSTableColumn"; headerCell.title = "Domain Name"; ObjectID = "17"; */
+"17.headerCell.title" = "Domain Name";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "20"; */
+"20.title" = "Text Cell";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Add (⇧=)"; ObjectID = "42"; */
+"42.ibShadowedToolTip" = "Add (⇧=)";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Remove (⌫)"; ObjectID = "46"; */
+"46.ibShadowedToolTip" = "Remove (⌫)";
+
+/* Class = "NSButtonCell"; title = "가져오기"; ObjectID = "80"; */
+"80.title" = "가져오기";
+
+/* Class = "NSMenu"; title = "Import"; ObjectID = "84"; */
+"84.title" = "Import";
+
+/* Class = "NSMenuItem"; title = "Mail 로 부터"; ObjectID = "91"; */
+"91.title" = "Mail 로 부터";
+
+/* Class = "NSMenu"; title = "Mail 로 부터"; ObjectID = "92"; */
+"92.title" = "Mail 로 부터";
+
+/* Class = "NSMenuItem"; title = "수신 메일 서버"; ObjectID = "93"; */
+"93.title" = "수신 메일 서버";
+
+/* Class = "NSMenuItem"; title = "Thunderbird 로 부터"; ObjectID = "94"; */
+"94.title" = "Thunderbird 로 부터";
+
+/* Class = "NSMenu"; title = "Thunderbird 로 부터"; ObjectID = "95"; */
+"95.title" = "Thunderbird 로 부터";
+
+/* Class = "NSMenuItem"; title = "수신 메일 서버"; ObjectID = "96"; */
+"96.title" = "수신 메일 서버";
+
+/* Class = "NSMenuItem"; title = "송신 메일 서버"; ObjectID = "97"; */
+"97.title" = "송신 메일 서버";
+
+/* Class = "NSMenuItem"; title = "송신 메일 서버"; ObjectID = "98"; */
+"98.title" = "송신 메일 서버";
+
+/* Class = "NSButtonCell"; title = "블랙리스트"; ObjectID = "110"; */
+"110.title" = "블랙리스트";
+
+/* Class = "NSButtonCell"; title = "화이트리스트"; ObjectID = "111"; */
+"111.title" = "화이트리스트";
+
+/* Class = "NSButtonCell"; title = "Radio"; ObjectID = "112"; */
+"112.title" = "Radio";
+
+/* Class = "NSMenuItem"; title = "News & Publications"; ObjectID = "1Z2-HC-qpp"; */
+"1Z2-HC-qpp.title" = "News & Publications";
+
+/* Class = "NSMenu"; title = "MailMate 로 부터"; ObjectID = "8iR-g5-4gH"; */
+"8iR-g5-4gH.title" = "MailMate 로 부터";
+
+/* Class = "NSMenuItem"; title = "Common Distracting Sites"; ObjectID = "HuZ-sb-Bso"; */
+"HuZ-sb-Bso.title" = "Common Distracting Sites";
+
+/* Class = "NSMenuItem"; title = "수신 메일 서버"; ObjectID = "faB-IB-MTM"; */
+"faB-IB-MTM.title" = "수신 메일 서버";
+
+/* Class = "NSMenuItem"; title = "MailMate 로 부터"; ObjectID = "rda-DG-e6b"; */
+"rda-DG-e6b.title" = "MailMate 로 부터";
+
+/* Class = "NSMenuItem"; title = "송신 메일 서버"; ObjectID = "zex-CN-C9S"; */
+"zex-CN-C9S.title" = "송신 메일 서버";

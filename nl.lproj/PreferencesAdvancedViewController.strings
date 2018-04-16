@@ -1,0 +1,18 @@
+
+/* Class = "NSButtonCell"; title = "Sta lokale netwerken toe"; ObjectID = "4wN-EQ-U6a"; */
+"4wN-EQ-U6a.title" = "Sta lokale netwerken toe";
+
+/* Class = "NSButtonCell"; title = "Verifieer internetverbinding"; ObjectID = "QeK-Oh-Gga"; */
+"QeK-Oh-Gga.title" = "Verifieer internetverbinding";
+
+/* Class = "NSButtonCell"; title = "Leeg browsercache"; ObjectID = "Y7x-Zc-xZU"; */
+"Y7x-Zc-xZU.title" = "Leeg browsercache";
+
+/* Class = "NSButtonCell"; title = "Blokkeringen met witte lijst moeten gekoppelde sites omvatten (traag)"; ObjectID = "b7a-fO-pJq"; */
+"b7a-fO-pJq.title" = "Blokkeringen met witte lijst moeten gekoppelde sites omvatten (traag)";
+
+/* Class = "NSButtonCell"; title = "Blokkeer subdomeinen"; ObjectID = "gOx-e1-ZUm"; */
+"gOx-e1-ZUm.title" = "Blokkeer subdomeinen";
+
+/* Class = "NSButtonCell"; title = "Duid ongeldige hosts aan"; ObjectID = "x53-JT-2sG"; */
+"x53-JT-2sG.title" = "Duid ongeldige hosts aan";

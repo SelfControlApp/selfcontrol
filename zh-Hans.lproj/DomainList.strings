@@ -1,0 +1,72 @@
+
+/* Class = "NSWindow"; title = "Domain Blacklist"; ObjectID = "1"; */
+"1.title" = "Domain Blacklist";
+
+/* Class = "NSTableColumn"; headerCell.title = "Domain Name"; ObjectID = "17"; */
+"17.headerCell.title" = "Domain Name";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "20"; */
+"20.title" = "Text Cell";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Add (⇧=)"; ObjectID = "42"; */
+"42.ibShadowedToolTip" = "Add (⇧=)";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Remove (⌫)"; ObjectID = "46"; */
+"46.ibShadowedToolTip" = "Remove (⌫)";
+
+/* Class = "NSButtonCell"; title = "Import"; ObjectID = "80"; */
+"80.title" = "Import";
+
+/* Class = "NSMenu"; title = "Import"; ObjectID = "84"; */
+"84.title" = "Import";
+
+/* Class = "NSMenuItem"; title = "来自 Mail"; ObjectID = "91"; */
+"91.title" = "来自 Mail";
+
+/* Class = "NSMenu"; title = "来自 Mail"; ObjectID = "92"; */
+"92.title" = "来自 Mail";
+
+/* Class = "NSMenuItem"; title = "接收服务器"; ObjectID = "93"; */
+"93.title" = "接收服务器";
+
+/* Class = "NSMenuItem"; title = "来自 Thunderbird"; ObjectID = "94"; */
+"94.title" = "来自 Thunderbird";
+
+/* Class = "NSMenu"; title = "来自 Thunderbird"; ObjectID = "95"; */
+"95.title" = "来自 Thunderbird";
+
+/* Class = "NSMenuItem"; title = "接收服务器"; ObjectID = "96"; */
+"96.title" = "接收服务器";
+
+/* Class = "NSMenuItem"; title = "发送服务器"; ObjectID = "97"; */
+"97.title" = "发送服务器";
+
+/* Class = "NSMenuItem"; title = "发送服务器"; ObjectID = "98"; */
+"98.title" = "发送服务器";
+
+/* Class = "NSButtonCell"; title = "Blacklist"; ObjectID = "110"; */
+"110.title" = "Blacklist";
+
+/* Class = "NSButtonCell"; title = "Whitelist"; ObjectID = "111"; */
+"111.title" = "Whitelist";
+
+/* Class = "NSButtonCell"; title = "Radio"; ObjectID = "112"; */
+"112.title" = "Radio";
+
+/* Class = "NSMenuItem"; title = "来自 MailMate"; ObjectID = "127"; */
+"127.title" = "来自 MailMate";
+
+/* Class = "NSMenu"; title = "来自 MailMate"; ObjectID = "128"; */
+"128.title" = "来自 MailMate";
+
+/* Class = "NSMenuItem"; title = "接收服务器"; ObjectID = "129"; */
+"129.title" = "接收服务器";
+
+/* Class = "NSMenuItem"; title = "发送服务器"; ObjectID = "130"; */
+"130.title" = "发送服务器";
+
+/* Class = "NSMenuItem"; title = "Common Distracting Sites"; ObjectID = "133"; */
+"133.title" = "Common Distracting Sites";
+
+/* Class = "NSMenuItem"; title = "News & Publications"; ObjectID = "134"; */
+"134.title" = "News & Publications";

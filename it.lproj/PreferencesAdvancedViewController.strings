@@ -1,0 +1,18 @@
+
+/* Class = "NSButtonCell"; title = "Consenti reti locali"; ObjectID = "4wN-EQ-U6a"; */
+"4wN-EQ-U6a.title" = "Consenti reti locali";
+
+/* Class = "NSButtonCell"; title = "Verifica la connessione ad internet"; ObjectID = "QeK-Oh-Gga"; */
+"QeK-Oh-Gga.title" = "Verifica la connessione ad internet";
+
+/* Class = "NSButtonCell"; title = "Cancella la cache del browser"; ObjectID = "Y7x-Zc-xZU"; */
+"Y7x-Zc-xZU.title" = "Cancella la cache del browser";
+
+/* Class = "NSButtonCell"; title = "Blocca i sottodomini comuni"; ObjectID = "gOx-e1-ZUm"; */
+"gOx-e1-ZUm.title" = "Blocca i sottodomini comuni";
+
+/* Class = "NSButtonCell"; title = "Whitelist blocks should include linked sites (slow)"; ObjectID = "gzF-fa-cv4"; */
+"gzF-fa-cv4.title" = "Whitelist blocks should include linked sites (slow)";
+
+/* Class = "NSButtonCell"; title = "Evidenzia host non validi"; ObjectID = "x53-JT-2sG"; */
+"x53-JT-2sG.title" = "Evidenzia host non validi";

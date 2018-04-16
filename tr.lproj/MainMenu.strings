@@ -1,0 +1,147 @@
+
+/* Class = "NSMenuItem"; title = "Hepsini büyült"; ObjectID = "5"; */
+"5.title" = "Hepsini büyült";
+
+/* Class = "NSMenuItem"; title = "Pencere"; ObjectID = "19"; */
+"19.title" = "Pencere";
+
+/* Class = "NSMenuItem"; title = "Küçült"; ObjectID = "23"; */
+"23.title" = "Küçült";
+
+/* Class = "NSMenu"; title = "Pencere"; ObjectID = "24"; */
+"24.title" = "Pencere";
+
+/* Class = "NSMenu"; title = "AMainMenu"; ObjectID = "29"; */
+"29.title" = "AMainMenu";
+
+/* Class = "NSMenuItem"; title = "SelfControl"; ObjectID = "56"; */
+"56.title" = "SelfControl";
+
+/* Class = "NSMenu"; title = "SelfControl"; ObjectID = "57"; */
+"57.title" = "SelfControl";
+
+/* Class = "NSMenuItem"; title = "SelfControl hakkında"; ObjectID = "58"; */
+"58.title" = "SelfControl hakkında";
+
+/* Class = "NSMenu"; title = "Servisler"; ObjectID = "130"; */
+"130.title" = "Servisler";
+
+/* Class = "NSMenuItem"; title = "Servisler"; ObjectID = "131"; */
+"131.title" = "Servisler";
+
+/* Class = "NSMenuItem"; title = "SelfControl'ü gizle"; ObjectID = "134"; */
+"134.title" = "SelfControl'ü gizle";
+
+/* Class = "NSMenuItem"; title = "SelfControl'ü kapat"; ObjectID = "136"; */
+"136.title" = "SelfControl'ü kapat";
+
+/* Class = "NSMenuItem"; title = "Diğer uygulamaları gizle"; ObjectID = "145"; */
+"145.title" = "Diğer uygulamaları gizle";
+
+/* Class = "NSMenuItem"; title = "Bütün uygulamaları göster"; ObjectID = "150"; */
+"150.title" = "Bütün uygulamaları göster";
+
+/* Class = "NSWindow"; title = "SelfControl"; ObjectID = "371"; */
+"371.title" = "SelfControl";
+
+/* Class = "NSTextFieldCell"; title = "30 dakika"; ObjectID = "479"; */
+"479.title" = "30 dakika";
+
+/* Class = "NSMenuItem"; title = "Karalisteyi düzenle"; ObjectID = "503"; */
+"503.title" = "Karalisteyi düzenle";
+
+/* Class = "NSMenuItem"; title = "Item 1"; ObjectID = "505"; */
+"505.title" = "Item 1";
+
+/* Class = "NSMenuItem"; title = "Item 2"; ObjectID = "506"; */
+"506.title" = "Item 2";
+
+/* Class = "NSMenuItem"; title = "Item 3"; ObjectID = "507"; */
+"507.title" = "Item 3";
+
+/* Class = "NSMenuItem"; title = "Item 1"; ObjectID = "509"; */
+"509.title" = "Item 1";
+
+/* Class = "NSMenuItem"; title = "Item 2"; ObjectID = "510"; */
+"510.title" = "Item 2";
+
+/* Class = "NSMenuItem"; title = "Item 3"; ObjectID = "511"; */
+"511.title" = "Item 3";
+
+/* Class = "NSButtonCell"; title = "Başlat"; ObjectID = "542"; */
+"542.title" = "Başlat";
+
+/* Class = "NSButtonCell"; title = "Karalisteyi düzenle"; ObjectID = "544"; */
+"544.title" = "Karalisteyi düzenle";
+
+/* Class = "NSMenuItem"; title = "Ayarlar"; ObjectID = "614"; */
+"614.title" = "Ayarlar";
+
+/* Class = "NSMenuItem"; title = "Güncellemeleri kontrol et"; ObjectID = "732"; */
+"732.title" = "Güncellemeleri kontrol et";
+
+/* Class = "NSMenuItem"; title = "Düzenle"; ObjectID = "766"; */
+"766.title" = "Düzenle";
+
+/* Class = "NSMenu"; title = "Düzenle"; ObjectID = "767"; */
+"767.title" = "Düzenle";
+
+/* Class = "NSMenuItem"; title = "Geri al"; ObjectID = "768"; */
+"768.title" = "Geri al";
+
+/* Class = "NSMenuItem"; title = "Geri almaktan vazgeç"; ObjectID = "769"; */
+"769.title" = "Geri almaktan vazgeç";
+
+/* Class = "NSMenuItem"; title = "Kes"; ObjectID = "771"; */
+"771.title" = "Kes";
+
+/* Class = "NSMenuItem"; title = "Kopyala"; ObjectID = "772"; */
+"772.title" = "Kopyala";
+
+/* Class = "NSMenuItem"; title = "Yapıştır"; ObjectID = "773"; */
+"773.title" = "Yapıştır";
+
+/* Class = "NSMenuItem"; title = "Sil"; ObjectID = "775"; */
+"775.title" = "Sil";
+
+/* Class = "NSMenuItem"; title = "Hepsini seç"; ObjectID = "776"; */
+"776.title" = "Hepsini seç";
+
+/* Class = "NSMenuItem"; title = "Konuşma"; ObjectID = "780"; */
+"780.title" = "Konuşma";
+
+/* Class = "NSMenu"; title = "Konuşma"; ObjectID = "781"; */
+"781.title" = "Konuşma";
+
+/* Class = "NSMenuItem"; title = "Konuşmaya başla"; ObjectID = "782"; */
+"782.title" = "Konuşmaya başla";
+
+/* Class = "NSMenuItem"; title = "Konuşmayı durdur"; ObjectID = "783"; */
+"783.title" = "Konuşmayı durdur";
+
+/* Class = "NSMenuItem"; title = "Dosya"; ObjectID = "865"; */
+"865.title" = "Dosya";
+
+/* Class = "NSMenu"; title = "Dosya"; ObjectID = "866"; */
+"866.title" = "Dosya";
+
+/* Class = "NSMenuItem"; title = "Pencereyi Kapat"; ObjectID = "867"; */
+"867.title" = "Pencereyi Kapat";
+
+/* Class = "NSMenuItem"; title = "Engelleme listesi kaydet"; ObjectID = "873"; */
+"873.title" = "Engelleme listesi kaydet";
+
+/* Class = "NSMenuItem"; title = "Engelleme listesi aç"; ObjectID = "877"; */
+"877.title" = "Engelleme listesi aç";
+
+/* Class = "NSMenuItem"; title = "Yardım"; ObjectID = "899"; */
+"899.title" = "Yardım";
+
+/* Class = "NSMenu"; title = "Yardım"; ObjectID = "900"; */
+"900.title" = "Yardım";
+
+/* Class = "NSMenuItem"; title = "SelfControl SSS (İngilizce)"; ObjectID = "901"; */
+"901.title" = "SelfControl SSS (İngilizce)";
+
+/* Class = "NSMenuItem"; title = "Get Started"; ObjectID = "rrS-VB-fKU"; */
+"rrS-VB-fKU.title" = "Get Started";

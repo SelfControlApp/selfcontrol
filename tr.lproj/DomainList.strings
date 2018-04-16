@@ -1,0 +1,72 @@
+
+/* Class = "NSWindow"; title = "Domain Blacklist"; ObjectID = "1"; */
+"1.title" = "Domain Blacklist";
+
+/* Class = "NSTableColumn"; headerCell.title = "Domain Name"; ObjectID = "17"; */
+"17.headerCell.title" = "Domain Name";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "20"; */
+"20.title" = "Text Cell";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Add (⇧=)"; ObjectID = "42"; */
+"42.ibShadowedToolTip" = "Add (⇧=)";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Remove (⌫)"; ObjectID = "46"; */
+"46.ibShadowedToolTip" = "Remove (⌫)";
+
+/* Class = "NSButtonCell"; title = "İçe aktar"; ObjectID = "80"; */
+"80.title" = "İçe aktar";
+
+/* Class = "NSMenu"; title = "Import"; ObjectID = "84"; */
+"84.title" = "Import";
+
+/* Class = "NSMenuItem"; title = "Mail ile"; ObjectID = "91"; */
+"91.title" = "Mail ile";
+
+/* Class = "NSMenu"; title = "Mail ile"; ObjectID = "92"; */
+"92.title" = "Mail ile";
+
+/* Class = "NSMenuItem"; title = "Gelen mail sunucuları"; ObjectID = "93"; */
+"93.title" = "Gelen mail sunucuları";
+
+/* Class = "NSMenuItem"; title = "Thunderbird ile"; ObjectID = "94"; */
+"94.title" = "Thunderbird ile";
+
+/* Class = "NSMenu"; title = "Thunderbird ile"; ObjectID = "95"; */
+"95.title" = "Thunderbird ile";
+
+/* Class = "NSMenuItem"; title = "Gelen mail sunucuları"; ObjectID = "96"; */
+"96.title" = "Gelen mail sunucuları";
+
+/* Class = "NSMenuItem"; title = "Giden mail sunucuları"; ObjectID = "97"; */
+"97.title" = "Giden mail sunucuları";
+
+/* Class = "NSMenuItem"; title = "Giden mail sunucuları"; ObjectID = "98"; */
+"98.title" = "Giden mail sunucuları";
+
+/* Class = "NSButtonCell"; title = "Karaliste"; ObjectID = "110"; */
+"110.title" = "Karaliste";
+
+/* Class = "NSButtonCell"; title = "Beyazliste"; ObjectID = "111"; */
+"111.title" = "Beyazliste";
+
+/* Class = "NSButtonCell"; title = "Radio"; ObjectID = "112"; */
+"112.title" = "Radio";
+
+/* Class = "NSMenuItem"; title = "Common Distracting Sites"; ObjectID = "1wQ-eD-C24"; */
+"1wQ-eD-C24.title" = "Common Distracting Sites";
+
+/* Class = "NSMenu"; title = "MateMate ile"; ObjectID = "7gj-65-XlV"; */
+"7gj-65-XlV.title" = "MateMate ile";
+
+/* Class = "NSMenuItem"; title = "News & Publications"; ObjectID = "e0U-ZG-P8L"; */
+"e0U-ZG-P8L.title" = "News & Publications";
+
+/* Class = "NSMenuItem"; title = "MateMate ile"; ObjectID = "jKR-7K-HP1"; */
+"jKR-7K-HP1.title" = "MateMate ile";
+
+/* Class = "NSMenuItem"; title = "Giden mail sunucuları"; ObjectID = "lhY-Ys-tN4"; */
+"lhY-Ys-tN4.title" = "Giden mail sunucuları";
+
+/* Class = "NSMenuItem"; title = "Gelen mail sunucuları"; ObjectID = "wlB-vA-pCD"; */
+"wlB-vA-pCD.title" = "Gelen mail sunucuları";

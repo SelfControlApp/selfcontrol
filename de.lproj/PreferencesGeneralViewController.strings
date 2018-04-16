@@ -1,0 +1,57 @@
+
+/* Class = "NSMenuItem"; title = "Morse"; ObjectID = "7O1-5F-9ML"; */
+"7O1-5F-9ML.title" = "Morse";
+
+/* Class = "NSMenuItem"; title = "Ping"; ObjectID = "9Do-me-xOR"; */
+"9Do-me-xOR.title" = "Ping";
+
+/* Class = "NSMenuItem"; title = "Tink"; ObjectID = "Agr-Wz-NMt"; */
+"Agr-Wz-NMt.title" = "Tink";
+
+/* Class = "NSMenuItem"; title = "Bottle"; ObjectID = "Cgh-hY-giQ"; */
+"Cgh-hY-giQ.title" = "Bottle";
+
+/* Class = "NSMenuItem"; title = "Hero"; ObjectID = "DOo-Z3-qou"; */
+"DOo-Z3-qou.title" = "Hero";
+
+/* Class = "NSMenuItem"; title = "Frog"; ObjectID = "GCn-B0-3PI"; */
+"GCn-B0-3PI.title" = "Frog";
+
+/* Class = "NSMenuItem"; title = "Glass"; ObjectID = "V5g-KN-uVs"; */
+"V5g-KN-uVs.title" = "Glass";
+
+/* Class = "NSMenuItem"; title = "Basso"; ObjectID = "ZGm-9Y-HUa"; */
+"ZGm-9Y-HUa.title" = "Basso";
+
+/* Class = "NSButtonCell"; title = "Timerfenster oben zeigen"; ObjectID = "ZTQ-hm-LIP"; */
+"ZTQ-hm-LIP.title" = "Timerfenster oben zeigen";
+
+/* Class = "NSMenuItem"; title = "Submarine"; ObjectID = "cYm-q6-DV1"; */
+"cYm-q6-DV1.title" = "Submarine";
+
+/* Class = "NSButtonCell"; title = "Dock Icon mit Countdown anzeigen (Badge)"; ObjectID = "deK-DV-3UF"; */
+"deK-DV-3UF.title" = "Dock Icon mit Countdown anzeigen (Badge)";
+
+/* Class = "NSMenuItem"; title = "Purr"; ObjectID = "fCx-Zs-8fd"; */
+"fCx-Zs-8fd.title" = "Purr";
+
+/* Class = "NSMenuItem"; title = "Pop"; ObjectID = "h92-Bv-Qxb"; */
+"h92-Bv-Qxb.title" = "Pop";
+
+/* Class = "NSMenuItem"; title = "Blow"; ObjectID = "i0p-Gl-XUd"; */
+"i0p-Gl-XUd.title" = "Blow";
+
+/* Class = "NSMenuItem"; title = "Funk"; ObjectID = "jwh-RD-99A"; */
+"jwh-RD-99A.title" = "Funk";
+
+/* Class = "NSButtonCell"; title = "Automatisch nach Updates suchen"; ObjectID = "mFo-x6-OdZ"; */
+"mFo-x6-OdZ.title" = "Automatisch nach Updates suchen";
+
+/* Class = "NSMenuItem"; title = "Sosumi"; ObjectID = "sKB-zE-z24"; */
+"sKB-zE-z24.title" = "Sosumi";
+
+/* Class = "NSMenu"; title = "OtherViews"; ObjectID = "tjX-Y0-sNd"; */
+"tjX-Y0-sNd.title" = "OtherViews";
+
+/* Class = "NSButtonCell"; title = "Bei Fertigstellung Sound spielen:"; ObjectID = "zMX-XR-Bg2"; */
+"zMX-XR-Bg2.title" = "Bei Fertigstellung Sound spielen:";

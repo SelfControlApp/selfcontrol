@@ -77,80 +77,8 @@
 /* Class = "NSMenuItem"; title = "Einstellungen..."; ObjectID = "614"; */
 "614.title" = "Einstellungen...";
 
-/* Class = "NSWindow"; title = "Preferences"; ObjectID = "633"; */
-"633.title" = "Preferences";
-
-/* Class = "NSButtonCell"; title = "Allgemeine Subdomains sperren"; ObjectID = "637"; */
-"637.title" = "Allgemeine Subdomains sperren";
-
-/* Class = "NSButtonCell"; title = "Ungültige Hosts markieren"; ObjectID = "648"; */
-"648.title" = "Ungültige Hosts markieren";
-
-/* Class = "NSButtonCell"; title = "Internetverbindung überprüfen"; ObjectID = "659"; */
-"659.title" = "Internetverbindung überprüfen";
-
-/* Class = "NSButtonCell"; title = "Timerfenster oben zeigen"; ObjectID = "690"; */
-"690.title" = "Timerfenster oben zeigen";
-
-/* Class = "NSMenu"; title = "OtherViews"; ObjectID = "696"; */
-"696.title" = "OtherViews";
-
-/* Class = "NSMenuItem"; title = "Basso"; ObjectID = "697"; */
-"697.title" = "Basso";
-
-/* Class = "NSMenuItem"; title = "Blow"; ObjectID = "698"; */
-"698.title" = "Blow";
-
-/* Class = "NSMenuItem"; title = "Bottle"; ObjectID = "699"; */
-"699.title" = "Bottle";
-
-/* Class = "NSButtonCell"; title = "Bei Fertigstellung Sound spielen:"; ObjectID = "701"; */
-"701.title" = "Bei Fertigstellung Sound spielen:";
-
-/* Class = "NSMenuItem"; title = "Ping"; ObjectID = "702"; */
-"702.title" = "Ping";
-
-/* Class = "NSMenuItem"; title = "Pop"; ObjectID = "703"; */
-"703.title" = "Pop";
-
-/* Class = "NSMenuItem"; title = "Funk"; ObjectID = "704"; */
-"704.title" = "Funk";
-
-/* Class = "NSMenuItem"; title = "Frog"; ObjectID = "705"; */
-"705.title" = "Frog";
-
-/* Class = "NSMenuItem"; title = "Glass"; ObjectID = "706"; */
-"706.title" = "Glass";
-
-/* Class = "NSMenuItem"; title = "Hero"; ObjectID = "707"; */
-"707.title" = "Hero";
-
-/* Class = "NSMenuItem"; title = "Morse"; ObjectID = "708"; */
-"708.title" = "Morse";
-
-/* Class = "NSMenuItem"; title = "Tink"; ObjectID = "709"; */
-"709.title" = "Tink";
-
-/* Class = "NSMenuItem"; title = "Purr"; ObjectID = "710"; */
-"710.title" = "Purr";
-
-/* Class = "NSMenuItem"; title = "Sosumi"; ObjectID = "711"; */
-"711.title" = "Sosumi";
-
-/* Class = "NSMenuItem"; title = "Submarine"; ObjectID = "712"; */
-"712.title" = "Submarine";
-
 /* Class = "NSMenuItem"; title = "Nach Updates suchen"; ObjectID = "732"; */
 "732.title" = "Nach Updates suchen";
-
-/* Class = "NSButtonCell"; title = "Automatisch nach Updates suchen"; ObjectID = "735"; */
-"735.title" = "Automatisch nach Updates suchen";
-
-/* Class = "NSButtonCell"; title = "Browsercache leeren"; ObjectID = "744"; */
-"744.title" = "Browsercache leeren";
-
-/* Class = "NSButtonCell"; title = "Dock Icon mit Countdown anzeigen (Badge)"; ObjectID = "751"; */
-"751.title" = "Dock Icon mit Countdown anzeigen (Badge)";
 
 /* Class = "NSMenuItem"; title = "Bearbeiten"; ObjectID = "766"; */
 "766.title" = "Bearbeiten";
@@ -206,5 +134,14 @@
 /* Class = "NSMenuItem"; title = "Öffnen"; ObjectID = "877"; */
 "877.title" = "Öffnen";
 
-/* Class = "NSButtonCell"; title = "Lokale Netzwerke zulassen"; ObjectID = "890"; */
-"890.title" = "Lokale Netzwerke zulassen";
+/* Class = "NSMenuItem"; title = "Help"; ObjectID = "899"; */
+"899.title" = "Help";
+
+/* Class = "NSMenu"; title = "Help"; ObjectID = "900"; */
+"900.title" = "Help";
+
+/* Class = "NSMenuItem"; title = "SelfControl FAQ"; ObjectID = "901"; */
+"901.title" = "SelfControl FAQ";
+
+/* Class = "NSMenuItem"; title = "Get Started"; ObjectID = "905"; */
+"905.title" = "Get Started";

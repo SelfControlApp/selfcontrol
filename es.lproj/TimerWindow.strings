@@ -1,21 +1,24 @@
 
-/* Class = "NSPanel"; title = "SelfControl"; ObjectID = "31"; */
+/* Class = "NSWindow"; title = "SelfControl"; ObjectID = "31"; */
 "31.title" = "SelfControl";
 
 /* Class = "NSTextFieldCell"; title = "00:00:00"; ObjectID = "34"; */
 "34.title" = "00:00:00";
 
 /* Class = "NSButtonCell"; title = "Add to Blacklist"; ObjectID = "50"; */
-"50.title" = "Add to lista negra";
+"50.title" = "Add to Blacklist";
 
-/* Class = "NSPanel"; title = "Window"; ObjectID = "63"; */
-"63.title" = "Ventana";
+/* Class = "NSWindow"; title = "Window"; ObjectID = "63"; */
+"63.title" = "Window";
 
 /* Class = "NSButtonCell"; title = "Cancel"; ObjectID = "70"; */
-"70.title" = "Cancelar";
+"70.title" = "Cancel";
 
 /* Class = "NSButtonCell"; title = "Add"; ObjectID = "71"; */
 "71.title" = "Add";
 
 /* Class = "NSTextFieldCell"; title = "Host: "; ObjectID = "72"; */
 "72.title" = "Host: ";
+
+/* Class = "NSButtonCell"; title = "Stuck? Stop block manually"; ObjectID = "IK5-Vv-MjW"; */
+"IK5-Vv-MjW.title" = "Stuck? Stop block manually";

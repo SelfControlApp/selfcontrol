@@ -251,7 +251,7 @@
                         </connections>
                     </slider>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="478">
-                        <rect key="frame" x="17" y="16" width="72" height="17"/>
+                        <rect key="frame" x="17" y="16" width="585" height="17"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="30 minutes" id="479">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -291,6 +291,8 @@ DQ
                     <constraint firstAttribute="bottom" secondItem="478" secondAttribute="bottom" constant="16" id="bCa-zH-2yY"/>
                     <constraint firstItem="465" firstAttribute="centerX" secondItem="541" secondAttribute="centerX" id="fF7-jW-hAj"/>
                     <constraint firstItem="541" firstAttribute="top" secondItem="372" secondAttribute="top" constant="16" id="jXt-Fy-vdp"/>
+                    <constraint firstItem="478" firstAttribute="trailing" secondItem="543" secondAttribute="trailing" id="jmb-Wp-H3Y"/>
+                    <constraint firstItem="543" firstAttribute="leading" relation="lessThanOrEqual" secondItem="478" secondAttribute="trailing" constant="-10" id="o6E-qg-6q9"/>
                     <constraint firstItem="478" firstAttribute="top" secondItem="465" secondAttribute="bottom" constant="9" id="sph-T0-uxn"/>
                 </constraints>
             </view>

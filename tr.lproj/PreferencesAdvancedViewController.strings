@@ -1,0 +1,18 @@
+
+/* Class = "NSButtonCell"; title = "Yerel ağ erişiminlerine izin ver"; ObjectID = "4wN-EQ-U6a"; */
+"4wN-EQ-U6a.title" = "Yerel ağ erişiminlerine izin ver";
+
+/* Class = "NSButtonCell"; title = "Whitelist blocks should include linked sites (slow)"; ObjectID = "DSg-wR-xe4"; */
+"DSg-wR-xe4.title" = "Whitelist blocks should include linked sites (slow)";
+
+/* Class = "NSButtonCell"; title = "İnternet bağlantısını doğrula"; ObjectID = "QeK-Oh-Gga"; */
+"QeK-Oh-Gga.title" = "İnternet bağlantısını doğrula";
+
+/* Class = "NSButtonCell"; title = "Tarayıcı geçmişini temizle"; ObjectID = "Y7x-Zc-xZU"; */
+"Y7x-Zc-xZU.title" = "Tarayıcı geçmişini temizle";
+
+/* Class = "NSButtonCell"; title = "Benzer siteleri de engelle"; ObjectID = "gOx-e1-ZUm"; */
+"gOx-e1-ZUm.title" = "Benzer siteleri de engelle";
+
+/* Class = "NSButtonCell"; title = "Geçersiz sunucuların üstünü çiz"; ObjectID = "x53-JT-2sG"; */
+"x53-JT-2sG.title" = "Geçersiz sunucuların üstünü çiz";

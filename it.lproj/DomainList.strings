@@ -1,0 +1,72 @@
+
+/* Class = "NSWindow"; title = "Domini sulla lista di blocco"; ObjectID = "1"; */
+"1.title" = "Domini sulla lista di blocco";
+
+/* Class = "NSTableColumn"; headerCell.title = "Domain Name"; ObjectID = "17"; */
+"17.headerCell.title" = "Domain Name";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "20"; */
+"20.title" = "Text Cell";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Add (⇧=)"; ObjectID = "42"; */
+"42.ibShadowedToolTip" = "Add (⇧=)";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Remove (⌫)"; ObjectID = "46"; */
+"46.ibShadowedToolTip" = "Remove (⌫)";
+
+/* Class = "NSButtonCell"; title = "Importa"; ObjectID = "80"; */
+"80.title" = "Importa";
+
+/* Class = "NSMenu"; title = "Import"; ObjectID = "84"; */
+"84.title" = "Import";
+
+/* Class = "NSMenuItem"; title = "Da Mail"; ObjectID = "91"; */
+"91.title" = "Da Mail";
+
+/* Class = "NSMenu"; title = "Da Mail"; ObjectID = "92"; */
+"92.title" = "Da Mail";
+
+/* Class = "NSMenuItem"; title = "Server di posta in ingresso"; ObjectID = "93"; */
+"93.title" = "Server di posta in ingresso";
+
+/* Class = "NSMenuItem"; title = "Da Thunderbird"; ObjectID = "94"; */
+"94.title" = "Da Thunderbird";
+
+/* Class = "NSMenu"; title = "Da Thunderbird"; ObjectID = "95"; */
+"95.title" = "Da Thunderbird";
+
+/* Class = "NSMenuItem"; title = "Server di posta in ingresso"; ObjectID = "96"; */
+"96.title" = "Server di posta in ingresso";
+
+/* Class = "NSMenuItem"; title = "Server di posta in uscita"; ObjectID = "97"; */
+"97.title" = "Server di posta in uscita";
+
+/* Class = "NSMenuItem"; title = "Server di posta in uscita"; ObjectID = "98"; */
+"98.title" = "Server di posta in uscita";
+
+/* Class = "NSButtonCell"; title = "Blacklist"; ObjectID = "110"; */
+"110.title" = "Blacklist";
+
+/* Class = "NSButtonCell"; title = "Whitelist"; ObjectID = "111"; */
+"111.title" = "Whitelist";
+
+/* Class = "NSButtonCell"; title = "Radio"; ObjectID = "112"; */
+"112.title" = "Radio";
+
+/* Class = "NSMenuItem"; title = "Da MailMate"; ObjectID = "127"; */
+"127.title" = "Da MailMate";
+
+/* Class = "NSMenu"; title = "Da MailMate"; ObjectID = "128"; */
+"128.title" = "Da MailMate";
+
+/* Class = "NSMenuItem"; title = "Server di posta in uscita"; ObjectID = "129"; */
+"129.title" = "Server di posta in uscita";
+
+/* Class = "NSMenuItem"; title = "Server di posta in ingresso"; ObjectID = "130"; */
+"130.title" = "Server di posta in ingresso";
+
+/* Class = "NSMenuItem"; title = "Common Distracting Sites"; ObjectID = "133"; */
+"133.title" = "Common Distracting Sites";
+
+/* Class = "NSMenuItem"; title = "News & Publications"; ObjectID = "134"; */
+"134.title" = "News & Publications";

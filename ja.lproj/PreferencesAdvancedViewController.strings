@@ -1,0 +1,18 @@
+
+/* Class = "NSButtonCell"; title = "ローカルネットワークを許可する"; ObjectID = "4wN-EQ-U6a"; */
+"4wN-EQ-U6a.title" = "ローカルネットワークを許可する";
+
+/* Class = "NSButtonCell"; title = "Whitelist blocks should include linked sites (slow)"; ObjectID = "F2f-er-vmT"; */
+"F2f-er-vmT.title" = "Whitelist blocks should include linked sites (slow)";
+
+/* Class = "NSButtonCell"; title = "インターネット接続を確認する"; ObjectID = "QeK-Oh-Gga"; */
+"QeK-Oh-Gga.title" = "インターネット接続を確認する";
+
+/* Class = "NSButtonCell"; title = "ブラウザのキャッシュを空にする"; ObjectID = "Y7x-Zc-xZU"; */
+"Y7x-Zc-xZU.title" = "ブラウザのキャッシュを空にする";
+
+/* Class = "NSButtonCell"; title = "一般的なサブドメインをブロックする"; ObjectID = "gOx-e1-ZUm"; */
+"gOx-e1-ZUm.title" = "一般的なサブドメインをブロックする";
+
+/* Class = "NSButtonCell"; title = "無効なホストを強調表示する"; ObjectID = "x53-JT-2sG"; */
+"x53-JT-2sG.title" = "無効なホストを強調表示する";

@@ -1,0 +1,18 @@
+
+/* Class = "NSButtonCell"; title = "Whitelist blocks should include linked sites (slow)"; ObjectID = "2dP-VO-eHN"; */
+"2dP-VO-eHN.title" = "Whitelist blocks should include linked sites (slow)";
+
+/* Class = "NSButtonCell"; title = "로컬 네트워크 허용"; ObjectID = "4wN-EQ-U6a"; */
+"4wN-EQ-U6a.title" = "로컬 네트워크 허용";
+
+/* Class = "NSButtonCell"; title = "인터넷 연결 상태 확인"; ObjectID = "QeK-Oh-Gga"; */
+"QeK-Oh-Gga.title" = "인터넷 연결 상태 확인";
+
+/* Class = "NSButtonCell"; title = "브라우저 캐쉬 지우기"; ObjectID = "Y7x-Zc-xZU"; */
+"Y7x-Zc-xZU.title" = "브라우저 캐쉬 지우기";
+
+/* Class = "NSButtonCell"; title = "서브도메인 차단"; ObjectID = "gOx-e1-ZUm"; */
+"gOx-e1-ZUm.title" = "서브도메인 차단";
+
+/* Class = "NSButtonCell"; title = "잘못된 호스트 주소 표시"; ObjectID = "x53-JT-2sG"; */
+"x53-JT-2sG.title" = "잘못된 호스트 주소 표시";

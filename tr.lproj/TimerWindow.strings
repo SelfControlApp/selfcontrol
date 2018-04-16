@@ -1,0 +1,24 @@
+
+/* Class = "NSWindow"; title = "SelfControl"; ObjectID = "31"; */
+"31.title" = "SelfControl";
+
+/* Class = "NSTextFieldCell"; title = "00:00:00"; ObjectID = "34"; */
+"34.title" = "00:00:00";
+
+/* Class = "NSButtonCell"; title = "Karalisteye ekle"; ObjectID = "50"; */
+"50.title" = "Karalisteye ekle";
+
+/* Class = "NSWindow"; title = "Window"; ObjectID = "63"; */
+"63.title" = "Window";
+
+/* Class = "NSButtonCell"; title = "Vazgeç"; ObjectID = "70"; */
+"70.title" = "Vazgeç";
+
+/* Class = "NSButtonCell"; title = "Ekle"; ObjectID = "71"; */
+"71.title" = "Ekle";
+
+/* Class = "NSTextFieldCell"; title = "Sunucu:"; ObjectID = "72"; */
+"72.title" = "Sunucu:";
+
+/* Class = "NSButtonCell"; title = "Stuck? Stop block manually"; ObjectID = "qfE-2A-D3r"; */
+"qfE-2A-D3r.title" = "Stuck? Stop block manually";

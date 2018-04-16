@@ -1,0 +1,147 @@
+
+/* Class = "NSMenuItem"; title = "Porta tutto in primo piano"; ObjectID = "5"; */
+"5.title" = "Porta tutto in primo piano";
+
+/* Class = "NSMenuItem"; title = "Finestra"; ObjectID = "19"; */
+"19.title" = "Finestra";
+
+/* Class = "NSMenuItem"; title = "Contrai"; ObjectID = "23"; */
+"23.title" = "Contrai";
+
+/* Class = "NSMenu"; title = "Finestra"; ObjectID = "24"; */
+"24.title" = "Finestra";
+
+/* Class = "NSMenu"; title = "AMainMenu"; ObjectID = "29"; */
+"29.title" = "AMainMenu";
+
+/* Class = "NSMenuItem"; title = "SelfControl"; ObjectID = "56"; */
+"56.title" = "SelfControl";
+
+/* Class = "NSMenu"; title = "SelfControl"; ObjectID = "57"; */
+"57.title" = "SelfControl";
+
+/* Class = "NSMenuItem"; title = "Informazioni su SelfControl"; ObjectID = "58"; */
+"58.title" = "Informazioni su SelfControl";
+
+/* Class = "NSMenu"; title = "Servizi"; ObjectID = "130"; */
+"130.title" = "Servizi";
+
+/* Class = "NSMenuItem"; title = "Servizi"; ObjectID = "131"; */
+"131.title" = "Servizi";
+
+/* Class = "NSMenuItem"; title = "Nascondi SelfControl"; ObjectID = "134"; */
+"134.title" = "Nascondi SelfControl";
+
+/* Class = "NSMenuItem"; title = "Esci da SelfControl"; ObjectID = "136"; */
+"136.title" = "Esci da SelfControl";
+
+/* Class = "NSMenuItem"; title = "Nascondi altre"; ObjectID = "145"; */
+"145.title" = "Nascondi altre";
+
+/* Class = "NSMenuItem"; title = "Mostra tutte"; ObjectID = "150"; */
+"150.title" = "Mostra tutte";
+
+/* Class = "NSWindow"; title = "SelfControl"; ObjectID = "371"; */
+"371.title" = "SelfControl";
+
+/* Class = "NSTextFieldCell"; title = "30 minuti"; ObjectID = "479"; */
+"479.title" = "30 minuti";
+
+/* Class = "NSMenuItem"; title = "Modifica lista di blocco..."; ObjectID = "503"; */
+"503.title" = "Modifica lista di blocco...";
+
+/* Class = "NSMenuItem"; title = "Item 1"; ObjectID = "505"; */
+"505.title" = "Item 1";
+
+/* Class = "NSMenuItem"; title = "Item 2"; ObjectID = "506"; */
+"506.title" = "Item 2";
+
+/* Class = "NSMenuItem"; title = "Item 3"; ObjectID = "507"; */
+"507.title" = "Item 3";
+
+/* Class = "NSMenuItem"; title = "Item 1"; ObjectID = "509"; */
+"509.title" = "Item 1";
+
+/* Class = "NSMenuItem"; title = "Item 2"; ObjectID = "510"; */
+"510.title" = "Item 2";
+
+/* Class = "NSMenuItem"; title = "Item 3"; ObjectID = "511"; */
+"511.title" = "Item 3";
+
+/* Class = "NSButtonCell"; title = "Avvio"; ObjectID = "542"; */
+"542.title" = "Avvio";
+
+/* Class = "NSButtonCell"; title = "Modifica lista di blocco"; ObjectID = "544"; */
+"544.title" = "Modifica lista di blocco";
+
+/* Class = "NSMenuItem"; title = "Preferenze…"; ObjectID = "614"; */
+"614.title" = "Preferenze…";
+
+/* Class = "NSMenuItem"; title = "Controlla aggiornamenti..."; ObjectID = "732"; */
+"732.title" = "Controlla aggiornamenti...";
+
+/* Class = "NSMenuItem"; title = "Composizione"; ObjectID = "766"; */
+"766.title" = "Composizione";
+
+/* Class = "NSMenu"; title = "Composizione"; ObjectID = "767"; */
+"767.title" = "Composizione";
+
+/* Class = "NSMenuItem"; title = "Annulla"; ObjectID = "768"; */
+"768.title" = "Annulla";
+
+/* Class = "NSMenuItem"; title = "Ripristina originale"; ObjectID = "769"; */
+"769.title" = "Ripristina originale";
+
+/* Class = "NSMenuItem"; title = "Taglia"; ObjectID = "771"; */
+"771.title" = "Taglia";
+
+/* Class = "NSMenuItem"; title = "Copia"; ObjectID = "772"; */
+"772.title" = "Copia";
+
+/* Class = "NSMenuItem"; title = "Incolla"; ObjectID = "773"; */
+"773.title" = "Incolla";
+
+/* Class = "NSMenuItem"; title = "Elimina"; ObjectID = "775"; */
+"775.title" = "Elimina";
+
+/* Class = "NSMenuItem"; title = "Seleziona tutto"; ObjectID = "776"; */
+"776.title" = "Seleziona tutto";
+
+/* Class = "NSMenuItem"; title = "Voce"; ObjectID = "780"; */
+"780.title" = "Voce";
+
+/* Class = "NSMenu"; title = "Voce"; ObjectID = "781"; */
+"781.title" = "Voce";
+
+/* Class = "NSMenuItem"; title = "Inizia riproduzione"; ObjectID = "782"; */
+"782.title" = "Inizia riproduzione";
+
+/* Class = "NSMenuItem"; title = "Interrompi riproduzione"; ObjectID = "783"; */
+"783.title" = "Interrompi riproduzione";
+
+/* Class = "NSMenuItem"; title = "File"; ObjectID = "865"; */
+"865.title" = "File";
+
+/* Class = "NSMenu"; title = "File"; ObjectID = "866"; */
+"866.title" = "File";
+
+/* Class = "NSMenuItem"; title = "Chiudi finestra"; ObjectID = "867"; */
+"867.title" = "Chiudi finestra";
+
+/* Class = "NSMenuItem"; title = "Salva lista di blocco..."; ObjectID = "873"; */
+"873.title" = "Salva lista di blocco...";
+
+/* Class = "NSMenuItem"; title = "Apri lista di blocco…"; ObjectID = "877"; */
+"877.title" = "Apri lista di blocco…";
+
+/* Class = "NSMenuItem"; title = "Aiuto"; ObjectID = "899"; */
+"899.title" = "Aiuto";
+
+/* Class = "NSMenu"; title = "Aiuto"; ObjectID = "900"; */
+"900.title" = "Aiuto";
+
+/* Class = "NSMenuItem"; title = "FAQ su SelfControl"; ObjectID = "901"; */
+"901.title" = "FAQ su SelfControl";
+
+/* Class = "NSMenuItem"; title = "Get Started"; ObjectID = "905"; */
+"905.title" = "Get Started";
