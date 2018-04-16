@@ -18,10 +18,10 @@
 "46.ibShadowedToolTip" = "Fjern (⌫)";
 
 /* Class = "NSButtonCell"; title = "Import"; ObjectID = "80"; */
-"80.title" = "Import";
+"80.title" = "Importer";
 
 /* Class = "NSMenu"; title = "Import"; ObjectID = "84"; */
-"84.title" = "Import";
+"84.title" = "Importer";
 
 /* Class = "NSMenuItem"; title = "From Mail"; ObjectID = "91"; */
 "91.title" = "Fra Mail";
