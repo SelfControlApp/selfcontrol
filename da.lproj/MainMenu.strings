@@ -135,13 +135,13 @@
 "877.title" = "Åben Blocklist…";
 
 /* Class = "NSMenuItem"; title = "Help"; ObjectID = "899"; */
-"899.title" = "Help";
+"899.title" = "Hjælp";
 
 /* Class = "NSMenu"; title = "Help"; ObjectID = "900"; */
-"900.title" = "Help";
+"900.title" = "Hjælp";
 
 /* Class = "NSMenuItem"; title = "SelfControl FAQ"; ObjectID = "901"; */
 "901.title" = "SelfControl FAQ";
 
 /* Class = "NSMenuItem"; title = "Get Started"; ObjectID = "908"; */
-"908.title" = "Get Started";
+"908.title" = "Kom i gang";
