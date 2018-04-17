@@ -7,21 +7,10 @@ SelfControl is a free and open-source application for macOS that lets you block 
 
 CREDITS
 -------
-Developed by [Charlie Stigler](http://charliestigler.com), [Steve Lambert](http://visitsteve.com), and you?
+Developed by [Charlie Stigler](http://charliestigler.com), [Steve Lambert](http://visitsteve.com), and [others](https://github.com/SelfControlApp/selfcontrol/graphs/contributors). Your contributions very welcome!
 
-Translations thanks to: Lukas Bestle, Paul Ishii, Cynthia Lawson, Heather Rasley, and Tian Zheng.
+SelfControl is now available in 12 languages thanks to [the fine translators credited here](https://github.com/SelfControlApp/selfcontrol/wiki/Translation-Credits).
 
 LICENSE
 -------
-SelfControl is Free Software under the GPL. See source code for more details.
-
-VERSION HISTORY
----------------
-
-* 1.4 - Added translations in Swedish, Spanish, German, and Japanese, fixed crash on Leopard, other minor bug fixes
-* 1.3 - Automatic checkup safety system, UI refresh, user-settable block duration/intervals, bug fixes
-* 1.2.2 - Automatic host file backups for safety, various stability improvements
-* 1.2.1 - Auto-whitelisting of local networks, fix bug causing persistent crash on 10.4
-* 1.2 - SelfControl Configuration files, live blocklist additions, whitelist blocking, automatic cache cleaning, IP range blocking, dock badging, bug fixes
-* 1.1 - 10.4 Tiger compatibility, automatic updates, port-wide block capability, bug fixes
-* 1.0 - works on OS X Leopard.
+SelfControl is free software under the GPL. See [this file](https://github.com/SelfControlApp/selfcontrol/blob/master/COPYING) for more details.
