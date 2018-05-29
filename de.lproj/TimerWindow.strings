@@ -12,7 +12,7 @@
 "63.title" = "Window";
 
 /* Class = "NSButtonCell"; title = "Cancel"; ObjectID = "70"; */
-"70.title" = "Cancel";
+"70.title" = "Abbruch";
 
 /* Class = "NSButtonCell"; title = "Add"; ObjectID = "71"; */
 "71.title" = "Add";
