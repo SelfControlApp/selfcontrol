@@ -38,7 +38,10 @@
 		// sheet.
 		modifyBlockLock = [[NSLock alloc] init];
 
-		numStrikes = 0;
+        self.extendBlockHoursValue = 0;
+        self.extendBlockMinutesValue = 15;
+	
+        numStrikes = 0;
 	}
 
 	return self;
@@ -244,8 +247,7 @@
 }
 
 - (IBAction) performExtendBlock:(id)sender {
-    NSInteger extendBlockHours = [extendBlockTimeHoursTextField_ integerValue];
-    NSInteger extendBlockMinutes = (extendBlockHours * 60) + [extendBlockTimeMinutesTextField_ integerValue];
+    NSInteger extendBlockMinutes = (self.extendBlockHoursValue * 60) + self.extendBlockMinutesValue;
         
     [self.appController extendBlockTime: extendBlockMinutes lock: modifyBlockLock];
     [NSApp endSheet: extendBlockTimeSheet_];
@@ -280,7 +282,6 @@
 
 // see updateTimerDisplay: for an explanation
 - (void)resetStrikes {
-    
 	numStrikes = 0;
 }
 
