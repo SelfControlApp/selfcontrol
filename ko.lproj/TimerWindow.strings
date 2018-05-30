@@ -22,3 +22,33 @@
 
 /* Class = "NSButtonCell"; title = "Stuck? Stop block manually"; ObjectID = "3SL-1M-RsD"; */
 "3SL-1M-RsD.title" = "Stuck? Stop block manually";
+
+/* Class = "NSButtonCell"; title = "Cancel"; ObjectID = "1Kv-cL-2E4"; */
+"1Kv-cL-2E4.title" = "취소";
+
+/* Class = "NSButtonCell"; title = "Extend"; ObjectID = "HNV-5F-fhQ"; */
+"HNV-5F-fhQ.title" = "Extend";
+
+/* Class = "NSTextFieldCell"; title = "By how much time do you want to extend your block?"; ObjectID = "IaH-kg-kxd"; */
+"IaH-kg-kxd.title" = "By how much time do you want to extend your block?";
+
+/* Class = "NSTextFieldCell"; title = "0"; ObjectID = "LEt-m5-bgN"; */
+"LEt-m5-bgN.title" = "0";
+
+/* Class = "NSWindow"; title = "Window"; ObjectID = "N5B-KG-X2q"; */
+"N5B-KG-X2q.title" = "Window";
+
+/* Class = "NSTextFieldCell"; title = "15"; ObjectID = "VkM-wZ-tEW"; */
+"VkM-wZ-tEW.title" = "15";
+
+/* Class = "NSTextFieldCell"; title = "hours and"; ObjectID = "fvq-gh-nZd"; */
+"fvq-gh-nZd.title" = "시간 and";
+
+/* Class = "NSButtonCell"; title = "Extend Block Timer"; ObjectID = "i3S-hJ-1V7"; */
+"i3S-hJ-1V7.title" = "Extend Block Timer";
+
+/* Class = "NSTextFieldCell"; title = "minutes"; ObjectID = "onH-n3-9se"; */
+"onH-n3-9se.title" = "분";
+
+/* Class = "NSButtonCell"; title = "Extend Block Timer"; ObjectID = "syd-Jl-33Z"; */
+"syd-Jl-33Z.title" = "Extend Block Timer";

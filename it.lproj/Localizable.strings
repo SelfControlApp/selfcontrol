@@ -1,1 +1,63 @@
 
+/* Message text when no network connection available */
+"A block cannot be started without a working network connection.  You can override this setting in Preferences." = "Non si può far partire un blocco senza una connessione funzionante. Puoi modificare questa funzione nelle preferenze.";
+
+/* Whitelist block explanation */
+"A whitelist block means that everything on the internet BESIDES your specified list will be blocked.  This includes the web, email, SSH, and anything else your computer accesses via the internet.  If a web site requires resources such as images or scripts from a site that is not on your whitelist, the site may not work properly." = "Una lista di blocco basata su una whitelist blocca qualunque cosa su internet ESCLUSO il contenuto della lista, inclusi web, posta elettronica, SSH e qualunque altra connessione via internet. Se un sito web richiede risorse (come immagini o codice) da un sito esterno che non è nella whitelist, potrebbe non funzionare correttamente.";
+
+/* Whitelist block confirmation question */
+"Are you sure you want a whitelist block?" = "Sei sicuro di voler usare un blocco basato su una whitelist?";
+
+/* Block in progress error note */
+"Block in progress" = "Sto bloccando";
+
+/* Cancel button */
+"Cancel" = "Annulla";
+
+/* Single day in time strings */
+"day" = "giorno";
+
+/* Plural days in time strings */
+"days" = "giorni";
+
+/* Shows that the slider is at 0 so the block is disabled */
+"disabled" = "disabilitato";
+
+/* Single hour in time strings */
+"hour" = "ora";
+
+/* Plural hours in time strings */
+"hours" = "ore";
+
+/* Text on Start button when loading */
+"Loading" = "In caricamento";
+
+/* Single minute in time strings */
+"minute" = "minuto";
+
+/* Plural minutes in time strings */
+"minutes" = "minuti";
+
+/* Button to open Network Diagnostics */
+"Network Diagnostics..." = "Diagnostica di rete...";
+
+/* Alert text when no network connection available */
+"No network connection detected" = "Nessuna connessione rilevata";
+
+/* OK button */
+"OK" = "OK";
+
+/* Start button */
+"Start" = "Inizia";
+
+/* Block in progress error text */
+"The blacklist cannot be edited while a block is in progress." = "La lista dei blocchi non può essere modificata mentre un blocco è attivo.";
+
+/* Common title for Preferences window */
+"Preferences" = "Preferenze";
+
+/* Toolbar item name for the General preference pane */
+"General" = "Generali";
+
+/* Toolbar item name for the Advanced preference pane */
+"Advanced" = "Avanzate";

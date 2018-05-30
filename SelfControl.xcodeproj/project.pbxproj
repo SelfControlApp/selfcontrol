@@ -210,6 +210,7 @@
 		CB25806116C1FDBE0059C99A /* BlockManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockManager.m; sourceTree = "<group>"; };
 		CB25806416C237F10059C99A /* NSString+IPAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+IPAddress.h"; sourceTree = "<group>"; };
 		CB25806516C237F10059C99A /* NSString+IPAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+IPAddress.m"; sourceTree = "<group>"; };
+		CB2E753420BD193200FAF051 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/TimerWindow.strings; sourceTree = "<group>"; };
 		CB40A8670FBC7DE700167727 /* SelfControlBlocklist.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SelfControlBlocklist.icns; sourceTree = "<group>"; };
 		CB42939A0F53A819008E10CA /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
 		CB4295C20F53EF8C008E10CA /* org.eyebeam.SelfControl.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = org.eyebeam.SelfControl.plist; sourceTree = "<group>"; };
@@ -321,7 +322,6 @@
 		CBDB1172208423570010397E /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/TimerWindow.strings"; sourceTree = "<group>"; };
 		CBDB1173208423580010397E /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/TimerWindow.strings; sourceTree = "<group>"; };
 		CBDB11742084235A0010397E /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/TimerWindow.strings; sourceTree = "<group>"; };
-		CBDB11752084235C0010397E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/TimerWindow.strings; sourceTree = "<group>"; };
 		CBDB1176208423650010397E /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/PreferencesGeneralViewController.strings; sourceTree = "<group>"; };
 		CBDB1177208423670010397E /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/PreferencesGeneralViewController.strings; sourceTree = "<group>"; };
 		CBDB1178208423680010397E /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/PreferencesGeneralViewController.strings; sourceTree = "<group>"; };
@@ -1166,8 +1166,8 @@
 				CBDB1172208423570010397E /* pt-BR */,
 				CBDB1173208423580010397E /* ko */,
 				CBDB11742084235A0010397E /* nl */,
-				CBDB11752084235C0010397E /* fr */,
 				CBDB11922084801B0010397E /* da */,
+				CB2E753420BD193200FAF051 /* fr */,
 			);
 			name = TimerWindow.xib;
 			sourceTree = "<group>";
