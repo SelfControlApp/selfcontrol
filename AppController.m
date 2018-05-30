@@ -513,11 +513,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     }
     
     NSInteger currentBlockDuration = [defaults_ integerForKey: @"BlockDuration"];
-    if (currentBlockDuration < 0) {
-        // we're done! so just let it expire
-        return;
-    }
-    NSInteger newBlockDuration = currentBlockDuration + minutesToAdd;
+    NSInteger newBlockDuration = MIN(currentBlockDuration + minutesToAdd, 0); // make sure we don't do something freaky if BlockDuration is negative for some reason
         
     [NSThread detachNewThreadSelector: @selector(setBlockDuration:)
                              toTarget: self
@@ -897,6 +893,15 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
             
             [lock unlock];
             
+            return;
+        }
+        
+        // Before we try to fix the block in the helper tool, make sure the block didn't finish in the meantime
+        // (note that the AuthorizationExecuteWithPrivileges blocks on user input, so we can't check the time left earlier in this function)
+        NSDate* oldBlockEndDate = [[defaults_ objectForKey:@"BlockStartedDate"] dateByAddingTimeInterval: (oldDuration * 60)];
+        // Block is finished if BlockStartedDate is set back to the distant future, OR if it's only a second left until we'll do that (allow some buffer for the helper tool)
+        if ([[defaults_ objectForKey:@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]] || [oldBlockEndDate timeIntervalSinceNow] < 1) {
+            // we're done, or will be by the time we get to it! so just let it expire. they can restart it.
             return;
         }
         

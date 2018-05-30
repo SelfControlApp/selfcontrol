@@ -17,7 +17,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" utility="YES" HUD="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="428" width="212" height="106"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
             <view key="contentView" id="32">
                 <rect key="frame" x="0.0" y="0.0" width="212" height="106"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -86,8 +86,6 @@
                 <outlet property="addSheet_" destination="63" id="85"/>
                 <outlet property="addToBlockButton_" destination="49" id="90"/>
                 <outlet property="addToBlockTextField_" destination="68" id="86"/>
-                <outlet property="extendBlockTimeHoursTextField_" destination="qpq-0E-99C" id="zZY-rG-RNX"/>
-                <outlet property="extendBlockTimeMinutesTextField_" destination="MoI-WT-GlV" id="tE8-bd-BhQ"/>
                 <outlet property="extendBlockTimeSheet_" destination="N5B-KG-X2q" id="OlO-C8-VZ5"/>
                 <outlet property="killBlockButton_" destination="100" id="105"/>
                 <outlet property="timerLabel_" destination="33" id="91"/>
@@ -98,7 +96,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="418" width="334" height="92"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
             <view key="contentView" id="64">
                 <rect key="frame" x="0.0" y="0.0" width="334" height="92"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -163,7 +161,7 @@ DQ
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="418" width="338" height="141"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
             <view key="contentView" id="mZd-qZ-baN">
                 <rect key="frame" x="0.0" y="0.0" width="338" height="141"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -178,8 +176,9 @@ DQ
                     </textField>
                     <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xjb-Wc-o7M">
                         <rect key="frame" x="96" y="63" width="19" height="27"/>
-                        <stepperCell key="cell" continuous="YES" alignment="left" maxValue="100" id="vWh-VW-JuK"/>
+                        <stepperCell key="cell" continuous="YES" alignment="left" maxValue="23" id="vWh-VW-JuK"/>
                         <connections>
+                            <binding destination="7" name="value" keyPath="extendBlockHoursValue" id="Q45-kQ-FnW"/>
                             <outlet property="formatter" destination="dV2-DT-GYi" id="fYi-2E-Vgt"/>
                         </connections>
                     </stepper>
@@ -197,11 +196,15 @@ DQ
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
+                        <connections>
+                            <binding destination="7" name="value" keyPath="extendBlockHoursValue" id="e66-nc-MxO"/>
+                        </connections>
                     </textField>
                     <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="C9X-8N-a3B">
                         <rect key="frame" x="210" y="63" width="19" height="27"/>
-                        <stepperCell key="cell" continuous="YES" alignment="left" maxValue="100" id="ie6-7s-fbR"/>
+                        <stepperCell key="cell" continuous="YES" alignment="left" maxValue="59" id="ie6-7s-fbR"/>
                         <connections>
+                            <binding destination="7" name="value" keyPath="extendBlockMinutesValue" id="gtS-2n-jyn"/>
                             <outlet property="formatter" destination="hbP-5E-esv" id="UdW-nc-GEW"/>
                         </connections>
                     </stepper>
@@ -220,6 +223,9 @@ DQ
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
+                        <connections>
+                            <binding destination="7" name="value" keyPath="extendBlockMinutesValue" id="ONn-Hb-OqX"/>
+                        </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pGt-f1-SoV">
                         <rect key="frame" x="228" y="68" width="53" height="17"/>
