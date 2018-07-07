@@ -46,34 +46,21 @@
 }
 
 + (void) startBlockInDefaults:(NSUserDefaults*)defaults {
-    // sanity check duration
-    NSTimeInterval duration = MIN([defaults floatForKey: @"BlockDuration"], 0);
+    // sanity check duration, and convert it to seconds
+    NSTimeInterval duration = MAX([defaults floatForKey: @"BlockDuration"] * 60, 0);
     
     // assume the block is starting now
     NSDate* blockEndDate = [NSDate dateWithTimeIntervalSinceNow: duration];
     
     // we always _set_ BlockEndDate, because BlockStartedDate is some legacy ish
     [defaults setObject: blockEndDate forKey: @"BlockEndDate"];
-    
+        
     // in fact, let's take the opportunity to make sure BlockStartedDate is gone-zo
     [defaults removeObjectForKey: @"BlockStartedDate"];
     
     [defaults synchronize];
 }
 
-+ (void) startDefaultsBlockWithDict:(NSDictionary*)defaultsDict forUID:(uid_t)uid {
-    // sanity check duration
-    NSTimeInterval duration = MIN([[defaultsDict objectForKey: @"BlockDuration"] floatValue], 0);
-    
-    // assume the block is starting now
-    NSDate* blockEndDate = [NSDate dateWithTimeIntervalSinceNow: duration];
-    
-    // we always _set_ BlockEndDate, because BlockStartedDate is some legacy ish
-    setDefaultsValue(@"BlockEndDate", blockEndDate, uid);
-    
-    // in fact, let's take the opportunity to make sure BlockStartedDate is gone-zo
-    setDefaultsValue(@"BlockStartedDate", nil, uid);
-}
 
 + (void) removeBlockFromDefaults:(NSUserDefaults*)defaults; {
     // remove both BlockEndDate and legacy BlockStartedDate, just in case an old version comes back and tries to readthat
@@ -82,15 +69,6 @@
     
     [defaults synchronize];
 }
-
-+ (void) removeBlockFromDefaultsForUID:(uid_t)uid {
-    // remove both BlockEndDate and legacy BlockStartedDate, just in case an old version comes back and tries to readthat
-    setDefaultsValue(@"BlockEndDate", nil, uid);
-    setDefaultsValue(@"BlockStartedDate", nil, uid);
-}
-
-
-
 
 + (NSDate*) blockEndDateInDictionary:(NSDictionary *)defaultsDict {
     // if it's not enabled, it's always the distant past!

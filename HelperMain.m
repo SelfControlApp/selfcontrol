@@ -22,6 +22,7 @@
 
 #import "HelperMain.h"
 #import "SCUtilities.h"
+#import "SCUtilities+HelperTools.h"
 
 int main(int argc, char* argv[]) {
 	@autoreleasepool {
@@ -182,7 +183,6 @@ int main(int argc, char* argv[]) {
 			// fact, one shouldn't exist), so we fail if the defaults system has unreasonable
 			// settings.
 			NSDictionary* lockDictionary = @{@"HostBlacklist": defaults[@"HostBlacklist"],
-											 @"BlockDuration": defaults[@"BlockDuration"],
 											 @"BlockEndDate": [SCUtilities blockEndDateInDictionary: defaults],
 											 @"BlockAsWhitelist": defaults[@"BlockAsWhitelist"]};
 			if([lockDictionary[@"HostBlacklist"] count] <= 0 || ![SCUtilities blockIsEnabledInDictionary: lockDictionary]) {
@@ -255,7 +255,6 @@ int main(int argc, char* argv[]) {
 
 				NSLog(@"WARNING: Refreshing domain blacklist, but no block is currently ongoing.  Relaunching block.");
 				newLockDictionary = @{@"HostBlacklist": defaults[@"HostBlacklist"],
-									  @"BlockDuration": defaults[@"BlockDuration"],
 									  @"BlockEndDate": [SCUtilities blockEndDateInDictionary: defaults],
 									  @"BlockAsWhitelist": defaults[@"BlockAsWhitelist"]};
 				// And later on we'll be reloading the launchd daemon if curDictionary
@@ -263,7 +262,6 @@ int main(int argc, char* argv[]) {
 			} else {
 				// If there is an existing block file we can save most of it from the old file
 				newLockDictionary = @{@"HostBlacklist": defaults[@"HostBlacklist"],
-									  @"BlockDuration": curDictionary[@"BlockDuration"],
 									  @"BlockEndDate": [SCUtilities blockEndDateInDictionary: curDictionary],
 									  @"BlockAsWhitelist": curDictionary[@"BlockAsWhitelist"]};
 			}
@@ -312,7 +310,6 @@ int main(int argc, char* argv[]) {
             }
 
             newLockDictionary = @{@"HostBlacklist": defaults[@"HostBlacklist"],
-                              @"BlockDuration": defaults[@"BlockDuration"],
                               @"BlockEndDate": [SCUtilities blockEndDateInDictionary: defaults],
                               @"BlockAsWhitelist": defaults[@"BlockAsWhitelist"]};
             
@@ -372,7 +369,7 @@ int main(int argc, char* argv[]) {
 				// settings just in case.
 				PacketFilter* pf = [[PacketFilter alloc] init];
 				HostFileBlocker* hostFileBlocker = [[HostFileBlocker alloc] init];
-				if(![pf containsSelfControlBlock] || (!blockAsWhitelist && ![hostFileBlocker containsSelfControlBlock])) {
+				if(![pf containsSelfControlBlock] || (!curDictionary[@"BlockAsWhitelist"] && ![hostFileBlocker containsSelfControlBlock])) {
 					// The firewall is missing at least the block header.  Let's clear everything
 					// before we re-add to make sure everything goes smoothly.
 
@@ -403,7 +400,6 @@ int main(int argc, char* argv[]) {
 				// info from the lock file?  In case one goes down, we want to make sure
 				// we always have a backup.
 				setDefaultsValue(@"BlockEndDate", [SCUtilities blockEndDateInDictionary: curDictionary], controllingUID);
-				setDefaultsValue(@"BlockDuration", curDictionary[@"BlockDuration"], controllingUID);
 				setDefaultsValue(@"HostBlacklist", domainList, controllingUID);
                 setDefaultsValue(@"BlockAsWhitelist", curDictionary[@"BlockAsWhitelist"], controllingUID);
                 

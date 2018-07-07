@@ -32,7 +32,4 @@
 + (BOOL) blockIsActiveInDictionary:(NSDictionary *)defaultsDict;
 + (NSDate*) blockEndDateInDictionary:(NSDictionary*)defaultsDict;
 
-+ (void) startDefaultsBlockWithDict:(NSDictionary*)defaultsDict forUID:(uid_t)uid;
-+ (void) removeBlockFromDefaultsForUID:(uid_t)uid;
-
 @end

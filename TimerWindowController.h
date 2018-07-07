@@ -49,11 +49,6 @@
 // timerUpdater, closes the timer window, and opens the initial window.
 - (void)updateTimerDisplay:(NSTimer*)timer;
 
-/* // Invalidates timerUpdater if it's still valid, then restarts the timer and
- // sets the end time to the scheduled end of the block, or the current time if
- // no block is scheduled.
- - (void)reloadTimer; */
-
 // Closes the "Add to Block" sheet.
 - (IBAction) closeAddSheet:(id)sender;
 
@@ -64,8 +59,8 @@
 // to take input for the host to block.
 - (IBAction) addToBlock:(id)sender;
 
-// Called after the block duration has been successfully changed
-- (void) blockDurationUpdated;
+// Called after the block end date has been successfully changed
+- (void) blockEndDateUpdated;
 
 // Called by the "Add to Block" sheet if the user clicks the add button, to destroy
 // the sheet and try to add the host to the block.

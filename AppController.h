@@ -88,8 +88,6 @@
 @property (nonatomic, readonly) BOOL selfControlLaunchDaemonIsLoaded;
 
 // Allocates a new TimerWindowController if necessary and opens the timer window.
-// Also calls TimerWindowController's reloadTimer method to begin the timer's
-// countdown.
 - (void)showTimerWindow;
 
 // Calls the close method of our TimerWindowController

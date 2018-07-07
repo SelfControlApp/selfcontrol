@@ -10,6 +10,7 @@
 #include "HelperCommon.h"
 #include "BlockManager.h"
 #import "SCUtilities.h"
+#import "SCUtilities+HelperTools.h"
 
 NSDictionary* getAppDefaultsDictionary() {
     return @{@"BlockDuration": @15,

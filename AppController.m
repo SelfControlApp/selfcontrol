@@ -505,21 +505,18 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
         
         NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
                                            code: -103
-                                       userInfo: @{NSLocalizedDescriptionKey: @"Error -103: Attempting to add host to block, but no block appears to be in progress."}];
+                                       userInfo: @{NSLocalizedDescriptionKey: @"Error -103: Attempting to extend block time, but no block appears to be in progress."}];
         
         [NSApp presentError: err];
         
         return;
     }
     
-    NSInteger currentBlockDuration = [defaults_ integerForKey: @"BlockDuration"];
-    NSInteger newBlockDuration = MIN(currentBlockDuration + minutesToAdd, 0); // make sure we don't do something freaky if BlockDuration is negative for some reason
-        
-    [NSThread detachNewThreadSelector: @selector(setBlockDuration:)
+    [NSThread detachNewThreadSelector: @selector(extendBlockDuration:)
                              toTarget: self
                            withObject: @{
                                          @"lock": lock,
-                                         @"duration": @(newBlockDuration)
+                                         @"minutesToAdd": @(minutesToAdd)
                                                                                                     }];
 }
 
@@ -821,17 +818,29 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	[lockToUse unlock];
 }
 
-- (void)setBlockDuration:(NSDictionary*)options {
+- (void)extendBlockDuration:(NSDictionary*)options {
     NSLock* lock = options[@"lock"];
-    NSInteger newDuration = [options[@"duration"] integerValue];
+    NSInteger minutesToAdd = [options[@"minutesToAdd"] integerValue];
     if(![lock tryLock]) {
         return;
     }
     
-    NSInteger oldDuration = [defaults_ integerForKey: @"BlockDuration"];
+    minutesToAdd = MAX(minutesToAdd, 0); // make sure there's no funny business with negative minutes
+    
     NSDate* oldBlockEndDate = [SCUtilities blockEndDateInDefaults: defaults_];
+    NSDate* newBlockEndDate = [oldBlockEndDate dateByAddingTimeInterval: (minutesToAdd * 60)];
+    
+    
+    // Before we try to extend the block, make sure the block time didn't run out (or is about to run out) in the meantime
+    if (![SCUtilities blockIsActiveInDefaults: defaults_] || [oldBlockEndDate timeIntervalSinceNow] < 3) {
+        // we're done, or will be by the time we get to it! so just let it expire. they can restart it.
+        return;
+    }
 
-    [defaults_ setInteger: newDuration forKey: @"BlockDuration"];
+    // set the new block end date
+    [defaults_ setObject: newBlockEndDate forKey: @"BlockEndDate"];
+    // clear any legacy BlockStartedDate value at the same time to ensure consistency
+    [defaults_ removeObjectForKey: @"BlockStartedDate"];
     [defaults_ synchronize];
 
     @autoreleasepool {
@@ -862,7 +871,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
             NSLog(@"ERROR: Failed to authorize setting new block duration.");
             
             // Reverse the block duration change made before we fail
-            [defaults_ setInteger: oldDuration forKey: @"BlockDuration"];
+            [defaults_ setObject: oldBlockEndDate forKey: @"BlockEndDate"];
             
             [lock unlock];
             
@@ -897,11 +906,13 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
             return;
         }
         
-        // Before we try to fix the block in the helper tool, make sure the block time didn't run out in the meantime
-        // (note that the AuthorizationExecuteWithPrivileges blocks on user input, so we can't check the time left earlier in this function)
+        
+        // Check to make sure the block is running again... AuthorizationExecuteWithPrivileges blocks on user input, so a lot of clock
+        // time might have passed since we checked earlier in this function.
         // Block is finished if it's unset in the defaults, OR if it's only a second left until we'll do that (allow some buffer for the helper tool)
-        if ([SCUtilities blockIsActiveInDefaults: defaults_] || [oldBlockEndDate timeIntervalSinceNow] < 1) {
-            // we're done, or will be by the time we get to it! so just let it expire. they can restart it.
+        if (![SCUtilities blockIsActiveInDefaults: defaults_] || [oldBlockEndDate timeIntervalSinceNow] < 1) {
+            // returning here won't stop the helper tool from running, but it will stop us from showing an error message
+            // (because we're not listening)
             return;
         }
         
@@ -930,7 +941,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
                                  waitUntilDone: YES];
         }
         
-        [timerWindowController_ performSelectorOnMainThread:@selector(blockDurationUpdated)
+        [timerWindowController_ performSelectorOnMainThread:@selector(blockEndDateUpdated)
                                                  withObject: nil
                                               waitUntilDone: YES];
     }
