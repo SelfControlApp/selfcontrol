@@ -23,6 +23,7 @@
 
 
 #import "TimerWindowController.h"
+#import "SCBlockDateUtilities.h"
 
 @interface TimerWindowController ()
 
@@ -34,6 +35,8 @@
 
 - (TimerWindowController*) init {
 	if(self = [super init]) {
+        settings_ = [SCSettings currentUserSettings];
+        
 		// We need a block to prevent us from running multiple copies of the "Add to Block"
 		// sheet.
 		modifyBlockLock = [[NSLock alloc] init];
@@ -66,24 +69,7 @@
 	killBlockButton_.hidden = YES;
 	addToBlockButton_.hidden = NO;
 
-	NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
-
-	NSDate* beginDate = lockDict[@"BlockStartedDate"];
-	NSTimeInterval blockDuration = [lockDict[@"BlockDuration"] intValue] * 60;
-
-	if(beginDate == nil || [beginDate isEqualToDate: [NSDate distantFuture]]
-	   || blockDuration < 1) {
-		beginDate = [defaults objectForKey:@"BlockStartedDate"];
-		blockDuration = [defaults integerForKey:@"BlockDuration"] * 60;
-	}
-
-	// It is KEY to retain the block ending date , if you forget to retain it
-	// you'll end up with a nasty program crash.
-	if(blockDuration)
-		blockEndingDate_ = [beginDate dateByAddingTimeInterval: blockDuration];
-	else
-		// If the block duration is 0, the ending date is... now!
-		blockEndingDate_ = [NSDate date];
+    blockEndingDate_ = [settings_ valueForKey: @"BlockEndDate"];
 
 	[self updateTimerDisplay: nil];
 
@@ -260,26 +246,9 @@
     [NSApp endSheet: extendBlockTimeSheet_];
 }
 
-- (void) blockDurationUpdated {
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-    NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
+- (void) blockEndDateUpdated {
+    blockEndingDate_ = [settings_ valueForKey: @"BlockEndDate"];
     
-    NSDate* beginDate = lockDict[@"BlockStartedDate"];
-    NSTimeInterval blockDuration = [lockDict[@"BlockDuration"] intValue] * 60;
-    
-    if(beginDate == nil || [beginDate isEqualToDate: [NSDate distantFuture]]
-       || blockDuration < 1) {
-        beginDate = [defaults objectForKey:@"BlockStartedDate"];
-        blockDuration = [defaults integerForKey:@"BlockDuration"] * 60;
-    }
-
-    if(blockDuration) {
-        blockEndingDate_ = [beginDate dateByAddingTimeInterval: blockDuration];
-    } else {
-        // If the block duration is 0, the ending date is... now!
-        blockEndingDate_ = [NSDate date];
-    }
-
     [self performSelectorOnMainThread: @selector(updateTimerDisplay:) withObject:nil waitUntilDone: YES];
 }
 
@@ -329,6 +298,9 @@
 		NSLog(@"ERROR: Failed to authorize block kill.");
 		return;
 	}
+    
+    // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
+    [settings_ synchronizeSettings];
 
 	char uidString[10];
 	snprintf(uidString, sizeof(uidString), "%d", getuid());
@@ -349,6 +321,10 @@
 
 		return;
 	} else {
+        // Now that the current block is over, we can go ahead and remove the legacy block info
+        // and migrate them to the new SCSettings system
+        [[SCSettings currentUserSettings] clearLegacySettings];
+        
 		NSAlert* alert = [[NSAlert alloc] init];
 		[alert setMessageText: @"Success!"];
 		[alert setInformativeText:@"The block was cleared successfully.  You can find the log file, named SelfControl-Killer.log, in your Documents folder. If you're still having issues, please check out the SelfControl FAQ on GitHub."];

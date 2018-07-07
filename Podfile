@@ -1,5 +1,6 @@
 source 'https://github.com/CocoaPods/Specs.git'
 platform :osx, '10.8'
+use_frameworks!
 
 target "SelfControl" do
 	pod 'MASPreferences', '~> 1.1.4'

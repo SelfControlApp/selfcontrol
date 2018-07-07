@@ -21,6 +21,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "HelperMain.h"
+#import "SCBlockDateUtilities.h"
+#import "SCSettings.h"
 
 int main(int argc, char* argv[]) {
 	@autoreleasepool {
@@ -40,7 +42,7 @@ int main(int argc, char* argv[]) {
 		}
 
 		NSString* modeString = @(argv[2]);
-		// We'll need the controlling UID to know what defaults database to search
+		// We'll need the controlling UID to know what settings to read
 		uid_t controllingUID = [@(argv[1]) intValue];
 
 		// For proper security, we need to make sure that SelfControl files are owned
@@ -51,26 +53,9 @@ int main(int argc, char* argv[]) {
 										 // 493 (decimal) = 755 (octal) = rwxr-xr-x
 										 NSFilePosixPermissions: @493UL};
 
-		// This is where we get going with the lockfile system, saving a "lock" in /etc/SelfControl.lock
-		// to make a more reliable block detection system.  For most of the program,
-		// the pattern exhibited here will be used: we attempt to use the lock file's
-		// contents, and revert to the user's defaults if the lock file has unreasonable
-		// contents.
-		NSDictionary* curLockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
-		if(!([curLockDict[@"HostBlacklist"] count] <= 0))
-			domainList = curLockDict[@"HostBlacklist"];
 
-		registerDefaults(controllingUID);
-		NSDictionary* defaults = getDefaultsDict(controllingUID);
-		if(!domainList) {
-			domainList = defaults[@"HostBlacklist"];
-			if([domainList count] <= 0) {
-				NSLog(@"ERROR: Not enough block information.");
-				printStatus(-203);
-				exit(EX_CONFIG);
-			}
-		}
-
+        SCSettings* settings = [SCSettings settingsForUser: controllingUID];
+        
 		if([modeString isEqual: @"--install"]) {
 			NSFileManager* fileManager = [NSFileManager defaultManager];
 
@@ -83,10 +68,9 @@ int main(int argc, char* argv[]) {
 			NSString* plistFormatString = [NSString stringWithContentsOfFile: plistFormatPath  encoding: NSUTF8StringEncoding error: NULL];
 
 			// get the expiration minute, to make sure we run the helper then (if it hasn't run already)
-			NSTimeInterval blockDuration = [defaults[@"BlockDuration"] intValue];
-			NSDate* expirationDate = [[NSDate date] dateByAddingTimeInterval: (blockDuration *60)];
+            NSDate* blockEndDate = [settings valueForKey: @"BlockEndDate"];
 			NSCalendar* calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-			NSDateComponents* components = [calendar components: NSMinuteCalendarUnit fromDate: expirationDate];
+			NSDateComponents* components = [calendar components: NSMinuteCalendarUnit fromDate: blockEndDate];
 			long expirationMinute = [components minute];
 
 			NSString* plistString = [NSString stringWithFormat:
@@ -171,53 +155,25 @@ int main(int argc, char* argv[]) {
 				exit(EX_IOERR);
 			}
 
-            // Update BlockStartedDate as the helper utility was probably started by command line and not through the AppController.
-            if(defaults[@"BlockStartedDate"] != nil && [defaults[@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]){
-                setDefaultsValue(@"BlockStartedDate", [NSDate date], controllingUID);
-            }
-
-			NSDictionary* defaults = getDefaultsDict(controllingUID);
-			// In this case it doesn't make any sense to use an existing lock file (in
-			// fact, one shouldn't exist), so we fail if the defaults system has unreasonable
-			// settings.
-			NSDictionary* lockDictionary = @{@"HostBlacklist": defaults[@"HostBlacklist"],
-											 @"BlockDuration": defaults[@"BlockDuration"],
-											 @"BlockStartedDate": defaults[@"BlockStartedDate"],
-											 @"BlockAsWhitelist": defaults[@"BlockAsWhitelist"]};
-			if([lockDictionary[@"HostBlacklist"] count] <= 0 || [lockDictionary[@"BlockDuration"] intValue] < 1
-			   || lockDictionary[@"BlockStartedDate"] == nil
-			   || [lockDictionary[@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]) {
-				NSLog(@"ERROR: Not enough block information.");
+            SCSettings* settings = [SCSettings settingsForUser: controllingUID];
+            
+            // clear any legacy block information - no longer useful since we're using SCSettings now
+            // (and could potentially confuse things)
+            [settings clearLegacySettings];
+            
+			if([[settings valueForKey: @"Blocklist"] count] <= 0 || ![SCBlockDateUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
+				NSLog(@"ERROR: Blocklist is empty, or there was an error transferring block information.");
+                NSLog(@"Block End Date: %@", [settings valueForKey: @"BlockEndDate"]);
 				printStatus(-210);
 				exit(EX_CONFIG);
 			}
 
-			// If perchance another lock is in existence already (which would be weird)
-			// we try to remove a block and continue as normal.  This should definitely not be
-			// happening though.
-			if([fileManager fileExistsAtPath: SelfControlLockFilePath]) {
-				NSLog(@"ERROR: Lock already established.  Attempting to stop block.");
-
-				removeBlock(controllingUID);
-
-				printStatus(-219);
-				exit(EX_CONFIG);
-			}
-
-			// And write out our lock...
-			if(![lockDictionary writeToFile: SelfControlLockFilePath atomically: YES]) {
-				NSLog(@"ERROR: Could not write lock file.");
-				printStatus(-216);
-				exit(EX_IOERR);
-			}
-			// Make sure the privileges are correct on our lock file
-			[fileManager setAttributes: fileAttributes ofItemAtPath: SelfControlLockFilePath error: nil];
-
 			addRulesToFirewall(controllingUID);
+            [settings setValue: @YES forKey: @"BlockIsRunning"];
+            [settings synchronizeSettings]; // synchronize ASAP since BlockIsRunning is a really important one
 			int result = [LaunchctlHelper loadLaunchdJobWithPlistAt: @"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
-
-			[[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
-																		   object: nil];
+            
+            sendConfigurationChangedNotification();
 
 			// Clear web browser caches if the user has the correct preference set, so
 			// that blocked pages are not loaded from a cache.
@@ -235,146 +191,48 @@ int main(int argc, char* argv[]) {
 			printStatus(-212);
 			exit(EX_UNAVAILABLE);
 		} else if([modeString isEqual: @"--refresh"]) {
-			// Check what the current block is (based on the lock file) because if possible
-			// we want to keep most of its information.
-			NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
-			NSDictionary* newLockDictionary;
+            // used when the blocklist may have changed, to make sure we are blocking the new list
+            SCSettings* settings = [SCSettings settingsForUser: controllingUID];
 
-			NSDictionary* defaults = getDefaultsDict(controllingUID);
-			if(curDictionary == nil) {
-				// If there is no block file we just use all information from defaults
-
-				if([defaults[@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]) {
-					// But if the block is already over (which is going to happen if the user
-					// starts authentication for the host add and then the block expires before
-					// they authenticate), we shouldn't do anything at all.
-
-					NSLog(@"ERROR: Refreshing domain blacklist, but no block is currently ongoing.");
-					printStatus(-213);
-					exit(EX_SOFTWARE);
-				}
-
-				NSLog(@"WARNING: Refreshing domain blacklist, but no block is currently ongoing.  Relaunching block.");
-				newLockDictionary = @{@"HostBlacklist": defaults[@"HostBlacklist"],
-									  @"BlockDuration": defaults[@"BlockDuration"],
-									  @"BlockStartedDate": defaults[@"BlockStartedDate"],
-									  @"BlockAsWhitelist": defaults[@"BlockAsWhitelist"]};
-				// And later on we'll be reloading the launchd daemon if curDictionary
-				// was nil, just in case.  Watch for it.
-			} else {
-				// If there is an existing block file we can save most of it from the old file
-				newLockDictionary = @{@"HostBlacklist": defaults[@"HostBlacklist"],
-									  @"BlockDuration": curDictionary[@"BlockDuration"],
-									  @"BlockStartedDate": curDictionary[@"BlockStartedDate"],
-									  @"BlockAsWhitelist": curDictionary[@"BlockAsWhitelist"]};
+            if([[settings valueForKey: @"Blocklist"] count] <= 0 || ![SCBlockDateUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
+                NSLog(@"ERROR: Refreshing domain blacklist, but no block is currently ongoing or the blocklist is empty.");
+                printStatus(-213);
+                exit(EX_SOFTWARE);
 			}
-
-			if([newLockDictionary[@"HostBlacklist"] count] <= 0 || [newLockDictionary[@"BlockDuration"] intValue] < 1
-			   || newLockDictionary[@"BlockStartedDate"] == nil
-			   || [newLockDictionary[@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]) {
-				NSLog(@"ERROR: Not enough block information.");
-				printStatus(-214);
-				exit(EX_CONFIG);
-			}
-
-			if(![newLockDictionary writeToFile: SelfControlLockFilePath atomically: YES]) {
-				NSLog(@"ERROR: Could not write lock file.");
-				printStatus(-217);
-				exit(EX_IOERR);
-			}
-			// Make sure the privileges are correct on our lock file
-			[[NSFileManager defaultManager] setAttributes: fileAttributes ofItemAtPath: SelfControlLockFilePath error: nil];
-			domainList = newLockDictionary[@"HostBlacklist"];
 
 			// Add and remove the rules to put in any new ones
 			removeRulesFromFirewall(controllingUID);
 			addRulesToFirewall(controllingUID);
+            
+            // make sure BlockIsRunning is still set
+            [settings setValue: @YES forKey: @"BlockIsRunning"];
+            [settings synchronizeSettings];
+            
+            // let the main app know things have changed so it can update the UI!
+            sendConfigurationChangedNotification();
 
-			if(curDictionary == nil) {
-				// aka if there was no lock file, and it's possible we're reloading the block,
-				// and we're sure the block is still on (that's checked earlier).
-				[LaunchctlHelper loadLaunchdJobWithPlistAt: @"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
-			}
+            // make sure the launchd job is still loaded
+            [LaunchctlHelper loadLaunchdJobWithPlistAt: @"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
 
 			// Clear web browser caches if the user has the correct preference set.  We
 			// need to do this again even if it's only a refresh because there might be
 			// caches for the new host blocked.
 			clearCachesIfRequested(controllingUID);
-        } else if([modeString isEqual: @"--rewrite-lock-file"]) {
-            NSDictionary* newLockDictionary;
-            NSDictionary* defaults = getDefaultsDict(controllingUID);
+        } else if([modeString isEqual: @"--checkup"]) {
+            if(![SCBlockDateUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]) {
+                // No block appears to be running at all in our settings. Weird! Someone else might have removed it?
+                NSLog(@"ERROR: Checkup ran but no block found.  Attempting to remove block.");
 
-            if([defaults[@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]) {
-                // But if the block is already over (which is going to happen if the user
-                // starts authentication for the extension and then the block expires before
-                // they authenticate), we shouldn't do anything at all.
-                
-                NSLog(@"ERROR: Extending block timer, but no block is currently ongoing.");
-                printStatus(-213);
+                // get rid of this block
+                removeBlock(controllingUID);
+
+                printStatus(-215);
                 exit(EX_SOFTWARE);
             }
 
-            newLockDictionary = @{@"HostBlacklist": defaults[@"HostBlacklist"],
-                              @"BlockDuration": defaults[@"BlockDuration"],
-                              @"BlockStartedDate": defaults[@"BlockStartedDate"],
-                              @"BlockAsWhitelist": defaults[@"BlockAsWhitelist"]};
-            
-            if([newLockDictionary[@"HostBlacklist"] count] <= 0 || [newLockDictionary[@"BlockDuration"] intValue] < 1
-               || newLockDictionary[@"BlockStartedDate"] == nil
-               || [newLockDictionary[@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]) {
-                NSLog(@"ERROR: Not enough block information.");
-                printStatus(-214);
-                exit(EX_CONFIG);
-            }
-            
-            if(![newLockDictionary writeToFile: SelfControlLockFilePath atomically: YES]) {
-                NSLog(@"ERROR: Could not write lock file.");
-                printStatus(-217);
-                exit(EX_IOERR);
-            }
-            // Make sure the privileges are correct on our lock file
-            [[NSFileManager defaultManager] setAttributes: fileAttributes ofItemAtPath: SelfControlLockFilePath error: nil];
-            domainList = newLockDictionary[@"HostBlacklist"];
-            
-            // Reload the launchd job just in case
-            [LaunchctlHelper loadLaunchdJobWithPlistAt: @"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
-        } else if([modeString isEqual: @"--checkup"]) {
-			NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
-
-			NSDate* blockStartedDate = curDictionary[@"BlockStartedDate"];
-			NSTimeInterval blockDuration = [curDictionary[@"BlockDuration"] intValue];
-			BOOL blockAsWhitelist = [curDictionary[@"blockAsWhitelist"] boolValue];
-
-			if(blockStartedDate == nil || [[NSDate distantFuture] isEqualToDate: blockStartedDate] || blockDuration < 1) {
-				// The lock file seems to be broken.  Read from defaults, then write out a
-				// new lock file while we're at it.
-				NSDictionary* defaults = getDefaultsDict(controllingUID);
-				blockStartedDate = defaults[@"BlockStartedDate"];
-				blockDuration = [defaults[@"BlockDuration"] intValue];
-
-				if(blockStartedDate == nil || blockDuration < 1) {
-					// Defaults is broken too!  Let's get out of here!
-					NSLog(@"ERROR: Checkup ran but no block found.  Attempting to remove block.");
-
-					// get rid of this block
-					removeBlock(controllingUID);
-
-					printStatus(-215);
-					exit(EX_SOFTWARE);
-				}
-			}
-
-			// convert to seconds
-			blockDuration *= 60;
-
-			NSTimeInterval timeSinceStarted = [[NSDate date] timeIntervalSinceDate: blockStartedDate];
-
-			// Note there are a few extra possible conditions on this if statement, this
-			// makes it more likely that an improperly applied block might come right
-			// off.
-			if( blockStartedDate == nil || blockDuration < 1 || [[NSDate distantFuture] isEqualToDate: blockStartedDate] || timeSinceStarted >= blockDuration) {
+			if (![SCBlockDateUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
 				NSLog(@"INFO: Checkup ran, block expired, removing block.");
-
+                
 				removeBlock(controllingUID);
 
 				// Execution should never reach this point.  Launchd unloading the job in removeBlock()
@@ -383,11 +241,11 @@ int main(int argc, char* argv[]) {
 				exit(EX_SOFTWARE);
 			} else {
 				// The block is still on.  Check if anybody removed our rules, and if so
-				// re-add them.  Also make sure the user's defaults are set to the correct
+				// re-add them.  Also make sure the user's settings are set to the correct
 				// settings just in case.
 				PacketFilter* pf = [[PacketFilter alloc] init];
 				HostFileBlocker* hostFileBlocker = [[HostFileBlocker alloc] init];
-				if(![pf containsSelfControlBlock] || (!blockAsWhitelist && ![hostFileBlocker containsSelfControlBlock])) {
+                if(![pf containsSelfControlBlock] || (![settings valueForKey: @"BlockAsWhitelist"] && ![hostFileBlocker containsSelfControlBlock])) {
 					// The firewall is missing at least the block header.  Let's clear everything
 					// before we re-add to make sure everything goes smoothly.
 
@@ -413,15 +271,11 @@ int main(int argc, char* argv[]) {
 					addRulesToFirewall(controllingUID);
 					NSLog(@"INFO: Checkup ran, readded block rules.");
 				} else NSLog(@"INFO: Checkup ran, no action needed.");
-
-				// Why would we make sure the defaults are correct even if we can get the
-				// info from the lock file?  In case one goes down, we want to make sure
-				// we always have a backup.
-				setDefaultsValue(@"BlockStartedDate", blockStartedDate, controllingUID);
-				setDefaultsValue(@"BlockDuration", [NSNumber numberWithInt: (blockDuration / 60)], controllingUID);
-				setDefaultsValue(@"HostBlacklist", domainList, controllingUID);
 			}
-		}
+        } else if ([modeString isEqualToString: @"--print-settings"]) {
+            NSLog(@" - Printing SelfControl secured settings for debug: - ");
+            NSLog(@"%@", [settings dictionaryRepresentation]);
+        }
 
 		// by putting printStatus first (which tells the app we didn't crash), we fake it to
 		// avoid memory-managment crashes (calling [pool drain] is essentially optional)

@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "SCSettings.h"
 
 @interface AppDelegate ()
 
@@ -49,6 +50,9 @@
 		NSLog(@"ERROR: Failed to authorize block kill.");
 		return;
 	}
+    
+    // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
+    [[SCSettings currentUserSettings] synchronizeSettings];
 
 	char uidString[10];
 	snprintf(uidString, sizeof(uidString), "%d", getuid());

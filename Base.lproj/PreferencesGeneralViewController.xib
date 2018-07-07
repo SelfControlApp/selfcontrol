@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15400" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15400"/>
@@ -8,6 +8,8 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="PreferencesGeneralViewController">
             <connections>
+                <outlet property="playSoundCheckbox" destination="GAL-tt-bnj" id="FEU-e3-eA8"/>
+                <outlet property="soundMenu" destination="aVc-DN-GnM" id="OAt-VK-bEg"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
@@ -37,7 +39,7 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <binding destination="4wD-T6-SpY" name="value" keyPath="values.BlockSoundShouldPlay" id="5ct-EJ-f1V"/>
+                        <action selector="soundCheckboxChanged:" target="-2" id="kSN-6y-5dQ"/>
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cl7-Ls-HNx">
@@ -65,65 +67,19 @@
                 <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aVc-DN-GnM">
                     <rect key="frame" x="211" y="91" width="102" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <popUpButtonCell key="cell" type="push" title="Glass" bezelStyle="rounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" tag="5" inset="2" selectedItem="V5g-KN-uVs" id="boQ-cQ-XTo">
+                    <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="center" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" inset="2" id="boQ-cQ-XTo">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
-                        <menu key="menu" title="OtherViews" id="tjX-Y0-sNd">
-                            <items>
-                                <menuItem title="Basso" id="ZGm-9Y-HUa"/>
-                                <menuItem title="Blow" tag="1" id="i0p-Gl-XUd"/>
-                                <menuItem title="Bottle" tag="2" id="Cgh-hY-giQ">
-                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                </menuItem>
-                                <menuItem title="Frog" tag="3" id="GCn-B0-3PI">
-                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                </menuItem>
-                                <menuItem title="Funk" tag="4" id="jwh-RD-99A">
-                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                </menuItem>
-                                <menuItem title="Glass" state="on" tag="5" id="V5g-KN-uVs">
-                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                </menuItem>
-                                <menuItem title="Hero" tag="6" id="DOo-Z3-qou">
-                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                </menuItem>
-                                <menuItem title="Morse" tag="7" id="7O1-5F-9ML">
-                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                </menuItem>
-                                <menuItem title="Ping" tag="8" id="9Do-me-xOR">
-                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                </menuItem>
-                                <menuItem title="Pop" tag="9" id="h92-Bv-Qxb">
-                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                </menuItem>
-                                <menuItem title="Purr" tag="10" id="fCx-Zs-8fd">
-                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                </menuItem>
-                                <menuItem title="Sosumi" tag="11" id="sKB-zE-z24">
-                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                </menuItem>
-                                <menuItem title="Submarine" tag="12" id="cYm-q6-DV1">
-                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                </menuItem>
-                                <menuItem title="Tink" tag="13" id="Agr-Wz-NMt">
-                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                </menuItem>
-                            </items>
-                        </menu>
-                        <connections>
-                            <binding destination="4wD-T6-SpY" name="selectedTag" keyPath="values.BlockSound" id="znX-ny-Gbl"/>
-                            <binding destination="4wD-T6-SpY" name="enabled" keyPath="values.BlockSoundShouldPlay" id="xsb-az-3TX"/>
-                        </connections>
+                        <font key="font" metaFont="menu"/>
+                        <menu key="menu" title="OtherViews" id="tjX-Y0-sNd"/>
                     </popUpButtonCell>
                     <connections>
                         <action selector="soundSelectionChanged:" target="-2" id="jn4-kC-4Y3"/>
-                        <binding destination="4wD-T6-SpY" name="selectedTag" keyPath="values.BlockSound" id="7sq-ew-va4"/>
-                        <binding destination="4wD-T6-SpY" name="enabled" keyPath="values.BlockSoundShouldPlay" id="WSA-SU-bR3"/>
                     </connections>
                 </popUpButton>
             </subviews>
             <point key="canvasLocation" x="136" y="-64.5"/>
         </customView>
         <userDefaultsController representsSharedInstance="YES" id="4wD-T6-SpY"/>
+        <dictionaryController objectClassName="_NSDictionaryControllerKeyValuePair" id="lbP-fI-BYl"/>
     </objects>
 </document>

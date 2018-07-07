@@ -9,83 +9,23 @@
 
 #include "HelperCommon.h"
 #include "BlockManager.h"
-
-NSDictionary* getAppDefaultsDictionary() {
-    return @{@"BlockDuration": @15,
-             @"BlockStartedDate": [NSDate distantFuture],
-             @"HostBlacklist": @[],
-             @"EvaluateCommonSubdomains": @YES,
-             @"IncludeLinkedDomains": @YES,
-             @"HighlightInvalidHosts": @YES,
-             @"VerifyInternetConnection": @YES,
-             @"TimerWindowFloats": @NO,
-             @"BlockSoundShouldPlay": @NO,
-             @"BlockSound": @5,
-             @"ClearCaches": @YES,
-             @"BlockAsWhitelist": @NO,
-             @"BadgeApplicationIcon": @YES,
-             @"AllowLocalNetworks": @YES,
-             @"MaxBlockLength": @1440,
-             @"BlockLengthInterval": @15,
-             @"WhitelistAlertSuppress": @NO,
-             @"GetStartedShown": @NO};
-}
-
-void registerDefaults(uid_t controllingUID) {
-	[NSUserDefaults resetStandardUserDefaults];
-	seteuid(controllingUID);
-	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-	[defaults addSuiteNamed: @"org.eyebeam.SelfControl"];
-	[defaults synchronize];
-	[defaults registerDefaults: getAppDefaultsDictionary()];
-	[defaults synchronize];
-	seteuid(0);
-}
-NSDictionary* getDefaultsDict(uid_t controllingUID) {
-	[NSUserDefaults resetStandardUserDefaults];
-	seteuid(controllingUID);
-	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-	[defaults addSuiteNamed: @"org.eyebeam.SelfControl"];
-	[defaults synchronize];
-
-	// in the 10.13 High Sierra public beta (as of build 17A291m) registering defaults needs to be done immediately
-	// before pulling the dictionary representation, or the default values won't be returned (we'll get nils instead and crash)
-	[defaults registerDefaults: getAppDefaultsDictionary()];
-
-	NSDictionary* dict = [defaults dictionaryRepresentation];
-	[NSUserDefaults resetStandardUserDefaults];
-	seteuid(0);
-	return dict;
-}
-void setDefaultsValue(NSString* prefName, id prefValue, uid_t controllingUID) {
-	[NSUserDefaults resetStandardUserDefaults];
-	seteuid(controllingUID);
-	CFPreferencesSetAppValue((__bridge CFStringRef)prefName, (__bridge CFPropertyListRef)(prefValue), (__bridge CFStringRef)@"org.eyebeam.SelfControl");
-	CFPreferencesAppSynchronize((__bridge CFStringRef)@"org.eyebeam.SelfControl");
-	[NSUserDefaults resetStandardUserDefaults];
-	seteuid(0);
-}
+#import "SCBlockDateUtilities.h"
+#import "SCSettings.h"
+#import "SCConstants.h"
 
 void addRulesToFirewall(uid_t controllingUID) {
-	// get value for EvaluateCommonSubdomains
-	NSDictionary* defaults = getDefaultsDict(controllingUID);
-	BOOL shouldEvaluateCommonSubdomains = [defaults[@"EvaluateCommonSubdomains"] boolValue];
-	BOOL allowLocalNetworks = [defaults[@"AllowLocalNetworks"] boolValue];
-	BOOL includeLinkedDomains = [defaults[@"IncludeLinkedDomains"] boolValue];
+    SCSettings* settings = [SCSettings settingsForUser: controllingUID];
+    BOOL shouldEvaluateCommonSubdomains = [[settings valueForKey: @"EvaluateCommonSubdomains"] boolValue];
+	BOOL allowLocalNetworks = [[settings valueForKey: @"AllowLocalNetworks"] boolValue];
+	BOOL includeLinkedDomains = [[settings valueForKey: @"IncludeLinkedDomains"] boolValue];
 
 	// get value for BlockAsWhitelist
-	BOOL blockAsWhitelist;
-	NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
-	if(curDictionary == nil || curDictionary[@"BlockAsWhitelist"] == nil) {
-		blockAsWhitelist = [defaults[@"BlockAsWhitelist"] boolValue];
-	} else {
-		blockAsWhitelist = [curDictionary[@"BlockAsWhitelist"] boolValue];
-	}
+	BOOL blockAsWhitelist = [[settings valueForKey: @"BlockAsWhitelist"] boolValue];
 
 	BlockManager* blockManager = [[BlockManager alloc] initAsWhitelist: blockAsWhitelist allowLocal: allowLocalNetworks includeCommonSubdomains: shouldEvaluateCommonSubdomains includeLinkedDomains: includeLinkedDomains];
 
 	[blockManager prepareToAddBlock];
-	[blockManager addBlockEntries: domainList];
+	[blockManager addBlockEntries: [settings valueForKey: @"Blocklist"]];
 	[blockManager finalizeBlock];
 
 }
@@ -95,28 +35,15 @@ void removeRulesFromFirewall(uid_t controllingUID) {
 	BlockManager* blockManager = [[BlockManager alloc] init];
 	[blockManager clearBlock];
 
-	// We'll play the sound now rather than putting it in the "defaults block"
-	// a few lines ago, because it is important that the UI get updated (by
-	// the posted notification) before we sleep to play the sound.  Otherwise,
+	// We'll play the sound now rather than earlier, because
+	//  it is important that the UI get updated (by the posted
+	//  notification) before we sleep to play the sound.  Otherwise,
 	// the app seems unresponsive and slow.
-	NSDictionary* defaults = getDefaultsDict(controllingUID);
-	if([defaults[@"BlockSoundShouldPlay"] boolValue]) {
+    SCSettings* settings = [SCSettings settingsForUser: controllingUID];
+    if([[settings valueForKey: @"BlockSoundShouldPlay"] boolValue]) {
 		// Map the tags used in interface builder to the sound
-		NSArray* systemSoundNames = @[@"Basso",
-									  @"Blow",
-									  @"Bottle",
-									  @"Frog",
-									  @"Funk",
-									  @"Glass",
-									  @"Hero",
-									  @"Morse",
-									  @"Ping",
-									  @"Pop",
-									  @"Purr",
-									  @"Sosumi",
-									  @"Submarine",
-									  @"Tink"];
-		NSSound* alertSound = [NSSound soundNamed: systemSoundNames[[defaults[@"BlockSound"] intValue]]];
+        NSArray* systemSoundNames = [SCConstants systemSoundNames];
+        NSSound* alertSound = [NSSound soundNamed: systemSoundNames[[[settings valueForKey: @"BlockSound"] intValue]]];
 		if(!alertSound)
 			NSLog(@"WARNING: Alert sound not found.");
 		else {
@@ -172,8 +99,8 @@ NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, int port) {
 }
 
 void clearCachesIfRequested(uid_t controllingUID) {
-	NSDictionary* defaults = getDefaultsDict(controllingUID);
-	if([defaults[@"ClearCaches"] boolValue]) {
+    SCSettings* settings = [SCSettings settingsForUser: controllingUID];
+	if([[settings valueForKey: @"ClearCaches"] boolValue]) {
 		NSFileManager* fileManager = [NSFileManager defaultManager];
 
 		NSTask* task = [[NSTask alloc] init];
@@ -226,18 +153,32 @@ void printStatus(int status) {
 }
 
 void removeBlock(uid_t controllingUID) {
-	setDefaultsValue(@"BlockStartedDate", [NSDate distantFuture], controllingUID);
+    [SCBlockDateUtilities removeBlockFromSettingsForUID: controllingUID];
 	removeRulesFromFirewall(controllingUID);
-	if(![[NSFileManager defaultManager] removeItemAtPath: SelfControlLockFilePath error: nil] && [[NSFileManager defaultManager] fileExistsAtPath: SelfControlLockFilePath]) {
-		NSLog(@"ERROR: Could not remove SelfControl lock file.");
-		printStatus(-218);
-	}
+    
+    // go ahead and remove any remaining legacy block info at the same time to avoid confusion
+    // (and migrate them to the new SCSettings system if not already migrated)
+    [[SCSettings settingsForUser: controllingUID] clearLegacySettings];
+    
+    // always synchronize settings ASAP after removing a block to let everybody else know
+    [[SCSettings settingsForUser: controllingUID] synchronizeSettings];
 
-	[[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
-																   object: nil];
+
+    // let the main app know things have changed so it can update the UI!
+    sendConfigurationChangedNotification();
+
 	clearCachesIfRequested(controllingUID);
 
-	NSLog(@"INFO: Block cleared.");
+    NSLog(@"INFO: Block cleared.");
+     
+    [LaunchctlHelper unloadLaunchdJobWithPlistAt:@"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
+}
 
-	[LaunchctlHelper unloadLaunchdJobWithPlistAt:@"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
+void sendConfigurationChangedNotification() {
+    // if you don't include the NSNotificationPostToAllSessions option,
+    // it will not deliver when run by launchd (root) to the main app being run by the user
+    [[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
+                                                                   object: nil
+                                                                 userInfo: nil
+                                                                  options: NSNotificationDeliverImmediately | NSNotificationPostToAllSessions];
 }

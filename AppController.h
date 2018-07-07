@@ -30,6 +30,7 @@
 #import <SystemConfiguration/SCNetwork.h>
 #import <unistd.h>
 #import "SelfControlCommon.h"
+#import "SCSettings.h"
 
 // The main controller for the SelfControl app, which includes several methods
 // to handle command flow and acts as delegate for the initial window.
@@ -44,6 +45,7 @@
 	IBOutlet TimerWindowController* timerWindowController_;
 	NSWindowController* preferencesWindowController_;
 	NSUserDefaults* defaults_;
+    SCSettings* settings_;
 	NSLock* refreshUILock_;
 	BOOL blockIsOn;
 	BOOL addingBlock;
@@ -77,6 +79,8 @@
 // user interface.  Called very often by several parts of the program.
 - (void)refreshUserInterface;
 
+- (void)handleConfigurationChangedNotification;
+
 // Called when the "Edit blacklist" button is clicked or the menu item is
 // selected.  Allocates a new DomainListWindowController if necessary and opens
 // the domain blacklist window.  Spawns an alert box if a block is in progress.
@@ -88,8 +92,6 @@
 @property (nonatomic, readonly) BOOL selfControlLaunchDaemonIsLoaded;
 
 // Allocates a new TimerWindowController if necessary and opens the timer window.
-// Also calls TimerWindowController's reloadTimer method to begin the timer's
-// countdown.
 - (void)showTimerWindow;
 
 // Calls the close method of our TimerWindowController

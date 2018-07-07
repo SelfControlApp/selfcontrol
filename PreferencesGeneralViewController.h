@@ -11,6 +11,9 @@
 
 @interface PreferencesGeneralViewController : NSViewController <MASPreferencesViewController>
 
+@property IBOutlet NSButton* playSoundCheckbox;
+@property IBOutlet NSPopUpButton* soundMenu;
+
 - (IBAction)soundSelectionChanged:(id)sender;
 
 @end

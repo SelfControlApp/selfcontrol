@@ -25,8 +25,10 @@
 #import "PreferencesGeneralViewController.h"
 #import "PreferencesAdvancedViewController.h"
 #import "SCTimeIntervalFormatter.h"
+#import "SCBlockDateUtilities.h"
 #import <SystemConfiguration/SystemConfiguration.h>
 #import <LetsMove/PFMoveApplication.h>
+#import "SCSettings.h"
 
 NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
@@ -40,25 +42,18 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	if(self = [super init]) {
 
 		defaults_ = [NSUserDefaults standardUserDefaults];
-
-		NSDictionary* appDefaults = @{@"BlockDuration": @15,
-									  @"BlockStartedDate": [NSDate distantFuture],
-									  @"HostBlacklist": @[],
-									  @"EvaluateCommonSubdomains": @YES,
-									  @"IncludeLinkedDomains": @YES,
+        settings_ = [SCSettings currentUserSettings];
+        
+		NSDictionary* appDefaults = @{
 									  @"HighlightInvalidHosts": @YES,
 									  @"VerifyInternetConnection": @YES,
 									  @"TimerWindowFloats": @NO,
-									  @"BlockSoundShouldPlay": @NO,
-									  @"BlockSound": @5,
-									  @"ClearCaches": @YES,
-									  @"BlockAsWhitelist": @NO,
 									  @"BadgeApplicationIcon": @YES,
-									  @"AllowLocalNetworks": @YES,
 									  @"MaxBlockLength": @1440,
 									  @"BlockLengthInterval": @15,
 									  @"WhitelistAlertSuppress": @NO,
-									  @"GetStartedShown": @NO};
+									  @"GetStartedShown": @NO
+                                      };
 
 		[defaults_ registerDefaults:appDefaults];
 
@@ -106,8 +101,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     // chop it down to our max display value so the user doesn't
     // accidentally start a much longer block than intended
     if (numMinutes > blockDurationSlider_.maxValue) {
-        [defaults_ setInteger: floor(blockDurationSlider_.maxValue) forKey: @"BlockDuration"];
-        numMinutes = [defaults_ integerForKey: @"BlockDuration"];
+        [settings_ setValue: floor(blockDurationSlider_.maxValue) forKey: @"BlockDuration"];
+        numMinutes = [settings_ valueForKey: @"BlockDuration"];
         NSLog(@"reset numMinutes and defaults to block duration of %d", numMinutes);
     }
 
@@ -116,7 +111,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	NSString* timeString = [self timeSliderDisplayStringFromNumberOfMinutes:numMinutes];
 
 	[blockSliderTimeDisplayLabel_ setStringValue:timeString];
-	[submitButton_ setEnabled: (numMinutes > 0) && ([[defaults_ arrayForKey:@"HostBlacklist"] count] > 0)];
+	[submitButton_ setEnabled: (numMinutes > 0) && ([[settings_ valueForKey: @"Blocklist"] count] > 0)];
 }
 
 - (NSString *)timeSliderDisplayStringFromNumberOfMinutes:(NSInteger)numberOfMinutes {
@@ -149,16 +144,15 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 - (IBAction)addBlock:(id)sender {
 	[defaults_ synchronize];
-	if(([[defaults_ objectForKey:@"BlockStartedDate"] timeIntervalSinceNow] < 0)) {
-		// This method shouldn't be getting called, a block is on (block started date
-		// is in the past, not distantFuture) so the Start button should be disabled.
+    if ([self selfControlLaunchDaemonIsLoaded]) {
+		// This method shouldn't be getting called, a block is on so the Start button should be disabled.
 		NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
 										   code: -102
 									   userInfo: @{NSLocalizedDescriptionKey: @"We can't start a block, because one is currently ongoing."}];
 		[NSApp presentError: err];
 		return;
 	}
-	if([[defaults_ arrayForKey:@"HostBlacklist"] count] == 0) {
+	if([[settings_ valueForKey:@"Blocklist"] count] == 0) {
 		// Since the Start button should be disabled when the blacklist has no entries,
 		// this should definitely not be happening.  Exit.
 
@@ -219,6 +213,10 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		}
 	} else { // block is off
 		if(blockWasOn) { // if we just switched states to off...
+            // Now that the current block is over, we can go ahead and remove the legacy block info
+            // and migrate them to the new SCSettings system
+            [[SCSettings currentUserSettings] clearLegacySettings];
+
 			[timerWindowController_ blockEnded];
 
 			// Makes sure the domain list will refresh when it comes back
@@ -240,7 +238,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 		BOOL addBlockIsOngoing = self.addingBlock;
 
-		if([defaults_ integerForKey: @"BlockDuration"] != 0 && [[defaults_ objectForKey: @"HostBlacklist"] count] != 0 && !addBlockIsOngoing) {
+		if([settings_ valueForKey: @"BlockDuration"] != 0 && [[settings_ valueForKey: @"Blocklist"] count] != 0 && !addBlockIsOngoing) {
 			[submitButton_ setEnabled: YES];
 		} else {
 			[submitButton_ setEnabled: NO];
@@ -265,6 +263,13 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		}
 	}
 	[refreshUILock_ unlock];
+}
+
+- (void)handleConfigurationChangedNotification {
+    // if our configuration changed, we should assume the settings may have changed
+    [[SCSettings currentUserSettings] reloadSettings];
+    // and our interface may need to change to match!
+    [self refreshUserInterface];
 }
 
 - (void)showTimerWindow {
@@ -302,7 +307,10 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (void)applicationWillFinishLaunching:(NSNotification *)notification {
-    PFMoveToApplicationsFolderIfNecessary();
+    // For test runs, we don't want to pop up the dialog to move to the Applications folder, as it breaks the tests
+    if (NSProcessInfo.processInfo.environment[@"XCTestConfigurationFilePath"] == nil) {
+        PFMoveToApplicationsFolderIfNecessary();
+    }
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
@@ -313,11 +321,12 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	// main SelfControl app.  Note that they are divided thusly because distributed
 	// notifications are very expensive and should be minimized.
 	[[NSDistributedNotificationCenter defaultCenter] addObserver: self
-														selector: @selector(refreshUserInterface)
+														selector: @selector(handleConfigurationChangedNotification)
 															name: @"SCConfigurationChangedNotification"
-														  object: nil];
+														  object: nil
+                                              suspensionBehavior: NSNotificationSuspensionBehaviorDeliverImmediately];
 	[[NSNotificationCenter defaultCenter] addObserver: self
-											 selector: @selector(refreshUserInterface)
+											 selector: @selector(handleConfigurationChangedNotification)
 												 name: @"SCConfigurationChangedNotification"
 											   object: nil];
 
@@ -353,23 +362,33 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	}
 }
 
+- (void)applicationWillTerminate:(NSNotification *)notification {
+    [settings_ synchronizeSettings];
+}
+
 - (BOOL)selfControlLaunchDaemonIsLoaded {
-	// First we check the host file, and see if a block is in there
-	NSString* hostFileContents = [NSString stringWithContentsOfFile: @"/etc/hosts" encoding: NSUTF8StringEncoding error: NULL];
-	if(hostFileContents != nil && [hostFileContents rangeOfString: @"# BEGIN SELFCONTROL BLOCK"].location != NSNotFound) {
-		return YES;
-	}
+    // first we look for the answer in the SCSettings system
+    if ([SCBlockDateUtilities blockIsRunningInDictionary: settings_.dictionaryRepresentation]) {
+        return YES;
+    }
+    
+    // next we check the host file, and see if a block is in there
+    NSString* hostFileContents = [NSString stringWithContentsOfFile: @"/etc/hosts" encoding: NSUTF8StringEncoding error: NULL];
+    if(hostFileContents != nil && [hostFileContents rangeOfString: @"# BEGIN SELFCONTROL BLOCK"].location != NSNotFound) {
+        return YES;
+    }
 
+    // finally, we should check the legacy ways of storing a block (defaults and lockfile)
+    
 	[defaults_ synchronize];
-	NSDate* blockStartedDate = [defaults_ objectForKey: @"BlockStartedDate"];
-	if(blockStartedDate != nil && ![blockStartedDate isEqualToDate: [NSDate distantFuture]]) {
+    if ([SCBlockDateUtilities blockIsRunningInDictionary: defaults_.dictionaryRepresentation]) {
 		return YES;
 	}
 
-	// If there's no block in the hosts file, no defaults BlockStartedDate, and no lock-file,
+	// If there's no block in the hosts file, SCSettings block in the defaults, and no lock-file,
 	// we'll assume we're clear of blocks.  Checking pf would be nice but usually requires
 	// root permissions, so it would be difficult to do here.
-	return [[NSFileManager defaultManager] fileExistsAtPath: SelfControlLockFilePath];
+	return [[NSFileManager defaultManager] fileExistsAtPath: SelfControlLegacyLockFilePath];
 }
 
 - (IBAction)showDomainList:(id)sender {
@@ -439,22 +458,21 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	if([host isEqualToString: @""])
 		return;
 
-	NSMutableArray* list = [[defaults_ arrayForKey: @"HostBlacklist"] mutableCopy];
+	NSMutableArray* list = [[settings_ valueForKey: @"Blocklist"] mutableCopy];
 	[list addObject: host];
-	[defaults_ setObject: list forKey: @"HostBlacklist"];
-	[defaults_ synchronize];
+	[settings_ setValue: list forKey: @"Blocklist"];
 
-	if(([[defaults_ objectForKey:@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]])) {
-		// This method shouldn't be getting called, a block is not on (block started
-		// is in the distantFuture) so the Start button should be disabled.
+	if(![self selfControlLaunchDaemonIsLoaded]) {
+		// This method shouldn't be getting called, a block is not on.
+		// so the Start button should be disabled.
 		// Maybe the UI didn't get properly refreshed, so try refreshing it again
 		// before we return.
 		[self refreshUserInterface];
 
 		// Reverse the blacklist change made before we fail
-		NSMutableArray* list = [[defaults_ arrayForKey: @"HostBlacklist"] mutableCopy];
+		NSMutableArray* list = [[settings_ valueForKey: @"Blocklist"] mutableCopy];
 		[list removeLastObject];
-		[defaults_ setObject: list forKey: @"HostBlacklist"];
+		[settings_ setValue: list forKey: @"Blocklist"];
 
 		NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
 										   code: -103
@@ -474,9 +492,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		if([networkUnavailableAlert runModal] == NSAlertFirstButtonReturn) {
 			// User clicked cancel
 			// Reverse the blacklist change made before we fail
-			NSMutableArray* list = [[defaults_ arrayForKey: @"HostBlacklist"] mutableCopy];
+			NSMutableArray* list = [[settings_ valueForKey: @"Blocklist"] mutableCopy];
 			[list removeLastObject];
-			[defaults_ setObject: list forKey: @"HostBlacklist"];
+			[settings_ setValue: list forKey: @"Blocklist"];
 
 			return;
 		}
@@ -488,9 +506,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		CFNetDiagnosticDiagnoseProblemInteractively(diagRef);
 
 		// Reverse the blacklist change made before we fail
-		NSMutableArray* list = [[defaults_ arrayForKey: @"HostBlacklist"] mutableCopy];
+		NSMutableArray* list = [[settings_ valueForKey: @"Blocklist"] mutableCopy];
 		[list removeLastObject];
-		[defaults_ setObject: list forKey: @"HostBlacklist"];
+		[settings_ setValue: list forKey: @"Blocklist"];
 
 		return;
 	}
@@ -505,30 +523,27 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
         return;
     
     // ensure block health before we try to change it
-    if(([[defaults_ objectForKey:@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]])) {
-        // This method shouldn't be getting called, a block is not on (block started
-        // is in the distantFuture) so the Start button should be disabled.
+    if(![self selfControlLaunchDaemonIsLoaded]) {
+        // This method shouldn't be getting called, a block is not on.
+        // so the Start button should be disabled.
         // Maybe the UI didn't get properly refreshed, so try refreshing it again
         // before we return.
         [self refreshUserInterface];
         
         NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
                                            code: -103
-                                       userInfo: @{NSLocalizedDescriptionKey: @"Error -103: Attempting to add host to block, but no block appears to be in progress."}];
+                                       userInfo: @{NSLocalizedDescriptionKey: @"Error -103: Attempting to extend block time, but no block appears to be in progress."}];
         
         [NSApp presentError: err];
         
         return;
     }
     
-    NSInteger currentBlockDuration = [defaults_ integerForKey: @"BlockDuration"];
-    NSInteger newBlockDuration = MAX(currentBlockDuration + minutesToAdd, 0); // make sure we don't do something freaky if BlockDuration is negative for some reason
-        
-    [NSThread detachNewThreadSelector: @selector(setBlockDuration:)
+    [NSThread detachNewThreadSelector: @selector(extendBlockDuration:)
                              toTarget: self
                            withObject: @{
                                          @"lock": lock,
-                                         @"duration": @(newBlockDuration)
+                                         @"minutesToAdd": @(minutesToAdd)
                                                                                                     }];
 }
 
@@ -656,8 +671,13 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 			return;
 		}
 
-		[defaults_ setObject: [NSDate date] forKey: @"BlockStartedDate"];
-		[defaults_ synchronize];
+        // for legacy reasons, BlockDuration is in minutes, so convert it to seconds before passing it through]
+        NSTimeInterval blockDurationSecs = [[defaults_ valueForKey: @"BlockDuration"] intValue] * 60;
+        [SCBlockDateUtilities startBlockInSettings: settings_ withBlockDuration: blockDurationSecs];
+        NSLog(@"starting block and set block end date to %@", [settings_ valueForKey: @"BlockEndDate"]);
+        
+        // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
+        [settings_ synchronizeSettings];
 
 		// We need to pass our UID to the helper tool.  It needs to know whose defaults
 		// it should reading in order to properly load the blacklist.
@@ -676,8 +696,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		if(status) {
 			NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", (int)status);
 
-			// reset BlockStartedDate on failure
-			[defaults_ removeObjectForKey: @"BlockStartedDate"];
+            // reset settings on failure, and record that on disk ASAP
+            [SCBlockDateUtilities removeBlockFromSettings: settings_];
+            [settings_ synchronizeSettings];
 
 			NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
 											   code: status
@@ -701,8 +722,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		NSString* inDataString = [[NSString alloc] initWithData: inData encoding: NSUTF8StringEncoding];
 
 		if([inDataString isEqualToString: @""]) {
-			// reset BlockStartedDate on failure
-			[defaults_ removeObjectForKey: @"BlockStartedDate"];
+            // reset settings on failure, and record that on disk ASAP
+            [SCBlockDateUtilities removeBlockFromSettings: settings_];
+            [settings_ synchronizeSettings];
 
 			NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
 											   code: -104
@@ -716,8 +738,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		int exitCode = [inDataString intValue];
 
 		if(exitCode) {
-			// reset BlockStartedDate on failure
-			[defaults_ removeObjectForKey: @"BlockStartedDate"];
+            // reset settings on failure, and record that on disk ASAP
+            [SCBlockDateUtilities removeBlockFromSettings: settings_];
+            [settings_ synchronizeSettings];
 
 			NSError* err = [self errorFromHelperToolStatusCode: exitCode];
 
@@ -764,14 +787,17 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 			NSLog(@"ERROR: Failed to authorize block refresh.");
 
 			// Reverse the blacklist change made before we fail
-			NSMutableArray* list = [[defaults_ arrayForKey: @"HostBlacklist"] mutableCopy];
+			NSMutableArray* list = [[settings_ valueForKey: @"Blocklist"] mutableCopy];
 			[list removeLastObject];
-			[defaults_ setObject: list forKey: @"HostBlacklist"];
+			[settings_ setValue: list forKey: @"Blocklist"];
 
 			[lockToUse unlock];
 
 			return;
 		}
+        
+        // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
+        [settings_ synchronizeSettings];
 
 		// We need to pass our UID to the helper tool.  It needs to know whose defaults
 		// it should read in order to properly load the blacklist.
@@ -831,130 +857,29 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	[lockToUse unlock];
 }
 
-
-// it really sucks, but we can't change any values that are KVO-bound to the UI unless they're on the main thread
-// to make that easier, here is a helper that always does it on the main thread
-- (void)setDefaultsBlockDurationOnMainThread:(NSNumber*)newBlockDuration {
-    if (![NSThread isMainThread]) {
-        [self performSelectorOnMainThread: @selector(setDefaultsBlockDurationOnMainThread:) withObject:newBlockDuration waitUntilDone: YES];
-    }
-
-    [defaults_ setInteger: [newBlockDuration intValue] forKey: @"BlockDuration"];
-    [defaults_ synchronize];
-}
-
-- (void)setBlockDuration:(NSDictionary*)options {
-    NSLock* lock = options[@"lock"];
-    NSInteger newDuration = [options[@"duration"] integerValue];
-    if(![lock tryLock]) {
+- (void)extendBlockDuration:(NSDictionary*)options {
+    NSInteger minutesToAdd = [options[@"minutesToAdd"] integerValue];
+    minutesToAdd = MAX(minutesToAdd, 0); // make sure there's no funny business with negative minutes
+    
+    NSDate* oldBlockEndDate = [settings_ valueForKey: @"BlockEndDate"];
+    NSDate* newBlockEndDate = [oldBlockEndDate dateByAddingTimeInterval: (minutesToAdd * 60)];
+    
+    // Before we try to extend the block, make sure the block time didn't run out (or is about to run out) in the meantime
+    if (![SCBlockDateUtilities blockShouldBeRunningInDictionary: settings_.dictionaryRepresentation] || [oldBlockEndDate timeIntervalSinceNow] < 1) {
+        // we're done, or will be by the time we get to it! so just let it expire. they can restart it.
         return;
     }
-    
-    NSInteger oldDuration = [defaults_ integerForKey: @"BlockDuration"];
-    [self setDefaultsBlockDurationOnMainThread: @(newDuration)];
 
-    @autoreleasepool {
-        AuthorizationRef authorizationRef;
-        char* helperToolPath = [self selfControlHelperToolPathUTF8String];
-        long helperToolPathSize = strlen(helperToolPath);
-        AuthorizationItem right = {
-            kAuthorizationRightExecute,
-            helperToolPathSize,
-            helperToolPath,
-            0
-        };
-        AuthorizationRights authRights = {
-            1,
-            &right
-        };
-        AuthorizationFlags myFlags = kAuthorizationFlagDefaults |
-        kAuthorizationFlagExtendRights |
-        kAuthorizationFlagInteractionAllowed;
-        OSStatus status;
-        
-        status = AuthorizationCreate (&authRights,
-                                      kAuthorizationEmptyEnvironment,
-                                      myFlags,
-                                      &authorizationRef);
-        
-        if(status) {
-            NSLog(@"ERROR: Failed to authorize setting new block duration.");
-            
-            // Reverse the block duration change made before we fail
-            [self setDefaultsBlockDurationOnMainThread: @(oldDuration)];
-            
-            [lock unlock];
-            
-            return;
-        }
-        
-        // We need to pass our UID to the helper tool.  It needs to know whose defaults
-        // it should read in order to properly load the blacklist.
-        char uidString[32];
-        snprintf(uidString, sizeof(uidString), "%d", getuid());
-        
-        FILE* commPipe;
-        
-        char* args[] = { uidString, "--rewrite-lock-file", NULL };
-        status = AuthorizationExecuteWithPrivileges(authorizationRef,
-                                                    helperToolPath,
-                                                    kAuthorizationFlagDefaults,
-                                                    args,
-                                                    &commPipe);
-        
-        if(status) {
-            NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", (int)status);
-            
-            NSError* err = [self errorFromHelperToolStatusCode: status];
-            
-            [NSApp performSelectorOnMainThread: @selector(presentError:)
-                                    withObject: err
-                                 waitUntilDone: YES];
-            
-            [lock unlock];
-            
-            return;
-        }
-        
-        // Before we try to fix the block in the helper tool, make sure the block didn't finish in the meantime
-        // (note that the AuthorizationExecuteWithPrivileges blocks on user input, so we can't check the time left earlier in this function)
-        NSDate* oldBlockEndDate = [[defaults_ objectForKey:@"BlockStartedDate"] dateByAddingTimeInterval: (oldDuration * 60)];
-        // Block is finished if BlockStartedDate is set back to the distant future, OR if it's only a second left until we'll do that (allow some buffer for the helper tool)
-        if ([[defaults_ objectForKey:@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]] || [oldBlockEndDate timeIntervalSinceNow] < 1) {
-            // we're done, or will be by the time we get to it! so just let it expire. they can restart it.
-            return;
-        }
-        
-        NSFileHandle* helperToolHandle = [[NSFileHandle alloc] initWithFileDescriptor: fileno(commPipe) closeOnDealloc: YES];
-        
-        NSData* inData = [helperToolHandle readDataToEndOfFile];
-        NSString* inDataString = [[NSString alloc] initWithData: inData encoding: NSUTF8StringEncoding];
-        
-        if([inDataString isEqualToString: @""]) {
-            NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
-                                               code: -105
-                                           userInfo: @{NSLocalizedDescriptionKey: @"Error -105: The helper tool crashed.  This may cause unexpected errors."}];
-            
-            [NSApp performSelectorOnMainThread: @selector(presentError:)
-                                    withObject: err
-                                 waitUntilDone: YES];
-        }
-        
-        int exitCode = [inDataString intValue];
-        
-        if(exitCode) {
-            NSError* err = [self errorFromHelperToolStatusCode: exitCode];
-            
-            [NSApp performSelectorOnMainThread: @selector(presentError:)
-                                    withObject: err
-                                 waitUntilDone: YES];
-        }
-        
-        [timerWindowController_ performSelectorOnMainThread:@selector(blockDurationUpdated)
-                                                 withObject: nil
-                                              waitUntilDone: YES];
-    }
-    [lock unlock];
+    // set the new block end date
+    [settings_ setValue: newBlockEndDate forKey: @"BlockEndDate"];
+    
+    // synchronize it to disk to the helper tool knows immediately
+    [settings_ synchronizeSettings];
+    
+    // let the timer know it needs to recalculate
+    [timerWindowController_ performSelectorOnMainThread:@selector(blockEndDateUpdated)
+                                             withObject: nil
+                                          waitUntilDone: YES];
 }
 
 - (IBAction)save:(id)sender {
@@ -972,8 +897,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	if (runResult == NSOKButton) {
 		[defaults_ synchronize];
 		NSString* err;
-		NSDictionary* saveDict = @{@"HostBlacklist": [defaults_ objectForKey: @"HostBlacklist"],
-								   @"BlockAsWhitelist": [defaults_ objectForKey: @"BlockAsWhitelist"]};
+		NSDictionary* saveDict = @{@"HostBlacklist": [settings_ valueForKey: @"Blocklist"],
+								   @"BlockAsWhitelist": [settings_ valueForKey: @"BlockAsWhitelist"]};
 		NSData* saveData = [NSPropertyListSerialization dataFromPropertyList: saveDict format: NSPropertyListBinaryFormat_v1_0 errorDescription: &err];
 		if(err) {
 			NSError* displayErr = [NSError errorWithDomain: kSelfControlErrorDomain code: -902 userInfo: @{NSLocalizedDescriptionKey: [@"Error 902: " stringByAppendingString: err]}];
@@ -998,8 +923,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	if (result == NSOKButton) {
 		if([oPanel.URLs count] > 0) {
 			NSDictionary* openedDict = [NSDictionary dictionaryWithContentsOfURL: oPanel.URLs[0]];
-			[defaults_ setObject: openedDict[@"HostBlacklist"] forKey: @"HostBlacklist"];
-			[defaults_ setObject: openedDict[@"BlockAsWhitelist"] forKey: @"BlockAsWhitelist"];
+			[settings_ setValue: openedDict[@"HostBlacklist"] forKey: @"Blocklist"];
+            [settings_ setValue: openedDict[@"BlockAsWhitelist"] forKey: @"BlockAsWhitelist"];
 			BOOL domainListIsOpen = [[domainListWindowController_ window] isVisible];
 			NSRect frame = [[domainListWindowController_ window] frame];
 			[self closeDomainList];
@@ -1014,11 +939,14 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 - (BOOL)application:(NSApplication*)theApplication openFile:(NSString*)filename {
 	NSDictionary* openedDict = [NSDictionary dictionaryWithContentsOfFile: filename];
 	if(openedDict == nil) return NO;
+
 	NSArray* newBlocklist = openedDict[@"HostBlacklist"];
 	NSNumber* newWhitelistChoice = openedDict[@"BlockAsWhitelist"];
 	if(newBlocklist == nil || newWhitelistChoice == nil) return NO;
-	[defaults_ setObject: newBlocklist forKey: @"HostBlacklist"];
-	[defaults_ setObject: newWhitelistChoice forKey: @"BlockAsWhitelist"];
+    
+	[settings_ setValue: newBlocklist forKey: @"Blocklist"];
+    [settings_ setValue: newWhitelistChoice forKey: @"BlockAsWhitelist"];
+    
 	BOOL domainListIsOpen = [[domainListWindowController_ window] isVisible];
 	NSRect frame = [[domainListWindowController_ window] frame];
 	[self closeDomainList];

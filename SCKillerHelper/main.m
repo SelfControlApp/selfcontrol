@@ -10,6 +10,7 @@
 #import <Cocoa/Cocoa.h>
 #import <unistd.h>
 #import "BlockManager.h"
+#import "SCSettings.h"
 
 #define LOG_FILE @"~/Documents/SelfControl-Killer.log"
 
@@ -124,7 +125,7 @@ int main(int argc, char* argv[]) {
 			[log appendString: @"FAILED TO CLEAR BLOCK! Used [BlockManager forceClearBlock]\n"];
 		}
 
-		// clear defaults
+		// clear BlockStartedDate (legacy date value) from defaults in case they're on an old version that still uses it
 		seteuid(controllingUID);
 		task = [NSTask launchedTaskWithLaunchPath: @"/usr/bin/defaults"
 										arguments: @[@"delete",
@@ -132,8 +133,31 @@ int main(int argc, char* argv[]) {
 													 @"BlockStartedDate"]];
 		[task waitUntilExit];
 		status = [task terminationStatus];
-		[log appendFormat: @"Deleting the defaults returned: %d\n", status];
+		[log appendFormat: @"Deleting BlockStartedDate from defaults returned: %d\n", status];
 		seteuid(0);
+        
+        // clear BlockEndDate (new date value) from defaults
+        seteuid(controllingUID);
+        task = [NSTask launchedTaskWithLaunchPath: @"/usr/bin/defaults"
+                                        arguments: @[@"delete",
+                                                     @"org.eyebeam.SelfControl",
+                                                     @"BlockEndDate"]];
+        [task waitUntilExit];
+        status = [task terminationStatus];
+        [log appendFormat: @"Deleting BlockEndDate from defaults returned: %d\n", status];
+        seteuid(0);
+        
+        // clear BlockIsRunning from defaults
+        seteuid(controllingUID);
+        task = [NSTask launchedTaskWithLaunchPath: @"/usr/bin/defaults"
+                                        arguments: @[@"delete",
+                                                     @"org.eyebeam.SelfControl",
+                                                     @"BlockIsRunning"]];
+        [task waitUntilExit];
+        status = [task terminationStatus];
+        [log appendFormat: @"Deleting BlockIsRunning from defaults returned: %d\n", status];
+        seteuid(0);
+
 
 		// remove PF token
 		if([fileManager removeItemAtPath: @"/etc/SelfControlPFToken" error: nil]) {
@@ -178,6 +202,11 @@ int main(int argc, char* argv[]) {
 				}
 			}
 		}
+        
+        // Now that the current block is over, we can go ahead and remove the legacy block info
+        // and migrate them to the new SCSettings system
+        [[SCSettings currentUserSettings] clearLegacySettings];
+        [log appendString: @"\nMigrating settings to new system...\n"];
 
 		[log appendString: @"\n===SelfControl-Killer complete!==="];
 

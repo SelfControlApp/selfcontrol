@@ -8,6 +8,8 @@
  */
 
 #include "CheckupMain.h"
+#import "SCBlockDateUtilities.h"
+#import "SCSettings.h"
 
 int main(int argc, char* argv[]) {
 	@autoreleasepool {
@@ -18,37 +20,22 @@ int main(int argc, char* argv[]) {
 			exit(EX_NOPERM);
 		}
 
-		registerDefaults(getuid());
+        SCSettings* settings = [SCSettings settingsForUser: getuid()];
+        
+        if(![SCBlockDateUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]) {
+            // something's, wrong, we shouldn't be run if there's no block
+            // so just try to remove one anyway, just in case
+            NSLog(@"WARNING: Checkup ran but no block found.  Attempting to remove block.");
 
-		NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
-		NSDate* blockStartedDate = curDictionary[@"BlockStartedDate"];
-		NSTimeInterval blockDuration = [curDictionary[@"BlockDuration"] intValue];
+            // get rid of this block
+            removeBlock(getuid());
 
-		if(blockStartedDate == nil || [[NSDate distantFuture] isEqualToDate: blockStartedDate] || blockDuration < 1) {
-			// The lock file seems to be broken.  Try defaults.
-			NSLog(@"WARNING: Lock file unreadable or invalid");
-			NSDictionary* defaults = getDefaultsDict(getuid());
-			blockStartedDate = defaults[@"BlockStartedDate"];
-			blockDuration = [defaults[@"BlockDuration"] intValue];
+            exit(EXIT_SUCCESS);
+        }
 
-			if(blockStartedDate == nil || [[NSDate distantFuture] isEqualToDate: blockStartedDate] || blockDuration < 1) {
-				// Defaults is broken too!  Let's get out of here!
-				NSLog(@"WARNING: Checkup ran but no block found.  Attempting to remove block.");
-
-				// get rid of this block
-				removeBlock(getuid());
-
-				exit(EXIT_SUCCESS);
-			}
-		}
-
-		// convert to seconds
-		blockDuration *= 60;
-
-		NSTimeInterval timeSinceStarted = [[NSDate date] timeIntervalSinceDate: blockStartedDate];
-
-		if( blockStartedDate == nil || blockDuration < 1 || [[NSDate distantFuture] isEqualToDate: blockStartedDate] || timeSinceStarted >= blockDuration) {
+		if(![SCBlockDateUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
 			NSLog(@"INFO: Checkup helper ran, block expired, removing block.");
+            
 			removeBlock(getuid());
 			exit(EXIT_SUCCESS);
 		}

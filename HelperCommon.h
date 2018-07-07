@@ -30,17 +30,7 @@
 #import "HostFileBlocker.h"
 #import "SelfControlCommon.h"
 
-// These don't comply with the "end instance variables with an underscore" rule
-// because they aren't instance variables.  Note this file is, although in
-// Objective-C, not a class.  It contains only functions.
-NSUserDefaults* defaults;
-NSArray* domainList;
-
-void registerDefaults(uid_t controllingUID);
-NSDictionary* getDefaultsDict(uid_t controllingUID);
-void setDefaultsValue(NSString* prefName, id prefValue, uid_t controllingUID);
-
-// Reads the domain block list from the defaults for SelfControl, and adds deny
+// Reads the domain block list from the settings for SelfControl, and adds deny
 // rules for all of the IPs (or the A DNS record IPS for doamin names) to the
 // ipfw firewall.
 void addRulesToFirewall(uid_t controllingUID);
@@ -52,7 +42,7 @@ void removeRulesFromFirewall(uid_t controllingUID);
 // "common subdomains" for the specified hostname
 NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, int port);
 
-// Checks the defaults system to see whether the user wants their web browser
+// Checks the settings system to see whether the user wants their web browser
 // caches cleared, and deletes the specific cache folders for a few common
 // web browsers if it is required.
 void clearCachesIfRequested(uid_t controllingUID);
@@ -60,6 +50,8 @@ void clearCachesIfRequested(uid_t controllingUID);
 // Prints out the given status code to stdout using printf
 void printStatus(int status);
 
-// Removes block via setting the defaults, removing the lock file, host file rules and ipfw
-// rules, unloading the org.eyebeam.SelfControl item, and deleting user caches if requested.
+// Removes block via settings, host file rules and ipfw rules, unloading the
+// org.eyebeam.SelfControl item, deleting user caches if requested, and migrating legacy settings.
 void removeBlock(uid_t controllingUID);
+
+void sendConfigurationChangedNotification();
