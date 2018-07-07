@@ -25,6 +25,7 @@
 #import "PreferencesGeneralViewController.h"
 #import "PreferencesAdvancedViewController.h"
 #import "SCTimeIntervalFormatter.h"
+#import "SCUtilities.h"
 #import <SystemConfiguration/SystemConfiguration.h>
 #import <LetsMove/PFMoveApplication.h>
 
@@ -43,6 +44,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 		NSDictionary* appDefaults = @{@"BlockDuration": @15,
 									  @"BlockStartedDate": [NSDate distantFuture],
+                                      @"BlockEndDate": [NSDate distantPast],
 									  @"HostBlacklist": @[],
 									  @"EvaluateCommonSubdomains": @YES,
 									  @"IncludeLinkedDomains": @YES,
@@ -140,9 +142,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 - (IBAction)addBlock:(id)sender {
 	[defaults_ synchronize];
-	if(([[defaults_ objectForKey:@"BlockStartedDate"] timeIntervalSinceNow] < 0)) {
-		// This method shouldn't be getting called, a block is on (block started date
-		// is in the past, not distantFuture) so the Start button should be disabled.
+    if ([SCUtilities blockIsActiveInDefaults: defaults_]) {
+		// This method shouldn't be getting called, a block is on so the Start button should be disabled.
 		NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
 										   code: -102
 									   userInfo: @{NSLocalizedDescriptionKey: @"We can't start a block, because one is currently ongoing."}];
@@ -352,12 +353,11 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	}
 
 	[defaults_ synchronize];
-	NSDate* blockStartedDate = [defaults_ objectForKey: @"BlockStartedDate"];
-	if(blockStartedDate != nil && ![blockStartedDate isEqualToDate: [NSDate distantFuture]]) {
+    if ([SCUtilities blockIsEnabledInDefaults: defaults_]) {
 		return YES;
 	}
 
-	// If there's no block in the hosts file, no defaults BlockStartedDate, and no lock-file,
+	// If there's no block in the hosts file, no block in the defaults, and no lock-file,
 	// we'll assume we're clear of blocks.  Checking pf would be nice but usually requires
 	// root permissions, so it would be difficult to do here.
 	return [[NSFileManager defaultManager] fileExistsAtPath: SelfControlLockFilePath];
@@ -435,7 +435,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	[defaults_ setObject: list forKey: @"HostBlacklist"];
 	[defaults_ synchronize];
 
-	if(([[defaults_ objectForKey:@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]])) {
+	if(![SCUtilities blockIsEnabledInDefaults: defaults_]) {
 		// This method shouldn't be getting called, a block is not on (block started
 		// is in the distantFuture) so the Start button should be disabled.
 		// Maybe the UI didn't get properly refreshed, so try refreshing it again
@@ -496,7 +496,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
         return;
     
     // ensure block health before we try to change it
-    if(([[defaults_ objectForKey:@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]])) {
+    if(![SCUtilities blockIsEnabledInDefaults: defaults_]) {
         // This method shouldn't be getting called, a block is not on (block started
         // is in the distantFuture) so the Start button should be disabled.
         // Maybe the UI didn't get properly refreshed, so try refreshing it again
@@ -647,8 +647,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 			return;
 		}
 
-		[defaults_ setObject: [NSDate date] forKey: @"BlockStartedDate"];
-		[defaults_ synchronize];
+        [SCUtilities startBlockInDefaults: defaults_];
 
 		// We need to pass our UID to the helper tool.  It needs to know whose defaults
 		// it should reading in order to properly load the blacklist.
@@ -667,8 +666,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		if(status) {
 			NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", (int)status);
 
-			// reset BlockStartedDate on failure
-			[defaults_ removeObjectForKey: @"BlockStartedDate"];
+			// reset defaults on failure
+            [SCUtilities removeBlockFromDefaults: defaults_];
 
 			NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
 											   code: status
@@ -692,8 +691,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		NSString* inDataString = [[NSString alloc] initWithData: inData encoding: NSUTF8StringEncoding];
 
 		if([inDataString isEqualToString: @""]) {
-			// reset BlockStartedDate on failure
-			[defaults_ removeObjectForKey: @"BlockStartedDate"];
+            // reset defaults on failure
+            [SCUtilities removeBlockFromDefaults: defaults_];
 
 			NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
 											   code: -104
@@ -707,8 +706,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		int exitCode = [inDataString intValue];
 
 		if(exitCode) {
-			// reset BlockStartedDate on failure
-			[defaults_ removeObjectForKey: @"BlockStartedDate"];
+            // reset defaults on failure
+            [SCUtilities removeBlockFromDefaults: defaults_];
 
 			NSError* err = [self errorFromHelperToolStatusCode: exitCode];
 
@@ -830,6 +829,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     }
     
     NSInteger oldDuration = [defaults_ integerForKey: @"BlockDuration"];
+    NSDate* oldBlockEndDate = [SCUtilities blockEndDateInDefaults: defaults_];
+
     [defaults_ setInteger: newDuration forKey: @"BlockDuration"];
     [defaults_ synchronize];
 
@@ -896,11 +897,10 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
             return;
         }
         
-        // Before we try to fix the block in the helper tool, make sure the block didn't finish in the meantime
+        // Before we try to fix the block in the helper tool, make sure the block time didn't run out in the meantime
         // (note that the AuthorizationExecuteWithPrivileges blocks on user input, so we can't check the time left earlier in this function)
-        NSDate* oldBlockEndDate = [[defaults_ objectForKey:@"BlockStartedDate"] dateByAddingTimeInterval: (oldDuration * 60)];
-        // Block is finished if BlockStartedDate is set back to the distant future, OR if it's only a second left until we'll do that (allow some buffer for the helper tool)
-        if ([[defaults_ objectForKey:@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]] || [oldBlockEndDate timeIntervalSinceNow] < 1) {
+        // Block is finished if it's unset in the defaults, OR if it's only a second left until we'll do that (allow some buffer for the helper tool)
+        if ([SCUtilities blockIsActiveInDefaults: defaults_] || [oldBlockEndDate timeIntervalSinceNow] < 1) {
             // we're done, or will be by the time we get to it! so just let it expire. they can restart it.
             return;
         }

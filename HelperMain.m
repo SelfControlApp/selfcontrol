@@ -21,6 +21,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "HelperMain.h"
+#import "SCUtilities.h"
 
 int main(int argc, char* argv[]) {
 	@autoreleasepool {
@@ -171,9 +172,9 @@ int main(int argc, char* argv[]) {
 				exit(EX_IOERR);
 			}
 
-            // Update BlockStartedDate as the helper utility was probably started by command line and not through the AppController.
-            if(defaults[@"BlockStartedDate"] != nil && [defaults[@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]){
-                setDefaultsValue(@"BlockStartedDate", [NSDate date], controllingUID);
+            // if we don't see the block enabled in defaults, enable it, as the helper utility was probably started by command line and not through the AppController.
+            if(![SCUtilities blockIsEnabledInDictionary: defaults]){
+                [SCUtilities startDefaultsBlockWithDict: defaults forUID: controllingUID];
             }
 
 			NSDictionary* defaults = getDefaultsDict(controllingUID);
@@ -182,11 +183,9 @@ int main(int argc, char* argv[]) {
 			// settings.
 			NSDictionary* lockDictionary = @{@"HostBlacklist": defaults[@"HostBlacklist"],
 											 @"BlockDuration": defaults[@"BlockDuration"],
-											 @"BlockStartedDate": defaults[@"BlockStartedDate"],
+											 @"BlockEndDate": [SCUtilities blockEndDateInDictionary: defaults],
 											 @"BlockAsWhitelist": defaults[@"BlockAsWhitelist"]};
-			if([lockDictionary[@"HostBlacklist"] count] <= 0 || [lockDictionary[@"BlockDuration"] intValue] < 1
-			   || lockDictionary[@"BlockStartedDate"] == nil
-			   || [lockDictionary[@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]) {
+			if([lockDictionary[@"HostBlacklist"] count] <= 0 || ![SCUtilities blockIsEnabledInDictionary: lockDictionary]) {
 				NSLog(@"ERROR: Not enough block information.");
 				printStatus(-210);
 				exit(EX_CONFIG);
@@ -244,7 +243,7 @@ int main(int argc, char* argv[]) {
 			if(curDictionary == nil) {
 				// If there is no block file we just use all information from defaults
 
-				if([defaults[@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]) {
+				if(![SCUtilities blockIsEnabledInDictionary: defaults]) {
 					// But if the block is already over (which is going to happen if the user
 					// starts authentication for the host add and then the block expires before
 					// they authenticate), we shouldn't do anything at all.
@@ -257,7 +256,7 @@ int main(int argc, char* argv[]) {
 				NSLog(@"WARNING: Refreshing domain blacklist, but no block is currently ongoing.  Relaunching block.");
 				newLockDictionary = @{@"HostBlacklist": defaults[@"HostBlacklist"],
 									  @"BlockDuration": defaults[@"BlockDuration"],
-									  @"BlockStartedDate": defaults[@"BlockStartedDate"],
+									  @"BlockEndDate": [SCUtilities blockEndDateInDictionary: defaults],
 									  @"BlockAsWhitelist": defaults[@"BlockAsWhitelist"]};
 				// And later on we'll be reloading the launchd daemon if curDictionary
 				// was nil, just in case.  Watch for it.
@@ -265,13 +264,11 @@ int main(int argc, char* argv[]) {
 				// If there is an existing block file we can save most of it from the old file
 				newLockDictionary = @{@"HostBlacklist": defaults[@"HostBlacklist"],
 									  @"BlockDuration": curDictionary[@"BlockDuration"],
-									  @"BlockStartedDate": curDictionary[@"BlockStartedDate"],
+									  @"BlockEndDate": [SCUtilities blockEndDateInDictionary: curDictionary],
 									  @"BlockAsWhitelist": curDictionary[@"BlockAsWhitelist"]};
 			}
 
-			if([newLockDictionary[@"HostBlacklist"] count] <= 0 || [newLockDictionary[@"BlockDuration"] intValue] < 1
-			   || newLockDictionary[@"BlockStartedDate"] == nil
-			   || [newLockDictionary[@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]) {
+			if([newLockDictionary[@"HostBlacklist"] count] <= 0 || ![SCUtilities blockIsEnabledInDictionary: newLockDictionary]) {
 				NSLog(@"ERROR: Not enough block information.");
 				printStatus(-214);
 				exit(EX_CONFIG);
@@ -304,7 +301,7 @@ int main(int argc, char* argv[]) {
             NSDictionary* newLockDictionary;
             NSDictionary* defaults = getDefaultsDict(controllingUID);
 
-            if([defaults[@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]) {
+            if(![SCUtilities blockIsEnabledInDictionary: defaults]) {
                 // But if the block is already over (which is going to happen if the user
                 // starts authentication for the extension and then the block expires before
                 // they authenticate), we shouldn't do anything at all.
@@ -316,12 +313,10 @@ int main(int argc, char* argv[]) {
 
             newLockDictionary = @{@"HostBlacklist": defaults[@"HostBlacklist"],
                               @"BlockDuration": defaults[@"BlockDuration"],
-                              @"BlockStartedDate": defaults[@"BlockStartedDate"],
+                              @"BlockEndDate": [SCUtilities blockEndDateInDictionary: defaults],
                               @"BlockAsWhitelist": defaults[@"BlockAsWhitelist"]};
             
-            if([newLockDictionary[@"HostBlacklist"] count] <= 0 || [newLockDictionary[@"BlockDuration"] intValue] < 1
-               || newLockDictionary[@"BlockStartedDate"] == nil
-               || [newLockDictionary[@"BlockStartedDate"] isEqualToDate: [NSDate distantFuture]]) {
+            if([newLockDictionary[@"HostBlacklist"] count] <= 0 || ![SCUtilities blockIsEnabledInDictionary: newLockDictionary]) {
                 NSLog(@"ERROR: Not enough block information.");
                 printStatus(-214);
                 exit(EX_CONFIG);
@@ -341,18 +336,13 @@ int main(int argc, char* argv[]) {
         } else if([modeString isEqual: @"--checkup"]) {
 			NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
 
-			NSDate* blockStartedDate = curDictionary[@"BlockStartedDate"];
-			NSTimeInterval blockDuration = [curDictionary[@"BlockDuration"] intValue];
-			BOOL blockAsWhitelist = [curDictionary[@"blockAsWhitelist"] boolValue];
-
-			if(blockStartedDate == nil || [[NSDate distantFuture] isEqualToDate: blockStartedDate] || blockDuration < 1) {
-				// The lock file seems to be broken.  Read from defaults, then write out a
-				// new lock file while we're at it.
-				NSDictionary* defaults = getDefaultsDict(controllingUID);
-				blockStartedDate = defaults[@"BlockStartedDate"];
-				blockDuration = [defaults[@"BlockDuration"] intValue];
-
-				if(blockStartedDate == nil || blockDuration < 1) {
+			if(![SCUtilities blockIsEnabledInDictionary: curDictionary]) {
+				// The lock file seems to be broken (no block found).  Read from defaults to try to find the block.
+                curDictionary = getDefaultsDict(controllingUID);
+                
+                // TODO: we should make sure we update the lock file after this too so we have a backup
+                
+				if(![SCUtilities blockIsEnabledInDictionary: curDictionary]) {
 					// Defaults is broken too!  Let's get out of here!
 					NSLog(@"ERROR: Checkup ran but no block found.  Attempting to remove block.");
 
@@ -364,15 +354,10 @@ int main(int argc, char* argv[]) {
 				}
 			}
 
-			// convert to seconds
-			blockDuration *= 60;
-
-			NSTimeInterval timeSinceStarted = [[NSDate date] timeIntervalSinceDate: blockStartedDate];
-
 			// Note there are a few extra possible conditions on this if statement, this
 			// makes it more likely that an improperly applied block might come right
 			// off.
-			if( blockStartedDate == nil || blockDuration < 1 || [[NSDate distantFuture] isEqualToDate: blockStartedDate] || timeSinceStarted >= blockDuration) {
+			if (![SCUtilities blockIsActiveInDictionary: curDictionary]) {
 				NSLog(@"INFO: Checkup ran, block expired, removing block.");
 
 				removeBlock(controllingUID);
@@ -417,9 +402,13 @@ int main(int argc, char* argv[]) {
 				// Why would we make sure the defaults are correct even if we can get the
 				// info from the lock file?  In case one goes down, we want to make sure
 				// we always have a backup.
-				setDefaultsValue(@"BlockStartedDate", blockStartedDate, controllingUID);
-				setDefaultsValue(@"BlockDuration", [NSNumber numberWithInt: (blockDuration / 60)], controllingUID);
+				setDefaultsValue(@"BlockEndDate", [SCUtilities blockEndDateInDictionary: curDictionary], controllingUID);
+				setDefaultsValue(@"BlockDuration", curDictionary[@"BlockDuration"], controllingUID);
 				setDefaultsValue(@"HostBlacklist", domainList, controllingUID);
+                setDefaultsValue(@"BlockAsWhitelist", curDictionary[@"BlockAsWhitelist"], controllingUID);
+                
+                // BlockStartedDate is a legacy value, no need for it now that we added a BlockEndDate
+                setDefaultsValue(@"BlockStartedDate", nil, controllingUID);
 			}
 		}
 

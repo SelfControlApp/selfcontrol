@@ -23,6 +23,7 @@
 
 
 #import "TimerWindowController.h"
+#import "SCUtilities.h"
 
 @interface TimerWindowController ()
 
@@ -69,24 +70,14 @@
 	killBlockButton_.hidden = YES;
 	addToBlockButton_.hidden = NO;
 
-	NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
-
-	NSDate* beginDate = lockDict[@"BlockStartedDate"];
-	NSTimeInterval blockDuration = [lockDict[@"BlockDuration"] intValue] * 60;
-
-	if(beginDate == nil || [beginDate isEqualToDate: [NSDate distantFuture]]
-	   || blockDuration < 1) {
-		beginDate = [defaults objectForKey:@"BlockStartedDate"];
-		blockDuration = [defaults integerForKey:@"BlockDuration"] * 60;
+    // Try reading the block parameters from the lockfile first
+	NSDictionary* blockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
+    // if we can't find a block in the lockfile, fall back to defaults
+	if(![SCUtilities blockIsEnabledInDictionary: blockDict]) {
+        blockDict = defaults.dictionaryRepresentation;
 	}
 
-	// It is KEY to retain the block ending date , if you forget to retain it
-	// you'll end up with a nasty program crash.
-	if(blockDuration)
-		blockEndingDate_ = [beginDate dateByAddingTimeInterval: blockDuration];
-	else
-		// If the block duration is 0, the ending date is... now!
-		blockEndingDate_ = [NSDate date];
+    blockEndingDate_ = [SCUtilities blockEndDateInDictionary: blockDict];
 
 	[self updateTimerDisplay: nil];
 
@@ -264,24 +255,14 @@
 }
 
 - (void) blockDurationUpdated {
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-    NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
-    
-    NSDate* beginDate = lockDict[@"BlockStartedDate"];
-    NSTimeInterval blockDuration = [lockDict[@"BlockDuration"] intValue] * 60;
-    
-    if(beginDate == nil || [beginDate isEqualToDate: [NSDate distantFuture]]
-       || blockDuration < 1) {
-        beginDate = [defaults objectForKey:@"BlockStartedDate"];
-        blockDuration = [defaults integerForKey:@"BlockDuration"] * 60;
+    // Try reading the block parameters from the lockfile first
+    NSDictionary* blockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
+    // if we can't find a block in the lockfile, fall back to defaults
+    if(![SCUtilities blockIsEnabledInDictionary: blockDict]) {
+        blockDict = [NSUserDefaults standardUserDefaults].dictionaryRepresentation;
     }
 
-    if(blockDuration) {
-        blockEndingDate_ = [beginDate dateByAddingTimeInterval: blockDuration];
-    } else {
-        // If the block duration is 0, the ending date is... now!
-        blockEndingDate_ = [NSDate date];
-    }
+    blockEndingDate_ = [SCUtilities blockEndDateInDictionary: blockDict];
     
     [self updateTimerDisplay: nil];
 }

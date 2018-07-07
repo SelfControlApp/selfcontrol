@@ -9,10 +9,12 @@
 
 #include "HelperCommon.h"
 #include "BlockManager.h"
+#import "SCUtilities.h"
 
 NSDictionary* getAppDefaultsDictionary() {
     return @{@"BlockDuration": @15,
              @"BlockStartedDate": [NSDate distantFuture],
+             @"BlockEndDate": [NSDate distantPast],
              @"HostBlacklist": @[],
              @"EvaluateCommonSubdomains": @YES,
              @"IncludeLinkedDomains": @YES,
@@ -226,7 +228,7 @@ void printStatus(int status) {
 }
 
 void removeBlock(uid_t controllingUID) {
-	setDefaultsValue(@"BlockStartedDate", [NSDate distantFuture], controllingUID);
+    [SCUtilities removeBlockFromDefaultsForUID: controllingUID];
 	removeRulesFromFirewall(controllingUID);
 	if(![[NSFileManager defaultManager] removeItemAtPath: SelfControlLockFilePath error: nil] && [[NSFileManager defaultManager] fileExistsAtPath: SelfControlLockFilePath]) {
 		NSLog(@"ERROR: Could not remove SelfControl lock file.");

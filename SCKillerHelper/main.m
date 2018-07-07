@@ -124,7 +124,7 @@ int main(int argc, char* argv[]) {
 			[log appendString: @"FAILED TO CLEAR BLOCK! Used [BlockManager forceClearBlock]\n"];
 		}
 
-		// clear defaults
+		// clear BlockStartedDate (legacy date value) from defaults
 		seteuid(controllingUID);
 		task = [NSTask launchedTaskWithLaunchPath: @"/usr/bin/defaults"
 										arguments: @[@"delete",
@@ -132,8 +132,20 @@ int main(int argc, char* argv[]) {
 													 @"BlockStartedDate"]];
 		[task waitUntilExit];
 		status = [task terminationStatus];
-		[log appendFormat: @"Deleting the defaults returned: %d\n", status];
+		[log appendFormat: @"Deleting BlockStartedDate from defaults returned: %d\n", status];
 		seteuid(0);
+        
+        // clear BlockEndDate (new date value) from defaults
+        seteuid(controllingUID);
+        task = [NSTask launchedTaskWithLaunchPath: @"/usr/bin/defaults"
+                                        arguments: @[@"delete",
+                                                     @"org.eyebeam.SelfControl",
+                                                     @"BlockEndDate"]];
+        [task waitUntilExit];
+        status = [task terminationStatus];
+        [log appendFormat: @"Deleting BlockEndDate from defaults returned: %d\n", status];
+        seteuid(0);
+
 
 		// remove PF token
 		if([fileManager removeItemAtPath: @"/etc/SelfControlPFToken" error: nil]) {
