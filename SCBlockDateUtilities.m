@@ -1,14 +1,14 @@
 //
-//  SCUtilities.m
+//  SCBlockDateUtilities.m
 //  SelfControl
 //
 //  Created by Charles Stigler on 07/07/2018.
 //
 
-#import "SCUtilities.h"
+#import "SCBlockDateUtilities.h"
 #import "HelperCommon.h"
 
-@implementation SCUtilities
+@implementation SCBlockDateUtilities
 
 
 // "enabled" means we have a start or end date set to a valid value (even if it's technically "finished" but hasn't been cleaned up yet)
@@ -28,13 +28,13 @@
 }
 + (BOOL) blockIsEnabledInDefaults:(NSUserDefaults*)defaults {
     [defaults synchronize];
-    return [SCUtilities blockIsEnabledInDictionary: defaults.dictionaryRepresentation];
+    return [SCBlockDateUtilities blockIsEnabledInDictionary: defaults.dictionaryRepresentation];
 }
 
 // "active" means the block is enabled and end date has not yet arrived - the block *should* be running
 + (BOOL) blockIsActiveInDictionary:(NSDictionary *)defaultsDict {
     // the block is active if the end date hasn't arrived yet
-    if ([[SCUtilities blockEndDateInDictionary: defaultsDict] timeIntervalSinceNow] > 0) {
+    if ([[SCBlockDateUtilities blockEndDateInDictionary: defaultsDict] timeIntervalSinceNow] > 0) {
         return YES;
     } else {
         return NO;
@@ -42,7 +42,7 @@
 }
 + (BOOL) blockIsActiveInDefaults:(NSUserDefaults*)defaults {
     [defaults synchronize];
-    return [SCUtilities blockIsActiveInDictionary: defaults.dictionaryRepresentation];
+    return [SCBlockDateUtilities blockIsActiveInDictionary: defaults.dictionaryRepresentation];
 }
 
 + (void) startBlockInDefaults:(NSUserDefaults*)defaults {
@@ -72,7 +72,7 @@
 
 + (NSDate*) blockEndDateInDictionary:(NSDictionary *)defaultsDict {
     // if it's not enabled, it's always the distant past!
-    if (![SCUtilities blockIsEnabledInDictionary: defaultsDict]) {
+    if (![SCBlockDateUtilities blockIsEnabledInDictionary: defaultsDict]) {
         return [NSDate distantPast];
     }
     
@@ -92,7 +92,7 @@
 
 + (NSDate*) blockEndDateInDefaults:(NSUserDefaults*)defaults {
     [defaults synchronize];
-    return [SCUtilities blockEndDateInDictionary: defaults.dictionaryRepresentation];
+    return [SCBlockDateUtilities blockEndDateInDictionary: defaults.dictionaryRepresentation];
 }
 
 @end

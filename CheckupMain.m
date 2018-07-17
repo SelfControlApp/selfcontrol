@@ -8,8 +8,7 @@
  */
 
 #include "CheckupMain.h"
-#import "SCUtilities.h"
-#import "SCUtilities.h"
+#import "SCBlockDateUtilities.h"
 
 int main(int argc, char* argv[]) {
 	@autoreleasepool {
@@ -24,12 +23,12 @@ int main(int argc, char* argv[]) {
 
 		NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
 
-		if(![SCUtilities blockIsEnabledInDictionary: curDictionary]) {
+		if(![SCBlockDateUtilities blockIsEnabledInDictionary: curDictionary]) {
 			// The lock file seems to be broken.  Try defaults.
 			NSLog(@"WARNING: Lock file unreadable or invalid");
 			curDictionary = getDefaultsDict(getuid());
 
-			if(![SCUtilities blockIsEnabledInDictionary: curDictionary]) {
+			if(![SCBlockDateUtilities blockIsEnabledInDictionary: curDictionary]) {
 				// Defaults is broken too!  Let's get out of here!
 				NSLog(@"WARNING: Checkup ran but no block found.  Attempting to remove block.");
 
@@ -40,7 +39,7 @@ int main(int argc, char* argv[]) {
 			}
 		}
 
-		if(![SCUtilities blockIsActiveInDictionary: curDictionary]) {
+		if(![SCBlockDateUtilities blockIsActiveInDictionary: curDictionary]) {
 			NSLog(@"INFO: Checkup helper ran, block expired, removing block.");
 			removeBlock(getuid());
 			exit(EXIT_SUCCESS);

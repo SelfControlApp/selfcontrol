@@ -21,8 +21,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "HelperMain.h"
-#import "SCUtilities.h"
-#import "SCUtilities+HelperTools.h"
+#import "SCBlockDateUtilities.h"
+#import "SCBlockDateUtilities+HelperTools.h"
 
 int main(int argc, char* argv[]) {
 	@autoreleasepool {
@@ -174,8 +174,8 @@ int main(int argc, char* argv[]) {
 			}
 
             // if we don't see the block enabled in defaults, enable it, as the helper utility was probably started by command line and not through the AppController.
-            if(![SCUtilities blockIsEnabledInDictionary: defaults]){
-                [SCUtilities startDefaultsBlockWithDict: defaults forUID: controllingUID];
+            if(![SCBlockDateUtilities blockIsEnabledInDictionary: defaults]){
+                [SCBlockDateUtilities startDefaultsBlockWithDict: defaults forUID: controllingUID];
             }
 
 			NSDictionary* defaults = getDefaultsDict(controllingUID);
@@ -183,9 +183,9 @@ int main(int argc, char* argv[]) {
 			// fact, one shouldn't exist), so we fail if the defaults system has unreasonable
 			// settings.
 			NSDictionary* lockDictionary = @{@"HostBlacklist": defaults[@"HostBlacklist"],
-											 @"BlockEndDate": [SCUtilities blockEndDateInDictionary: defaults],
+											 @"BlockEndDate": [SCBlockDateUtilities blockEndDateInDictionary: defaults],
 											 @"BlockAsWhitelist": defaults[@"BlockAsWhitelist"]};
-			if([lockDictionary[@"HostBlacklist"] count] <= 0 || ![SCUtilities blockIsEnabledInDictionary: lockDictionary]) {
+			if([lockDictionary[@"HostBlacklist"] count] <= 0 || ![SCBlockDateUtilities blockIsEnabledInDictionary: lockDictionary]) {
 				NSLog(@"ERROR: Not enough block information.");
 				printStatus(-210);
 				exit(EX_CONFIG);
@@ -243,7 +243,7 @@ int main(int argc, char* argv[]) {
 			if(curDictionary == nil) {
 				// If there is no block file we just use all information from defaults
 
-				if(![SCUtilities blockIsEnabledInDictionary: defaults]) {
+				if(![SCBlockDateUtilities blockIsEnabledInDictionary: defaults]) {
 					// But if the block is already over (which is going to happen if the user
 					// starts authentication for the host add and then the block expires before
 					// they authenticate), we shouldn't do anything at all.
@@ -255,18 +255,18 @@ int main(int argc, char* argv[]) {
 
 				NSLog(@"WARNING: Refreshing domain blacklist, but no block is currently ongoing.  Relaunching block.");
 				newLockDictionary = @{@"HostBlacklist": defaults[@"HostBlacklist"],
-									  @"BlockEndDate": [SCUtilities blockEndDateInDictionary: defaults],
+									  @"BlockEndDate": [SCBlockDateUtilities blockEndDateInDictionary: defaults],
 									  @"BlockAsWhitelist": defaults[@"BlockAsWhitelist"]};
 				// And later on we'll be reloading the launchd daemon if curDictionary
 				// was nil, just in case.  Watch for it.
 			} else {
 				// If there is an existing block file we can save most of it from the old file
 				newLockDictionary = @{@"HostBlacklist": defaults[@"HostBlacklist"],
-									  @"BlockEndDate": [SCUtilities blockEndDateInDictionary: curDictionary],
+									  @"BlockEndDate": [SCBlockDateUtilities blockEndDateInDictionary: curDictionary],
 									  @"BlockAsWhitelist": curDictionary[@"BlockAsWhitelist"]};
 			}
 
-			if([newLockDictionary[@"HostBlacklist"] count] <= 0 || ![SCUtilities blockIsEnabledInDictionary: newLockDictionary]) {
+			if([newLockDictionary[@"HostBlacklist"] count] <= 0 || ![SCBlockDateUtilities blockIsEnabledInDictionary: newLockDictionary]) {
 				NSLog(@"ERROR: Not enough block information.");
 				printStatus(-214);
 				exit(EX_CONFIG);
@@ -299,7 +299,7 @@ int main(int argc, char* argv[]) {
             NSDictionary* newLockDictionary;
             NSDictionary* defaults = getDefaultsDict(controllingUID);
 
-            if(![SCUtilities blockIsEnabledInDictionary: defaults]) {
+            if(![SCBlockDateUtilities blockIsEnabledInDictionary: defaults]) {
                 // But if the block is already over (which is going to happen if the user
                 // starts authentication for the extension and then the block expires before
                 // they authenticate), we shouldn't do anything at all.
@@ -310,10 +310,10 @@ int main(int argc, char* argv[]) {
             }
 
             newLockDictionary = @{@"HostBlacklist": defaults[@"HostBlacklist"],
-                              @"BlockEndDate": [SCUtilities blockEndDateInDictionary: defaults],
+                              @"BlockEndDate": [SCBlockDateUtilities blockEndDateInDictionary: defaults],
                               @"BlockAsWhitelist": defaults[@"BlockAsWhitelist"]};
             
-            if([newLockDictionary[@"HostBlacklist"] count] <= 0 || ![SCUtilities blockIsEnabledInDictionary: newLockDictionary]) {
+            if([newLockDictionary[@"HostBlacklist"] count] <= 0 || ![SCBlockDateUtilities blockIsEnabledInDictionary: newLockDictionary]) {
                 NSLog(@"ERROR: Not enough block information.");
                 printStatus(-214);
                 exit(EX_CONFIG);
@@ -333,13 +333,13 @@ int main(int argc, char* argv[]) {
         } else if([modeString isEqual: @"--checkup"]) {
 			NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
 
-			if(![SCUtilities blockIsEnabledInDictionary: curDictionary]) {
+			if(![SCBlockDateUtilities blockIsEnabledInDictionary: curDictionary]) {
 				// The lock file seems to be broken (no block found).  Read from defaults to try to find the block.
                 curDictionary = getDefaultsDict(controllingUID);
                 
                 // TODO: we should make sure we update the lock file after this too so we have a backup
                 
-				if(![SCUtilities blockIsEnabledInDictionary: curDictionary]) {
+				if(![SCBlockDateUtilities blockIsEnabledInDictionary: curDictionary]) {
 					// Defaults is broken too!  Let's get out of here!
 					NSLog(@"ERROR: Checkup ran but no block found.  Attempting to remove block.");
 
@@ -354,7 +354,7 @@ int main(int argc, char* argv[]) {
 			// Note there are a few extra possible conditions on this if statement, this
 			// makes it more likely that an improperly applied block might come right
 			// off.
-			if (![SCUtilities blockIsActiveInDictionary: curDictionary]) {
+			if (![SCBlockDateUtilities blockIsActiveInDictionary: curDictionary]) {
 				NSLog(@"INFO: Checkup ran, block expired, removing block.");
 
 				removeBlock(controllingUID);
@@ -399,7 +399,7 @@ int main(int argc, char* argv[]) {
 				// Why would we make sure the defaults are correct even if we can get the
 				// info from the lock file?  In case one goes down, we want to make sure
 				// we always have a backup.
-				setDefaultsValue(@"BlockEndDate", [SCUtilities blockEndDateInDictionary: curDictionary], controllingUID);
+				setDefaultsValue(@"BlockEndDate", [SCBlockDateUtilities blockEndDateInDictionary: curDictionary], controllingUID);
 				setDefaultsValue(@"HostBlacklist", domainList, controllingUID);
                 setDefaultsValue(@"BlockAsWhitelist", curDictionary[@"BlockAsWhitelist"], controllingUID);
                 

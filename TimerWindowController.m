@@ -23,7 +23,7 @@
 
 
 #import "TimerWindowController.h"
-#import "SCUtilities.h"
+#import "SCBlockDateUtilities.h"
 
 @interface TimerWindowController ()
 
@@ -73,11 +73,11 @@
     // Try reading the block parameters from the lockfile first
 	NSDictionary* blockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
     // if we can't find a block in the lockfile, fall back to defaults
-	if(![SCUtilities blockIsEnabledInDictionary: blockDict]) {
+	if(![SCBlockDateUtilities blockIsEnabledInDictionary: blockDict]) {
         blockDict = defaults.dictionaryRepresentation;
 	}
 
-    blockEndingDate_ = [SCUtilities blockEndDateInDictionary: blockDict];
+    blockEndingDate_ = [SCBlockDateUtilities blockEndDateInDictionary: blockDict];
 
 	[self updateTimerDisplay: nil];
 
@@ -258,11 +258,11 @@
     // Try reading the block parameters from the lockfile first
     NSDictionary* blockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
     // if we can't find a block in the lockfile, fall back to defaults
-    if(![SCUtilities blockIsEnabledInDictionary: blockDict]) {
+    if(![SCBlockDateUtilities blockIsEnabledInDictionary: blockDict]) {
         blockDict = [NSUserDefaults standardUserDefaults].dictionaryRepresentation;
     }
 
-    blockEndingDate_ = [SCUtilities blockEndDateInDictionary: blockDict];
+    blockEndingDate_ = [SCBlockDateUtilities blockEndDateInDictionary: blockDict];
     
     [self updateTimerDisplay: nil];
 }

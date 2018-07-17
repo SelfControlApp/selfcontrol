@@ -1,5 +1,5 @@
 //
-//  SCUtilities.h
+//  SCBlockDateUtilities.h
 //  SelfControl
 //
 //  Created by Charles Stigler on 07/07/2018.
@@ -16,7 +16,7 @@
 // the main app works with standard NSUserDefaults objects, but the helper tools have very weird patterns for reading/writing defaults
 // (because of the UID issues), so we have two versions of some functions to accommodate
 
-@interface SCUtilities : NSObject
+@interface SCBlockDateUtilities : NSObject
 
 // Main app functions taking NSUserDefaults
 

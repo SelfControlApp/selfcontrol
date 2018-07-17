@@ -1,14 +1,14 @@
 //
-//  SCUtilities+HelperTools.m
+//  SCBlockDateUtilities+HelperTools.m
 //  SelfControl
 //
 //  Created by Charles Stigler on 07/07/2018.
 //
 
-#import "SCUtilities+HelperTools.h"
+#import "SCBlockDateUtilities+HelperTools.h"
 #import "HelperCommon.h"
 
-@implementation SCUtilities (HelperTools)
+@implementation SCBlockDateUtilities (HelperTools)
 
 + (void) startDefaultsBlockWithDict:(NSDictionary*)defaultsDict forUID:(uid_t)uid {
     // sanity check duration

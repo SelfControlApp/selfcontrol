@@ -25,7 +25,7 @@
 #import "PreferencesGeneralViewController.h"
 #import "PreferencesAdvancedViewController.h"
 #import "SCTimeIntervalFormatter.h"
-#import "SCUtilities.h"
+#import "SCBlockDateUtilities.h"
 #import <SystemConfiguration/SystemConfiguration.h>
 #import <LetsMove/PFMoveApplication.h>
 
@@ -142,7 +142,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 - (IBAction)addBlock:(id)sender {
 	[defaults_ synchronize];
-    if ([SCUtilities blockIsActiveInDefaults: defaults_]) {
+    if ([SCBlockDateUtilities blockIsActiveInDefaults: defaults_]) {
 		// This method shouldn't be getting called, a block is on so the Start button should be disabled.
 		NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
 										   code: -102
@@ -353,7 +353,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	}
 
 	[defaults_ synchronize];
-    if ([SCUtilities blockIsEnabledInDefaults: defaults_]) {
+    if ([SCBlockDateUtilities blockIsEnabledInDefaults: defaults_]) {
 		return YES;
 	}
 
@@ -435,7 +435,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	[defaults_ setObject: list forKey: @"HostBlacklist"];
 	[defaults_ synchronize];
 
-	if(![SCUtilities blockIsEnabledInDefaults: defaults_]) {
+	if(![SCBlockDateUtilities blockIsEnabledInDefaults: defaults_]) {
 		// This method shouldn't be getting called, a block is not on (block started
 		// is in the distantFuture) so the Start button should be disabled.
 		// Maybe the UI didn't get properly refreshed, so try refreshing it again
@@ -496,7 +496,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
         return;
     
     // ensure block health before we try to change it
-    if(![SCUtilities blockIsEnabledInDefaults: defaults_]) {
+    if(![SCBlockDateUtilities blockIsEnabledInDefaults: defaults_]) {
         // This method shouldn't be getting called, a block is not on (block started
         // is in the distantFuture) so the Start button should be disabled.
         // Maybe the UI didn't get properly refreshed, so try refreshing it again
@@ -644,7 +644,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 			return;
 		}
 
-        [SCUtilities startBlockInDefaults: defaults_];
+        [SCBlockDateUtilities startBlockInDefaults: defaults_];
 
 		// We need to pass our UID to the helper tool.  It needs to know whose defaults
 		// it should reading in order to properly load the blacklist.
@@ -664,7 +664,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 			NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", (int)status);
 
 			// reset defaults on failure
-            [SCUtilities removeBlockFromDefaults: defaults_];
+            [SCBlockDateUtilities removeBlockFromDefaults: defaults_];
 
 			NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
 											   code: status
@@ -689,7 +689,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 		if([inDataString isEqualToString: @""]) {
             // reset defaults on failure
-            [SCUtilities removeBlockFromDefaults: defaults_];
+            [SCBlockDateUtilities removeBlockFromDefaults: defaults_];
 
 			NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
 											   code: -104
@@ -704,7 +704,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 		if(exitCode) {
             // reset defaults on failure
-            [SCUtilities removeBlockFromDefaults: defaults_];
+            [SCBlockDateUtilities removeBlockFromDefaults: defaults_];
 
 			NSError* err = [self errorFromHelperToolStatusCode: exitCode];
 
@@ -827,12 +827,12 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     
     minutesToAdd = MAX(minutesToAdd, 0); // make sure there's no funny business with negative minutes
     
-    NSDate* oldBlockEndDate = [SCUtilities blockEndDateInDefaults: defaults_];
+    NSDate* oldBlockEndDate = [SCBlockDateUtilities blockEndDateInDefaults: defaults_];
     NSDate* newBlockEndDate = [oldBlockEndDate dateByAddingTimeInterval: (minutesToAdd * 60)];
     
     
     // Before we try to extend the block, make sure the block time didn't run out (or is about to run out) in the meantime
-    if (![SCUtilities blockIsActiveInDefaults: defaults_] || [oldBlockEndDate timeIntervalSinceNow] < 3) {
+    if (![SCBlockDateUtilities blockIsActiveInDefaults: defaults_] || [oldBlockEndDate timeIntervalSinceNow] < 3) {
         // we're done, or will be by the time we get to it! so just let it expire. they can restart it.
         return;
     }
@@ -910,7 +910,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
         // Check to make sure the block is running again... AuthorizationExecuteWithPrivileges blocks on user input, so a lot of clock
         // time might have passed since we checked earlier in this function.
         // Block is finished if it's unset in the defaults, OR if it's only a second left until we'll do that (allow some buffer for the helper tool)
-        if (![SCUtilities blockIsActiveInDefaults: defaults_] || [oldBlockEndDate timeIntervalSinceNow] < 1) {
+        if (![SCBlockDateUtilities blockIsActiveInDefaults: defaults_] || [oldBlockEndDate timeIntervalSinceNow] < 1) {
             // returning here won't stop the helper tool from running, but it will stop us from showing an error message
             // (because we're not listening)
             return;

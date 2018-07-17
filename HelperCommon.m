@@ -9,8 +9,8 @@
 
 #include "HelperCommon.h"
 #include "BlockManager.h"
-#import "SCUtilities.h"
-#import "SCUtilities+HelperTools.h"
+#import "SCBlockDateUtilities.h"
+#import "SCBlockDateUtilities+HelperTools.h"
 
 NSDictionary* getAppDefaultsDictionary() {
     return @{@"BlockDuration": @15,
@@ -229,7 +229,7 @@ void printStatus(int status) {
 }
 
 void removeBlock(uid_t controllingUID) {
-    [SCUtilities removeBlockFromDefaultsForUID: controllingUID];
+    [SCBlockDateUtilities removeBlockFromDefaultsForUID: controllingUID];
 	removeRulesFromFirewall(controllingUID);
 	if(![[NSFileManager defaultManager] removeItemAtPath: SelfControlLockFilePath error: nil] && [[NSFileManager defaultManager] fileExistsAtPath: SelfControlLockFilePath]) {
 		NSLog(@"ERROR: Could not remove SelfControl lock file.");
