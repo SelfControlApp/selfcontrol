@@ -27,6 +27,8 @@
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		CB0385E119D77051004614B6 /* PreferencesAdvancedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB0385DD19D77051004614B6 /* PreferencesAdvancedViewController.xib */; };
 		CB0385E219D77051004614B6 /* PreferencesGeneralViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB0385DF19D77051004614B6 /* PreferencesGeneralViewController.xib */; };
+		CB0EEF6020FD8CE00024D27B /* SelfControlTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB0EEF5F20FD8CE00024D27B /* SelfControlTests.m */; };
+		CB0EEF6820FD8D470024D27B /* BlockDateUtilitiesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB0EEF6720FD8D470024D27B /* BlockDateUtilitiesTests.m */; };
 		CB1E7A6E0F9AEA9B00D158BC /* ERRORS in Resources */ = {isa = PBXBuildFile; fileRef = CB1E7A6D0F9AEA9B00D158BC /* ERRORS */; };
 		CB1ED4480F56686400EFECEE /* org.eyebeam.SelfControl in Copy Helper Tools */ = {isa = PBXBuildFile; fileRef = CBA2AFD20F39EC12005AFEBE /* org.eyebeam.SelfControl */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		CB249FED19D782230087BBB6 /* SelfControlIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = CB249FEC19D782230087BBB6 /* SelfControlIcon.icns */; };
@@ -111,6 +113,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		CB0EEF6220FD8CE00024D27B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8D1107260486CEB800E47090;
+			remoteInfo = SelfControl;
+		};
 		CB9C812D19CFBBA300CDCAE1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -212,6 +221,10 @@
 		8D1107320486CEB800E47090 /* SelfControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SelfControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		949F9F8815B32EC6007B8B42 /* zh-Hans */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		949F9F8D15B333A1007B8B42 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		CB0EEF5D20FD8CE00024D27B /* SelfControlTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SelfControlTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB0EEF5F20FD8CE00024D27B /* SelfControlTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SelfControlTests.m; sourceTree = "<group>"; };
+		CB0EEF6120FD8CE00024D27B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CB0EEF6720FD8D470024D27B /* BlockDateUtilitiesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BlockDateUtilitiesTests.m; sourceTree = "<group>"; };
 		CB1E7A6D0F9AEA9B00D158BC /* ERRORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ERRORS; sourceTree = "<group>"; };
 		CB249FEC19D782230087BBB6 /* SelfControlIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SelfControlIcon.icns; sourceTree = "<group>"; };
 		CB25806016C1FDBE0059C99A /* BlockManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockManager.h; sourceTree = "<group>"; };
@@ -388,6 +401,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CB0EEF5A20FD8CE00024D27B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CB54D4490F93E32B00AA22E9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -461,6 +481,7 @@
 				CB5E20BF0FAE0CDC006DBFC8 /* scheckup */,
 				CB9C80F719CFB79700CDCAE1 /* SelfControl Killer.app */,
 				CB9C811B19CFBA8500CDCAE1 /* SCKillerHelper */,
+				CB0EEF5D20FD8CE00024D27B /* SelfControlTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -474,6 +495,7 @@
 				CBCA9116196123E600AFD20C /* SelfControl.entitlements */,
 				CB1E7A6D0F9AEA9B00D158BC /* ERRORS */,
 				CB4294DF0F53D865008E10CA /* Classes */,
+				CB0EEF5E20FD8CE00024D27B /* SelfControlTests */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				CB4294F10F53D95D008E10CA /* Interfaces */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
@@ -522,6 +544,16 @@
 				7998DF77DD84DD8940C6F482 /* libPods-SelfControl.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CB0EEF5E20FD8CE00024D27B /* SelfControlTests */ = {
+			isa = PBXGroup;
+			children = (
+				CB0EEF6720FD8D470024D27B /* BlockDateUtilitiesTests.m */,
+				CB0EEF5F20FD8CE00024D27B /* SelfControlTests.m */,
+				CB0EEF6120FD8CE00024D27B /* Info.plist */,
+			);
+			path = SelfControlTests;
 			sourceTree = "<group>";
 		};
 		CB4294DF0F53D865008E10CA /* Classes */ = {
@@ -681,6 +713,24 @@
 			productReference = 8D1107320486CEB800E47090 /* SelfControl.app */;
 			productType = "com.apple.product-type.application";
 		};
+		CB0EEF5C20FD8CE00024D27B /* SelfControlTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CB0EEF6420FD8CE00024D27B /* Build configuration list for PBXNativeTarget "SelfControlTests" */;
+			buildPhases = (
+				CB0EEF5920FD8CE00024D27B /* Sources */,
+				CB0EEF5A20FD8CE00024D27B /* Frameworks */,
+				CB0EEF5B20FD8CE00024D27B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CB0EEF6320FD8CE00024D27B /* PBXTargetDependency */,
+			);
+			name = SelfControlTests;
+			productName = SelfControlTests;
+			productReference = CB0EEF5D20FD8CE00024D27B /* SelfControlTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		CB5E20BE0FAE0CDC006DBFC8 /* SelfControl-checkup */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CB5E20C50FAE0D01006DBFC8 /* Build configuration list for PBXNativeTarget "SelfControl-checkup" */;
@@ -766,6 +816,12 @@
 							};
 						};
 					};
+					CB0EEF5C20FD8CE00024D27B = {
+						CreatedOnToolsVersion = 9.4.1;
+						DevelopmentTeam = L6W5L88KN7;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 8D1107260486CEB800E47090;
+					};
 					CB5E20BE0FAE0CDC006DBFC8 = {
 						DevelopmentTeam = L6W5L88KN7;
 						ProvisioningStyle = Manual;
@@ -821,6 +877,7 @@
 				CB9F02EE16C10CDE003054EE /* Distribution */,
 				CB9C80F619CFB79700CDCAE1 /* SelfControl Killer */,
 				CB9C811A19CFBA8500CDCAE1 /* SCKillerHelper */,
+				CB0EEF5C20FD8CE00024D27B /* SelfControlTests */,
 			);
 		};
 /* End PBXProject section */
@@ -846,6 +903,13 @@
 				CB249FED19D782230087BBB6 /* SelfControlIcon.icns in Resources */,
 				CBBF4E8E1582F8E000E364D9 /* Localizable.strings in Resources */,
 				CB0385E119D77051004614B6 /* PreferencesAdvancedViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB0EEF5B20FD8CE00024D27B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -955,6 +1019,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CB0EEF5920FD8CE00024D27B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB0EEF6820FD8D470024D27B /* BlockDateUtilitiesTests.m in Sources */,
+				CB0EEF6020FD8CE00024D27B /* SelfControlTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CB5E20BC0FAE0CDC006DBFC8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1019,6 +1092,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		CB0EEF6320FD8CE00024D27B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8D1107260486CEB800E47090 /* SelfControl */;
+			targetProxy = CB0EEF6220FD8CE00024D27B /* PBXContainerItemProxy */;
+		};
 		CB9C812E19CFBBA300CDCAE1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = CB9C811A19CFBA8500CDCAE1 /* SCKillerHelper */;
@@ -1288,7 +1366,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_ENTITLEMENTS = SelfControl.entitlements;
-				CODE_SIGN_IDENTITY = "Developer ID Application: Charlie Stigler (L6W5L88KN7)";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = L6W5L88KN7;
@@ -1355,6 +1433,80 @@
 				SDKROOT = macosx;
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_STYLE = debugging;
+			};
+			name = Release;
+		};
+		CB0EEF6520FD8CE00024D27B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = SelfControlTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.selfcontrolapp.SelfControlTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SelfControl.app/Contents/MacOS/SelfControl";
+			};
+			name = Debug;
+		};
+		CB0EEF6620FD8CE00024D27B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = SelfControlTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = org.selfcontrolapp.SelfControlTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SelfControl.app/Contents/MacOS/SelfControl";
 			};
 			name = Release;
 		};
@@ -1667,6 +1819,15 @@
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
 				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CB0EEF6420FD8CE00024D27B /* Build configuration list for PBXNativeTarget "SelfControlTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB0EEF6520FD8CE00024D27B /* Debug */,
+				CB0EEF6620FD8CE00024D27B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

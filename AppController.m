@@ -294,7 +294,10 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (void)applicationWillFinishLaunching:(NSNotification *)notification {
-    PFMoveToApplicationsFolderIfNecessary();
+    // For test runs, we don't want to pop up the dialog to move to the Applications folder, as it breaks the tests
+    if (NSProcessInfo.processInfo.environment[@"XCTestConfigurationFilePath"] == nil) {
+        PFMoveToApplicationsFolderIfNecessary();
+    }
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
