@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,9 +17,9 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" utility="YES" HUD="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="428" width="212" height="106"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
             <view key="contentView" id="32">
-                <rect key="frame" x="0.0" y="0.0" width="212" height="106"/>
+                <rect key="frame" x="0.0" y="0.0" width="212" height="110"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="49">
@@ -48,7 +48,7 @@
                         </connections>
                     </button>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="33">
-                        <rect key="frame" x="-2" y="55" width="216" height="51"/>
+                        <rect key="frame" x="-2" y="59" width="216" height="51"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="00:00:00" id="34">
                             <font key="font" metaFont="system" size="42"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -68,9 +68,9 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="6wT-hW-OYG" firstAttribute="top" secondItem="100" secondAttribute="bottom" constant="9" id="1tp-gl-bcx"/>
-                    <constraint firstItem="49" firstAttribute="top" secondItem="33" secondAttribute="bottom" constant="3" id="ISd-jc-sOt"/>
+                    <constraint firstItem="49" firstAttribute="top" secondItem="33" secondAttribute="bottom" constant="7" id="ISd-jc-sOt"/>
                     <constraint firstItem="33" firstAttribute="top" secondItem="32" secondAttribute="top" id="Sfd-ER-Wmr"/>
-                    <constraint firstItem="100" firstAttribute="top" secondItem="33" secondAttribute="bottom" constant="3" id="Ylv-xl-Thf"/>
+                    <constraint firstItem="100" firstAttribute="top" secondItem="33" secondAttribute="bottom" constant="7" id="Ylv-xl-Thf"/>
                     <constraint firstItem="33" firstAttribute="centerX" secondItem="32" secondAttribute="centerX" id="ZfP-3B-sYQ"/>
                     <constraint firstItem="100" firstAttribute="centerX" secondItem="32" secondAttribute="centerX" id="avs-qE-7q5"/>
                     <constraint firstItem="49" firstAttribute="centerX" secondItem="32" secondAttribute="centerX" id="bw9-0x-OeK"/>
@@ -96,7 +96,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="418" width="334" height="92"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
             <view key="contentView" id="64">
                 <rect key="frame" x="0.0" y="0.0" width="334" height="92"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -161,7 +161,7 @@ DQ
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="418" width="338" height="141"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
             <view key="contentView" id="mZd-qZ-baN">
                 <rect key="frame" x="0.0" y="0.0" width="338" height="141"/>
                 <autoresizingMask key="autoresizingMask"/>

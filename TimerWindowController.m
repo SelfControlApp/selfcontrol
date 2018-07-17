@@ -131,11 +131,14 @@
                                          withObject:nil
                                       waitUntilDone:NO];
 
+    NSString* finishingString = NSLocalizedString(@"Finishing", @"String shown when waiting for finished block to clear");
 	int numSeconds = (int) [blockEndingDate_ timeIntervalSinceNow];
 	int numHours;
 	int numMinutes;
 
-	if(numSeconds < 0) {
+    // if we're already showing "Finishing", but the block timer isn't clearing,
+    // keep track of that, so we can take drastic measures if necessary.
+	if(numSeconds < 0 && [timerLabel_.stringValue isEqualToString: finishingString]) {
 		[[NSApp dockTile] setBadgeLabel: nil];
 
 		// This increments the strike counter.  After four strikes of the timer being
@@ -161,10 +164,17 @@
 	numMinutes = (numSeconds / 60);
 	numSeconds %= 60;
 
-	NSString* timeString = [NSString stringWithFormat: @"%0.2d:%0.2d:%0.2d",
-							numHours,
-							numMinutes,
-							numSeconds];
+    NSString* timeString;
+    if (numHours > 0 || numMinutes > 0 || numSeconds > 0) {
+        timeString = [NSString stringWithFormat: @"%0.2d:%0.2d:%0.2d",
+                      numHours,
+                      numMinutes,
+                      numSeconds];
+    } else {
+        // It usually takes 5-15 seconds after a block finishes for it to turn off
+        // so show "Finishing" instead of "00:00:00" to avoid user worry and confusion!
+        timeString = finishingString;
+    }
 
 	[timerLabel_ setStringValue: timeString];
 	[timerLabel_ setFont: [[NSFontManager sharedFontManager]
