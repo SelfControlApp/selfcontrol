@@ -25,7 +25,6 @@
 }
 
 + (void) removeBlockFromDefaultsForUID:(uid_t)uid {
-    NSLog(@"removing BlockEndDate and BlockStartedDate from user defaults for %d", uid);
     // remove both BlockEndDate and legacy BlockStartedDate, just in case an old version comes back and tries to readthat
     setDefaultsValue(@"BlockEndDate", nil, uid);
     setDefaultsValue(@"BlockStartedDate", nil, uid);
