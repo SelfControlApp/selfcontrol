@@ -325,6 +325,9 @@
 - (IBAction)importNewsAndPublications:(id)sender {
 	[self addHostArray: [HostImporter newsAndPublications]];
 }
+- (IBAction)importCommonPornWebsites:(id)sender {
+	[self addHostArray: [HostImporter commonPornWebsites]];
+}
 - (IBAction)importIncomingMailServersFromThunderbird:(id)sender {
 	[self addHostArray: [HostImporter incomingMailHostnamesFromThunderbird]];
 }
