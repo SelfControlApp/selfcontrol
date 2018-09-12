@@ -31,6 +31,7 @@
 
 + (NSArray*)commonDistractingWebsites;
 + (NSArray*)newsAndPublications;
++ (NSArray*)commonPornWebsites;
 
 // Returns an autoreleased instance of NSArray containing all incoming hostnames
 // imported from the user's instance of Mail.app
