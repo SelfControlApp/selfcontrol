@@ -84,6 +84,21 @@
 			 ];
 }
 
++ (NSArray*)commonPornWebsites {
+	return @[
+			@"pornhub.com",
+			@"youporn.com", 
+			@"redtube.com",
+			@"fuq.com",
+			@"xvideos.com",
+			@"xhamster.com",
+			@"xnxx.com",
+			@"porn.com",
+			@"chaturbate.com",
+			@"cam4.com",
+		];
+}
+
 + (NSArray*)incomingMailHostnamesFromMail {
 	NSMutableArray* hostnames = [NSMutableArray arrayWithCapacity: 10];
 	NSString* sandboxedPreferences = [@"~/Library/Containers/com.apple.mail/Data/Library/Preferences/com.apple.mail" stringByExpandingTildeInPath];
