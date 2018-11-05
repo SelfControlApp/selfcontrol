@@ -23,5 +23,5 @@
 // This file holds variables, functions, includes, etc. that should be easily
 // accessible from many different parts of SelfControl.
 
-#define SelfControlLockFilePath @"/etc/SelfControl.lock"
+#define SelfControlLegacyLockFilePath @"/etc/SelfControl.lock"
 // #define DEBUG 0

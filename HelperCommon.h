@@ -38,6 +38,7 @@ NSArray* domainList;
 
 void registerDefaults(uid_t controllingUID);
 NSDictionary* getDefaultsDict(uid_t controllingUID);
+// pass NULL for prefValue to remove a key from the domain
 void setDefaultsValue(NSString* prefName, id prefValue, uid_t controllingUID);
 
 // Reads the domain block list from the defaults for SelfControl, and adds deny

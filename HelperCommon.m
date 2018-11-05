@@ -63,6 +63,7 @@ NSDictionary* getDefaultsDict(uid_t controllingUID) {
 void setDefaultsValue(NSString* prefName, id prefValue, uid_t controllingUID) {
 	[NSUserDefaults resetStandardUserDefaults];
 	seteuid(controllingUID);
+    NSLog(@"Setting defaults value %@ = %@ for UID %d", prefName, prefValue, controllingUID);
 	CFPreferencesSetAppValue((__bridge CFStringRef)prefName, (__bridge CFPropertyListRef)(prefValue), (__bridge CFStringRef)@"org.eyebeam.SelfControl");
 	CFPreferencesAppSynchronize((__bridge CFStringRef)@"org.eyebeam.SelfControl");
 	[NSUserDefaults resetStandardUserDefaults];
@@ -78,7 +79,7 @@ void addRulesToFirewall(uid_t controllingUID) {
 
 	// get value for BlockAsWhitelist
 	BOOL blockAsWhitelist;
-	NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
+	NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: SelfControlLegacyLockFilePath];
 	if(curDictionary == nil || curDictionary[@"BlockAsWhitelist"] == nil) {
 		blockAsWhitelist = [defaults[@"BlockAsWhitelist"] boolValue];
 	} else {
@@ -231,7 +232,7 @@ void printStatus(int status) {
 void removeBlock(uid_t controllingUID) {
     [SCBlockDateUtilities removeBlockFromDefaultsForUID: controllingUID];
 	removeRulesFromFirewall(controllingUID);
-	if(![[NSFileManager defaultManager] removeItemAtPath: SelfControlLockFilePath error: nil] && [[NSFileManager defaultManager] fileExistsAtPath: SelfControlLockFilePath]) {
+	if(![[NSFileManager defaultManager] removeItemAtPath: SelfControlLegacyLockFilePath error: nil] && [[NSFileManager defaultManager] fileExistsAtPath: SelfControlLegacyLockFilePath]) {
 		NSLog(@"ERROR: Could not remove SelfControl lock file.");
 		printStatus(-218);
 	}

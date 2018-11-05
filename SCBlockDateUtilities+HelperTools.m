@@ -21,13 +21,14 @@
     setDefaultsValue(@"BlockEndDate", blockEndDate, uid);
     
     // in fact, let's take the opportunity to make sure BlockStartedDate is gone-zo
-    setDefaultsValue(@"BlockStartedDate", nil, uid);
+    setDefaultsValue(@"BlockStartedDate", NULL, uid);
 }
 
 + (void) removeBlockFromDefaultsForUID:(uid_t)uid {
-    // remove both BlockEndDate and legacy BlockStartedDate, just in case an old version comes back and tries to readthat
-    setDefaultsValue(@"BlockEndDate", nil, uid);
-    setDefaultsValue(@"BlockStartedDate", nil, uid);
+    // remove both BlockEndDate and legacy BlockStartedDate, just in case an old version comes back and tries to read that
+    NSLog(@"Setting BlockEndDate and BlockStartedDate to NULL for %d", uid);
+    setDefaultsValue(@"BlockEndDate", [NSDate dateWithTimeIntervalSince1970: 0], uid);
+    setDefaultsValue(@"BlockStartedDate", NULL, uid);
 }
 
 @end

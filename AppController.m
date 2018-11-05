@@ -363,7 +363,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	// If there's no block in the hosts file, no block in the defaults, and no lock-file,
 	// we'll assume we're clear of blocks.  Checking pf would be nice but usually requires
 	// root permissions, so it would be difficult to do here.
-	return [[NSFileManager defaultManager] fileExistsAtPath: SelfControlLockFilePath];
+	return [[NSFileManager defaultManager] fileExistsAtPath: SelfControlLegacyLockFilePath];
 }
 
 - (IBAction)showDomainList:(id)sender {

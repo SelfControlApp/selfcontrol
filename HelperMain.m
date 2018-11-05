@@ -58,7 +58,7 @@ int main(int argc, char* argv[]) {
 		// the pattern exhibited here will be used: we attempt to use the lock file's
 		// contents, and revert to the user's defaults if the lock file has unreasonable
 		// contents.
-		NSDictionary* curLockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
+		NSDictionary* curLockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLegacyLockFilePath];
 		if(!([curLockDict[@"HostBlacklist"] count] <= 0))
 			domainList = curLockDict[@"HostBlacklist"];
 
@@ -194,7 +194,7 @@ int main(int argc, char* argv[]) {
 			// If perchance another lock is in existence already (which would be weird)
 			// we try to remove a block and continue as normal.  This should definitely not be
 			// happening though.
-			if([fileManager fileExistsAtPath: SelfControlLockFilePath]) {
+			if([fileManager fileExistsAtPath: SelfControlLegacyLockFilePath]) {
 				NSLog(@"ERROR: Lock already established.  Attempting to stop block.");
 
 				removeBlock(controllingUID);
@@ -204,13 +204,13 @@ int main(int argc, char* argv[]) {
 			}
 
 			// And write out our lock...
-			if(![lockDictionary writeToFile: SelfControlLockFilePath atomically: YES]) {
+			if(![lockDictionary writeToFile: SelfControlLegacyLockFilePath atomically: YES]) {
 				NSLog(@"ERROR: Could not write lock file.");
 				printStatus(-216);
 				exit(EX_IOERR);
 			}
 			// Make sure the privileges are correct on our lock file
-			[fileManager setAttributes: fileAttributes ofItemAtPath: SelfControlLockFilePath error: nil];
+			[fileManager setAttributes: fileAttributes ofItemAtPath: SelfControlLegacyLockFilePath error: nil];
 
 			addRulesToFirewall(controllingUID);
 			int result = [LaunchctlHelper loadLaunchdJobWithPlistAt: @"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
@@ -236,7 +236,7 @@ int main(int argc, char* argv[]) {
 		} else if([modeString isEqual: @"--refresh"]) {
 			// Check what the current block is (based on the lock file) because if possible
 			// we want to keep most of its information.
-			NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
+			NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: SelfControlLegacyLockFilePath];
 			NSDictionary* newLockDictionary;
 
 			NSDictionary* defaults = getDefaultsDict(controllingUID);
@@ -272,13 +272,13 @@ int main(int argc, char* argv[]) {
 				exit(EX_CONFIG);
 			}
 
-			if(![newLockDictionary writeToFile: SelfControlLockFilePath atomically: YES]) {
+			if(![newLockDictionary writeToFile: SelfControlLegacyLockFilePath atomically: YES]) {
 				NSLog(@"ERROR: Could not write lock file.");
 				printStatus(-217);
 				exit(EX_IOERR);
 			}
 			// Make sure the privileges are correct on our lock file
-			[[NSFileManager defaultManager] setAttributes: fileAttributes ofItemAtPath: SelfControlLockFilePath error: nil];
+			[[NSFileManager defaultManager] setAttributes: fileAttributes ofItemAtPath: SelfControlLegacyLockFilePath error: nil];
 			domainList = newLockDictionary[@"HostBlacklist"];
 
 			// Add and remove the rules to put in any new ones
@@ -319,19 +319,19 @@ int main(int argc, char* argv[]) {
                 exit(EX_CONFIG);
             }
             
-            if(![newLockDictionary writeToFile: SelfControlLockFilePath atomically: YES]) {
+            if(![newLockDictionary writeToFile: SelfControlLegacyLockFilePath atomically: YES]) {
                 NSLog(@"ERROR: Could not write lock file.");
                 printStatus(-217);
                 exit(EX_IOERR);
             }
             // Make sure the privileges are correct on our lock file
-            [[NSFileManager defaultManager] setAttributes: fileAttributes ofItemAtPath: SelfControlLockFilePath error: nil];
+            [[NSFileManager defaultManager] setAttributes: fileAttributes ofItemAtPath: SelfControlLegacyLockFilePath error: nil];
             domainList = newLockDictionary[@"HostBlacklist"];
             
             // Reload the launchd job just in case
             [LaunchctlHelper loadLaunchdJobWithPlistAt: @"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
         } else if([modeString isEqual: @"--checkup"]) {
-			NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
+			NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: SelfControlLegacyLockFilePath];
 
 			if(![SCBlockDateUtilities blockIsEnabledInDictionary: curDictionary]) {
 				// The lock file seems to be broken (no block found).  Read from defaults to try to find the block.
@@ -404,7 +404,7 @@ int main(int argc, char* argv[]) {
                 setDefaultsValue(@"BlockAsWhitelist", curDictionary[@"BlockAsWhitelist"], controllingUID);
                 
                 // BlockStartedDate is a legacy value, no need for it now that we added a BlockEndDate
-                setDefaultsValue(@"BlockStartedDate", nil, controllingUID);
+                setDefaultsValue(@"BlockStartedDate", NULL, controllingUID);
 			}
 		}
 

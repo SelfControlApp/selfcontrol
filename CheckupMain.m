@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
 
 		registerDefaults(getuid());
 
-		NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
+		NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: SelfControlLegacyLockFilePath];
 
 		if(![SCBlockDateUtilities blockIsEnabledInDictionary: curDictionary]) {
 			// The lock file seems to be broken.  Try defaults.

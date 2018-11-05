@@ -71,7 +71,7 @@
 	addToBlockButton_.hidden = NO;
 
     // Try reading the block parameters from the lockfile first
-	NSDictionary* blockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
+	NSDictionary* blockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLegacyLockFilePath];
     // if we can't find a block in the lockfile, fall back to defaults
 	if(![SCBlockDateUtilities blockIsEnabledInDictionary: blockDict]) {
         blockDict = defaults.dictionaryRepresentation;
@@ -256,7 +256,7 @@
 
 - (void) blockEndDateUpdated {
     // Try reading the block parameters from the lockfile first
-    NSDictionary* blockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLockFilePath];
+    NSDictionary* blockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLegacyLockFilePath];
     // if we can't find a block in the lockfile, fall back to defaults
     if(![SCBlockDateUtilities blockIsEnabledInDictionary: blockDict]) {
         blockDict = [NSUserDefaults standardUserDefaults].dictionaryRepresentation;
