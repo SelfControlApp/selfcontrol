@@ -16,11 +16,11 @@
 @implementation PreferencesAdvancedViewController
 
 - (instancetype)init {
-	self = [super initWithNibName: @"PreferencesAdvancedViewController" bundle: nil];
-    
-    _securedSettingsDict = [SCSettings currentUserSettings];
-    
-    return self;
+	return [super initWithNibName: @"PreferencesAdvancedViewController" bundle: nil];
+}
+
+- (NSDictionary*)securedSettingsDict {
+    return [[SCSettings currentUserSettings] settingsDictionary];
 }
 
 #pragma mark MASPreferencesViewController

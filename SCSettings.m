@@ -74,6 +74,7 @@
     return [SCSettings settingsForUser: getuid()];
 }
 - (instancetype)initWithUserId:(uid_t)userId {
+    NSLog(@"init SCSettings");
     if (self = [super init]) {
         _userId = userId;
         _settingsDictionary = nil;
@@ -90,13 +91,31 @@
 - (NSString*)securedSettingsFilePath {
     NSString* homeDir = [self homeDirectoryForUid: self.userId];
     NSString* hash = [self sha1: [NSString stringWithFormat: @"SelfControlUserPreferences%@", [self getSerialNumber]]];
-    NSLog(@"securedSettingsFilePath = %@ (homeDir = %@ and hash = %@)", [[NSString stringWithFormat: @"%@/Library/Preferences.%@.plist", homeDir, hash] stringByExpandingTildeInPath], homeDir, hash);
-    return [[NSString stringWithFormat: @"%@/Library/Preferences.%@.plist", homeDir, hash] stringByExpandingTildeInPath];
+    NSLog(@"securedSettingsFilePath = %@ (homeDir = %@ and hash = %@)", [[NSString stringWithFormat: @"%@/Library/Preferences/.%@.plist", homeDir, hash] stringByExpandingTildeInPath], homeDir, hash);
+    return [[NSString stringWithFormat: @"%@/Library/Preferences/.%@.plist", homeDir, hash] stringByExpandingTildeInPath];
 }
 
+- (NSDictionary*)defaultSettingsDict {
+    return @{
+        @"BlockEndDate": [NSDate distantPast],
+        @"HostBlacklist": @[],
+        @"EvaluateCommonSubdomains": @YES,
+        @"IncludeLinkedDomains": @YES,
+        @"BlockSoundShouldPlay": @NO,
+        @"BlockSound": @5,
+        @"ClearCaches": @YES,
+        @"BlockAsWhitelist": @NO,
+        @"AllowLocalNetworks": @YES,
+    };
+}
 - (NSDictionary*)settingsDictionary {
     if (_settingsDictionary == nil) {
-        _settingsDictionary = [NSDictionary dictionaryWithContentsOfFile: [self securedSettingsFilePath]];
+        _settingsDictionary = [NSMutableDictionary dictionaryWithContentsOfFile: [self securedSettingsFilePath]];
+        
+        if (_settingsDictionary == nil) {
+            _settingsDictionary = [[self defaultSettingsDict] mutableCopy];
+        }
+        NSLog(@"initialized settingsDictionary with contents of %@ to %@", [self securedSettingsFilePath], _settingsDictionary);
     }
     return _settingsDictionary;
 }
@@ -112,7 +131,7 @@
         NSLog(@"NSPropertyListSerialization error: %@", serializationErrString);
         return;
     }
-    
+    NSLog(@"writing %@ to %@", plistData, self.securedSettingsFilePath);
     [plistData writeToFile: [self securedSettingsFilePath]
                 atomically: YES];
 }
@@ -123,7 +142,7 @@
     [self.settingsDictionary setValue: value forKey: key];
 }
 - (id)getValueForKey:(NSString*)key {
-    [self.settingsDictionary valueForKey: key];
+    return [self.settingsDictionary valueForKey: key];
 }
 
 @synthesize settingsDictionary = _settingsDictionary;

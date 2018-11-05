@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)reloadSettings;
 - (void)writeSettings;
 - (void)synchronizeSettings;
-- (void)setValue:(id)value forKey:(NSString*)key;
+- (void)setValue:(nullable id)value forKey:(NSString*)key;
 - (id)getValueForKey:(NSString*)key;
 
 @end

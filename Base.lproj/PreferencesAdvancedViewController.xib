@@ -25,7 +25,7 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <binding destination="ELT-Ca-Hib" name="value" keyPath="values.ClearCaches" id="o8X-nc-1Za"/>
+                        <binding destination="-2" name="value" keyPath="self.securedSettingsDict.ClearCaches" id="bEI-nr-bfC"/>
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tez-LB-kje">
@@ -36,7 +36,7 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <binding destination="-2" name="value" keyPath="self.securedSettings.EvaluateCommonSubdomains" id="VeP-7e-cW6"/>
+                        <binding destination="-2" name="value" keyPath="self.securedSettingsDict.EvaluateCommonSubdomains" id="KLi-AI-YFP"/>
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q9x-EI-6xR">
@@ -58,7 +58,7 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <binding destination="ELT-Ca-Hib" name="value" keyPath="values.AllowLocalNetworks" id="4ed-B0-uwO"/>
+                        <binding destination="-2" name="value" keyPath="self.securedSettingsDict.AllowLocalNetworks" id="N7X-9S-LY4"/>
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YfV-CO-6Ud">
@@ -80,7 +80,7 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <binding destination="ELT-Ca-Hib" name="value" keyPath="values.IncludeLinkedDomains" id="FGV-zm-NWL"/>
+                        <binding destination="-2" name="value" keyPath="self.securedSettingsDict.IncludeLinkedDomains" id="k2m-Kk-qp9"/>
                     </connections>
                 </button>
             </subviews>

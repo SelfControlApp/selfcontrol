@@ -19,16 +19,16 @@ NSDictionary* getAppDefaultsDictionary() {
              @"BlockEndDate": [NSDate distantPast],
              @"HostBlacklist": @[],
 //             @"EvaluateCommonSubdomains": @YES,
-             @"IncludeLinkedDomains": @YES,
+//             @"IncludeLinkedDomains": @YES,
              @"HighlightInvalidHosts": @YES,
              @"VerifyInternetConnection": @YES,
              @"TimerWindowFloats": @NO,
-             @"BlockSoundShouldPlay": @NO,
-             @"BlockSound": @5,
-             @"ClearCaches": @YES,
+             // @"BlockSoundShouldPlay": @NO,
+             // @"BlockSound": @5,
+             // @"ClearCaches": @YES,
              @"BlockAsWhitelist": @NO,
              @"BadgeApplicationIcon": @YES,
-             @"AllowLocalNetworks": @YES,
+             // @"AllowLocalNetworks": @YES,
              @"MaxBlockLength": @1440,
              @"BlockLengthInterval": @15,
              @"WhitelistAlertSuppress": @NO,
@@ -74,9 +74,10 @@ void setDefaultsValue(NSString* prefName, id prefValue, uid_t controllingUID) {
 void addRulesToFirewall(uid_t controllingUID) {
 	// get value for EvaluateCommonSubdomains
 	NSDictionary* defaults = getDefaultsDict(controllingUID);
-    BOOL shouldEvaluateCommonSubdomains = [[[SCSettings settingsForUser: controllingUID] valueForKey: @"EvaluateCommonSubdomains"] boolValue];
-	BOOL allowLocalNetworks = [defaults[@"AllowLocalNetworks"] boolValue];
-	BOOL includeLinkedDomains = [defaults[@"IncludeLinkedDomains"] boolValue];
+    SCSettings* settings = [SCSettings settingsForUser: controllingUID];
+    BOOL shouldEvaluateCommonSubdomains = [[settings valueForKey: @"EvaluateCommonSubdomains"] boolValue];
+	BOOL allowLocalNetworks = [[settings valueForKey: @"AllowLocalNetworks"] boolValue];
+	BOOL includeLinkedDomains = [[settings valueForKey: @"IncludeLinkedDomains"] boolValue];
 
 	// get value for BlockAsWhitelist
 	BOOL blockAsWhitelist;
@@ -104,8 +105,8 @@ void removeRulesFromFirewall(uid_t controllingUID) {
 	// a few lines ago, because it is important that the UI get updated (by
 	// the posted notification) before we sleep to play the sound.  Otherwise,
 	// the app seems unresponsive and slow.
-	NSDictionary* defaults = getDefaultsDict(controllingUID);
-	if([defaults[@"BlockSoundShouldPlay"] boolValue]) {
+    SCSettings* settings = [SCSettings settingsForUser: controllingUID];
+    if([[settings valueForKey: @"BlockSoundShouldPlay"] boolValue]) {
 		// Map the tags used in interface builder to the sound
 		NSArray* systemSoundNames = @[@"Basso",
 									  @"Blow",
@@ -121,7 +122,7 @@ void removeRulesFromFirewall(uid_t controllingUID) {
 									  @"Sosumi",
 									  @"Submarine",
 									  @"Tink"];
-		NSSound* alertSound = [NSSound soundNamed: systemSoundNames[[defaults[@"BlockSound"] intValue]]];
+        NSSound* alertSound = [NSSound soundNamed: systemSoundNames[[[settings valueForKey: @"BlockSound"] intValue]]];
 		if(!alertSound)
 			NSLog(@"WARNING: Alert sound not found.");
 		else {
@@ -177,8 +178,8 @@ NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, int port) {
 }
 
 void clearCachesIfRequested(uid_t controllingUID) {
-	NSDictionary* defaults = getDefaultsDict(controllingUID);
-	if([defaults[@"ClearCaches"] boolValue]) {
+    SCSettings* settings = [SCSettings settingsForUser: controllingUID];
+	if([[settings valueForKey: @"ClearCaches"] boolValue]) {
 		NSFileManager* fileManager = [NSFileManager defaultManager];
 
 		NSTask* task = [[NSTask alloc] init];

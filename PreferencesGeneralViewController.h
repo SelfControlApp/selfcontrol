@@ -11,6 +11,8 @@
 
 @interface PreferencesGeneralViewController : NSViewController <MASPreferencesViewController>
 
+@property (readonly) NSDictionary* securedSettingsDict;
+
 - (IBAction)soundSelectionChanged:(id)sender;
 
 @end

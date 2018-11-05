@@ -7,6 +7,7 @@
 //
 
 #import "PreferencesGeneralViewController.h"
+#import "SCSettings.h"
 
 @interface PreferencesGeneralViewController ()
 
@@ -15,7 +16,11 @@
 @implementation PreferencesGeneralViewController
 
 - (instancetype)init {
-	return [super initWithNibName: @"PreferencesGeneralViewController" bundle: nil];
+    return [super initWithNibName: @"PreferencesGeneralViewController" bundle: nil];
+}
+
+- (NSDictionary*)securedSettingsDict {
+    return [[SCSettings currentUserSettings] settingsDictionary];
 }
 
 - (IBAction)soundSelectionChanged:(id)sender {
@@ -34,7 +39,7 @@
 								  @"Sosumi",
 								  @"Submarine",
 								  @"Tink"];
-	NSInteger blockSoundIndex = [[NSUserDefaults standardUserDefaults] integerForKey: @"BlockSound"];
+	NSInteger blockSoundIndex = [[self.securedSettingsDict objectForKey: @"BlockSound"] integerValue];
 	NSSound* alertSound = [NSSound soundNamed: systemSoundNames[blockSoundIndex]];
 	if(!alertSound) {
 		NSLog(@"WARNING: Alert sound not found.");

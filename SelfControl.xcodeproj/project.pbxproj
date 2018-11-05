@@ -36,6 +36,15 @@
 		CB25806616C237F10059C99A /* NSString+IPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806516C237F10059C99A /* NSString+IPAddress.m */; };
 		CB25806716C237F10059C99A /* NSString+IPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806516C237F10059C99A /* NSString+IPAddress.m */; };
 		CB25806816C237F10059C99A /* NSString+IPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806516C237F10059C99A /* NSString+IPAddress.m */; };
+		CB32D2A921902CB300B8CD68 /* SCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF3B573217BADD7006D5F52 /* SCSettings.m */; };
+		CB32D2AA21902CB600B8CD68 /* SCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF3B573217BADD7006D5F52 /* SCSettings.m */; };
+		CB32D2AB21902CB700B8CD68 /* SCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF3B573217BADD7006D5F52 /* SCSettings.m */; };
+		CB32D2AC21902CF800B8CD68 /* SCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF3B573217BADD7006D5F52 /* SCSettings.m */; };
+		CB32D2AE21902D9D00B8CD68 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB32D2AD21902D9D00B8CD68 /* IOKit.framework */; };
+		CB32D2AF21902DA500B8CD68 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB32D2AD21902D9D00B8CD68 /* IOKit.framework */; };
+		CB32D2B021902DAD00B8CD68 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB32D2AD21902D9D00B8CD68 /* IOKit.framework */; };
+		CB32D2B121902DB300B8CD68 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB32D2AD21902D9D00B8CD68 /* IOKit.framework */; };
+		CB32D2B221902DB800B8CD68 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB32D2AD21902D9D00B8CD68 /* IOKit.framework */; };
 		CB40A8680FBC7DE700167727 /* SelfControlBlocklist.icns in Resources */ = {isa = PBXBuildFile; fileRef = CB40A8670FBC7DE700167727 /* SelfControlBlocklist.icns */; };
 		CB4C58DA0F3F90B000B5D7CB /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = CB4C58D90F3F90B000B5D7CB /* Credits.rtf */; };
 		CB529BBF0F32B7ED00564FB8 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB529BBE0F32B7ED00564FB8 /* AppController.m */; };
@@ -231,6 +240,7 @@
 		CB25806416C237F10059C99A /* NSString+IPAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+IPAddress.h"; sourceTree = "<group>"; };
 		CB25806516C237F10059C99A /* NSString+IPAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+IPAddress.m"; sourceTree = "<group>"; };
 		CB2E753420BD193200FAF051 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/TimerWindow.strings; sourceTree = "<group>"; };
+		CB32D2AD21902D9D00B8CD68 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		CB40A8670FBC7DE700167727 /* SelfControlBlocklist.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SelfControlBlocklist.icns; sourceTree = "<group>"; };
 		CB42939A0F53A819008E10CA /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
 		CB4295C20F53EF8C008E10CA /* org.eyebeam.SelfControl.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = org.eyebeam.SelfControl.plist; sourceTree = "<group>"; };
@@ -394,6 +404,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB32D2AE21902D9D00B8CD68 /* IOKit.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				CB587E500F50FE8800C66A09 /* SystemConfiguration.framework in Frameworks */,
 				CB8A338B1CD7196B00AD6B8B /* Sparkle.framework in Frameworks */,
@@ -413,6 +424,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB32D2AF21902DA500B8CD68 /* IOKit.framework in Frameworks */,
 				CB54D44C0F93E33300AA22E9 /* Security.framework in Frameworks */,
 				CBD2677011ED92DE00042CD8 /* CoreFoundation.framework in Frameworks */,
 				CBD2677311ED92EF00042CD8 /* Foundation.framework in Frameworks */,
@@ -424,6 +436,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB32D2B021902DAD00B8CD68 /* IOKit.framework in Frameworks */,
 				CBD2676911ED924700042CD8 /* Security.framework in Frameworks */,
 				CBD2677111ED92DF00042CD8 /* CoreFoundation.framework in Frameworks */,
 				CBD2677211ED92EE00042CD8 /* Foundation.framework in Frameworks */,
@@ -435,6 +448,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB32D2B121902DB300B8CD68 /* IOKit.framework in Frameworks */,
 				CB9C813019CFBBC000CDCAE1 /* Security.framework in Frameworks */,
 				CB9C812F19CFBBB900CDCAE1 /* Cocoa.framework in Frameworks */,
 			);
@@ -444,6 +458,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB32D2B221902DB800B8CD68 /* IOKit.framework in Frameworks */,
 				CB9C812C19CFBB8400CDCAE1 /* Cocoa.framework in Frameworks */,
 				CB9C812A19CFBB8000CDCAE1 /* Foundation.framework in Frameworks */,
 				CB9C812819CFBB7B00CDCAE1 /* Security.framework in Frameworks */,
@@ -538,6 +553,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CB32D2AD21902D9D00B8CD68 /* IOKit.framework */,
 				CB9C812B19CFBB8400CDCAE1 /* Cocoa.framework */,
 				CB9C812919CFBB8000CDCAE1 /* Foundation.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
@@ -1041,6 +1057,7 @@
 				CBD2676A11ED925700042CD8 /* HostFileBlocker.m in Sources */,
 				CBB1732320F07AA5007FCAE9 /* SCBlockDateUtilities+HelperTools.m in Sources */,
 				CB25806316C1FDBE0059C99A /* BlockManager.m in Sources */,
+				CB32D2AA21902CB600B8CD68 /* SCSettings.m in Sources */,
 				CBCA91131960FF0100AFD20C /* PacketFilter.m in Sources */,
 				CB25806816C237F10059C99A /* NSString+IPAddress.m in Sources */,
 				CBB1731A20F05C08007FCAE9 /* SCBlockDateUtilities.m in Sources */,
@@ -1053,6 +1070,7 @@
 			files = (
 				CB9C80FF19CFB79700CDCAE1 /* AppDelegate.m in Sources */,
 				CB9C80FC19CFB79700CDCAE1 /* main.m in Sources */,
+				CB32D2AC21902CF800B8CD68 /* SCSettings.m in Sources */,
 				CBB1731C20F05C0A007FCAE9 /* SCBlockDateUtilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1068,6 +1086,7 @@
 				CB9C812519CFBB5500CDCAE1 /* HelperCommon.m in Sources */,
 				CBB1732520F07AA5007FCAE9 /* SCBlockDateUtilities+HelperTools.m in Sources */,
 				CB9C812419CFBB4E00CDCAE1 /* HostFileBlocker.m in Sources */,
+				CB32D2AB21902CB700B8CD68 /* SCSettings.m in Sources */,
 				CB9C812319CFBB4400CDCAE1 /* LaunchctlHelper.m in Sources */,
 				CB9C812219CFBB3800CDCAE1 /* PacketFilter.m in Sources */,
 				CBB1731B20F05C09007FCAE9 /* SCBlockDateUtilities.m in Sources */,
@@ -1085,6 +1104,7 @@
 				CBB0AE2A0FA74566006229B3 /* HostFileBlocker.m in Sources */,
 				CBB1732220F07AA5007FCAE9 /* SCBlockDateUtilities+HelperTools.m in Sources */,
 				CBD266B011ED7D9C00042CD8 /* HelperCommon.m in Sources */,
+				CB32D2A921902CB300B8CD68 /* SCSettings.m in Sources */,
 				CB25806216C1FDBE0059C99A /* BlockManager.m in Sources */,
 				CB25806716C237F10059C99A /* NSString+IPAddress.m in Sources */,
 				CBB1731520F041F4007FCAE9 /* SCBlockDateUtilities.m in Sources */,
