@@ -11,13 +11,14 @@
 #include "BlockManager.h"
 #import "SCBlockDateUtilities.h"
 #import "SCBlockDateUtilities+HelperTools.h"
+#import "SCSettings.h"
 
 NSDictionary* getAppDefaultsDictionary() {
     return @{@"BlockDuration": @15,
              @"BlockStartedDate": [NSDate distantFuture],
              @"BlockEndDate": [NSDate distantPast],
              @"HostBlacklist": @[],
-             @"EvaluateCommonSubdomains": @YES,
+//             @"EvaluateCommonSubdomains": @YES,
              @"IncludeLinkedDomains": @YES,
              @"HighlightInvalidHosts": @YES,
              @"VerifyInternetConnection": @YES,
@@ -73,7 +74,7 @@ void setDefaultsValue(NSString* prefName, id prefValue, uid_t controllingUID) {
 void addRulesToFirewall(uid_t controllingUID) {
 	// get value for EvaluateCommonSubdomains
 	NSDictionary* defaults = getDefaultsDict(controllingUID);
-	BOOL shouldEvaluateCommonSubdomains = [defaults[@"EvaluateCommonSubdomains"] boolValue];
+    BOOL shouldEvaluateCommonSubdomains = [[[SCSettings settingsForUser: controllingUID] valueForKey: @"EvaluateCommonSubdomains"] boolValue];
 	BOOL allowLocalNetworks = [defaults[@"AllowLocalNetworks"] boolValue];
 	BOOL includeLinkedDomains = [defaults[@"IncludeLinkedDomains"] boolValue];
 

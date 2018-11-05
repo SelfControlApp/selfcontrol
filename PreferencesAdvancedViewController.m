@@ -7,6 +7,7 @@
 //
 
 #import "PreferencesAdvancedViewController.h"
+#import "SCSettings.h"
 
 @interface PreferencesAdvancedViewController ()
 
@@ -15,7 +16,11 @@
 @implementation PreferencesAdvancedViewController
 
 - (instancetype)init {
-	return [super initWithNibName: @"PreferencesAdvancedViewController" bundle: nil];
+	self = [super initWithNibName: @"PreferencesAdvancedViewController" bundle: nil];
+    
+    _securedSettingsDict = [SCSettings currentUserSettings];
+    
+    return self;
 }
 
 #pragma mark MASPreferencesViewController

@@ -11,4 +11,6 @@
 
 @interface PreferencesAdvancedViewController : NSViewController <MASPreferencesViewController>
 
+@property (readonly) NSDictionary* securedSettingsDict;
+
 @end

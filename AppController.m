@@ -28,6 +28,7 @@
 #import "SCBlockDateUtilities.h"
 #import <SystemConfiguration/SystemConfiguration.h>
 #import <LetsMove/PFMoveApplication.h>
+#import "SCSettings.h"
 
 NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
@@ -46,7 +47,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 									  @"BlockStartedDate": [NSDate distantFuture],
                                       @"BlockEndDate": [NSDate distantPast],
 									  @"HostBlacklist": @[],
-									  @"EvaluateCommonSubdomains": @YES,
+//                                      @"EvaluateCommonSubdomains": @YES,
 									  @"IncludeLinkedDomains": @YES,
 									  @"HighlightInvalidHosts": @YES,
 									  @"VerifyInternetConnection": @YES,
@@ -346,6 +347,10 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		[unsupportedVersionAlert addButtonWithTitle: NSLocalizedString(@"OK", nil)];
 		[unsupportedVersionAlert runModal];
 	}
+}
+
+- (void)applicationWillTerminate:(NSNotification *)notification {
+    [[SCSettings currentUserSettings] writeSettings];
 }
 
 - (BOOL)selfControlLaunchDaemonIsLoaded {
