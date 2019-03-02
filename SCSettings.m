@@ -9,6 +9,7 @@
 #include <IOKit/IOKitLib.h>
 #import <CommonCrypto/CommonCrypto.h>
 #include <pwd.h>
+#import "SCBlockDateUtilities.h"
 
 @implementation SCSettings
 
@@ -98,7 +99,7 @@
 - (NSDictionary*)defaultSettingsDict {
     return @{
         @"BlockEndDate": [NSDate distantPast],
-        @"HostBlocklist": @[],
+        @"Blocklist": @[],
         @"EvaluateCommonSubdomains": @YES,
         @"IncludeLinkedDomains": @YES,
         @"BlockSoundShouldPlay": @NO,
@@ -159,7 +160,37 @@
 //        blocks are started or finished.
 - (void)migrateLegacySettings {
     NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLegacyLockFilePath];
-    NSDictionary* defaultsDict = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
+    // note that the defaults will generally only be defined in the main app, not helper tool (because helper tool runs as root)
+    NSDictionary* userDefaultsDict = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
+    
+    // prefer reading from the lock file, using defaults as a backup only
+    for (NSString* key in [[self defaultSettingsDict] allKeys]) {
+        if (lockDict[key] != nil) {
+            [self setValue: lockDict[key] forKey: key];
+        } else if (userDefaultsDict[key] != nil) {
+            [self setValue: userDefaultsDict[key] forKey: key];
+        }
+    }
+
+    // Blocklist attribute was renamed so needs a special migration
+    if (lockDict[@"HostBlacklist"] != nil) {
+        [self setValue: lockDict[@"HostBlacklist"] forKey: @"Blocklist"];
+    } else if (userDefaultsDict[@"HostBlacklist"] != nil) {
+        [self setValue: userDefaultsDict[@"HostBlacklist"] forKey: @"Blocklist"];
+    }
+
+    // BlockStartedDate and BlockDuration were migrated to a simpler BlockEndDate property
+    if ([SCBlockDateUtilities blockIsEnabledInDictionary: lockDict]) {
+        [self setValue: [SCBlockDateUtilities blockEndDateInDictionary: lockDict] forKey: @"BlockEndDate"];
+    } else if ([SCBlockDateUtilities blockIsEnabledInDictionary: userDefaultsDict]) {
+        [self setValue: [SCBlockDateUtilities blockEndDateInDictionary: userDefaultsDict] forKey: @"BlockEndDate"];
+    }
+    
+    // write out our brand-new migrated settings to disk!
+    [self writeSettings];
+}
+
++ (void)clearLegacySettings {
     
 }
 
