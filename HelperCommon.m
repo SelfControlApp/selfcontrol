@@ -10,83 +10,16 @@
 #include "HelperCommon.h"
 #include "BlockManager.h"
 #import "SCBlockDateUtilities.h"
-#import "SCBlockDateUtilities+HelperTools.h"
 #import "SCSettings.h"
 
-NSDictionary* getAppDefaultsDictionary() {
-    return @{@"BlockDuration": @15,
-             @"BlockStartedDate": [NSDate distantFuture],
-             @"BlockEndDate": [NSDate distantPast],
-             @"HostBlacklist": @[],
-//             @"EvaluateCommonSubdomains": @YES,
-//             @"IncludeLinkedDomains": @YES,
-             @"HighlightInvalidHosts": @YES,
-             @"VerifyInternetConnection": @YES,
-             @"TimerWindowFloats": @NO,
-             // @"BlockSoundShouldPlay": @NO,
-             // @"BlockSound": @5,
-             // @"ClearCaches": @YES,
-             @"BlockAsWhitelist": @NO,
-             @"BadgeApplicationIcon": @YES,
-             // @"AllowLocalNetworks": @YES,
-             @"MaxBlockLength": @1440,
-             @"BlockLengthInterval": @15,
-             @"WhitelistAlertSuppress": @NO,
-             @"GetStartedShown": @NO};
-}
-
-void registerDefaults(uid_t controllingUID) {
-	[NSUserDefaults resetStandardUserDefaults];
-	seteuid(controllingUID);
-	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-	[defaults addSuiteNamed: @"org.eyebeam.SelfControl"];
-	[defaults synchronize];
-	[defaults registerDefaults: getAppDefaultsDictionary()];
-	[defaults synchronize];
-	seteuid(0);
-}
-NSDictionary* getDefaultsDict(uid_t controllingUID) {
-	[NSUserDefaults resetStandardUserDefaults];
-	seteuid(controllingUID);
-	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-	[defaults addSuiteNamed: @"org.eyebeam.SelfControl"];
-	[defaults synchronize];
-
-	// in the 10.13 High Sierra public beta (as of build 17A291m) registering defaults needs to be done immediately
-	// before pulling the dictionary representation, or the default values won't be returned (we'll get nils instead and crash)
-	[defaults registerDefaults: getAppDefaultsDictionary()];
-
-	NSDictionary* dict = [defaults dictionaryRepresentation];
-	[NSUserDefaults resetStandardUserDefaults];
-	seteuid(0);
-	return dict;
-}
-void setDefaultsValue(NSString* prefName, id prefValue, uid_t controllingUID) {
-	[NSUserDefaults resetStandardUserDefaults];
-	seteuid(controllingUID);
-    NSLog(@"Setting defaults value %@ = %@ for UID %d", prefName, prefValue, controllingUID);
-	CFPreferencesSetAppValue((__bridge CFStringRef)prefName, (__bridge CFPropertyListRef)(prefValue), (__bridge CFStringRef)@"org.eyebeam.SelfControl");
-	CFPreferencesAppSynchronize((__bridge CFStringRef)@"org.eyebeam.SelfControl");
-	[NSUserDefaults resetStandardUserDefaults];
-	seteuid(0);
-}
-
 void addRulesToFirewall(uid_t controllingUID) {
-	// get value for EvaluateCommonSubdomains
-	NSDictionary* defaults = getDefaultsDict(controllingUID);
     SCSettings* settings = [SCSettings settingsForUser: controllingUID];
     BOOL shouldEvaluateCommonSubdomains = [[settings valueForKey: @"EvaluateCommonSubdomains"] boolValue];
 	BOOL allowLocalNetworks = [[settings valueForKey: @"AllowLocalNetworks"] boolValue];
 	BOOL includeLinkedDomains = [[settings valueForKey: @"IncludeLinkedDomains"] boolValue];
 
 	// get value for BlockAsWhitelist
-	BOOL blockAsWhitelist;
-	NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: SelfControlLegacyLockFilePath];
-	if(curDictionary == nil || curDictionary[@"BlockAsWhitelist"] == nil) {
-		blockAsWhitelist = [defaults[@"BlockAsWhitelist"] boolValue];
-	} else {
-		blockAsWhitelist = [curDictionary[@"BlockAsWhitelist"] boolValue];
-	}
+	BOOL blockAsWhitelist = [[settings valueForKey: @"BlockAsWhitelist"] boolValue];
 
 	BlockManager* blockManager = [[BlockManager alloc] initAsWhitelist: blockAsWhitelist allowLocal: allowLocalNetworks includeCommonSubdomains: shouldEvaluateCommonSubdomains includeLinkedDomains: includeLinkedDomains];
 
@@ -101,9 +34,9 @@ void removeRulesFromFirewall(uid_t controllingUID) {
 	BlockManager* blockManager = [[BlockManager alloc] init];
 	[blockManager clearBlock];
 
-	// We'll play the sound now rather than putting it in the "defaults block"
-	// a few lines ago, because it is important that the UI get updated (by
-	// the posted notification) before we sleep to play the sound.  Otherwise,
+	// We'll play the sound now rather than earlier, because
+	//  it is important that the UI get updated (by the posted
+	//  notification) before we sleep to play the sound.  Otherwise,
 	// the app seems unresponsive and slow.
     SCSettings* settings = [SCSettings settingsForUser: controllingUID];
     if([[settings valueForKey: @"BlockSoundShouldPlay"] boolValue]) {
@@ -232,7 +165,7 @@ void printStatus(int status) {
 }
 
 void removeBlock(uid_t controllingUID) {
-    [SCBlockDateUtilities removeBlockFromDefaultsForUID: controllingUID];
+    [SCBlockDateUtilities removeBlockFromSettingsForUID: controllingUID];
 	removeRulesFromFirewall(controllingUID);
 	if(![[NSFileManager defaultManager] removeItemAtPath: SelfControlLegacyLockFilePath error: nil] && [[NSFileManager defaultManager] fileExistsAtPath: SelfControlLegacyLockFilePath]) {
 		NSLog(@"ERROR: Could not remove SelfControl lock file.");

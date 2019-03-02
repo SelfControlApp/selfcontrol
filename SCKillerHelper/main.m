@@ -124,7 +124,7 @@ int main(int argc, char* argv[]) {
 			[log appendString: @"FAILED TO CLEAR BLOCK! Used [BlockManager forceClearBlock]\n"];
 		}
 
-		// clear BlockStartedDate (legacy date value) from defaults
+		// clear BlockStartedDate (legacy date value) from defaults in case they're on an old version that still uses it
 		seteuid(controllingUID);
 		task = [NSTask launchedTaskWithLaunchPath: @"/usr/bin/defaults"
 										arguments: @[@"delete",

@@ -98,7 +98,7 @@
 - (NSDictionary*)defaultSettingsDict {
     return @{
         @"BlockEndDate": [NSDate distantPast],
-        @"HostBlacklist": @[],
+        @"HostBlocklist": @[],
         @"EvaluateCommonSubdomains": @YES,
         @"IncludeLinkedDomains": @YES,
         @"BlockSoundShouldPlay": @NO,
@@ -106,6 +106,7 @@
         @"ClearCaches": @YES,
         @"BlockAsWhitelist": @NO,
         @"AllowLocalNetworks": @YES,
+        @"BlockIsRunning": @NO // tells us whether a block is actually running on the system (to the best of our knowledge)
     };
 }
 - (NSDictionary*)settingsDictionary {
@@ -114,6 +115,7 @@
         
         if (_settingsDictionary == nil) {
             _settingsDictionary = [[self defaultSettingsDict] mutableCopy];
+            [self migrateLegacySettings];
         }
         NSLog(@"initialized settingsDictionary with contents of %@ to %@", [self securedSettingsFilePath], _settingsDictionary);
     }
@@ -141,8 +143,24 @@
 - (void)setValue:(id)value forKey:(NSString*)key {
     [self.settingsDictionary setValue: value forKey: key];
 }
-- (id)getValueForKey:(NSString*)key {
+- (id)valueForKey:(NSString*)key {
+    NSLog(@"value for key %@ is %@", key, [self.settingsDictionary valueForKey: key]);
     return [self.settingsDictionary valueForKey: key];
+}
+
+// We might have "legacy" block settings hiding in one of two places:
+//  - a "lock file" at /etc/SelfControl.lock (aka SelfControlLegacyLockFilePath)
+//  - the defaults system
+// we should check for block settings in both of these places and move them to the new SCSettings system
+// (defaults continues to be used for some settings that only affect the UI and don't need to be read by helper tools)
+// NOTE: this method should only be called when SCSettings is uninitialized, since it will overwrite any existing settings
+// NOTE2: this method does NOT clear the settings from legacy locations, because that may break ongoing blocks being cleared
+//        by older versions of the helper tool. Insteads, we will clean out legacy locations from the helper when
+//        blocks are started or finished.
+- (void)migrateLegacySettings {
+    NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLegacyLockFilePath];
+    NSDictionary* defaultsDict = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
+    
 }
 
 @synthesize settingsDictionary = _settingsDictionary;

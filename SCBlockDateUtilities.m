@@ -7,14 +7,15 @@
 
 #import "SCBlockDateUtilities.h"
 #import "HelperCommon.h"
+#import "SCSettings.h"
 
 @implementation SCBlockDateUtilities
 
 
 // "enabled" means we have a start or end date set to a valid value (even if it's technically "finished" but hasn't been cleaned up yet)
-+ (BOOL) blockIsEnabledInDictionary:(NSDictionary *)defaultsDict {
-    NSDate* blockEndDate = [defaultsDict objectForKey: @"BlockEndDate"];
-    NSDate* blockStartedDate = [defaultsDict objectForKey:@"BlockStartedDate"];
++ (BOOL) blockIsEnabledInDictionary:(NSDictionary *)dict {
+    NSDate* blockEndDate = [dict objectForKey: @"BlockEndDate"];
+    NSDate* blockStartedDate = [dict objectForKey:@"BlockStartedDate"];
 
     // the block is enabled if one of BlockStartedDate or BlockEndDate exists and isn't equal to the default value
     if (
@@ -45,40 +46,45 @@
     return [SCBlockDateUtilities blockIsActiveInDictionary: defaults.dictionaryRepresentation];
 }
 
-+ (void) startBlockInDefaults:(NSUserDefaults*)defaults {
++ (void) startBlockInSettings:(SCSettings*)settings withBlockDuration:(NSTimeInterval)blockDuration {
     // sanity check duration, and convert it to seconds
-    NSTimeInterval duration = MAX([defaults floatForKey: @"BlockDuration"] * 60, 0);
+    // NSTimeInterval duration = MAX(blockDuration * 60, 0);
     
     // assume the block is starting now
-    NSDate* blockEndDate = [NSDate dateWithTimeIntervalSinceNow: duration];
+    NSDate* blockEndDate = [NSDate dateWithTimeIntervalSinceNow: blockDuration];
     
     // we always _set_ BlockEndDate, because BlockStartedDate is some legacy ish
-    [defaults setObject: blockEndDate forKey: @"BlockEndDate"];
-        
-    // in fact, let's take the opportunity to make sure BlockStartedDate is gone-zo
-    [defaults removeObjectForKey: @"BlockStartedDate"];
+    [settings setValue: blockEndDate forKey: @"BlockEndDate"];
     
-    [defaults synchronize];
+    // this is an important one to write out ASAP since it may be read/written in several places
+    [settings writeSettings];
 }
 
 
 + (void) removeBlockFromDefaults:(NSUserDefaults*)defaults; {
-    // remove both BlockEndDate and legacy BlockStartedDate, just in case an old version comes back and tries to readthat
+    // remove both BlockEndDate and legacy BlockStartedDate, just in case an old version comes back and tries to read that
     [defaults removeObjectForKey: @"BlockEndDate"];
     [defaults removeObjectForKey: @"BlockStartedDate"];
     
     [defaults synchronize];
 }
 
-+ (NSDate*) blockEndDateInDictionary:(NSDictionary *)defaultsDict {
++ (void) removeBlockFromSettingsForUID:(uid_t)uid {
+    SCSettings* settings = [SCSettings settingsForUser: uid];
+    // remove both BlockEndDate and legacy BlockStartedDate, just in case an old version comes back and tries to read that
+    NSLog(@"Setting BlockEndDate and BlockStartedDate to NULL for %d", uid);
+    [settings setValue: [NSDate dateWithTimeIntervalSince1970: 0] forKey: @"BlockEndDate"];
+}
+
++ (NSDate*) blockEndDateInDictionary:(NSDictionary *)dict {
     // if it's not enabled, it's always the distant past!
-    if (![SCBlockDateUtilities blockIsEnabledInDictionary: defaultsDict]) {
+    if (![SCBlockDateUtilities blockIsEnabledInDictionary: dict]) {
         return [NSDate distantPast];
     }
     
-    NSDate* startDate = [defaultsDict objectForKey: @"BlockStartedDate"];
-    NSDate* endDate = [defaultsDict objectForKey: @"BlockEndDate"];
-    NSTimeInterval duration = [[defaultsDict objectForKey: @"BlockDuration"] floatValue];
+    NSDate* startDate = [dict objectForKey: @"BlockStartedDate"];
+    NSDate* endDate = [dict objectForKey: @"BlockEndDate"];
+    NSTimeInterval duration = [[dict objectForKey: @"BlockDuration"] floatValue];
     
     // if we've got BlockEndDate set, this is easy - that's the value we're looking for
     if (endDate != nil && ![endDate isEqualToDate: [NSDate distantPast]]) {
@@ -88,11 +94,6 @@
         // so we must have the legacy start date, which we now need to convert to an end date
         return [startDate dateByAddingTimeInterval: (duration * 60)];
     }
-}
-
-+ (NSDate*) blockEndDateInDefaults:(NSUserDefaults*)defaults {
-    [defaults synchronize];
-    return [SCBlockDateUtilities blockEndDateInDictionary: defaults.dictionaryRepresentation];
 }
 
 @end

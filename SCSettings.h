@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SelfControlCommon.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -24,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)writeSettings;
 - (void)synchronizeSettings;
 - (void)setValue:(nullable id)value forKey:(NSString*)key;
-- (id)getValueForKey:(NSString*)key;
+- (id)valueForKey:(NSString*)key;
 
 @end
 

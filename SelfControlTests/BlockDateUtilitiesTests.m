@@ -7,7 +7,6 @@
 
 #import <XCTest/XCTest.h>
 #import "SCBlockDateUtilities.h"
-#import "SCBlockDateUtilities+HelperTools.h"
 
 @interface BlockDateUtilitiesTests : XCTestCase
 

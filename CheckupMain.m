@@ -9,6 +9,7 @@
 
 #include "CheckupMain.h"
 #import "SCBlockDateUtilities.h"
+#import "SCSettings.h"
 
 int main(int argc, char* argv[]) {
 	@autoreleasepool {
@@ -19,17 +20,15 @@ int main(int argc, char* argv[]) {
 			exit(EX_NOPERM);
 		}
 
-		registerDefaults(getuid());
-
 		NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: SelfControlLegacyLockFilePath];
 
 		if(![SCBlockDateUtilities blockIsEnabledInDictionary: curDictionary]) {
-			// The lock file seems to be broken.  Try defaults.
+			// The lock file seems to be broken.  Try settings.
 			NSLog(@"WARNING: Lock file unreadable or invalid");
-			curDictionary = getDefaultsDict(getuid());
+            curDictionary = [SCSettings settingsForUser: getuid()];
 
 			if(![SCBlockDateUtilities blockIsEnabledInDictionary: curDictionary]) {
-				// Defaults is broken too!  Let's get out of here!
+				// Settings are broken too!  Let's get out of here!
 				NSLog(@"WARNING: Checkup ran but no block found.  Attempting to remove block.");
 
 				// get rid of this block

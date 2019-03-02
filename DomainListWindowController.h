@@ -25,6 +25,7 @@
 #import "HostImporter.h"
 #import "ThunderbirdPreferenceParser.h"
 #import "SelfControlCommon.h"
+#import "SCSettings.h"
 
 // A subclass of NSWindowController created to manage the domain list (actually
 // host list, but domain list seems more understandable to inexperienced users
@@ -34,6 +35,7 @@
 	NSMutableArray* domainList_;
 	IBOutlet NSTableView* domainListTableView_;
 	NSUserDefaults* defaults_;
+    SCSettings* settings_;
 }
 
 // Called when the add button is clicked.  Adds a new empty string to the domain

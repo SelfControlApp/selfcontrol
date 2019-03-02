@@ -29,14 +29,15 @@
 	if(self = [super initWithWindowNibName:@"DomainList"]) {
 
 		defaults_ = [NSUserDefaults standardUserDefaults];
+        settings_ = [SCSettings currentUserSettings];
 
-		NSArray* curArray = [defaults_ arrayForKey: @"HostBlacklist"];
+		NSArray* curArray = [settings_ valueForKey: @"Blocklist"];
 		if(curArray == nil)
 			domainList_ = [NSMutableArray arrayWithCapacity: 10];
 		else
 			domainList_ = [curArray mutableCopy];
 
-		[defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
+		[settings_ setValue: domainList_ forKey: @"Blocklist"];
 	}
 
 	return self;
@@ -53,7 +54,7 @@
 - (IBAction)addDomain:(id)sender
 {
 	[domainList_ addObject:@""];
-	[defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
+	[settings_ setValue: domainList_ forKey: @"Blocklist"];
 	[domainListTableView_ reloadData];
 	NSIndexSet* rowIndex = [NSIndexSet indexSetWithIndex: [domainList_ count] - 1];
 	[domainListTableView_ selectRowIndexes: rowIndex
@@ -81,7 +82,7 @@
 		index = [selected indexGreaterThanIndex: index];
 	}
 
-	[defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
+	[settings_ setValue: domainList_ forKey: @"Blocklist"];
 	[domainListTableView_ reloadData];
 
 	[[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
@@ -138,7 +139,7 @@
 			}
 		}
 
-		[defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
+		[settings_ setValue: domainList_ forKey: @"Blocklist"];
 		[domainListTableView_ reloadData];
 
 		return;
@@ -217,7 +218,7 @@
 		domainList_[rowIndex] = str;
 	}
 
-	[defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
+	[settings_ setValue: domainList_ forKey: @"Blocklist"];
 	[aTableView reloadData];
 	[[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
 														object: self];
@@ -313,7 +314,7 @@
 		if(![domainList_ containsObject: arr[i]])
 			[domainList_ addObject: arr[i]];
 	}
-	[defaults_ setObject: domainList_ forKey: @"HostBlacklist"];
+	[settings_ setValue: domainList_ forKey: @"Blocklist"];
 	[domainListTableView_ reloadData];
 	[[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
 														object: self];

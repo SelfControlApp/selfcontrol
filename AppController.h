@@ -30,6 +30,7 @@
 #import <SystemConfiguration/SCNetwork.h>
 #import <unistd.h>
 #import "SelfControlCommon.h"
+#import "SCSettings.h"
 
 // The main controller for the SelfControl app, which includes several methods
 // to handle command flow and acts as delegate for the initial window.
@@ -44,6 +45,7 @@
 	IBOutlet TimerWindowController* timerWindowController_;
 	NSWindowController* preferencesWindowController_;
 	NSUserDefaults* defaults_;
+    SCSettings* settings_;
 	NSLock* refreshUILock_;
 	BOOL blockIsOn;
 	BOOL addingBlock;
