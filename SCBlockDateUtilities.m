@@ -27,10 +27,6 @@
         return NO;
     }
 }
-+ (BOOL) blockIsEnabledInDefaults:(NSUserDefaults*)defaults {
-    [defaults synchronize];
-    return [SCBlockDateUtilities blockIsEnabledInDictionary: defaults.dictionaryRepresentation];
-}
 
 // "active" means the block is enabled and end date has not yet arrived - the block *should* be running
 + (BOOL) blockIsActiveInDictionary:(NSDictionary *)defaultsDict {
@@ -41,14 +37,10 @@
         return NO;
     }
 }
-+ (BOOL) blockIsActiveInDefaults:(NSUserDefaults*)defaults {
-    [defaults synchronize];
-    return [SCBlockDateUtilities blockIsActiveInDictionary: defaults.dictionaryRepresentation];
-}
 
 + (void) startBlockInSettings:(SCSettings*)settings withBlockDuration:(NSTimeInterval)blockDuration {
-    // sanity check duration, and convert it to seconds
-    // NSTimeInterval duration = MAX(blockDuration * 60, 0);
+    // sanity check duration (must be above zero)
+    blockDuration = MAX(blockDuration, 0);
     
     // assume the block is starting now
     NSDate* blockEndDate = [NSDate dateWithTimeIntervalSinceNow: blockDuration];
@@ -61,19 +53,16 @@
 }
 
 
-+ (void) removeBlockFromDefaults:(NSUserDefaults*)defaults; {
++ (void) removeBlockFromSettings:(SCSettings*)settings {
     // remove both BlockEndDate and legacy BlockStartedDate, just in case an old version comes back and tries to read that
-    [defaults removeObjectForKey: @"BlockEndDate"];
-    [defaults removeObjectForKey: @"BlockStartedDate"];
-    
-    [defaults synchronize];
+    // TODO: will this work setting nil instead of [NSDate dateWithTimeIntervalSince1970: 0]?
+    [settings setValue: nil forKey: @"BlockEndDate"];
+    [settings writeSettings];
 }
 
 + (void) removeBlockFromSettingsForUID:(uid_t)uid {
     SCSettings* settings = [SCSettings settingsForUser: uid];
-    // remove both BlockEndDate and legacy BlockStartedDate, just in case an old version comes back and tries to read that
-    NSLog(@"Setting BlockEndDate and BlockStartedDate to NULL for %d", uid);
-    [settings setValue: [NSDate dateWithTimeIntervalSince1970: 0] forKey: @"BlockEndDate"];
+    [SCBlockDateUtilities removeBlockFromSettings: settings];
 }
 
 + (NSDate*) blockEndDateInDictionary:(NSDictionary *)dict {

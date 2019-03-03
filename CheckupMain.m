@@ -20,26 +20,22 @@ int main(int argc, char* argv[]) {
 			exit(EX_NOPERM);
 		}
 
-		NSDictionary* curDictionary = [NSDictionary dictionaryWithContentsOfFile: SelfControlLegacyLockFilePath];
+        SCSettings* settings = [SCSettings settingsForUser: getuid()];
+        
+        if(![SCBlockDateUtilities blockIsEnabledInDictionary: settings.settingsDictionary]) {
+            // something's, wrong, we shouldn't be run if there's no block
+            // so just try to remove one anyway, just in case
+            NSLog(@"WARNING: Checkup ran but no block found.  Attempting to remove block.");
 
-		if(![SCBlockDateUtilities blockIsEnabledInDictionary: curDictionary]) {
-			// The lock file seems to be broken.  Try settings.
-			NSLog(@"WARNING: Lock file unreadable or invalid");
-            curDictionary = [SCSettings settingsForUser: getuid()];
+            // get rid of this block
+            removeBlock(getuid());
 
-			if(![SCBlockDateUtilities blockIsEnabledInDictionary: curDictionary]) {
-				// Settings are broken too!  Let's get out of here!
-				NSLog(@"WARNING: Checkup ran but no block found.  Attempting to remove block.");
+            exit(EXIT_SUCCESS);
+        }
 
-				// get rid of this block
-				removeBlock(getuid());
-
-				exit(EXIT_SUCCESS);
-			}
-		}
-
-		if(![SCBlockDateUtilities blockIsActiveInDictionary: curDictionary]) {
+		if(![SCBlockDateUtilities blockIsActiveInDictionary: settings.settingsDictionary]) {
 			NSLog(@"INFO: Checkup helper ran, block expired, removing block.");
+            
 			removeBlock(getuid());
 			exit(EXIT_SUCCESS);
 		}

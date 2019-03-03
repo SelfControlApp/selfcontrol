@@ -24,7 +24,7 @@ void addRulesToFirewall(uid_t controllingUID) {
 	BlockManager* blockManager = [[BlockManager alloc] initAsWhitelist: blockAsWhitelist allowLocal: allowLocalNetworks includeCommonSubdomains: shouldEvaluateCommonSubdomains includeLinkedDomains: includeLinkedDomains];
 
 	[blockManager prepareToAddBlock];
-	[blockManager addBlockEntries: domainList];
+	[blockManager addBlockEntries: [settings valueForKey: @"Blocklist"]];
 	[blockManager finalizeBlock];
 
 }
@@ -167,10 +167,10 @@ void printStatus(int status) {
 void removeBlock(uid_t controllingUID) {
     [SCBlockDateUtilities removeBlockFromSettingsForUID: controllingUID];
 	removeRulesFromFirewall(controllingUID);
-	if(![[NSFileManager defaultManager] removeItemAtPath: SelfControlLegacyLockFilePath error: nil] && [[NSFileManager defaultManager] fileExistsAtPath: SelfControlLegacyLockFilePath]) {
-		NSLog(@"ERROR: Could not remove SelfControl lock file.");
-		printStatus(-218);
-	}
+    
+    // go ahead and remove any remaining legacy block info at the same time to avoid confusion
+    // (and migrate them to the new SCSettings system if not already migrated)
+    [[SCSettings settingsForUser: controllingUID] clearLegacySettings];
 
 	[[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
 																   object: nil];

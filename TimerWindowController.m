@@ -35,6 +35,8 @@
 
 - (TimerWindowController*) init {
 	if(self = [super init]) {
+        settings_ = [SCSettings currentUserSettings];
+        
 		// We need a block to prevent us from running multiple copies of the "Add to Block"
 		// sheet.
 		modifyBlockLock = [[NSLock alloc] init];
@@ -70,14 +72,7 @@
 	killBlockButton_.hidden = YES;
 	addToBlockButton_.hidden = NO;
 
-    // Try reading the block parameters from the lockfile first
-	NSDictionary* blockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLegacyLockFilePath];
-    // if we can't find a block in the lockfile, fall back to defaults
-	if(![SCBlockDateUtilities blockIsEnabledInDictionary: blockDict]) {
-        blockDict = defaults.dictionaryRepresentation;
-	}
-
-    blockEndingDate_ = [SCBlockDateUtilities blockEndDateInDictionary: blockDict];
+    blockEndingDate_ = [SCBlockDateUtilities blockEndDateInDictionary: settings_.settingsDictionary];
 
 	[self updateTimerDisplay: nil];
 
@@ -255,14 +250,7 @@
 }
 
 - (void) blockEndDateUpdated {
-    // Try reading the block parameters from the lockfile first
-    NSDictionary* blockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLegacyLockFilePath];
-    // if we can't find a block in the lockfile, fall back to defaults
-    if(![SCBlockDateUtilities blockIsEnabledInDictionary: blockDict]) {
-        blockDict = [NSUserDefaults standardUserDefaults].dictionaryRepresentation;
-    }
-
-    blockEndingDate_ = [SCBlockDateUtilities blockEndDateInDictionary: blockDict];
+    blockEndingDate_ = [SCBlockDateUtilities blockEndDateInDictionary: settings_.settingsDictionary];
     
     [self updateTimerDisplay: nil];
 }
@@ -333,6 +321,10 @@
 
 		return;
 	} else {
+        // Now that the current block is over, we can go ahead and remove the legacy block info
+        // and migrate them to the new SCSettings system
+        [[SCSettings currentUserSettings] clearLegacySettings];
+        
 		NSAlert* alert = [[NSAlert alloc] init];
 		[alert setMessageText: @"Success!"];
 		[alert setInformativeText:@"The block was cleared successfully.  You can find the log file, named SelfControl-Killer.log, in your Documents folder. If you're still having issues, please check out the SelfControl FAQ on GitHub."];

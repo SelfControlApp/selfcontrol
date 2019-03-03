@@ -135,7 +135,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 - (IBAction)addBlock:(id)sender {
 	[defaults_ synchronize];
-    if ([SCBlockDateUtilities blockIsActiveInDefaults: defaults_]) {
+    if ([self selfControlLaunchDaemonIsLoaded]) {
 		// This method shouldn't be getting called, a block is on so the Start button should be disabled.
 		NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
 										   code: -102
@@ -204,6 +204,10 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		}
 	} else { // block is off
 		if(blockWasOn) { // if we just switched states to off...
+            // Now that the current block is over, we can go ahead and remove the legacy block info
+            // and migrate them to the new SCSettings system
+            [[SCSettings currentUserSettings] clearLegacySettings];
+
 			[timerWindowController_ blockEnded];
 
 			// Makes sure the domain list will refresh when it comes back
@@ -346,18 +350,25 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (BOOL)selfControlLaunchDaemonIsLoaded {
-	// First we check the host file, and see if a block is in there
-	NSString* hostFileContents = [NSString stringWithContentsOfFile: @"/etc/hosts" encoding: NSUTF8StringEncoding error: NULL];
-	if(hostFileContents != nil && [hostFileContents rangeOfString: @"# BEGIN SELFCONTROL BLOCK"].location != NSNotFound) {
-		return YES;
-	}
+    // first we look for the answer in the SCSettings system
+    if ([SCBlockDateUtilities blockIsEnabledInDictionary: settings_.settingsDictionary]) {
+        return YES;
+    }
+    
+    // next we check the host file, and see if a block is in there
+    NSString* hostFileContents = [NSString stringWithContentsOfFile: @"/etc/hosts" encoding: NSUTF8StringEncoding error: NULL];
+    if(hostFileContents != nil && [hostFileContents rangeOfString: @"# BEGIN SELFCONTROL BLOCK"].location != NSNotFound) {
+        return YES;
+    }
 
+    // finally, we should check the legacy ways of storing a block (defaults and lockfile)
+    
 	[defaults_ synchronize];
-    if ([SCBlockDateUtilities blockIsEnabledInDefaults: defaults_]) {
+    if ([SCBlockDateUtilities blockIsEnabledInDictionary: defaults_.dictionaryRepresentation]) {
 		return YES;
 	}
 
-	// If there's no block in the hosts file, no block in the defaults, and no lock-file,
+	// If there's no block in the hosts file, SCSettings block in the defaults, and no lock-file,
 	// we'll assume we're clear of blocks.  Checking pf would be nice but usually requires
 	// root permissions, so it would be difficult to do here.
 	return [[NSFileManager defaultManager] fileExistsAtPath: SelfControlLegacyLockFilePath];
@@ -434,9 +445,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	[list addObject: host];
 	[settings_ setValue: list forKey: @"Blocklist"];
 
-	if(![SCBlockDateUtilities blockIsEnabledInDefaults: defaults_]) {
-		// This method shouldn't be getting called, a block is not on (block started
-		// is in the distantFuture) so the Start button should be disabled.
+	if(![self selfControlLaunchDaemonIsLoaded]) {
+		// This method shouldn't be getting called, a block is not on.
+		// so the Start button should be disabled.
 		// Maybe the UI didn't get properly refreshed, so try refreshing it again
 		// before we return.
 		[self refreshUserInterface];
@@ -495,9 +506,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
         return;
     
     // ensure block health before we try to change it
-    if(![SCBlockDateUtilities blockIsEnabledInDefaults: defaults_]) {
-        // This method shouldn't be getting called, a block is not on (block started
-        // is in the distantFuture) so the Start button should be disabled.
+    if(![self selfControlLaunchDaemonIsLoaded]) {
+        // This method shouldn't be getting called, a block is not on.
+        // so the Start button should be disabled.
         // Maybe the UI didn't get properly refreshed, so try refreshing it again
         // before we return.
         [self refreshUserInterface];
@@ -643,7 +654,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 			return;
 		}
 
-        [SCBlockDateUtilities startBlockInSettings: settings_ withDefaults: defaults_];
+        // for legacy reasons, BlockDuration is in minutes, so convert it to seconds before passing it through
+        NSTimeInterval blockDurationSecs = [[settings_ valueForKey: @"BlockDuration"] intValue] * 60;
+        [SCBlockDateUtilities startBlockInSettings: settings_ withBlockDuration: blockDurationSecs];
 
 		// We need to pass our UID to the helper tool.  It needs to know whose defaults
 		// it should reading in order to properly load the blacklist.
@@ -662,8 +675,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		if(status) {
 			NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", (int)status);
 
-			// reset defaults on failure
-            [SCBlockDateUtilities removeBlockFromDefaults: defaults_];
+			// reset settings on failure
+            [SCBlockDateUtilities removeBlockFromSettings: settings_];
 
 			NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
 											   code: status
@@ -687,8 +700,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		NSString* inDataString = [[NSString alloc] initWithData: inData encoding: NSUTF8StringEncoding];
 
 		if([inDataString isEqualToString: @""]) {
-            // reset defaults on failure
-            [SCBlockDateUtilities removeBlockFromDefaults: defaults_];
+            // reset settings on failure
+            [SCBlockDateUtilities removeBlockFromSettings: settings_];
 
 			NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
 											   code: -104
@@ -702,8 +715,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		int exitCode = [inDataString intValue];
 
 		if(exitCode) {
-            // reset defaults on failure
-            [SCBlockDateUtilities removeBlockFromDefaults: defaults_];
+            // reset settings on failure
+            [SCBlockDateUtilities removeBlockFromSettings: settings_];
 
 			NSError* err = [self errorFromHelperToolStatusCode: exitCode];
 
@@ -818,130 +831,25 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (void)extendBlockDuration:(NSDictionary*)options {
-    NSLock* lock = options[@"lock"];
     NSInteger minutesToAdd = [options[@"minutesToAdd"] integerValue];
-    if(![lock tryLock]) {
-        return;
-    }
-    
     minutesToAdd = MAX(minutesToAdd, 0); // make sure there's no funny business with negative minutes
     
     NSDate* oldBlockEndDate = [SCBlockDateUtilities blockEndDateInDictionary: settings_.settingsDictionary];
     NSDate* newBlockEndDate = [oldBlockEndDate dateByAddingTimeInterval: (minutesToAdd * 60)];
     
-    
     // Before we try to extend the block, make sure the block time didn't run out (or is about to run out) in the meantime
-    if (![SCBlockDateUtilities blockIsActiveInDefaults: defaults_] || [oldBlockEndDate timeIntervalSinceNow] < 3) {
+    if (![SCBlockDateUtilities blockIsActiveInDictionary: settings_.settingsDictionary] || [oldBlockEndDate timeIntervalSinceNow] < 1) {
         // we're done, or will be by the time we get to it! so just let it expire. they can restart it.
         return;
     }
 
     // set the new block end date
     [settings_ setValue: newBlockEndDate forKey: @"BlockEndDate"];
-
-    @autoreleasepool {
-        AuthorizationRef authorizationRef;
-        char* helperToolPath = [self selfControlHelperToolPathUTF8String];
-        long helperToolPathSize = strlen(helperToolPath);
-        AuthorizationItem right = {
-            kAuthorizationRightExecute,
-            helperToolPathSize,
-            helperToolPath,
-            0
-        };
-        AuthorizationRights authRights = {
-            1,
-            &right
-        };
-        AuthorizationFlags myFlags = kAuthorizationFlagDefaults |
-        kAuthorizationFlagExtendRights |
-        kAuthorizationFlagInteractionAllowed;
-        OSStatus status;
-        
-        status = AuthorizationCreate (&authRights,
-                                      kAuthorizationEmptyEnvironment,
-                                      myFlags,
-                                      &authorizationRef);
-        
-        if(status) {
-            NSLog(@"ERROR: Failed to authorize setting new block duration.");
-            
-            // Reverse the block duration change made before we fail
-            [settings_ setValue: oldBlockEndDate forKey: @"BlockEndDate"];
-            
-            [lock unlock];
-            
-            return;
-        }
-        
-        // We need to pass our UID to the helper tool.  It needs to know whose defaults
-        // it should read in order to properly load the blacklist.
-        char uidString[32];
-        snprintf(uidString, sizeof(uidString), "%d", getuid());
-        
-        FILE* commPipe;
-        
-        char* args[] = { uidString, "--rewrite-lock-file", NULL };
-        status = AuthorizationExecuteWithPrivileges(authorizationRef,
-                                                    helperToolPath,
-                                                    kAuthorizationFlagDefaults,
-                                                    args,
-                                                    &commPipe);
-        
-        if(status) {
-            NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", (int)status);
-            
-            NSError* err = [self errorFromHelperToolStatusCode: status];
-            
-            [NSApp performSelectorOnMainThread: @selector(presentError:)
-                                    withObject: err
-                                 waitUntilDone: YES];
-            
-            [lock unlock];
-            
-            return;
-        }
-        
-        
-        // Check to make sure the block is running again... AuthorizationExecuteWithPrivileges blocks on user input, so a lot of clock
-        // time might have passed since we checked earlier in this function.
-        // Block is finished if it's unset in the defaults, OR if it's only a second left until we'll do that (allow some buffer for the helper tool)
-        if (![SCBlockDateUtilities blockIsActiveInDictionary: settings_.settingsDictionary] || [oldBlockEndDate timeIntervalSinceNow] < 1) {
-            // returning here won't stop the helper tool from running, but it will stop us from showing an error message
-            // (because we're not listening)
-            return;
-        }
-        
-        NSFileHandle* helperToolHandle = [[NSFileHandle alloc] initWithFileDescriptor: fileno(commPipe) closeOnDealloc: YES];
-        
-        NSData* inData = [helperToolHandle readDataToEndOfFile];
-        NSString* inDataString = [[NSString alloc] initWithData: inData encoding: NSUTF8StringEncoding];
-        
-        if([inDataString isEqualToString: @""]) {
-            NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
-                                               code: -105
-                                           userInfo: @{NSLocalizedDescriptionKey: @"Error -105: The helper tool crashed.  This may cause unexpected errors."}];
-            
-            [NSApp performSelectorOnMainThread: @selector(presentError:)
-                                    withObject: err
-                                 waitUntilDone: YES];
-        }
-        
-        int exitCode = [inDataString intValue];
-        
-        if(exitCode) {
-            NSError* err = [self errorFromHelperToolStatusCode: exitCode];
-            
-            [NSApp performSelectorOnMainThread: @selector(presentError:)
-                                    withObject: err
-                                 waitUntilDone: YES];
-        }
-        
-        [timerWindowController_ performSelectorOnMainThread:@selector(blockEndDateUpdated)
-                                                 withObject: nil
-                                              waitUntilDone: YES];
-    }
-    [lock unlock];
+    
+    // let the timer know it needs to recalculate
+    [timerWindowController_ performSelectorOnMainThread:@selector(blockEndDateUpdated)
+                                             withObject: nil
+                                          waitUntilDone: YES];
 }
 
 - (IBAction)save:(id)sender {

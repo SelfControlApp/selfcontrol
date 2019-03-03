@@ -19,12 +19,9 @@
 
 // Main app functions taking NSUserDefaults and SCSettings
 
-+ (BOOL) blockIsEnabledInDefaults:(NSUserDefaults*)defaults;
-+ (BOOL) blockIsActiveInDefaults:(NSUserDefaults*)defaults;
-+ (void) startBlockInSettings:(SCSettings*)settings withDefaults:(NSUserDefaults*)defaults;
-+ (void) removeBlockFromDefaults:(NSUserDefaults*)defaults;
++ (void) startBlockInSettings:(SCSettings*)settings withBlockDuration:(NSTimeInterval)blockDuration;
++ (void) removeBlockFromSettings:(SCSettings*)settings;
 + (void) removeBlockFromSettingsForUID:(uid_t)uid;
-+ (NSDate*) blockEndDateInDefaults:(NSUserDefaults*)defaults;
 
 // Helper tool functions dealing with dictionaries and setDefaultsValue helper
 

@@ -10,6 +10,7 @@
 #import <Cocoa/Cocoa.h>
 #import <unistd.h>
 #import "BlockManager.h"
+#import "SCSettings.h"
 
 #define LOG_FILE @"~/Documents/SelfControl-Killer.log"
 
@@ -190,6 +191,11 @@ int main(int argc, char* argv[]) {
 				}
 			}
 		}
+        
+        // Now that the current block is over, we can go ahead and remove the legacy block info
+        // and migrate them to the new SCSettings system
+        [[SCSettings currentUserSettings] clearLegacySettings];
+        [log appendString: @"\nMigrating settings to new system...\n"];
 
 		[log appendString: @"\n===SelfControl-Killer complete!==="];
 

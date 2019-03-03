@@ -30,11 +30,6 @@
 #import "HostFileBlocker.h"
 #import "SelfControlCommon.h"
 
-// These don't comply with the "end instance variables with an underscore" rule
-// because they aren't instance variables.  Note this file is, although in
-// Objective-C, not a class.  It contains only functions.
-NSArray* domainList;
-
 // Reads the domain block list from the settings for SelfControl, and adds deny
 // rules for all of the IPs (or the A DNS record IPS for doamin names) to the
 // ipfw firewall.
@@ -55,6 +50,6 @@ void clearCachesIfRequested(uid_t controllingUID);
 // Prints out the given status code to stdout using printf
 void printStatus(int status);
 
-// Removes block via settings, removing the lock file, host file rules and ipfw
-// rules, unloading the org.eyebeam.SelfControl item, and deleting user caches if requested.
+// Removes block via settings, host file rules and ipfw rules, unloading the
+// org.eyebeam.SelfControl item, deleting user caches if requested, and migrating legacy settings.
 void removeBlock(uid_t controllingUID);

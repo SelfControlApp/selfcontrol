@@ -156,7 +156,7 @@
 // (defaults continues to be used for some settings that only affect the UI and don't need to be read by helper tools)
 // NOTE: this method should only be called when SCSettings is uninitialized, since it will overwrite any existing settings
 // NOTE2: this method does NOT clear the settings from legacy locations, because that may break ongoing blocks being cleared
-//        by older versions of the helper tool. Insteads, we will clean out legacy locations from the helper when
+//        by older versions of the helper tool. Instead, we will clean out legacy locations from the helper when
 //        blocks are started or finished.
 - (void)migrateLegacySettings {
     NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLegacyLockFilePath];
@@ -179,7 +179,7 @@
         [self setValue: userDefaultsDict[@"HostBlacklist"] forKey: @"Blocklist"];
     }
 
-    // BlockStartedDate and BlockDuration were migrated to a simpler BlockEndDate property
+    // BlockStartedDate was migrated to a simpler BlockEndDate property (which doesn't require BlockDuration to function)
     if ([SCBlockDateUtilities blockIsEnabledInDictionary: lockDict]) {
         [self setValue: [SCBlockDateUtilities blockEndDateInDictionary: lockDict] forKey: @"BlockEndDate"];
     } else if ([SCBlockDateUtilities blockIsEnabledInDictionary: userDefaultsDict]) {
@@ -190,8 +190,35 @@
     [self writeSettings];
 }
 
-+ (void)clearLegacySettings {
-    
+- (void)clearLegacySettings {
+    // first things first, access the settings dictionary to make sure any necessary migration already happened
+    // TODO: make this less terrible (making it reliant on a side effect kinda sucks)
+    [SCSettings currentUserSettings].settingsDictionary;
+
+    NSError* err;
+
+    // no more need for the old lock file!
+    if(![[NSFileManager defaultManager] removeItemAtPath: SelfControlLegacyLockFilePath error: &err] && [[NSFileManager defaultManager] fileExistsAtPath: SelfControlLegacyLockFilePath]) {
+        NSLog(@"WARNING: Could not remove legacy SelfControl lock file because of error: %@", err);
+    }
+
+    // clear keys out of user defaults which are now stored in SCSettings
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    NSArray* keysToClear = @[
+                             @"BlockStartedDate",
+                             @"BlockEndDate",
+                             @"HostBlacklist",
+                             @"EvaluateCommonSubdomains",
+                             @"IncludeLinkedDomains",
+                             @"BlockSoundShouldPlay",
+                             @"BlockSound",
+                             @"ClearCaches",
+                             @"BlockAsWhitelist",
+                             @"AllowLocalNetworks"
+                             ];
+    for (NSString* key in keysToClear) {
+        [userDefaults removeObjectForKey: key];
+    }
 }
 
 @synthesize settingsDictionary = _settingsDictionary;
