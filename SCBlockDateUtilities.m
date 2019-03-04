@@ -49,7 +49,7 @@
     [settings setValue: blockEndDate forKey: @"BlockEndDate"];
     
     // this is an important one to write out ASAP since it may be read/written in several places
-    [settings writeSettings];
+    [settings synchronizeSettings];
 }
 
 
@@ -57,7 +57,7 @@
     // remove both BlockEndDate and legacy BlockStartedDate, just in case an old version comes back and tries to read that
     // TODO: will this work setting nil instead of [NSDate dateWithTimeIntervalSince1970: 0]?
     [settings setValue: nil forKey: @"BlockEndDate"];
-    [settings writeSettings];
+    [settings synchronizeSettings];
 }
 
 + (void) removeBlockFromSettingsForUID:(uid_t)uid {

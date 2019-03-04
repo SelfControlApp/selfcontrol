@@ -28,6 +28,8 @@
 		CB0385E119D77051004614B6 /* PreferencesAdvancedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB0385DD19D77051004614B6 /* PreferencesAdvancedViewController.xib */; };
 		CB0385E219D77051004614B6 /* PreferencesGeneralViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB0385DF19D77051004614B6 /* PreferencesGeneralViewController.xib */; };
 		CB0EEF7820FE49030024D27B /* BlockDateUtilitiesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB0EEF7720FE49020024D27B /* BlockDateUtilitiesTests.m */; };
+		CB114283222CCF19004B7868 /* SCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF3B573217BADD7006D5F52 /* SCSettings.m */; };
+		CB114284222CD4F0004B7868 /* SCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF3B573217BADD7006D5F52 /* SCSettings.m */; };
 		CB1E7A6E0F9AEA9B00D158BC /* ERRORS in Resources */ = {isa = PBXBuildFile; fileRef = CB1E7A6D0F9AEA9B00D158BC /* ERRORS */; };
 		CB1ED4480F56686400EFECEE /* org.eyebeam.SelfControl in Copy Helper Tools */ = {isa = PBXBuildFile; fileRef = CBA2AFD20F39EC12005AFEBE /* org.eyebeam.SelfControl */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		CB249FED19D782230087BBB6 /* SelfControlIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = CB249FEC19D782230087BBB6 /* SelfControlIcon.icns */; };
@@ -38,7 +40,6 @@
 		CB25806816C237F10059C99A /* NSString+IPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806516C237F10059C99A /* NSString+IPAddress.m */; };
 		CB32D2A921902CB300B8CD68 /* SCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF3B573217BADD7006D5F52 /* SCSettings.m */; };
 		CB32D2AA21902CB600B8CD68 /* SCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF3B573217BADD7006D5F52 /* SCSettings.m */; };
-		CB32D2AB21902CB700B8CD68 /* SCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF3B573217BADD7006D5F52 /* SCSettings.m */; };
 		CB32D2AC21902CF800B8CD68 /* SCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF3B573217BADD7006D5F52 /* SCSettings.m */; };
 		CB32D2AE21902D9D00B8CD68 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB32D2AD21902D9D00B8CD68 /* IOKit.framework */; };
 		CB32D2AF21902DA500B8CD68 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB32D2AD21902D9D00B8CD68 /* IOKit.framework */; };
@@ -1029,6 +1030,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB114284222CD4F0004B7868 /* SCSettings.m in Sources */,
 				CB0EEF7820FE49030024D27B /* BlockDateUtilitiesTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1071,7 +1073,7 @@
 				CB9C812619CFBB5E00CDCAE1 /* BlockManager.m in Sources */,
 				CB9C812519CFBB5500CDCAE1 /* HelperCommon.m in Sources */,
 				CB9C812419CFBB4E00CDCAE1 /* HostFileBlocker.m in Sources */,
-				CB32D2AB21902CB700B8CD68 /* SCSettings.m in Sources */,
+				CB114283222CCF19004B7868 /* SCSettings.m in Sources */,
 				CB9C812319CFBB4400CDCAE1 /* LaunchctlHelper.m in Sources */,
 				CB9C812219CFBB3800CDCAE1 /* PacketFilter.m in Sources */,
 				CBB1731B20F05C09007FCAE9 /* SCBlockDateUtilities.m in Sources */,

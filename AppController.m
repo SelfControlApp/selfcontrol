@@ -346,7 +346,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (void)applicationWillTerminate:(NSNotification *)notification {
-    [settings_ writeSettings];
+    [settings_ synchronizeSettings];
 }
 
 - (BOOL)selfControlLaunchDaemonIsLoaded {

@@ -11,6 +11,17 @@
 #include <pwd.h>
 #import "SCBlockDateUtilities.h"
 
+float const SYNC_INTERVAL_SECS = 30;
+float const SYNC_LEEWAY_SECS = 30;
+
+@interface SCSettings ()
+
+// Private vars
+@property NSDate* lastSynchronizedWithDisk;
+@property dispatch_source_t syncTimer;
+
+@end
+
 @implementation SCSettings
 
 /* TODO: move these two functions to a utility class */
@@ -107,23 +118,42 @@
         @"ClearCaches": @YES,
         @"BlockAsWhitelist": @NO,
         @"AllowLocalNetworks": @YES,
-        @"BlockIsRunning": @NO // tells us whether a block is actually running on the system (to the best of our knowledge)
+        @"BlockIsRunning": @NO, // tells us whether a block is actually running on the system (to the best of our knowledge)
+        
+        @"LastSettingsUpdate": [NSDate distantPast] // special value that keeps track of when we last updated our settings
     };
 }
 - (NSDictionary*)settingsDictionary {
     if (_settingsDictionary == nil) {
         _settingsDictionary = [NSMutableDictionary dictionaryWithContentsOfFile: [self securedSettingsFilePath]];
         
+        // if we don't have a settings dictionary on disk yet,
+        // set it up with the default values (and migrate legacy settings also)
         if (_settingsDictionary == nil) {
             _settingsDictionary = [[self defaultSettingsDict] mutableCopy];
             [self migrateLegacySettings];
         }
+
+        [self startSyncTimer];
+        
         NSLog(@"initialized settingsDictionary with contents of %@ to %@", [self securedSettingsFilePath], _settingsDictionary);
     }
     return _settingsDictionary;
 }
 - (void)reloadSettings {
-    _settingsDictionary = [NSDictionary dictionaryWithContentsOfFile: [self securedSettingsFilePath]];
+    NSDictionary* settingsFromDisk = [NSDictionary dictionaryWithContentsOfFile: [self securedSettingsFilePath]];
+    
+    NSDate* diskSettingsLastUpdated = settingsFromDisk[@"LastSettingsUpdate"];
+    NSDate* memorySettingsLastUpdated = [self valueForKey: @"LastSettingsUpdate"];
+
+    if (diskSettingsLastUpdated == nil) diskSettingsLastUpdated = [NSDate distantPast];
+    if (memorySettingsLastUpdated == nil) memorySettingsLastUpdated = [NSDate distantPast];
+    
+    if ([diskSettingsLastUpdated timeIntervalSinceDate: memorySettingsLastUpdated] > 0) {
+        _settingsDictionary = settingsFromDisk;
+        self.lastSynchronizedWithDisk = [NSDate date];
+        NSLog(@"Newer SCSettings found on disk (updated %@ versus %@, updating...", diskSettingsLastUpdated, memorySettingsLastUpdated);
+    }
 }
 - (void)writeSettings {
     NSString* serializationErrString;
@@ -134,15 +164,31 @@
         NSLog(@"NSPropertyListSerialization error: %@", serializationErrString);
         return;
     }
+    
     NSLog(@"writing %@ to %@", plistData, self.securedSettingsFilePath);
-    [plistData writeToFile: [self securedSettingsFilePath]
+    BOOL writeSuccessful = [plistData writeToFile: [self securedSettingsFilePath]
                 atomically: YES];
+    
+    if (writeSuccessful) {
+        self.lastSynchronizedWithDisk = [NSDate date];
+    }
 }
 - (void)synchronizeSettings {
-    // read and write and combine?
+    NSLog(@"Synchronizing settings at %@", [NSDate date]);
+    [self reloadSettings];
+    
+    NSDate* lastSettingsUpdate = [self valueForKey: @"LastSettingsUpdate"];
+    if ([lastSettingsUpdate timeIntervalSinceDate: self.lastSynchronizedWithDisk] > 0) {
+        NSLog(@" --> Writing settings to disk (haven't been written since %@)", self.lastSynchronizedWithDisk);
+        [self writeSettings];
+    }
 }
+
 - (void)setValue:(id)value forKey:(NSString*)key {
     [self.settingsDictionary setValue: value forKey: key];
+    
+    // record the update
+    [self.settingsDictionary setValue: [NSDate date] forKey: @"LastSettingsUpdate"];
 }
 - (id)valueForKey:(NSString*)key {
     NSLog(@"value for key %@ is %@", key, [self.settingsDictionary valueForKey: key]);
@@ -221,6 +267,29 @@
     }
 }
 
-@synthesize settingsDictionary = _settingsDictionary;
+- (void)startSyncTimer {
+    // set up a timer so values get synchronized to disk on a regular basis
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    self.syncTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+    if (self.syncTimer) {
+        dispatch_source_set_timer(self.syncTimer, dispatch_time(DISPATCH_TIME_NOW, SYNC_INTERVAL_SECS * NSEC_PER_SEC), SYNC_INTERVAL_SECS * NSEC_PER_SEC, SYNC_LEEWAY_SECS * NSEC_PER_SEC);
+        dispatch_source_set_event_handler(self.syncTimer, ^{
+            [self synchronizeSettings];
+        });
+        dispatch_resume(self.syncTimer);
+    }
+}
+- (void)cancelSyncTimer {
+    if (self.syncTimer) {
+        dispatch_source_cancel(self.syncTimer);
+        self.syncTimer = nil;
+    }
+}
+
+- (void)dealloc {
+    [self cancelSyncTimer];
+}
+
+@synthesize settingsDictionary = _settingsDictionary, lastSynchronizedWithDisk;
 
 @end
