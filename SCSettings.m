@@ -90,6 +90,12 @@ float const SYNC_LEEWAY_SECS = 30;
     if (self = [super init]) {
         _userId = userId;
         _settingsDictionary = nil;
+        
+        [[NSDistributedNotificationCenter defaultCenter] addObserver: self
+                                                            selector: @selector(onSettingChanged:)
+                                                                name: @"org.eyebeam.SelfControl.SCSettingsValueChanged"
+                                                              object: nil
+                                                  suspensionBehavior: NSNotificationSuspensionBehaviorDeliverImmediately];
     }
     return self;
 }
@@ -125,8 +131,10 @@ float const SYNC_LEEWAY_SECS = 30;
 }
 - (NSDictionary*)settingsDictionary {
     if (_settingsDictionary == nil) {
-        _settingsDictionary = [NSMutableDictionary dictionaryWithContentsOfFile: [self securedSettingsFilePath]];
-        
+        @synchronized (self) {
+            _settingsDictionary = [NSMutableDictionary dictionaryWithContentsOfFile: [self securedSettingsFilePath]];
+        }
+            
         // if we don't have a settings dictionary on disk yet,
         // set it up with the default values (and migrate legacy settings also)
         if (_settingsDictionary == nil) {
@@ -140,37 +148,50 @@ float const SYNC_LEEWAY_SECS = 30;
     }
     return _settingsDictionary;
 }
-- (void)reloadSettings {
-    NSDictionary* settingsFromDisk = [NSDictionary dictionaryWithContentsOfFile: [self securedSettingsFilePath]];
-    
-    NSDate* diskSettingsLastUpdated = settingsFromDisk[@"LastSettingsUpdate"];
-    NSDate* memorySettingsLastUpdated = [self valueForKey: @"LastSettingsUpdate"];
 
-    if (diskSettingsLastUpdated == nil) diskSettingsLastUpdated = [NSDate distantPast];
-    if (memorySettingsLastUpdated == nil) memorySettingsLastUpdated = [NSDate distantPast];
-    
-    if ([diskSettingsLastUpdated timeIntervalSinceDate: memorySettingsLastUpdated] > 0) {
-        _settingsDictionary = settingsFromDisk;
-        self.lastSynchronizedWithDisk = [NSDate date];
-        NSLog(@"Newer SCSettings found on disk (updated %@ versus %@, updating...", diskSettingsLastUpdated, memorySettingsLastUpdated);
+// both reloadSettings and writeSettings are synchronized with the same object, so
+// at any given time we are running a maximum of one of these methods, on one thread.
+// we don't want to be reading the file on one thread and writing out two different versions
+// on two other threads
+
+- (void)reloadSettings {
+    @synchronized (self) {
+        NSDictionary* settingsFromDisk = [NSDictionary dictionaryWithContentsOfFile: [self securedSettingsFilePath]];
+        
+        NSDate* diskSettingsLastUpdated = settingsFromDisk[@"LastSettingsUpdate"];
+        NSDate* memorySettingsLastUpdated = [self valueForKey: @"LastSettingsUpdate"];
+        
+        if (diskSettingsLastUpdated == nil) diskSettingsLastUpdated = [NSDate distantPast];
+        if (memorySettingsLastUpdated == nil) memorySettingsLastUpdated = [NSDate distantPast];
+        
+        if ([diskSettingsLastUpdated timeIntervalSinceDate: memorySettingsLastUpdated] > 0) {
+            _settingsDictionary = settingsFromDisk;
+            self.lastSynchronizedWithDisk = [NSDate date];
+            NSLog(@"Newer SCSettings found on disk (updated %@ versus %@, updating...", diskSettingsLastUpdated, memorySettingsLastUpdated);
+        }
     }
 }
 - (void)writeSettings {
-    NSString* serializationErrString;
-    NSData* plistData = [NSPropertyListSerialization dataFromPropertyList: self.settingsDictionary
-                                                                   format: NSPropertyListBinaryFormat_v1_0
-                                                         errorDescription: &serializationErrString];
-    if (plistData == nil) {
-        NSLog(@"NSPropertyListSerialization error: %@", serializationErrString);
-        return;
-    }
-    
-    NSLog(@"writing %@ to %@", plistData, self.securedSettingsFilePath);
-    BOOL writeSuccessful = [plistData writeToFile: [self securedSettingsFilePath]
-                atomically: YES];
-    
-    if (writeSuccessful) {
-        self.lastSynchronizedWithDisk = [NSDate date];
+    @synchronized (self) {
+        NSString* serializationErrString;
+        NSData* plistData = [NSPropertyListSerialization dataFromPropertyList: self.settingsDictionary
+                                                                       format: NSPropertyListBinaryFormat_v1_0
+                                                             errorDescription: &serializationErrString];
+        if (plistData == nil) {
+            NSLog(@"NSPropertyListSerialization error: %@", serializationErrString);
+            return;
+        }
+        
+        // don't spend time on the main thread writing out files - it's OK for this to happen without blocking other things
+        dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSLog(@"writing %@ to %@", plistData, self.securedSettingsFilePath);
+            BOOL writeSuccessful = [plistData writeToFile: [self securedSettingsFilePath]
+                                               atomically: YES];
+            
+            if (writeSuccessful) {
+                self.lastSynchronizedWithDisk = [NSDate date];
+            }
+        });
     }
 }
 - (void)synchronizeSettings {
@@ -185,10 +206,24 @@ float const SYNC_LEEWAY_SECS = 30;
 }
 
 - (void)setValue:(id)value forKey:(NSString*)key {
-    [self.settingsDictionary setValue: value forKey: key];
-    
-    // record the update
-    [self.settingsDictionary setValue: [NSDate date] forKey: @"LastSettingsUpdate"];
+    // TODO: locking everything on self is kinda inefficient/unnecessary
+    @synchronized (self) {
+        [self.settingsDictionary setValue: value forKey: key];
+        
+        // record the update
+        [self.settingsDictionary setValue: [NSDate date] forKey: @"LastSettingsUpdate"];
+        
+        NSLog(@"setting value (%@ = %@), self.description is %@", key, value, self.description);
+        // notify other instances (presumably in other processes)
+        [[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"org.eyebeam.SelfControl.SCSettingsValueChanged"
+                                                                       object: self.description
+                                                                     userInfo: @{
+                                                                                 @"key": key,
+                                                                                 @"value": value,
+                                                                                 @"date": [NSDate date]
+                                                                                 }
+                                                           deliverImmediately: YES];
+    }
 }
 - (id)valueForKey:(NSString*)key {
     NSLog(@"value for key %@ is %@", key, [self.settingsDictionary valueForKey: key]);
@@ -284,6 +319,31 @@ float const SYNC_LEEWAY_SECS = 30;
         dispatch_source_cancel(self.syncTimer);
         self.syncTimer = nil;
     }
+}
+
+- (void)onSettingChanged:(NSNotification*)note {
+    if (note.object == self) {
+        // we don't need to listen to our own notifications
+        return;
+    }
+    
+    if (note.userInfo[@"key"] == nil) {
+        // something's wrong - we don't have a key to set
+        return;
+    }
+    
+    // if this change happened before our latest update, it's kinda unclear what the end state should be
+    // so ignore it and just queue up a sync instead
+    NSDate* noteSettingUpdated = note.userInfo[@"date"];
+    NSDate* ourSettingsLastUpdated = [self valueForKey: @"LastSettingsUpdate"];
+    if ([noteSettingUpdated timeIntervalSinceDate: ourSettingsLastUpdated] <= 0) {
+        NSLog(@"Ignoring setting change notification as %@ is older than %@", noteSettingUpdated, ourSettingsLastUpdated);
+        [self synchronizeSettings];
+        return;
+    }
+    
+    // mirror the change on our own instance
+    [self setValue: note.userInfo[@"value"] forKey: note.userInfo[@"key"]];
 }
 
 - (void)dealloc {
