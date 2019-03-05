@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SCSettings : NSObject
 
 @property (readonly) uid_t userId;
-@property (readonly) NSDictionary* settingsDictionary;
+@property (readonly) NSDictionary* dictionaryRepresentation;
 
 + (instancetype)currentUserSettings;
 + (instancetype)settingsForUser:(uid_t)uid;

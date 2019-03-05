@@ -20,7 +20,7 @@
 }
 
 - (NSDictionary*)securedSettingsDict {
-    return [[SCSettings currentUserSettings] settingsDictionary];
+    return [SCSettings currentUserSettings].dictionaryRepresentation;
 }
 
 #pragma mark MASPreferencesViewController

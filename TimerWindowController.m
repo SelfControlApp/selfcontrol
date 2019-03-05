@@ -72,7 +72,7 @@
 	killBlockButton_.hidden = YES;
 	addToBlockButton_.hidden = NO;
 
-    blockEndingDate_ = [SCBlockDateUtilities blockEndDateInDictionary: settings_.settingsDictionary];
+    blockEndingDate_ = [SCBlockDateUtilities blockEndDateInDictionary: settings_.dictionaryRepresentation];
 
 	[self updateTimerDisplay: nil];
 
@@ -250,7 +250,7 @@
 }
 
 - (void) blockEndDateUpdated {
-    blockEndingDate_ = [SCBlockDateUtilities blockEndDateInDictionary: settings_.settingsDictionary];
+    blockEndingDate_ = [SCBlockDateUtilities blockEndDateInDictionary: settings_.dictionaryRepresentation];
     
     [self updateTimerDisplay: nil];
 }
@@ -301,6 +301,9 @@
 		NSLog(@"ERROR: Failed to authorize block kill.");
 		return;
 	}
+    
+    // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
+    [settings_ synchronizeSettings];
 
 	char uidString[10];
 	snprintf(uidString, sizeof(uidString), "%d", getuid());

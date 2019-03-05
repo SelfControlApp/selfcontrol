@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
 
         SCSettings* settings = [SCSettings settingsForUser: getuid()];
         
-        if(![SCBlockDateUtilities blockIsEnabledInDictionary: settings.settingsDictionary]) {
+        if(![SCBlockDateUtilities blockIsEnabledInDictionary: settings.dictionaryRepresentation]) {
             // something's, wrong, we shouldn't be run if there's no block
             // so just try to remove one anyway, just in case
             NSLog(@"WARNING: Checkup ran but no block found.  Attempting to remove block.");
@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
             exit(EXIT_SUCCESS);
         }
 
-		if(![SCBlockDateUtilities blockIsActiveInDictionary: settings.settingsDictionary]) {
+		if(![SCBlockDateUtilities blockIsActiveInDictionary: settings.dictionaryRepresentation]) {
 			NSLog(@"INFO: Checkup helper ran, block expired, removing block.");
             
 			removeBlock(getuid());

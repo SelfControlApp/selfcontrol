@@ -171,6 +171,9 @@ void removeBlock(uid_t controllingUID) {
     // go ahead and remove any remaining legacy block info at the same time to avoid confusion
     // (and migrate them to the new SCSettings system if not already migrated)
     [[SCSettings settingsForUser: controllingUID] clearLegacySettings];
+    
+    // always synchronize settings ASAP after removing a block to let everybody else know
+    [[SCSettings settingsForUser: controllingUID] synchronizeSettings];
 
 	[[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
 																   object: nil];

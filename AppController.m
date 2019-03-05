@@ -351,7 +351,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 - (BOOL)selfControlLaunchDaemonIsLoaded {
     // first we look for the answer in the SCSettings system
-    if ([SCBlockDateUtilities blockIsEnabledInDictionary: settings_.settingsDictionary]) {
+    if ([SCBlockDateUtilities blockIsEnabledInDictionary: settings_.dictionaryRepresentation]) {
         return YES;
     }
     
@@ -657,6 +657,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
         // for legacy reasons, BlockDuration is in minutes, so convert it to seconds before passing it through
         NSTimeInterval blockDurationSecs = [[settings_ valueForKey: @"BlockDuration"] intValue] * 60;
         [SCBlockDateUtilities startBlockInSettings: settings_ withBlockDuration: blockDurationSecs];
+        
+        // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
+        [settings_ synchronizeSettings];
 
 		// We need to pass our UID to the helper tool.  It needs to know whose defaults
 		// it should reading in order to properly load the blacklist.
@@ -675,8 +678,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		if(status) {
 			NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", (int)status);
 
-			// reset settings on failure
+            // reset settings on failure, and record that on disk ASAP
             [SCBlockDateUtilities removeBlockFromSettings: settings_];
+            [settings_ synchronizeSettings];
 
 			NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
 											   code: status
@@ -700,8 +704,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		NSString* inDataString = [[NSString alloc] initWithData: inData encoding: NSUTF8StringEncoding];
 
 		if([inDataString isEqualToString: @""]) {
-            // reset settings on failure
+            // reset settings on failure, and record that on disk ASAP
             [SCBlockDateUtilities removeBlockFromSettings: settings_];
+            [settings_ synchronizeSettings];
 
 			NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
 											   code: -104
@@ -715,8 +720,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		int exitCode = [inDataString intValue];
 
 		if(exitCode) {
-            // reset settings on failure
+            // reset settings on failure, and record that on disk ASAP
             [SCBlockDateUtilities removeBlockFromSettings: settings_];
+            [settings_ synchronizeSettings];
 
 			NSError* err = [self errorFromHelperToolStatusCode: exitCode];
 
@@ -771,6 +777,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 			return;
 		}
+        
+        // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
+        [settings_ synchronizeSettings];
 
 		// We need to pass our UID to the helper tool.  It needs to know whose defaults
 		// it should read in order to properly load the blacklist.
@@ -834,17 +843,20 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     NSInteger minutesToAdd = [options[@"minutesToAdd"] integerValue];
     minutesToAdd = MAX(minutesToAdd, 0); // make sure there's no funny business with negative minutes
     
-    NSDate* oldBlockEndDate = [SCBlockDateUtilities blockEndDateInDictionary: settings_.settingsDictionary];
+    NSDate* oldBlockEndDate = [SCBlockDateUtilities blockEndDateInDictionary: settings_.dictionaryRepresentation];
     NSDate* newBlockEndDate = [oldBlockEndDate dateByAddingTimeInterval: (minutesToAdd * 60)];
     
     // Before we try to extend the block, make sure the block time didn't run out (or is about to run out) in the meantime
-    if (![SCBlockDateUtilities blockIsActiveInDictionary: settings_.settingsDictionary] || [oldBlockEndDate timeIntervalSinceNow] < 1) {
+    if (![SCBlockDateUtilities blockIsActiveInDictionary: settings_.dictionaryRepresentation] || [oldBlockEndDate timeIntervalSinceNow] < 1) {
         // we're done, or will be by the time we get to it! so just let it expire. they can restart it.
         return;
     }
 
     // set the new block end date
     [settings_ setValue: newBlockEndDate forKey: @"BlockEndDate"];
+    
+    // synchronize it to disk to the helper tool knows immediately
+    [settings_ synchronizeSettings];
     
     // let the timer know it needs to recalculate
     [timerWindowController_ performSelectorOnMainThread:@selector(blockEndDateUpdated)

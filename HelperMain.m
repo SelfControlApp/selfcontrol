@@ -167,7 +167,7 @@ int main(int argc, char* argv[]) {
             // (and could potentially confuse things)
             [settings clearLegacySettings];
             
-			if([[settings valueForKey: @"Blocklist"] count] <= 0 || ![SCBlockDateUtilities blockIsEnabledInDictionary: settings.settingsDictionary]) {
+			if([[settings valueForKey: @"Blocklist"] count] <= 0 || ![SCBlockDateUtilities blockIsEnabledInDictionary: settings.dictionaryRepresentation]) {
 				NSLog(@"ERROR: Blocklist is empty, or there was an error transferring block information.");
 				printStatus(-210);
 				exit(EX_CONFIG);
@@ -198,7 +198,7 @@ int main(int argc, char* argv[]) {
             // used when the blocklist may have changed, to make sure we are blocking the new list
             SCSettings* settings = [SCSettings settingsForUser: controllingUID];
 
-            if([[settings valueForKey: @"Blocklist"] count] <= 0 || ![SCBlockDateUtilities blockIsEnabledInDictionary: settings.settingsDictionary]) {
+            if([[settings valueForKey: @"Blocklist"] count] <= 0 || ![SCBlockDateUtilities blockIsEnabledInDictionary: settings.dictionaryRepresentation]) {
                 NSLog(@"ERROR: Refreshing domain blacklist, but no block is currently ongoing or the blocklist is empty.");
                 printStatus(-213);
                 exit(EX_SOFTWARE);
@@ -216,7 +216,7 @@ int main(int argc, char* argv[]) {
 			// caches for the new host blocked.
 			clearCachesIfRequested(controllingUID);
         } else if([modeString isEqual: @"--checkup"]) {
-            if(![SCBlockDateUtilities blockIsEnabledInDictionary: settings.settingsDictionary]) {
+            if(![SCBlockDateUtilities blockIsEnabledInDictionary: settings.dictionaryRepresentation]) {
                 // No block is in settings at all, not even an inactive one. Weird!
                 // we should try to remove any blocks just in case
                 NSLog(@"ERROR: Checkup ran but no block found.  Attempting to remove block.");
@@ -228,7 +228,7 @@ int main(int argc, char* argv[]) {
                 exit(EX_SOFTWARE);
             }
 
-			if (![SCBlockDateUtilities blockIsActiveInDictionary: settings.settingsDictionary]) {
+			if (![SCBlockDateUtilities blockIsActiveInDictionary: settings.dictionaryRepresentation]) {
 				NSLog(@"INFO: Checkup ran, block expired, removing block.");
                 
 				removeBlock(controllingUID);

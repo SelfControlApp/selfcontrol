@@ -113,13 +113,14 @@
                     </popUpButtonCell>
                     <connections>
                         <action selector="soundSelectionChanged:" target="-2" id="jn4-kC-4Y3"/>
-                        <binding destination="-2" name="enabled" keyPath="self.securedSettingsDict.BlockSoundShouldPlay" id="DZu-pp-PEs"/>
                         <binding destination="-2" name="selectedTag" keyPath="self.securedSettingsDict.BlockSound" id="Oy4-fm-WMD"/>
+                        <binding destination="-2" name="enabled" keyPath="self.securedSettingsDict.BlockSoundShouldPlay" id="DZu-pp-PEs"/>
                     </connections>
                 </popUpButton>
             </subviews>
             <point key="canvasLocation" x="136" y="-64.5"/>
         </customView>
         <userDefaultsController representsSharedInstance="YES" id="4wD-T6-SpY"/>
+        <dictionaryController objectClassName="_NSDictionaryControllerKeyValuePair" id="lbP-fI-BYl"/>
     </objects>
 </document>

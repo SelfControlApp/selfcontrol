@@ -17,6 +17,7 @@ float const SYNC_LEEWAY_SECS = 30;
 @interface SCSettings ()
 
 // Private vars
+@property (readonly) NSMutableDictionary* settingsDict;
 @property NSDate* lastSynchronizedWithDisk;
 @property dispatch_source_t syncTimer;
 
@@ -74,9 +75,11 @@ float const SYNC_LEEWAY_SECS = 30;
         settingsForUserIds = [NSMutableDictionary new];
     });
     
-    if (settingsForUserIds[@(uid)] == nil) {
-        // no settings object yet for this UID, instantiate one
-        settingsForUserIds[@(uid)] = [[self alloc] initWithUserId: uid];
+    @synchronized (settingsForUserIds) {
+        if (settingsForUserIds[@(uid)] == nil) {
+            // no settings object yet for this UID, instantiate one
+            settingsForUserIds[@(uid)] = [[self alloc] initWithUserId: uid];
+        }
     }
     
     // return the settings object we've got cached for this user id!
@@ -89,7 +92,7 @@ float const SYNC_LEEWAY_SECS = 30;
     NSLog(@"init SCSettings");
     if (self = [super init]) {
         _userId = userId;
-        _settingsDictionary = nil;
+        _settingsDict = nil;
         
         [[NSDistributedNotificationCenter defaultCenter] addObserver: self
                                                             selector: @selector(onSettingChanged:)
@@ -113,6 +116,7 @@ float const SYNC_LEEWAY_SECS = 30;
     return [[NSString stringWithFormat: @"%@/Library/Preferences/.%@.plist", homeDir, hash] stringByExpandingTildeInPath];
 }
 
+// NOTE: there should be a default setting for each valid setting, even if it's nil/zero/etc
 - (NSDictionary*)defaultSettingsDict {
     return @{
         @"BlockEndDate": [NSDate distantPast],
@@ -129,24 +133,50 @@ float const SYNC_LEEWAY_SECS = 30;
         @"LastSettingsUpdate": [NSDate distantPast] // special value that keeps track of when we last updated our settings
     };
 }
-- (NSDictionary*)settingsDictionary {
-    if (_settingsDictionary == nil) {
-        @synchronized (self) {
-            _settingsDictionary = [NSMutableDictionary dictionaryWithContentsOfFile: [self securedSettingsFilePath]];
-        }
-            
+
+- (void)initializeSettingsDict {
+    // make sure we only load the settings dictionary once, even if called simultaneously from multiple threads
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        self->_settingsDict = [NSMutableDictionary dictionaryWithContentsOfFile: [self securedSettingsFilePath]];
+        
         // if we don't have a settings dictionary on disk yet,
         // set it up with the default values (and migrate legacy settings also)
-        if (_settingsDictionary == nil) {
-            _settingsDictionary = [[self defaultSettingsDict] mutableCopy];
+        if (self->_settingsDict == nil) {
+            self->_settingsDict = [[self defaultSettingsDict] mutableCopy];
             [self migrateLegacySettings];
+            
+            // write out our brand-new migrated settings to disk!
+            [self writeSettings];
         }
-
+        
+        // we're now current with disk!
+        self->lastSynchronizedWithDisk = [NSDate date];
+        
         [self startSyncTimer];
         
-        NSLog(@"initialized settingsDictionary with contents of %@ to %@", [self securedSettingsFilePath], _settingsDictionary);
+        NSLog(@"initialized settingsDict with contents of %@ to %@", [self securedSettingsFilePath], self->_settingsDict);
+    });
+}
+
+- (NSDictionary*)settingsDict {
+    if (_settingsDict == nil) {
+        [self initializeSettingsDict];
     }
-    return _settingsDictionary;
+    return _settingsDict;
+}
+
+- (NSDictionary*)dictionaryRepresentation {
+    NSMutableDictionary* dictCopy = [self.settingsDict copy];
+    
+    // fill in any gaps with default values (like we did if they called valueForKey:)
+    for (NSString* key in [[self defaultSettingsDict] allKeys]) {
+        if (dictCopy[key] == nil) {
+            dictCopy[key] = [self defaultSettingsDict][key];
+        }
+    }
+
+    return dictCopy;
 }
 
 // both reloadSettings and writeSettings are synchronized with the same object, so
@@ -155,6 +185,12 @@ float const SYNC_LEEWAY_SECS = 30;
 // on two other threads
 
 - (void)reloadSettings {
+    // if the settings dictionary hasn't been loaded the first time, do that instead of reloading
+    if (_settingsDict == nil) {
+        [self initializeSettingsDict];
+        return;
+    }
+
     @synchronized (self) {
         NSDictionary* settingsFromDisk = [NSDictionary dictionaryWithContentsOfFile: [self securedSettingsFilePath]];
         
@@ -165,7 +201,7 @@ float const SYNC_LEEWAY_SECS = 30;
         if (memorySettingsLastUpdated == nil) memorySettingsLastUpdated = [NSDate distantPast];
         
         if ([diskSettingsLastUpdated timeIntervalSinceDate: memorySettingsLastUpdated] > 0) {
-            _settingsDictionary = settingsFromDisk;
+            _settingsDict = [settingsFromDisk mutableCopy];
             self.lastSynchronizedWithDisk = [NSDate date];
             NSLog(@"Newer SCSettings found on disk (updated %@ versus %@, updating...", diskSettingsLastUpdated, memorySettingsLastUpdated);
         }
@@ -173,17 +209,17 @@ float const SYNC_LEEWAY_SECS = 30;
 }
 - (void)writeSettings {
     @synchronized (self) {
-        NSString* serializationErrString;
-        NSData* plistData = [NSPropertyListSerialization dataFromPropertyList: self.settingsDictionary
-                                                                       format: NSPropertyListBinaryFormat_v1_0
-                                                             errorDescription: &serializationErrString];
-        if (plistData == nil) {
-            NSLog(@"NSPropertyListSerialization error: %@", serializationErrString);
-            return;
-        }
-        
         // don't spend time on the main thread writing out files - it's OK for this to happen without blocking other things
         dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSString* serializationErrString;
+            NSData* plistData = [NSPropertyListSerialization dataFromPropertyList: self.settingsDict
+                                                                           format: NSPropertyListBinaryFormat_v1_0
+                                                                 errorDescription: &serializationErrString];
+            if (plistData == nil) {
+                NSLog(@"NSPropertyListSerialization error: %@", serializationErrString);
+                return;
+            }
+
             NSLog(@"writing %@ to %@", plistData, self.securedSettingsFilePath);
             BOOL writeSuccessful = [plistData writeToFile: [self securedSettingsFilePath]
                                                atomically: YES];
@@ -206,28 +242,37 @@ float const SYNC_LEEWAY_SECS = 30;
 }
 
 - (void)setValue:(id)value forKey:(NSString*)key {
-    // TODO: locking everything on self is kinda inefficient/unnecessary
+    // locking everything on self is kinda inefficient/unnecessary
+    // since it means we can only set one value at a time, and never when reading/writing from disk
+    // but it seems to be OK for now - we'll improve later
     @synchronized (self) {
-        [self.settingsDictionary setValue: value forKey: key];
+        [self.settingsDict setValue: value forKey: key];
         
         // record the update
-        [self.settingsDictionary setValue: [NSDate date] forKey: @"LastSettingsUpdate"];
-        
-        NSLog(@"setting value (%@ = %@), self.description is %@", key, value, self.description);
-        // notify other instances (presumably in other processes)
-        [[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"org.eyebeam.SelfControl.SCSettingsValueChanged"
-                                                                       object: self.description
-                                                                     userInfo: @{
-                                                                                 @"key": key,
-                                                                                 @"value": value,
-                                                                                 @"date": [NSDate date]
-                                                                                 }
-                                                           deliverImmediately: YES];
+        [self.settingsDict setValue: [NSDate date] forKey: @"LastSettingsUpdate"];
     }
+        
+    NSLog(@"setting value (%@ = %@), self.description is %@", key, value, self.description);
+    // notify other instances (presumably in other processes)
+    [[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"org.eyebeam.SelfControl.SCSettingsValueChanged"
+                                                                   object: self.description
+                                                                 userInfo: @{
+                                                                             @"key": key,
+                                                                             @"value": value,
+                                                                             @"date": [NSDate date]
+                                                                             }
+                                                       deliverImmediately: YES];
 }
 - (id)valueForKey:(NSString*)key {
-    NSLog(@"value for key %@ is %@", key, [self.settingsDictionary valueForKey: key]);
-    return [self.settingsDictionary valueForKey: key];
+    NSLog(@"value for key %@ is %@", key, [self.settingsDict valueForKey: key]);
+    id value = [self.settingsDict valueForKey: key];
+    
+    // if we don't have a value in our dictionary but we do have a default value, use that instead!
+    if (value == nil && [self defaultSettingsDict][key] != nil) {
+        value = [self defaultSettingsDict][key];
+    }
+
+    return value;
 }
 
 // We might have "legacy" block settings hiding in one of two places:
@@ -239,10 +284,11 @@ float const SYNC_LEEWAY_SECS = 30;
 // NOTE2: this method does NOT clear the settings from legacy locations, because that may break ongoing blocks being cleared
 //        by older versions of the helper tool. Instead, we will clean out legacy locations from the helper when
 //        blocks are started or finished.
+// NOTE3: this method always pulls user defaults for the current user, regardless of what instance it's called on
 - (void)migrateLegacySettings {
     NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLegacyLockFilePath];
     // note that the defaults will generally only be defined in the main app, not helper tool (because helper tool runs as root)
-    NSDictionary* userDefaultsDict = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
+    NSDictionary* userDefaultsDict = [NSUserDefaults standardUserDefaults].dictionaryRepresentation;
     
     // prefer reading from the lock file, using defaults as a backup only
     for (NSString* key in [[self defaultSettingsDict] allKeys]) {
@@ -266,15 +312,13 @@ float const SYNC_LEEWAY_SECS = 30;
     } else if ([SCBlockDateUtilities blockIsEnabledInDictionary: userDefaultsDict]) {
         [self setValue: [SCBlockDateUtilities blockEndDateInDictionary: userDefaultsDict] forKey: @"BlockEndDate"];
     }
-    
-    // write out our brand-new migrated settings to disk!
-    [self writeSettings];
 }
 
+// NOTE: this method always clears the user defaults for the current user, regardless of what instance
+// it's called on
 - (void)clearLegacySettings {
-    // first things first, access the settings dictionary to make sure any necessary migration already happened
-    // TODO: make this less terrible (making it reliant on a side effect kinda sucks)
-    [SCSettings currentUserSettings].settingsDictionary;
+    // make sure the settings dictionary is set up (and migration has occurred if necessary)
+    [self initializeSettingsDict];
 
     NSError* err;
 
@@ -303,6 +347,11 @@ float const SYNC_LEEWAY_SECS = 30;
 }
 
 - (void)startSyncTimer {
+    if (self.syncTimer != nil) {
+        // we already have a timer, so no need to start another
+        return;
+    }
+    
     // set up a timer so values get synchronized to disk on a regular basis
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     self.syncTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
@@ -315,10 +364,13 @@ float const SYNC_LEEWAY_SECS = 30;
     }
 }
 - (void)cancelSyncTimer {
-    if (self.syncTimer) {
-        dispatch_source_cancel(self.syncTimer);
-        self.syncTimer = nil;
+    if (self.syncTimer == nil) {
+        // no active timer, no need to cancel
+        return;
     }
+
+    dispatch_source_cancel(self.syncTimer);
+    self.syncTimer = nil;
 }
 
 - (void)onSettingChanged:(NSNotification*)note {
@@ -350,6 +402,6 @@ float const SYNC_LEEWAY_SECS = 30;
     [self cancelSyncTimer];
 }
 
-@synthesize settingsDictionary = _settingsDictionary, lastSynchronizedWithDisk;
+@synthesize settingsDict = _settingsDict, lastSynchronizedWithDisk;
 
 @end
