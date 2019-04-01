@@ -4,7 +4,7 @@ platform :osx, '10.8'
 target "SelfControl" do
 	pod 'MASPreferences', '~> 1.1.4'
 	pod 'FormatterKit/TimeIntervalFormatter', '~> 1.7'
-	pod 'Sparkle', '~> 1.17'
+	pod 'Sparkle', '~> 1.21.3'
     pod 'LetsMove', :git => 'https://github.com/SelfControlApp/LetsMove.git'
 end
 
