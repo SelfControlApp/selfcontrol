@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="PreferencesAdvancedViewController">
             <connections>
+                <outlet property="allowLocalCheckbox" destination="gkT-O1-AZS" id="GAV-ty-Dny"/>
+                <outlet property="clearCachesCheckbox" destination="dSg-wR-arw" id="Vh3-ua-zBv"/>
+                <outlet property="includeLinkedSitesCheckbox" destination="P7c-ml-UCV" id="Uhz-Nv-os4"/>
+                <outlet property="includeSubdomainsCheckbox" destination="tez-LB-kje" id="ONt-L0-rzg"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
@@ -25,7 +29,7 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <binding destination="-2" name="value" keyPath="self.securedSettingsDict.ClearCaches" id="bEI-nr-bfC"/>
+                        <action selector="securedCheckboxChanged:" target="-2" id="6tR-dE-G98"/>
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tez-LB-kje">
@@ -36,7 +40,7 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <binding destination="-2" name="value" keyPath="self.securedSettingsDict.EvaluateCommonSubdomains" id="KLi-AI-YFP"/>
+                        <action selector="securedCheckboxChanged:" target="-2" id="7n3-2O-6w1"/>
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q9x-EI-6xR">
@@ -58,7 +62,7 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <binding destination="-2" name="value" keyPath="self.securedSettingsDict.AllowLocalNetworks" id="N7X-9S-LY4"/>
+                        <action selector="securedCheckboxChanged:" target="-2" id="K5O-rj-PYo"/>
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YfV-CO-6Ud">
@@ -80,7 +84,7 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <binding destination="-2" name="value" keyPath="self.securedSettingsDict.IncludeLinkedDomains" id="k2m-Kk-qp9"/>
+                        <action selector="securedCheckboxChanged:" target="-2" id="Dq3-ow-crK"/>
                     </connections>
                 </button>
             </subviews>

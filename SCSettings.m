@@ -167,7 +167,7 @@ float const SYNC_LEEWAY_SECS = 30;
 }
 
 - (NSDictionary*)dictionaryRepresentation {
-    NSMutableDictionary* dictCopy = [self.settingsDict copy];
+    NSMutableDictionary* dictCopy = [self.settingsDict mutableCopy];
     
     // fill in any gaps with default values (like we did if they called valueForKey:)
     for (NSString* key in [[self defaultSettingsDict] allKeys]) {

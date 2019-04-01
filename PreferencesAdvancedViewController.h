@@ -11,6 +11,9 @@
 
 @interface PreferencesAdvancedViewController : NSViewController <MASPreferencesViewController>
 
-@property (readonly) NSDictionary* securedSettingsDict;
-
+@property IBOutlet NSButton* clearCachesCheckbox;
+@property IBOutlet NSButton* allowLocalCheckbox;
+@property IBOutlet NSButton* includeSubdomainsCheckbox;
+@property IBOutlet NSButton* includeLinkedSitesCheckbox;
+    
 @end
