@@ -1,11 +1,12 @@
 source 'https://github.com/CocoaPods/Specs.git'
 platform :osx, '10.8'
+use_frameworks!
 
 target "SelfControl" do
 	pod 'MASPreferences', '~> 1.1.4'
-	pod 'FormatterKit/TimeIntervalFormatter', '~> 1.7'
+    pod 'FormatterKit/TimeIntervalFormatter', '~> 1.7'
 	pod 'Sparkle', '~> 1.21.3'
-    pod 'LetsMove', :git => 'https://github.com/SelfControlApp/LetsMove.git'
+    pod 'LetsMove', :git => 'https://github.com/SelfControlApp/LetsMove.git',  :branch => 'master'
 end
 
 pre_install do |installer|
