@@ -11,6 +11,7 @@
 #include "BlockManager.h"
 #import "SCBlockDateUtilities.h"
 #import "SCSettings.h"
+#import "SCConstants.h"
 
 void addRulesToFirewall(uid_t controllingUID) {
     SCSettings* settings = [SCSettings settingsForUser: controllingUID];
@@ -41,20 +42,7 @@ void removeRulesFromFirewall(uid_t controllingUID) {
     SCSettings* settings = [SCSettings settingsForUser: controllingUID];
     if([[settings valueForKey: @"BlockSoundShouldPlay"] boolValue]) {
 		// Map the tags used in interface builder to the sound
-		NSArray* systemSoundNames = @[@"Basso",
-									  @"Blow",
-									  @"Bottle",
-									  @"Frog",
-									  @"Funk",
-									  @"Glass",
-									  @"Hero",
-									  @"Morse",
-									  @"Ping",
-									  @"Pop",
-									  @"Purr",
-									  @"Sosumi",
-									  @"Submarine",
-									  @"Tink"];
+        NSArray* systemSoundNames = [SCConstants systemSoundNames];
         NSSound* alertSound = [NSSound soundNamed: systemSoundNames[[[settings valueForKey: @"BlockSound"] intValue]]];
 		if(!alertSound)
 			NSLog(@"WARNING: Alert sound not found.");

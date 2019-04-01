@@ -11,8 +11,8 @@
 
 @interface PreferencesGeneralViewController : NSViewController <MASPreferencesViewController>
 
-@property (readonly) NSDictionary* securedSettingsDict;
-@property IBOutlet NSDictionaryController* dictController;
+@property IBOutlet NSButton* playSoundCheckbox;
+@property IBOutlet NSPopUpButton* soundMenu;
 
 - (IBAction)soundSelectionChanged:(id)sender;
 

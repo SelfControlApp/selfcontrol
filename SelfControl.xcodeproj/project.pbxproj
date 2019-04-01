@@ -51,6 +51,12 @@
 		CB529BBF0F32B7ED00564FB8 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB529BBE0F32B7ED00564FB8 /* AppController.m */; };
 		CB54D44C0F93E33300AA22E9 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9E901D0F397FFA006DE6E4 /* Security.framework */; };
 		CB587E500F50FE8800C66A09 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB587E4F0F50FE8800C66A09 /* SystemConfiguration.framework */; };
+		CB5DFCB72251DD1F0084CEC2 /* SCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */; };
+		CB5DFCB82251DD1F0084CEC2 /* SCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */; };
+		CB5DFCB92251DD1F0084CEC2 /* SCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */; };
+		CB5DFCBA2251DD1F0084CEC2 /* SCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */; };
+		CB5DFCBB2251DD1F0084CEC2 /* SCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */; };
+		CB5DFCBC2251DD1F0084CEC2 /* SCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */; };
 		CB73616119E5086900E0924F /* WhitelistScraper.m in Sources */ = {isa = PBXBuildFile; fileRef = CB73615F19E4FDA000E0924F /* WhitelistScraper.m */; };
 		CB73616219E5086A00E0924F /* WhitelistScraper.m in Sources */ = {isa = PBXBuildFile; fileRef = CB73615F19E4FDA000E0924F /* WhitelistScraper.m */; };
 		CB90BF830F49F430006D202D /* HostImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB90BF820F49F430006D202D /* HostImporter.m */; };
@@ -244,6 +250,8 @@
 		CB529BBD0F32B7ED00564FB8 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		CB529BBE0F32B7ED00564FB8 /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
 		CB587E4F0F50FE8800C66A09 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = /System/Library/Frameworks/SystemConfiguration.framework; sourceTree = "<absolute>"; };
+		CB5DFCB52251DD1F0084CEC2 /* SCConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCConstants.h; sourceTree = "<group>"; };
+		CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCConstants.m; sourceTree = "<group>"; };
 		CB5E20BF0FAE0CDC006DBFC8 /* scheckup */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = scheckup; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB6ED5662085C70200012817 /* da */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = da; path = da.lproj/FirstTime.xib; sourceTree = "<group>"; };
 		CB7026181CD7177400D7C7F0 /* fr */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -599,6 +607,8 @@
 				CBF3B573217BADD7006D5F52 /* SCSettings.m */,
 				CBB1731220F041F4007FCAE9 /* SCBlockDateUtilities.h */,
 				CBB1731320F041F4007FCAE9 /* SCBlockDateUtilities.m */,
+				CB5DFCB52251DD1F0084CEC2 /* SCConstants.h */,
+				CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */,
 				F5B8CBEB19EE21340026F3A5 /* Formatters */,
 			);
 			name = Classes;
@@ -856,6 +866,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
+				English,
 				en,
 				de,
 				es,
@@ -1017,6 +1028,7 @@
 				CBD4848A19D764440020F949 /* PreferencesGeneralViewController.m in Sources */,
 				CBEE50C10F48C21F00F5DF1C /* TimerWindowController.m in Sources */,
 				CB90BF830F49F430006D202D /* HostImporter.m in Sources */,
+				CB5DFCB72251DD1F0084CEC2 /* SCConstants.m in Sources */,
 				CBE4401B0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m in Sources */,
 				CBE5C40B0F4D4531003DB900 /* ButtonWithPopupMenu.m in Sources */,
 				CBD4848F19D768C90020F949 /* PreferencesAdvancedViewController.m in Sources */,
@@ -1030,6 +1042,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB5DFCBC2251DD1F0084CEC2 /* SCConstants.m in Sources */,
 				CB114284222CD4F0004B7868 /* SCSettings.m in Sources */,
 				CB0EEF7820FE49030024D27B /* BlockDateUtilitiesTests.m in Sources */,
 			);
@@ -1040,6 +1053,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CBD2676C11ED926300042CD8 /* LaunchctlHelper.m in Sources */,
+				CB5DFCB92251DD1F0084CEC2 /* SCConstants.m in Sources */,
 				CBD266B111ED7D9C00042CD8 /* HelperCommon.m in Sources */,
 				CB73616119E5086900E0924F /* WhitelistScraper.m in Sources */,
 				CBD2672011ED882700042CD8 /* CheckupMain.m in Sources */,
@@ -1058,6 +1072,7 @@
 			files = (
 				CB9C80FF19CFB79700CDCAE1 /* AppDelegate.m in Sources */,
 				CB9C80FC19CFB79700CDCAE1 /* main.m in Sources */,
+				CB5DFCBA2251DD1F0084CEC2 /* SCConstants.m in Sources */,
 				CB32D2AC21902CF800B8CD68 /* SCSettings.m in Sources */,
 				CBB1731C20F05C0A007FCAE9 /* SCBlockDateUtilities.m in Sources */,
 			);
@@ -1068,6 +1083,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB9C811E19CFBA8500CDCAE1 /* main.m in Sources */,
+				CB5DFCBB2251DD1F0084CEC2 /* SCConstants.m in Sources */,
 				CB9C812719CFBB6400CDCAE1 /* NSString+IPAddress.m in Sources */,
 				CBE44FEB19E50900004E9706 /* WhitelistScraper.m in Sources */,
 				CB9C812619CFBB5E00CDCAE1 /* BlockManager.m in Sources */,
@@ -1085,6 +1101,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CBA2AFD90F39EC46005AFEBE /* HelperMain.m in Sources */,
+				CB5DFCB82251DD1F0084CEC2 /* SCConstants.m in Sources */,
 				CBCA91121960D87300AFD20C /* PacketFilter.m in Sources */,
 				CB73616219E5086A00E0924F /* WhitelistScraper.m in Sources */,
 				CBC2F8580F4672FE00CF2A42 /* LaunchctlHelper.m in Sources */,
