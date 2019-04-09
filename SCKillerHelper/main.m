@@ -146,6 +146,17 @@ int main(int argc, char* argv[]) {
         status = [task terminationStatus];
         [log appendFormat: @"Deleting BlockEndDate from defaults returned: %d\n", status];
         seteuid(0);
+        
+        // clear BlockIsRunning from defaults
+        seteuid(controllingUID);
+        task = [NSTask launchedTaskWithLaunchPath: @"/usr/bin/defaults"
+                                        arguments: @[@"delete",
+                                                     @"org.eyebeam.SelfControl",
+                                                     @"BlockIsRunning"]];
+        [task waitUntilExit];
+        status = [task terminationStatus];
+        [log appendFormat: @"Deleting BlockIsRunning from defaults returned: %d\n", status];
+        seteuid(0);
 
 
 		// remove PF token

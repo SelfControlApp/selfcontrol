@@ -72,7 +72,7 @@
 	killBlockButton_.hidden = YES;
 	addToBlockButton_.hidden = NO;
 
-    blockEndingDate_ = [SCBlockDateUtilities blockEndDateInDictionary: settings_.dictionaryRepresentation];
+    blockEndingDate_ = [settings_ valueForKey: @"BlockEndDate"];
 
 	[self updateTimerDisplay: nil];
 
@@ -250,7 +250,7 @@
 }
 
 - (void) blockEndDateUpdated {
-    blockEndingDate_ = [SCBlockDateUtilities blockEndDateInDictionary: settings_.dictionaryRepresentation];
+    blockEndingDate_ = [settings_ valueForKey: @"BlockEndDate"];
     
     [self updateTimerDisplay: nil];
 }

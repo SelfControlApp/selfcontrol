@@ -242,11 +242,22 @@ float const SYNC_LEEWAY_SECS = 30;
 }
 
 - (void)setValue:(id)value forKey:(NSString*)key {
+    // we can't store nils in a dictionary
+    // so we sneak around it
+    if (value == nil) {
+        value = [NSNull null];
+    }
+    
     // locking everything on self is kinda inefficient/unnecessary
     // since it means we can only set one value at a time, and never when reading/writing from disk
     // but it seems to be OK for now - we'll improve later
     @synchronized (self) {
-        [self.settingsDict setValue: value forKey: key];
+        // if we're about to insert NSNull anyway, may as well just unset the value
+        if ([value isEqual: [NSNull null]]) {
+            [self.settingsDict removeObjectForKey: key];
+        } else {
+            [self.settingsDict setValue: value forKey: key];
+        }
         
         // record the update
         [self.settingsDict setValue: [NSDate date] forKey: @"LastSettingsUpdate"];
@@ -264,8 +275,12 @@ float const SYNC_LEEWAY_SECS = 30;
                                                        deliverImmediately: YES];
 }
 - (id)valueForKey:(NSString*)key {
-    NSLog(@"value for key %@ is %@", key, [self.settingsDict valueForKey: key]);
     id value = [self.settingsDict valueForKey: key];
+    
+    // when we get an NSNull we have to unwrap it and remember that means nil
+    if ([value isEqual: [NSNull null]]) {
+        value = nil;
+    }
     
     // if we don't have a value in our dictionary but we do have a default value, use that instead!
     if (value == nil && [self defaultSettingsDict][key] != nil) {
@@ -307,10 +322,13 @@ float const SYNC_LEEWAY_SECS = 30;
     }
 
     // BlockStartedDate was migrated to a simpler BlockEndDate property (which doesn't require BlockDuration to function)
-    if ([SCBlockDateUtilities blockIsEnabledInDictionary: lockDict]) {
-        [self setValue: [SCBlockDateUtilities blockEndDateInDictionary: lockDict] forKey: @"BlockEndDate"];
-    } else if ([SCBlockDateUtilities blockIsEnabledInDictionary: userDefaultsDict]) {
-        [self setValue: [SCBlockDateUtilities blockEndDateInDictionary: userDefaultsDict] forKey: @"BlockEndDate"];
+    // so we need to specially convert the old BlockStartedDate into BlockEndDates
+    if ([SCBlockDateUtilities blockIsRunningInLegacyDictionary: lockDict]) {
+        [self setValue: @YES forKey: @"BlockIsRunning"];
+        [self setValue: [SCBlockDateUtilities endDateFromLegacyBlockDictionary: lockDict] forKey: @"BlockEndDate"];
+    } else if ([SCBlockDateUtilities blockIsRunningInDictionary: userDefaultsDict]) {
+        [self setValue: @YES forKey: @"BlockIsRunning"];
+        [self setValue: [SCBlockDateUtilities endDateFromLegacyBlockDictionary: userDefaultsDict] forKey: @"BlockEndDate"];
     }
 }
 
@@ -331,7 +349,6 @@ float const SYNC_LEEWAY_SECS = 30;
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     NSArray* keysToClear = @[
                              @"BlockStartedDate",
-                             @"BlockEndDate",
                              @"HostBlacklist",
                              @"EvaluateCommonSubdomains",
                              @"IncludeLinkedDomains",

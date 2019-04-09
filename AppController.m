@@ -351,7 +351,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 - (BOOL)selfControlLaunchDaemonIsLoaded {
     // first we look for the answer in the SCSettings system
-    if ([SCBlockDateUtilities blockIsEnabledInDictionary: settings_.dictionaryRepresentation]) {
+    if ([SCBlockDateUtilities blockIsRunningInDictionary: settings_.dictionaryRepresentation]) {
         return YES;
     }
     
@@ -364,7 +364,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     // finally, we should check the legacy ways of storing a block (defaults and lockfile)
     
 	[defaults_ synchronize];
-    if ([SCBlockDateUtilities blockIsEnabledInDictionary: defaults_.dictionaryRepresentation]) {
+    if ([SCBlockDateUtilities blockIsRunningInDictionary: defaults_.dictionaryRepresentation]) {
 		return YES;
 	}
 
@@ -654,9 +654,10 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 			return;
 		}
 
-        // for legacy reasons, BlockDuration is in minutes, so convert it to seconds before passing it through
-        NSTimeInterval blockDurationSecs = [[settings_ valueForKey: @"BlockDuration"] intValue] * 60;
+        // for legacy reasons, BlockDuration is in minutes, so convert it to seconds before passing it through]
+        NSTimeInterval blockDurationSecs = [[defaults_ valueForKey: @"BlockDuration"] intValue] * 60;
         [SCBlockDateUtilities startBlockInSettings: settings_ withBlockDuration: blockDurationSecs];
+        NSLog(@"starting block and set block end date to %@", [settings_ valueForKey: @"BlockEndDate"]);
         
         // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
         [settings_ synchronizeSettings];
@@ -843,11 +844,11 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     NSInteger minutesToAdd = [options[@"minutesToAdd"] integerValue];
     minutesToAdd = MAX(minutesToAdd, 0); // make sure there's no funny business with negative minutes
     
-    NSDate* oldBlockEndDate = [SCBlockDateUtilities blockEndDateInDictionary: settings_.dictionaryRepresentation];
+    NSDate* oldBlockEndDate = [settings_ valueForKey: @"BlockEndDate"];
     NSDate* newBlockEndDate = [oldBlockEndDate dateByAddingTimeInterval: (minutesToAdd * 60)];
     
     // Before we try to extend the block, make sure the block time didn't run out (or is about to run out) in the meantime
-    if (![SCBlockDateUtilities blockIsActiveInDictionary: settings_.dictionaryRepresentation] || [oldBlockEndDate timeIntervalSinceNow] < 1) {
+    if (![SCBlockDateUtilities blockShouldBeRunningInDictionary: settings_.dictionaryRepresentation] || [oldBlockEndDate timeIntervalSinceNow] < 1) {
         // we're done, or will be by the time we get to it! so just let it expire. they can restart it.
         return;
     }

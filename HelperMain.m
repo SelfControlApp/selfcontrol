@@ -155,25 +155,22 @@ int main(int argc, char* argv[]) {
 				exit(EX_IOERR);
 			}
 
-            // if we don't see the block enabled in settings, enable it, as the helper utility was probably started by command line and not through the AppController.
-            // TODO: figure out when this happens, and fix it with the new settings
-//            if(![SCBlockDateUtilities blockIsEnabledInDictionary: defaults]){
-//                [SCBlockDateUtilities startDefaultsBlockWithDict: defaults forUID: controllingUID];
-//            }
-
             SCSettings* settings = [SCSettings settingsForUser: controllingUID];
             
             // clear any legacy block information - no longer useful since we're using SCSettings now
             // (and could potentially confuse things)
             [settings clearLegacySettings];
             
-			if([[settings valueForKey: @"Blocklist"] count] <= 0 || ![SCBlockDateUtilities blockIsEnabledInDictionary: settings.dictionaryRepresentation]) {
+			if([[settings valueForKey: @"Blocklist"] count] <= 0 || ![SCBlockDateUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
 				NSLog(@"ERROR: Blocklist is empty, or there was an error transferring block information.");
+                NSLog(@"Block End Date: %@", [settings valueForKey: @"BlockEndDate"]);
 				printStatus(-210);
 				exit(EX_CONFIG);
 			}
 
 			addRulesToFirewall(controllingUID);
+            [settings setValue: @YES forKey: @"BlockIsRunning"];
+            [settings synchronizeSettings]; // synchronize ASAP since BlockIsRunning is a really important one
 			int result = [LaunchctlHelper loadLaunchdJobWithPlistAt: @"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
 
 			[[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
@@ -198,7 +195,7 @@ int main(int argc, char* argv[]) {
             // used when the blocklist may have changed, to make sure we are blocking the new list
             SCSettings* settings = [SCSettings settingsForUser: controllingUID];
 
-            if([[settings valueForKey: @"Blocklist"] count] <= 0 || ![SCBlockDateUtilities blockIsEnabledInDictionary: settings.dictionaryRepresentation]) {
+            if([[settings valueForKey: @"Blocklist"] count] <= 0 || ![SCBlockDateUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
                 NSLog(@"ERROR: Refreshing domain blacklist, but no block is currently ongoing or the blocklist is empty.");
                 printStatus(-213);
                 exit(EX_SOFTWARE);
@@ -207,6 +204,10 @@ int main(int argc, char* argv[]) {
 			// Add and remove the rules to put in any new ones
 			removeRulesFromFirewall(controllingUID);
 			addRulesToFirewall(controllingUID);
+            
+            // make sure BlockIsRunning is still set
+            [settings setValue: @YES forKey: @"BlockIsRunning"];
+            [settings synchronizeSettings];
 
             // make sure the launchd job is still loaded
             [LaunchctlHelper loadLaunchdJobWithPlistAt: @"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
@@ -216,9 +217,8 @@ int main(int argc, char* argv[]) {
 			// caches for the new host blocked.
 			clearCachesIfRequested(controllingUID);
         } else if([modeString isEqual: @"--checkup"]) {
-            if(![SCBlockDateUtilities blockIsEnabledInDictionary: settings.dictionaryRepresentation]) {
-                // No block is in settings at all, not even an inactive one. Weird!
-                // we should try to remove any blocks just in case
+            if(![SCBlockDateUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]) {
+                // No block appears to be running at all in our settings. Weird! Someone else might have removed it?
                 NSLog(@"ERROR: Checkup ran but no block found.  Attempting to remove block.");
 
                 // get rid of this block
@@ -228,7 +228,7 @@ int main(int argc, char* argv[]) {
                 exit(EX_SOFTWARE);
             }
 
-			if (![SCBlockDateUtilities blockIsActiveInDictionary: settings.dictionaryRepresentation]) {
+			if (![SCBlockDateUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
 				NSLog(@"INFO: Checkup ran, block expired, removing block.");
                 
 				removeBlock(controllingUID);
@@ -270,7 +270,10 @@ int main(int argc, char* argv[]) {
 					NSLog(@"INFO: Checkup ran, readded block rules.");
 				} else NSLog(@"INFO: Checkup ran, no action needed.");
 			}
-		}
+        } else if ([modeString isEqualToString: @"--print-settings"]) {
+            NSLog(@" - Printing SelfControl secured settings for debug: - ");
+            NSLog(@"%@", [settings dictionaryRepresentation]);
+        }
 
 		// by putting printStatus first (which tells the app we didn't crash), we fake it to
 		// avoid memory-managment crashes (calling [pool drain] is essentially optional)

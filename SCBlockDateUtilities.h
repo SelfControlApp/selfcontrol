@@ -25,8 +25,10 @@
 
 // Helper tool functions dealing with dictionaries and setDefaultsValue helper
 
-+ (BOOL) blockIsEnabledInDictionary:(NSDictionary*)dict;
-+ (BOOL) blockIsActiveInDictionary:(NSDictionary *)dict;
-+ (NSDate*) blockEndDateInDictionary:(NSDictionary*)dict;
++ (BOOL) blockIsRunningInDictionary:(NSDictionary*)dict;
++ (BOOL) blockShouldBeRunningInDictionary:(NSDictionary *)dict;
+
++ (BOOL) blockIsRunningInLegacyDictionary:(NSDictionary*)dict;
++ (NSDate*) endDateFromLegacyBlockDictionary:(NSDictionary *)dict;
 
 @end
