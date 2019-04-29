@@ -163,11 +163,22 @@ void removeBlock(uid_t controllingUID) {
     // always synchronize settings ASAP after removing a block to let everybody else know
     [[SCSettings settingsForUser: controllingUID] synchronizeSettings];
 
-	[[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
-																   object: nil];
+
+    // let the main app know things have changed so it can update the UI!
+    sendConfigurationChangedNotification();
+
 	clearCachesIfRequested(controllingUID);
 
-	NSLog(@"INFO: Block cleared.");
+    NSLog(@"INFO: Block cleared.");
+     
+    [LaunchctlHelper unloadLaunchdJobWithPlistAt:@"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
+}
 
-	[LaunchctlHelper unloadLaunchdJobWithPlistAt:@"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
+void sendConfigurationChangedNotification() {
+    // if you don't include the NSNotificationPostToAllSessions option,
+    // it will not deliver when run by launchd (root) to the main app being run by the user
+    [[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
+                                                                   object: nil
+                                                                 userInfo: nil
+                                                                  options: NSNotificationDeliverImmediately | NSNotificationPostToAllSessions];
 }

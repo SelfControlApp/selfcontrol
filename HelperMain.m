@@ -55,7 +55,7 @@ int main(int argc, char* argv[]) {
 
 
         SCSettings* settings = [SCSettings settingsForUser: controllingUID];
-
+        
 		if([modeString isEqual: @"--install"]) {
 			NSFileManager* fileManager = [NSFileManager defaultManager];
 
@@ -172,9 +172,8 @@ int main(int argc, char* argv[]) {
             [settings setValue: @YES forKey: @"BlockIsRunning"];
             [settings synchronizeSettings]; // synchronize ASAP since BlockIsRunning is a really important one
 			int result = [LaunchctlHelper loadLaunchdJobWithPlistAt: @"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
-
-			[[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
-																		   object: nil];
+            
+            sendConfigurationChangedNotification();
 
 			// Clear web browser caches if the user has the correct preference set, so
 			// that blocked pages are not loaded from a cache.
@@ -208,6 +207,9 @@ int main(int argc, char* argv[]) {
             // make sure BlockIsRunning is still set
             [settings setValue: @YES forKey: @"BlockIsRunning"];
             [settings synchronizeSettings];
+            
+            // let the main app know things have changed so it can update the UI!
+            sendConfigurationChangedNotification();
 
             // make sure the launchd job is still loaded
             [LaunchctlHelper loadLaunchdJobWithPlistAt: @"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];

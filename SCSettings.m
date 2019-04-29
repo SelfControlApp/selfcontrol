@@ -272,7 +272,8 @@ float const SYNC_LEEWAY_SECS = 30;
                                                                              @"value": value,
                                                                              @"date": [NSDate date]
                                                                              }
-                                                       deliverImmediately: YES];
+                                                                  options: NSNotificationDeliverImmediately | NSNotificationPostToAllSessions
+     ];
 }
 - (id)valueForKey:(NSString*)key {
     id value = [self.settingsDict valueForKey: key];

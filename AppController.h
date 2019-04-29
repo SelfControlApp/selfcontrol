@@ -79,6 +79,8 @@
 // user interface.  Called very often by several parts of the program.
 - (void)refreshUserInterface;
 
+- (void)handleConfigurationChangedNotification;
+
 // Called when the "Edit blacklist" button is clicked or the menu item is
 // selected.  Allocates a new DomainListWindowController if necessary and opens
 // the domain blacklist window.  Spawns an alert box if a block is in progress.

@@ -256,6 +256,13 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	[refreshUILock_ unlock];
 }
 
+- (void)handleConfigurationChangedNotification {
+    // if our configuration changed, we should assume the settings may have changed
+    [[SCSettings currentUserSettings] reloadSettings];
+    // and our interface may need to change to match!
+    [self refreshUserInterface];
+}
+
 - (void)showTimerWindow {
 	if(timerWindowController_ == nil) {
 		[NSBundle loadNibNamed: @"TimerWindow" owner: self];
@@ -305,11 +312,12 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	// main SelfControl app.  Note that they are divided thusly because distributed
 	// notifications are very expensive and should be minimized.
 	[[NSDistributedNotificationCenter defaultCenter] addObserver: self
-														selector: @selector(refreshUserInterface)
+														selector: @selector(handleConfigurationChangedNotification)
 															name: @"SCConfigurationChangedNotification"
-														  object: nil];
+														  object: nil
+                                              suspensionBehavior: NSNotificationSuspensionBehaviorDeliverImmediately];
 	[[NSNotificationCenter defaultCenter] addObserver: self
-											 selector: @selector(refreshUserInterface)
+											 selector: @selector(handleConfigurationChangedNotification)
 												 name: @"SCConfigurationChangedNotification"
 											   object: nil];
 
