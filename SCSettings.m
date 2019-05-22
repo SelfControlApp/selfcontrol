@@ -220,7 +220,7 @@ float const SYNC_LEEWAY_SECS = 30;
                 return;
             }
 
-            NSLog(@"writing %@ to %@", plistData, self.securedSettingsFilePath);
+            NSLog(@"writing to %@", plistData, self.securedSettingsFilePath);
             BOOL writeSuccessful = [plistData writeToFile: [self securedSettingsFilePath]
                                                atomically: YES];
             
@@ -263,7 +263,6 @@ float const SYNC_LEEWAY_SECS = 30;
         [self.settingsDict setValue: [NSDate date] forKey: @"LastSettingsUpdate"];
     }
         
-    NSLog(@"setting value (%@ = %@), self.description is %@", key, value, self.description);
     // notify other instances (presumably in other processes)
     [[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"org.eyebeam.SelfControl.SCSettingsValueChanged"
                                                                    object: self.description
