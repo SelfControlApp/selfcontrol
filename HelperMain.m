@@ -193,12 +193,10 @@ int main(int argc, char* argv[]) {
 			}
 
 			// If perchance another lock is in existence already (which would be weird)
-			// we try to remove a block and continue as normal.  This should definitely not be
-			// happening though.
+			// we ignore removing the block and exit, so as to not create a back door.  
+			//This should definitely not be happening though.
 			if([fileManager fileExistsAtPath: SelfControlLockFilePath]) {
-				NSLog(@"ERROR: Lock already established.  Attempting to stop block.");
-
-				removeBlock(controllingUID);
+				NSLog(@"ERROR: Lock already established. Exiting without removing block.");
 
 				printStatus(-219);
 				exit(EX_CONFIG);
