@@ -9,7 +9,7 @@
 #include <IOKit/IOKitLib.h>
 #import <CommonCrypto/CommonCrypto.h>
 #include <pwd.h>
-#import "SCBlockDateUtilities.h"
+#import "SCBlockSettingUtilities.h"
 
 float const SYNC_INTERVAL_SECS = 30;
 float const SYNC_LEEWAY_SECS = 30;
@@ -323,12 +323,12 @@ float const SYNC_LEEWAY_SECS = 30;
 
     // BlockStartedDate was migrated to a simpler BlockEndDate property (which doesn't require BlockDuration to function)
     // so we need to specially convert the old BlockStartedDate into BlockEndDates
-    if ([SCBlockDateUtilities blockIsRunningInLegacyDictionary: lockDict]) {
+    if ([SCBlockSettingUtilities blockIsRunningInLegacyDictionary: lockDict]) {
         [self setValue: @YES forKey: @"BlockIsRunning"];
-        [self setValue: [SCBlockDateUtilities endDateFromLegacyBlockDictionary: lockDict] forKey: @"BlockEndDate"];
-    } else if ([SCBlockDateUtilities blockIsRunningInDictionary: userDefaultsDict]) {
+        [self setValue: [SCBlockSettingUtilities endDateFromLegacyBlockDictionary: lockDict] forKey: @"BlockEndDate"];
+    } else if ([SCBlockSettingUtilities blockIsRunningInDictionary: userDefaultsDict]) {
         [self setValue: @YES forKey: @"BlockIsRunning"];
-        [self setValue: [SCBlockDateUtilities endDateFromLegacyBlockDictionary: userDefaultsDict] forKey: @"BlockEndDate"];
+        [self setValue: [SCBlockSettingUtilities endDateFromLegacyBlockDictionary: userDefaultsDict] forKey: @"BlockEndDate"];
     }
 }
 

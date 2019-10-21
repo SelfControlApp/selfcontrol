@@ -21,7 +21,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "HelperMain.h"
-#import "SCBlockDateUtilities.h"
+#import "SCBlockSettingUtilities.h"
 #import "SCSettings.h"
 
 int main(int argc, char* argv[]) {
@@ -161,7 +161,7 @@ int main(int argc, char* argv[]) {
             // (and could potentially confuse things)
             [settings clearLegacySettings];
             
-			if([[settings valueForKey: @"Blocklist"] count] <= 0 || ![SCBlockDateUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
+			if([[settings valueForKey: @"Blocklist"] count] <= 0 || ![SCBlockSettingUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
 				NSLog(@"ERROR: Blocklist is empty, or there was an error transferring block information.");
                 NSLog(@"Block End Date: %@", [settings valueForKey: @"BlockEndDate"]);
 				printStatus(-210);
@@ -194,7 +194,7 @@ int main(int argc, char* argv[]) {
             // used when the blocklist may have changed, to make sure we are blocking the new list
             SCSettings* settings = [SCSettings settingsForUser: controllingUID];
 
-            if([[settings valueForKey: @"Blocklist"] count] <= 0 || ![SCBlockDateUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
+            if([[settings valueForKey: @"Blocklist"] count] <= 0 || ![SCBlockSettingUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
                 NSLog(@"ERROR: Refreshing domain blacklist, but no block is currently ongoing or the blocklist is empty.");
                 printStatus(-213);
                 exit(EX_SOFTWARE);
@@ -219,7 +219,7 @@ int main(int argc, char* argv[]) {
 			// caches for the new host blocked.
 			clearCachesIfRequested(controllingUID);
         } else if([modeString isEqual: @"--checkup"]) {
-            if(![SCBlockDateUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]) {
+            if(![SCBlockSettingUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]) {
                 // No block appears to be running at all in our settings. Weird! Someone else might have removed it?
                 NSLog(@"ERROR: Checkup ran but no block found.  Attempting to remove block.");
 
@@ -230,7 +230,7 @@ int main(int argc, char* argv[]) {
                 exit(EX_SOFTWARE);
             }
 
-			if (![SCBlockDateUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
+			if (![SCBlockSettingUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
 				NSLog(@"INFO: Checkup ran, block expired, removing block.");
                 
 				removeBlock(controllingUID);

@@ -8,7 +8,7 @@
  */
 
 #include "CheckupMain.h"
-#import "SCBlockDateUtilities.h"
+#import "SCBlockSettingUtilities.h"
 #import "SCSettings.h"
 
 int main(int argc, char* argv[]) {
@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
 
         SCSettings* settings = [SCSettings settingsForUser: getuid()];
         
-        if(![SCBlockDateUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]) {
+        if(![SCBlockSettingUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]) {
             // something's, wrong, we shouldn't be run if there's no block
             // so just try to remove one anyway, just in case
             NSLog(@"WARNING: Checkup ran but no block found.  Attempting to remove block.");
@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
             exit(EXIT_SUCCESS);
         }
 
-		if(![SCBlockDateUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
+		if(![SCBlockSettingUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
 			NSLog(@"INFO: Checkup helper ran, block expired, removing block.");
             
 			removeBlock(getuid());
