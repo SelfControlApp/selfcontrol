@@ -37,9 +37,6 @@
 		// We need a block to prevent us from running multiple copies of the "Add to Block"
 		// sheet.
 		modifyBlockLock = [[NSLock alloc] init];
-
-        self.extendBlockHoursValue = 0;
-        self.extendBlockMinutesValue = 15;
 	
         numStrikes = 0;
 	}
@@ -257,7 +254,7 @@
 }
 
 - (IBAction) performExtendBlock:(id)sender {
-    NSInteger extendBlockMinutes = (self.extendBlockHoursValue * 60) + self.extendBlockMinutesValue;
+    NSInteger extendBlockMinutes = (extendBlockHoursField_.intValue * 60) + extendBlockMinutesField_.intValue;
         
     [self.appController extendBlockTime: extendBlockMinutes lock: modifyBlockLock];
     [NSApp endSheet: extendBlockTimeSheet_];
@@ -282,8 +279,8 @@
         // If the block duration is 0, the ending date is... now!
         blockEndingDate_ = [NSDate date];
     }
-    
-    [self updateTimerDisplay: nil];
+
+    [self performSelectorOnMainThread: @selector(updateTimerDisplay:) withObject:nil waitUntilDone: YES];
 }
 
 - (void)didEndSheet:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {

@@ -39,10 +39,11 @@
 	IBOutlet NSTextField* addToBlockTextField_;
     
     IBOutlet NSPanel* extendBlockTimeSheet_;
+
+    IBOutlet NSTextField* extendBlockHoursField_;
+    IBOutlet NSTextField* extendBlockMinutesField_;
 }
 
-@property (nonatomic, readwrite) int extendBlockHoursValue;
-@property (nonatomic, readwrite) int extendBlockMinutesValue;
 
 // Updates the window's timer display to the correct time remaining until the
 // block expires.  If the block has expired and been removed, it invalidates

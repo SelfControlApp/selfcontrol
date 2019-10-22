@@ -513,7 +513,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     }
     
     NSInteger currentBlockDuration = [defaults_ integerForKey: @"BlockDuration"];
-    NSInteger newBlockDuration = MIN(currentBlockDuration + minutesToAdd, 0); // make sure we don't do something freaky if BlockDuration is negative for some reason
+    NSInteger newBlockDuration = MAX(currentBlockDuration + minutesToAdd, 0); // make sure we don't do something freaky if BlockDuration is negative for some reason
         
     [NSThread detachNewThreadSelector: @selector(setBlockDuration:)
                              toTarget: self
@@ -817,9 +817,21 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 								 waitUntilDone: YES];
 		}
 
-		[timerWindowController_ closeAddSheet: self];
+        [timerWindowController_ performSelectorOnMainThread:@selector(closeAddSheet:) withObject: self waitUntilDone: YES];
 	}
 	[lockToUse unlock];
+}
+
+
+// it really sucks, but we can't change any values that are KVO-bound to the UI unless they're on the main thread
+// to make that easier, here is a helper that always does it on the main thread
+- (void)setDefaultsBlockDurationOnMainThread:(NSNumber*)newBlockDuration {
+    if (![NSThread isMainThread]) {
+        [self performSelectorOnMainThread: @selector(setDefaultsBlockDurationOnMainThread:) withObject:newBlockDuration waitUntilDone: YES];
+    }
+
+    [defaults_ setInteger: [newBlockDuration intValue] forKey: @"BlockDuration"];
+    [defaults_ synchronize];
 }
 
 - (void)setBlockDuration:(NSDictionary*)options {
@@ -830,8 +842,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     }
     
     NSInteger oldDuration = [defaults_ integerForKey: @"BlockDuration"];
-    [defaults_ setInteger: newDuration forKey: @"BlockDuration"];
-    [defaults_ synchronize];
+    [self setDefaultsBlockDurationOnMainThread: @(newDuration)];
 
     @autoreleasepool {
         AuthorizationRef authorizationRef;
@@ -861,7 +872,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
             NSLog(@"ERROR: Failed to authorize setting new block duration.");
             
             // Reverse the block duration change made before we fail
-            [defaults_ setInteger: oldDuration forKey: @"BlockDuration"];
+            [self setDefaultsBlockDurationOnMainThread: @(oldDuration)];
             
             [lock unlock];
             
