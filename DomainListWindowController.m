@@ -303,7 +303,7 @@
 			return;
 		}
 
-		[cell setTextColor: [NSColor blackColor]];
+		[cell setTextColor: [NSColor grayColor]];
 	}
 }
 
