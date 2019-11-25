@@ -100,7 +100,16 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (IBAction)updateTimeSliderDisplay:(id)sender {
-	NSInteger numMinutes = floor([defaults_ integerForKey: @"BlockDuration"]);
+    NSInteger numMinutes = [defaults_ integerForKey: @"BlockDuration"];
+
+    // if the duration is larger than we can display on our slider
+    // chop it down to our max display value so the user doesn't
+    // accidentally start a much longer block than intended
+    if (numMinutes > blockDurationSlider_.maxValue) {
+        [defaults_ setInteger: floor(blockDurationSlider_.maxValue) forKey: @"BlockDuration"];
+        numMinutes = [defaults_ integerForKey: @"BlockDuration"];
+        NSLog(@"reset numMinutes and defaults to block duration of %d", numMinutes);
+    }
 
 	// Time-display code cleaned up thanks to the contributions of many users
 
