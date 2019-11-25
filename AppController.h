@@ -143,9 +143,6 @@
 // Changed property to manual accessor for pre-Leopard compatibility
 @property (nonatomic, readonly, strong) id initialWindow;
 
-@property (nonatomic) int blockLength;
-
-
 - (IBAction)openFAQ:(id)sender;
 
 - (void)switchedToWhitelist:(id)sender;

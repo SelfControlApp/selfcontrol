@@ -100,7 +100,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (IBAction)updateTimeSliderDisplay:(id)sender {
-	NSInteger numMinutes = floor([blockDurationSlider_ integerValue]);
+	NSInteger numMinutes = floor([defaults_ integerForKey: @"BlockDuration"]);
 
 	// Time-display code cleaned up thanks to the contributions of many users
 
@@ -231,7 +231,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 		BOOL addBlockIsOngoing = self.addingBlock;
 
-		if([blockDurationSlider_ intValue] != 0 && [[defaults_ objectForKey: @"HostBlacklist"] count] != 0 && !addBlockIsOngoing) {
+		if([defaults_ integerForKey: @"BlockDuration"] != 0 && [[defaults_ objectForKey: @"HostBlacklist"] count] != 0 && !addBlockIsOngoing) {
 			[submitButton_ setEnabled: YES];
 		} else {
 			[submitButton_ setEnabled: NO];
@@ -1019,15 +1019,6 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	}
 
 	return YES;
-}
-
-- (int)blockLength {
-	return [blockDurationSlider_ intValue];
-}
-
-- (void)setBlockLength:(int)blockLength {
-	[blockDurationSlider_ setIntValue: blockLength];
-	[self updateTimeSliderDisplay: blockDurationSlider_];
 }
 
 - (IBAction)openFAQ:(id)sender {
