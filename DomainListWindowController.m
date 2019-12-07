@@ -231,7 +231,7 @@
 	[defaults_ synchronize];
 
 	// Initialize the cell's text color to black
-	[cell setTextColor: [NSColor blackColor]];
+	[cell setTextColor: NSColor.textColor];
 	NSString* str = [[cell title] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	if([str isEqual: @""]) return;
 	if([defaults_ boolForKey: @"HighlightInvalidHosts"]) {
@@ -287,23 +287,23 @@
 												];
 
 			if(![hostnameRegexTester evaluateWithObject: str] && ![str isEqualToString: @"*"] && ![str isEqualToString: @""]) {
-				[cell setTextColor: [NSColor redColor]];
+				[cell setTextColor: NSColor.redColor];
 				return;
 			}
 		}
 
 		// We shouldn't have a mask length if it's not an IP, fail
 		if(!isIP && maskLength != -1) {
-			[cell setTextColor: [NSColor redColor]];
+			[cell setTextColor: NSColor.redColor];
 			return;
 		}
 
 		if(([str isEqualToString: @"*"] || [str isEqualToString: @""]) && portNum == -1) {
-			[cell setTextColor: [NSColor redColor]];
+			[cell setTextColor: NSColor.redColor];
 			return;
 		}
 
-		[cell setTextColor: [NSColor blackColor]];
+		[cell setTextColor: NSColor.textColor];
 	}
 }
 
