@@ -88,7 +88,7 @@
                     </menu>
                 </menuItem>
             </items>
-            <point key="canvasLocation" x="139" y="152"/>
+            <point key="canvasLocation" x="140" y="152"/>
         </menu>
         <window title="Domain Blacklist" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="1">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
@@ -96,18 +96,18 @@
             <rect key="contentRect" x="342" y="259" width="400" height="315"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <value key="minSize" type="size" width="400" height="315"/>
-            <view key="contentView" misplaced="YES" id="2">
-                <rect key="frame" x="0.0" y="0.0" width="400" height="315"/>
+            <view key="contentView" id="2">
+                <rect key="frame" x="0.0" y="0.0" width="401" height="315"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="12">
-                        <rect key="frame" x="0.0" y="50" width="401" height="266"/>
-                        <clipView key="contentView" id="cjg-fc-rRS">
-                            <rect key="frame" x="1" y="1" width="399" height="264"/>
+                        <rect key="frame" x="0.0" y="51" width="401" height="265"/>
+                        <clipView key="contentView" drawsBackground="NO" id="cjg-fc-rRS">
+                            <rect key="frame" x="1" y="1" width="399" height="263"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" columnResizing="NO" autosaveColumns="NO" typeSelect="NO" id="15">
-                                    <rect key="frame" x="0.0" y="0.0" width="399" height="264"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="399" height="263"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <size key="intercellSpacing" width="3" height="2"/>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -116,14 +116,14 @@
                                     <tableColumns>
                                         <tableColumn width="396" minWidth="40" maxWidth="1000" id="17">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="Domain Name">
-                                                <font key="font" metaFont="message" size="11"/>
+                                                <font key="font" metaFont="label" size="11"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
                                             </tableHeaderCell>
                                             <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" title="Text Cell" placeholderString="example.com" id="20">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <allowedInputSourceLocales>
                                                     <string>NSAllRomanInputSourcesLocaleIdentifier</string>
                                                 </allowedInputSourceLocales>
@@ -137,6 +137,7 @@
                                     </connections>
                                 </tableView>
                             </subviews>
+                            <nil key="backgroundColor"/>
                         </clipView>
                         <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="14">
                             <rect key="frame" x="1" y="250" width="343" height="15"/>
@@ -222,25 +223,24 @@ CA
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="42" secondAttribute="bottom" constant="14" id="7tf-JQ-Quw"/>
                     <constraint firstAttribute="trailing" secondItem="109" secondAttribute="trailing" constant="7" id="CIM-6l-puS"/>
-                    <constraint firstItem="46" firstAttribute="top" secondItem="15" secondAttribute="bottom" constant="15" id="GVh-mb-b0R"/>
-                    <constraint firstItem="42" firstAttribute="top" secondItem="15" secondAttribute="bottom" constant="15" id="HfJ-9J-mdP"/>
                     <constraint firstItem="42" firstAttribute="width" secondItem="46" secondAttribute="width" id="Jir-Gx-22c"/>
-                    <constraint firstItem="79" firstAttribute="top" secondItem="15" secondAttribute="bottom" constant="15" id="OsI-Ww-gX0"/>
+                    <constraint firstItem="42" firstAttribute="top" secondItem="12" secondAttribute="bottom" constant="15" id="So4-a2-473"/>
                     <constraint firstItem="12" firstAttribute="centerX" secondItem="2" secondAttribute="centerX" id="U3U-Qw-tWr"/>
+                    <constraint firstItem="109" firstAttribute="top" secondItem="12" secondAttribute="bottom" constant="2" id="XBR-S3-ncb"/>
                     <constraint firstItem="42" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="20" id="Ysy-Yb-TBm"/>
+                    <constraint firstItem="79" firstAttribute="top" secondItem="12" secondAttribute="bottom" constant="15" id="aAM-nw-3w8"/>
                     <constraint firstAttribute="bottom" secondItem="46" secondAttribute="bottom" constant="14" id="aGF-0L-ehP"/>
                     <constraint firstItem="42" firstAttribute="height" secondItem="46" secondAttribute="height" id="dNk-LL-rDy"/>
                     <constraint firstItem="46" firstAttribute="leading" secondItem="42" secondAttribute="trailing" constant="8" id="es4-fs-34f"/>
                     <constraint firstItem="79" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="46" secondAttribute="trailing" constant="68" id="f0U-dk-hxf"/>
-                    <constraint firstItem="109" firstAttribute="top" secondItem="15" secondAttribute="bottom" constant="2" id="gMH-nz-WMO"/>
                     <constraint firstItem="12" firstAttribute="top" secondItem="2" secondAttribute="top" constant="-1" id="hBt-rQ-Thw"/>
                     <constraint firstAttribute="bottom" secondItem="109" secondAttribute="bottom" constant="5" id="i2N-WQ-0WO"/>
                     <constraint firstItem="12" firstAttribute="width" secondItem="2" secondAttribute="width" id="rJq-Pg-BdD"/>
+                    <constraint firstItem="46" firstAttribute="top" secondItem="12" secondAttribute="bottom" constant="15" id="rfd-75-BTe"/>
                     <constraint firstItem="79" firstAttribute="centerX" secondItem="2" secondAttribute="centerX" id="v5C-it-N0T"/>
-                    <constraint firstAttribute="bottom" secondItem="12" secondAttribute="bottom" constant="50" id="xIU-2a-dRs"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="139" y="-153"/>
+            <point key="canvasLocation" x="140" y="304"/>
         </window>
         <customObject id="48" userLabel="Domain List Window Controller" customClass="DomainListWindowController">
             <connections>
