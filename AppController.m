@@ -101,9 +101,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     // chop it down to our max display value so the user doesn't
     // accidentally start a much longer block than intended
     if (numMinutes > blockDurationSlider_.maxValue) {
-        [settings_ setValue: @(floor(blockDurationSlider_.maxValue)) forKey: @"BlockDuration"];
-        numMinutes = [[settings_ valueForKey: @"BlockDuration"] integerValue];
-        NSLog(@"reset numMinutes and defaults to block duration of %d", (long)numMinutes);
+        [self setDefaultsBlockDurationOnMainThread: @(floor(blockDurationSlider_.maxValue))];
+        numMinutes = [defaults_ integerForKey: @"BlockDuration"];
     }
 
 	// Time-display code cleaned up thanks to the contributions of many users
@@ -238,7 +237,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 		BOOL addBlockIsOngoing = self.addingBlock;
 
-		if([settings_ valueForKey: @"BlockDuration"] != 0 && [[settings_ valueForKey: @"Blocklist"] count] != 0 && !addBlockIsOngoing) {
+		if([defaults_ integerForKey: @"BlockDuration"] != 0 && [[settings_ valueForKey: @"Blocklist"] count] != 0 && !addBlockIsOngoing) {
 			[submitButton_ setEnabled: YES];
 		} else {
 			[submitButton_ setEnabled: NO];
@@ -855,6 +854,17 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
         [timerWindowController_ performSelectorOnMainThread:@selector(closeAddSheet:) withObject: self waitUntilDone: YES];
 	}
 	[lockToUse unlock];
+}
+
+// it really sucks, but we can't change any values that are KVO-bound to the UI unless they're on the main thread
+// to make that easier, here is a helper that always does it on the main thread
+- (void)setDefaultsBlockDurationOnMainThread:(NSNumber*)newBlockDuration {
+    if (![NSThread isMainThread]) {
+        [self performSelectorOnMainThread: @selector(setDefaultsBlockDurationOnMainThread:) withObject:newBlockDuration waitUntilDone: YES];
+    }
+
+    [defaults_ setInteger: [newBlockDuration intValue] forKey: @"BlockDuration"];
+    [defaults_ synchronize];
 }
 
 - (void)extendBlockDuration:(NSDictionary*)options {
