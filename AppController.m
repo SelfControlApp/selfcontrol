@@ -101,9 +101,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     // chop it down to our max display value so the user doesn't
     // accidentally start a much longer block than intended
     if (numMinutes > blockDurationSlider_.maxValue) {
-        [settings_ setValue: floor(blockDurationSlider_.maxValue) forKey: @"BlockDuration"];
-        numMinutes = [settings_ valueForKey: @"BlockDuration"];
-        NSLog(@"reset numMinutes and defaults to block duration of %d", numMinutes);
+        [settings_ setValue: @(floor(blockDurationSlider_.maxValue)) forKey: @"BlockDuration"];
+        numMinutes = [[settings_ valueForKey: @"BlockDuration"] integerValue];
+        NSLog(@"reset numMinutes and defaults to block duration of %d", (long)numMinutes);
     }
 
 	// Time-display code cleaned up thanks to the contributions of many users

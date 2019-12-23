@@ -54,4 +54,4 @@ void printStatus(int status);
 // org.eyebeam.SelfControl item, deleting user caches if requested, and migrating legacy settings.
 void removeBlock(uid_t controllingUID);
 
-void sendConfigurationChangedNotification();
+void sendConfigurationChangedNotification(void);

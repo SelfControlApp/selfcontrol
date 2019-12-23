@@ -965,45 +965,6 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SelfControl/Pods-SelfControl-resources.sh",
-				"${PODS_ROOT}/FormatterKit/Localizations/de.lproj",
-				"${PODS_ROOT}/FormatterKit/Localizations/en.lproj",
-				"${PODS_ROOT}/FormatterKit/Localizations/es.lproj",
-				"${PODS_ROOT}/FormatterKit/Localizations/it.lproj",
-				"${PODS_ROOT}/FormatterKit/Localizations/ja.lproj",
-				"${PODS_ROOT}/FormatterKit/Localizations/ko.lproj",
-				"${PODS_ROOT}/FormatterKit/Localizations/pt.lproj",
-				"${PODS_ROOT}/FormatterKit/Localizations/pt_BR.lproj",
-				"${PODS_ROOT}/FormatterKit/Localizations/sv.lproj",
-				"${PODS_ROOT}/FormatterKit/Localizations/tr.lproj",
-				"${PODS_ROOT}/FormatterKit/Localizations/zh-Hans.lproj",
-				"${PODS_ROOT}/LetsMove/ca.lproj",
-				"${PODS_ROOT}/LetsMove/cs.lproj",
-				"${PODS_ROOT}/LetsMove/da.lproj",
-				"${PODS_ROOT}/LetsMove/de.lproj",
-				"${PODS_ROOT}/LetsMove/en.lproj",
-				"${PODS_ROOT}/LetsMove/es.lproj",
-				"${PODS_ROOT}/LetsMove/fr.lproj",
-				"${PODS_ROOT}/LetsMove/hu.lproj",
-				"${PODS_ROOT}/LetsMove/it.lproj",
-				"${PODS_ROOT}/LetsMove/ja.lproj",
-				"${PODS_ROOT}/LetsMove/ko.lproj",
-				"${PODS_ROOT}/LetsMove/mk.lproj",
-				"${PODS_ROOT}/LetsMove/nb.lproj",
-				"${PODS_ROOT}/LetsMove/nl.lproj",
-				"${PODS_ROOT}/LetsMove/pl.lproj",
-				"${PODS_ROOT}/LetsMove/pt.lproj",
-				"${PODS_ROOT}/LetsMove/pt_BR.lproj",
-				"${PODS_ROOT}/LetsMove/ru.lproj",
-				"${PODS_ROOT}/LetsMove/sk.lproj",
-				"${PODS_ROOT}/LetsMove/sr.lproj",
-				"${PODS_ROOT}/LetsMove/sv.lproj",
-				"${PODS_ROOT}/LetsMove/tr.lproj",
-				"${PODS_ROOT}/LetsMove/zh_CN.lproj",
-				"${PODS_ROOT}/LetsMove/zh_TW.lproj",
-				"${PODS_ROOT}/MASPreferences/Framework/en.lproj/MASPreferencesWindow.xib",
-			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-SelfControl/Pods-SelfControl-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/FormatterKit/FormatterKit.framework",
@@ -1013,8 +974,6 @@
 				"${PODS_ROOT}/Sparkle/Sparkle.framework.dSYM",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FormatterKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LetsMove.framework",
