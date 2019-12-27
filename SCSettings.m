@@ -104,11 +104,6 @@ float const SYNC_LEEWAY_SECS = 30;
 }
 
 
-/* put these files at random-ish locations to make them harder for users to find and tamper with */
-- (NSString*)lockFilePath {
-    NSString* hash = [self sha1: [NSString stringWithFormat: @"SelfControlSystemLock%@", [self getSerialNumber]]];
-    return [NSString stringWithFormat: @"/etc/.%@.plist", hash];
-}
 - (NSString*)securedSettingsFilePath {
     NSString* homeDir = [self homeDirectoryForUid: self.userId];
     NSString* hash = [self sha1: [NSString stringWithFormat: @"SelfControlUserPreferences%@", [self getSerialNumber]]];

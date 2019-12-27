@@ -18,7 +18,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)currentUserSettings;
 + (instancetype)settingsForUser:(uid_t)uid;
 
-- (NSString*)lockFilePath;
 - (NSString*)securedSettingsFilePath;
 
 - (void)reloadSettings;
