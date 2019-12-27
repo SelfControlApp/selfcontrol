@@ -82,6 +82,10 @@ int main(int argc, char* argv[]) {
 		}
 		seteuid(0);
 
+        // and print new secured settings, if they exist
+        SCSettings* settings = [SCSettings settingsForUser: controllingUID];
+        [log appendFormat: @"Current secured settings:\n\n:%@\n", settings.dictionaryRepresentation];
+
 		NSFileManager* fileManager = [NSFileManager defaultManager];
 
 		// print lockfile
@@ -136,29 +140,12 @@ int main(int argc, char* argv[]) {
 		[log appendFormat: @"Deleting BlockStartedDate from defaults returned: %d\n", status];
 		seteuid(0);
         
-        // clear BlockEndDate (new date value) from defaults
-        seteuid(controllingUID);
-        task = [NSTask launchedTaskWithLaunchPath: @"/usr/bin/defaults"
-                                        arguments: @[@"delete",
-                                                     @"org.eyebeam.SelfControl",
-                                                     @"BlockEndDate"]];
-        [task waitUntilExit];
-        status = [task terminationStatus];
-        [log appendFormat: @"Deleting BlockEndDate from defaults returned: %d\n", status];
-        seteuid(0);
+        // clear BlockEndDate (new date value) from secured settings
+        [settings setValue: nil forKey: @"BlockEndDate"];
+        [settings setValue: nil forKey: @"BlockIsRunning"];
+        [settings synchronizeSettings];
+        [log appendFormat: @"Deleted BlockEndDate and BlockIsRunning from secured settings\n"];
         
-        // clear BlockIsRunning from defaults
-        seteuid(controllingUID);
-        task = [NSTask launchedTaskWithLaunchPath: @"/usr/bin/defaults"
-                                        arguments: @[@"delete",
-                                                     @"org.eyebeam.SelfControl",
-                                                     @"BlockIsRunning"]];
-        [task waitUntilExit];
-        status = [task terminationStatus];
-        [log appendFormat: @"Deleting BlockIsRunning from defaults returned: %d\n", status];
-        seteuid(0);
-
-
 		// remove PF token
 		if([fileManager removeItemAtPath: @"/etc/SelfControlPFToken" error: nil]) {
 			[log appendString: @"\nRemoved PF token file successfully.\n"];

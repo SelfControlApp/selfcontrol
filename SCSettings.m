@@ -216,11 +216,26 @@ float const SYNC_LEEWAY_SECS = 30;
             }
 
             NSLog(@"writing %@ to %@", plistData, self.securedSettingsFilePath);
-            BOOL writeSuccessful = [plistData writeToFile: [self securedSettingsFilePath]
+            BOOL writeSuccessful = [plistData writeToFile: self.securedSettingsFilePath
                                                atomically: YES];
             
+            NSError* chmodErr;
+            BOOL chmodSuccessful = [[NSFileManager defaultManager]
+                                    setAttributes: @{
+                                        @"NSFileOwnerAccountID": [NSNumber numberWithUnsignedLong: self.userId],
+                                        @"NSFilePosixPermissions": [NSNumber numberWithShort: 0755]
+                                    }
+                                    ofItemAtPath: self.securedSettingsFilePath
+                                    error: &chmodErr];
+
             if (writeSuccessful) {
                 self.lastSynchronizedWithDisk = [NSDate date];
+            }
+
+            if (!writeSuccessful) {
+                NSLog(@"Failed to write secured settings to file %@", self.securedSettingsFilePath);
+            } else if (!chmodSuccessful) {
+                NSLog(@"Failed to change secured settings file owner/permissions secured settings for file %@ with error %@", self.securedSettingsFilePath, chmodErr);
             }
         });
     }
