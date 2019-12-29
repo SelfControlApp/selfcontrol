@@ -11,6 +11,7 @@
 #import <unistd.h>
 #import "BlockManager.h"
 #import "SCSettings.h"
+#import "HelperCommon.h"
 
 #define LOG_FILE @"~/Documents/SelfControl-Killer.log"
 
@@ -195,7 +196,10 @@ int main(int argc, char* argv[]) {
         [[SCSettings currentUserSettings] clearLegacySettings];
         [log appendString: @"\nMigrating settings to new system...\n"];
 
-		[log appendString: @"\n===SelfControl-Killer complete!==="];
+        // and let the main app know to refresh
+        sendConfigurationChangedNotification();
+
+`		[log appendString: @"\n===SelfControl-Killer complete!==="];
 
 		[log writeToFile: logFilePath
 			  atomically: YES
