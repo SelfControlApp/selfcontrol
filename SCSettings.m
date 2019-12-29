@@ -10,6 +10,7 @@
 #import <CommonCrypto/CommonCrypto.h>
 #include <pwd.h>
 #import "SCBlockDateUtilities.h"
+#import <AppKit/AppKit.h>
 
 float const SYNC_INTERVAL_SECS = 30;
 float const SYNC_LEEWAY_SECS = 30;
@@ -125,6 +126,8 @@ float const SYNC_LEEWAY_SECS = 30;
         @"AllowLocalNetworks": @YES,
         @"BlockIsRunning": @NO, // tells us whether a block is actually running on the system (to the best of our knowledge)
         
+        @"TamperingDetected": @NO,
+
         @"LastSettingsUpdate": [NSDate distantPast] // special value that keeps track of when we last updated our settings
     };
 }
@@ -149,7 +152,7 @@ float const SYNC_LEEWAY_SECS = 30;
         self->lastSynchronizedWithDisk = [NSDate date];
         
         [self startSyncTimer];
-        
+
         NSLog(@"initialized settingsDict with contents of %@ to %@", [self securedSettingsFilePath], self->_settingsDict);
     });
 }
@@ -373,7 +376,6 @@ float const SYNC_LEEWAY_SECS = 30;
         [userDefaults removeObjectForKey: key];
     }
 }
-
 - (void)startSyncTimer {
     if (self.syncTimer != nil) {
         // we already have a timer, so no need to start another

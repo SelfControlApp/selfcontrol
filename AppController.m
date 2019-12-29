@@ -261,6 +261,22 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 			[self showGetStartedWindow: self];
 		}
 	}
+
+    // finally: if the helper tool marked that it detected tampering, make sure
+    // we follow through and set the cheater wallpaper (helper tool can't do it itself)
+    if ([[settings_ valueForKey: @"TamperingDetected"] boolValue]) {
+        NSURL* cheaterBackgroundURL = [[NSBundle mainBundle] URLForResource: @"cheater-background" withExtension: @"png"];
+            NSArray<NSScreen *>* screens = [NSScreen screens];
+        for (NSScreen* screen in screens) {
+            NSError* err;
+            [[NSWorkspace sharedWorkspace] setDesktopImageURL: cheaterBackgroundURL
+                                                    forScreen: screen
+                                                      options: @{}
+                                                        error: &err];
+        }
+        [settings_ setValue: @NO forKey: @"TamperingDetected"];
+    }
+
 	[refreshUILock_ unlock];
 }
 

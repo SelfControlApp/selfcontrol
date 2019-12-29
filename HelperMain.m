@@ -55,7 +55,7 @@ int main(int argc, char* argv[]) {
 
 
         SCSettings* settings = [SCSettings settingsForUser: controllingUID];
-        
+
 		if([modeString isEqual: @"--install"]) {
 			NSFileManager* fileManager = [NSFileManager defaultManager];
 
@@ -171,6 +171,11 @@ int main(int argc, char* argv[]) {
 			addRulesToFirewall(controllingUID);
             [settings setValue: @YES forKey: @"BlockIsRunning"];
             [settings synchronizeSettings]; // synchronize ASAP since BlockIsRunning is a really important one
+
+            // first unload any old running copies, because otherwise we could end up with an old
+            // version of the SC plist running with a newer version of the app
+            // (calling load doesn't update the existing job if it's already running)
+            [LaunchctlHelper unloadLaunchdJobWithPlistAt:@"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
 			int result = [LaunchctlHelper loadLaunchdJobWithPlistAt: @"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
             
             sendConfigurationChangedNotification();
@@ -220,10 +225,16 @@ int main(int argc, char* argv[]) {
 			clearCachesIfRequested(controllingUID);
         } else if([modeString isEqual: @"--checkup"]) {
             if(![SCBlockDateUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]) {
-                // No block appears to be running at all in our settings. Weird! Someone else might have removed it?
-                NSLog(@"ERROR: Checkup ran but no block found.  Attempting to remove block.");
+                // No block appears to be running at all in our settings.
+                // Most likely, the user removed it trying to get around the block. Boo!
+                // but for safety and to avoid permablocks (we no longer know when the block should end)
+                // we should clear the block now.
+                // but let them know that we noticed their (likely) cheating and we're not happy!
+                NSLog(@"ERROR: Checkup ran but no block found. Likely tampering! Removing block for safety, but flagging tampering.");
 
                 // get rid of this block
+                [settings setValue: @YES forKey: @"TamperingDetected"];
+                [settings synchronizeSettings];
                 removeBlock(controllingUID);
 
                 printStatus(-215);

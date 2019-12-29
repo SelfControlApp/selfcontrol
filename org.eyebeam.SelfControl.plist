@@ -26,7 +26,7 @@
 	<key>ProgramArguments</key>
 	<array>
 		<string>/Library/PrivilegedHelperTools/org.eyebeam.SelfControl</string>
-		<string>%lld</string>
+		<string>%u</string>
 		<string>--checkup</string>
 	</array>
 </dict>

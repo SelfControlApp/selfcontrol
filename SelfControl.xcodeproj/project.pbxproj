@@ -30,6 +30,7 @@
 		CB0EEF7820FE49030024D27B /* BlockDateUtilitiesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB0EEF7720FE49020024D27B /* BlockDateUtilitiesTests.m */; };
 		CB114283222CCF19004B7868 /* SCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF3B573217BADD7006D5F52 /* SCSettings.m */; };
 		CB114284222CD4F0004B7868 /* SCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF3B573217BADD7006D5F52 /* SCSettings.m */; };
+		CB1B44BE23B7F1ED00EBA087 /* cheater-background.png in Resources */ = {isa = PBXBuildFile; fileRef = CB1B44BD23B7F1ED00EBA087 /* cheater-background.png */; };
 		CB1E7A6E0F9AEA9B00D158BC /* ERRORS in Resources */ = {isa = PBXBuildFile; fileRef = CB1E7A6D0F9AEA9B00D158BC /* ERRORS */; };
 		CB1ED4480F56686400EFECEE /* org.eyebeam.SelfControl in Copy Helper Tools */ = {isa = PBXBuildFile; fileRef = CBA2AFD20F39EC12005AFEBE /* org.eyebeam.SelfControl */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		CB249FED19D782230087BBB6 /* SelfControlIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = CB249FEC19D782230087BBB6 /* SelfControlIcon.icns */; };
@@ -235,6 +236,7 @@
 		CB0EEF5D20FD8CE00024D27B /* SelfControlTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SelfControlTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB0EEF6120FD8CE00024D27B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB0EEF7720FE49020024D27B /* BlockDateUtilitiesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockDateUtilitiesTests.m; sourceTree = "<group>"; };
+		CB1B44BD23B7F1ED00EBA087 /* cheater-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cheater-background.png"; sourceTree = "<group>"; };
 		CB1E7A6D0F9AEA9B00D158BC /* ERRORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ERRORS; sourceTree = "<group>"; };
 		CB249FEC19D782230087BBB6 /* SelfControlIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SelfControlIcon.icns; sourceTree = "<group>"; };
 		CB25806016C1FDBE0059C99A /* BlockManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockManager.h; sourceTree = "<group>"; };
@@ -540,6 +542,7 @@
 				CB40A8670FBC7DE700167727 /* SelfControlBlocklist.icns */,
 				CB9366E60F85BEF100EF284E /* NSRemoveTemplate.jpg */,
 				CB9366E70F85BEF100EF284E /* NSAddTemplate.jpg */,
+				CB1B44BD23B7F1ED00EBA087 /* cheater-background.png */,
 				CB4295C20F53EF8C008E10CA /* org.eyebeam.SelfControl.plist */,
 				CB4C58D90F3F90B000B5D7CB /* Credits.rtf */,
 				8D1107310486CEB800E47090 /* Info.plist */,
@@ -599,8 +602,8 @@
 				CB90BF810F49F430006D202D /* HostImporter.h */,
 				CB90BF820F49F430006D202D /* HostImporter.m */,
 				CB73615E19E4FDA000E0924F /* WhitelistScraper.h */,
-				CB73615F19E4FDA000E0924F /* WhitelistScraper.m */,
 				CBEE50BF0F48C21F00F5DF1C /* TimerWindowController.h */,
+				CB73615F19E4FDA000E0924F /* WhitelistScraper.m */,
 				CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */,
 				CBC2F8650F4674E300CF2A42 /* LaunchctlHelper.h */,
 				CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */,
@@ -920,6 +923,7 @@
 				CB249FED19D782230087BBB6 /* SelfControlIcon.icns in Resources */,
 				CBBF4E8E1582F8E000E364D9 /* Localizable.strings in Resources */,
 				CB0385E119D77051004614B6 /* PreferencesAdvancedViewController.xib in Resources */,
+				CB1B44BE23B7F1ED00EBA087 /* cheater-background.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
