@@ -199,7 +199,7 @@ int main(int argc, char* argv[]) {
         // and let the main app know to refresh
         sendConfigurationChangedNotification();
 
-`		[log appendString: @"\n===SelfControl-Killer complete!==="];
+		[log appendString: @"\n===SelfControl-Killer complete!==="];
 
 		[log writeToFile: logFilePath
 			  atomically: YES
