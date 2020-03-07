@@ -108,7 +108,6 @@ float const SYNC_LEEWAY_SECS = 30;
 - (NSString*)securedSettingsFilePath {
     NSString* homeDir = [self homeDirectoryForUid: self.userId];
     NSString* hash = [self sha1: [NSString stringWithFormat: @"SelfControlUserPreferences%@", [self getSerialNumber]]];
-    NSLog(@"securedSettingsFilePath = %@ (homeDir = %@ and hash = %@)", [[NSString stringWithFormat: @"%@/Library/Preferences/.%@.plist", homeDir, hash] stringByExpandingTildeInPath], homeDir, hash);
     return [[NSString stringWithFormat: @"%@/Library/Preferences/.%@.plist", homeDir, hash] stringByExpandingTildeInPath];
 }
 
@@ -153,7 +152,7 @@ float const SYNC_LEEWAY_SECS = 30;
         
         [self startSyncTimer];
 
-        NSLog(@"initialized settingsDict with contents of %@ to %@", [self securedSettingsFilePath], self->_settingsDict);
+        NSLog(@"initialized settingsDict with contents of %@ to %@", [self securedSettingsFilePath], [self->_settingsDict valueForKey: @"Blocklist"]);
     });
 }
 
@@ -195,13 +194,29 @@ float const SYNC_LEEWAY_SECS = 30;
         NSDate* diskSettingsLastUpdated = settingsFromDisk[@"LastSettingsUpdate"];
         NSDate* memorySettingsLastUpdated = [self valueForKey: @"LastSettingsUpdate"];
         
+        // occasionally we can end up with timestamps from the future
+        // (usually because the user moved their system clock forward, then back again)
+        // it's a weird edge case and we should just fix that when we see it
+        if ([diskSettingsLastUpdated timeIntervalSinceNow] > 0) {
+            NSLog(@"*** Reload: Disk settings were last updated in the FUTURE, fixing!");
+            // we'll pretend the disk was written 1 second ago in this case to avoid weird edge conditions
+            diskSettingsLastUpdated = [[NSDate date] dateByAddingTimeInterval: 1.0];
+        }
+        if ([memorySettingsLastUpdated timeIntervalSinceNow] > 0) {
+            NSLog(@"*** Reload: Memory settings were last updated in the FUTURE, fixing!");
+            memorySettingsLastUpdated = [NSDate date];
+            [self setValue: memorySettingsLastUpdated forKey: @"LastSettingsUpdate"];
+        }
+        
         if (diskSettingsLastUpdated == nil) diskSettingsLastUpdated = [NSDate distantPast];
         if (memorySettingsLastUpdated == nil) memorySettingsLastUpdated = [NSDate distantPast];
         
         if ([diskSettingsLastUpdated timeIntervalSinceDate: memorySettingsLastUpdated] > 0) {
+            NSLog(@"updated SCSettings from disk (bc %@ is before %@). Old blocklist was %@, new is %@", memorySettingsLastUpdated, diskSettingsLastUpdated, [_settingsDict valueForKey: @"Blocklist"], [settingsFromDisk valueForKey: @"Blocklist"]);
             _settingsDict = [settingsFromDisk mutableCopy];
             self.lastSynchronizedWithDisk = [NSDate date];
             NSLog(@"Newer SCSettings found on disk (updated %@ versus %@, updating...", diskSettingsLastUpdated, memorySettingsLastUpdated);
+            
         }
     }
 }
@@ -218,7 +233,7 @@ float const SYNC_LEEWAY_SECS = 30;
                 return;
             }
 
-            NSLog(@"writing %@ to %@", plistData, self.securedSettingsFilePath);
+            NSLog(@"writing %@ to %@", [self.settingsDict valueForKey: @"Blocklist"], self.securedSettingsFilePath);
             BOOL writeSuccessful = [plistData writeToFile: self.securedSettingsFilePath
                                                atomically: YES];
             
@@ -248,6 +263,15 @@ float const SYNC_LEEWAY_SECS = 30;
     [self reloadSettings];
     
     NSDate* lastSettingsUpdate = [self valueForKey: @"LastSettingsUpdate"];
+    
+    // occasionally we can end up with timestamps from the future
+    // (usually because the user moved their system clock forward, then back again)
+    // it's a weird edge case and we should just fix that when we see it
+    if ([lastSettingsUpdate timeIntervalSinceNow] > 0) {
+        NSLog(@"*** Sync: settings were last updated in the FUTURE, fixing!");
+        [self setValue: [NSDate date] forKey: @"LastSettingsUpdate"];
+    }
+    
     if ([lastSettingsUpdate timeIntervalSinceDate: self.lastSynchronizedWithDisk] > 0) {
         NSLog(@" --> Writing settings to disk (haven't been written since %@)", self.lastSynchronizedWithDisk);
         [self writeSettings];
@@ -276,7 +300,7 @@ float const SYNC_LEEWAY_SECS = 30;
         [self.settingsDict setValue: [NSDate date] forKey: @"LastSettingsUpdate"];
     }
         
-    NSLog(@"setting value (%@ = %@), self.description is %@", key, value, self.description);
+    NSLog(@"setting value (%@ = %@)", key, value);
     // notify other instances (presumably in other processes)
     [[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"org.eyebeam.SelfControl.SCSettingsValueChanged"
                                                                    object: self.description

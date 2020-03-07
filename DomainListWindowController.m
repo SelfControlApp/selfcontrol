@@ -138,6 +138,8 @@
 				[self tableView: aTableView setObjectValue: listComponents[i] forTableColumn: aTableColumn row: (int)[domainList_ count] - 1];
 			}
 		}
+        
+        NSLog(@"set value and domain list is now %@", domainList_);
 
 		[settings_ setValue: domainList_ forKey: @"Blocklist"];
 		[domainListTableView_ reloadData];
