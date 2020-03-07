@@ -116,6 +116,7 @@ int main(int argc, char* argv[]) {
 
 		task = [NSTask launchedTaskWithLaunchPath: @"/bin/launchctl"
 										arguments: @[@"unload",
+                                                     @"-w",
 													 @"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"]];
 		[task waitUntilExit];
 		

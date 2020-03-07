@@ -21,7 +21,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString*)securedSettingsFilePath;
 
 - (void)reloadSettings;
+- (void)writeSettingsWithCompletion:(nullable void(^)(NSError* _Nullable))completionBlock;
 - (void)writeSettings;
+- (void)synchronizeSettingsWithCompletion:(nullable void(^)(NSError* _Nullable))completionBlock;
 - (void)synchronizeSettings;
 - (void)setValue:(nullable id)value forKey:(NSString*)key;
 - (id)valueForKey:(NSString*)key;

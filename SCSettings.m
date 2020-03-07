@@ -127,6 +127,7 @@ float const SYNC_LEEWAY_SECS = 30;
         
         @"TamperingDetected": @NO,
 
+        @"SettingsVersionNumber": @0,
         @"LastSettingsUpdate": [NSDate distantPast] // special value that keeps track of when we last updated our settings
     };
 }
@@ -191,6 +192,8 @@ float const SYNC_LEEWAY_SECS = 30;
     @synchronized (self) {
         NSDictionary* settingsFromDisk = [NSDictionary dictionaryWithContentsOfFile: [self securedSettingsFilePath]];
         
+        int diskSettingsVersion = [settingsFromDisk[@"SettingsVersionNumber"] intValue];
+        int memorySettingsVersion = [[self valueForKey: @"SettingsVersionNumber"] intValue];
         NSDate* diskSettingsLastUpdated = settingsFromDisk[@"LastSettingsUpdate"];
         NSDate* memorySettingsLastUpdated = [self valueForKey: @"LastSettingsUpdate"];
         
@@ -207,35 +210,47 @@ float const SYNC_LEEWAY_SECS = 30;
             memorySettingsLastUpdated = [NSDate date];
             [self setValue: memorySettingsLastUpdated forKey: @"LastSettingsUpdate"];
         }
-        
+
         if (diskSettingsLastUpdated == nil) diskSettingsLastUpdated = [NSDate distantPast];
-        if (memorySettingsLastUpdated == nil) memorySettingsLastUpdated = [NSDate distantPast];
         
-        if ([diskSettingsLastUpdated timeIntervalSinceDate: memorySettingsLastUpdated] > 0) {
-            NSLog(@"updated SCSettings from disk (bc %@ is before %@). Old blocklist was %@, new is %@", memorySettingsLastUpdated, diskSettingsLastUpdated, [_settingsDict valueForKey: @"Blocklist"], [settingsFromDisk valueForKey: @"Blocklist"]);
+        // try to decide which is more recent by version number, tiebreak by date
+        BOOL diskMoreRecentThanMemory = NO;
+        if (diskSettingsVersion == memorySettingsVersion) {
+            diskMoreRecentThanMemory = ([diskSettingsLastUpdated timeIntervalSinceDate: memorySettingsLastUpdated] > 0);
+        } else {
+            diskMoreRecentThanMemory = (diskSettingsVersion > memorySettingsVersion);
+        }
+
+        if (diskMoreRecentThanMemory) {
             _settingsDict = [settingsFromDisk mutableCopy];
             self.lastSynchronizedWithDisk = [NSDate date];
-            NSLog(@"Newer SCSettings found on disk (updated %@ versus %@, updating...", diskSettingsLastUpdated, memorySettingsLastUpdated);
+            NSLog(@"Newer SCSettings found on disk (version %@ vs %@), updating...", diskSettingsVersion, memorySettingsVersion);
             
         }
     }
 }
-- (void)writeSettings {
+- (void)writeSettingsWithCompletion:(nullable void(^)(NSError* _Nullable))completionBlock {
     @synchronized (self) {
         // don't spend time on the main thread writing out files - it's OK for this to happen without blocking other things
         dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            NSString* serializationErrString;
-            NSData* plistData = [NSPropertyListSerialization dataFromPropertyList: self.settingsDict
+            NSError* serializationErr;
+            NSData* plistData = [NSPropertyListSerialization dataWithPropertyList: self.settingsDict
                                                                            format: NSPropertyListBinaryFormat_v1_0
-                                                                 errorDescription: &serializationErrString];
+                                                                          options: kNilOptions
+                                                                            error: &serializationErr];
+                            
             if (plistData == nil) {
-                NSLog(@"NSPropertyListSerialization error: %@", serializationErrString);
+                NSLog(@"NSPropertyListSerialization error: %@", serializationErr);
+                if (completionBlock != nil) completionBlock(serializationErr);
                 return;
             }
 
             NSLog(@"writing %@ to %@", [self.settingsDict valueForKey: @"Blocklist"], self.securedSettingsFilePath);
+            NSError* writeErr;
             BOOL writeSuccessful = [plistData writeToFile: self.securedSettingsFilePath
-                                               atomically: YES];
+                                                  options: NSDataWritingAtomic
+                                                    error: &writeErr
+                                    ];
             
             NSError* chmodErr;
             BOOL chmodSuccessful = [[NSFileManager defaultManager]
@@ -252,13 +267,25 @@ float const SYNC_LEEWAY_SECS = 30;
 
             if (!writeSuccessful) {
                 NSLog(@"Failed to write secured settings to file %@", self.securedSettingsFilePath);
+                if (completionBlock != nil) completionBlock(writeErr);
             } else if (!chmodSuccessful) {
                 NSLog(@"Failed to change secured settings file owner/permissions secured settings for file %@ with error %@", self.securedSettingsFilePath, chmodErr);
+                if (completionBlock != nil) completionBlock(chmodErr);
+            } else {
+                if (completionBlock != nil) completionBlock(nil);
             }
         });
     }
 }
-- (void)synchronizeSettings {
+- (void)writeSettings {
+    // by default, just log all errors
+    [self writeSettingsWithCompletion:^(NSError * _Nullable err) {
+        if (err != nil) {
+            NSLog(@"Error writing SCSettings: %@", err);
+        }
+    }];
+}
+- (void)synchronizeSettingsWithCompletion:(nullable void (^)(NSError * _Nullable))completionBlock {
     NSLog(@"Synchronizing settings at %@", [NSDate date]);
     [self reloadSettings];
     
@@ -274,8 +301,13 @@ float const SYNC_LEEWAY_SECS = 30;
     
     if ([lastSettingsUpdate timeIntervalSinceDate: self.lastSynchronizedWithDisk] > 0) {
         NSLog(@" --> Writing settings to disk (haven't been written since %@)", self.lastSynchronizedWithDisk);
-        [self writeSettings];
+        [self writeSettingsWithCompletion: completionBlock];
+    } else {
+        if(completionBlock != nil) completionBlock(nil);
     }
+}
+- (void)synchronizeSettings {
+    [self synchronizeSettingsWithCompletion: nil];
 }
 
 - (void)setValue:(id)value forKey:(NSString*)key {
@@ -297,6 +329,8 @@ float const SYNC_LEEWAY_SECS = 30;
         }
         
         // record the update
+        int newVersionNumber = [[self valueForKey: @"SettingsVersionNumber"] intValue] + 1;
+        [self.settingsDict setValue: [NSNumber numberWithInt: newVersionNumber] forKey: @"SettingsVersionNumber"];
         [self.settingsDict setValue: [NSDate date] forKey: @"LastSettingsUpdate"];
     }
         
@@ -307,6 +341,7 @@ float const SYNC_LEEWAY_SECS = 30;
                                                                  userInfo: @{
                                                                              @"key": key,
                                                                              @"value": value,
+                                                                             @"versionNumber": self.settingsDict[@"SettingsVersionNumber"],
                                                                              @"date": [NSDate date]
                                                                              }
                                                                   options: NSNotificationDeliverImmediately | NSNotificationPostToAllSessions
@@ -440,16 +475,29 @@ float const SYNC_LEEWAY_SECS = 30;
     
     // if this change happened before our latest update, it's kinda unclear what the end state should be
     // so ignore it and just queue up a sync instead
+    int noteVersionNumber = [note.userInfo[@"versionNumber"] intValue];
     NSDate* noteSettingUpdated = note.userInfo[@"date"];
+    int ourSettingsVersionNumber = [[self valueForKey: @"SettingsVersionNumber"] intValue];
     NSDate* ourSettingsLastUpdated = [self valueForKey: @"LastSettingsUpdate"];
-    if ([noteSettingUpdated timeIntervalSinceDate: ourSettingsLastUpdated] <= 0) {
+
+    // check by version number, tiebreak by last updated date
+    BOOL noteMoreRecentThanSettings = NO;
+    if (noteVersionNumber == ourSettingsVersionNumber) {
+        noteMoreRecentThanSettings = ([noteSettingUpdated timeIntervalSinceDate: ourSettingsLastUpdated] > 0);
+    } else {
+        noteMoreRecentThanSettings = (noteVersionNumber > ourSettingsVersionNumber);
+    }
+
+    if (!noteMoreRecentThanSettings) {
         NSLog(@"Ignoring setting change notification as %@ is older than %@", noteSettingUpdated, ourSettingsLastUpdated);
         [self synchronizeSettings];
         return;
+    } else {
+        NSLog(@"propagating change since version %d is newer than %d and/or %@ is older than %@", noteVersionNumber, ourSettingsVersionNumber, noteSettingUpdated, ourSettingsLastUpdated);
+        
+        // mirror the change on our own instance
+        [self setValue: note.userInfo[@"value"] forKey: note.userInfo[@"key"]];
     }
-    
-    // mirror the change on our own instance
-    [self setValue: note.userInfo[@"value"] forKey: note.userInfo[@"key"]];
 }
 
 - (void)dealloc {
