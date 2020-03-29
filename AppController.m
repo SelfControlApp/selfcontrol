@@ -227,6 +227,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 			[initialWindow_ makeKeyAndOrderFront: self];
 			// So we work around it and make key and front whatever was the main window
 			[mainWindow makeKeyAndOrderFront: self];
+            
+            // make sure the dock badge is cleared
+            [[NSApp dockTile] setBadgeLabel: nil];
 
 			[self closeTimerWindow];
 		}
