@@ -139,8 +139,6 @@
 			}
 		}
         
-        NSLog(@"set value and domain list is now %@", domainList_);
-
 		[settings_ setValue: domainList_ forKey: @"Blocklist"];
 		[domainListTableView_ reloadData];
 
