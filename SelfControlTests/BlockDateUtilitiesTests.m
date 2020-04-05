@@ -7,6 +7,7 @@
 
 #import <XCTest/XCTest.h>
 #import "SCBlockDateUtilities.h"
+#import "SCSettings.h"
 
 @interface BlockDateUtilitiesTests : XCTestCase
 
@@ -14,15 +15,14 @@
 
 // Static dictionaries of block values to test against
 
-NSDictionary* enabledActiveOldWayDict; // Enabled + active old way (started 5 minutes ago, duration 10 min)
-NSDictionary* enabledInactiveOldWayDict; // Enabled + inactive old way (started 10 minutes 5 seconds ago, duration 10 min)
-NSDictionary* disabledOldWayDict; // Disabled old way
-NSDictionary* enabledActiveNewWayDict; // Enabled + active new way (started 5 minutes ago, duration 10 min)
-NSDictionary* enabledInactiveNewWayDict; // Enabled + inactive new way (started 10 minutes 5 seconds ago, duration 10 min)
-NSDictionary* enabledActiveNewWayConflictingInfoDict; // Enabled + active new way, but with old values showing conflicting info
-NSDictionary* disabledNewWayDict; // Disabled new way
-NSDictionary* enabledOldDisabledNewDict; // Disabled new way, but enabled/active via the old way
-NSDictionary* clearDict; // Completely clear defaults (first run)
+NSDictionary* activeBlockLegacyDict; // Active (started 5 minutes ago, duration 10 min)
+NSDictionary* expiredBlockLegacyDict; // Expired (started 10 minutes 10 seconds ago, duration 10 min)
+NSDictionary* noBlockLegacyDict; // start date is distantFuture
+NSDictionary* noBlockLegacyDict2; // start date is nil
+NSDictionary* emptyLegacyDict; // literally an empty dictionary
+NSDictionary* futureStartDateLegacyDict; // start date is in the future
+NSDictionary* negativeBlockDurationLegacyDict; // block duration is negative
+NSDictionary* veryLongBlockLegacyDict; // year-long block, one day in
 
 @implementation BlockDateUtilitiesTests
 
@@ -31,52 +31,36 @@ NSDictionary* clearDict; // Completely clear defaults (first run)
 }
 
 + (void)setUp {
-    // Initialize the sample data dictionaries
-    enabledActiveOldWayDict = @{
-                                @"BlockStartedDate": [NSDate dateWithTimeIntervalSinceNow: -300],
-                                @"BlockDuration": @10,
-                                @"BlockEndDate": [NSNull null]
-                                };
-    enabledInactiveOldWayDict = @{
-                                  @"BlockStartedDate": [NSDate dateWithTimeIntervalSinceNow: -605],
-                                  @"BlockDuration": @10,
-                                  @"BlockEndDate": [NSNull null]
-                                  }; // Enabled + inactive old way (started 10 minutes 5 seconds ago, duration 10 min)
-    disabledOldWayDict = @{
-                           @"BlockStartedDate": [NSDate distantFuture],
-                           @"BlockDuration": @10,
-                           @"BlockEndDate": [NSNull null]
-                           };
-    enabledActiveNewWayDict = @{
-                                @"BlockStartedDate": [NSNull null],
-                                @"BlockDuration": @10,
-                                @"BlockEndDate": [NSDate dateWithTimeIntervalSinceNow: 300]
-                                };
-    enabledInactiveNewWayDict = @{
-                                  @"BlockStartedDate": [NSNull null],
-                                  @"BlockDuration": @10,
-                                  @"BlockEndDate": [NSDate dateWithTimeIntervalSinceNow: -5]
-                                  };
-    enabledActiveNewWayConflictingInfoDict = @{
-                                               @"BlockStartedDate": [NSDate dateWithTimeIntervalSinceNow: -605],
-                                               @"BlockDuration": @10,
-                                               @"BlockEndDate": [NSDate dateWithTimeIntervalSinceNow: 300]
-                                               };
-    disabledNewWayDict = @{
-                           @"BlockStartedDate": [NSNull null],
-                           @"BlockDuration": @10,
-                           @"BlockEndDate": [NSDate distantPast]
-                           };
-    enabledOldDisabledNewDict = @{
-                                  @"BlockStartedDate": [NSDate dateWithTimeIntervalSinceNow: -300],
-                                  @"BlockDuration": @10,
-                                  @"BlockEndDate": [NSDate distantPast]
-                                  };
-    clearDict = @{
-                  @"BlockEndDate": [NSNull null],
-                  @"BlockStartedDate": [NSNull null],
-                  @"BlockDuration": [NSNull null]
-                  };
+    // Initialize the sample legacy setting dictionaries
+    activeBlockLegacyDict = @{
+        @"BlockStartedDate": [NSDate dateWithTimeIntervalSinceNow: -300], // 5 minutes ago
+        @"BlockDuration": @10 // 10 minutes
+    };
+    expiredBlockLegacyDict = @{
+        @"BlockStartedDate": [NSDate dateWithTimeIntervalSinceNow: -610], // 10 min 10 seconds ago
+        @"BlockDuration": @10 // 10 minutes
+    };
+    noBlockLegacyDict = @{
+        @"BlockStartedDate": [NSDate distantFuture],
+        @"BlockDuration": @300 // 6 hours
+    };
+    noBlockLegacyDict2 = @{
+        @"BlockDuration": @300 // 6 hours
+    };
+    futureStartDateLegacyDict = @{
+        @"BlockStartedDate": [NSDate dateWithTimeIntervalSinceNow: 600], // 10 min from now
+        @"BlockDuration": @300 // 6 hours
+    };
+    negativeBlockDurationLegacyDict = @{
+        @"BlockStartedDate": [NSDate dateWithTimeIntervalSinceNow: -600], // 10 min ago
+        @"BlockDuration": @-15 // negative 15 minutes
+    };
+    veryLongBlockLegacyDict = @{
+        @"BlockStartedDate": [NSDate dateWithTimeIntervalSinceNow: -86400], // 1 day ago
+        @"BlockDuration": @432000 // 300 days
+    };
+    emptyLegacyDict = @{
+    };
 }
 
 - (void)setUp {
@@ -90,140 +74,75 @@ NSDictionary* clearDict; // Completely clear defaults (first run)
     [super tearDown];
 }
 
-- (void)testBlockEnabledActive {
-    NSUserDefaults* defaults = [self testDefaults];
-    
-    // Enabled + active old way (started 5 minutes ago, duration 10 min)
-    [defaults setValuesForKeysWithDictionary: enabledActiveOldWayDict];
-    XCTAssert([SCBlockDateUtilities blockIsRunningInDictionary: defaults.dictionaryRepresentation]);
-    XCTAssert([SCBlockDateUtilities blockShouldBeRunningInDictionary: defaults.dictionaryRepresentation]);
-    
-    // Enabled + inactive old way (started 10 minutes 5 seconds ago, duration 10 min)
-    [defaults setValuesForKeysWithDictionary: enabledInactiveOldWayDict];
-    XCTAssert([SCBlockDateUtilities blockIsRunningInDictionary: defaults.dictionaryRepresentation]);
-    XCTAssert(![SCBlockDateUtilities blockShouldBeRunningInDictionary: defaults.dictionaryRepresentation]);
-    
-    // Disabled old way
-    [defaults setValuesForKeysWithDictionary: disabledOldWayDict];
-    XCTAssert(![SCBlockDateUtilities blockIsRunningInDictionary: defaults.dictionaryRepresentation]);
-    XCTAssert(![SCBlockDateUtilities blockShouldBeRunningInDictionary: defaults.dictionaryRepresentation]);
-    
-    // Enabled + active new way (started 5 minutes ago, duration 10 min)
-    [defaults setValuesForKeysWithDictionary: enabledActiveNewWayDict];
-    XCTAssert([SCBlockDateUtilities blockIsRunningInDictionary: defaults.dictionaryRepresentation]);
-    XCTAssert([SCBlockDateUtilities blockShouldBeRunningInDictionary: defaults.dictionaryRepresentation]);
-    
-    // Enabled + inactive new way (started 10 minutes 5 seconds ago, duration 10 min)
-    [defaults setValuesForKeysWithDictionary: enabledInactiveNewWayDict];
-    XCTAssert([SCBlockDateUtilities blockIsRunningInDictionary: defaults.dictionaryRepresentation]);
-    XCTAssert(![SCBlockDateUtilities blockShouldBeRunningInDictionary: defaults.dictionaryRepresentation]);
-    
-    // Enabled + active new way, but with old values showing conflicting info
-    [defaults setValuesForKeysWithDictionary: enabledActiveNewWayConflictingInfoDict];
-    XCTAssert([SCBlockDateUtilities blockIsRunningInDictionary: defaults.dictionaryRepresentation]);
-    XCTAssert([SCBlockDateUtilities blockShouldBeRunningInDictionary: defaults.dictionaryRepresentation]);
-    
-    // Disabled new way
-    [defaults setValuesForKeysWithDictionary: disabledNewWayDict];
-    XCTAssert(![SCBlockDateUtilities blockIsRunningInDictionary: defaults.dictionaryRepresentation]);
-    XCTAssert(![SCBlockDateUtilities blockShouldBeRunningInDictionary: defaults.dictionaryRepresentation]);
-    
-    // Disabled new way, but enabled/active via the old way
-    [defaults setValuesForKeysWithDictionary: enabledOldDisabledNewDict];
-    XCTAssert([SCBlockDateUtilities blockIsRunningInDictionary: defaults.dictionaryRepresentation]);
-    XCTAssert([SCBlockDateUtilities blockShouldBeRunningInDictionary: defaults.dictionaryRepresentation]);
-    
 
-    // Completely clear
-    [defaults setValuesForKeysWithDictionary: clearDict];
-    XCTAssert(![SCBlockDateUtilities blockIsRunningInDictionary: defaults.dictionaryRepresentation]);
-    XCTAssert(![SCBlockDateUtilities blockShouldBeRunningInDictionary: defaults.dictionaryRepresentation]);
+- (void) testStartingAndRemovingBlocks {
+    SCSettings* settings = [SCSettings currentUserSettings];
+
+    XCTAssert(![SCBlockDateUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]);
+    XCTAssert(![SCBlockDateUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]);
+
+    // test starting a block
+    [SCBlockDateUtilities startBlockInSettings: settings withBlockDuration: 21600];
+    XCTAssert([SCBlockDateUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]);
+    NSTimeInterval timeToBlockEnd = [[settings valueForKey: @"BlockEndDate"] timeIntervalSinceNow];
+    XCTAssert(round(timeToBlockEnd) == 21600);
+
+    // test removing a block
+    [SCBlockDateUtilities removeBlockFromSettings: settings];
+    XCTAssert(![SCBlockDateUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]);
+}
+- (void) testModernBlockDetection {
+    SCSettings* settings = [SCSettings currentUserSettings];
+
+    XCTAssert(![SCBlockDateUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]);
+    XCTAssert(![SCBlockDateUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]);
+
+    // test starting a block
+    [SCBlockDateUtilities startBlockInSettings: settings withBlockDuration: 21600];
+    XCTAssert(![SCBlockDateUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]);
+    XCTAssert([SCBlockDateUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]);
+
+    // turn the block "on"
+    [settings setValue: @YES forKey: @"BlockIsRunning"];
+    XCTAssert([SCBlockDateUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]);
+    XCTAssert([SCBlockDateUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]);
+
+    // remove the block
+    [SCBlockDateUtilities removeBlockFromSettings: settings];
+    XCTAssert(![SCBlockDateUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]);
+    XCTAssert(![SCBlockDateUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]);
 }
 
-- (void)testStartBlock {
-    NSUserDefaults* defaults = [self testDefaults];
-    NSDate* blockEndDate;
-    NSDate* expectedEndDate;
+- (void) testLegacyBlockDetection {
+    // test blockIsRunningInLegacyDictionary
+    // the block is "running" even if it's expired, since it hasn't been removed
+    XCTAssert([SCBlockDateUtilities blockIsRunningInLegacyDictionary: activeBlockLegacyDict]);
+    XCTAssert([SCBlockDateUtilities blockIsRunningInLegacyDictionary: expiredBlockLegacyDict]);
+    XCTAssert(![SCBlockDateUtilities blockIsRunningInLegacyDictionary: noBlockLegacyDict]);
+    XCTAssert(![SCBlockDateUtilities blockIsRunningInLegacyDictionary: noBlockLegacyDict2]);
+    XCTAssert([SCBlockDateUtilities blockIsRunningInLegacyDictionary: futureStartDateLegacyDict]);
+    XCTAssert([SCBlockDateUtilities blockIsRunningInLegacyDictionary: negativeBlockDurationLegacyDict]); // negative still might be running?
+    XCTAssert([SCBlockDateUtilities blockIsRunningInLegacyDictionary: veryLongBlockLegacyDict]);
+    XCTAssert(![SCBlockDateUtilities blockIsRunningInLegacyDictionary: emptyLegacyDict]);
     
-    // Start from disabled (new way) with 10 min block duraion
-    [defaults setValuesForKeysWithDictionary: disabledNewWayDict];
-    [SCBlockDateUtilities startBlockInDefaults: defaults];
-    XCTAssert([SCBlockDateUtilities blockIsRunningInDictionary: defaults.dictionaryRepresentation]);
-    XCTAssert([SCBlockDateUtilities blockShouldBeRunningInDictionary: defaults.dictionaryRepresentation]);
-    // Block end date should now be 10 min from now (with minor margin for timing error)
-    blockEndDate = defaults.dictionaryRepresentation[@"BlockEndDate"];
-    expectedEndDate = [NSDate dateWithTimeIntervalSinceNow: 600];
-    XCTAssert([blockEndDate timeIntervalSinceDate: expectedEndDate] < 2 && [blockEndDate timeIntervalSinceDate: expectedEndDate] > -2);
-    
-    // Start from disabled (old way) with 10 min block duraion
-    [defaults setValuesForKeysWithDictionary: disabledOldWayDict];
-    [SCBlockDateUtilities startBlockInDefaults: defaults];
-    XCTAssert([SCBlockDateUtilities blockIsRunningInDictionary: defaults.dictionaryRepresentation]);
-    XCTAssert([SCBlockDateUtilities blockShouldBeRunningInDictionary: defaults.dictionaryRepresentation]);
-    // Block end date should now be 10 min from now (with minor margin for timing error)
-    blockEndDate = defaults.dictionaryRepresentation[@"BlockEndDate"];
-    expectedEndDate = [NSDate dateWithTimeIntervalSinceNow: 600];
-    XCTAssert([blockEndDate timeIntervalSinceDate: expectedEndDate] < 2 && [blockEndDate timeIntervalSinceDate: expectedEndDate] > -2);
-    // Old BlockStartedDate Property should be cleared
-    NSDate* blockStartedDate = [defaults objectForKey: @"BlockStartedDate"];
-    XCTAssert(blockStartedDate == nil || [blockStartedDate isEqualToDate: [NSDate distantFuture]]);
+    // test endDateFromLegacyBlockDictionary
+    NSDate* activeBlockEndDate = [SCBlockDateUtilities endDateFromLegacyBlockDictionary: activeBlockLegacyDict];
+    NSDate* expiredBlockEndDate = [SCBlockDateUtilities endDateFromLegacyBlockDictionary: expiredBlockLegacyDict];
+    NSDate* noBlockBlockEndDate = [SCBlockDateUtilities endDateFromLegacyBlockDictionary: noBlockLegacyDict];
+    NSDate* noBlock2BlockEndDate = [SCBlockDateUtilities endDateFromLegacyBlockDictionary: noBlockLegacyDict2];
+    NSDate* futureStartBlockEndDate = [SCBlockDateUtilities endDateFromLegacyBlockDictionary: futureStartDateLegacyDict];
+    NSDate* negativeDurationBlockEndDate = [SCBlockDateUtilities endDateFromLegacyBlockDictionary: negativeBlockDurationLegacyDict];
+    NSDate* veryLongBlockEndDate = [SCBlockDateUtilities endDateFromLegacyBlockDictionary: veryLongBlockLegacyDict];
+    NSDate* emptyBlockEndDate = [SCBlockDateUtilities endDateFromLegacyBlockDictionary: emptyLegacyDict];
 
-    // Start from clear (no block duration)
-    // Block duration defaults to 15 min, so it should start block with duration 15 minutes
-    [defaults setValuesForKeysWithDictionary: clearDict];
-    [SCBlockDateUtilities startBlockInDefaults: defaults];
-    XCTAssert([SCBlockDateUtilities blockIsRunningInDictionary: defaults.dictionaryRepresentation]);
-    XCTAssert([SCBlockDateUtilities blockShouldBeRunningInDictionary: defaults.dictionaryRepresentation]);
-    // Block end date should be now (with minor margin for timing error)
-    blockEndDate = defaults.dictionaryRepresentation[@"BlockEndDate"];
-    expectedEndDate = [NSDate dateWithTimeIntervalSinceNow: 900];
-    XCTAssert([blockEndDate timeIntervalSinceDate: expectedEndDate] < 2 && [blockEndDate timeIntervalSinceDate: expectedEndDate] > -2);
-    
-    // Start when block is already active - should keep block active, but change the block ending date
-    [defaults setValuesForKeysWithDictionary: enabledActiveNewWayDict];
-    [defaults setValue: @20 forKey: @"BlockDuration"]; // change duration so we can notice the block ending date changing
-    [SCBlockDateUtilities startBlockInDefaults: defaults];
-    XCTAssert([SCBlockDateUtilities blockIsRunningInDictionary: defaults.dictionaryRepresentation]);
-    XCTAssert([SCBlockDateUtilities blockShouldBeRunningInDictionary: defaults.dictionaryRepresentation]);
-    // Block end date should be 20 min from now (with minor margin for timing error)
-    blockEndDate = defaults.dictionaryRepresentation[@"BlockEndDate"];
-    expectedEndDate = [NSDate dateWithTimeIntervalSinceNow: 1200];
-    XCTAssert([blockEndDate timeIntervalSinceDate: expectedEndDate] < 2 && [blockEndDate timeIntervalSinceDate: expectedEndDate] > -2);
+    XCTAssert(round([activeBlockEndDate timeIntervalSinceNow]) == 300); // 5 min from now
+    XCTAssert(round([expiredBlockEndDate timeIntervalSinceNow]) == -10); // 10 seconds ago
+    XCTAssert([noBlockBlockEndDate isEqualToDate: [NSDate distantPast]]); // no block should be active
+    XCTAssert([noBlock2BlockEndDate isEqualToDate: [NSDate distantPast]]); // no block should be active
+    XCTAssert([futureStartBlockEndDate isEqualToDate: [NSDate distantPast]]); // no block should be active
+    XCTAssert([negativeDurationBlockEndDate isEqualToDate: [NSDate distantPast]]); // no block should be active
+    XCTAssert(round([veryLongBlockEndDate timeIntervalSinceNow]) == 25833600); // 299 days from now
+    XCTAssert([emptyBlockEndDate isEqualToDate: [NSDate distantPast]]); // block should be expired
 }
-
-- (void)testRemoveBlock {
-    NSUserDefaults* defaults = [self testDefaults];
-    
-    // Remove when block is active/enabled with new properties
-    [defaults setValuesForKeysWithDictionary: enabledActiveNewWayDict];
-    [SCBlockDateUtilities removeBlockFromDefaults: defaults];
-    XCTAssert(![SCBlockDateUtilities blockIsRunningInDictionary: defaults.dictionaryRepresentation]);
-    XCTAssert(![SCBlockDateUtilities blockShouldBeRunningInDictionary: defaults.dictionaryRepresentation]);
-    
-    // Remove when block is active/enabled with old properties
-    [defaults setValuesForKeysWithDictionary: enabledActiveOldWayDict];
-    [SCBlockDateUtilities removeBlockFromDefaults: defaults];
-    XCTAssert(![SCBlockDateUtilities blockIsRunningInDictionary: defaults.dictionaryRepresentation]);
-    XCTAssert(![SCBlockDateUtilities blockShouldBeRunningInDictionary: defaults.dictionaryRepresentation]);
-    
-    // Remove when block is enabled but inactive with new properties
-    [defaults setValuesForKeysWithDictionary: enabledInactiveNewWayDict];
-    [SCBlockDateUtilities removeBlockFromDefaults: defaults];
-    XCTAssert(![SCBlockDateUtilities blockIsRunningInDictionary: defaults.dictionaryRepresentation]);
-    XCTAssert(![SCBlockDateUtilities blockShouldBeRunningInDictionary: defaults.dictionaryRepresentation]);
-    
-    // Remove when block is enabled but inactive with old properties
-    [defaults setValuesForKeysWithDictionary: enabledInactiveOldWayDict];
-    [SCBlockDateUtilities removeBlockFromDefaults: defaults];
-    XCTAssert(![SCBlockDateUtilities blockIsRunningInDictionary: defaults.dictionaryRepresentation]);
-    XCTAssert(![SCBlockDateUtilities blockShouldBeRunningInDictionary: defaults.dictionaryRepresentation]);
-    
-    // Remove when block is already disabled (should stay disabled)
-    [defaults setValuesForKeysWithDictionary: disabledNewWayDict];
-    [SCBlockDateUtilities removeBlockFromDefaults: defaults];
-    XCTAssert(![SCBlockDateUtilities blockIsRunningInDictionary: defaults.dictionaryRepresentation]);
-    XCTAssert(![SCBlockDateUtilities blockShouldBeRunningInDictionary: defaults.dictionaryRepresentation]);
-}
-
 
 @end

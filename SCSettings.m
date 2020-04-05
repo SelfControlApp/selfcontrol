@@ -138,9 +138,13 @@ float const SYNC_LEEWAY_SECS = 30;
     dispatch_once(&onceToken, ^{
         self->_settingsDict = [NSMutableDictionary dictionaryWithContentsOfFile: [self securedSettingsFilePath]];
         
+        BOOL isTest = [[NSUserDefaults standardUserDefaults] boolForKey: @"isTest"];
+        if (isTest) NSLog(@"Ignoring settings on disk because we're unit-testing");
+        
         // if we don't have a settings dictionary on disk yet,
         // set it up with the default values (and migrate legacy settings also)
-        if (self->_settingsDict == nil) {
+        // also if we're running tests, just use the default dict
+        if (self->_settingsDict == nil || isTest) {
             self->_settingsDict = [[self defaultSettingsDict] mutableCopy];
             [self migrateLegacySettings];
             
@@ -231,6 +235,13 @@ float const SYNC_LEEWAY_SECS = 30;
 }
 - (void)writeSettingsWithCompletion:(nullable void(^)(NSError* _Nullable))completionBlock {
     @synchronized (self) {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey: @"isTest"]) {
+            // no writing to disk during unit tests
+            NSLog(@"Would write settings to disk now (but no writing during unit tests)");
+            if (completionBlock != nil) completionBlock(nil);
+            return;
+        }
+        
         // don't spend time on the main thread writing out files - it's OK for this to happen without blocking other things
         dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             NSError* serializationErr;
