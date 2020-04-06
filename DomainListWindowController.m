@@ -70,7 +70,7 @@
 	[domainListTableView_ abortEditing];
 
 	// This isn't the most efficient way to do this, but the code is much cleaner
-	// than other methods and the domain blacklist will probably never be large
+	// than other methods and the domain blocklist will probably never be large
 	// enough for it to be an issue.
 	NSUInteger index = [selected firstIndex];
 	int shift = 0;

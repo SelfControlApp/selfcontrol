@@ -71,8 +71,8 @@
 /* Class = "NSButtonCell"; title = "Start"; ObjectID = "542"; */
 "542.title" = "Start";
 
-/* Class = "NSButtonCell"; title = "Edit Blacklist"; ObjectID = "544"; */
-"544.title" = "Edit Blacklist";
+/* Class = "NSButtonCell"; title = "Edit Blocklist"; ObjectID = "544"; */
+"544.title" = "Edit Blocklist";
 
 /* Class = "NSMenuItem"; title = "Voorkeuren..."; ObjectID = "614"; */
 "614.title" = "Voorkeuren...";

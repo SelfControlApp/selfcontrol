@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -54,7 +55,7 @@
                                     <action selector="openPreferences:" target="469" id="907"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Edit Blacklist..." keyEquivalent="d" id="503">
+                            <menuItem title="Edit Blocklist..." keyEquivalent="d" id="503">
                                 <connections>
                                     <action selector="showDomainList:" target="469" id="515"/>
                                 </connections>
@@ -227,42 +228,43 @@
                     </menu>
                 </menuItem>
             </items>
+            <point key="canvasLocation" x="140" y="137"/>
         </menu>
         <window title="SelfControl" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="371">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" texturedBackground="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="451" y="331" width="620" height="111"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
             <view key="contentView" id="372">
                 <rect key="frame" x="0.0" y="0.0" width="620" height="111"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="465">
-                        <rect key="frame" x="18" y="41" width="584" height="25"/>
+                        <rect key="frame" x="18" y="40" width="584" height="25"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="22" id="aHf-Ya-8uh"/>
                         </constraints>
                         <sliderCell key="cell" continuous="YES" alignment="left" maxValue="1440" doubleValue="30" tickMarkPosition="below" numberOfTickMarks="97" allowsTickMarkValuesOnly="YES" sliderType="linear" id="466">
-                            <font key="font" size="12" name="Helvetica"/>
+                            <font key="font" metaFont="user"/>
                         </sliderCell>
                         <connections>
                             <action selector="updateTimeSliderDisplay:" target="469" id="481"/>
                         </connections>
                     </slider>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="478">
-                        <rect key="frame" x="17" y="16" width="585" height="17"/>
+                        <rect key="frame" x="17" y="16" width="585" height="16"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="30 minutes" id="479">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="543">
-                        <rect key="frame" x="480" y="9" width="120" height="25"/>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="543" userLabel="Edit Blocklist Button">
+                        <rect key="frame" x="480" y="10" width="120" height="23"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="hTb-jo-56c"/>
                         </constraints>
-                        <buttonCell key="cell" type="roundTextured" title="Edit Blacklist" bezelStyle="texturedRounded" alignment="center" borderStyle="border" allowsMixedState="YES" inset="2" id="544">
+                        <buttonCell key="cell" type="roundTextured" title="Edit Blocklist" bezelStyle="texturedRounded" alignment="center" borderStyle="border" allowsMixedState="YES" inset="2" id="544">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
@@ -271,7 +273,7 @@
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="541">
-                        <rect key="frame" x="261" y="71" width="97" height="25"/>
+                        <rect key="frame" x="262" y="72" width="97" height="23"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="97" id="Wgy-0n-fJ9"/>
                         </constraints>
@@ -312,7 +314,7 @@ DQ
                 <outlet property="blockDurationSlider_" destination="465" id="669"/>
                 <outlet property="blockSliderTimeDisplayLabel_" destination="478" id="670"/>
                 <outlet property="domainListMenuItem_" destination="503" id="673"/>
-                <outlet property="editBlacklistButton_" destination="543" id="749"/>
+                <outlet property="editBlocklistButton_" destination="543" id="6tH-Bv-ZNK"/>
                 <outlet property="initialWindow_" destination="371" id="672"/>
                 <outlet property="submitButton_" destination="541" id="671"/>
             </connections>

@@ -40,7 +40,7 @@
 	IBOutlet NSButton* submitButton_;
 	IBOutlet NSWindow* initialWindow_;
 	IBOutlet NSMenuItem* domainListMenuItem_;
-	IBOutlet NSButton* editBlacklistButton_;
+	IBOutlet NSButton* editBlocklistButton_;
 	IBOutlet DomainListWindowController* domainListWindowController_;
 	IBOutlet TimerWindowController* timerWindowController_;
 	NSWindowController* preferencesWindowController_;
@@ -81,9 +81,9 @@
 
 - (void)handleConfigurationChangedNotification;
 
-// Called when the "Edit blacklist" button is clicked or the menu item is
+// Called when the "Edit blocklist" button is clicked or the menu item is
 // selected.  Allocates a new DomainListWindowController if necessary and opens
-// the domain blacklist window.  Spawns an alert box if a block is in progress.
+// the domain blocklist window.  Spawns an alert box if a block is in progress.
 - (IBAction)showDomainList:(id)sender;
 
 // Returns YES if, according to a flag set in the user defaults system, the
@@ -106,7 +106,7 @@
 @property (nonatomic, readonly) BOOL networkConnectionIsAvailable;
 
 // Called by timerWindowController_ after its sheet returns, to add a specified
-// host to the blacklist (and refresh the block to use the new blacklist).  Launches
+// host to the blocklist (and refresh the block to use the new blocklist).  Launches
 // a new thread with refreshBlock:
 - (void)addToBlockList:(NSString*)host lock:(NSLock*)lock;
 

@@ -47,7 +47,7 @@
 /* Class = "NSTextFieldCell"; title = "30 minutes"; ObjectID = "479"; */
 "479.title" = "30 minutter";
 
-/* Class = "NSMenuItem"; title = "Edit Blacklist..."; ObjectID = "503"; */
+/* Class = "NSMenuItem"; title = "Edit Blocklist..."; ObjectID = "503"; */
 "503.title" = "Rediger Blackliste...";
 
 /* Class = "NSMenuItem"; title = "Item 1"; ObjectID = "505"; */

@@ -152,7 +152,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		return;
 	}
 	if([[settings_ valueForKey:@"Blocklist"] count] == 0) {
-		// Since the Start button should be disabled when the blacklist has no entries,
+		// Since the Start button should be disabled when the blocklist has no entries,
 		// this should definitely not be happening.  Exit.
 
 		NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
@@ -249,11 +249,11 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		// If we're adding a block, we want buttons disabled.
 		if(!addBlockIsOngoing) {
 			[blockDurationSlider_ setEnabled: YES];
-			[editBlacklistButton_ setEnabled: YES];
+			[editBlocklistButton_ setEnabled: YES];
 			[submitButton_ setTitle: NSLocalizedString(@"Start", @"Start button")];
 		} else {
 			[blockDurationSlider_ setEnabled: NO];
-			[editBlacklistButton_ setEnabled: NO];
+			[editBlocklistButton_ setEnabled: NO];
 			[submitButton_ setTitle: NSLocalizedString(@"Loading", @"Loading button")];
 		}
 
@@ -414,7 +414,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	if([self selfControlLaunchDaemonIsLoaded] || addBlockIsOngoing) {
 		NSAlert* blockInProgressAlert = [[NSAlert alloc] init];
 		[blockInProgressAlert setMessageText: NSLocalizedString(@"Block in progress", @"Block in progress error title")];
-		[blockInProgressAlert setInformativeText:NSLocalizedString(@"The blacklist cannot be edited while a block is in progress.", @"Block in progress explanation")];
+		[blockInProgressAlert setInformativeText:NSLocalizedString(@"The blocklist cannot be edited while a block is in progress.", @"Block in progress explanation")];
 		[blockInProgressAlert addButtonWithTitle: NSLocalizedString(@"OK", @"OK button")];
 		[blockInProgressAlert runModal];
 
@@ -487,7 +487,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		// before we return.
 		[self refreshUserInterface];
 
-		// Reverse the blacklist change made before we fail
+		// Reverse the blocklist change made before we fail
 		NSMutableArray* list = [[settings_ valueForKey: @"Blocklist"] mutableCopy];
 		[list removeLastObject];
 		[settings_ setValue: list forKey: @"Blocklist"];
@@ -509,7 +509,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		[networkUnavailableAlert addButtonWithTitle: NSLocalizedString(@"Network Diagnostics...", @"Network Diagnostics button")];
 		if([networkUnavailableAlert runModal] == NSAlertFirstButtonReturn) {
 			// User clicked cancel
-			// Reverse the blacklist change made before we fail
+			// Reverse the blocklist change made before we fail
 			NSMutableArray* list = [[settings_ valueForKey: @"Blocklist"] mutableCopy];
 			[list removeLastObject];
 			[settings_ setValue: list forKey: @"Blocklist"];
@@ -523,7 +523,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		CFNetDiagnosticRef diagRef = CFNetDiagnosticCreateWithURL(kCFAllocatorDefault, url);
 		CFNetDiagnosticDiagnoseProblemInteractively(diagRef);
 
-		// Reverse the blacklist change made before we fail
+		// Reverse the blocklist change made before we fail
 		NSMutableArray* list = [[settings_ valueForKey: @"Blocklist"] mutableCopy];
 		[list removeLastObject];
 		[settings_ setValue: list forKey: @"Blocklist"];
@@ -627,7 +627,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 			[description appendString: @"Remove option called."];
 			break;
 		case -213:
-			[description appendString: @"Refreshing domain blacklist, but no block is currently ongoing."];
+			[description appendString: @"Refreshing domain blocklist, but no block is currently ongoing."];
 			break;
 		case -214:
 			[description appendString: @"Insufficient block information found."];
@@ -698,7 +698,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
         [settings_ synchronizeSettings];
 
 		// We need to pass our UID to the helper tool.  It needs to know whose defaults
-		// it should reading in order to properly load the blacklist.
+		// it should reading in order to properly load the blocklist.
 		char uidString[32];
 		snprintf(uidString, sizeof(uidString), "%d", getuid());
 
@@ -804,7 +804,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		if(status) {
 			NSLog(@"ERROR: Failed to authorize block refresh.");
 
-			// Reverse the blacklist change made before we fail
+			// Reverse the blocklist change made before we fail
 			NSMutableArray* list = [[settings_ valueForKey: @"Blocklist"] mutableCopy];
 			[list removeLastObject];
 			[settings_ setValue: list forKey: @"Blocklist"];
@@ -818,7 +818,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
         [settings_ synchronizeSettings];
 
 		// We need to pass our UID to the helper tool.  It needs to know whose defaults
-		// it should read in order to properly load the blacklist.
+		// it should read in order to properly load the blocklist.
 		char uidString[32];
 		snprintf(uidString, sizeof(uidString), "%d", getuid());
 

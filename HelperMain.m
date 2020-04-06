@@ -200,7 +200,7 @@ int main(int argc, char* argv[]) {
             SCSettings* settings = [SCSettings settingsForUser: controllingUID];
 
             if([[settings valueForKey: @"Blocklist"] count] <= 0 || ![SCBlockDateUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
-                NSLog(@"ERROR: Refreshing domain blacklist, but no block is currently ongoing or the blocklist is empty.");
+                NSLog(@"ERROR: Refreshing domain blocklist, but no block is currently ongoing or the blocklist is empty.");
                 printStatus(-213);
                 exit(EX_SOFTWARE);
 			}

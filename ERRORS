@@ -16,7 +16,7 @@
 -210 - Insufficient block information found.
 -211 - Launch daemon load returned a failure status code.
 -212 - Remove option called
--213 - Refreshing domain blacklist, but no block is currently ongoing.
+-213 - Refreshing domain blocklist, but no block is currently ongoing.
 -214 - Insufficient block information found.
 -215 - Checkup ran but no block found.
 -216 - Could not write lock file.
@@ -25,4 +25,4 @@
 -219 - Trying to add block but lock file already found.  Please try again.
 
 -901 - Selected sound not found.
--902 - Error serializing blacklist for save
+-902 - Error serializing blocklist for save
