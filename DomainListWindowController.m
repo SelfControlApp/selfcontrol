@@ -42,6 +42,10 @@
 
 	return self;
 }
+- (void)awakeFromNib  {
+    NSInteger indexToSelect = [[settings_ valueForKey: @"BlockAsWhitelist"] boolValue] ? 1 : 0;
+    [whitelistRadioMatrix_ selectCellAtRow: indexToSelect column: 0];
+}
 
 - (void)showWindow:(id)sender {
 	[[self window] makeKeyAndOrderFront: self];
@@ -307,6 +311,32 @@
 		[cell setTextColor: NSColor.textColor];
 	}
 }
+
+- (IBAction)whitelistOptionChanged:(NSMatrix*)sender {
+    switch (sender.selectedRow) {
+        case 0:
+            [settings_ setValue: @NO forKey: @"BlockAsWhitelist"];
+            break;
+        case 1:
+            [self showWhitelistWarning];
+            [settings_ setValue: @YES forKey: @"BlockAsWhitelist"];
+            break;
+    }
+}
+
+- (void)showWhitelistWarning {
+    if(![defaults_ boolForKey: @"WhitelistAlertSuppress"]) {
+        NSAlert* a = [NSAlert alertWithMessageText: NSLocalizedString(@"Are you sure you want a whitelist block?", @"Whitelist block confirmation prompt") defaultButton: NSLocalizedString(@"OK", @"OK button") alternateButton: @"" otherButton: @"" informativeTextWithFormat: NSLocalizedString(@"A whitelist block means that everything on the internet BESIDES your specified list will be blocked.  This includes the web, email, SSH, and anything else your computer accesses via the internet.  If a web site requires resources such as images or scripts from a site that is not on your whitelist, the site may not work properly.", @"Whitelist block explanation")];
+        if([a respondsToSelector: @selector(setShowsSuppressionButton:)]) {
+            [a setShowsSuppressionButton: YES];
+        }
+        [a runModal];
+        if([a respondsToSelector: @selector(suppressionButton)] && [[a suppressionButton] state] == NSOnState) {
+            [defaults_ setBool: YES forKey: @"WhitelistAlertSuppress"];
+        }
+    }
+}
+
 
 - (void)addHostArray:(NSArray*)arr {
 	for(int i = 0; i < [arr count]; i++) {

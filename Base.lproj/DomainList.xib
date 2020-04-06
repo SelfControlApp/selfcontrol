@@ -116,7 +116,7 @@
                                     <tableColumns>
                                         <tableColumn width="396" minWidth="40" maxWidth="1000" id="17">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="Domain Name">
-                                                <font key="font" metaFont="message" size="11"/>
+                                                <font key="font" metaFont="label" size="11"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
                                             </tableHeaderCell>
@@ -179,14 +179,11 @@
                                 <buttonCell type="radio" title="Whitelist" imagePosition="left" alignment="left" inset="2" id="111">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
-                                    <connections>
-                                        <action selector="switchedToWhitelist:" target="-2" id="126"/>
-                                    </connections>
                                 </buttonCell>
                             </column>
                         </cells>
                         <connections>
-                            <binding destination="113" name="selectedIndex" keyPath="values.BlockAsWhitelist" id="123"/>
+                            <action selector="whitelistOptionChanged:" target="48" id="OMk-L5-3Bl"/>
                         </connections>
                     </matrix>
                     <button toolTip="Add (⇧=)" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="42">
@@ -245,10 +242,18 @@ CA
         <customObject id="48" userLabel="Domain List Window Controller" customClass="DomainListWindowController">
             <connections>
                 <outlet property="domainListTableView_" destination="15" id="106"/>
+                <outlet property="whitelistRadioMatrix_" destination="109" id="9FT-ZJ-kZG"/>
                 <outlet property="window" destination="1" id="124"/>
             </connections>
         </customObject>
         <userDefaultsController representsSharedInstance="YES" id="113"/>
+        <customObject id="NEd-wg-0Tw" userLabel="Domain List Window Controller" customClass="DomainListWindowController">
+            <connections>
+                <outlet property="domainListTableView_" destination="15" id="60h-kO-EHB"/>
+                <outlet property="whitelistRadioMatrix_" destination="109" id="daJ-2Z-hcN"/>
+                <outlet property="window" destination="1" id="VhD-nK-i73"/>
+            </connections>
+        </customObject>
     </objects>
     <resources>
         <image name="NSAddTemplate" width="11" height="11"/>

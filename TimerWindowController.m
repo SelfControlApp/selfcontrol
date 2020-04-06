@@ -184,6 +184,9 @@
 		// empty to remove any badge if there is one.
 		[[NSApp dockTile] setBadgeLabel: nil];
 	}
+    
+    // make sure add to list is disabled if it's a whitelist block
+    addToBlockButton_.hidden = [[settings_ valueForKey: @"BlockAsWhitelist"] boolValue];
 }
 
 - (void)windowShouldClose:(NSNotification *)notification {
