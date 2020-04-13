@@ -23,7 +23,7 @@
 
 
 #import "TimerWindowController.h"
-#import "SCBlockDateUtilities.h"
+#import "SCUtilities.h"
 
 @interface TimerWindowController ()
 

@@ -27,7 +27,7 @@
 		A8CE188B21F9EF2D44ECBED3 /* Pods_SelfControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B27D9D2EEE63F8097F8F2190 /* Pods_SelfControl.framework */; };
 		CB0385E119D77051004614B6 /* PreferencesAdvancedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB0385DD19D77051004614B6 /* PreferencesAdvancedViewController.xib */; };
 		CB0385E219D77051004614B6 /* PreferencesGeneralViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB0385DF19D77051004614B6 /* PreferencesGeneralViewController.xib */; };
-		CB0EEF7820FE49030024D27B /* BlockDateUtilitiesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB0EEF7720FE49020024D27B /* BlockDateUtilitiesTests.m */; };
+		CB0EEF7820FE49030024D27B /* SCUtilitiesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB0EEF7720FE49020024D27B /* SCUtilitiesTests.m */; };
 		CB114283222CCF19004B7868 /* SCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF3B573217BADD7006D5F52 /* SCSettings.m */; };
 		CB114284222CD4F0004B7868 /* SCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF3B573217BADD7006D5F52 /* SCSettings.m */; };
 		CB1B44BE23B7F1ED00EBA087 /* cheater-background.png in Resources */ = {isa = PBXBuildFile; fileRef = CB1B44BD23B7F1ED00EBA087 /* cheater-background.png */; };
@@ -83,11 +83,11 @@
 		CB9C813219CFBBE200CDCAE1 /* SCKillerHelper in Copy Helper Tools */ = {isa = PBXBuildFile; fileRef = CB9C811B19CFBA8500CDCAE1 /* SCKillerHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		CBA2AFD90F39EC46005AFEBE /* HelperMain.m in Sources */ = {isa = PBXBuildFile; fileRef = CBA2AFD80F39EC46005AFEBE /* HelperMain.m */; };
 		CBB0AE2A0FA74566006229B3 /* HostFileBlocker.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB0AE290FA74566006229B3 /* HostFileBlocker.m */; };
-		CBB1731520F041F4007FCAE9 /* SCBlockDateUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1731320F041F4007FCAE9 /* SCBlockDateUtilities.m */; };
-		CBB1731920F05C07007FCAE9 /* SCBlockDateUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1731320F041F4007FCAE9 /* SCBlockDateUtilities.m */; };
-		CBB1731A20F05C08007FCAE9 /* SCBlockDateUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1731320F041F4007FCAE9 /* SCBlockDateUtilities.m */; };
-		CBB1731B20F05C09007FCAE9 /* SCBlockDateUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1731320F041F4007FCAE9 /* SCBlockDateUtilities.m */; };
-		CBB1731C20F05C0A007FCAE9 /* SCBlockDateUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1731320F041F4007FCAE9 /* SCBlockDateUtilities.m */; };
+		CBB1731520F041F4007FCAE9 /* SCUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1731320F041F4007FCAE9 /* SCUtilities.m */; };
+		CBB1731920F05C07007FCAE9 /* SCUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1731320F041F4007FCAE9 /* SCUtilities.m */; };
+		CBB1731A20F05C08007FCAE9 /* SCUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1731320F041F4007FCAE9 /* SCUtilities.m */; };
+		CBB1731B20F05C09007FCAE9 /* SCUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1731320F041F4007FCAE9 /* SCUtilities.m */; };
+		CBB1731C20F05C0A007FCAE9 /* SCUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1731320F041F4007FCAE9 /* SCUtilities.m */; };
 		CBB3FD7A0F53834B00244132 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9E901D0F397FFA006DE6E4 /* Security.framework */; };
 		CBB7DEEA0F53313F00ABF3EA /* DomainListWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB637220F3E296000EBD135 /* DomainListWindowController.m */; };
 		CBBCA14B0F54E1B300C75324 /* org.eyebeam.SelfControl.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB4295C20F53EF8C008E10CA /* org.eyebeam.SelfControl.plist */; };
@@ -115,7 +115,7 @@
 		CBD4848A19D764440020F949 /* PreferencesGeneralViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD4848819D764440020F949 /* PreferencesGeneralViewController.m */; };
 		CBD4848F19D768C90020F949 /* PreferencesAdvancedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD4848D19D768C90020F949 /* PreferencesAdvancedViewController.m */; };
 		CBDB118C2084239D0010397E /* FirstTime.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBDB118E2084239D0010397E /* FirstTime.xib */; };
-		CBDF919A225C5A9700358B95 /* SCBlockDateUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1731320F041F4007FCAE9 /* SCBlockDateUtilities.m */; };
+		CBDF919A225C5A9700358B95 /* SCUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1731320F041F4007FCAE9 /* SCUtilities.m */; };
 		CBE2BB5619D10CCC0077124F /* SCKillerHelper in Copy Helper Tools */ = {isa = PBXBuildFile; fileRef = CB9C811B19CFBA8500CDCAE1 /* SCKillerHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		CBE4401B0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE4401A0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m */; };
 		CBE44FEB19E50900004E9706 /* WhitelistScraper.m in Sources */ = {isa = PBXBuildFile; fileRef = CB73615F19E4FDA000E0924F /* WhitelistScraper.m */; };
@@ -234,7 +234,7 @@
 		B27D9D2EEE63F8097F8F2190 /* Pods_SelfControl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SelfControl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB0EEF5D20FD8CE00024D27B /* SelfControlTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SelfControlTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB0EEF6120FD8CE00024D27B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CB0EEF7720FE49020024D27B /* BlockDateUtilitiesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockDateUtilitiesTests.m; sourceTree = "<group>"; };
+		CB0EEF7720FE49020024D27B /* SCUtilitiesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCUtilitiesTests.m; sourceTree = "<group>"; };
 		CB1B44BD23B7F1ED00EBA087 /* cheater-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cheater-background.png"; sourceTree = "<group>"; };
 		CB1E7A6D0F9AEA9B00D158BC /* ERRORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ERRORS; sourceTree = "<group>"; };
 		CB249FEC19D782230087BBB6 /* SelfControlIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SelfControlIcon.icns; sourceTree = "<group>"; };
@@ -284,8 +284,8 @@
 		CBA2AFD80F39EC46005AFEBE /* HelperMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelperMain.m; sourceTree = "<group>"; };
 		CBB0AE280FA74566006229B3 /* HostFileBlocker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostFileBlocker.h; sourceTree = "<group>"; };
 		CBB0AE290FA74566006229B3 /* HostFileBlocker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HostFileBlocker.m; sourceTree = "<group>"; };
-		CBB1731220F041F4007FCAE9 /* SCBlockDateUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCBlockDateUtilities.h; sourceTree = "<group>"; };
-		CBB1731320F041F4007FCAE9 /* SCBlockDateUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCBlockDateUtilities.m; sourceTree = "<group>"; };
+		CBB1731220F041F4007FCAE9 /* SCUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCUtilities.h; sourceTree = "<group>"; };
+		CBB1731320F041F4007FCAE9 /* SCUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCUtilities.m; sourceTree = "<group>"; };
 		CBB60BE31F12F19E00DCB597 /* distribution-build.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = "distribution-build.rb"; sourceTree = "<group>"; };
 		CBB637210F3E296000EBD135 /* DomainListWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DomainListWindowController.h; sourceTree = "<group>"; };
 		CBB637220F3E296000EBD135 /* DomainListWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DomainListWindowController.m; sourceTree = "<group>"; };
@@ -566,7 +566,7 @@
 		CB0EEF5E20FD8CE00024D27B /* SelfControlTests */ = {
 			isa = PBXGroup;
 			children = (
-				CB0EEF7720FE49020024D27B /* BlockDateUtilitiesTests.m */,
+				CB0EEF7720FE49020024D27B /* SCUtilitiesTests.m */,
 				CB0EEF6120FD8CE00024D27B /* Info.plist */,
 			);
 			path = SelfControlTests;
@@ -607,8 +607,8 @@
 				CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */,
 				CBF3B572217BADD7006D5F52 /* SCSettings.h */,
 				CBF3B573217BADD7006D5F52 /* SCSettings.m */,
-				CBB1731220F041F4007FCAE9 /* SCBlockDateUtilities.h */,
-				CBB1731320F041F4007FCAE9 /* SCBlockDateUtilities.m */,
+				CBB1731220F041F4007FCAE9 /* SCUtilities.h */,
+				CBB1731320F041F4007FCAE9 /* SCUtilities.m */,
 				CB5DFCB52251DD1F0084CEC2 /* SCConstants.h */,
 				CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */,
 				F5B8CBEB19EE21340026F3A5 /* Formatters */,
@@ -1035,7 +1035,7 @@
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				CB529BBF0F32B7ED00564FB8 /* AppController.m in Sources */,
-				CBB1731920F05C07007FCAE9 /* SCBlockDateUtilities.m in Sources */,
+				CBB1731920F05C07007FCAE9 /* SCUtilities.m in Sources */,
 				F5B8CBEE19EE21C30026F3A5 /* SCTimeIntervalFormatter.m in Sources */,
 				CBD4848A19D764440020F949 /* PreferencesGeneralViewController.m in Sources */,
 				CBEE50C10F48C21F00F5DF1C /* TimerWindowController.m in Sources */,
@@ -1054,10 +1054,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CBDF919A225C5A9700358B95 /* SCBlockDateUtilities.m in Sources */,
+				CBDF919A225C5A9700358B95 /* SCUtilities.m in Sources */,
 				CB5DFCBC2251DD1F0084CEC2 /* SCConstants.m in Sources */,
 				CB114284222CD4F0004B7868 /* SCSettings.m in Sources */,
-				CB0EEF7820FE49030024D27B /* BlockDateUtilitiesTests.m in Sources */,
+				CB0EEF7820FE49030024D27B /* SCUtilitiesTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1075,7 +1075,7 @@
 				CB32D2AA21902CB600B8CD68 /* SCSettings.m in Sources */,
 				CBCA91131960FF0100AFD20C /* PacketFilter.m in Sources */,
 				CB25806816C237F10059C99A /* NSString+IPAddress.m in Sources */,
-				CBB1731A20F05C08007FCAE9 /* SCBlockDateUtilities.m in Sources */,
+				CBB1731A20F05C08007FCAE9 /* SCUtilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1087,7 +1087,7 @@
 				CB9C80FC19CFB79700CDCAE1 /* main.m in Sources */,
 				CB5DFCBA2251DD1F0084CEC2 /* SCConstants.m in Sources */,
 				CB32D2AC21902CF800B8CD68 /* SCSettings.m in Sources */,
-				CBB1731C20F05C0A007FCAE9 /* SCBlockDateUtilities.m in Sources */,
+				CBB1731C20F05C0A007FCAE9 /* SCUtilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1105,7 +1105,7 @@
 				CB114283222CCF19004B7868 /* SCSettings.m in Sources */,
 				CB9C812319CFBB4400CDCAE1 /* LaunchctlHelper.m in Sources */,
 				CB9C812219CFBB3800CDCAE1 /* PacketFilter.m in Sources */,
-				CBB1731B20F05C09007FCAE9 /* SCBlockDateUtilities.m in Sources */,
+				CBB1731B20F05C09007FCAE9 /* SCUtilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1123,7 +1123,7 @@
 				CB32D2A921902CB300B8CD68 /* SCSettings.m in Sources */,
 				CB25806216C1FDBE0059C99A /* BlockManager.m in Sources */,
 				CB25806716C237F10059C99A /* NSString+IPAddress.m in Sources */,
-				CBB1731520F041F4007FCAE9 /* SCBlockDateUtilities.m in Sources */,
+				CBB1731520F041F4007FCAE9 /* SCUtilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,7 +9,7 @@
 
 #include "HelperCommon.h"
 #include "BlockManager.h"
-#import "SCBlockDateUtilities.h"
+#import "SCUtilities.h"
 #import "SCSettings.h"
 #import "SCConstants.h"
 
@@ -153,7 +153,7 @@ void printStatus(int status) {
 }
 
 void removeBlock(uid_t controllingUID) {
-    [SCBlockDateUtilities removeBlockFromSettingsForUID: controllingUID];
+    [SCUtilities removeBlockFromSettingsForUID: controllingUID];
 	removeRulesFromFirewall(controllingUID);
     
     // go ahead and remove any remaining legacy block info at the same time to avoid confusion

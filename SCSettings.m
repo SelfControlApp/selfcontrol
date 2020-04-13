@@ -9,7 +9,7 @@
 #include <IOKit/IOKitLib.h>
 #import <CommonCrypto/CommonCrypto.h>
 #include <pwd.h>
-#import "SCBlockDateUtilities.h"
+#import "SCUtilities.h"
 #import <AppKit/AppKit.h>
 
 float const SYNC_INTERVAL_SECS = 30;
@@ -256,7 +256,6 @@ float const SYNC_LEEWAY_SECS = 30;
                 return;
             }
 
-            NSLog(@"writing %@ to %@", [self.settingsDict valueForKey: @"Blocklist"], self.securedSettingsFilePath);
             NSError* writeErr;
             BOOL writeSuccessful = [plistData writeToFile: self.securedSettingsFilePath
                                                   options: NSDataWritingAtomic
@@ -345,7 +344,6 @@ float const SYNC_LEEWAY_SECS = 30;
         [self.settingsDict setValue: [NSDate date] forKey: @"LastSettingsUpdate"];
     }
         
-    NSLog(@"setting value (%@ = %@)", key, value);
     // notify other instances (presumably in other processes)
     [[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"org.eyebeam.SelfControl.SCSettingsValueChanged"
                                                                    object: self.description
@@ -407,12 +405,12 @@ float const SYNC_LEEWAY_SECS = 30;
 
     // BlockStartedDate was migrated to a simpler BlockEndDate property (which doesn't require BlockDuration to function)
     // so we need to specially convert the old BlockStartedDate into BlockEndDates
-    if ([SCBlockDateUtilities blockIsRunningInLegacyDictionary: lockDict]) {
+    if ([SCUtilities blockIsRunningInLegacyDictionary: lockDict]) {
         [self setValue: @YES forKey: @"BlockIsRunning"];
-        [self setValue: [SCBlockDateUtilities endDateFromLegacyBlockDictionary: lockDict] forKey: @"BlockEndDate"];
-    } else if ([SCBlockDateUtilities blockIsRunningInDictionary: userDefaultsDict]) {
+        [self setValue: [SCUtilities endDateFromLegacyBlockDictionary: lockDict] forKey: @"BlockEndDate"];
+    } else if ([SCUtilities blockIsRunningInDictionary: userDefaultsDict]) {
         [self setValue: @YES forKey: @"BlockIsRunning"];
-        [self setValue: [SCBlockDateUtilities endDateFromLegacyBlockDictionary: userDefaultsDict] forKey: @"BlockEndDate"];
+        [self setValue: [SCUtilities endDateFromLegacyBlockDictionary: userDefaultsDict] forKey: @"BlockEndDate"];
     }
 }
 

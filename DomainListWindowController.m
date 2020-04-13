@@ -22,6 +22,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "DomainListWindowController.h"
+#import "SCUtilities.h"
 
 @implementation DomainListWindowController
 
@@ -125,107 +126,22 @@
 	if (rowIndex < 0 || rowIndex + 1 > [domainList_ count]) {
 		return;
 	}
-	// All of this is just code to standardize and clean up the input value.
-	// This'll remove whitespace and lowercase the string.
-	NSString* str = [[newString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];
-
-	if([str rangeOfCharacterFromSet: [NSCharacterSet newlineCharacterSet]].location != NSNotFound) {
-		// only hits LF linebreaks, but componentsSeparatedByCharacterSet won't work on 10.4
-		NSArray* listComponents = [str componentsSeparatedByString: @"\n"];
-
-		for(int i = 0; i < [listComponents count]; i++) {
-			if(i == 0) {
-				[self tableView: aTableView setObjectValue: listComponents[i] forTableColumn: aTableColumn row: rowIndex];
-			}
-			else {
-				[domainList_ addObject:@""];
-				[self tableView: aTableView setObjectValue: listComponents[i] forTableColumn: aTableColumn row: (int)[domainList_ count] - 1];
-			}
-		}
-        
-		[settings_ setValue: domainList_ forKey: @"Blocklist"];
-		[domainListTableView_ reloadData];
-
-		return;
-	}
-
-	// Remove "http://" if a user tried to put that in
-	NSArray* splitString = [str componentsSeparatedByString: @"http://"];
-	for(int i = 0; i < [splitString count]; i++) {
-		if(![splitString[i] isEqual: @""]) {
-			str = splitString[i];
-			break;
-		}
-	}
-
-	// Remove "https://" if a user tried to put that in
-	splitString = [str componentsSeparatedByString: @"https://"];
-	for(int i = 0; i < [splitString count]; i++) {
-		if(![splitString[i] isEqual: @""]) {
-			str = splitString[i];
-			break;
-		}
-	}
-
-	// Remove URL login names/passwords (username:password@host) if a user tried to put that in
-	splitString = [str componentsSeparatedByString: @"@"];
-	str = [splitString lastObject];
-
-	// Delete anything after a "/" in case a user tried to copy-paste a web address.
-	// str = [[str componentsSeparatedByString: @"/"] objectAtIndex: 0];
-
-	int maskLength = -1;
-	int portNum = -1;
-
-	splitString = [str componentsSeparatedByString: @"/"];
-
-	str = splitString[0];
-
-	NSString* stringToSearchForPort = str;
-
-	if([splitString count] >= 2) {
-		maskLength = [splitString[1] intValue];
-		// If the int value is 0, we couldn't find a valid integer representation
-		// in the split off string
-		if(maskLength == 0)
-			maskLength = -1;
-
-		stringToSearchForPort = splitString[1];
-	}
-
-	splitString = [stringToSearchForPort componentsSeparatedByString: @":"];
-
-	if(stringToSearchForPort == str) {
-		str = splitString[0];
-	}
-
-	if([splitString count] >= 2) {
-		portNum = [splitString[1] intValue];
-		// If the int value is 0, we couldn't find a valid integer representation
-		// in the split off string
-		if(portNum == 0)
-			portNum = -1;
-	}
-
-	if ([str length] || portNum >= 0){
-		NSString* maskString;
-		NSString* portString;
-		if(maskLength == -1)
-			maskString = @"";
-		else
-			maskString = [NSString stringWithFormat: @"/%d", maskLength];
-		if(portNum == -1)
-			portString = @"";
-		else
-			portString = [NSString stringWithFormat: @":%d", portNum];
-		str = [NSString stringWithFormat: @"%@%@%@", str, maskString, portString];
-		domainList_[rowIndex] = str;
-	}
-
-	[settings_ setValue: domainList_ forKey: @"Blocklist"];
-	[aTableView reloadData];
-	[[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
-														object: self];
+    
+    NSArray<NSString*>* cleanedEntries = [SCUtilities cleanBlocklistEntry: newString];
+    
+    for (int i = 0; i < cleanedEntries.count; i++) {
+        NSString* entry = cleanedEntries[i];
+        if (i == 0) {
+            domainList_[rowIndex] = entry;
+        } else {
+            [domainList_ insertObject: entry atIndex: rowIndex + i];
+        }
+    }
+    
+    [settings_ setValue: domainList_ forKey: @"Blocklist"];
+    [domainListTableView_ reloadData];
+    [[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
+    object: self];
 }
 
 - (void)tableView:(NSTableView *)tableView

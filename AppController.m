@@ -25,7 +25,7 @@
 #import "PreferencesGeneralViewController.h"
 #import "PreferencesAdvancedViewController.h"
 #import "SCTimeIntervalFormatter.h"
-#import "SCBlockDateUtilities.h"
+#import "SCUtilities.h"
 #import <SystemConfiguration/SystemConfiguration.h>
 #import <LetsMove/PFMoveApplication.h>
 #import "SCSettings.h"
@@ -386,7 +386,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 - (BOOL)selfControlLaunchDaemonIsLoaded {
     // first we look for the answer in the SCSettings system
-    if ([SCBlockDateUtilities blockIsRunningInDictionary: settings_.dictionaryRepresentation]) {
+    if ([SCUtilities blockIsRunningInDictionary: settings_.dictionaryRepresentation]) {
         return YES;
     }
     
@@ -399,7 +399,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     // finally, we should check the legacy ways of storing a block (defaults and lockfile)
     
 	[defaults_ synchronize];
-    if ([SCBlockDateUtilities blockIsRunningInDictionary: defaults_.dictionaryRepresentation]) {
+    if ([SCUtilities blockIsRunningInDictionary: defaults_.dictionaryRepresentation]) {
 		return YES;
 	}
 
@@ -456,28 +456,16 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (void)addToBlockList:(NSString*)host lock:(NSLock*)lock {
-	if(host == nil)
-		return;
-
-	host = [[host stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];
-
-	// Remove "http://" if a user tried to put that in
-	NSArray* splitString = [host componentsSeparatedByString: @"http://"];
-	for(int i = 0; i < [splitString count]; i++) {
-		if(![splitString[i] isEqual: @""]) {
-			host = splitString[i];
-			break;
-		}
-	}
-
-	// Delete anything after a "/" in case a user tried to copy-paste a web address.
-	host = [host componentsSeparatedByString: @"/"][0];
-
-	if([host isEqualToString: @""])
-		return;
-
-	NSMutableArray* list = [[settings_ valueForKey: @"Blocklist"] mutableCopy];
-	[list addObject: host];
+    NSMutableArray* list = [[settings_ valueForKey: @"Blocklist"] mutableCopy];
+    NSArray<NSString*>* cleanedEntries = [SCUtilities cleanBlocklistEntry: host];
+    
+    if (cleanedEntries.count == 0) return;
+    
+    for (int i = 0; i < cleanedEntries.count; i++) {
+       NSString* entry = cleanedEntries[i];
+       [list addObject: entry];
+    }
+       
 	[settings_ setValue: list forKey: @"Blocklist"];
 
 	if(![self selfControlLaunchDaemonIsLoaded]) {
@@ -691,7 +679,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
         // for legacy reasons, BlockDuration is in minutes, so convert it to seconds before passing it through]
         NSTimeInterval blockDurationSecs = [[defaults_ valueForKey: @"BlockDuration"] intValue] * 60;
-        [SCBlockDateUtilities startBlockInSettings: settings_ withBlockDuration: blockDurationSecs];
+        [SCUtilities startBlockInSettings: settings_ withBlockDuration: blockDurationSecs];
         NSLog(@"starting block and set block end date to %@", [settings_ valueForKey: @"BlockEndDate"]);
         
         // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
@@ -715,7 +703,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 			NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", (int)status);
 
             // reset settings on failure, and record that on disk ASAP
-            [SCBlockDateUtilities removeBlockFromSettings: settings_];
+            [SCUtilities removeBlockFromSettings: settings_];
             [settings_ synchronizeSettings];
 
 			NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
@@ -741,7 +729,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 		if([inDataString isEqualToString: @""]) {
             // reset settings on failure, and record that on disk ASAP
-            [SCBlockDateUtilities removeBlockFromSettings: settings_];
+            [SCUtilities removeBlockFromSettings: settings_];
             [settings_ synchronizeSettings];
 
 			NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
@@ -757,7 +745,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 		if(exitCode) {
             // reset settings on failure, and record that on disk ASAP
-            [SCBlockDateUtilities removeBlockFromSettings: settings_];
+            [SCUtilities removeBlockFromSettings: settings_];
             [settings_ synchronizeSettings];
 
 			NSError* err = [self errorFromHelperToolStatusCode: exitCode];
@@ -894,7 +882,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     NSDate* newBlockEndDate = [oldBlockEndDate dateByAddingTimeInterval: (minutesToAdd * 60)];
     
     // Before we try to extend the block, make sure the block time didn't run out (or is about to run out) in the meantime
-    if (![SCBlockDateUtilities blockShouldBeRunningInDictionary: settings_.dictionaryRepresentation] || [oldBlockEndDate timeIntervalSinceNow] < 1) {
+    if (![SCUtilities blockShouldBeRunningInDictionary: settings_.dictionaryRepresentation] || [oldBlockEndDate timeIntervalSinceNow] < 1) {
         // we're done, or will be by the time we get to it! so just let it expire. they can restart it.
         return;
     }
