@@ -236,6 +236,7 @@ int main(int argc, char* argv[]) {
                 [settings setValue: @YES forKey: @"TamperingDetected"];
                 [settings synchronizeSettings];
                 removeBlock(controllingUID);
+                sendConfigurationChangedNotification();
 
                 printStatus(-215);
                 exit(EX_SOFTWARE);
@@ -245,6 +246,7 @@ int main(int argc, char* argv[]) {
 				NSLog(@"INFO: Checkup ran, block expired, removing block.");
                 
 				removeBlock(controllingUID);
+                sendConfigurationChangedNotification();
 
 				// Execution should never reach this point.  Launchd unloading the job in removeBlock()
 				// should have killed this process.
