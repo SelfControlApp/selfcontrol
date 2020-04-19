@@ -128,7 +128,7 @@ NSString* const kDefaultHostsFileContents = @"##\n"
 - (BOOL)containsSelfControlBlock {
 	[strLock lock];
 
-	BOOL ret = ([newFileContents rangeOfString: kHostFileBlockerSelfControlHeader].location != NSNotFound);
+    BOOL ret = ([newFileContents rangeOfString: kHostFileBlockerSelfControlHeader].location != NSNotFound);
 
 	[strLock unlock];
 	return ret;

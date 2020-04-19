@@ -258,7 +258,7 @@ int main(int argc, char* argv[]) {
 				// settings just in case.
 				PacketFilter* pf = [[PacketFilter alloc] init];
 				HostFileBlocker* hostFileBlocker = [[HostFileBlocker alloc] init];
-                if(![pf containsSelfControlBlock] || (![settings valueForKey: @"BlockAsWhitelist"] && ![hostFileBlocker containsSelfControlBlock])) {
+                if(![pf containsSelfControlBlock] || (![[settings valueForKey: @"BlockAsWhitelist"] boolValue] && ![hostFileBlocker containsSelfControlBlock])) {
 					// The firewall is missing at least the block header.  Let's clear everything
 					// before we re-add to make sure everything goes smoothly.
 
