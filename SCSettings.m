@@ -90,7 +90,6 @@ float const SYNC_LEEWAY_SECS = 30;
     return [SCSettings settingsForUser: getuid()];
 }
 - (instancetype)initWithUserId:(uid_t)userId {
-    NSLog(@"init SCSettings");
     if (self = [super init]) {
         _userId = userId;
         _settingsDict = nil;
@@ -156,8 +155,6 @@ float const SYNC_LEEWAY_SECS = 30;
         self->lastSynchronizedWithDisk = [NSDate date];
         
         [self startSyncTimer];
-
-        NSLog(@"initialized settingsDict with contents of %@ to %@", [self securedSettingsFilePath], [self->_settingsDict valueForKey: @"Blocklist"]);
     });
 }
 
@@ -205,12 +202,10 @@ float const SYNC_LEEWAY_SECS = 30;
         // (usually because the user moved their system clock forward, then back again)
         // it's a weird edge case and we should just fix that when we see it
         if ([diskSettingsLastUpdated timeIntervalSinceNow] > 0) {
-            NSLog(@"*** Reload: Disk settings were last updated in the FUTURE, fixing!");
             // we'll pretend the disk was written 1 second ago in this case to avoid weird edge conditions
             diskSettingsLastUpdated = [[NSDate date] dateByAddingTimeInterval: 1.0];
         }
         if ([memorySettingsLastUpdated timeIntervalSinceNow] > 0) {
-            NSLog(@"*** Reload: Memory settings were last updated in the FUTURE, fixing!");
             memorySettingsLastUpdated = [NSDate date];
             [self setValue: memorySettingsLastUpdated forKey: @"LastSettingsUpdate"];
         }
@@ -296,7 +291,6 @@ float const SYNC_LEEWAY_SECS = 30;
     }];
 }
 - (void)synchronizeSettingsWithCompletion:(nullable void (^)(NSError * _Nullable))completionBlock {
-    NSLog(@"Synchronizing settings at %@", [NSDate date]);
     [self reloadSettings];
     
     NSDate* lastSettingsUpdate = [self valueForKey: @"LastSettingsUpdate"];
@@ -305,7 +299,6 @@ float const SYNC_LEEWAY_SECS = 30;
     // (usually because the user moved their system clock forward, then back again)
     // it's a weird edge case and we should just fix that when we see it
     if ([lastSettingsUpdate timeIntervalSinceNow] > 0) {
-        NSLog(@"*** Sync: settings were last updated in the FUTURE, fixing!");
         [self setValue: [NSDate date] forKey: @"LastSettingsUpdate"];
     }
     
@@ -405,11 +398,12 @@ float const SYNC_LEEWAY_SECS = 30;
 
     // BlockStartedDate was migrated to a simpler BlockEndDate property (which doesn't require BlockDuration to function)
     // so we need to specially convert the old BlockStartedDate into BlockEndDates
+    // NOTE: we do NOT set BlockIsRunning to YES in Settings for a legacy migration
+    // Why? the old version of the helper tool si still involved, and it doesn't know
+    // to clear that setting. So it will stay stuck on.
     if ([SCUtilities blockIsRunningInLegacyDictionary: lockDict]) {
-        [self setValue: @YES forKey: @"BlockIsRunning"];
         [self setValue: [SCUtilities endDateFromLegacyBlockDictionary: lockDict] forKey: @"BlockEndDate"];
     } else if ([SCUtilities blockIsRunningInDictionary: userDefaultsDict]) {
-        [self setValue: @YES forKey: @"BlockIsRunning"];
         [self setValue: [SCUtilities endDateFromLegacyBlockDictionary: userDefaultsDict] forKey: @"BlockEndDate"];
     }
 }

@@ -50,7 +50,7 @@
         timeIntervalFormatter.numberOfSignificantUnits = 0;
         timeIntervalFormatter.leastSignificantUnit = NSCalendarUnitMinute;
     }
-
+    
     NSString* formatted = [timeIntervalFormatter stringForTimeInterval:seconds];
     if ([formatted length] == 0) {
         formatted = [self stringIndicatingZeroMinutes];
@@ -66,7 +66,7 @@
     formatDays = numMinutes / 1440;
     formatHours = (numMinutes % 1440) / 60;
     formatMinutes = (numMinutes % 60);
-
+    
     NSString* timeString = @"";
 
     if(numMinutes > 0) {

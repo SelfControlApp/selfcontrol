@@ -680,7 +680,6 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
         // for legacy reasons, BlockDuration is in minutes, so convert it to seconds before passing it through]
         NSTimeInterval blockDurationSecs = [[defaults_ valueForKey: @"BlockDuration"] intValue] * 60;
         [SCUtilities startBlockInSettings: settings_ withBlockDuration: blockDurationSecs];
-        NSLog(@"starting block and set block end date to %@", [settings_ valueForKey: @"BlockEndDate"]);
         
         // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
         [settings_ synchronizeSettings];
