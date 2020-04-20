@@ -184,16 +184,6 @@
 			name = "Copy Helper Tools";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CB8A338D1CD7196B00AD6B8B /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		CB9C811919CFBA8500CDCAE1 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -723,7 +713,6 @@
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				CB2359D90F4541AB0030F59C /* Copy Helper Tools */,
-				CB8A338D1CD7196B00AD6B8B /* Embed Frameworks */,
 				CB5E5FF81C3A5FD10038F331 /* ShellScript */,
 				7D55904F6A3D627B837007A9 /* [CP] Embed Pods Frameworks */,
 			);
