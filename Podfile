@@ -1,28 +1,13 @@
 source 'https://github.com/CocoaPods/Specs.git'
 platform :osx, '10.8'
-use_frameworks!
+
+# cocoapods-prune-localizations doesn't appear to auto-detect pods properly, so using a manual list
+supported_locales = ['Base', 'da', 'de', 'en', 'es', 'fr', 'it', 'ja', 'ko', 'nl', 'pt-BR', 'sv', 'tr', 'zh-Hans']
+plugin 'cocoapods-prune-localizations', { :localizations => supported_locales }
 
 target "SelfControl" do
-	pod 'MASPreferences', '~> 1.1.4'
-	pod 'FormatterKit/TimeIntervalFormatter', '~> 1.7'
-	pod 'Sparkle', '~> 1.22'
+    pod 'MASPreferences', '~> 1.1.4'
+    pod 'FormatterKit/TimeIntervalFormatter', '~> 1.8.0'
+    pod 'Sparkle', '~> 1.22'
     pod 'LetsMove', '~> 1.24'
-end
-
-pre_install do |installer|
-	supported_locales = ['base', 'en', 'de', 'es', 'it', 'ja', 'ko', 'pt', 'pt-br', 'pt_br', 'sv', 'tr', 'zh-hans', 'zh_hans', 'zh-cn', 'zh_cn']
-
-	Dir.glob(File.join(installer.sandbox.pod_dir('FormatterKit'), '**', '*.lproj')).each do |bundle|
-		if (!supported_locales.include?(File.basename(bundle, ".lproj").downcase))
-			puts "Removing #{bundle} from FormatterKit"
-			FileUtils.rm_rf(bundle)
-		end
-	end
-
-	Dir.glob(File.join(installer.sandbox.pod_dir('Sparkle'), '**', '*.lproj')).each do |bundle|
-		if (!supported_locales.include?(File.basename(bundle, ".lproj").downcase))
-			puts "Removing #{bundle} from Sparkle"
-			FileUtils.rm_rf(bundle)
-		end
-	end
 end
