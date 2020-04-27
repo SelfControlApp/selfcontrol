@@ -32,6 +32,9 @@
 
 // Helper tool functions dealing with dictionaries and setDefaultsValue helper
 
+// uses the below methods as well as filesystem checks to see if the block is REALLY running or not
++ (BOOL) blockIsRunningWithSettings:(SCSettings*)settings defaults:(NSUserDefaults*)defaults;
+
 + (BOOL) blockIsRunningInDictionary:(NSDictionary*)dict;
 + (BOOL) blockShouldBeRunningInDictionary:(NSDictionary *)dict;
 

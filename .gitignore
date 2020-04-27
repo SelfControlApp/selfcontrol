@@ -2,6 +2,8 @@
 .Trashes
 *.swp
 
+version-header.h
+
 *~.nib
 
 # Xcode

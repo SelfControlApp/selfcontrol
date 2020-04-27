@@ -23,6 +23,7 @@
 #import "HelperMain.h"
 #import "SCUtilities.h"
 #import "SCSettings.h"
+#import "version-header.h"
 
 int main(int argc, char* argv[]) {
 	@autoreleasepool {
@@ -288,6 +289,22 @@ int main(int argc, char* argv[]) {
         } else if ([modeString isEqualToString: @"--print-settings"]) {
             NSLog(@" - Printing SelfControl secured settings for debug: - ");
             NSLog(@"%@", [settings dictionaryRepresentation]);
+        } else if ([modeString isEqualToString: @"--is-running"]) {
+            // pull up the user's defaults to check for the existence of a legacy block
+            // to do that, we have to seteuid to the controlling UID so NSUserDefaults thinks we're them
+            seteuid(controllingUID);
+            NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+            [defaults addSuiteNamed: @"org.eyebeam.SelfControl"];
+            [defaults synchronize];
+            
+            BOOL blockIsRunning = [SCUtilities blockIsRunningWithSettings: settings defaults: defaults];
+            NSLog(@"%@", blockIsRunning ? @"YES" : @"NO");
+            
+            // reset the euid so nothing else gets funky
+            [NSUserDefaults resetStandardUserDefaults];
+            seteuid(0);
+        } else if ([modeString isEqualToString: @"--version"]) {
+            NSLog(SELFCONTROL_VERSION_STRING);
         }
 
 		// by putting printStatus first (which tells the app we didn't crash), we fake it to

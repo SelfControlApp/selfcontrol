@@ -87,7 +87,7 @@
 
 
 - (void)blockEnded {
-	if(![self.appController selfControlLaunchDaemonIsLoaded]) {
+	if(![SCUtilities blockIsRunningWithSettings: settings_ defaults: [NSUserDefaults standardUserDefaults]]) {
 		[timerUpdater_ invalidate];
 		timerUpdater_ = nil;
 

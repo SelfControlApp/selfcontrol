@@ -143,7 +143,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 - (IBAction)addBlock:(id)sender {
 	[defaults_ synchronize];
-    if ([self selfControlLaunchDaemonIsLoaded]) {
+    if ([self blockIsRunning]) {
 		// This method shouldn't be getting called, a block is on so the Start button should be disabled.
 		NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
 										   code: -102
@@ -201,7 +201,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	}
 
 	BOOL blockWasOn = blockIsOn;
-	blockIsOn = [self selfControlLaunchDaemonIsLoaded];
+	blockIsOn = [self blockIsRunning];
 
 	if(blockIsOn) { // block is on
 		if(!blockWasOn) { // if we just switched states to on...
@@ -352,7 +352,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 	// We'll set blockIsOn to whatever is NOT right, so that in refreshUserInterface
 	// it'll fix it and properly refresh the user interface.
-	blockIsOn = ![self selfControlLaunchDaemonIsLoaded];
+	blockIsOn = ![self blockIsRunning];
 
 	// Change block duration slider for hidden user defaults settings
 	long numTickMarks = ([defaults_ integerForKey: @"MaxBlockLength"] / [defaults_ integerForKey: @"BlockLengthInterval"]) + 1;
@@ -384,34 +384,13 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     [settings_ synchronizeSettings];
 }
 
-- (BOOL)selfControlLaunchDaemonIsLoaded {
-    // first we look for the answer in the SCSettings system
-    if ([SCUtilities blockIsRunningInDictionary: settings_.dictionaryRepresentation]) {
-        return YES;
-    }
-    
-    // next we check the host file, and see if a block is in there
-    NSString* hostFileContents = [NSString stringWithContentsOfFile: @"/etc/hosts" encoding: NSUTF8StringEncoding error: NULL];
-    if(hostFileContents != nil && [hostFileContents rangeOfString: @"# BEGIN SELFCONTROL BLOCK"].location != NSNotFound) {
-        return YES;
-    }
-
-    // finally, we should check the legacy ways of storing a block (defaults and lockfile)
-    
-	[defaults_ synchronize];
-    if ([SCUtilities blockIsRunningInDictionary: defaults_.dictionaryRepresentation]) {
-		return YES;
-	}
-
-	// If there's no block in the hosts file, SCSettings block in the defaults, and no lock-file,
-	// we'll assume we're clear of blocks.  Checking pf would be nice but usually requires
-	// root permissions, so it would be difficult to do here.
-	return [[NSFileManager defaultManager] fileExistsAtPath: SelfControlLegacyLockFilePath];
+- (BOOL)blockIsRunning {
+    return [SCUtilities blockIsRunningWithSettings: settings_ defaults: defaults_];
 }
 
 - (IBAction)showDomainList:(id)sender {
 	BOOL addBlockIsOngoing = self.addingBlock;
-	if([self selfControlLaunchDaemonIsLoaded] || addBlockIsOngoing) {
+	if([self blockIsRunning] || addBlockIsOngoing) {
 		NSAlert* blockInProgressAlert = [[NSAlert alloc] init];
 		[blockInProgressAlert setMessageText: NSLocalizedString(@"Block in progress", @"Block in progress error title")];
 		[blockInProgressAlert setInformativeText:NSLocalizedString(@"The blocklist cannot be edited while a block is in progress.", @"Block in progress explanation")];
@@ -468,7 +447,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
        
 	[settings_ setValue: list forKey: @"Blocklist"];
 
-	if(![self selfControlLaunchDaemonIsLoaded]) {
+	if(![self blockIsRunning]) {
 		// This method shouldn't be getting called, a block is not on.
 		// so the Start button should be disabled.
 		// Maybe the UI didn't get properly refreshed, so try refreshing it again
@@ -529,7 +508,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
         return;
     
     // ensure block health before we try to change it
-    if(![self selfControlLaunchDaemonIsLoaded]) {
+    if(![self blockIsRunning]) {
         // This method shouldn't be getting called, a block is not on.
         // so the Start button should be disabled.
         // Maybe the UI didn't get properly refreshed, so try refreshing it again

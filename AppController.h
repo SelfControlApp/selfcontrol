@@ -89,7 +89,7 @@
 // Returns YES if, according to a flag set in the user defaults system, the
 // SelfControl launchd daemon (and therefore the block) is loaded.  Returns NO
 // if it is not.
-@property (nonatomic, readonly) BOOL selfControlLaunchDaemonIsLoaded;
+@property (nonatomic, readonly) BOOL blockIsRunning;
 
 // Allocates a new TimerWindowController if necessary and opens the timer window.
 - (void)showTimerWindow;

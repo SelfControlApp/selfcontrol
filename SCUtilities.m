@@ -113,6 +113,32 @@
     return @[[NSString stringWithFormat: @"%@%@%@", str, maskString, portString]];
 }
 
+
++ (BOOL) blockIsRunningWithSettings:(SCSettings*)settings defaults:(NSUserDefaults*)defaults {
+    // first we look for the answer in the SCSettings system
+    if ([SCUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]) {
+        return YES;
+    }
+
+    // next we check the host file, and see if a block is in there
+    NSString* hostFileContents = [NSString stringWithContentsOfFile: @"/etc/hosts" encoding: NSUTF8StringEncoding error: NULL];
+    if(hostFileContents != nil && [hostFileContents rangeOfString: @"# BEGIN SELFCONTROL BLOCK"].location != NSNotFound) {
+        return YES;
+    }
+
+    // finally, we should check the legacy ways of storing a block (defaults and lockfile)
+
+    [defaults synchronize];
+    if ([SCUtilities blockIsRunningInDictionary: defaults.dictionaryRepresentation]) {
+        return YES;
+    }
+
+    // If there's no block in the hosts file, SCSettings block in the defaults, and no lock-file,
+    // we'll assume we're clear of blocks.  Checking pf would be nice but usually requires
+    // root permissions, so it would be difficult to do here.
+    return [[NSFileManager defaultManager] fileExistsAtPath: SelfControlLegacyLockFilePath];
+}
+
 // returns YES if a block is actively running (to the best of our knowledge), and NO otherwise
 + (BOOL) blockIsRunningInDictionary:(NSDictionary *)dict {
     // simple: the block is running if BlockIsRunning is set to true!

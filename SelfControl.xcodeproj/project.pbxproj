@@ -33,6 +33,7 @@
 		CB1B44BE23B7F1ED00EBA087 /* cheater-background.png in Resources */ = {isa = PBXBuildFile; fileRef = CB1B44BD23B7F1ED00EBA087 /* cheater-background.png */; };
 		CB1E7A6E0F9AEA9B00D158BC /* ERRORS in Resources */ = {isa = PBXBuildFile; fileRef = CB1E7A6D0F9AEA9B00D158BC /* ERRORS */; };
 		CB1ED4480F56686400EFECEE /* org.eyebeam.SelfControl in Copy Helper Tools */ = {isa = PBXBuildFile; fileRef = CBA2AFD20F39EC12005AFEBE /* org.eyebeam.SelfControl */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		CB20C5D8245699D700B9D749 /* version-header.h in Sources */ = {isa = PBXBuildFile; fileRef = CB20C5D7245699D700B9D749 /* version-header.h */; };
 		CB249FED19D782230087BBB6 /* SelfControlIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = CB249FEC19D782230087BBB6 /* SelfControlIcon.icns */; };
 		CB25806216C1FDBE0059C99A /* BlockManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806116C1FDBE0059C99A /* BlockManager.m */; };
 		CB25806316C1FDBE0059C99A /* BlockManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806116C1FDBE0059C99A /* BlockManager.m */; };
@@ -227,6 +228,7 @@
 		CB0EEF7720FE49020024D27B /* SCUtilitiesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCUtilitiesTests.m; sourceTree = "<group>"; };
 		CB1B44BD23B7F1ED00EBA087 /* cheater-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cheater-background.png"; sourceTree = "<group>"; };
 		CB1E7A6D0F9AEA9B00D158BC /* ERRORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ERRORS; sourceTree = "<group>"; };
+		CB20C5D7245699D700B9D749 /* version-header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "version-header.h"; sourceTree = "<group>"; };
 		CB249FEC19D782230087BBB6 /* SelfControlIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SelfControlIcon.icns; sourceTree = "<group>"; };
 		CB25806016C1FDBE0059C99A /* BlockManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockManager.h; sourceTree = "<group>"; };
 		CB25806116C1FDBE0059C99A /* BlockManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockManager.m; sourceTree = "<group>"; };
@@ -492,9 +494,10 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* SelfControl */ = {
 			isa = PBXGroup;
 			children = (
+				CB20C5D7245699D700B9D749 /* version-header.h */,
 				CBD4848519D7611F0020F949 /* Podfile */,
 				CBD4848619D7611F0020F949 /* TemplateIcon2x.png */,
 				CBCA9116196123E600AFD20C /* SelfControl.entitlements */,
@@ -805,6 +808,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CBA2AFD60F39EC33005AFEBE /* Build configuration list for PBXNativeTarget "org.eyebeam.SelfControl" */;
 			buildPhases = (
+				CB20C5D6245696C500B9D749 /* ShellScript */,
 				CBA2AFCF0F39EC12005AFEBE /* Sources */,
 				CB54D4490F93E32B00AA22E9 /* Frameworks */,
 			);
@@ -885,7 +889,7 @@
 				Base,
 				da,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* SelfControl */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -982,6 +986,23 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SelfControl/Pods-SelfControl-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		CB20C5D6245696C500B9D749 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${INFOPLIST_FILE}\")\n\necho \"#define SELFCONTROL_VERSION_STRING @\\\"${buildNumber}\\\"\" > \"${PROJECT_DIR}/version-header.h\"\n";
 		};
 		CB5E5FF81C3A5FD10038F331 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1195,6 +1216,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB20C5D8245699D700B9D749 /* version-header.h in Sources */,
 				CBA2AFD90F39EC46005AFEBE /* HelperMain.m in Sources */,
 				CB5DFCB82251DD1F0084CEC2 /* SCConstants.m in Sources */,
 				CBCA91121960D87300AFD20C /* PacketFilter.m in Sources */,
@@ -1885,6 +1907,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
 				GCC_VERSION = "";
+				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -1916,6 +1939,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
 				GCC_VERSION = "";
+				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				OTHER_LDFLAGS = (
 					"-framework",
