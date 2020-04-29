@@ -890,21 +890,14 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 	/* if successful, save file under designated name */
 	if (runResult == NSOKButton) {
-		[defaults_ synchronize];
-		NSString* err;
-		NSDictionary* saveDict = @{@"HostBlacklist": [settings_ valueForKey: @"Blocklist"],
-								   @"BlockAsWhitelist": [settings_ valueForKey: @"BlockAsWhitelist"]};
-		NSData* saveData = [NSPropertyListSerialization dataFromPropertyList: saveDict format: NSPropertyListBinaryFormat_v1_0 errorDescription: &err];
-		if(err) {
-			NSError* displayErr = [NSError errorWithDomain: kSelfControlErrorDomain code: -902 userInfo: @{NSLocalizedDescriptionKey: [@"Error 902: " stringByAppendingString: err]}];
+        NSString* errDescription;
+        [SCUtilities writeBlocklistToFileURL: sp.URL settings: settings_ errorDescription: &errDescription];
+
+        if(errDescription) {
+			NSError* displayErr = [NSError errorWithDomain: kSelfControlErrorDomain code: -902 userInfo: @{NSLocalizedDescriptionKey: [@"Error 902: " stringByAppendingString: errDescription]}];
+            NSBeep();
 			[NSApp presentError: displayErr];
 			return;
-		}
-		if (![saveData writeToURL: sp.URL atomically: YES]) {
-			NSBeep();
-		} else {
-			NSDictionary* attribs = @{NSFileExtensionHidden: @YES};
-			[[NSFileManager defaultManager] setAttributes: attribs ofItemAtPath: [sp.URL path] error: NULL];
 		}
 	}
 }
@@ -917,10 +910,10 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	long result = [oPanel runModal];
 	if (result == NSOKButton) {
 		if([oPanel.URLs count] > 0) {
-			NSDictionary* openedDict = [NSDictionary dictionaryWithContentsOfURL: oPanel.URLs[0]];
-			[settings_ setValue: openedDict[@"HostBlacklist"] forKey: @"Blocklist"];
-            [settings_ setValue: openedDict[@"BlockAsWhitelist"] forKey: @"BlockAsWhitelist"];
-			BOOL domainListIsOpen = [[domainListWindowController_ window] isVisible];
+            [SCUtilities readBlocklistFromFile: oPanel.URLs[0] toSettings: settings_];
+
+            // close the domain list (and reopen again if need be to refresh)
+            BOOL domainListIsOpen = [[domainListWindowController_ window] isVisible];
 			NSRect frame = [[domainListWindowController_ window] frame];
 			[self closeDomainList];
 			if(domainListIsOpen) {

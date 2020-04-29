@@ -58,6 +58,12 @@ int main(int argc, char* argv[]) {
         SCSettings* settings = [SCSettings settingsForUser: controllingUID];
 
 		if([modeString isEqual: @"--install"]) {
+            if (blockIsRunningInSettingsOrDefaults(controllingUID)) {
+                NSLog(@"ERROR: Block is already running");
+                printStatus(-222);
+                exit(EX_CONFIG);
+            }
+
 			NSFileManager* fileManager = [NSFileManager defaultManager];
 
 			// Initialize writeErr to nil so calling messages on it later don't cause
@@ -65,11 +71,39 @@ int main(int argc, char* argv[]) {
 			NSError* writeErr = nil;
 			NSString* plistFormatPath = [[NSBundle mainBundle] pathForResource:@"org.eyebeam.SelfControl"
 																		ofType:@"plist"];
-
 			NSString* plistFormatString = [NSString stringWithContentsOfFile: plistFormatPath  encoding: NSUTF8StringEncoding error: NULL];
+            
+            // while the main app will just expect us to fetch the blocklist / end date from settings
+            // this helper tool can also be used via command line with no other settings
+            // (ex: by auto-selfcontrol) and in that case they'll pass a blocklist file and the end date via args
+            // we should read those values into settings for use later
+            NSString* pathToBlocklistFile;
+            NSDate* blockEndDateArg;
+            if (argv[3] != NULL && argv[4] != NULL) {
+                pathToBlocklistFile = @(argv[3]);
+                blockEndDateArg = [[NSISO8601DateFormatter new] dateFromString: @(argv[4])];
+                                
+                // if we didn't get a valid block end date in the future, ignore the other args
+                if (blockEndDateArg == nil || [blockEndDateArg timeIntervalSinceNow] < 1) {
+                    pathToBlocklistFile = nil;
+                    NSLog(@"Error: Block end date argument %@ is invalid", @(argv[4]));
+                    printStatus(-220);
+                    exit(EX_IOERR);
+                } else {
+                    [settings setValue: blockEndDateArg forKey: @"BlockEndDate"];
+                    BOOL readSuccess = [SCUtilities readBlocklistFromFile: [NSURL fileURLWithPath: pathToBlocklistFile] toSettings: settings];
+                    
+                    if (!readSuccess) {
+                        NSLog(@"ERROR: Block could not be read from file %@", pathToBlocklistFile);
+                        printStatus(-221);
+                        exit(EX_IOERR);
+                    }
+                }
+            }
 
 			// get the expiration minute, to make sure we run the helper then (if it hasn't run already)
-            NSDate* blockEndDate = [settings valueForKey: @"BlockEndDate"];
+            // use the block end date from the argument if it's available; otherwise fall back to the one in settings
+            NSDate* blockEndDate = (blockEndDateArg != nil) ? blockEndDateArg : [settings valueForKey: @"BlockEndDate"];
 			NSCalendar* calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 			NSDateComponents* components = [calendar components: NSMinuteCalendarUnit fromDate: blockEndDate];
 			long expirationMinute = [components minute];

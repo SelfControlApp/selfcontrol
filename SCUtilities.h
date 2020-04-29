@@ -41,4 +41,8 @@
 + (BOOL) blockIsRunningInLegacyDictionary:(NSDictionary*)dict;
 + (NSDate*) endDateFromLegacyBlockDictionary:(NSDictionary *)dict;
 
+// read and write saved block files
++ (BOOL)writeBlocklistToFileURL:(NSURL*)targetFileURL settings:(SCSettings*)settings errorDescription:(NSString**)errDescriptionRef;
++ (BOOL)readBlocklistFromFile:(NSURL*)fileURL toSettings:(SCSettings*)settings;
+
 @end

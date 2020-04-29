@@ -200,4 +200,41 @@
     return [startDate dateByAddingTimeInterval: (duration * 60)];
 }
 
++ (BOOL)writeBlocklistToFileURL:(NSURL*)targetFileURL settings:(SCSettings*)settings errorDescription:(NSString**)errDescriptionRef {
+    NSDictionary* saveDict = @{@"HostBlacklist": [settings valueForKey: @"Blocklist"],
+                               @"BlockAsWhitelist": [settings valueForKey: @"BlockAsWhitelist"]};
+
+    NSString* saveDataErr;
+    NSData* saveData = [NSPropertyListSerialization dataFromPropertyList: saveDict format: NSPropertyListBinaryFormat_v1_0 errorDescription: &saveDataErr];
+    if (saveDataErr != nil) {
+        *errDescriptionRef = saveDataErr;
+        return NO;
+    }
+
+    if (![saveData writeToURL: targetFileURL atomically: YES]) {
+        NSLog(@"ERROR: Failed to write blocklist to URL %@", targetFileURL);
+        return NO;
+    }
+    
+    // for prettiness sake, attempt to hide the file extension
+    NSDictionary* attribs = @{NSFileExtensionHidden: @YES};
+    [[NSFileManager defaultManager] setAttributes: attribs ofItemAtPath: [targetFileURL path] error: NULL];
+    
+    return YES;
+}
+
++ (BOOL)readBlocklistFromFile:(NSURL*)fileURL toSettings:(SCSettings*)settings {
+    NSDictionary* openedDict = [NSDictionary dictionaryWithContentsOfURL: fileURL];
+    
+    if (openedDict == nil || openedDict[@"HostBlacklist"] == nil || openedDict[@"BlockAsWhitelist"] == nil) {
+        NSLog(@"ERROR: Could not read a valid block from file %@", fileURL);
+        return NO;
+    }
+    
+    [settings setValue: openedDict[@"HostBlacklist"] forKey: @"Blocklist"];
+    [settings setValue: openedDict[@"BlockAsWhitelist"] forKey: @"BlockAsWhitelist"];
+    
+    return YES;
+}
+
 @end

@@ -23,6 +23,9 @@
 -217 - Could not write lock file.
 -218 - Could not remove lock file.
 -219 - Trying to add block but lock file already found.  Please try again.
+-220 - Block end date argument is invalid
+-221 - Block could not be read from file
+-221 - Block is already running (so we can't start another)
 
 -901 - Selected sound not found.
 -902 - Error serializing blocklist for save
