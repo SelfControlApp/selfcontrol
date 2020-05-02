@@ -1029,7 +1029,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "ruby ./distribution-build.rb";
+			shellScript = "ruby ./distribution-build.rb\n";
 		};
 		CBFF218A3108765AAB5DE542 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;

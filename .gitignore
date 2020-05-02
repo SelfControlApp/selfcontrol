@@ -2,6 +2,7 @@
 .Trashes
 *.swp
 
+release/
 version-header.h
 
 *~.nib
