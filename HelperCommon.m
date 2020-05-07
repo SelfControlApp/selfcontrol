@@ -132,27 +132,28 @@ void clearBrowserCaches(uid_t controllingUID) {
 
     // need to seteuid so the tilde expansion will work properly
     seteuid(controllingUID);
-    
+    NSString* libraryDirectoryExpanded = [@"~/Library" stringByExpandingTildeInPath];
+    seteuid(0);
+
     NSArray<NSString*>* cacheDirs = @[
         // chrome
-        @"~/Library/Caches/Google/Chrome/Default",
-        @"~/Library/Caches/Google/Chrome/com.google.Chrome",
+        @"/Caches/Google/Chrome/Default",
+        @"/Caches/Google/Chrome/com.google.Chrome",
         
         // firefox
-        @"~/Library/Caches/Firefox/Profiles",
+        @"/Caches/Firefox/Profiles",
         
         // safari
-        @"~/Library/Caches/com.apple.Safari",
-        @"~/Library/Containers/com.apple.Safari/Data/Library/Caches"
+        @"/Caches/com.apple.Safari",
+        @"/Containers/com.apple.Safari/Data/Library/Caches" // this one seems to fail due to permissions issues, but not sure how to fix
     ];
     for (NSString* cacheDir in cacheDirs) {
-        NSString* expandedCacheDir = [cacheDir stringByExpandingTildeInPath];
-        NSLog(@"Clearing browser cache folder %@", expandedCacheDir);
-        [fileManager removeItemAtPath: expandedCacheDir error: nil];
+        NSString* absoluteCacheDir = [libraryDirectoryExpanded stringByAppendingString: cacheDir];
+        NSLog(@"Clearing browser cache folder %@", absoluteCacheDir);
+        [fileManager removeItemAtPath: absoluteCacheDir error: nil];
     }
-    
-    seteuid(0);
 }
+
 void clearOSDNSCache() {
     // no error checks - if it works it works!
     NSTask* flushDsCacheUtil = [[NSTask alloc] init];
