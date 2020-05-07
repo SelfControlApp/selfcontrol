@@ -147,6 +147,4 @@
 
 - (IBAction)openFAQ:(id)sender;
 
-- (void)switchedToWhitelist:(id)sender;
-
 @end

@@ -119,51 +119,61 @@ NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, int port) {
 
 void clearCachesIfRequested(uid_t controllingUID) {
     SCSettings* settings = [SCSettings settingsForUser: controllingUID];
-	if([[settings valueForKey: @"ClearCaches"] boolValue]) {
-		NSFileManager* fileManager = [NSFileManager defaultManager];
+    if(![[settings valueForKey: @"ClearCaches"] boolValue]) {
+        return;
+    }
+    
+    clearBrowserCaches(controllingUID);
+    clearOSDNSCache();
+}
 
-		NSTask* task = [[NSTask alloc] init];
-		[task setLaunchPath: @"/usr/bin/getconf"];
-		[task setArguments: @[@"DARWIN_USER_CACHE_DIR"]];
-		NSPipe* inPipe = [[NSPipe alloc] init];
-		NSFileHandle* readHandle = [inPipe fileHandleForReading];
-		[task setStandardOutput: inPipe];
-		[task launch];
-		NSString* leopardCacheDirectory = [[NSString alloc] initWithData:[readHandle readDataToEndOfFile]
-																encoding: NSUTF8StringEncoding];
-		close([readHandle fileDescriptor]);
-		[task waitUntilExit];
+void clearBrowserCaches(uid_t controllingUID) {
+    NSFileManager* fileManager = [NSFileManager defaultManager];
 
-		leopardCacheDirectory = [leopardCacheDirectory stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-
-		if([task terminationStatus] == 0 && [leopardCacheDirectory length] > 0) {
-			NSMutableArray* leopardCacheDirs = [NSMutableArray arrayWithObjects:
-												@"com.apple.Safari",
-												nil];
-			for(int i = 0; i < [leopardCacheDirs count]; i++) {
-				NSString* cacheDir = [leopardCacheDirectory stringByAppendingPathComponent: leopardCacheDirs[i]];
-				if([fileManager isDeletableFileAtPath: cacheDir]) {
-					[fileManager removeItemAtPath: cacheDir error: nil];
-				}
-			}
-		}
-
-		// NSArray* userCacheDirectories = NSSearchPathForDirectoriesInDomain(NSCachesDirectory, NSUserDomainMask, NO);
-		// I have no clue why this doesn't compile, I'm #importing properly I believe.
-		// We'll have to do it the messy way...
-
-		NSString* userLibraryDirectory = [@"~/Library" stringByExpandingTildeInPath];
-		NSMutableArray* cacheDirs = [NSMutableArray arrayWithObjects:
-									 @"Caches/com.apple.Safari",
-									 nil];
-
-		for(int i = 0; i < [cacheDirs count]; i++) {
-			NSString* cacheDir = [userLibraryDirectory stringByAppendingPathComponent: cacheDirs[i]];
-			if([fileManager isDeletableFileAtPath: cacheDir]) {
-				[fileManager removeItemAtPath: cacheDir error: nil];
-			}
-		}
-	}
+    // need to seteuid so the tilde expansion will work properly
+    seteuid(controllingUID);
+    
+    NSArray<NSString*>* cacheDirs = @[
+        // chrome
+        @"~/Library/Caches/Google/Chrome/Default",
+        @"~/Library/Caches/Google/Chrome/com.google.Chrome",
+        
+        // firefox
+        @"~/Library/Caches/Firefox/Profiles",
+        
+        // safari
+        @"~/Library/Caches/com.apple.Safari",
+        @"~/Library/Containers/com.apple.Safari/Data/Library/Caches"
+    ];
+    for (NSString* cacheDir in cacheDirs) {
+        NSString* expandedCacheDir = [cacheDir stringByExpandingTildeInPath];
+        NSLog(@"Clearing browser cache folder %@", expandedCacheDir);
+        [fileManager removeItemAtPath: expandedCacheDir error: nil];
+    }
+    
+    seteuid(0);
+}
+void clearOSDNSCache() {
+    // no error checks - if it works it works!
+    NSTask* flushDsCacheUtil = [[NSTask alloc] init];
+    [flushDsCacheUtil setLaunchPath: @"/usr/bin/dscacheutil"];
+    [flushDsCacheUtil setArguments: @[@"-flushcache"]];
+    [flushDsCacheUtil launch];
+    [flushDsCacheUtil waitUntilExit];
+    
+    NSTask* killResponder = [[NSTask alloc] init];
+    [killResponder setLaunchPath: @"/usr/bin/killall"];
+    [killResponder setArguments: @[@"-HUP", @"mDNSResponder"]];
+    [killResponder launch];
+    [killResponder waitUntilExit];
+    
+    NSTask* killResponderHelper = [[NSTask alloc] init];
+    [killResponderHelper setLaunchPath: @"/usr/bin/killall"];
+    [killResponderHelper setArguments: @[@"mDNSResponderHelper"]];
+    [killResponderHelper launch];
+    [killResponderHelper waitUntilExit];
+    
+    NSLog(@"Cleared OS DNS caches");
 }
 
 void printStatus(int status) {
@@ -182,13 +192,12 @@ void removeBlock(uid_t controllingUID) {
     // always synchronize settings ASAP after removing a block to let everybody else know
     [[SCSettings settingsForUser: controllingUID] synchronizeSettings];
 
-
     // let the main app know things have changed so it can update the UI!
     sendConfigurationChangedNotification();
 
-	clearCachesIfRequested(controllingUID);
-
     NSLog(@"INFO: Block cleared.");
+    
+    clearCachesIfRequested(controllingUID);
      
     [LaunchctlHelper unloadLaunchdJobWithPlistAt:@"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
 }

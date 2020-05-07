@@ -52,6 +52,12 @@ NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, int port);
 // web browsers if it is required.
 void clearCachesIfRequested(uid_t controllingUID);
 
+// Clear only the caches for browsers
+void clearBrowserCaches(uid_t controllingUID);
+
+// Clear only the OS-level DNS cache
+void clearOSDNSCache();
+
 // Prints out the given status code to stdout using printf
 void printStatus(int status);
 

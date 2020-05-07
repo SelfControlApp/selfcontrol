@@ -215,7 +215,7 @@ int main(int argc, char* argv[]) {
             
             sendConfigurationChangedNotification();
 
-			// Clear web browser caches if the user has the correct preference set, so
+			// Clear all caches if the user has the correct preference set, so
 			// that blocked pages are not loaded from a cache.
 			clearCachesIfRequested(controllingUID);
 
@@ -270,8 +270,8 @@ int main(int argc, char* argv[]) {
                 // get rid of this block
                 [settings setValue: @YES forKey: @"TamperingDetected"];
                 [settings synchronizeSettings];
+
                 removeBlock(controllingUID);
-                sendConfigurationChangedNotification();
 
                 printStatus(-215);
                 exit(EX_SOFTWARE);
@@ -281,7 +281,6 @@ int main(int argc, char* argv[]) {
 				NSLog(@"INFO: Checkup ran, block expired, removing block.");
                 
 				removeBlock(controllingUID);
-                sendConfigurationChangedNotification();
 
 				// Execution should never reach this point.  Launchd unloading the job in removeBlock()
 				// should have killed this process.
@@ -317,6 +316,8 @@ int main(int argc, char* argv[]) {
 
 					// Perform the re-add of the rules
 					addRulesToFirewall(controllingUID);
+                    
+                    clearCachesIfRequested(controllingUID);
 					NSLog(@"INFO: Checkup ran, readded block rules.");
 				} else NSLog(@"INFO: Checkup ran, no action needed.");
 			}
