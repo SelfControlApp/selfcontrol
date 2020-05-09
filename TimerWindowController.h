@@ -35,6 +35,7 @@
 	int numStrikes;
 	IBOutlet NSButton* addToBlockButton_;
 	IBOutlet NSButton* killBlockButton_;
+    IBOutlet NSButton* extendBlockButton_;
 
 	IBOutlet NSPanel* addSheet_;
 	IBOutlet NSTextField* addToBlockTextField_;

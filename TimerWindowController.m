@@ -66,8 +66,15 @@
 
 	[window makeKeyAndOrderFront: self];
 
+    // make the kill-block button red so it's extra noticeable
+    NSMutableAttributedString* killBlockMutableAttributedTitle = [killBlockButton_.attributedTitle mutableCopy];
+    [killBlockMutableAttributedTitle addAttribute: NSForegroundColorAttributeName value: [NSColor systemRedColor] range: NSMakeRange(0, killBlockButton_.title.length)];
+    [killBlockMutableAttributedTitle applyFontTraits: NSBoldFontMask range: NSMakeRange(0, killBlockButton_.title.length)];
+    killBlockButton_.attributedTitle = killBlockMutableAttributedTitle;
+
 	killBlockButton_.hidden = YES;
 	addToBlockButton_.hidden = NO;
+    extendBlockButton_.hidden = NO;
 
     blockEndingDate_ = [settings_ valueForKey: @"BlockEndDate"];
 
@@ -136,6 +143,7 @@
 			// OK, so apparently scheckup couldn't remove the block either. Enable manual block removal.
 			if (numStrikes == 10) NSLog(@"WARNING: Block should have ended a minute ago! Probable permablock.");
 			addToBlockButton_.hidden = YES;
+            extendBlockButton_.hidden = YES;
 			killBlockButton_.hidden = NO;
 		}
 
@@ -309,12 +317,15 @@
 	snprintf(uidString, sizeof(uidString), "%d", getuid());
 
 	char* args[] = { uidString, NULL };
-
+    
+    
+    FILE* pipe = NULL;
 	status = AuthorizationExecuteWithPrivileges(authorizationRef,
 												helperToolPath,
 												kAuthorizationFlagDefaults,
 												args,
-												NULL);
+												&pipe);
+    
 	if(status) {
 		NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", status);
 
@@ -323,17 +334,33 @@
 		[NSApp presentError: err];
 
 		return;
-	} else {
-        // Now that the current block is over, we can go ahead and remove the legacy block info
-        // and migrate them to the new SCSettings system
-        [[SCSettings currentUserSettings] clearLegacySettings];
-        
-		NSAlert* alert = [[NSAlert alloc] init];
-		[alert setMessageText: @"Success!"];
-		[alert setInformativeText:@"The block was cleared successfully.  You can find the log file, named SelfControl-Killer.log, in your Documents folder. If you're still having issues, please check out the SelfControl FAQ on GitHub."];
-		[alert addButtonWithTitle: @"OK"];
-		[alert runModal];
 	}
+    
+    // read until the pipe finishes so we wait for execution to end before we
+    // show the modal (this also helps make the focus ordering better)
+    for (;;) {
+        int bytesRead = read(fileno(pipe), NULL, 256);
+        if (bytesRead < 1) break;
+    }
+        
+    // Now that[ the current block is over, we can go ahead and remove the legacy block info
+    // and migrate them to the new SCSettings system
+    // (and reload settings so the timer window knows the block is done)
+    [[SCSettings currentUserSettings] reloadSettings];
+    [[SCSettings currentUserSettings] clearLegacySettings];
+        
+    // update the UI _before_ we run the alert,
+    // so the main window doesn't steal the focus from the alert
+    // (and after we've synced settings so we know things have changed)
+    [self.appController performSelectorOnMainThread:@selector(refreshUserInterface)
+                                         withObject:nil
+                                      waitUntilDone:YES];
+    
+    NSAlert* alert = [[NSAlert alloc] init];
+    [alert setMessageText: @"Success!"];
+    [alert setInformativeText:@"The block was cleared successfully.  You can find the log file, named SelfControl-Killer.log, in your Documents folder. If you're still having issues, please check out the SelfControl FAQ on GitHub."];
+    [alert addButtonWithTitle: @"OK"];
+    [alert runModal];
 }
 
 - (NSString*)selfControlKillerHelperToolPath {
