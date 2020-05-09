@@ -56,7 +56,7 @@ void clearCachesIfRequested(uid_t controllingUID);
 void clearBrowserCaches(uid_t controllingUID);
 
 // Clear only the OS-level DNS cache
-void clearOSDNSCache();
+void clearOSDNSCache(void);
 
 // Prints out the given status code to stdout using printf
 void printStatus(int status);

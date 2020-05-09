@@ -339,7 +339,7 @@
     // read until the pipe finishes so we wait for execution to end before we
     // show the modal (this also helps make the focus ordering better)
     for (;;) {
-        int bytesRead = read(fileno(pipe), NULL, 256);
+        ssize_t bytesRead = read(fileno(pipe), NULL, 256);
         if (bytesRead < 1) break;
     }
         

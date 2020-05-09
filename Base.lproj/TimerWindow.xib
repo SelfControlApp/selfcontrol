@@ -50,8 +50,8 @@
                             <action selector="extendBlockTime:" target="7" id="6Xu-rQ-ikP"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="100">
-                        <rect key="frame" x="12" y="19" width="198" height="17"/>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="100">
+                        <rect key="frame" x="21" y="21" width="170" height="17"/>
                         <buttonCell key="cell" type="roundRect" title="Stuck? Stop block manually" bezelStyle="roundedRect" image="buttonCell:101:image" imagePosition="overlaps" alignment="center" controlSize="small" state="on" borderStyle="border" inset="2" id="101">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="label" size="12"/>
@@ -94,8 +94,8 @@
             <windowPositionMask key="initialPositionMask" leftStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="418" width="334" height="92"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
-            <view key="contentView" misplaced="YES" id="64">
-                <rect key="frame" x="0.0" y="0.0" width="334" height="92"/>
+            <view key="contentView" id="64">
+                <rect key="frame" x="0.0" y="0.0" width="334" height="91"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="65">
@@ -152,6 +152,7 @@ DQ
                     <constraint firstAttribute="bottom" secondItem="66" secondAttribute="bottom" constant="14" id="yqD-Ax-O82"/>
                 </constraints>
             </view>
+            <point key="canvasLocation" x="191" y="91"/>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="77"/>
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" visibleAtLaunch="NO" animationBehavior="default" id="N5B-KG-X2q" userLabel="Extend Block Sheet" customClass="NSPanel">
