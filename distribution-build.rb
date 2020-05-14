@@ -25,40 +25,32 @@
 #                                                                               #
 #################################################################################
 
-class AppCast
+class SelfControlRelease
+    require 'fileutils'
     require 'yaml'
     require 'plist'
-    
-    MESSAGE_HEADER   = 'RUN SCRIPT DURING BUILD MESSAGE'
+    require 'xcodeproj'
+
     YAML_FOLDER_PATH = "#{ENV['HOME']}/dev/selfcontrol/"
-    SRCROOT = ENV['SRCROOT'].chomp
+    SOURCE_FOLDER = __dir__.chomp
     
     def initialize
         @signature = ''
-        require_release_build
-        parse_project_settings
-        project_setup
+        @target_app = ARGV[0]
+                        
         load_config
-        
-        appcast_setup
+        parse_project_settings
+                
+        setup_variables
     end
     
     def execute!
-        create_appcast_folder_and_files
-        remove_old_zip_create_new_zip
+        remove_old_build_create_new_build
+        create_release_notes
         file_stats
         create_appcast_xml_snippet
     end
-    
-    # Only works for Release builds
-    # Exits upon failure
-    def require_release_build
-        if ENV["BUILD_STYLE"] == 'Debug'
-            log_message("Distribution target requires 'Release' build style")
-            exit
-        end
-    end
-    
+        
     # Exits if no config.yml file found.
     def load_config
         config_file_path = "#{YAML_FOLDER_PATH}/config.yml"
@@ -70,35 +62,38 @@ class AppCast
     end
 
     def parse_project_settings
-        plist = Plist.parse_xml("#{SRCROOT}/Info.plist")
-        
-        @version = plist['CFBundleShortVersionString']
+        plist = Plist.parse_xml("#{SOURCE_FOLDER}/Info.plist")
+        @version = plist['CFBundleShortVersionString'].chomp
+
+        # Xcodeproj throws an insane number of warnings when opening the project
+        # BUT still seems to work. so, just open it and suppress the warnings!
+        project = nil
+        suppress_warnings { project = Xcodeproj::Project.open("SelfControl.xcodeproj") }
+        @min_system_version = project.build_settings("Release")['MACOSX_DEPLOYMENT_TARGET']
     end
 
-    def project_setup
-        @proj_dir         = ENV['BUILT_PRODUCTS_DIR']
-        @proj_name        = ENV['PROJECT_NAME']
-        @archive_filename = "#{@proj_name}-#{@version.chomp}.zip" # underline character added
-        @archive_path     = "#{SRCROOT}/release/#{@archive_filename}".chomp
-    end
+    def setup_variables
+        # General / archive variables
+        @release_folder   = "#{SOURCE_FOLDER}/release".chomp
+        @version_folder     = "#{@release_folder}/#{@version}".chomp
+        @archive_filename = "SelfControl-#{@version}.zip" # underline character added
+        @archive_path     = "#{@version_folder}/#{@archive_filename}".chomp
 
-    def appcast_setup
+        # Appcast / release note variables
         @appcast_xml_name      = @config['appcast_xml_name'].chomp
-        @appcast_release_folder   = "#{SRCROOT}/release".chomp
-        @appcast_xml_path      = "#{@appcast_release_folder}/#{@appcast_xml_name}"
-        @min_system_version    = ENV['MACOSX_DEPLOYMENT_TARGET']
+        @appcast_xml_path      = "#{@version_folder}/#{@appcast_xml_name}"
         @download_base_url     = @config['download_base_url']
         @web_base_url          = @config['web_base_url']
-        @releasenotes_url      = "#{@web_base_url}/releasenotes.html#collapse-#{@version.chomp.gsub('.', '-')}"
+        @releasenotes_url      = "#{@web_base_url}/releasenotes.html#collapse-#{@version.gsub('.', '-')}"
         @download_url          = "#{@download_base_url}#{@archive_filename}"
         @appcast_download_url  = "#{@web_base_url}#{@appcast_xml_name}"
     end
         
-    def remove_old_zip_create_new_zip
-        puts @proj_dir
-        Dir.chdir(@proj_dir)
-        `rm -f #{@proj_name}*.zip`
-        `ditto -ck --keepParent --rsrc --sequesterRsrc "#{@proj_name}.app" "#{@archive_path}"`
+    def remove_old_build_create_new_build
+        Dir.chdir(@release_folder)
+        FileUtils.rm_rf("#{@version}")
+        Dir.mkdir("#{@version}")
+        `ditto -ck --keepParent --rsrc --sequesterRsrc "#{@target_app}" "#{@archive_path}"`
     end
         
     def file_stats
@@ -107,27 +102,27 @@ class AppCast
     
     def get_dsa_signature
         puts "Generating DSA signature for archive at path #{@archive_path}"
-        puts "Command: #{SRCROOT}/Pods/Sparkle/bin/old_dsa_scripts/sign_update \"#{@archive_path}\" /Volumes/SelfControl\ Keys\ and\ Secrets/Sparkle\ Signing\ Keys/dsa_priv.pem"
-        return `#{SRCROOT}/Pods/Sparkle/bin/old_dsa_scripts/sign_update \"#{@archive_path}\" \"/Volumes/SelfControl\ Keys\ and\ Secrets/Sparkle\ Signing\ Keys/dsa_priv.pem\"`.chomp
+        puts "Command: #{SOURCE_FOLDER}/Pods/Sparkle/bin/old_dsa_scripts/sign_update \"#{@archive_path}\" /Volumes/SelfControl\ Keys\ and\ Secrets/Sparkle\ Signing\ Keys/dsa_priv.pem"
+        return `#{SOURCE_FOLDER}/Pods/Sparkle/bin/old_dsa_scripts/sign_update \"#{@archive_path}\" \"/Volumes/SelfControl\ Keys\ and\ Secrets/Sparkle\ Signing\ Keys/dsa_priv.pem\"`.chomp
     end
     
     def get_eddsa_signature_and_length_parameters
         puts "Generating edDSA signature parameters for archive at path #{@archive_path}"
-        puts "Command: #{SRCROOT}/Pods/Sparkle/bin/sign_update \"#{@archive_path}\""
-        return `#{SRCROOT}/Pods/Sparkle/bin/sign_update \"#{@archive_path}\"`.chomp
+        puts "Command: #{SOURCE_FOLDER}/Pods/Sparkle/bin/sign_update \"#{@archive_path}\""
+        return `#{SOURCE_FOLDER}/Pods/Sparkle/bin/sign_update \"#{@archive_path}\"`.chomp
     end
     
     def create_appcast_xml_snippet
         appcast_xml =
         "    <item>
-        <title>Version #{@version.chomp}</title>
+        <title>Version #{@version}</title>
         <sparkle:releaseNotesLink>
             #{@releasenotes_url}
         </sparkle:releaseNotesLink>
         <pubDate>#{@pubdate.chomp}</pubDate>
         <enclosure url=\"#{@download_url.chomp}\"
-            sparkle:version=\"#{@version.chomp}\"
-            sparkle:shortVersionString=\"#{@version.chomp}\"
+            sparkle:version=\"#{@version}\"
+            sparkle:shortVersionString=\"#{@version}\"
             sparkle:dsaSignature=\"#{get_dsa_signature}\"
             #{get_eddsa_signature_and_length_parameters}
             type=\"application/octet-stream\"
@@ -138,30 +133,31 @@ class AppCast
         File.open(@appcast_xml_path, 'w') { |f| f.puts appcast_xml }
     end
     
-    # Creates the appcast folder if it does not exist
-    # or is accidently moved or deleted
-    # Creates an html file with generic note template if it does not exist
-    # This way the notes file is named correctly as well
-    def create_appcast_folder_and_files
-        project_folder = @appcast_release_folder
-        
-        notes_file = "#{project_folder}/releasenotes-#{@version}.html"
-        
-        Dir.mkdir(project_folder) unless File.exist?(project_folder)
-                
-        File.open(notes_file, 'w') { |f| f.puts release_notes_html_snippet } unless File.exist?(notes_file)
+    # Creates an html file with release notes
+    def create_release_notes
+        notes_file = "#{@version_folder}/releasenotes-#{@version}.html"
+        File.open(notes_file, 'w') { |f| f.puts release_notes_html_snippet }
     end
     
     def log_message(msg)
         puts "\n\n----------------------------------------------"
-        puts MESSAGE_HEADER
         puts msg
         puts "----------------------------------------------\n\n"
     end
+    
+    # Method borrowed from Jakob Skjerning
+    # Source: https://mentalized.net/journal/2010/04/02/suppress-warnings-from-ruby/
+    def suppress_warnings
+        original_verbosity = $VERBOSE
+        $VERBOSE = nil
+        result = yield
+        $VERBOSE = original_verbosity
+        return result
+    end
         
     def release_notes_html_snippet
-        @releasenotes_url      = "#{@web_base_url}/releasenotes.html#collapse-#{@version.chomp.gsub('.', '-')}"
-        url_friendly_version = @version.chomp.gsub('.', '-')
+        @releasenotes_url      = "#{@web_base_url}/releasenotes.html#collapse-#{@version.gsub('.', '-')}"
+        url_friendly_version = @version.gsub('.', '-')
 
         return "
         <div class=\"accordion-group\">
@@ -185,7 +181,7 @@ class AppCast
 end
                                             
 if __FILE__ == $0
-    appcast = AppCast.new
-    appcast.execute!
-    appcast.log_message("It appears all went well with the build script!")
+    release = SelfControlRelease.new
+    release.execute!
+    release.log_message("Signed and packaged successfully!")
 end
