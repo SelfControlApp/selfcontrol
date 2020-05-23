@@ -223,7 +223,7 @@ float const SYNC_LEEWAY_SECS = 30;
         if (diskMoreRecentThanMemory) {
             _settingsDict = [settingsFromDisk mutableCopy];
             self.lastSynchronizedWithDisk = [NSDate date];
-            NSLog(@"Newer SCSettings found on disk (version %d vs %d), updating...", diskSettingsVersion, memorySettingsVersion);
+            NSLog(@"Newer SCSettings found on disk (version %d vs %d with time interval %f), updating...", diskSettingsVersion, memorySettingsVersion, [diskSettingsLastUpdated timeIntervalSinceDate: memorySettingsLastUpdated]);
             
         }
     }

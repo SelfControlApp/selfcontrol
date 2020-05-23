@@ -183,15 +183,17 @@ void printStatus(int status) {
 }
 
 void removeBlock(uid_t controllingUID) {
+    SCSettings* settings = [SCSettings settingsForUser: controllingUID];
+
     [SCUtilities removeBlockFromSettingsForUID: controllingUID];
 	removeRulesFromFirewall(controllingUID);
     
     // go ahead and remove any remaining legacy block info at the same time to avoid confusion
     // (and migrate them to the new SCSettings system if not already migrated)
-    [[SCSettings settingsForUser: controllingUID] clearLegacySettings];
+    [settings clearLegacySettings];
     
     // always synchronize settings ASAP after removing a block to let everybody else know
-    [[SCSettings settingsForUser: controllingUID] synchronizeSettings];
+    [settings synchronizeSettings];
 
     // let the main app know things have changed so it can update the UI!
     sendConfigurationChangedNotification();
@@ -199,7 +201,24 @@ void removeBlock(uid_t controllingUID) {
     NSLog(@"INFO: Block cleared.");
     
     clearCachesIfRequested(controllingUID);
-     
+    
+    // the final step is to unload the launchd job
+    // this will kill this process, so we have to make sure
+    // all settings are synced before we unload
+    [settings synchronizeSettingsWithCompletion:^(NSError* err) {
+        if (err != nil) {
+            NSLog(@"WARNING: Settings failed to synchronize before unloading block, with error %@", err);
+        }
+        
+        [LaunchctlHelper unloadLaunchdJobWithPlistAt:@"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
+    }];
+        
+    // wait 5 seconds. assuming the synchronization completes during that time,
+    // it'll unload the launchd job for us and we'll never get to the other side of this wait
+    sleep(5);
+        
+    // uh-oh, looks like it's 5 seconds later and the sync hasn't completed yet. Bad news.
+    NSLog(@"WARNING: Settings sync timed out before unloading block");
     [LaunchctlHelper unloadLaunchdJobWithPlistAt:@"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
 }
 
@@ -210,4 +229,30 @@ void sendConfigurationChangedNotification() {
                                                                    object: nil
                                                                  userInfo: nil
                                                                   options: NSNotificationDeliverImmediately | NSNotificationPostToAllSessions];
+}
+
+void syncSettingsAndExit(SCSettings* settings, int status) {
+    // this should always be run on the main thread so it blocks main()
+    if (![NSThread isMainThread]) {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            syncSettingsAndExit(settings, status);
+        });
+    }
+
+    [settings synchronizeSettingsWithCompletion:^(NSError* err) {
+        if (err != nil) {
+            NSLog(@"WARNING: Settings failed to synchronize before exit, with error %@", err);
+        }
+        
+        exit(status);
+    }];
+        
+    // wait 5 seconds. assuming the synchronization completes during that time,
+    // it'll exit() for us and we'll never get to the other side of this wait
+    sleep(5);
+        
+    // uh-oh, looks like it's 5 seconds later and the sync hasn't completed yet. Bad news.
+    NSLog(@"WARNING: Settings sync timed out before exiting");
+    
+    exit(status);
 }

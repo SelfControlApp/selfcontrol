@@ -66,3 +66,10 @@ void printStatus(int status);
 void removeBlock(uid_t controllingUID);
 
 void sendConfigurationChangedNotification(void);
+
+// makes sure the secured settings finish syncing
+// before calling exit with the given status
+// if there's any chance settings could have been modified, we should
+// always call this instead of plain exit() to make sure settings aren't left unsynced!
+// this waits for the settings to sync before returning, so may be slow
+void syncSettingsAndExit(SCSettings* settings, int status);

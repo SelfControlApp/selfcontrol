@@ -88,7 +88,7 @@ int main(int argc, char* argv[]) {
                     pathToBlocklistFile = nil;
                     NSLog(@"Error: Block end date argument %@ is invalid", @(argv[4]));
                     printStatus(-220);
-                    exit(EX_IOERR);
+                    syncSettingsAndExit(settings, EX_IOERR);
                 } else {
                     [settings setValue: blockEndDateArg forKey: @"BlockEndDate"];
                     BOOL readSuccess = [SCUtilities readBlocklistFromFile: [NSURL fileURLWithPath: pathToBlocklistFile] toSettings: settings];
@@ -96,7 +96,7 @@ int main(int argc, char* argv[]) {
                     if (!readSuccess) {
                         NSLog(@"ERROR: Block could not be read from file %@", pathToBlocklistFile);
                         printStatus(-221);
-                        exit(EX_IOERR);
+                        syncSettingsAndExit(settings, EX_IOERR);
                     }
                 }
             }
@@ -122,7 +122,7 @@ int main(int argc, char* argv[]) {
 			if([writeErr code]) {
 				NSLog(@"ERROR: Could not write launchd plist file to LaunchDaemons folder.");
 				printStatus(-204);
-				exit(EX_IOERR);
+				syncSettingsAndExit(settings, EX_IOERR);
 			}
 
 			if(![fileManager fileExistsAtPath: @"/Library/PrivilegedHelperTools"]) {
@@ -132,13 +132,13 @@ int main(int argc, char* argv[]) {
 												 error: nil]) {
 					NSLog(@"ERROR: Could not create PrivilegedHelperTools directory.");
 					printStatus(-205);
-					exit(EX_IOERR);
+					syncSettingsAndExit(settings, EX_IOERR);
 				}
 			} else {
 				if(![fileManager setAttributes: fileAttributes ofItemAtPath: @"/Library/PrivilegedHelperTools" error: nil]) {
 					NSLog(@"ERROR: Could not change permissions on PrivilegedHelperTools directory.");
 					printStatus(-206);
-					exit(EX_IOERR);
+					syncSettingsAndExit(settings, EX_IOERR);
 				}
 			}
 			// We should delete the old file if it exists and copy the new binary in,
@@ -147,7 +147,7 @@ int main(int argc, char* argv[]) {
 				if(![fileManager removeItemAtPath: @"/Library/PrivilegedHelperTools/org.eyebeam.SelfControl" error: nil]) {
 					NSLog(@"ERROR: Could not delete old helper binary.");
 					printStatus(-207);
-					exit(EX_IOERR);
+					syncSettingsAndExit(settings, EX_IOERR);
 				}
 			}
 
@@ -156,7 +156,7 @@ int main(int argc, char* argv[]) {
 							  error: nil]) {
 				NSLog(@"ERROR: Could not copy SelfControl's helper binary to PrivilegedHelperTools directory.");
 				printStatus(-208);
-				exit(EX_IOERR);
+				syncSettingsAndExit(settings, EX_IOERR);
 			}
 
 			if([fileManager fileExistsAtPath: @"/Library/PrivilegedHelperTools/scheckup"]) {
@@ -187,10 +187,8 @@ int main(int argc, char* argv[]) {
 			if(![fileManager setAttributes: fileAttributes ofItemAtPath: @"/Library/PrivilegedHelperTools/org.eyebeam.SelfControl" error: nil]) {
 				NSLog(@"ERROR: Could not change permissions on SelfControl's helper binary.");
 				printStatus(-209);
-				exit(EX_IOERR);
+				syncSettingsAndExit(settings, EX_IOERR);
 			}
-
-            SCSettings* settings = [SCSettings settingsForUser: controllingUID];
             
             // clear any legacy block information - no longer useful since we're using SCSettings now
             // (and could potentially confuse things)
@@ -200,7 +198,7 @@ int main(int argc, char* argv[]) {
 				NSLog(@"ERROR: Blocklist is empty, or there was an error transferring block information.");
                 NSLog(@"Block End Date: %@", [settings valueForKey: @"BlockEndDate"]);
 				printStatus(-210);
-				exit(EX_CONFIG);
+				syncSettingsAndExit(settings, EX_CONFIG);
 			}
 
 			addRulesToFirewall(controllingUID);
@@ -222,22 +220,21 @@ int main(int argc, char* argv[]) {
 			if(result) {
 				printStatus(-211);
                 NSLog(@"WARNING: Launch daemon load returned a failure status code.");
-				exit(EX_UNAVAILABLE);
+				syncSettingsAndExit(settings, EX_UNAVAILABLE);
 			} else NSLog(@"INFO: Block successfully added.");
 		}
 		if([modeString isEqual: @"--remove"]) {
 			// So you think you can rid yourself of SelfControl just like that?
 			NSLog(@"INFO: Nice try.");
 			printStatus(-212);
-			exit(EX_UNAVAILABLE);
+			syncSettingsAndExit(settings, EX_UNAVAILABLE);
 		} else if([modeString isEqual: @"--refresh"]) {
             // used when the blocklist may have changed, to make sure we are blocking the new list
-            SCSettings* settings = [SCSettings settingsForUser: controllingUID];
 
             if([[settings valueForKey: @"Blocklist"] count] <= 0 || ![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
                 NSLog(@"ERROR: Refreshing domain blocklist, but no block is currently ongoing or the blocklist is empty.");
                 printStatus(-213);
-                exit(EX_SOFTWARE);
+                syncSettingsAndExit(settings, EX_SOFTWARE);
 			}
 
 			// Add and remove the rules to put in any new ones
@@ -274,7 +271,7 @@ int main(int argc, char* argv[]) {
                 removeBlock(controllingUID);
 
                 printStatus(-215);
-                exit(EX_SOFTWARE);
+                syncSettingsAndExit(settings, EX_SOFTWARE);
             }
 
 			if (![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
@@ -285,7 +282,7 @@ int main(int argc, char* argv[]) {
 				// Execution should never reach this point.  Launchd unloading the job in removeBlock()
 				// should have killed this process.
 				printStatus(-216);
-				exit(EX_SOFTWARE);
+				syncSettingsAndExit(settings, EX_SOFTWARE);
 			} else {
 				// The block is still on.  Check if anybody removed our rules, and if so
 				// re-add them.  Also make sure the user's settings are set to the correct
@@ -346,6 +343,11 @@ int main(int argc, char* argv[]) {
 		// avoid memory-managment crashes (calling [pool drain] is essentially optional)
 		printStatus(0);
 
+        // final sync before we exit
+        syncSettingsAndExit(settings, EXIT_SUCCESS);
 	}
-	exit(EXIT_SUCCESS);
+
+    // wait, how'd we get out of the autorelease block without hitting the exit just above this?
+    // whoops, something broke
+	exit(EX_SOFTWARE);
 }
