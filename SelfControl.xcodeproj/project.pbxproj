@@ -59,6 +59,7 @@
 		CB5DFCBA2251DD1F0084CEC2 /* SCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */; };
 		CB5DFCBB2251DD1F0084CEC2 /* SCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */; };
 		CB5DFCBC2251DD1F0084CEC2 /* SCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */; };
+		CB6840A5247A3E5500E51564 /* SelfControlKillerIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = CB6840A4247A3E5500E51564 /* SelfControlKillerIcon.icns */; };
 		CB73616119E5086900E0924F /* WhitelistScraper.m in Sources */ = {isa = PBXBuildFile; fileRef = CB73615F19E4FDA000E0924F /* WhitelistScraper.m */; };
 		CB73616219E5086A00E0924F /* WhitelistScraper.m in Sources */ = {isa = PBXBuildFile; fileRef = CB73615F19E4FDA000E0924F /* WhitelistScraper.m */; };
 		CB90BF830F49F430006D202D /* HostImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB90BF820F49F430006D202D /* HostImporter.m */; };
@@ -67,7 +68,6 @@
 		CB9366E90F85BEF100EF284E /* NSAddTemplate.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB9366E70F85BEF100EF284E /* NSAddTemplate.jpg */; };
 		CB9C80FC19CFB79700CDCAE1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9C80FB19CFB79700CDCAE1 /* main.m */; };
 		CB9C80FF19CFB79700CDCAE1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9C80FE19CFB79700CDCAE1 /* AppDelegate.m */; };
-		CB9C810119CFB79700CDCAE1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB9C810019CFB79700CDCAE1 /* Images.xcassets */; };
 		CB9C810419CFB79700CDCAE1 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB9C810219CFB79700CDCAE1 /* MainMenu.xib */; };
 		CB9C811E19CFBA8500CDCAE1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9C811D19CFBA8500CDCAE1 /* main.m */; };
 		CB9C812219CFBB3800CDCAE1 /* PacketFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = CBCA91111960D87300AFD20C /* PacketFilter.m */; };
@@ -247,6 +247,7 @@
 		CB5DFCB52251DD1F0084CEC2 /* SCConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCConstants.h; sourceTree = "<group>"; };
 		CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCConstants.m; sourceTree = "<group>"; };
 		CB5E20BF0FAE0CDC006DBFC8 /* scheckup */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = scheckup; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB6840A4247A3E5500E51564 /* SelfControlKillerIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SelfControlKillerIcon.icns; sourceTree = "<group>"; };
 		CB6ED5662085C70200012817 /* da */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = da; path = da.lproj/FirstTime.xib; sourceTree = "<group>"; };
 		CB7026181CD7177400D7C7F0 /* fr */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CB7026191CD7177400D7C7F0 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -264,7 +265,6 @@
 		CB9C80FB19CFB79700CDCAE1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CB9C80FD19CFB79700CDCAE1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		CB9C80FE19CFB79700CDCAE1 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		CB9C810019CFB79700CDCAE1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		CB9C811B19CFBA8500CDCAE1 /* SCKillerHelper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SCKillerHelper; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB9C811D19CFBA8500CDCAE1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CB9C812919CFBB8000CDCAE1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -628,8 +628,8 @@
 				CB9C811C19CFBA8500CDCAE1 /* SCKillerHelper */,
 				CB9C80FD19CFB79700CDCAE1 /* AppDelegate.h */,
 				CB9C80FE19CFB79700CDCAE1 /* AppDelegate.m */,
-				CB9C810019CFB79700CDCAE1 /* Images.xcassets */,
 				CB9C810219CFB79700CDCAE1 /* MainMenu.xib */,
+				CB6840A4247A3E5500E51564 /* SelfControlKillerIcon.icns */,
 				CB9C80F919CFB79700CDCAE1 /* Supporting Files */,
 			);
 			path = "SelfControl Killer";
@@ -851,7 +851,7 @@
 					CB9C80F619CFB79700CDCAE1 = {
 						CreatedOnToolsVersion = 6.0.1;
 						DevelopmentTeam = L6W5L88KN7;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 					CB9C811A19CFBA8500CDCAE1 = {
 						CreatedOnToolsVersion = 6.0.1;
@@ -940,7 +940,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CB9C810119CFB79700CDCAE1 /* Images.xcassets in Resources */,
+				CB6840A5247A3E5500E51564 /* SelfControlKillerIcon.icns in Resources */,
 				CB9C810419CFB79700CDCAE1 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1704,7 +1704,6 @@
 		CB9C811219CFB79700CDCAE1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1718,9 +1717,11 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = L6W5L88KN7;
+				CURRENT_PROJECT_VERSION = 3;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1739,7 +1740,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "selfcontrol.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.selfcontrolapp.SelfControl-Killer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
@@ -1749,7 +1750,6 @@
 		CB9C811319CFB79700CDCAE1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1765,6 +1765,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = L6W5L88KN7;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1777,7 +1778,7 @@
 				INFOPLIST_FILE = "SelfControl Killer/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "selfcontrol.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.selfcontrolapp.SelfControl-Killer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
