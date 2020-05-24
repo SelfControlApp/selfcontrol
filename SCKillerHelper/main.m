@@ -194,17 +194,37 @@ int main(int argc, char* argv[]) {
         
         // Now that the current block is over, we can go ahead and remove the legacy block info
         // and migrate them to the new SCSettings system
-        [[SCSettings currentUserSettings] clearLegacySettings];
+        [settings clearLegacySettings];
         [log appendString: @"\nMigrating settings to new system...\n"];
+        
+        // OK, make sure all settings are synced before this thing exits
+        [settings synchronizeSettingsWithCompletion:^(NSError* err) {
+            if (err != nil) {
+                [log appendFormat: @"\nWARNING: Settings failed to synchronize before exit, with error %@", err];
+            }
 
-        // and let the main app know to refresh
-        sendConfigurationChangedNotification();
+            // let the main app know to refresh
+           sendConfigurationChangedNotification();
 
-		[log appendString: @"\n===SelfControl-Killer complete!==="];
+           [log appendString: @"\n===SelfControl-Killer complete!==="];
 
-		[log writeToFile: logFilePath
-			  atomically: YES
-				encoding: NSUTF8StringEncoding
-				   error: nil];
+           [log writeToFile: logFilePath
+                 atomically: YES
+                   encoding: NSUTF8StringEncoding
+                      error: nil];
+            
+            exit(EX_OK);
+        }];
+        
+        // only wait 5 seconds for the sync to finish, otherwise exit anyway
+        sleep(5);
+        
+        [log appendString: @"\nWARNING: Settings timed out synchronizing before exit"];
+        [log writeToFile: logFilePath
+        atomically: YES
+          encoding: NSUTF8StringEncoding
+             error: nil];
+        
+        exit(EX_OK);
 	}
 }
