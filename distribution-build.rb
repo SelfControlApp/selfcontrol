@@ -62,8 +62,8 @@ class SelfControlRelease
     end
 
     def parse_project_settings
-        plist = Plist.parse_xml("#{SOURCE_FOLDER}/Info.plist")
-        @version = plist['CFBundleShortVersionString'].chomp
+        @version = `xcodebuild -project SelfControl.xcodeproj/ -showBuildSettings | grep "CURRENT_PROJECT_VERSION" | sed 's/[ ]*CURRENT_PROJECT_VERSION = //'`.chomp
+        log_message("version is #{@version} and version.chomp is #{@version.chomp}")
 
         # Xcodeproj throws an insane number of warnings when opening the project
         # BUT still seems to work. so, just open it and suppress the warnings!

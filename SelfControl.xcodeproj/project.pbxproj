@@ -1001,7 +1001,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${INFOPLIST_FILE}\")\n\necho \"#define SELFCONTROL_VERSION_STRING @\\\"${buildNumber}\\\"\" > \"${PROJECT_DIR}/version-header.h\"\n";
+			shellScript = "buildNumber=$(xcodebuild -project SelfControl.xcodeproj/ -showBuildSettings | grep \"CURRENT_PROJECT_VERSION\" | sed 's/[ ]*CURRENT_PROJECT_VERSION = //')\n\necho \"#define SELFCONTROL_VERSION_STRING @\\\"${buildNumber}\\\"\" > \"${PROJECT_DIR}/version-header.h\"\n";
 		};
 		CB5E5FF81C3A5FD10038F331 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
