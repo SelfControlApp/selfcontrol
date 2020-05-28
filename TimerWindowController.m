@@ -131,17 +131,14 @@
 	if(numSeconds < 0 && [timerLabel_.stringValue isEqualToString: finishingString]) {
 		[[NSApp dockTile] setBadgeLabel: nil];
 
-		// This increments the strike counter.  After four strikes of the timer being
-		// at or less than 0 seconds, SelfControl will assume something's wrong and run
-		// scheckup.
+		// This increments the strike counter.  After ten strikes of the timer being
+		// at or less than 0 seconds, SelfControl will assume something's wrong and enable
+		// manual block removal
 		numStrikes++;
 
-		if(numStrikes == 2) {
-			NSLog(@"WARNING: Block should have ended two seconds ago, starting scheckup");
-			[self runCheckup];
-		} else if(numStrikes > 10) {
-			// OK, so apparently scheckup couldn't remove the block either. Enable manual block removal.
-			if (numStrikes == 10) NSLog(@"WARNING: Block should have ended a minute ago! Probable permablock.");
+		if(numStrikes > 10) {
+			// OK, this is taking longer than it should. Enable manual block removal.
+			if (numStrikes == 10) NSLog(@"WARNING: Block should have ended a minute ago! Probable failure to remove.");
 			addToBlockButton_.hidden = YES;
             extendBlockButton_.hidden = YES;
 			killBlockButton_.hidden = NO;
@@ -270,15 +267,6 @@
 // see updateTimerDisplay: for an explanation
 - (void)resetStrikes {
 	numStrikes = 0;
-}
-
-- (void)runCheckup {
-	@try {
-		[NSTask launchedTaskWithLaunchPath: @"/Library/PrivilegedHelperTools/scheckup" arguments: @[]];
-	}
-	@catch (NSException* exception) {
-		NSLog(@"ERROR: exception %@ caught while trying to launch scheckup", exception);
-	}
 }
 
 - (IBAction)killBlock:(id)sender {

@@ -159,31 +159,6 @@ int main(int argc, char* argv[]) {
 				syncSettingsAndExit(settings, EX_IOERR);
 			}
 
-			if([fileManager fileExistsAtPath: @"/Library/PrivilegedHelperTools/scheckup"]) {
-				if(![fileManager removeItemAtPath: @"/Library/PrivilegedHelperTools/scheckup" error: nil]) {
-					NSLog(@"WARNING: Could not delete old scheckup binary.");
-				}
-			}
-			NSString* scheckupPath = [@(argv[0]) stringByDeletingLastPathComponent];
-			scheckupPath = [scheckupPath stringByAppendingPathComponent: @"scheckup"];
-
-			if(![fileManager copyItemAtPath: scheckupPath
-							   toPath: @"/Library/PrivilegedHelperTools/scheckup"
-									  error: nil]) {
-				NSLog(@"WARNING: Could not copy scheckup to PrivilegedHelperTools directory.");
-			}
-
-			// Let's set up our backup system -- give scheckup the SUID bit
-			NSDictionary* checkupAttributes = @{NSFileOwnerAccountID: @0,
-												NSFileGroupOwnerAccountID: @(controllingUID),
-												// 2541 (decimal) = 4755 (octal) = rwsr-xr-x
-												NSFilePosixPermissions: @2541UL};
-
-			if(![fileManager setAttributes: checkupAttributes ofItemAtPath: @"/Library/PrivilegedHelperTools/scheckup" error: nil]) {
-				NSLog(@"WARNING: Could not change file attributes on scheckup.  Backup block-removal system may not work.");
-			}
-
-
 			if(![fileManager setAttributes: fileAttributes ofItemAtPath: @"/Library/PrivilegedHelperTools/org.eyebeam.SelfControl" error: nil]) {
 				NSLog(@"ERROR: Could not change permissions on SelfControl's helper binary.");
 				printStatus(-209);

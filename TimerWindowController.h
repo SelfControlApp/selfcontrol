@@ -72,10 +72,6 @@
 // Delegate method for the sheet.  Just closes the sheet.
 - (void)didEndSheet:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo;
 
-// Run specialized SelfControl checkup program to make sure timer should still be on,
-// and remove it if it isn't supposed to be on.
-- (void)runCheckup;
-
 - (IBAction)killBlock:(id)sender;
 
 - (void)resetStrikes;
