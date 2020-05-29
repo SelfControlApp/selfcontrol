@@ -31,21 +31,20 @@
 	if(self = [super initWithWindowNibName:@"DomainList"]) {
 
 		defaults_ = [NSUserDefaults standardUserDefaults];
-        settings_ = [SCSettings currentUserSettings];
 
-		NSArray* curArray = [settings_ valueForKey: @"Blocklist"];
+        NSArray* curArray = [defaults_ arrayForKey: @"Blocklist"];
 		if(curArray == nil)
 			domainList_ = [NSMutableArray arrayWithCapacity: 10];
 		else
 			domainList_ = [curArray mutableCopy];
 
-		[settings_ setValue: domainList_ forKey: @"Blocklist"];
+        [defaults_ setValue: domainList_ forKey: @"Blocklist"];
 	}
 
 	return self;
 }
 - (void)awakeFromNib  {
-    NSInteger indexToSelect = [[settings_ valueForKey: @"BlockAsWhitelist"] boolValue] ? 1 : 0;
+    NSInteger indexToSelect = [defaults_ boolForKey: @"BlockAsWhitelist"] ? 1 : 0;
     [allowlistRadioMatrix_ selectCellAtRow: indexToSelect column: 0];
     
     [self updateWindowTitle];
@@ -64,7 +63,7 @@
 - (IBAction)addDomain:(id)sender
 {
 	[domainList_ addObject:@""];
-	[settings_ setValue: domainList_ forKey: @"Blocklist"];
+    [defaults_ setValue: domainList_ forKey: @"Blocklist"];
 	[domainListTableView_ reloadData];
 	NSIndexSet* rowIndex = [NSIndexSet indexSetWithIndex: [domainList_ count] - 1];
 	[domainListTableView_ selectRowIndexes: rowIndex
@@ -92,7 +91,7 @@
 		index = [selected indexGreaterThanIndex: index];
 	}
 
-	[settings_ setValue: domainList_ forKey: @"Blocklist"];
+    [defaults_ setValue: domainList_ forKey: @"Blocklist"];
 	[domainListTableView_ reloadData];
 
 	[[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
@@ -143,7 +142,7 @@
         }
     }
     
-    [settings_ setValue: domainList_ forKey: @"Blocklist"];
+    [defaults_ setValue: domainList_ forKey: @"Blocklist"];
     [domainListTableView_ reloadData];
     [[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
     object: self];
@@ -236,11 +235,11 @@
 - (IBAction)allowlistOptionChanged:(NSMatrix*)sender {
     switch (sender.selectedRow) {
         case 0:
-            [settings_ setValue: @NO forKey: @"BlockAsWhitelist"];
+            [defaults_ setBool: NO forKey: @"BlockAsWhitelist"];
             break;
         case 1:
             [self showAllowlistWarning];
-            [settings_ setValue: @YES forKey: @"BlockAsWhitelist"];
+            [defaults_ setBool: YES forKey: @"BlockAsWhitelist"];
             break;
     }
     
@@ -264,7 +263,7 @@
 }
 
 - (void)updateWindowTitle {
-    NSString* listType = [[settings_ valueForKey: @"BlockAsWhitelist"] boolValue] ? @"Allowlist" : @"Blocklist";
+    NSString* listType = [defaults_ boolForKey: @"BlockAsWhitelist"] ? @"Allowlist" : @"Blocklist";
     self.window.title = NSLocalizedString(([NSString stringWithFormat: @"Domain %@", listType]), @"Domain list window title");
 }
 
@@ -274,7 +273,7 @@
 		if(![domainList_ containsObject: arr[i]])
 			[domainList_ addObject: arr[i]];
 	}
-	[settings_ setValue: domainList_ forKey: @"Blocklist"];
+	[defaults_ setValue: domainList_ forKey: @"Blocklist"];
 	[domainListTableView_ reloadData];
 	[[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
 														object: self];

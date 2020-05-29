@@ -56,14 +56,6 @@
 
 @property (assign) BOOL addingBlock;
 
-// Returns an autoreleased instance of the path to the helper tool inside
-// SelfControl's bundle
-@property (nonatomic, readonly, copy) NSString *selfControlHelperToolPath;
-
-// Returns as a UTF-8 encoded C-string the path to the helper tool inside
-// SelfControl's bundle
-- (char*)selfControlHelperToolPathUTF8String;
-
 // Called when the block duration slider is moved.  Updates the label that gives
 // the block duration in words (hours and minutes).
 - (IBAction)updateTimeSliderDisplay:(id)sender;
@@ -110,11 +102,11 @@
 
 // Called by timerWindowController_ after its sheet returns, to add a specified
 // host to the blocklist (and refresh the block to use the new blocklist).  Launches
-// a new thread with refreshBlock:
+// a new thread with addToBlocklist:
 - (void)addToBlockList:(NSString*)host lock:(NSLock*)lock;
 
 // Called by timerWindowController_ after its sheet returns, to add a specified
-// number of minutes to the black timer. Launches a new thread with refreshBlock.
+// number of minutes to the black timer.
 - (void)extendBlockTime:(NSInteger)minutes lock:(NSLock*)lock;
 
 // Converts a failure exit code from a helper tool invocation into an NSError,
@@ -129,7 +121,7 @@
 // Gets authorization for and then immediately refreshes the block by calling
 // SelfControl's helper tool with the appropriate arguments.  Meant to be called
 // as a separate thread.
-- (void)refreshBlock:(NSLock*)lockToUse;
+- (void)updateActiveBlocklist:(NSLock*)lockToUse;
 
 // open preferences panel
 - (IBAction)openPreferences:(id)sender;

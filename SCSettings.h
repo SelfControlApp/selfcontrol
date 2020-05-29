@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (readonly) uid_t userId;
 @property (readonly) NSDictionary* dictionaryRepresentation;
+@property (nonatomic, readonly, getter=isReadOnly) BOOL readOnly;
 
 + (instancetype)currentUserSettings;
 + (instancetype)settingsForUser:(uid_t)uid;
@@ -28,6 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setValue:(id)value forKey:(NSString*)key stopPropagation:(BOOL)stopPropagation;
 - (void)setValue:(nullable id)value forKey:(NSString*)key;
 - (id)valueForKey:(NSString*)key;
+- (BOOL)boolForKey:(NSString*)key;
 - (void)migrateLegacySettings;
 - (void)clearLegacySettings;
 

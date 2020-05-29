@@ -118,11 +118,41 @@ NSString* const kDefaultHostsFileContents = @"##\n"
 	[strLock unlock];
 }
 
+- (NSArray<NSString*>*)ruleStringsToBlockDomain:(NSString*)domainName {
+    return @[
+        [NSString stringWithFormat: @"0.0.0.0\t%@\n", domainName],
+        [NSString stringWithFormat: @"::\t%@\n", domainName]
+    ];
+}
+
 - (void)addRuleBlockingDomain:(NSString*)domainName {
 	[strLock lock];
-	[newFileContents appendString: [NSString stringWithFormat: @"0.0.0.0\t%@\n", domainName]];
-	[newFileContents appendString: [NSString stringWithFormat: @"::\t%@\n", domainName]];
+    NSLog(@"host file blocker: add rule to block domain %@", domainName);
+    NSArray<NSString*>* ruleStrings = [self ruleStringsToBlockDomain: domainName];
+    for (NSString* ruleString in ruleStrings) {
+        [newFileContents appendString: ruleString];
+    }
 	[strLock unlock];
+}
+
+- (void)appendExistingBlockWithRuleForDomain:(NSString*)domainName {
+    [strLock lock];
+    NSRange footerLocation = [newFileContents rangeOfString: kHostFileBlockerSelfControlFooter];
+    if (footerLocation.location == NSNotFound) {
+        // we can't append if a block isn't in the file already!
+        NSLog(@"WARNING: can't append to host block because footer can't be found");
+    } else {
+        // combine the rule strings and insert em all at once to make the math easier
+        NSArray<NSString*>* ruleStrings = [self ruleStringsToBlockDomain: domainName];
+
+        NSMutableString* combinedRuleString = [NSMutableString string];
+        for (NSString* ruleString in ruleStrings) {
+            [combinedRuleString appendString: ruleString];
+        }
+                
+        [newFileContents insertString: combinedRuleString atIndex: footerLocation.location];
+    }
+    [strLock unlock];
 }
 
 - (BOOL)containsSelfControlBlock {

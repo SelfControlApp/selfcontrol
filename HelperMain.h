@@ -20,13 +20,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// The main class for SelfControl's helper tool to be run by launchd with high
-// privileges in order to handle the root-only configuration.
+// The main class for SelfControl's CLI helper tool
 
 #import "PacketFilter.h"
 #import "HelperCommon.h"
 
 // The main method which deals which most of the logic flow and execution of
-// the helper tool.  Posts an SCConfigurationChangedNotification if the block
+// the CLI helper tool.  Posts an SCConfigurationChangedNotification if the block
 // is enabled or disabled.
 int main(int argc, char* argv[]);

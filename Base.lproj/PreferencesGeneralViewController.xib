@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15400"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="PreferencesGeneralViewController">
             <connections>
-                <outlet property="playSoundCheckbox" destination="GAL-tt-bnj" id="FEU-e3-eA8"/>
                 <outlet property="soundMenu" destination="aVc-DN-GnM" id="OAt-VK-bEg"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
@@ -39,7 +38,7 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <action selector="soundCheckboxChanged:" target="-2" id="kSN-6y-5dQ"/>
+                        <binding destination="4wD-T6-SpY" name="value" keyPath="values.BlockSoundShouldPlay" id="Kmx-Xr-RfW"/>
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cl7-Ls-HNx">
@@ -74,6 +73,8 @@
                     </popUpButtonCell>
                     <connections>
                         <action selector="soundSelectionChanged:" target="-2" id="jn4-kC-4Y3"/>
+                        <binding destination="4wD-T6-SpY" name="enabled" keyPath="values.BlockSoundShouldPlay" id="3II-RK-Syp"/>
+                        <binding destination="4wD-T6-SpY" name="selectedIndex" keyPath="values.BlockSound" id="GDF-4e-Ljl"/>
                     </connections>
                 </popUpButton>
             </subviews>

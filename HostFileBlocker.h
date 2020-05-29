@@ -45,6 +45,7 @@
 - (BOOL)restoreBackupHostsFile;
 
 - (void)addRuleBlockingDomain:(NSString*)domainName;
+- (void)appendExistingBlockWithRuleForDomain:(NSString*)domainName;
 
 - (BOOL)containsSelfControlBlock;
 

@@ -14,6 +14,8 @@
 
 @interface SCUtilities : NSObject
 
+dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queue_t queue, dispatch_block_t block);
+
 + (NSArray<NSString*>*) cleanBlocklistEntry:(NSString*)rawEntry;
 
 /* BLOCK SETTING METHODS */
@@ -26,7 +28,6 @@
 
 // Main app functions taking NSUserDefaults and SCSettings
 
-+ (void) startBlockInSettings:(SCSettings*)settings withBlockDuration:(NSTimeInterval)blockDuration;
 + (void) removeBlockFromSettings:(SCSettings*)settings;
 + (void) removeBlockFromSettingsForUID:(uid_t)uid;
 
@@ -34,6 +35,7 @@
 
 // uses the below methods as well as filesystem checks to see if the block is REALLY running or not
 + (BOOL) blockIsRunningWithSettings:(SCSettings*)settings defaults:(NSUserDefaults*)defaults;
++ (BOOL) blockIsRunningWithSettings:(SCSettings*)settings defaultsDict:(NSDictionary*)defaultsDict;
 
 + (BOOL) blockIsRunningInDictionary:(NSDictionary*)dict;
 + (BOOL) blockShouldBeRunningInDictionary:(NSDictionary *)dict;
@@ -42,7 +44,7 @@
 + (NSDate*) endDateFromLegacyBlockDictionary:(NSDictionary *)dict;
 
 // read and write saved block files
-+ (BOOL)writeBlocklistToFileURL:(NSURL*)targetFileURL settings:(SCSettings*)settings errorDescription:(NSString**)errDescriptionRef;
-+ (BOOL)readBlocklistFromFile:(NSURL*)fileURL toSettings:(SCSettings*)settings;
++ (BOOL)writeBlocklistToFileURL:(NSURL*)targetFileURL blockInfo:(NSDictionary*)blockInfo errorDescription:(NSString**)errDescriptionRef;
++ (NSDictionary*)readBlocklistFromFile:(NSURL*)fileURL;
 
 @end

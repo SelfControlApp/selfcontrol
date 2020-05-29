@@ -29,8 +29,15 @@
 #import <SystemConfiguration/SystemConfiguration.h>
 #import <LetsMove/PFMoveApplication.h>
 #import "SCSettings.h"
+#import <ServiceManagement/ServiceManagement.h>
+#import "SCXPCClient.h"
+#import "SCConstants.h"
 
-NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
+@interface AppController () {}
+
+@property (atomic, strong, readwrite) SCXPCClient* xpc;
+
+@end
 
 @implementation AppController {
 	NSWindowController* getStartedWindowController;
@@ -45,6 +52,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
         settings_ = [SCSettings currentUserSettings];
         
 		NSDictionary* appDefaults = @{
+                                      @"Blocklist": @[],
 									  @"HighlightInvalidHosts": @YES,
 									  @"VerifyInternetConnection": @YES,
 									  @"TimerWindowFloats": @NO,
@@ -52,7 +60,13 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 									  @"MaxBlockLength": @1440,
 									  @"BlockLengthInterval": @15,
 									  @"WhitelistAlertSuppress": @NO,
-									  @"GetStartedShown": @NO
+									  @"GetStartedShown": @NO,
+                                      @"EvaluateCommonSubdomains": @YES,
+                                      @"IncludeLinkedDomains": @YES,
+                                      @"BlockSoundShouldPlay": @NO,
+                                      @"BlockSound": @5,
+                                      @"ClearCaches": @YES,
+                                      @"AllowLocalNetworks": @YES
                                       };
 
 		[defaults_ registerDefaults:appDefaults];
@@ -66,32 +80,6 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	}
 
 	return self;
-}
-
-- (NSString*)selfControlHelperToolPath {
-	static NSString* path;
-
-	// Cache the path so it doesn't have to be searched for again.
-	if(!path) {
-		NSBundle* thisBundle = [NSBundle mainBundle];
-		path = [thisBundle pathForAuxiliaryExecutable: @"org.eyebeam.SelfControl"];
-	}
-
-	return path;
-}
-
-- (char*)selfControlHelperToolPathUTF8String {
-	static char* path;
-
-	// Cache the converted path so it doesn't have to be converted again
-	if(!path) {
-		path = malloc(512);
-		[[self selfControlHelperToolPath] getCString: path
-										   maxLength: 512
-											encoding: NSUTF8StringEncoding];
-	}
-
-	return path;
 }
 
 - (IBAction)updateTimeSliderDisplay:(id)sender {
@@ -110,7 +98,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	NSString* timeString = [self timeSliderDisplayStringFromNumberOfMinutes:numMinutes];
 
 	[blockSliderTimeDisplayLabel_ setStringValue:timeString];
-	[submitButton_ setEnabled: (numMinutes > 0) && ([[settings_ valueForKey: @"Blocklist"] count] > 0)];
+	[submitButton_ setEnabled: (numMinutes > 0) && ([[defaults_ arrayForKey: @"Blocklist"] count] > 0)];
 }
 
 - (NSString *)timeSliderDisplayStringFromNumberOfMinutes:(NSInteger)numberOfMinutes {
@@ -151,7 +139,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		[NSApp presentError: err];
 		return;
 	}
-	if([[settings_ valueForKey:@"Blocklist"] count] == 0) {
+	if([[defaults_ arrayForKey: @"Blocklist"] count] == 0) {
 		// Since the Start button should be disabled when the blocklist has no entries,
 		// this should definitely not be happening.  Exit.
 
@@ -238,16 +226,14 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 		[self updateTimeSliderDisplay: blockDurationSlider_];
 
-		BOOL addBlockIsOngoing = self.addingBlock;
-
-		if([defaults_ integerForKey: @"BlockDuration"] != 0 && [[settings_ valueForKey: @"Blocklist"] count] != 0 && !addBlockIsOngoing) {
+		if([defaults_ integerForKey: @"BlockDuration"] != 0 && [[defaults_ arrayForKey: @"Blocklist"] count] != 0 && !self.addingBlock) {
 			[submitButton_ setEnabled: YES];
 		} else {
 			[submitButton_ setEnabled: NO];
 		}
 
 		// If we're adding a block, we want buttons disabled.
-		if(!addBlockIsOngoing) {
+        if(!self.addingBlock) {
 			[blockDurationSlider_ setEnabled: YES];
 			[editBlocklistButton_ setEnabled: YES];
 			[submitButton_ setTitle: NSLocalizedString(@"Start", @"Start button")];
@@ -267,7 +253,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
     // finally: if the helper tool marked that it detected tampering, make sure
     // we follow through and set the cheater wallpaper (helper tool can't do it itself)
-    if ([[settings_ valueForKey: @"TamperingDetected"] boolValue]) {
+    if ([settings_ boolForKey: @"TamperingDetected"]) {
         NSURL* cheaterBackgroundURL = [[NSBundle mainBundle] URLForResource: @"cheater-background" withExtension: @"png"];
             NSArray<NSScreen *>* screens = [NSScreen screens];
         for (NSScreen* screen in screens) {
@@ -281,7 +267,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     }
     
     // Display "blocklist" or "allowlist" as appropriate
-    NSString* listType = [[settings_ valueForKey: @"BlockAsWhitelist"] boolValue] ? @"Allowlist" : @"Blocklist";
+    NSString* listType = [defaults_ boolForKey: @"BlockAsWhitelist"] ? @"Allowlist" : @"Blocklist";
     NSString* editListString = NSLocalizedString(([NSString stringWithFormat: @"Edit %@", listType]), @"Edit list button / menu item");
     
     editBlocklistButton_.title = editListString;
@@ -340,6 +326,10 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	[NSApplication sharedApplication].delegate = self;
+    
+    // start up our daemon XPC
+    self.xpc = [SCXPCClient new];
+     [self.xpc connectToHelperTool];
 
 	// Register observers on both distributed and normal notification centers
 	// to receive notifications from the helper tool and the other parts of the
@@ -396,8 +386,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (IBAction)showDomainList:(id)sender {
-	BOOL addBlockIsOngoing = self.addingBlock;
-	if([self blockIsRunning] || addBlockIsOngoing) {
+	if([self blockIsRunning] || self.addingBlock) {
 		NSAlert* blockInProgressAlert = [[NSAlert alloc] init];
 		[blockInProgressAlert setMessageText: NSLocalizedString(@"Block in progress", @"Block in progress error title")];
 		[blockInProgressAlert setInformativeText:NSLocalizedString(@"The blocklist cannot be edited while a block is in progress.", @"Block in progress explanation")];
@@ -442,7 +431,10 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (void)addToBlockList:(NSString*)host lock:(NSLock*)lock {
-    NSMutableArray* list = [[settings_ valueForKey: @"Blocklist"] mutableCopy];
+    NSLog(@"addToBlocklist: %@", host);
+    // Note we RETRIEVE the latest list from settings (ActiveBlocklist), but we SET the new list in defaults
+    // since the helper daemon should be the only one changing ActiveBlocklist
+    NSMutableArray* list = [[settings_ valueForKey: @"ActiveBlocklist"] mutableCopy];
     NSArray<NSString*>* cleanedEntries = [SCUtilities cleanBlocklistEntry: host];
     
     if (cleanedEntries.count == 0) return;
@@ -452,7 +444,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
        [list addObject: entry];
     }
        
-	[settings_ setValue: list forKey: @"Blocklist"];
+	[defaults_ setValue: list forKey: @"Blocklist"];
 
 	if(![self blockIsRunning]) {
 		// This method shouldn't be getting called, a block is not on.
@@ -460,11 +452,6 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		// Maybe the UI didn't get properly refreshed, so try refreshing it again
 		// before we return.
 		[self refreshUserInterface];
-
-		// Reverse the blocklist change made before we fail
-		NSMutableArray* list = [[settings_ valueForKey: @"Blocklist"] mutableCopy];
-		[list removeLastObject];
-		[settings_ setValue: list forKey: @"Blocklist"];
 
 		NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
 										   code: -103
@@ -483,11 +470,6 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		[networkUnavailableAlert addButtonWithTitle: NSLocalizedString(@"Network Diagnostics...", @"Network Diagnostics button")];
 		if([networkUnavailableAlert runModal] == NSAlertFirstButtonReturn) {
 			// User clicked cancel
-			// Reverse the blocklist change made before we fail
-			NSMutableArray* list = [[settings_ valueForKey: @"Blocklist"] mutableCopy];
-			[list removeLastObject];
-			[settings_ setValue: list forKey: @"Blocklist"];
-
 			return;
 		}
 
@@ -497,15 +479,10 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		CFNetDiagnosticRef diagRef = CFNetDiagnosticCreateWithURL(kCFAllocatorDefault, url);
 		CFNetDiagnosticDiagnoseProblemInteractively(diagRef);
 
-		// Reverse the blocklist change made before we fail
-		NSMutableArray* list = [[settings_ valueForKey: @"Blocklist"] mutableCopy];
-		[list removeLastObject];
-		[settings_ setValue: list forKey: @"Blocklist"];
-
 		return;
 	}
 
-	[NSThread detachNewThreadSelector: @selector(refreshBlock:) toTarget: self withObject: lock];
+    [NSThread detachNewThreadSelector: @selector(updateActiveBlocklist:) toTarget: self withObject: lock];
 }
 
 - (void)extendBlockTime:(NSInteger)minutesToAdd lock:(NSLock*)lock {
@@ -530,13 +507,14 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
         
         return;
     }
-    
-    [NSThread detachNewThreadSelector: @selector(extendBlockDuration:)
-                             toTarget: self
-                           withObject: @{
-                                         @"lock": lock,
-                                         @"minutesToAdd": @(minutesToAdd)
-                                                                                                    }];
+  
+    [self updateBlockEndDate: lock minutesToAdd: minutesToAdd];
+//    [NSThread detachNewThreadSelector: @selector(extendBlockDuration:)
+//                             toTarget: self
+//                           withObject: @{
+//                                         @"lock": lock,
+//                                         @"minutesToAdd": @(minutesToAdd)
+//                                                                                                    }];
 }
 
 - (void)dealloc {
@@ -633,219 +611,86 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	@autoreleasepool {
 		self.addingBlock = true;
 		[self refreshUserInterface];
-		AuthorizationRef authorizationRef;
-		char* helperToolPath = [self selfControlHelperToolPathUTF8String];
-		NSUInteger helperToolPathSize = strlen(helperToolPath);
-		AuthorizationItem right = {
-			kAuthorizationRightExecute,
-			helperToolPathSize,
-			helperToolPath,
-			0
-		};
-		AuthorizationRights authRights = {
-			1,
-			&right
-		};
-		AuthorizationFlags myFlags = kAuthorizationFlagDefaults |
-		kAuthorizationFlagExtendRights |
-		kAuthorizationFlagInteractionAllowed;
-		OSStatus status;
+        [self.xpc installDaemon:^(NSError * _Nonnull error) {
+            if (error != nil) {
+                [NSApp performSelectorOnMainThread: @selector(presentError:)
+                                        withObject: error
+                                     waitUntilDone: YES];
+                self.addingBlock = false;
+                [self refreshUserInterface];
+                return;
+            } else {
+                // helper tool installed successfully, let's prepare to start the block!
+                // for legacy reasons, BlockDuration is in minutes, so convert it to seconds before passing it through]
+                // sanity check duration (must be above zero)
+                NSTimeInterval blockDurationSecs = MAX([[self->defaults_ valueForKey: @"BlockDuration"] intValue] * 60, 0);
+                NSDate* newBlockEndDate = [NSDate dateWithTimeIntervalSinceNow: blockDurationSecs];
+                
+                // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
+                [self->settings_ synchronizeSettings];
 
-		status = AuthorizationCreate (&authRights,
-									  kAuthorizationEmptyEnvironment,
-									  myFlags,
-									  &authorizationRef);
-
-		if(status) {
-			NSLog(@"ERROR: Failed to authorize block start.");
-			self.addingBlock = false;
-			[self refreshUserInterface];
-			return;
-		}
-
-        // for legacy reasons, BlockDuration is in minutes, so convert it to seconds before passing it through]
-        NSTimeInterval blockDurationSecs = [[defaults_ valueForKey: @"BlockDuration"] intValue] * 60;
-        [SCUtilities startBlockInSettings: settings_ withBlockDuration: blockDurationSecs];
-        
-        // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
-        [settings_ synchronizeSettings];
-
-		// We need to pass our UID to the helper tool.  It needs to know whose defaults
-		// it should reading in order to properly load the blocklist.
-		char uidString[32];
-		snprintf(uidString, sizeof(uidString), "%d", getuid());
-
-		FILE* commPipe;
-
-		char* args[] = { uidString, "--install", NULL };
-		status = AuthorizationExecuteWithPrivileges(authorizationRef,
-													helperToolPath,
-													kAuthorizationFlagDefaults,
-													args,
-													&commPipe);
-
-		if(status) {
-			NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", (int)status);
-
-            // reset settings on failure, and record that on disk ASAP
-            [SCUtilities removeBlockFromSettings: settings_];
-            [settings_ synchronizeSettings];
-
-			NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
-											   code: status
-										   userInfo: @{NSLocalizedDescriptionKey: [NSString stringWithFormat: @"Error %d received from the Security Server.", (int)status]}];
-
-			[NSApp performSelectorOnMainThread: @selector(presentError:)
-									withObject: err
-								 waitUntilDone: YES];
-
-			self.addingBlock = false;
-			[self refreshUserInterface];
-
-			return;
-		}
-
-		NSFileHandle* helperToolHandle = [[NSFileHandle alloc] initWithFileDescriptor: fileno(commPipe) closeOnDealloc: YES];
-
-		NSData* inData = [helperToolHandle readDataToEndOfFile];
-
-
-		NSString* inDataString = [[NSString alloc] initWithData: inData encoding: NSUTF8StringEncoding];
-
-		if([inDataString isEqualToString: @""]) {
-            // reset settings on failure, and record that on disk ASAP
-            [SCUtilities removeBlockFromSettings: settings_];
-            [settings_ synchronizeSettings];
-
-			NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
-											   code: -104
-										   userInfo: @{NSLocalizedDescriptionKey: @"Error -104: The helper tool crashed.  This may cause unexpected errors."}];
-
-			[NSApp performSelectorOnMainThread: @selector(presentError:)
-									withObject: err
-								 waitUntilDone: YES];
-		}
-
-		int exitCode = [inDataString intValue];
-
-		if(exitCode) {
-            // reset settings on failure, and record that on disk ASAP
-            [SCUtilities removeBlockFromSettings: settings_];
-            [settings_ synchronizeSettings];
-
-			NSError* err = [self errorFromHelperToolStatusCode: exitCode];
-
-			[NSApp performSelectorOnMainThread: @selector(presentError:)
-									withObject: err
-								 waitUntilDone: YES];
-		}
-
-		self.addingBlock = false;
-		[self refreshUserInterface];
+                // ok, the new helper tool is installed! refresh the connection, then it's time to start the block
+                [self.xpc refreshConnectionAndRun:^{
+                    NSLog(@"Refreshed connection and ready to start block!");
+                    [self.xpc startBlockWithControllingUID: getuid()
+                                                 blocklist: [self->defaults_ arrayForKey: @"Blocklist"]
+                                               isAllowlist: [self->defaults_ boolForKey: @"BlockAsWhitelist"]
+                                                   endDate: newBlockEndDate
+                                             blockSettings: @{
+                                                                @"ClearCaches": [self->defaults_ valueForKey: @"ClearCaches"],
+                                                                @"AllowLocalNetworks": [self->defaults_ valueForKey: @"AllowLocalNetworks"],
+                                                                @"EvaluateCommonSubdomains": [self->defaults_ valueForKey: @"EvaluateCommonSubdomains"],
+                                                                @"IncludeLinkedDomains": [self->defaults_ valueForKey: @"IncludeLinkedDomains"],
+                                                                @"BlockSoundShouldPlay": [self->defaults_ valueForKey: @"BlockSoundShouldPlay"],
+                                                                @"BlockSound": [self->defaults_ valueForKey: @"BlockSound"]
+                                                            }
+                                                     reply:^(NSError * _Nonnull error) {
+                        NSLog(@"WOO started block with error %@", error);
+                        if (error != nil) {
+                            [NSApp performSelectorOnMainThread: @selector(presentError:)
+                                                    withObject: error
+                                                 waitUntilDone: YES];
+                        }
+                        
+                        // get the new settings
+                        [settings_ synchronizeSettingsWithCompletion:^(NSError * _Nullable error) {
+                            self.addingBlock = false;
+                            [self refreshUserInterface];
+                        }];
+                    }];
+                }];
+            }
+        }];
 	}
 }
 
-- (void)refreshBlock:(NSLock*)lockToUse {
+- (void)updateActiveBlocklist:(NSLock*)lockToUse {
+    NSLog(@"updateActiveBlocklist");
 	if(![lockToUse tryLock]) {
 		return;
 	}
 
-	@autoreleasepool {
-		AuthorizationRef authorizationRef;
-		char* helperToolPath = [self selfControlHelperToolPathUTF8String];
-		long helperToolPathSize = strlen(helperToolPath);
-		AuthorizationItem right = {
-			kAuthorizationRightExecute,
-			helperToolPathSize,
-			helperToolPath,
-			0
-		};
-		AuthorizationRights authRights = {
-			1,
-			&right
-		};
-		AuthorizationFlags myFlags = kAuthorizationFlagDefaults |
-		kAuthorizationFlagExtendRights |
-		kAuthorizationFlagInteractionAllowed;
-		OSStatus status;
+    // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
+    [settings_ synchronizeSettings];
 
-		status = AuthorizationCreate (&authRights,
-									  kAuthorizationEmptyEnvironment,
-									  myFlags,
-									  &authorizationRef);
-
-		if(status) {
-			NSLog(@"ERROR: Failed to authorize block refresh.");
-
-			// Reverse the blocklist change made before we fail
-			NSMutableArray* list = [[settings_ valueForKey: @"Blocklist"] mutableCopy];
-			[list removeLastObject];
-			[settings_ setValue: list forKey: @"Blocklist"];
-
-			[lockToUse unlock];
-
-			return;
-		}
-        
-        // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
-        [settings_ synchronizeSettings];
-
-		// We need to pass our UID to the helper tool.  It needs to know whose defaults
-		// it should read in order to properly load the blocklist.
-		char uidString[32];
-		snprintf(uidString, sizeof(uidString), "%d", getuid());
-
-		FILE* commPipe;
-
-		char* args[] = { uidString, "--refresh", NULL };
-		status = AuthorizationExecuteWithPrivileges(authorizationRef,
-													helperToolPath,
-													kAuthorizationFlagDefaults,
-													args,
-													&commPipe);
-
-		if(status) {
-			NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", (int)status);
-
-			NSError* err = [self errorFromHelperToolStatusCode: status];
-
-			[NSApp performSelectorOnMainThread: @selector(presentError:)
-									withObject: err
-								 waitUntilDone: YES];
-
-			[lockToUse unlock];
-
-			return;
-		}
-
-		NSFileHandle* helperToolHandle = [[NSFileHandle alloc] initWithFileDescriptor: fileno(commPipe) closeOnDealloc: YES];
-
-		NSData* inData = [helperToolHandle readDataToEndOfFile];
-		NSString* inDataString = [[NSString alloc] initWithData: inData encoding: NSUTF8StringEncoding];
-
-		if([inDataString isEqualToString: @""]) {
-			NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
-											   code: -105
-										   userInfo: @{NSLocalizedDescriptionKey: @"Error -105: The helper tool crashed.  This may cause unexpected errors."}];
-
-			[NSApp performSelectorOnMainThread: @selector(presentError:)
-									withObject: err
-								 waitUntilDone: YES];
-		}
-
-		int exitCode = [inDataString intValue];
-
-		if(exitCode) {
-			NSError* err = [self errorFromHelperToolStatusCode: exitCode];
-
-			[NSApp performSelectorOnMainThread: @selector(presentError:)
-									withObject: err
-								 waitUntilDone: YES];
-		}
-
-        [timerWindowController_ performSelectorOnMainThread:@selector(closeAddSheet:) withObject: self waitUntilDone: YES];
-	}
-	[lockToUse unlock];
+    [self.xpc refreshConnectionAndRun:^{
+        NSLog(@"Refreshed connection updating active blocklist!");
+        [self.xpc updateBlocklistWithControllingUID: getuid()
+                                       newBlocklist: [self->defaults_ arrayForKey: @"Blocklist"]
+                                              reply:^(NSError * _Nonnull error) {
+            NSLog(@"WOO updated block with error %@", error);
+            
+            [self->timerWindowController_ performSelectorOnMainThread:@selector(closeAddSheet:) withObject: self waitUntilDone: YES];
+            
+            if (error != nil) {
+                [NSApp performSelectorOnMainThread: @selector(presentError:)
+                                        withObject: error
+                                     waitUntilDone: YES];
+            }
+            
+            [lockToUse unlock];
+        }];
+    }];
 }
 
 // it really sucks, but we can't change any values that are KVO-bound to the UI unless they're on the main thread
@@ -859,29 +704,48 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     [defaults_ synchronize];
 }
 
-- (void)extendBlockDuration:(NSDictionary*)options {
-    NSInteger minutesToAdd = [options[@"minutesToAdd"] integerValue];
-    minutesToAdd = MAX(minutesToAdd, 0); // make sure there's no funny business with negative minutes
-    
-    NSDate* oldBlockEndDate = [settings_ valueForKey: @"BlockEndDate"];
-    NSDate* newBlockEndDate = [oldBlockEndDate dateByAddingTimeInterval: (minutesToAdd * 60)];
-    
-    // Before we try to extend the block, make sure the block time didn't run out (or is about to run out) in the meantime
-    if (![SCUtilities blockShouldBeRunningInDictionary: settings_.dictionaryRepresentation] || [oldBlockEndDate timeIntervalSinceNow] < 1) {
-        // we're done, or will be by the time we get to it! so just let it expire. they can restart it.
+- (void)updateBlockEndDate:(NSLock*)lockToUse minutesToAdd:(NSInteger)minutesToAdd {
+    NSLog(@"updateBlockEndDate");
+    if(![lockToUse tryLock]) {
         return;
     }
 
-    // set the new block end date
-    [settings_ setValue: newBlockEndDate forKey: @"BlockEndDate"];
-    
-    // synchronize it to disk to the helper tool knows immediately
+    minutesToAdd = MAX(minutesToAdd, 0); // make sure there's no funny business with negative minutes
+    NSDate* oldBlockEndDate = [settings_ valueForKey: @"BlockEndDate"];
+    NSDate* newBlockEndDate = [oldBlockEndDate dateByAddingTimeInterval: (minutesToAdd * 60)];
+
+    // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
     [settings_ synchronizeSettings];
-    
-    // let the timer know it needs to recalculate
-    [timerWindowController_ performSelectorOnMainThread:@selector(blockEndDateUpdated)
-                                             withObject: nil
-                                          waitUntilDone: YES];
+
+    [self.xpc refreshConnectionAndRun:^{
+        // Before we try to extend the block, make sure the block time didn't run out (or is about to run out) in the meantime
+        if (![SCUtilities blockShouldBeRunningInDictionary: self->settings_.dictionaryRepresentation] || [oldBlockEndDate timeIntervalSinceNow] < 1) {
+            // we're done, or will be by the time we get to it! so just let it expire. they can restart it.
+            [lockToUse unlock];
+            return;
+        }
+
+        NSLog(@"Refreshed connection updating active block end date!");
+        [self.xpc updateBlockEndDateWithControllingUID: getuid()
+                                       newEndDate: newBlockEndDate
+                                              reply:^(NSError * _Nonnull error) {
+            NSLog(@"WOO updated block end date with error %@", error);
+            
+            [self->timerWindowController_ performSelectorOnMainThread:@selector(closeAddSheet:) withObject: self waitUntilDone: YES];
+            // let the timer know it needs to recalculate
+            [self->timerWindowController_ performSelectorOnMainThread:@selector(blockEndDateUpdated)
+                                                     withObject: nil
+                                                  waitUntilDone: YES];
+
+            if (error != nil) {
+                [NSApp performSelectorOnMainThread: @selector(presentError:)
+                                        withObject: error
+                                     waitUntilDone: YES];
+            }
+            
+            [lockToUse unlock];
+        }];
+    }];
 }
 
 - (IBAction)save:(id)sender {
@@ -898,7 +762,13 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	/* if successful, save file under designated name */
 	if (runResult == NSOKButton) {
         NSString* errDescription;
-        [SCUtilities writeBlocklistToFileURL: sp.URL settings: settings_ errorDescription: &errDescription];
+        [SCUtilities writeBlocklistToFileURL: sp.URL
+                                   blockInfo: @{
+                                       @"Blocklist": [defaults_ arrayForKey: @"Blocklist"],
+                                       @"BlockAsWhitelist": [defaults_ objectForKey: @"BlockAsWhitelist"]
+                                       
+                                   }
+                                   errorDescription: &errDescription];
 
         if(errDescription) {
 			NSError* displayErr = [NSError errorWithDomain: kSelfControlErrorDomain code: -902 userInfo: @{NSLocalizedDescriptionKey: [@"Error 902: " stringByAppendingString: errDescription]}];
@@ -917,7 +787,14 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	long result = [oPanel runModal];
 	if (result == NSOKButton) {
 		if([oPanel.URLs count] > 0) {
-            [SCUtilities readBlocklistFromFile: oPanel.URLs[0] toSettings: settings_];
+            NSDictionary* settingsFromFile = [SCUtilities readBlocklistFromFile: oPanel.URLs[0]];
+            
+            if (settingsFromFile != nil) {
+                [defaults_ setObject: settingsFromFile[@"Blocklist"] forKey: @"Blocklist"];
+                [defaults_ setObject: settingsFromFile[@"BlockAsWhitelist"] forKey: @"BlockAsWhitelist"];
+            } else {
+                NSLog(@"WARNING: Could not read a valid blocklist from file - ignoring.");
+            }
 
             // close the domain list (and reopen again if need be to refresh)
             BOOL domainListIsOpen = [[domainListWindowController_ window] isVisible];
@@ -941,8 +818,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	NSNumber* newAllowlistChoice = openedDict[@"BlockAsWhitelist"];
 	if(newBlocklist == nil || newAllowlistChoice == nil) return NO;
     
-	[settings_ setValue: newBlocklist forKey: @"Blocklist"];
-    [settings_ setValue: newAllowlistChoice forKey: @"BlockAsWhitelist"];
+    [defaults_ setValue: newBlocklist forKey:@"Blocklist"];
+    [defaults_ setObject: newAllowlistChoice forKey: @"BlockAsWhitelist"];
     
 	BOOL domainListIsOpen = [[domainListWindowController_ window] isVisible];
 	NSRect frame = [[domainListWindowController_ window] frame];

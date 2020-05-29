@@ -36,7 +36,6 @@
 	IBOutlet NSTableView* domainListTableView_;
     IBOutlet NSMatrix* allowlistRadioMatrix_;
 	NSUserDefaults* defaults_;
-    SCSettings* settings_;
 }
 
 // Called when the add button is clicked.  Adds a new empty string to the domain

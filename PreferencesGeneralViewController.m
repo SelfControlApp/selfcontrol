@@ -20,25 +20,10 @@
     return [super initWithNibName: @"PreferencesGeneralViewController" bundle: nil];
 }
 
-- (void)refreshBlockSoundFromSettings {
-    SCSettings* settings = [SCSettings currentUserSettings];
-    BOOL blockSoundShouldPlay = [[settings valueForKey: @"BlockSoundShouldPlay"] boolValue];
-    NSInteger blockSoundIndex = [[settings valueForKey: @"BlockSound"] integerValue];
-    
-    self.playSoundCheckbox.state = blockSoundShouldPlay;
-    [self.soundMenu selectItemAtIndex: blockSoundIndex];
-    self.soundMenu.enabled = blockSoundShouldPlay;
-}
-
 - (void)viewDidLoad  {
     // set the valid sounds in the Block Sound menu
     [self.soundMenu removeAllItems];
     [self.soundMenu addItemsWithTitles: [SCConstants systemSoundNames]];
-    
-    [self refreshBlockSoundFromSettings];
-}
-- (void)viewDidAppear {
-    [self refreshBlockSoundFromSettings];
 }
 
 - (IBAction)soundSelectionChanged:(NSPopUpButton*)sender {
@@ -55,7 +40,6 @@
         [NSApp presentError: err];
         return;
     }
-    [[SCSettings currentUserSettings] setValue: @(blockSoundIndex) forKey: @"BlockSound"];
 
     // now play the sound to preview it for the user
     NSSound* alertSound = [NSSound soundNamed: systemSoundNames[blockSoundIndex]];
@@ -68,18 +52,6 @@
 	} else {
 		[alertSound play];
 	}
-}
-
-- (IBAction)soundCheckboxChanged:(NSButton*)sender {
-    BOOL isChecked = (((NSButton*)sender).state == NSOnState);
-    SCSettings* settings = [SCSettings currentUserSettings];
-    
-    if (sender == self.playSoundCheckbox) {
-        [settings setValue: @(isChecked) forKey: @"BlockSoundShouldPlay"];
-    }
-    
-    // enable the sound menu only if sound playback is enabled
-    self.soundMenu.enabled = isChecked;
 }
 
 #pragma mark MASPreferencesViewController
