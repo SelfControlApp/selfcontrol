@@ -29,6 +29,7 @@
 #import <SystemConfiguration/SystemConfiguration.h>
 #import <LetsMove/PFMoveApplication.h>
 #import "SCSettings.h"
+#import <ServiceManagement/ServiceManagement.h>
 
 NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
@@ -637,7 +638,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		char* helperToolPath = [self selfControlHelperToolPathUTF8String];
 		NSUInteger helperToolPathSize = strlen(helperToolPath);
 		AuthorizationItem right = {
-			kAuthorizationRightExecute,
+			kSMRightBlessPrivilegedHelper,
 			helperToolPathSize,
 			helperToolPath,
 			0
@@ -670,22 +671,12 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
         // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
         [settings_ synchronizeSettings];
 
-		// We need to pass our UID to the helper tool.  It needs to know whose defaults
-		// it should reading in order to properly load the blocklist.
-		char uidString[32];
-		snprintf(uidString, sizeof(uidString), "%d", getuid());
+        CFErrorRef cfError;
+        BOOL result = (BOOL)SMJobBless(kSMDomainSystemLaunchd, (CFStringRef)@"org.eyebeams.selfcontrold", authorizationRef, NULL);
+        
 
-		FILE* commPipe;
-
-		char* args[] = { uidString, "--install", NULL };
-		status = AuthorizationExecuteWithPrivileges(authorizationRef,
-													helperToolPath,
-													kAuthorizationFlagDefaults,
-													args,
-													&commPipe);
-
-		if(status) {
-			NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", (int)status);
+		if(!result) {
+			NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %ds", (int)status);
 
             // reset settings on failure, and record that on disk ASAP
             [SCUtilities removeBlockFromSettings: settings_];

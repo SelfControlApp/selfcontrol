@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>org.eyebeam.selfcontrold</string>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>Nice</key>
+    <integer>5</integer>
+    <key>ProgramArguments</key>
+	<array>
+		<string>/Library/PrivilegedHelperTools/org.eyebeam.selfcontrold</string>
+	</array>
+</dict>
+</plist>

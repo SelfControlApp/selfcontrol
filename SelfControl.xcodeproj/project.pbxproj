@@ -47,6 +47,7 @@
 		CB74D1192480E506002B2079 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		CB74D11F2480E55D002B2079 /* DaemonMain.m in Sources */ = {isa = PBXBuildFile; fileRef = CB74D1032480E4D9002B2079 /* DaemonMain.m */; };
 		CB74D1202480E566002B2079 /* SCDaemon.m in Sources */ = {isa = PBXBuildFile; fileRef = CB74D0FD2480E3E6002B2079 /* SCDaemon.m */; };
+		CB8086D424837607004B88BD /* SCDaemonXPC.m in Sources */ = {isa = PBXBuildFile; fileRef = CB8086D324837607004B88BD /* SCDaemonXPC.m */; };
 		CB90BF830F49F430006D202D /* HostImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB90BF820F49F430006D202D /* HostImporter.m */; };
 		CB9365620F8581B000EF284E /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = CB9365610F8581B000EF284E /* dsa_pub.pem */; };
 		CB9366E80F85BEF100EF284E /* NSRemoveTemplate.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB9366E60F85BEF100EF284E /* NSRemoveTemplate.jpg */; };
@@ -211,12 +212,15 @@
 		CB7026191CD7177400D7C7F0 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CB73615E19E4FDA000E0924F /* AllowlistScraper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllowlistScraper.h; sourceTree = "<group>"; };
 		CB73615F19E4FDA000E0924F /* AllowlistScraper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllowlistScraper.m; sourceTree = "<group>"; };
-		CB74D0F62480E2F8002B2079 /* SelfControl-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SelfControl-Bridging-Header.h"; sourceTree = "<group>"; };
 		CB74D0FC2480E3E6002B2079 /* SCDaemon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCDaemon.h; sourceTree = "<group>"; };
 		CB74D0FD2480E3E6002B2079 /* SCDaemon.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCDaemon.m; sourceTree = "<group>"; };
 		CB74D1032480E4D9002B2079 /* DaemonMain.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DaemonMain.m; sourceTree = "<group>"; };
 		CB74D11D2480E506002B2079 /* selfcontrold */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = selfcontrold; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB74D11E2480E506002B2079 /* selfcontrold-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "selfcontrold-Info.plist"; path = "/Users/charlie/dev/selfcontrol/selfcontrold-Info.plist"; sourceTree = "<absolute>"; };
+		CB74D122248374E6002B2079 /* SCDaemonProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCDaemonProtocol.h; sourceTree = "<group>"; };
+		CB8086D224837607004B88BD /* SCDaemonXPC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCDaemonXPC.h; sourceTree = "<group>"; };
+		CB8086D324837607004B88BD /* SCDaemonXPC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCDaemonXPC.m; sourceTree = "<group>"; };
+		CB8086D524837734004B88BD /* org.eyebeam.selfcontrold.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = org.eyebeam.selfcontrold.plist; sourceTree = "<group>"; };
 		CB90BF810F49F430006D202D /* HostImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostImporter.h; sourceTree = "<group>"; };
 		CB90BF820F49F430006D202D /* HostImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HostImporter.m; sourceTree = "<group>"; };
 		CB9365610F8581B000EF284E /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
@@ -490,7 +494,6 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				CB74D11E2480E506002B2079 /* selfcontrold-Info.plist */,
 				CBBF4E8C1582F8E000E364D9 /* Localizable.strings */,
 				CB40A8670FBC7DE700167727 /* SelfControlBlocklist.icns */,
 				CB9366E60F85BEF100EF284E /* NSRemoveTemplate.jpg */,
@@ -584,6 +587,20 @@
 			name = Interfaces;
 			sourceTree = "<group>";
 		};
+		CB74D121248371E7002B2079 /* Daemon */ = {
+			isa = PBXGroup;
+			children = (
+				CB74D0FC2480E3E6002B2079 /* SCDaemon.h */,
+				CB74D0FD2480E3E6002B2079 /* SCDaemon.m */,
+				CB8086D224837607004B88BD /* SCDaemonXPC.h */,
+				CB8086D324837607004B88BD /* SCDaemonXPC.m */,
+				CB74D122248374E6002B2079 /* SCDaemonProtocol.h */,
+				CB74D11E2480E506002B2079 /* selfcontrold-Info.plist */,
+				CB8086D524837734004B88BD /* org.eyebeam.selfcontrold.plist */,
+			);
+			path = Daemon;
+			sourceTree = "<group>";
+		};
 		CB9C80F819CFB79700CDCAE1 /* SelfControl Killer */ = {
 			isa = PBXGroup;
 			children = (
@@ -631,11 +648,9 @@
 				CB74D1032480E4D9002B2079 /* DaemonMain.m */,
 				CBA2AFD70F39EC46005AFEBE /* HelperMain.h */,
 				CBA2AFD80F39EC46005AFEBE /* HelperMain.m */,
-				CB74D0FC2480E3E6002B2079 /* SCDaemon.h */,
-				CB74D0FD2480E3E6002B2079 /* SCDaemon.m */,
+				CB74D121248371E7002B2079 /* Daemon */,
 				CBD266AD11ED7D9C00042CD8 /* HelperCommon.h */,
 				CBD266AE11ED7D9C00042CD8 /* HelperCommon.m */,
-				CB74D0F62480E2F8002B2079 /* SelfControl-Bridging-Header.h */,
 			);
 			name = "Helper Tools";
 			sourceTree = "<group>";
@@ -1136,6 +1151,7 @@
 			files = (
 				CB74D11F2480E55D002B2079 /* DaemonMain.m in Sources */,
 				CB74D1202480E566002B2079 /* SCDaemon.m in Sources */,
+				CB8086D424837607004B88BD /* SCDaemonXPC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
