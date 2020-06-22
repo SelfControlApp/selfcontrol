@@ -5,7 +5,7 @@
 /* Class = "NSTextFieldCell"; title = "00:00:00"; ObjectID = "34"; */
 "34.title" = "00:00:00";
 
-/* Class = "NSButtonCell"; title = "Add to Blacklist"; ObjectID = "50"; */
+/* Class = "NSButtonCell"; title = "Add to Blocklist"; ObjectID = "50"; */
 "50.title" = "Ajouter à la liste noire";
 
 /* Class = "NSWindow"; title = "Window"; ObjectID = "63"; */

@@ -1,6 +1,6 @@
 
-/* Class = "NSButtonCell"; title = "Whitelist blocks should include linked sites (slow)"; ObjectID = "2dP-VO-eHN"; */
-"2dP-VO-eHN.title" = "Whitelist blocks should include linked sites (slow)";
+/* Class = "NSButtonCell"; title = "Allowlist blocks should include linked sites (slow)"; ObjectID = "2dP-VO-eHN"; */
+"2dP-VO-eHN.title" = "Allowlist blocks should include linked sites (slow)";
 
 /* Class = "NSButtonCell"; title = "로컬 네트워크 허용"; ObjectID = "4wN-EQ-U6a"; */
 "4wN-EQ-U6a.title" = "로컬 네트워크 허용";

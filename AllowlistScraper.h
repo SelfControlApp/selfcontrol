@@ -1,5 +1,5 @@
 //
-//  WhitelistScraper.h
+//  AllowlistScraper.h
 //  SelfControl
 //
 //  Created by Charles Stigler on 10/7/14.

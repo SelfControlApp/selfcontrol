@@ -190,7 +190,7 @@
 		[[NSApp dockTile] setBadgeLabel: nil];
 	}
     
-    // make sure add to list is disabled if it's a whitelist block
+    // make sure add to list is disabled if it's an allowlist block
     addToBlockButton_.hidden = [[settings_ valueForKey: @"BlockAsWhitelist"] boolValue];
 }
 

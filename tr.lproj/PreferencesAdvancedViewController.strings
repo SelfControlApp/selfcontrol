@@ -2,8 +2,8 @@
 /* Class = "NSButtonCell"; title = "Yerel ağ erişiminlerine izin ver"; ObjectID = "4wN-EQ-U6a"; */
 "4wN-EQ-U6a.title" = "Yerel ağ erişiminlerine izin ver";
 
-/* Class = "NSButtonCell"; title = "Whitelist blocks should include linked sites (slow)"; ObjectID = "DSg-wR-xe4"; */
-"DSg-wR-xe4.title" = "Whitelist blocks should include linked sites (slow)";
+/* Class = "NSButtonCell"; title = "Allowlist blocks should include linked sites (slow)"; ObjectID = "DSg-wR-xe4"; */
+"DSg-wR-xe4.title" = "Allowlist blocks should include linked sites (slow)";
 
 /* Class = "NSButtonCell"; title = "İnternet bağlantısını doğrula"; ObjectID = "QeK-Oh-Gga"; */
 "QeK-Oh-Gga.title" = "İnternet bağlantısını doğrula";

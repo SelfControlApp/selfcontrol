@@ -1,6 +1,6 @@
 
-/* Class = "NSWindow"; title = "Domain Blacklist"; ObjectID = "1"; */
-"1.title" = "Domain Blacklist";
+/* Class = "NSWindow"; title = "Domain Blocklist"; ObjectID = "1"; */
+"1.title" = "Domain Blocklist";
 
 /* Class = "NSTableColumn"; headerCell.title = "Domain Name"; ObjectID = "17"; */
 "17.headerCell.title" = "Domain Name";
@@ -47,11 +47,11 @@
 /* Class = "NSMenuItem"; title = "Serveurs d'envoi"; ObjectID = "98"; */
 "98.title" = "Serveurs d'envoi";
 
-/* Class = "NSButtonCell"; title = "Blacklist"; ObjectID = "110"; */
-"110.title" = "Blacklist";
+/* Class = "NSButtonCell"; title = "Blocklist"; ObjectID = "110"; */
+"110.title" = "Blocklist";
 
-/* Class = "NSButtonCell"; title = "Whitelist"; ObjectID = "111"; */
-"111.title" = "Whitelist";
+/* Class = "NSButtonCell"; title = "Allowlist"; ObjectID = "111"; */
+"111.title" = "Allowlist";
 
 /* Class = "NSButtonCell"; title = "Radio"; ObjectID = "112"; */
 "112.title" = "Radio";

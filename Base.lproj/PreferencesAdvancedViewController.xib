@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -79,7 +79,7 @@
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="P7c-ml-UCV">
                     <rect key="frame" x="18" y="18" width="444" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="check" title="Whitelist blocks should include linked sites (slow)" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="b7a-fO-pJq">
+                    <buttonCell key="cell" type="check" title="Allowlist blocks should include linked sites (slow)" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="b7a-fO-pJq">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>

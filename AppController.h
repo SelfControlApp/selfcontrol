@@ -39,7 +39,10 @@
 	IBOutlet NSTextField* blockSliderTimeDisplayLabel_;
 	IBOutlet NSButton* submitButton_;
 	IBOutlet NSWindow* initialWindow_;
+
 	IBOutlet NSMenuItem* domainListMenuItem_;
+    IBOutlet NSMenuItem* editBlocklistMenuItem_;
+    
 	IBOutlet NSButton* editBlocklistButton_;
 	IBOutlet DomainListWindowController* domainListWindowController_;
 	IBOutlet TimerWindowController* timerWindowController_;

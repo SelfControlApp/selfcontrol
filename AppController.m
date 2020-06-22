@@ -279,6 +279,13 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
         }
         [settings_ setValue: @NO forKey: @"TamperingDetected"];
     }
+    
+    // Display "blocklist" or "allowlist" as appropriate
+    NSString* listType = [[settings_ valueForKey: @"BlockAsWhitelist"] boolValue] ? @"Allowlist" : @"Blocklist";
+    NSString* editListString = NSLocalizedString(([NSString stringWithFormat: @"Edit %@", listType]), @"Edit list button / menu item");
+    
+    editBlocklistButton_.title = editListString;
+    editBlocklistMenuItem_.title = editListString;
 
 	[refreshUILock_ unlock];
 }
@@ -920,6 +927,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 				[self showDomainList: self];
 				[[domainListWindowController_ window] setFrame: frame display: YES];
 			}
+            
+            [self refreshUserInterface];
 		}
 	}
 }
@@ -929,11 +938,11 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	if(openedDict == nil) return NO;
 
 	NSArray* newBlocklist = openedDict[@"HostBlacklist"];
-	NSNumber* newWhitelistChoice = openedDict[@"BlockAsWhitelist"];
-	if(newBlocklist == nil || newWhitelistChoice == nil) return NO;
+	NSNumber* newAllowlistChoice = openedDict[@"BlockAsWhitelist"];
+	if(newBlocklist == nil || newAllowlistChoice == nil) return NO;
     
 	[settings_ setValue: newBlocklist forKey: @"Blocklist"];
-    [settings_ setValue: newWhitelistChoice forKey: @"BlockAsWhitelist"];
+    [settings_ setValue: newAllowlistChoice forKey: @"BlockAsWhitelist"];
     
 	BOOL domainListIsOpen = [[domainListWindowController_ window] isVisible];
 	NSRect frame = [[domainListWindowController_ window] frame];

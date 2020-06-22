@@ -23,6 +23,7 @@
 
 #import "DomainListWindowController.h"
 #import "SCUtilities.h"
+#import "AppController.h"
 
 @implementation DomainListWindowController
 
@@ -45,7 +46,9 @@
 }
 - (void)awakeFromNib  {
     NSInteger indexToSelect = [[settings_ valueForKey: @"BlockAsWhitelist"] boolValue] ? 1 : 0;
-    [whitelistRadioMatrix_ selectCellAtRow: indexToSelect column: 0];
+    [allowlistRadioMatrix_ selectCellAtRow: indexToSelect column: 0];
+    
+    [self updateWindowTitle];
 }
 
 - (void)showWindow:(id)sender {
@@ -54,6 +57,8 @@
 	if ([domainList_ count] == 0) {
 		[self addDomain: self];
 	}
+    
+    [self updateWindowTitle];
 }
 
 - (IBAction)addDomain:(id)sender
@@ -228,21 +233,26 @@
 	}
 }
 
-- (IBAction)whitelistOptionChanged:(NSMatrix*)sender {
+- (IBAction)allowlistOptionChanged:(NSMatrix*)sender {
     switch (sender.selectedRow) {
         case 0:
             [settings_ setValue: @NO forKey: @"BlockAsWhitelist"];
             break;
         case 1:
-            [self showWhitelistWarning];
+            [self showAllowlistWarning];
             [settings_ setValue: @YES forKey: @"BlockAsWhitelist"];
             break;
     }
+    
+    // update UI to reflect appropriate list type
+    AppController* controller = (AppController *)[NSApp delegate];
+    [controller refreshUserInterface];
+    [self updateWindowTitle];
 }
 
-- (void)showWhitelistWarning {
+- (void)showAllowlistWarning {
     if(![defaults_ boolForKey: @"WhitelistAlertSuppress"]) {
-        NSAlert* a = [NSAlert alertWithMessageText: NSLocalizedString(@"Are you sure you want a whitelist block?", @"Whitelist block confirmation prompt") defaultButton: NSLocalizedString(@"OK", @"OK button") alternateButton: @"" otherButton: @"" informativeTextWithFormat: NSLocalizedString(@"A whitelist block means that everything on the internet BESIDES your specified list will be blocked.  This includes the web, email, SSH, and anything else your computer accesses via the internet.  If a web site requires resources such as images or scripts from a site that is not on your whitelist, the site may not work properly.", @"Whitelist block explanation")];
+        NSAlert* a = [NSAlert alertWithMessageText: NSLocalizedString(@"Are you sure you want an allowlist block?", @"Allowlist block confirmation prompt") defaultButton: NSLocalizedString(@"OK", @"OK button") alternateButton: @"" otherButton: @"" informativeTextWithFormat: NSLocalizedString(@"An allowlist block means that everything on the internet BESIDES your specified list will be blocked.  This includes the web, email, SSH, and anything else your computer accesses via the internet.  If a web site requires resources such as images or scripts from a site that is not on your allowlist, the site may not work properly.", @"allowlist block explanation")];
         if([a respondsToSelector: @selector(setShowsSuppressionButton:)]) {
             [a setShowsSuppressionButton: YES];
         }
@@ -253,6 +263,10 @@
     }
 }
 
+- (void)updateWindowTitle {
+    NSString* listType = [[settings_ valueForKey: @"BlockAsWhitelist"] boolValue] ? @"Allowlist" : @"Blocklist";
+    self.window.title = NSLocalizedString(([NSString stringWithFormat: @"Domain %@", listType]), @"Domain list window title");
+}
 
 - (void)addHostArray:(NSArray*)arr {
 	for(int i = 0; i < [arr count]; i++) {

@@ -1,6 +1,6 @@
 
-/* Class = "NSWindow"; title = "Domain Blacklist"; ObjectID = "1"; */
-"1.title" = "Domain Blacklist";
+/* Class = "NSWindow"; title = "Domain Blocklist"; ObjectID = "1"; */
+"1.title" = "Domain Blocklist";
 
 /* Class = "NSTableColumn"; headerCell.title = "Domain Name"; ObjectID = "17"; */
 "17.headerCell.title" = "Domain Name";

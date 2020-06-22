@@ -1,14 +1,14 @@
 //
-//  WhitelistScraper.m
+//  AllowlistScraper.m
 //  SelfControl
 //
 //  Created by Charles Stigler on 10/7/14.
 //
 //
 
-#import "WhitelistScraper.h"
+#import "AllowlistScraper.h"
 
-@implementation WhitelistScraper
+@implementation AllowlistScraper
 
 + (NSSet*)relatedDomains:(NSString*)domain; {
 	NSURL* rootURL = [NSURL URLWithString: [NSString stringWithFormat: @"http://%@", domain]];

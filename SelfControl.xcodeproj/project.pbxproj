@@ -55,7 +55,7 @@
 		CB5DFCBB2251DD1F0084CEC2 /* SCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */; };
 		CB5DFCBC2251DD1F0084CEC2 /* SCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */; };
 		CB6840A5247A3E5500E51564 /* SelfControlKillerIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = CB6840A4247A3E5500E51564 /* SelfControlKillerIcon.icns */; };
-		CB73616219E5086A00E0924F /* WhitelistScraper.m in Sources */ = {isa = PBXBuildFile; fileRef = CB73615F19E4FDA000E0924F /* WhitelistScraper.m */; };
+		CB73616219E5086A00E0924F /* AllowlistScraper.m in Sources */ = {isa = PBXBuildFile; fileRef = CB73615F19E4FDA000E0924F /* AllowlistScraper.m */; };
 		CB90BF830F49F430006D202D /* HostImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB90BF820F49F430006D202D /* HostImporter.m */; };
 		CB9365620F8581B000EF284E /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = CB9365610F8581B000EF284E /* dsa_pub.pem */; };
 		CB9366E80F85BEF100EF284E /* NSRemoveTemplate.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB9366E60F85BEF100EF284E /* NSRemoveTemplate.jpg */; };
@@ -102,7 +102,7 @@
 		CBDF919A225C5A9700358B95 /* SCUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1731320F041F4007FCAE9 /* SCUtilities.m */; };
 		CBE2BB5619D10CCC0077124F /* SCKillerHelper in Copy Helper Tools */ = {isa = PBXBuildFile; fileRef = CB9C811B19CFBA8500CDCAE1 /* SCKillerHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		CBE4401B0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE4401A0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m */; };
-		CBE44FEB19E50900004E9706 /* WhitelistScraper.m in Sources */ = {isa = PBXBuildFile; fileRef = CB73615F19E4FDA000E0924F /* WhitelistScraper.m */; };
+		CBE44FEB19E50900004E9706 /* AllowlistScraper.m in Sources */ = {isa = PBXBuildFile; fileRef = CB73615F19E4FDA000E0924F /* AllowlistScraper.m */; };
 		CBE5C40B0F4D4531003DB900 /* ButtonWithPopupMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE5C40A0F4D4531003DB900 /* ButtonWithPopupMenu.m */; };
 		CBEE50C10F48C21F00F5DF1C /* TimerWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */; };
 		CBF3B574217BADD7006D5F52 /* SCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF3B573217BADD7006D5F52 /* SCSettings.m */; };
@@ -225,8 +225,8 @@
 		CB6ED5662085C70200012817 /* da */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = da; path = da.lproj/FirstTime.xib; sourceTree = "<group>"; };
 		CB7026181CD7177400D7C7F0 /* fr */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CB7026191CD7177400D7C7F0 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		CB73615E19E4FDA000E0924F /* WhitelistScraper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WhitelistScraper.h; sourceTree = "<group>"; };
-		CB73615F19E4FDA000E0924F /* WhitelistScraper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WhitelistScraper.m; sourceTree = "<group>"; };
+		CB73615E19E4FDA000E0924F /* AllowlistScraper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllowlistScraper.h; sourceTree = "<group>"; };
+		CB73615F19E4FDA000E0924F /* AllowlistScraper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllowlistScraper.m; sourceTree = "<group>"; };
 		CB90BF810F49F430006D202D /* HostImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostImporter.h; sourceTree = "<group>"; };
 		CB90BF820F49F430006D202D /* HostImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HostImporter.m; sourceTree = "<group>"; };
 		CB9365610F8581B000EF284E /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
@@ -551,8 +551,8 @@
 				CBE4401A0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m */,
 				CB90BF810F49F430006D202D /* HostImporter.h */,
 				CB90BF820F49F430006D202D /* HostImporter.m */,
-				CB73615E19E4FDA000E0924F /* WhitelistScraper.h */,
-				CB73615F19E4FDA000E0924F /* WhitelistScraper.m */,
+				CB73615E19E4FDA000E0924F /* AllowlistScraper.h */,
+				CB73615F19E4FDA000E0924F /* AllowlistScraper.m */,
 				CBEE50BF0F48C21F00F5DF1C /* TimerWindowController.h */,
 				CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */,
 				CBC2F8650F4674E300CF2A42 /* LaunchctlHelper.h */,
@@ -1117,7 +1117,7 @@
 				CB9C811E19CFBA8500CDCAE1 /* main.m in Sources */,
 				CB5DFCBB2251DD1F0084CEC2 /* SCConstants.m in Sources */,
 				CB9C812719CFBB6400CDCAE1 /* NSString+IPAddress.m in Sources */,
-				CBE44FEB19E50900004E9706 /* WhitelistScraper.m in Sources */,
+				CBE44FEB19E50900004E9706 /* AllowlistScraper.m in Sources */,
 				CB9C812619CFBB5E00CDCAE1 /* BlockManager.m in Sources */,
 				CB9C812519CFBB5500CDCAE1 /* HelperCommon.m in Sources */,
 				CB9C812419CFBB4E00CDCAE1 /* HostFileBlocker.m in Sources */,
@@ -1136,7 +1136,7 @@
 				CBA2AFD90F39EC46005AFEBE /* HelperMain.m in Sources */,
 				CB5DFCB82251DD1F0084CEC2 /* SCConstants.m in Sources */,
 				CBCA91121960D87300AFD20C /* PacketFilter.m in Sources */,
-				CB73616219E5086A00E0924F /* WhitelistScraper.m in Sources */,
+				CB73616219E5086A00E0924F /* AllowlistScraper.m in Sources */,
 				CBC2F8580F4672FE00CF2A42 /* LaunchctlHelper.m in Sources */,
 				CBB0AE2A0FA74566006229B3 /* HostFileBlocker.m in Sources */,
 				CBD266B011ED7D9C00042CD8 /* HelperCommon.m in Sources */,

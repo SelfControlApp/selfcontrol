@@ -21,35 +21,35 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "BlockManager.h"
-#import "WhitelistScraper.h"
+#import "AllowlistScraper.h"
 
 @implementation BlockManager
 
 - (BlockManager*)init {
-	return [self initAsWhitelist: NO allowLocal: YES includeCommonSubdomains: YES];
+	return [self initAsAllowlist: NO allowLocal: YES includeCommonSubdomains: YES];
 }
 
-- (BlockManager*)initAsWhitelist:(BOOL)whitelist {
-	return [self initAsWhitelist: whitelist allowLocal: YES includeCommonSubdomains: YES];
+- (BlockManager*)initAsAllowlist:(BOOL)allowlist {
+	return [self initAsAllowlist: allowlist allowLocal: YES includeCommonSubdomains: YES];
 }
 
-- (BlockManager*)initAsWhitelist:(BOOL)whitelist allowLocal:(BOOL)local {
-	return [self initAsWhitelist: whitelist allowLocal: local includeCommonSubdomains: YES];
+- (BlockManager*)initAsAllowlist:(BOOL)allowlist allowLocal:(BOOL)local {
+	return [self initAsAllowlist: allowlist allowLocal: local includeCommonSubdomains: YES];
 }
-- (BlockManager*)initAsWhitelist:(BOOL)whitelist allowLocal:(BOOL)local includeCommonSubdomains:(BOOL)blockCommon {
-	return [self initAsWhitelist: whitelist allowLocal: local includeCommonSubdomains: blockCommon includeLinkedDomains: YES];
+- (BlockManager*)initAsAllowlist:(BOOL)allowlist allowLocal:(BOOL)local includeCommonSubdomains:(BOOL)blockCommon {
+	return [self initAsAllowlist: allowlist allowLocal: local includeCommonSubdomains: blockCommon includeLinkedDomains: YES];
 }
 
-- (BlockManager*)initAsWhitelist:(BOOL)whitelist allowLocal:(BOOL)local includeCommonSubdomains:(BOOL)blockCommon includeLinkedDomains:(BOOL)includeLinked {
+- (BlockManager*)initAsAllowlist:(BOOL)allowlist allowLocal:(BOOL)local includeCommonSubdomains:(BOOL)blockCommon includeLinkedDomains:(BOOL)includeLinked {
 	if(self = [super init]) {
 		opQueue = [[NSOperationQueue alloc] init];
 		[opQueue setMaxConcurrentOperationCount: 20];
 
-		pf = [[PacketFilter alloc] initAsWhitelist: whitelist];
+		pf = [[PacketFilter alloc] initAsAllowlist: allowlist];
 		hostsBlocker = [[HostFileBlocker alloc] init];
 		hostsBlockingEnabled = NO;
 
-		isWhitelist = whitelist;
+		isAllowlist = allowlist;
 		allowLocal = local;
 		includeCommonSubdomains = blockCommon;
 		includeLinkedDomains = includeLinked;
@@ -64,7 +64,7 @@
 		[hostsBlocker writeNewFileContents];
 	}
 
-	if(!isWhitelist && ![hostsBlocker containsSelfControlBlock] && [hostsBlocker createBackupHostsFile]) {
+	if(!isAllowlist && ![hostsBlocker containsSelfControlBlock] && [hostsBlocker createBackupHostsFile]) {
 		[hostsBlocker addSelfControlBlockHeader];
 		hostsBlockingEnabled = YES;
 	} else {
@@ -98,8 +98,8 @@
 		[pf addRuleWithIP: nil port: portNum maskLen: 0];
 	} else if(isIPv4) { // current we do NOT do ipfw blocking for IPv6
 		[pf addRuleWithIP: hostName port: portNum maskLen: maskLen];
-	} else if(!isIP && (![self domainIsGoogle: hostName] || isWhitelist)) { // domain name
-		// on blacklist blocks where the domain is Google, we don't use ipfw to block
+	} else if(!isIP && (![self domainIsGoogle: hostName] || isAllowlist)) { // domain name
+		// on blocklist blocks where the domain is Google, we don't use ipfw to block
 		// because we'd end up blocking more than the user wants (i.e. Search/Reader)
 		NSArray* addresses = [self ipAddressesForDomainName: hostName];
 
@@ -131,15 +131,15 @@
 	int maskLen = maskLenObject ? [maskLenObject intValue] : 0;
 
 	// we won't block host * (everywhere) without a port number... it's just too likely to be mistaken.
-	// Use a whitelist if that's what you want!
+	// Use a allowlist if that's what you want!
 	if ([hostName isEqualToString: @"*"] && !portNum) {
 		return;
 	}
 
 	[self addBlockEntryWithHostName: hostName port: portNum maskLen: maskLen];
 
-	if (isWhitelist && includeLinkedDomains && ![hostName isValidIPAddress]) {
-		NSSet* relatedDomains = [WhitelistScraper relatedDomains: hostName];
+	if (isAllowlist && includeLinkedDomains && ![hostName isValidIPAddress]) {
+		NSSet* relatedDomains = [AllowlistScraper relatedDomains: hostName];
 		[relatedDomains enumerateObjectsUsingBlock:^(NSString* host, BOOL* stop) {
 			[self enqueueBlockEntryWithHostName: host port: 0 maskLen: 0];
 		}];

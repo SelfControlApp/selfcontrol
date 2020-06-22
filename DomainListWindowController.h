@@ -34,7 +34,7 @@
 @interface DomainListWindowController : NSWindowController {
 	NSMutableArray* domainList_;
 	IBOutlet NSTableView* domainListTableView_;
-    IBOutlet NSMatrix* whitelistRadioMatrix_;
+    IBOutlet NSMatrix* allowlistRadioMatrix_;
 	NSUserDefaults* defaults_;
     SCSettings* settings_;
 }
@@ -75,8 +75,8 @@
    forTableColumn:(NSTableColumn *)tableColumn
 			  row:(int)row;
 
-- (IBAction)whitelistOptionChanged:(NSMatrix*)sender;
-- (void)showWhitelistWarning;
+- (IBAction)allowlistOptionChanged:(NSMatrix*)sender;
+- (void)showAllowlistWarning;
 
 - (IBAction)importCommonDistractingWebsites:(id)sender;
 - (IBAction)importNewsAndPublications:(id)sender;

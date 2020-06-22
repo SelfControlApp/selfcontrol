@@ -12,9 +12,9 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 
 @implementation PacketFilter
 
-- (PacketFilter*)initAsWhitelist: (BOOL)whitelist {
+- (PacketFilter*)initAsAllowlist: (BOOL)allowlist {
 	if (self = [super init]) {
-		isWhitelist = whitelist;
+		isAllowlist = allowlist;
 		rules = [NSMutableString stringWithCapacity: 1000];
 	}
 	return self;
@@ -31,13 +31,13 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 	 "# org.eyebeam ruleset for SelfControl blocks\n"
 	 "#\n"];
 
-	if (isWhitelist) {
+	if (isAllowlist) {
 		[configText appendString: @"block return out proto tcp from any to any\n"
 		 "block return out proto udp from any to any\n"
 		 "\n"];
 	}
 }
-- (void)addWhitelistFooter:(NSMutableString*)configText {
+- (void)addAllowlistFooter:(NSMutableString*)configText {
 	[configText appendString: @"pass out proto tcp from any to any port 53\n"];
 	[configText appendString: @"pass out proto udp from any to any port 53\n"];
 	[configText appendString: @"pass out proto udp from any to any port 123\n"];
@@ -65,7 +65,7 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 	}
 
 	@synchronized(self) {
-		if (isWhitelist) {
+		if (isAllowlist) {
 			[rules appendString: [NSString stringWithFormat: @"pass out proto tcp %@\n", rule]];
 			[rules appendString: [NSString stringWithFormat: @"pass out proto udp %@\n", rule]];
 		} else {
@@ -81,8 +81,8 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 	[self addBlockHeader: filterConfiguration];
 	[filterConfiguration appendString: rules];
 
-	if (isWhitelist) {
-		[self addWhitelistFooter: filterConfiguration];
+	if (isAllowlist) {
+		[self addAllowlistFooter: filterConfiguration];
 	}
 
 	[filterConfiguration writeToFile: @"/etc/pf.anchors/org.eyebeam" atomically: true encoding: NSUTF8StringEncoding error: nil];

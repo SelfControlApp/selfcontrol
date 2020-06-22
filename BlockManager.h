@@ -30,16 +30,16 @@
 	PacketFilter* pf;
 	HostFileBlocker* hostsBlocker;
 	BOOL hostsBlockingEnabled;
-	BOOL isWhitelist;
+	BOOL isAllowlist;
 	BOOL allowLocal;
 	BOOL includeCommonSubdomains;
 	BOOL includeLinkedDomains;
 }
 
-- (BlockManager*)initAsWhitelist:(BOOL)whitelist;
-- (BlockManager*)initAsWhitelist:(BOOL)whitelist allowLocal:(BOOL)local;
-- (BlockManager*)initAsWhitelist:(BOOL)whitelist allowLocal:(BOOL)local includeCommonSubdomains:(BOOL)blockCommon;
-- (BlockManager*)initAsWhitelist:(BOOL)whitelist allowLocal:(BOOL)local includeCommonSubdomains:(BOOL)blockCommon includeLinkedDomains:(BOOL)includeLinked;
+- (BlockManager*)initAsAllowlist:(BOOL)allowlist;
+- (BlockManager*)initAsAllowlist:(BOOL)allowlist allowLocal:(BOOL)local;
+- (BlockManager*)initAsAllowlist:(BOOL)allowlist allowLocal:(BOOL)local includeCommonSubdomains:(BOOL)blockCommon;
+- (BlockManager*)initAsAllowlist:(BOOL)allowlist allowLocal:(BOOL)local includeCommonSubdomains:(BOOL)blockCommon includeLinkedDomains:(BOOL)includeLinked;
 
 - (void)prepareToAddBlock;
 - (void)finalizeBlock;

@@ -10,12 +10,12 @@
 
 @interface PacketFilter : NSObject {
 	NSMutableString* rules;
-	BOOL isWhitelist;
+	BOOL isAllowlist;
 }
 
-- (PacketFilter*)initAsWhitelist: (BOOL)whitelist;
+- (PacketFilter*)initAsAllowlist: (BOOL)allowlist;
 - (void)addBlockHeader:(NSMutableString*)configText;
-- (void)addWhitelistFooter:(NSMutableString*)configText;
+- (void)addAllowlistFooter:(NSMutableString*)configText;
 - (void)addRuleWithIP:(NSString*)ip port:(int)port maskLen:(int)maskLen;
 - (void)writeConfiguration;
 - (int)startBlock;

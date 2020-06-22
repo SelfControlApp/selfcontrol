@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -116,7 +116,6 @@
                                     <tableColumns>
                                         <tableColumn width="396" minWidth="40" maxWidth="1000" id="17">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="Domain Name">
-                                                <font key="font" metaFont="label" size="11"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
                                             </tableHeaderCell>
@@ -173,18 +172,18 @@
                         </buttonCell>
                         <cells>
                             <column>
-                                <buttonCell type="radio" title="Blacklist" imagePosition="left" alignment="left" state="on" tag="1" inset="2" id="110">
+                                <buttonCell type="radio" title="Blocklist" imagePosition="left" alignment="left" state="on" tag="1" inset="2" id="110">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
-                                <buttonCell type="radio" title="Whitelist" imagePosition="left" alignment="left" inset="2" id="111">
+                                <buttonCell type="radio" title="Allowlist" imagePosition="left" alignment="left" inset="2" id="111">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                             </column>
                         </cells>
                         <connections>
-                            <action selector="whitelistOptionChanged:" target="48" id="OMk-L5-3Bl"/>
+                            <action selector="allowlistOptionChanged:" target="48" id="OMk-L5-3Bl"/>
                         </connections>
                     </matrix>
                     <button toolTip="Add (⇧=)" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="42">
@@ -241,16 +240,16 @@ CA
         </window>
         <customObject id="48" userLabel="Domain List Window Controller" customClass="DomainListWindowController">
             <connections>
+                <outlet property="allowlistRadioMatrix_" destination="109" id="9FT-ZJ-kZG"/>
                 <outlet property="domainListTableView_" destination="15" id="106"/>
-                <outlet property="whitelistRadioMatrix_" destination="109" id="9FT-ZJ-kZG"/>
                 <outlet property="window" destination="1" id="124"/>
             </connections>
         </customObject>
         <userDefaultsController representsSharedInstance="YES" id="113"/>
         <customObject id="NEd-wg-0Tw" userLabel="Domain List Window Controller" customClass="DomainListWindowController">
             <connections>
+                <outlet property="allowlistRadioMatrix_" destination="109" id="daJ-2Z-hcN"/>
                 <outlet property="domainListTableView_" destination="15" id="60h-kO-EHB"/>
-                <outlet property="whitelistRadioMatrix_" destination="109" id="daJ-2Z-hcN"/>
                 <outlet property="window" destination="1" id="VhD-nK-i73"/>
             </connections>
         </customObject>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -23,10 +23,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="49">
-                        <rect key="frame" x="58" y="32" width="96" height="17"/>
-                        <buttonCell key="cell" type="roundRect" title="Add to Blacklist" bezelStyle="roundedRect" image="buttonCell:50:image" imagePosition="overlaps" alignment="center" controlSize="small" state="on" borderStyle="border" inset="2" id="50">
+                        <rect key="frame" x="58" y="32" width="97" height="17"/>
+                        <buttonCell key="cell" type="roundRect" title="Add to Blocklist" bezelStyle="roundedRect" image="buttonCell:50:image" imagePosition="overlaps" alignment="center" controlSize="small" state="on" borderStyle="border" inset="2" id="50">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="label" size="11"/>
+                            <font key="font" metaFont="menu" size="11"/>
                         </buttonCell>
                         <connections>
                             <action selector="addToBlock:" target="7" id="93"/>
@@ -44,7 +44,7 @@
                         <rect key="frame" x="48" y="10" width="116" height="17"/>
                         <buttonCell key="cell" type="roundRect" title="Extend Block Timer" bezelStyle="roundedRect" image="buttonCell:i3S-hJ-1V7:image" imagePosition="overlaps" alignment="center" controlSize="small" state="on" borderStyle="border" inset="2" id="i3S-hJ-1V7">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="label" size="11"/>
+                            <font key="font" metaFont="menu" size="11"/>
                         </buttonCell>
                         <connections>
                             <action selector="extendBlockTime:" target="7" id="6Xu-rQ-ikP"/>
@@ -94,8 +94,8 @@
             <windowPositionMask key="initialPositionMask" leftStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="418" width="334" height="92"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
-            <view key="contentView" id="64">
-                <rect key="frame" x="0.0" y="0.0" width="334" height="91"/>
+            <view key="contentView" misplaced="YES" id="64">
+                <rect key="frame" x="0.0" y="0.0" width="334" height="92"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="65">
@@ -115,7 +115,7 @@
                         </textFieldCell>
                     </textField>
                     <button horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="66">
-                        <rect key="frame" x="252" y="13" width="62" height="23"/>
+                        <rect key="frame" x="250.5" y="13" width="64" height="23"/>
                         <buttonCell key="cell" type="roundTextured" title="Add" bezelStyle="texturedRounded" alignment="center" state="on" borderStyle="border" inset="2" id="71">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -128,7 +128,7 @@ DQ
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="67">
-                        <rect key="frame" x="19" y="13" width="56" height="23"/>
+                        <rect key="frame" x="18.5" y="13" width="56" height="23"/>
                         <buttonCell key="cell" type="roundTextured" title="Cancel" bezelStyle="texturedRounded" alignment="center" borderStyle="border" inset="2" id="70">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -234,7 +234,7 @@ DQ
                         </textFieldCell>
                     </textField>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gw2-E1-AZE">
-                        <rect key="frame" x="20" y="19" width="56" height="23"/>
+                        <rect key="frame" x="19.5" y="19" width="56" height="23"/>
                         <buttonCell key="cell" type="roundTextured" title="Cancel" bezelStyle="texturedRounded" alignment="center" borderStyle="border" inset="2" id="1Kv-cL-2E4">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -244,7 +244,7 @@ DQ
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="V5b-TT-ZSv">
-                        <rect key="frame" x="262" y="19" width="56" height="23"/>
+                        <rect key="frame" x="262.5" y="19" width="56" height="23"/>
                         <buttonCell key="cell" type="roundTextured" title="Extend" bezelStyle="texturedRounded" alignment="center" borderStyle="border" inset="2" id="HNV-5F-fhQ">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -284,7 +284,7 @@ DQ
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <buttonCell key="cell" type="roundRect" title="Extend Block Timer" bezelStyle="roundedRect" image="buttonCell:syd-Jl-33Z:image" imagePosition="overlaps" alignment="center" controlSize="small" state="on" borderStyle="border" inset="2" id="syd-Jl-33Z">
                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                <font key="font" metaFont="label" size="11"/>
+                <font key="font" metaFont="menu" size="11"/>
             </buttonCell>
             <point key="canvasLocation" x="191" y="-71"/>
         </button>

@@ -1,6 +1,6 @@
 
-/* Class = "NSButtonCell"; title = "Whitelist blocks should include linked sites (slow)"; ObjectID = "2Oc-pw-Gdd"; */
-"2Oc-pw-Gdd.title" = "Whitelist blocks should include linked sites (slow)";
+/* Class = "NSButtonCell"; title = "Allowlist blocks should include linked sites (slow)"; ObjectID = "2Oc-pw-Gdd"; */
+"2Oc-pw-Gdd.title" = "Allowlist blocks should include linked sites (slow)";
 
 /* Class = "NSButtonCell"; title = "Permitir redes locais"; ObjectID = "4wN-EQ-U6a"; */
 "4wN-EQ-U6a.title" = "Permitir redes locais";
