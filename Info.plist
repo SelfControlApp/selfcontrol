@@ -63,5 +63,10 @@
 	<string>https://selfcontrolapp.com/SelfControlAppcast.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
+	<key>SMPrivilegedExecutables</key>
+	<dict>
+		<key>org.eyebeam.selfcontrold</key>
+		<string>identifier &quot;org.eyebeam.selfcontrold&quot; and (cert leaf[subject.CN] = &quot;Developer ID Application: Charlie Stigler (L6W5L88KN7)&quot; or cert leaf[subject.CN] = &quot;Apple Development: Charles Stigler (22JB4UZFSZ)&quot;)</string>
+	</dict>
 </dict>
 </plist>

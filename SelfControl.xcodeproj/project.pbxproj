@@ -17,7 +17,7 @@
 		CB114284222CD4F0004B7868 /* SCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF3B573217BADD7006D5F52 /* SCSettings.m */; };
 		CB1B44BE23B7F1ED00EBA087 /* cheater-background.png in Resources */ = {isa = PBXBuildFile; fileRef = CB1B44BD23B7F1ED00EBA087 /* cheater-background.png */; };
 		CB1E7A6E0F9AEA9B00D158BC /* ERRORS in Resources */ = {isa = PBXBuildFile; fileRef = CB1E7A6D0F9AEA9B00D158BC /* ERRORS */; };
-		CB1ED4480F56686400EFECEE /* org.eyebeam.SelfControl in Copy Helper Tools */ = {isa = PBXBuildFile; fileRef = CBA2AFD20F39EC12005AFEBE /* org.eyebeam.SelfControl */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		CB1ED4480F56686400EFECEE /* org.eyebeam.SelfControl in Copy Executable Helper Tools */ = {isa = PBXBuildFile; fileRef = CBA2AFD20F39EC12005AFEBE /* org.eyebeam.SelfControl */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		CB20C5D8245699D700B9D749 /* version-header.h in Sources */ = {isa = PBXBuildFile; fileRef = CB20C5D7245699D700B9D749 /* version-header.h */; };
 		CB249FED19D782230087BBB6 /* SelfControlIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = CB249FEC19D782230087BBB6 /* SelfControlIcon.icns */; };
 		CB25806216C1FDBE0059C99A /* BlockManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806116C1FDBE0059C99A /* BlockManager.m */; };
@@ -92,7 +92,9 @@
 		CBD4848F19D768C90020F949 /* PreferencesAdvancedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD4848D19D768C90020F949 /* PreferencesAdvancedViewController.m */; };
 		CBDB118C2084239D0010397E /* FirstTime.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBDB118E2084239D0010397E /* FirstTime.xib */; };
 		CBDF919A225C5A9700358B95 /* SCUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1731320F041F4007FCAE9 /* SCUtilities.m */; };
-		CBE2BB5619D10CCC0077124F /* SCKillerHelper in Copy Helper Tools */ = {isa = PBXBuildFile; fileRef = CB9C811B19CFBA8500CDCAE1 /* SCKillerHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		CBDFFF4724A0450200622CEE /* org.eyebeam.selfcontrold in Copy Daemon Launch Service */ = {isa = PBXBuildFile; fileRef = CB74D11D2480E506002B2079 /* org.eyebeam.selfcontrold */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		CBDFFF4924A0711800622CEE /* org.eyebeam.selfcontrold.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB8086D524837734004B88BD /* org.eyebeam.selfcontrold.plist */; };
+		CBE2BB5619D10CCC0077124F /* SCKillerHelper in Copy Executable Helper Tools */ = {isa = PBXBuildFile; fileRef = CB9C811B19CFBA8500CDCAE1 /* SCKillerHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		CBE4401B0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE4401A0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m */; };
 		CBE44FEB19E50900004E9706 /* AllowlistScraper.m in Sources */ = {isa = PBXBuildFile; fileRef = CB73615F19E4FDA000E0924F /* AllowlistScraper.m */; };
 		CBE5C40B0F4D4531003DB900 /* ButtonWithPopupMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE5C40A0F4D4531003DB900 /* ButtonWithPopupMenu.m */; };
@@ -133,16 +135,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		CB2359D90F4541AB0030F59C /* Copy Helper Tools */ = {
+		CB2359D90F4541AB0030F59C /* Copy Executable Helper Tools */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 6;
 			files = (
-				CBE2BB5619D10CCC0077124F /* SCKillerHelper in Copy Helper Tools */,
-				CB1ED4480F56686400EFECEE /* org.eyebeam.SelfControl in Copy Helper Tools */,
+				CBE2BB5619D10CCC0077124F /* SCKillerHelper in Copy Executable Helper Tools */,
+				CB1ED4480F56686400EFECEE /* org.eyebeam.SelfControl in Copy Executable Helper Tools */,
 			);
-			name = "Copy Helper Tools";
+			name = "Copy Executable Helper Tools";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		CB9C811919CFBA8500CDCAE1 /* CopyFiles */ = {
@@ -163,6 +165,17 @@
 				CB9C813219CFBBE200CDCAE1 /* SCKillerHelper in Copy Helper Tools */,
 			);
 			name = "Copy Helper Tools";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CBDFFF4624A044C900622CEE /* Copy Daemon Launch Service */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Library/LaunchServices;
+			dstSubfolderSpec = 1;
+			files = (
+				CBDFFF4724A0450200622CEE /* org.eyebeam.selfcontrold in Copy Daemon Launch Service */,
+			);
+			name = "Copy Daemon Launch Service";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -215,7 +228,7 @@
 		CB74D0FC2480E3E6002B2079 /* SCDaemon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCDaemon.h; sourceTree = "<group>"; };
 		CB74D0FD2480E3E6002B2079 /* SCDaemon.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCDaemon.m; sourceTree = "<group>"; };
 		CB74D1032480E4D9002B2079 /* DaemonMain.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DaemonMain.m; sourceTree = "<group>"; };
-		CB74D11D2480E506002B2079 /* selfcontrold */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = selfcontrold; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB74D11D2480E506002B2079 /* org.eyebeam.selfcontrold */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = org.eyebeam.selfcontrold; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB74D11E2480E506002B2079 /* selfcontrold-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "selfcontrold-Info.plist"; path = "/Users/charlie/dev/selfcontrol/selfcontrold-Info.plist"; sourceTree = "<absolute>"; };
 		CB74D122248374E6002B2079 /* SCDaemonProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCDaemonProtocol.h; sourceTree = "<group>"; };
 		CB8086D224837607004B88BD /* SCDaemonXPC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCDaemonXPC.h; sourceTree = "<group>"; };
@@ -265,7 +278,6 @@
 		CBC2F8650F4674E300CF2A42 /* LaunchctlHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchctlHelper.h; sourceTree = "<group>"; };
 		CBCA91101960D87300AFD20C /* PacketFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketFilter.h; sourceTree = "<group>"; };
 		CBCA91111960D87300AFD20C /* PacketFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketFilter.m; sourceTree = "<group>"; };
-		CBCA9116196123E600AFD20C /* SelfControl.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SelfControl.entitlements; sourceTree = "<group>"; };
 		CBCA91271961381F00AFD20C /* tr */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CBCA912B1961384600AFD20C /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CBD266AD11ED7D9C00042CD8 /* HelperCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperCommon.h; sourceTree = "<group>"; };
@@ -345,6 +357,7 @@
 		CBDB11942084801B0010397E /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/PreferencesAdvancedViewController.strings; sourceTree = "<group>"; };
 		CBDB11962084801B0010397E /* da */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CBDB11972084801C0010397E /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CBDFFF4B24A07DB300622CEE /* SelfControl.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SelfControl.entitlements; sourceTree = "<group>"; };
 		CBE440190F4BE0670062A1FE /* ThunderbirdPreferenceParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThunderbirdPreferenceParser.h; sourceTree = "<group>"; };
 		CBE4401A0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThunderbirdPreferenceParser.m; sourceTree = "<group>"; };
 		CBE5C4090F4D4531003DB900 /* ButtonWithPopupMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonWithPopupMenu.h; sourceTree = "<group>"; };
@@ -454,7 +467,7 @@
 				CB9C80F719CFB79700CDCAE1 /* SelfControl Killer.app */,
 				CB9C811B19CFBA8500CDCAE1 /* SCKillerHelper */,
 				CB0EEF5D20FD8CE00024D27B /* SelfControlTests.xctest */,
-				CB74D11D2480E506002B2079 /* selfcontrold */,
+				CB74D11D2480E506002B2079 /* org.eyebeam.selfcontrold */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -462,10 +475,10 @@
 		29B97314FDCFA39411CA2CEA /* SelfControl */ = {
 			isa = PBXGroup;
 			children = (
+				CBDFFF4B24A07DB300622CEE /* SelfControl.entitlements */,
 				CB20C5D7245699D700B9D749 /* version-header.h */,
 				CBD4848519D7611F0020F949 /* Podfile */,
 				CBD4848619D7611F0020F949 /* TemplateIcon2x.png */,
-				CBCA9116196123E600AFD20C /* SelfControl.entitlements */,
 				CB1E7A6D0F9AEA9B00D158BC /* ERRORS */,
 				CB4294DF0F53D865008E10CA /* Classes */,
 				CB0EEF5E20FD8CE00024D27B /* SelfControlTests */,
@@ -694,7 +707,8 @@
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
-				CB2359D90F4541AB0030F59C /* Copy Helper Tools */,
+				CB2359D90F4541AB0030F59C /* Copy Executable Helper Tools */,
+				CBDFFF4624A044C900622CEE /* Copy Daemon Launch Service */,
 				CB5E5FF81C3A5FD10038F331 /* ShellScript */,
 				7D55904F6A3D627B837007A9 /* [CP] Embed Pods Frameworks */,
 				CBFF218A3108765AAB5DE542 /* [CP] Copy Pods Resources */,
@@ -730,9 +744,9 @@
 			productReference = CB0EEF5D20FD8CE00024D27B /* SelfControlTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		CB74D1052480E506002B2079 /* selfcontrold */ = {
+		CB74D1052480E506002B2079 /* org.eyebeam.selfcontrold */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CB74D11A2480E506002B2079 /* Build configuration list for PBXNativeTarget "selfcontrold" */;
+			buildConfigurationList = CB74D11A2480E506002B2079 /* Build configuration list for PBXNativeTarget "org.eyebeam.selfcontrold" */;
 			buildPhases = (
 				CB74D1062480E506002B2079 /* ShellScript */,
 				CB74D1072480E506002B2079 /* Sources */,
@@ -742,9 +756,9 @@
 			);
 			dependencies = (
 			);
-			name = selfcontrold;
+			name = org.eyebeam.selfcontrold;
 			productName = "selfcontrol-helper";
-			productReference = CB74D11D2480E506002B2079 /* selfcontrold */;
+			productReference = CB74D11D2480E506002B2079 /* org.eyebeam.selfcontrold */;
 			productType = "com.apple.product-type.tool";
 		};
 		CB9C80F619CFB79700CDCAE1 /* SelfControl Killer */ = {
@@ -826,6 +840,7 @@
 					};
 					CB74D1052480E506002B2079 = {
 						DevelopmentTeam = L6W5L88KN7;
+						ProvisioningStyle = Manual;
 					};
 					CB9C80F619CFB79700CDCAE1 = {
 						CreatedOnToolsVersion = 6.0.1;
@@ -877,7 +892,7 @@
 				CB9C80F619CFB79700CDCAE1 /* SelfControl Killer */,
 				CB9C811A19CFBA8500CDCAE1 /* SCKillerHelper */,
 				CB0EEF5C20FD8CE00024D27B /* SelfControlTests */,
-				CB74D1052480E506002B2079 /* selfcontrold */,
+				CB74D1052480E506002B2079 /* org.eyebeam.selfcontrold */,
 			);
 		};
 /* End PBXProject section */
@@ -894,6 +909,7 @@
 				CB9366E90F85BEF100EF284E /* NSAddTemplate.jpg in Resources */,
 				CBDB118C2084239D0010397E /* FirstTime.xib in Resources */,
 				CBBF4EE515830D7300E364D9 /* TimerWindow.xib in Resources */,
+				CBDFFF4924A0711800622CEE /* org.eyebeam.selfcontrold.plist in Resources */,
 				CB0385E219D77051004614B6 /* PreferencesGeneralViewController.xib in Resources */,
 				CB1E7A6E0F9AEA9B00D158BC /* ERRORS in Resources */,
 				CB40A8680FBC7DE700167727 /* SelfControlBlocklist.icns in Resources */,
@@ -1484,7 +1500,6 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = SelfControl.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1533,7 +1548,6 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = SelfControl.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1635,6 +1649,8 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = L6W5L88KN7;
@@ -1653,6 +1669,7 @@
 					"-framework",
 					AppKit,
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.eyebeam.selfcontrold;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1668,6 +1685,8 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = L6W5L88KN7;
@@ -1684,6 +1703,7 @@
 					"-framework",
 					AppKit,
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.eyebeam.selfcontrold;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1948,7 +1968,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CB74D11A2480E506002B2079 /* Build configuration list for PBXNativeTarget "selfcontrold" */ = {
+		CB74D11A2480E506002B2079 /* Build configuration list for PBXNativeTarget "org.eyebeam.selfcontrold" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CB74D11B2480E506002B2079 /* Debug */,

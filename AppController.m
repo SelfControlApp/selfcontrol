@@ -75,8 +75,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	// Cache the path so it doesn't have to be searched for again.
 	if(!path) {
 		NSBundle* thisBundle = [NSBundle mainBundle];
-		path = [thisBundle pathForAuxiliaryExecutable: @"org.eyebeam.SelfControl"];
-	}
+        path = [thisBundle.bundlePath stringByAppendingString: @"/Contents/Library/LaunchServices/org.eyebeam.selfcontrold"];
+    }
 
 	return path;
 }
@@ -635,6 +635,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		self.addingBlock = true;
 		[self refreshUserInterface];
 		AuthorizationRef authorizationRef;
+        NSLog(@"helper tool path is %@", [self selfControlHelperToolPath]);
 		char* helperToolPath = [self selfControlHelperToolPathUTF8String];
 		NSUInteger helperToolPathSize = strlen(helperToolPath);
 		AuthorizationItem right = {
@@ -672,11 +673,17 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
         [settings_ synchronizeSettings];
 
         CFErrorRef cfError;
-        BOOL result = (BOOL)SMJobBless(kSMDomainSystemLaunchd, (CFStringRef)@"org.eyebeams.selfcontrold", authorizationRef, NULL);
+        BOOL result = (BOOL)SMJobBless(
+                                       kSMDomainSystemLaunchd,
+                                       CFSTR("org.eyebeam.selfcontrold"),
+                                       authorizationRef,
+                                       &cfError);
         
 
 		if(!result) {
-			NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %ds", (int)status);
+            NSError* error = CFBridgingRelease(cfError);
+            
+			NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d and error %@", (int)status, error);
 
             // reset settings on failure, and record that on disk ASAP
             [SCUtilities removeBlockFromSettings: settings_];
@@ -696,43 +703,43 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 			return;
 		}
 
-		NSFileHandle* helperToolHandle = [[NSFileHandle alloc] initWithFileDescriptor: fileno(commPipe) closeOnDealloc: YES];
-
-		NSData* inData = [helperToolHandle readDataToEndOfFile];
-
-
-		NSString* inDataString = [[NSString alloc] initWithData: inData encoding: NSUTF8StringEncoding];
-
-		if([inDataString isEqualToString: @""]) {
-            // reset settings on failure, and record that on disk ASAP
-            [SCUtilities removeBlockFromSettings: settings_];
-            [settings_ synchronizeSettings];
-
-			NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
-											   code: -104
-										   userInfo: @{NSLocalizedDescriptionKey: @"Error -104: The helper tool crashed.  This may cause unexpected errors."}];
-
-			[NSApp performSelectorOnMainThread: @selector(presentError:)
-									withObject: err
-								 waitUntilDone: YES];
-		}
-
-		int exitCode = [inDataString intValue];
-
-		if(exitCode) {
-            // reset settings on failure, and record that on disk ASAP
-            [SCUtilities removeBlockFromSettings: settings_];
-            [settings_ synchronizeSettings];
-
-			NSError* err = [self errorFromHelperToolStatusCode: exitCode];
-
-			[NSApp performSelectorOnMainThread: @selector(presentError:)
-									withObject: err
-								 waitUntilDone: YES];
-		}
-
-		self.addingBlock = false;
-		[self refreshUserInterface];
+//		NSFileHandle* helperToolHandle = [[NSFileHandle alloc] initWithFileDescriptor: fileno(commPipe) closeOnDealloc: YES];
+//
+//		NSData* inData = [helperToolHandle readDataToEndOfFile];
+//
+//
+//		NSString* inDataString = [[NSString alloc] initWithData: inData encoding: NSUTF8StringEncoding];
+//
+//		if([inDataString isEqualToString: @""]) {
+//            // reset settings on failure, and record that on disk ASAP
+//            [SCUtilities removeBlockFromSettings: settings_];
+//            [settings_ synchronizeSettings];
+//
+//			NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
+//											   code: -104
+//										   userInfo: @{NSLocalizedDescriptionKey: @"Error -104: The helper tool crashed.  This may cause unexpected errors."}];
+//
+//			[NSApp performSelectorOnMainThread: @selector(presentError:)
+//									withObject: err
+//								 waitUntilDone: YES];
+//		}
+//
+//		int exitCode = [inDataString intValue];
+//
+//		if(exitCode) {
+//            // reset settings on failure, and record that on disk ASAP
+//            [SCUtilities removeBlockFromSettings: settings_];
+//            [settings_ synchronizeSettings];
+//
+//			NSError* err = [self errorFromHelperToolStatusCode: exitCode];
+//
+//			[NSApp performSelectorOnMainThread: @selector(presentError:)
+//									withObject: err
+//								 waitUntilDone: YES];
+//		}
+//
+//		self.addingBlock = false;
+//		[self refreshUserInterface];
 	}
 }
 

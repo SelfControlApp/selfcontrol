@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "CB74D1052480E506002B2079"
-               BuildableName = "selfcontrold"
-               BlueprintName = "selfcontrold"
+               BuildableName = "org.eyebeam.selfcontrold"
+               BlueprintName = "org.eyebeam.selfcontrold"
                ReferencedContainer = "container:SelfControl.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,8 +45,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "CB74D1052480E506002B2079"
-            BuildableName = "selfcontrold"
-            BlueprintName = "selfcontrold"
+            BuildableName = "org.eyebeam.selfcontrold"
+            BlueprintName = "org.eyebeam.selfcontrold"
             ReferencedContainer = "container:SelfControl.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -62,8 +62,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "CB74D1052480E506002B2079"
-            BuildableName = "selfcontrold"
-            BlueprintName = "selfcontrold"
+            BuildableName = "org.eyebeam.selfcontrold"
+            BlueprintName = "org.eyebeam.selfcontrold"
             ReferencedContainer = "container:SelfControl.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
