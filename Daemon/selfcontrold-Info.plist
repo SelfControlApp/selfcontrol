@@ -30,7 +30,7 @@
 	<key>CFBundleIconFile</key>
 	<string>SelfControlIcon</string>
 	<key>CFBundleIdentifier</key>
-	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<string>org.eyebeam.selfcontrold</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -55,6 +55,10 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>SMAuthorizedClients</key>
+	<array>
+		<string>anchor apple generic and identifier &quot;org.eyebeam.SelfControl&quot; and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = L6W5L88KN7)</string>
+	</array>
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUEnableJavaScript</key>
@@ -63,9 +67,5 @@
 	<string>https://selfcontrolapp.com/SelfControlAppcast.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
-	<key>SMAuthorizedClients</key>
-	<array>
-		<string>identifier &quot;org.eyebeam.selfcontrol&quot; and (cert leaf[subject.CN] = &quot;Developer ID Application: Charlie Stigler (L6W5L88KN7)&quot; or cert leaf[subject.CN] = &quot;Apple Development: Charles Stigler (22JB4UZFSZ)&quot;)</string>
-	</array>
 </dict>
 </plist>

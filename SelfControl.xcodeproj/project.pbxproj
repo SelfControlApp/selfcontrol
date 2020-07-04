@@ -39,6 +39,7 @@
 		CB5DFCBA2251DD1F0084CEC2 /* SCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */; };
 		CB5DFCBB2251DD1F0084CEC2 /* SCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */; };
 		CB5DFCBC2251DD1F0084CEC2 /* SCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */; };
+		CB62FC3024B11A4F00ADBC40 /* selfcontrold-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB62FC2F24B11A4F00ADBC40 /* selfcontrold-Info.plist */; };
 		CB6840A5247A3E5500E51564 /* SelfControlKillerIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = CB6840A4247A3E5500E51564 /* SelfControlKillerIcon.icns */; };
 		CB73616219E5086A00E0924F /* AllowlistScraper.m in Sources */ = {isa = PBXBuildFile; fileRef = CB73615F19E4FDA000E0924F /* AllowlistScraper.m */; };
 		CB74D1152480E506002B2079 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB32D2AD21902D9D00B8CD68 /* IOKit.framework */; };
@@ -219,6 +220,7 @@
 		CB587E4F0F50FE8800C66A09 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = /System/Library/Frameworks/SystemConfiguration.framework; sourceTree = "<absolute>"; };
 		CB5DFCB52251DD1F0084CEC2 /* SCConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCConstants.h; sourceTree = "<group>"; };
 		CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCConstants.m; sourceTree = "<group>"; };
+		CB62FC2F24B11A4F00ADBC40 /* selfcontrold-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "selfcontrold-Info.plist"; sourceTree = "<group>"; };
 		CB6840A4247A3E5500E51564 /* SelfControlKillerIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SelfControlKillerIcon.icns; sourceTree = "<group>"; };
 		CB6ED5662085C70200012817 /* da */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = da; path = da.lproj/FirstTime.xib; sourceTree = "<group>"; };
 		CB7026181CD7177400D7C7F0 /* fr */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -229,7 +231,6 @@
 		CB74D0FD2480E3E6002B2079 /* SCDaemon.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCDaemon.m; sourceTree = "<group>"; };
 		CB74D1032480E4D9002B2079 /* DaemonMain.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DaemonMain.m; sourceTree = "<group>"; };
 		CB74D11D2480E506002B2079 /* org.eyebeam.selfcontrold */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = org.eyebeam.selfcontrold; sourceTree = BUILT_PRODUCTS_DIR; };
-		CB74D11E2480E506002B2079 /* selfcontrold-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "selfcontrold-Info.plist"; path = "/Users/charlie/dev/selfcontrol/selfcontrold-Info.plist"; sourceTree = "<absolute>"; };
 		CB74D122248374E6002B2079 /* SCDaemonProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCDaemonProtocol.h; sourceTree = "<group>"; };
 		CB8086D224837607004B88BD /* SCDaemonXPC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCDaemonXPC.h; sourceTree = "<group>"; };
 		CB8086D324837607004B88BD /* SCDaemonXPC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCDaemonXPC.m; sourceTree = "<group>"; };
@@ -480,6 +481,7 @@
 				CBD4848519D7611F0020F949 /* Podfile */,
 				CBD4848619D7611F0020F949 /* TemplateIcon2x.png */,
 				CB1E7A6D0F9AEA9B00D158BC /* ERRORS */,
+				CB74D121248371E7002B2079 /* Daemon */,
 				CB4294DF0F53D865008E10CA /* Classes */,
 				CB0EEF5E20FD8CE00024D27B /* SelfControlTests */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -608,7 +610,7 @@
 				CB8086D224837607004B88BD /* SCDaemonXPC.h */,
 				CB8086D324837607004B88BD /* SCDaemonXPC.m */,
 				CB74D122248374E6002B2079 /* SCDaemonProtocol.h */,
-				CB74D11E2480E506002B2079 /* selfcontrold-Info.plist */,
+				CB62FC2F24B11A4F00ADBC40 /* selfcontrold-Info.plist */,
 				CB8086D524837734004B88BD /* org.eyebeam.selfcontrold.plist */,
 			);
 			path = Daemon;
@@ -661,7 +663,6 @@
 				CB74D1032480E4D9002B2079 /* DaemonMain.m */,
 				CBA2AFD70F39EC46005AFEBE /* HelperMain.h */,
 				CBA2AFD80F39EC46005AFEBE /* HelperMain.m */,
-				CB74D121248371E7002B2079 /* Daemon */,
 				CBD266AD11ED7D9C00042CD8 /* HelperCommon.h */,
 				CBD266AE11ED7D9C00042CD8 /* HelperCommon.m */,
 			);
@@ -908,6 +909,7 @@
 				CB9366E80F85BEF100EF284E /* NSRemoveTemplate.jpg in Resources */,
 				CB9366E90F85BEF100EF284E /* NSAddTemplate.jpg in Resources */,
 				CBDB118C2084239D0010397E /* FirstTime.xib in Resources */,
+				CB62FC3024B11A4F00ADBC40 /* selfcontrold-Info.plist in Resources */,
 				CBBF4EE515830D7300E364D9 /* TimerWindow.xib in Resources */,
 				CBDFFF4924A0711800622CEE /* org.eyebeam.selfcontrold.plist in Resources */,
 				CB0385E219D77051004614B6 /* PreferencesGeneralViewController.xib in Resources */,
@@ -1664,10 +1666,14 @@
 				INFOPLIST_FILE = "org.eyebeam.SelfControl copy-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
+					"-sectcreate",
+					__TEXT,
+					__info_plist,
+					"Daemon/selfcontrold-Info.plist",
+					"-sectcreate",
+					__TEXT,
+					__launchd_plist,
+					Daemon/org.eyebeam.selfcontrold.plist,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.eyebeam.selfcontrold;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1698,10 +1704,14 @@
 				INFOPLIST_FILE = "org.eyebeam.SelfControl copy-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
+					"-sectcreate",
+					__TEXT,
+					__info_plist,
+					"Daemon/selfcontrold-Info.plist",
+					"-sectcreate",
+					__TEXT,
+					__launchd_plist,
+					Daemon/org.eyebeam.selfcontrold.plist,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.eyebeam.selfcontrold;
 				PRODUCT_NAME = "$(TARGET_NAME)";
