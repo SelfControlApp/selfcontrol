@@ -240,7 +240,11 @@ int main(int argc, char* argv[]) {
                 NSLog(@"ERROR: Checkup ran but no block found. Likely tampering! Removing block for safety, but flagging tampering.");
 
                 // get rid of this block
-                [settings setValue: @YES forKey: @"TamperingDetected"];
+                // Temporarily disabled the TamperingDetection flag because it was sometimes causing false positives
+                // (i.e. people having the background set repeatedly despite no attempts to cheat)
+                // We will try to bring this feature back once we can debug it
+                // GitHub issue: https://github.com/SelfControlApp/selfcontrol/issues/621
+                // [settings setValue: @YES forKey: @"TamperingDetected"];
                 [settings synchronizeSettings];
 
                 removeBlock(controllingUID);
