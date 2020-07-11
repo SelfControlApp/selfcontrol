@@ -6,21 +6,6 @@
 	objectVersion = 46;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		CB9F02EE16C10CDE003054EE /* Distribution */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = CB9F02EF16C10CDE003054EE /* Build configuration list for PBXAggregateTarget "Distribution" */;
-			buildPhases = (
-				CB9F02F416C10CEE003054EE /* Run Script */,
-			);
-			dependencies = (
-				CB9F02F316C10CE6003054EE /* PBXTargetDependency */,
-			);
-			name = Distribution;
-			productName = "dist-target";
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -123,13 +108,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = CB9C811A19CFBA8500CDCAE1;
 			remoteInfo = SCKillerHelper;
-		};
-		CB9F02F216C10CE6003054EE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8D1107260486CEB800E47090;
-			remoteInfo = SelfControl;
 		};
 		CBE2BB5419D10CBB0077124F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -794,9 +772,6 @@
 						DevelopmentTeam = L6W5L88KN7;
 						ProvisioningStyle = Manual;
 					};
-					CB9F02EE16C10CDE003054EE = {
-						DevelopmentTeam = L6W5L88KN7;
-					};
 					CBA2AFD10F39EC12005AFEBE = {
 						DevelopmentTeam = L6W5L88KN7;
 						ProvisioningStyle = Manual;
@@ -831,7 +806,6 @@
 			targets = (
 				8D1107260486CEB800E47090 /* SelfControl */,
 				CBA2AFD10F39EC12005AFEBE /* org.eyebeam.SelfControl */,
-				CB9F02EE16C10CDE003054EE /* Distribution */,
 				CB9C80F619CFB79700CDCAE1 /* SelfControl Killer */,
 				CB9C811A19CFBA8500CDCAE1 /* SCKillerHelper */,
 				CB0EEF5C20FD8CE00024D27B /* SelfControlTests */,
@@ -950,20 +924,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "LOCATION=\"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\n\n# Usually set by Xcode\nCODE_SIGN_IDENTITY=\"Developer ID Application: Charlie Stigler (L6W5L88KN7)\"\n\necho \"location: \"\necho $LOCATION\n\n# codesign --verbose --force --sign \"$CODE_SIGN_IDENTITY\" \"$LOCATION/Sparkle.framework/Versions/A\"\n";
-		};
-		CB9F02F416C10CEE003054EE /* Run Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Run Script";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "ruby ./distribution-build.rb\n";
 		};
 		CBFF218A3108765AAB5DE542 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1159,11 +1119,6 @@
 			isa = PBXTargetDependency;
 			target = CB9C811A19CFBA8500CDCAE1 /* SCKillerHelper */;
 			targetProxy = CB9C812D19CFBBA300CDCAE1 /* PBXContainerItemProxy */;
-		};
-		CB9F02F316C10CE6003054EE /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8D1107260486CEB800E47090 /* SelfControl */;
-			targetProxy = CB9F02F216C10CE6003054EE /* PBXContainerItemProxy */;
 		};
 		CBE2BB5519D10CBB0077124F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1725,26 +1680,6 @@
 			};
 			name = Release;
 		};
-		CB9F02F016C10CDE003054EE /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
-				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		CB9F02F116C10CDE003054EE /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
-				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
 		CBA2AFD40F39EC14005AFEBE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1854,15 +1789,6 @@
 			buildConfigurations = (
 				CB9C812019CFBA8500CDCAE1 /* Debug */,
 				CB9C812119CFBA8500CDCAE1 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		CB9F02EF16C10CDE003054EE /* Build configuration list for PBXAggregateTarget "Distribution" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				CB9F02F016C10CDE003054EE /* Debug */,
-				CB9F02F116C10CDE003054EE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
