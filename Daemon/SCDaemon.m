@@ -28,8 +28,8 @@ static NSString* serviceName = @"org.eyebeam.selfcontrold";
 
 - (void)start {
     [self.listener resume];
-    NSTimer* timer = [NSTimer scheduledTimerWithTimeInterval: 0.5 repeats: YES block:^(NSTimer * _Nonnull timer) {
-        NSLog(@"still running still running");
+    NSTimer* timer = [NSTimer scheduledTimerWithTimeInterval: 15 repeats: YES block:^(NSTimer * _Nonnull timer) {
+        NSLog(@"still running");
     }];    
 }
 
@@ -41,6 +41,8 @@ static NSString* serviceName = @"org.eyebeam.selfcontrold";
     newConnection.exportedObject = scdXPC;
     
     [newConnection resume];
+    
+    NSLog(@"Accepted new connection!");
     
     return YES;
 }

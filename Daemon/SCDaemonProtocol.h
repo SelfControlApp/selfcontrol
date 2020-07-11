@@ -11,11 +11,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol SCDaemonProtocol <NSObject>
 
-- (BOOL) install;
+- (void)startBlockWithControllingUID:(uid_t)controllingUID blocklist:(NSArray<NSString*>*)blocklist endDate:(NSDate*)endDate authorization:(NSData *)authData reply:(void(^)(NSError* error))reply;
 
 - (BOOL) checkup;
 
-- (BOOL) getVersion;
+- (void)getVersionWithReply:(void(^)(NSString * version))reply;
 
 @end
 

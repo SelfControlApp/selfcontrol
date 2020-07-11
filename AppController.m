@@ -30,8 +30,15 @@
 #import <LetsMove/PFMoveApplication.h>
 #import "SCSettings.h"
 #import <ServiceManagement/ServiceManagement.h>
+#import "SCAppXPC.h"
 
 NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
+
+@interface AppController () {}
+
+@property (atomic, strong, readwrite) SCAppXPC* xpc;
+
+@end
 
 @implementation AppController {
 	NSWindowController* getStartedWindowController;
@@ -341,6 +348,10 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	[NSApplication sharedApplication].delegate = self;
+    
+    // start up our daemon XPC
+    self.xpc = [SCAppXPC new];
+    [self.xpc connectToHelperTool];
 
 	// Register observers on both distributed and normal notification centers
 	// to receive notifications from the helper tool and the other parts of the
@@ -397,6 +408,15 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (IBAction)showDomainList:(id)sender {
+    [self.xpc getVersion];
+    [self.xpc startBlockWithControllingUID: 501 // TODO: don't hardcode the user ID
+                                                 blocklist: [settings_ valueForKey: @"Blocklist"]
+                                                   endDate: [settings_ valueForKey: @"BlockEndDate"]
+                                             authorization: nil
+                                                     reply:^(NSError * _Nonnull error) {
+                        NSLog(@"WOO started block with error %@", error);
+                    }];
+    
 	BOOL addBlockIsOngoing = self.addingBlock;
 	if([self blockIsRunning] || addBlockIsOngoing) {
 		NSAlert* blockInProgressAlert = [[NSAlert alloc] init];
@@ -703,6 +723,20 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 			return;
 		}
 
+        // ok, the new helper tool is installed! refresh the connection, then it's time to start the block
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.xpc refreshConnection];
+            NSLog(@"Refreshed connection!");
+//            [self.xpc getVersion];
+            [self.xpc startBlockWithControllingUID: 501 // TODO: don't hardcode the user ID
+                                         blocklist: [settings_ valueForKey: @"Blocklist"]
+                                           endDate: [settings_ valueForKey: @"BlockEndDate"]
+                                     authorization: nil
+                                             reply:^(NSError * _Nonnull error) {
+                NSLog(@"WOO started block with error %@", error);
+            }];
+        });
+        
 //		NSFileHandle* helperToolHandle = [[NSFileHandle alloc] initWithFileDescriptor: fileno(commPipe) closeOnDealloc: YES];
 //
 //		NSData* inData = [helperToolHandle readDataToEndOfFile];

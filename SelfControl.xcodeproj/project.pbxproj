@@ -40,6 +40,19 @@
 		CB5DFCBB2251DD1F0084CEC2 /* SCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */; };
 		CB5DFCBC2251DD1F0084CEC2 /* SCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */; };
 		CB62FC3024B11A4F00ADBC40 /* selfcontrold-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB62FC2F24B11A4F00ADBC40 /* selfcontrold-Info.plist */; };
+		CB62FC3B24B124B900ADBC40 /* SCAppXPC.m in Sources */ = {isa = PBXBuildFile; fileRef = CB62FC3A24B124B900ADBC40 /* SCAppXPC.m */; };
+		CB62FC3E24B1298500ADBC40 /* SCDaemonBlockMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = CB62FC3D24B1298500ADBC40 /* SCDaemonBlockMethods.m */; };
+		CB62FC3F24B1327A00ADBC40 /* SCUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1731320F041F4007FCAE9 /* SCUtilities.m */; };
+		CB62FC4024B1327D00ADBC40 /* SCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF3B573217BADD7006D5F52 /* SCSettings.m */; };
+		CB62FC4124B1328F00ADBC40 /* HelperCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD266AE11ED7D9C00042CD8 /* HelperCommon.m */; };
+		CB62FC4224B1329200ADBC40 /* BlockManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806116C1FDBE0059C99A /* BlockManager.m */; };
+		CB62FC4324B1329500ADBC40 /* PacketFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = CBCA91111960D87300AFD20C /* PacketFilter.m */; };
+		CB62FC4424B1329800ADBC40 /* HostFileBlocker.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB0AE290FA74566006229B3 /* HostFileBlocker.m */; };
+		CB62FC4524B1329F00ADBC40 /* ThunderbirdPreferenceParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE4401A0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m */; };
+		CB62FC4624B132A300ADBC40 /* HostImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB90BF820F49F430006D202D /* HostImporter.m */; };
+		CB62FC4724B132A600ADBC40 /* AllowlistScraper.m in Sources */ = {isa = PBXBuildFile; fileRef = CB73615F19E4FDA000E0924F /* AllowlistScraper.m */; };
+		CB62FC4824B132B300ADBC40 /* SCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */; };
+		CB62FC4924B1330700ADBC40 /* LaunchctlHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */; };
 		CB6840A5247A3E5500E51564 /* SelfControlKillerIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = CB6840A4247A3E5500E51564 /* SelfControlKillerIcon.icns */; };
 		CB73616219E5086A00E0924F /* AllowlistScraper.m in Sources */ = {isa = PBXBuildFile; fileRef = CB73615F19E4FDA000E0924F /* AllowlistScraper.m */; };
 		CB74D1152480E506002B2079 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB32D2AD21902D9D00B8CD68 /* IOKit.framework */; };
@@ -221,6 +234,10 @@
 		CB5DFCB52251DD1F0084CEC2 /* SCConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCConstants.h; sourceTree = "<group>"; };
 		CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCConstants.m; sourceTree = "<group>"; };
 		CB62FC2F24B11A4F00ADBC40 /* selfcontrold-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "selfcontrold-Info.plist"; sourceTree = "<group>"; };
+		CB62FC3924B124B900ADBC40 /* SCAppXPC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCAppXPC.h; sourceTree = "<group>"; };
+		CB62FC3A24B124B900ADBC40 /* SCAppXPC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCAppXPC.m; sourceTree = "<group>"; };
+		CB62FC3C24B1298500ADBC40 /* SCDaemonBlockMethods.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCDaemonBlockMethods.h; sourceTree = "<group>"; };
+		CB62FC3D24B1298500ADBC40 /* SCDaemonBlockMethods.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCDaemonBlockMethods.m; sourceTree = "<group>"; };
 		CB6840A4247A3E5500E51564 /* SelfControlKillerIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SelfControlKillerIcon.icns; sourceTree = "<group>"; };
 		CB6ED5662085C70200012817 /* da */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = da; path = da.lproj/FirstTime.xib; sourceTree = "<group>"; };
 		CB7026181CD7177400D7C7F0 /* fr */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -561,6 +578,8 @@
 				CBD4848D19D768C90020F949 /* PreferencesAdvancedViewController.m */,
 				CBB637210F3E296000EBD135 /* DomainListWindowController.h */,
 				CBB637220F3E296000EBD135 /* DomainListWindowController.m */,
+				CB62FC3924B124B900ADBC40 /* SCAppXPC.h */,
+				CB62FC3A24B124B900ADBC40 /* SCAppXPC.m */,
 				CBD266C611ED82DB00042CD8 /* Helper Tools */,
 				CBB0AE280FA74566006229B3 /* HostFileBlocker.h */,
 				CBB0AE290FA74566006229B3 /* HostFileBlocker.m */,
@@ -605,8 +624,11 @@
 		CB74D121248371E7002B2079 /* Daemon */ = {
 			isa = PBXGroup;
 			children = (
+				CB74D1032480E4D9002B2079 /* DaemonMain.m */,
 				CB74D0FC2480E3E6002B2079 /* SCDaemon.h */,
 				CB74D0FD2480E3E6002B2079 /* SCDaemon.m */,
+				CB62FC3C24B1298500ADBC40 /* SCDaemonBlockMethods.h */,
+				CB62FC3D24B1298500ADBC40 /* SCDaemonBlockMethods.m */,
 				CB8086D224837607004B88BD /* SCDaemonXPC.h */,
 				CB8086D324837607004B88BD /* SCDaemonXPC.m */,
 				CB74D122248374E6002B2079 /* SCDaemonProtocol.h */,
@@ -660,7 +682,6 @@
 		CBD266C611ED82DB00042CD8 /* Helper Tools */ = {
 			isa = PBXGroup;
 			children = (
-				CB74D1032480E4D9002B2079 /* DaemonMain.m */,
 				CBA2AFD70F39EC46005AFEBE /* HelperMain.h */,
 				CBA2AFD80F39EC46005AFEBE /* HelperMain.m */,
 				CBD266AD11ED7D9C00042CD8 /* HelperCommon.h */,
@@ -1141,6 +1162,7 @@
 				F5B8CBEE19EE21C30026F3A5 /* SCTimeIntervalFormatter.m in Sources */,
 				CBD4848A19D764440020F949 /* PreferencesGeneralViewController.m in Sources */,
 				CBEE50C10F48C21F00F5DF1C /* TimerWindowController.m in Sources */,
+				CB62FC3B24B124B900ADBC40 /* SCAppXPC.m in Sources */,
 				CB90BF830F49F430006D202D /* HostImporter.m in Sources */,
 				CB5DFCB72251DD1F0084CEC2 /* SCConstants.m in Sources */,
 				CBE4401B0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m in Sources */,
@@ -1168,8 +1190,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB74D11F2480E55D002B2079 /* DaemonMain.m in Sources */,
+				CB62FC4624B132A300ADBC40 /* HostImporter.m in Sources */,
+				CB62FC4724B132A600ADBC40 /* AllowlistScraper.m in Sources */,
+				CB62FC4524B1329F00ADBC40 /* ThunderbirdPreferenceParser.m in Sources */,
 				CB74D1202480E566002B2079 /* SCDaemon.m in Sources */,
+				CB62FC4024B1327D00ADBC40 /* SCSettings.m in Sources */,
+				CB62FC3F24B1327A00ADBC40 /* SCUtilities.m in Sources */,
+				CB62FC4924B1330700ADBC40 /* LaunchctlHelper.m in Sources */,
+				CB62FC4824B132B300ADBC40 /* SCConstants.m in Sources */,
+				CB62FC4424B1329800ADBC40 /* HostFileBlocker.m in Sources */,
+				CB62FC3E24B1298500ADBC40 /* SCDaemonBlockMethods.m in Sources */,
+				CB62FC4124B1328F00ADBC40 /* HelperCommon.m in Sources */,
 				CB8086D424837607004B88BD /* SCDaemonXPC.m in Sources */,
+				CB62FC4324B1329500ADBC40 /* PacketFilter.m in Sources */,
+				CB62FC4224B1329200ADBC40 /* BlockManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
