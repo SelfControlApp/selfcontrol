@@ -351,7 +351,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     
     // start up our daemon XPC
     self.xpc = [SCAppXPC new];
-    [self.xpc connectToHelperTool];
+     [self.xpc connectToHelperTool];
 
 	// Register observers on both distributed and normal notification centers
 	// to receive notifications from the helper tool and the other parts of the
@@ -721,22 +721,22 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 			[self refreshUserInterface];
 
 			return;
-		}
-
+        } else NSLog(@"succeeded in installing helper tool");
+        
+        
         // ok, the new helper tool is installed! refresh the connection, then it's time to start the block
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.xpc refreshConnection];
+        [self.xpc refreshConnectionAndRun:^{
             NSLog(@"Refreshed connection!");
-//            [self.xpc getVersion];
+            //   [self.xpc getVersion];
             [self.xpc startBlockWithControllingUID: 501 // TODO: don't hardcode the user ID
-                                         blocklist: [settings_ valueForKey: @"Blocklist"]
-                                           endDate: [settings_ valueForKey: @"BlockEndDate"]
-                                     authorization: nil
+                                         blocklist: [self->settings_ valueForKey: @"Blocklist"]
+                                           endDate: [self->settings_ valueForKey: @"BlockEndDate"]
+                                     authorization: [NSData new]
                                              reply:^(NSError * _Nonnull error) {
                 NSLog(@"WOO started block with error %@", error);
             }];
-        });
-        
+//            [self.xpc getVersion];
+        }];
 //		NSFileHandle* helperToolHandle = [[NSFileHandle alloc] initWithFileDescriptor: fileno(commPipe) closeOnDealloc: YES];
 //
 //		NSData* inData = [helperToolHandle readDataToEndOfFile];

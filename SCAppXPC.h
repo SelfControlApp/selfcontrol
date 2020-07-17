@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SCAppXPC : NSObject
 
 - (void)connectToHelperTool;
-- (void)refreshConnection;
+- (void)refreshConnectionAndRun:(void(^)(void))callback;
 - (void)connectAndExecuteCommandBlock:(void(^)(NSError *))commandBlock;
 
 - (void)getVersion;

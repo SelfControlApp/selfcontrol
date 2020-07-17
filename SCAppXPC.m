@@ -41,12 +41,21 @@
             connection.invalidationHandler = nil;
             NSLog(@"called invalidation handler");
                         
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                if (connection == self.daemonConnection) {
+            if (connection == self.daemonConnection) {
+                // dispatch_sync on main thread would deadlock, so be careful
+                if ([NSThread isMainThread]) {
                     self.daemonConnection = nil;
-                    NSLog(@"connection invalidated");
+                    NSLog(@"set daemonConnection to nil on main thread");
+                } else {
+                    // running this synchronously ensures that the daemonConnection is nil'd out even if
+                    // reinstantiate the connection immediately
+                    dispatch_sync(dispatch_get_main_queue(), ^{
+                        self.daemonConnection = nil;
+                        NSLog(@"set daemonConnection to nil via dispatch_sync");
+                    });
                 }
-            }];
+                NSLog(@"connection invalidated");
+            } else NSLog(@"not invalidating connection cause they don't match");
         };
         #pragma clang diagnostic pop
         [self.daemonConnection resume];
@@ -54,26 +63,27 @@
         NSLog(@"Started helper connection!");
     }
 }
-- (void)refreshConnection {
+- (void)refreshConnectionAndRun:(void(^)(void))callback {
     // when we're refreshing the connection, we can end up in a slightly awkward situation:
     // if we call invalidate, but immediately start to reconnect before daemonConnection can be nil'd out
     // then we risk trying to use the invalidated connection
     // the fix? nil out daemonConnection before invalidating it in the refresh case
+    NSLog(@"refresh connection");
     
-    NSXPCConnection* oldConnection = self.daemonConnection;
-    
-    // dispatch_sync on main thread would deadlock, so be careful
-    if ([NSThread isMainThread]) {
-        self.daemonConnection = nil;
-    } else {
-        // running this synchronously ensures that the daemonConnection is nil'd out even if
-        // reinstantiate the connection immediately
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            self.daemonConnection = nil;
-        });
+    if (self.daemonConnection == nil) {
+        NSLog(@"no daemon connection to invalidate");
+        callback();
+        return;
     }
-
-    [oldConnection performSelectorOnMainThread: @selector(invalidate) withObject: nil waitUntilDone: YES];
+    void (^standardInvalidationHandler)(void) = self.daemonConnection.invalidationHandler;
+    
+    // wait until the invalidation handler runs, then run our callback
+    self.daemonConnection.invalidationHandler = ^{
+        standardInvalidationHandler();
+        callback();
+    };
+    
+    [self.daemonConnection performSelectorOnMainThread: @selector(invalidate) withObject: nil waitUntilDone: YES];
     
 }
 
