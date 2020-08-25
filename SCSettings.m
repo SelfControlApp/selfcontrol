@@ -466,7 +466,10 @@ float const SYNC_LEEWAY_SECS = 30;
 }
 
 - (void)onSettingChanged:(NSNotification*)note {
-    if (note.object == self) {
+    // note.object is a string, so we can't just do a simple == to see if the object is self
+    // but if we check our description against it, that will do the same thing because description
+    // includes the memory address. Don't override description or this logic will break!!
+    if ([note.object isEqualToString: [self description]]) {
         // we don't need to listen to our own notifications
         return;
     }
@@ -496,7 +499,7 @@ float const SYNC_LEEWAY_SECS = 30;
         [self synchronizeSettings];
         return;
     } else {
-        NSLog(@"propagating change since version %d is newer than %d and/or %@ is older than %@", noteVersionNumber, ourSettingsVersionNumber, noteSettingUpdated, ourSettingsLastUpdated);
+        NSLog(@"propagating change (%@ --> %@) since version %d is newer than %d and/or %@ is older than %@", note.userInfo[@"key"], note.userInfo[@"value"], note.object, self, noteVersionNumber, ourSettingsVersionNumber, noteSettingUpdated, ourSettingsLastUpdated);
         
         // mirror the change on our own instance
         [self setValue: note.userInfo[@"value"] forKey: note.userInfo[@"key"]];
