@@ -499,7 +499,7 @@ float const SYNC_LEEWAY_SECS = 30;
         [self synchronizeSettings];
         return;
     } else {
-        NSLog(@"propagating change (%@ --> %@) since version %d is newer than %d and/or %@ is older than %@", note.userInfo[@"key"], note.userInfo[@"value"], note.object, self, noteVersionNumber, ourSettingsVersionNumber, noteSettingUpdated, ourSettingsLastUpdated);
+        NSLog(@"propagating change (%@ --> %@) since version %d is newer than %d and/or %@ is older than %@", note.userInfo[@"key"], note.userInfo[@"value"], noteVersionNumber, ourSettingsVersionNumber, noteSettingUpdated, ourSettingsLastUpdated);
         
         // mirror the change on our own instance
         [self setValue: note.userInfo[@"value"] forKey: note.userInfo[@"key"]];
