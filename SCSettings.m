@@ -313,7 +313,7 @@ float const SYNC_LEEWAY_SECS = 30;
     [self synchronizeSettingsWithCompletion: nil];
 }
 
-- (void)setValue:(id)value forKey:(NSString*)key {
+- (void)setValue:(id)value forKey:(NSString*)key stopPropagation:(BOOL)stopPropagation {
     // we can't store nils in a dictionary
     // so we sneak around it
     if (value == nil) {
@@ -336,19 +336,27 @@ float const SYNC_LEEWAY_SECS = 30;
         [self.settingsDict setValue: [NSNumber numberWithInt: newVersionNumber] forKey: @"SettingsVersionNumber"];
         [self.settingsDict setValue: [NSDate date] forKey: @"LastSettingsUpdate"];
     }
-        
+    
     // notify other instances (presumably in other processes)
-    [[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"org.eyebeam.SelfControl.SCSettingsValueChanged"
-                                                                   object: self.description
-                                                                 userInfo: @{
-                                                                             @"key": key,
-                                                                             @"value": value,
-                                                                             @"versionNumber": self.settingsDict[@"SettingsVersionNumber"],
-                                                                             @"date": [NSDate date]
-                                                                             }
-                                                                  options: NSNotificationDeliverImmediately | NSNotificationPostToAllSessions
-     ];
+    // stopPropagation is a flag that stops one setting change from bouncing back and forth for ages
+    // between two processes
+    if (!stopPropagation) {
+        [[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"org.eyebeam.SelfControl.SCSettingsValueChanged"
+                                                                       object: self.description
+                                                                     userInfo: @{
+                                                                                 @"key": key,
+                                                                                 @"value": value,
+                                                                                 @"versionNumber": self.settingsDict[@"SettingsVersionNumber"],
+                                                                                 @"date": [NSDate date]
+                                                                                 }
+                                                                      options: NSNotificationDeliverImmediately | NSNotificationPostToAllSessions
+         ];
+    }
 }
+- (void)setValue:(id)value forKey:(NSString*)key {
+    [self setValue: value forKey: key stopPropagation: NO];
+}
+
 - (id)valueForKey:(NSString*)key {
     id value = [self.settingsDict valueForKey: key];
     
@@ -499,10 +507,10 @@ float const SYNC_LEEWAY_SECS = 30;
         [self synchronizeSettings];
         return;
     } else {
-        NSLog(@"propagating change (%@ --> %@) since version %d is newer than %d and/or %@ is older than %@", note.userInfo[@"key"], note.userInfo[@"value"], noteVersionNumber, ourSettingsVersionNumber, noteSettingUpdated, ourSettingsLastUpdated);
+        NSLog(@"Accepting propagated change (%@ --> %@) since version %d is newer than %d and/or %@ is older than %@", note.userInfo[@"key"], note.userInfo[@"value"], noteVersionNumber, ourSettingsVersionNumber, noteSettingUpdated, ourSettingsLastUpdated);
         
-        // mirror the change on our own instance
-        [self setValue: note.userInfo[@"value"] forKey: note.userInfo[@"key"]];
+        // mirror the change on our own instance - but don't propagate the change to avoid loopin
+        [self setValue: note.userInfo[@"value"] forKey: note.userInfo[@"key"] stopPropagation: YES];
     }
 }
 

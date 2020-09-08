@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)writeSettings;
 - (void)synchronizeSettingsWithCompletion:(nullable void(^)(NSError* _Nullable))completionBlock;
 - (void)synchronizeSettings;
+- (void)setValue:(id)value forKey:(NSString*)key stopPropagation:(BOOL)stopPropagation;
 - (void)setValue:(nullable id)value forKey:(NSString*)key;
 - (id)valueForKey:(NSString*)key;
 - (void)migrateLegacySettings;
