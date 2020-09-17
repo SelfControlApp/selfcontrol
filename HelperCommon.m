@@ -12,6 +12,7 @@
 #import "SCUtilities.h"
 #import "SCSettings.h"
 #import "SCConstants.h"
+#import <ServiceManagement/ServiceManagement.h>
 
 BOOL blockIsRunningInSettingsOrDefaults(uid_t controllingUID) {
     SCSettings* settings = [SCSettings settingsForUser: controllingUID];
@@ -202,24 +203,28 @@ void removeBlock(uid_t controllingUID) {
     
     clearCachesIfRequested(controllingUID);
     
-    // the final step is to unload the launchd job
-    // this will kill this process, so we have to make sure
-    // all settings are synced before we unload
-    [settings synchronizeSettingsWithCompletion:^(NSError* err) {
-        if (err != nil) {
-            NSLog(@"WARNING: Settings failed to synchronize before unloading block, with error %@", err);
-        }
-        
-        [LaunchctlHelper unloadLaunchdJobWithPlistAt:@"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
-    }];
-        
-    // wait 5 seconds. assuming the synchronization completes during that time,
-    // it'll unload the launchd job for us and we'll never get to the other side of this wait
-    sleep(5);
-        
-    // uh-oh, looks like it's 5 seconds later and the sync hasn't completed yet. Bad news.
-    NSLog(@"WARNING: Settings sync timed out before unloading block");
-    [LaunchctlHelper unloadLaunchdJobWithPlistAt:@"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
+//    // the final step is to unload the launchd job
+//    // this will kill this process, so we have to make sure
+//    // all settings are synced before we unload
+//    [settings synchronizeSettingsWithCompletion:^(NSError* err) {
+//        if (err != nil) {
+//            NSLog(@"WARNING: Settings failed to synchronize before unloading block, with error %@", err);
+//        }
+//
+//        CFErrorRef cfError;
+//        SMJobRemove(kSMDomainSystemLaunchd, CFSTR("org.eyebeam.selfcontrold"), NULL, NO, &cfError);
+//        NSLog(@"ran SMJobRemove and removed job with error %@", cfError);
+//    }];
+//
+//    // wait 5 seconds. assuming the synchronization completes during that time,
+//    // it'll unload the launchd job for us and we'll never get to the other side of this wait
+//    sleep(5);
+//
+//    // uh-oh, looks like it's 5 seconds later and the sync hasn't completed yet. Bad news.
+//    NSLog(@"WARNING: Settings sync timed out before unloading block");
+//    CFErrorRef cfError;
+//    SMJobRemove(kSMDomainSystemLaunchd, CFSTR("org.eyebeam.selfcontrold"), NULL, NO, &cfError);
+//    NSLog(@"ran SMJobRemove and removed job with error %@", cfError);
 }
 
 void sendConfigurationChangedNotification() {

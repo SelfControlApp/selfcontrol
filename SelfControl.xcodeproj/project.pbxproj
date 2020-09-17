@@ -62,6 +62,8 @@
 		CB74D11F2480E55D002B2079 /* DaemonMain.m in Sources */ = {isa = PBXBuildFile; fileRef = CB74D1032480E4D9002B2079 /* DaemonMain.m */; };
 		CB74D1202480E566002B2079 /* SCDaemon.m in Sources */ = {isa = PBXBuildFile; fileRef = CB74D0FD2480E3E6002B2079 /* SCDaemon.m */; };
 		CB8086D424837607004B88BD /* SCDaemonXPC.m in Sources */ = {isa = PBXBuildFile; fileRef = CB8086D324837607004B88BD /* SCDaemonXPC.m */; };
+		CB850F3925130F5300EE2E2D /* NSString+IPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806516C237F10059C99A /* NSString+IPAddress.m */; };
+		CB850F3C2513185300EE2E2D /* SCDaemonUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB850F3B2513185300EE2E2D /* SCDaemonUtilities.m */; };
 		CB90BF830F49F430006D202D /* HostImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB90BF820F49F430006D202D /* HostImporter.m */; };
 		CB9365620F8581B000EF284E /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = CB9365610F8581B000EF284E /* dsa_pub.pem */; };
 		CB9366E80F85BEF100EF284E /* NSRemoveTemplate.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB9366E60F85BEF100EF284E /* NSRemoveTemplate.jpg */; };
@@ -252,6 +254,8 @@
 		CB8086D224837607004B88BD /* SCDaemonXPC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCDaemonXPC.h; sourceTree = "<group>"; };
 		CB8086D324837607004B88BD /* SCDaemonXPC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCDaemonXPC.m; sourceTree = "<group>"; };
 		CB8086D524837734004B88BD /* org.eyebeam.selfcontrold.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = org.eyebeam.selfcontrold.plist; sourceTree = "<group>"; };
+		CB850F3A2513185300EE2E2D /* SCDaemonUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCDaemonUtilities.h; sourceTree = "<group>"; };
+		CB850F3B2513185300EE2E2D /* SCDaemonUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCDaemonUtilities.m; sourceTree = "<group>"; };
 		CB90BF810F49F430006D202D /* HostImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostImporter.h; sourceTree = "<group>"; };
 		CB90BF820F49F430006D202D /* HostImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HostImporter.m; sourceTree = "<group>"; };
 		CB9365610F8581B000EF284E /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
@@ -631,6 +635,8 @@
 				CB62FC3D24B1298500ADBC40 /* SCDaemonBlockMethods.m */,
 				CB8086D224837607004B88BD /* SCDaemonXPC.h */,
 				CB8086D324837607004B88BD /* SCDaemonXPC.m */,
+				CB850F3A2513185300EE2E2D /* SCDaemonUtilities.h */,
+				CB850F3B2513185300EE2E2D /* SCDaemonUtilities.m */,
 				CB74D122248374E6002B2079 /* SCDaemonProtocol.h */,
 				CB62FC2F24B11A4F00ADBC40 /* selfcontrold-Info.plist */,
 				CB8086D524837734004B88BD /* org.eyebeam.selfcontrold.plist */,
@@ -874,9 +880,6 @@
 						DevelopmentTeam = L6W5L88KN7;
 						ProvisioningStyle = Manual;
 					};
-					CB9F02EE16C10CDE003054EE = {
-						DevelopmentTeam = L6W5L88KN7;
-					};
 					CBA2AFD10F39EC12005AFEBE = {
 						DevelopmentTeam = L6W5L88KN7;
 						ProvisioningStyle = Manual;
@@ -1050,8 +1053,7 @@
 			shellPath = /bin/sh;
 			shellScript = "buildNumber=$(xcodebuild -project SelfControl.xcodeproj/ -showBuildSettings | grep \"CURRENT_PROJECT_VERSION\" | sed 's/[ ]*CURRENT_PROJECT_VERSION = //')\n\necho \"#define SELFCONTROL_VERSION_STRING @\\\"${buildNumber}\\\"\" > \"${PROJECT_DIR}/version-header.h\"\n";
 		};
-
-	CBFF218A3108765AAB5DE542 /* [CP] Copy Pods Resources */ = {
+		CBFF218A3108765AAB5DE542 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1190,6 +1192,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB74D11F2480E55D002B2079 /* DaemonMain.m in Sources */,
+				CB850F3925130F5300EE2E2D /* NSString+IPAddress.m in Sources */,
 				CB62FC4624B132A300ADBC40 /* HostImporter.m in Sources */,
 				CB62FC4724B132A600ADBC40 /* AllowlistScraper.m in Sources */,
 				CB62FC4524B1329F00ADBC40 /* ThunderbirdPreferenceParser.m in Sources */,
@@ -1199,6 +1202,7 @@
 				CB62FC4924B1330700ADBC40 /* LaunchctlHelper.m in Sources */,
 				CB62FC4824B132B300ADBC40 /* SCConstants.m in Sources */,
 				CB62FC4424B1329800ADBC40 /* HostFileBlocker.m in Sources */,
+				CB850F3C2513185300EE2E2D /* SCDaemonUtilities.m in Sources */,
 				CB62FC3E24B1298500ADBC40 /* SCDaemonBlockMethods.m in Sources */,
 				CB62FC4124B1328F00ADBC40 /* HelperCommon.m in Sources */,
 				CB8086D424837607004B88BD /* SCDaemonXPC.m in Sources */,
@@ -1268,11 +1272,6 @@
 			isa = PBXTargetDependency;
 			target = CB9C811A19CFBA8500CDCAE1 /* SCKillerHelper */;
 			targetProxy = CB9C812D19CFBBA300CDCAE1 /* PBXContainerItemProxy */;
-		};
-		CB9F02F316C10CE6003054EE /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8D1107260486CEB800E47090 /* SelfControl */;
-			targetProxy = CB9F02F216C10CE6003054EE /* PBXContainerItemProxy */;
 		};
 		CBE2BB5519D10CBB0077124F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)startBlockWithControllingUID:(uid_t)controllingUID blocklist:(NSArray<NSString*>*)blocklist endDate:(NSDate*)endDate authorization:(NSData *)authData reply:(void(^)(NSError* error))reply;
 
++ (void)checkupBlockWithControllingUID:(uid_t)controllingUID;
+
 @end
 
 NS_ASSUME_NONNULL_END

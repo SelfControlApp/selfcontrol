@@ -125,6 +125,7 @@
         if (connectError != nil) {
             NSLog(@"Command failed with connection error: %@", connectError);
         } else {
+            NSLog(@"starting blcok with blocklist %@ and endDate %@", blocklist, endDate);
             [[self.daemonConnection remoteObjectProxyWithErrorHandler:^(NSError * proxyError) {
                 NSLog(@"Command failed with remote object proxy error: %@", proxyError);
             }] startBlockWithControllingUID: controllingUID blocklist: blocklist endDate:endDate authorization: [NSData new] reply:^(NSError* error) {
