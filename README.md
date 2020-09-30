@@ -14,3 +14,7 @@ SelfControl is now available in 12 languages thanks to [the fine translators cre
 LICENSE
 -------
 SelfControl is free software under the GPL. See [this file](https://github.com/SelfControlApp/selfcontrol/blob/master/COPYING) for more details.
+
+WHY YOU NEED IT
+-------
+Those with self-control are able to understand that it is important to persevere with difficult activities if you are to develop skill in them. ... Fundamentally, self-control allows us to enjoy the good things of life in moderation, without wanting too much, and knowing when we have had enough.
