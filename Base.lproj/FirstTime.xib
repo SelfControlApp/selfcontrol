@@ -375,7 +375,7 @@ Cg
                                                 <color key="NSUnderlineColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             </attributes>
                                         </fragment>
-                                        <fragment content="Click &quot;Edit Blacklist&quot;">
+                                        <fragment content="Click &quot;Edit Blocklist&quot;">
                                             <attributes>
                                                 <font key="NSFont" size="12" name="Helvetica-Bold"/>
                                                 <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" headIndent="36" lineHeightMultiple="1.3">
