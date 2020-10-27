@@ -123,13 +123,15 @@
     NSLog(@"sending command block");
     [self connectAndExecuteCommandBlock:^(NSError * connectError) {
         if (connectError != nil) {
-            NSLog(@"Command failed with connection error: %@", connectError);
+            NSLog(@"Install command failed with connection error: %@", connectError);
+            reply(connectError);
         } else {
-            NSLog(@"starting blcok with blocklist %@ and endDate %@", blocklist, endDate);
             [[self.daemonConnection remoteObjectProxyWithErrorHandler:^(NSError * proxyError) {
-                NSLog(@"Command failed with remote object proxy error: %@", proxyError);
+                NSLog(@"Install command failed with remote object proxy error: %@", proxyError);
+                reply(proxyError);
             }] startBlockWithControllingUID: controllingUID blocklist: blocklist endDate:endDate authorization: [NSData new] reply:^(NSError* error) {
-                NSLog(@"installed with error = %@\n", error);
+                NSLog(@"Install failed with error = %@\n", error);
+                reply(error);
             }];
         }
     }];

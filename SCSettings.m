@@ -89,6 +89,10 @@ float const SYNC_LEEWAY_SECS = 30;
 + (instancetype)currentUserSettings {
     return [SCSettings settingsForUser: getuid()];
 }
++ (instancetype)sharedSettings {
+    return [SCSettings settingsForUser: 0];
+}
+
 - (instancetype)initWithUserId:(uid_t)userId {
     if (self = [super init]) {
         _userId = userId;
@@ -102,19 +106,29 @@ float const SYNC_LEEWAY_SECS = 30;
     }
     return self;
 }
+- (instancetype)init {
+    return [self initWithUserId: 0];
+}
 
-
+- (NSString*)settingsFileName {
+    return [NSString stringWithFormat: @".%@.plist", [self sha1: [NSString stringWithFormat: @"SelfControlUserPreferences%@", [self getSerialNumber]]]];
+}
 - (NSString*)securedSettingsFilePath {
-    NSString* homeDir = [self homeDirectoryForUid: self.userId];
-    NSString* hash = [self sha1: [NSString stringWithFormat: @"SelfControlUserPreferences%@", [self getSerialNumber]]];
-    return [[NSString stringWithFormat: @"%@/Library/Preferences/.%@.plist", homeDir, hash] stringByExpandingTildeInPath];
+    NSArray<NSURL*>* libraryURLs = [[NSFileManager defaultManager] URLsForDirectory: NSLibraryDirectory inDomains: NSLocalDomainMask];
+    NSLog(@"secured settings file path got lib URLs: %@", libraryURLs);
+    
+    return [NSString stringWithFormat: @"/Users/Shared/%@", [self settingsFileName]];
+}
+- (NSString*)legacySecuredSettingsFilePathForUser:(uid_t)userId {
+    NSString* homeDir = [self homeDirectoryForUid: userId];
+    return [[NSString stringWithFormat: @"%@/Library/Preferences/%@", homeDir, [self settingsFileName]] stringByExpandingTildeInPath];
 }
 
 // NOTE: there should be a default setting for each valid setting, even if it's nil/zero/etc
 - (NSDictionary*)defaultSettingsDict {
     return @{
         @"BlockEndDate": [NSDate distantPast],
-        @"Blocklist": @[],
+        @"ActiveBlocklist": @[],
         @"EvaluateCommonSubdomains": @YES,
         @"IncludeLinkedDomains": @YES,
         @"BlockSoundShouldPlay": @NO,
@@ -261,7 +275,7 @@ float const SYNC_LEEWAY_SECS = 30;
             BOOL chmodSuccessful = [[NSFileManager defaultManager]
                                     setAttributes: @{
                                         @"NSFileOwnerAccountID": [NSNumber numberWithUnsignedLong: self.userId],
-                                        @"NSFilePosixPermissions": [NSNumber numberWithShort: 0755]
+                                        @"NSFilePosixPermissions": [NSNumber numberWithShort: 0777]
                                     }
                                     ofItemAtPath: self.securedSettingsFilePath
                                     error: &chmodErr];
@@ -384,6 +398,44 @@ float const SYNC_LEEWAY_SECS = 30;
 //        blocks are started or finished.
 // NOTE3: this method always pulls user defaults for the current user, regardless of what instance it's called on
 - (void)migrateLegacySettings {
+    // try to migrate from the user-based secured settings model (v3.0-3.0.3)
+    // basically, we're gonna take the most-recently-updated settings, if they exist
+    // of course, we can only access settings that are readable to us, i.e.
+    // if this first gets run as user X, they generally won't be able to read user Y's prefs
+    NSFileManager* fileManager = [NSFileManager defaultManager];
+    NSArray<NSURL*>* libraryURLs = [fileManager URLsForDirectory: NSLibraryDirectory inDomains: NSAllDomainsMask];
+    NSMutableArray<NSString*>* preferencePaths = [NSMutableArray arrayWithCapacity: libraryURLs.count];
+    for (NSURL* libraryURL in libraryURLs) {
+        [preferencePaths addObject: [NSString stringWithFormat: @"%@/Preferences/%@", libraryURL.path, [self settingsFileName]]];
+    }
+    NSDictionary* latestSettingsDict;
+    for (NSString* prefPath in preferencePaths) {
+        if ([fileManager isReadableFileAtPath: prefPath]) {
+
+            NSDictionary* settingsFromDisk = [NSDictionary dictionaryWithContentsOfFile: prefPath];
+            if (!settingsFromDisk) continue;
+            
+            if (latestSettingsDict == nil || [settingsFromDisk[@"LastSettingsUpdate"] timeIntervalSinceDate: latestSettingsDict[@"LastSettingsUpdate"]] > 0) {
+                latestSettingsDict = settingsFromDisk;
+            }
+        }
+    }
+    
+    if (latestSettingsDict != nil) {
+        NSLog(@"Migrating all settings from %@", latestSettingsDict);
+//        for (NSString* key in [[self defaultSettingsDict] allKeys]) {
+//            if (latestSettingsDict[key] != nil) {
+//                [self setValue: latestSettingsDict[key] forKey: key];
+//            }
+//        }
+        NSLog(@"Migrated!");
+        return;
+    }
+    
+    
+    // if no user-based secured settings exist, we try to read from the even older legacy defaults settings
+    
+    
     NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLegacyLockFilePath];
     // note that the defaults will generally only be defined in the main app, not helper tool (because helper tool runs as root)
     NSDictionary* userDefaultsDict = [NSUserDefaults standardUserDefaults].dictionaryRepresentation;

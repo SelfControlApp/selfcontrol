@@ -201,7 +201,8 @@
 }
 
 + (BOOL)writeBlocklistToFileURL:(NSURL*)targetFileURL settings:(SCSettings*)settings errorDescription:(NSString**)errDescriptionRef {
-    NSDictionary* saveDict = @{@"HostBlacklist": [settings valueForKey: @"Blocklist"],
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary* saveDict = @{@"HostBlacklist": [defaults arrayForKey: @"Blocklist"],
                                @"BlockAsWhitelist": [settings valueForKey: @"BlockAsWhitelist"]};
 
     NSString* saveDataErr;

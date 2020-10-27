@@ -169,7 +169,7 @@ int main(int argc, char* argv[]) {
             // (and could potentially confuse things)
             [settings clearLegacySettings];
             
-			if([[settings valueForKey: @"Blocklist"] count] <= 0 || ![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
+			if([[settings valueForKey: @"ActiveBlocklist"] count] <= 0 || ![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
 				NSLog(@"ERROR: Blocklist is empty, or there was an error transferring block information.");
                 NSLog(@"Block End Date: %@", [settings valueForKey: @"BlockEndDate"]);
 				printStatus(-210);
@@ -206,7 +206,7 @@ int main(int argc, char* argv[]) {
 		} else if([modeString isEqual: @"--refresh"]) {
             // used when the blocklist may have changed, to make sure we are blocking the new list
 
-            if([[settings valueForKey: @"Blocklist"] count] <= 0 || ![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
+            if([[settings valueForKey: @"ActiveBlocklist"] count] <= 0 || ![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
                 NSLog(@"ERROR: Refreshing domain blocklist, but no block is currently ongoing or the blocklist is empty.");
                 printStatus(-213);
                 syncSettingsAndExit(settings, EX_SOFTWARE);

@@ -53,6 +53,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
         settings_ = [SCSettings currentUserSettings];
         
 		NSDictionary* appDefaults = @{
+                                      @"Blocklist": @[],
 									  @"HighlightInvalidHosts": @YES,
 									  @"VerifyInternetConnection": @YES,
 									  @"TimerWindowFloats": @NO,
@@ -118,7 +119,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	NSString* timeString = [self timeSliderDisplayStringFromNumberOfMinutes:numMinutes];
 
 	[blockSliderTimeDisplayLabel_ setStringValue:timeString];
-	[submitButton_ setEnabled: (numMinutes > 0) && ([[settings_ valueForKey: @"Blocklist"] count] > 0)];
+	[submitButton_ setEnabled: (numMinutes > 0) && ([[defaults_ arrayForKey: @"Blocklist"] count] > 0)];
 }
 
 - (NSString *)timeSliderDisplayStringFromNumberOfMinutes:(NSInteger)numberOfMinutes {
@@ -159,7 +160,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		[NSApp presentError: err];
 		return;
 	}
-	if([[settings_ valueForKey:@"Blocklist"] count] == 0) {
+	if([[defaults_ arrayForKey: @"Blocklist"] count] == 0) {
 		// Since the Start button should be disabled when the blocklist has no entries,
 		// this should definitely not be happening.  Exit.
 
@@ -248,7 +249,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 		BOOL addBlockIsOngoing = self.addingBlock;
 
-		if([defaults_ integerForKey: @"BlockDuration"] != 0 && [[settings_ valueForKey: @"Blocklist"] count] != 0 && !addBlockIsOngoing) {
+		if([defaults_ integerForKey: @"BlockDuration"] != 0 && [[defaults_ arrayForKey: @"Blocklist"] count] != 0 && !addBlockIsOngoing) {
 			[submitButton_ setEnabled: YES];
 		} else {
 			[submitButton_ setEnabled: NO];
@@ -407,16 +408,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     return [SCUtilities blockIsRunningWithSettings: settings_ defaults: defaults_];
 }
 
-- (IBAction)showDomainList:(id)sender {
-    [self.xpc getVersion];
-    [self.xpc startBlockWithControllingUID: 501 // TODO: don't hardcode the user ID
-                                                 blocklist: [settings_ valueForKey: @"Blocklist"]
-                                                   endDate: [settings_ valueForKey: @"BlockEndDate"]
-                                             authorization: nil
-                                                     reply:^(NSError * _Nonnull error) {
-                        NSLog(@"WOO started block with error %@", error);
-                    }];
-    
+- (IBAction)showDomainList:(id)sender {    
 	BOOL addBlockIsOngoing = self.addingBlock;
 	if([self blockIsRunning] || addBlockIsOngoing) {
 		NSAlert* blockInProgressAlert = [[NSAlert alloc] init];
@@ -463,7 +455,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 }
 
 - (void)addToBlockList:(NSString*)host lock:(NSLock*)lock {
-    NSMutableArray* list = [[settings_ valueForKey: @"Blocklist"] mutableCopy];
+    NSMutableArray* list = [[settings_ valueForKey: @"ActiveBlocklist"] mutableCopy];
     NSArray<NSString*>* cleanedEntries = [SCUtilities cleanBlocklistEntry: host];
     
     if (cleanedEntries.count == 0) return;
@@ -473,7 +465,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
        [list addObject: entry];
     }
        
-	[settings_ setValue: list forKey: @"Blocklist"];
+	[settings_ setValue: list forKey: @"ActiveBlocklist"];
 
 	if(![self blockIsRunning]) {
 		// This method shouldn't be getting called, a block is not on.
@@ -483,9 +475,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		[self refreshUserInterface];
 
 		// Reverse the blocklist change made before we fail
-		NSMutableArray* list = [[settings_ valueForKey: @"Blocklist"] mutableCopy];
+		NSMutableArray* list = [[settings_ valueForKey: @"ActiveBlocklist"] mutableCopy];
 		[list removeLastObject];
-		[settings_ setValue: list forKey: @"Blocklist"];
+		[settings_ setValue: list forKey: @"ActiveBlocklist"];
 
 		NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
 										   code: -103
@@ -505,9 +497,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		if([networkUnavailableAlert runModal] == NSAlertFirstButtonReturn) {
 			// User clicked cancel
 			// Reverse the blocklist change made before we fail
-			NSMutableArray* list = [[settings_ valueForKey: @"Blocklist"] mutableCopy];
+			NSMutableArray* list = [[settings_ valueForKey: @"ActiveBlocklist"] mutableCopy];
 			[list removeLastObject];
-			[settings_ setValue: list forKey: @"Blocklist"];
+			[settings_ setValue: list forKey: @"ActiveBlocklist"];
 
 			return;
 		}
@@ -519,9 +511,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 		CFNetDiagnosticDiagnoseProblemInteractively(diagRef);
 
 		// Reverse the blocklist change made before we fail
-		NSMutableArray* list = [[settings_ valueForKey: @"Blocklist"] mutableCopy];
+		NSMutableArray* list = [[settings_ valueForKey: @"ActiveBlocklist"] mutableCopy];
 		[list removeLastObject];
-		[settings_ setValue: list forKey: @"Blocklist"];
+		[settings_ setValue: list forKey: @"ActiveBlocklist"];
 
 		return;
 	}
@@ -729,11 +721,14 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
             NSLog(@"Refreshed connection!");
             //   [self.xpc getVersion];
             [self.xpc startBlockWithControllingUID: 501 // TODO: don't hardcode the user ID
-                                         blocklist: [self->settings_ valueForKey: @"Blocklist"]
+                                         blocklist: [self->defaults_ arrayForKey: @"Blocklist"]
                                            endDate: [self->settings_ valueForKey: @"BlockEndDate"]
                                      authorization: [NSData new]
                                              reply:^(NSError * _Nonnull error) {
                 NSLog(@"WOO started block with error %@", error);
+                
+                self.addingBlock = false;
+                [self refreshUserInterface];
             }];
 //            [self.xpc getVersion];
         }];
@@ -810,9 +805,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 			NSLog(@"ERROR: Failed to authorize block refresh.");
 
 			// Reverse the blocklist change made before we fail
-			NSMutableArray* list = [[settings_ valueForKey: @"Blocklist"] mutableCopy];
+			NSMutableArray* list = [[settings_ valueForKey: @"ActiveBlocklist"] mutableCopy];
 			[list removeLastObject];
-			[settings_ setValue: list forKey: @"Blocklist"];
+			[settings_ setValue: list forKey: @"ActiveBlocklist"];
 
 			[lockToUse unlock];
 
@@ -973,7 +968,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	NSNumber* newAllowlistChoice = openedDict[@"BlockAsWhitelist"];
 	if(newBlocklist == nil || newAllowlistChoice == nil) return NO;
     
-	[settings_ setValue: newBlocklist forKey: @"Blocklist"];
+    [defaults_ setValue: newBlocklist forKey:@"Blocklist"];
     [settings_ setValue: newAllowlistChoice forKey: @"BlockAsWhitelist"];
     
 	BOOL domainListIsOpen = [[domainListWindowController_ window] isVisible];

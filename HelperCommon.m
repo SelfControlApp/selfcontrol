@@ -45,7 +45,7 @@ void addRulesToFirewall(uid_t controllingUID) {
 	BlockManager* blockManager = [[BlockManager alloc] initAsAllowlist: blockAsAllowlist allowLocal: allowLocalNetworks includeCommonSubdomains: shouldEvaluateCommonSubdomains includeLinkedDomains: includeLinkedDomains];
 
 	[blockManager prepareToAddBlock];
-	[blockManager addBlockEntries: [settings valueForKey: @"Blocklist"]];
+	[blockManager addBlockEntries: [settings valueForKey: @"ActiveBlocklist"]];
 	[blockManager finalizeBlock];
 
 }

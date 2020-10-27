@@ -32,8 +32,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     [settings clearLegacySettings];
     
     // update SCSettings with the blocklist and end date that've been requested
-    NSLog(@"Replacing settings end date %@ with %@, and blocklist %@ with %@ (%@ of %@)", [settings valueForKey: @"BlockEndDate"], endDate, [settings valueForKey: @"Blocklist"], blocklist, [blocklist class], [blocklist[0] class]);
-    [settings setValue: blocklist forKey: @"Blocklist"];
+    NSLog(@"Replacing settings end date %@ with %@, and blocklist %@ with %@ (%@ of %@)", [settings valueForKey: @"BlockEndDate"], endDate, [settings valueForKey: @"ActiveBlocklist"], blocklist, [blocklist class], [blocklist[0] class]);
+    [settings setValue: blocklist forKey: @"ActiveBlocklist"];
     [settings setValue: endDate forKey: @"BlockEndDate"];
     
     if([blocklist count] <= 0 || ![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
