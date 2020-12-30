@@ -191,7 +191,7 @@
 	}
     
     // make sure add to list is disabled if it's an allowlist block
-    addToBlockButton_.hidden = [[settings_ valueForKey: @"BlockAsWhitelist"] boolValue];
+    addToBlockButton_.hidden = [[NSUserDefaults standardUserDefaults] boolForKey: @"BlockAsWhitelist"];
 }
 
 - (void)windowShouldClose:(NSNotification *)notification {

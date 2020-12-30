@@ -91,13 +91,16 @@ int main(int argc, char* argv[]) {
                     syncSettingsAndExit(settings, EX_IOERR);
                 } else {
                     [settings setValue: blockEndDateArg forKey: @"BlockEndDate"];
-                    BOOL readSuccess = [SCUtilities readBlocklistFromFile: [NSURL fileURLWithPath: pathToBlocklistFile] toSettings: settings];
+                    NSDictionary* readProperties = [SCUtilities readBlocklistFromFile: [NSURL fileURLWithPath: pathToBlocklistFile]];
                     
-                    if (!readSuccess) {
+                    if (readProperties == nil) {
                         NSLog(@"ERROR: Block could not be read from file %@", pathToBlocklistFile);
                         printStatus(-221);
                         syncSettingsAndExit(settings, EX_IOERR);
                     }
+                    
+                    [settings setValue: readProperties[@"Blocklist"] forKey: @"ActiveBlocklist"];
+                    [settings setValue: readProperties[@"BlockAsWhitelist"] forKey: @"ActiveBlockAsWhitelist"];
                 }
             }
 
@@ -268,7 +271,7 @@ int main(int argc, char* argv[]) {
 				// settings just in case.
 				PacketFilter* pf = [[PacketFilter alloc] init];
 				HostFileBlocker* hostFileBlocker = [[HostFileBlocker alloc] init];
-                if(![pf containsSelfControlBlock] || (![[settings valueForKey: @"BlockAsWhitelist"] boolValue] && ![hostFileBlocker containsSelfControlBlock])) {
+                if(![pf containsSelfControlBlock] || (![[settings valueForKey: @"ActiveBlockAsWhitelist"] boolValue] && ![hostFileBlocker containsSelfControlBlock])) {
 					// The firewall is missing at least the block header.  Let's clear everything
 					// before we re-add to make sure everything goes smoothly.
 

@@ -45,7 +45,7 @@
 	return self;
 }
 - (void)awakeFromNib  {
-    NSInteger indexToSelect = [[settings_ valueForKey: @"BlockAsWhitelist"] boolValue] ? 1 : 0;
+    NSInteger indexToSelect = [defaults_ boolForKey: @"BlockAsWhitelist"] ? 1 : 0;
     [allowlistRadioMatrix_ selectCellAtRow: indexToSelect column: 0];
     
     [self updateWindowTitle];
@@ -236,11 +236,11 @@
 - (IBAction)allowlistOptionChanged:(NSMatrix*)sender {
     switch (sender.selectedRow) {
         case 0:
-            [settings_ setValue: @NO forKey: @"BlockAsWhitelist"];
+            [defaults_ setBool: NO forKey: @"BlockAsWhitelist"];
             break;
         case 1:
             [self showAllowlistWarning];
-            [settings_ setValue: @YES forKey: @"BlockAsWhitelist"];
+            [defaults_ setBool: YES forKey: @"BlockAsWhitelist"];
             break;
     }
     
@@ -264,7 +264,7 @@
 }
 
 - (void)updateWindowTitle {
-    NSString* listType = [[settings_ valueForKey: @"BlockAsWhitelist"] boolValue] ? @"Allowlist" : @"Blocklist";
+    NSString* listType = [defaults_ boolForKey: @"BlockAsWhitelist"] ? @"Allowlist" : @"Blocklist";
     self.window.title = NSLocalizedString(([NSString stringWithFormat: @"Domain %@", listType]), @"Domain list window title");
 }
 

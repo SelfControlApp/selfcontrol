@@ -119,7 +119,7 @@
     }];
 }
 
-- (void)startBlockWithControllingUID:(uid_t)controllingUID blocklist:(NSArray<NSString*>*)blocklist endDate:(NSDate*)endDate authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
+- (void)startBlockWithControllingUID:(uid_t)controllingUID blocklist:(NSArray<NSString*>*)blocklist isAllowlist:(BOOL)isAllowlist endDate:(NSDate*)endDate authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
     NSLog(@"sending command block");
     [self connectAndExecuteCommandBlock:^(NSError * connectError) {
         if (connectError != nil) {
@@ -129,7 +129,7 @@
             [[self.daemonConnection remoteObjectProxyWithErrorHandler:^(NSError * proxyError) {
                 NSLog(@"Install command failed with remote object proxy error: %@", proxyError);
                 reply(proxyError);
-            }] startBlockWithControllingUID: controllingUID blocklist: blocklist endDate:endDate authorization: [NSData new] reply:^(NSError* error) {
+            }] startBlockWithControllingUID: controllingUID blocklist: blocklist isAllowlist:isAllowlist endDate:endDate authorization: [NSData new] reply:^(NSError* error) {
                 NSLog(@"Install failed with error = %@\n", error);
                 reply(error);
             }];

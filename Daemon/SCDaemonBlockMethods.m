@@ -15,7 +15,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 @implementation SCDaemonBlockMethods
 
-+ (void)startBlockWithControllingUID:(uid_t)controllingUID blocklist:(NSArray<NSString*>*)blocklist endDate:(NSDate*)endDate authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
++ (void)startBlockWithControllingUID:(uid_t)controllingUID blocklist:(NSArray<NSString*>*)blocklist isAllowlist:(BOOL)isAllowlist endDate:(NSDate*)endDate authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
     NSLog(@"startign block in methods");
     if (blockIsRunningInSettingsOrDefaults(controllingUID)) {
         NSLog(@"ERROR: Block is already running");
@@ -34,7 +34,9 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     // update SCSettings with the blocklist and end date that've been requested
     NSLog(@"Replacing settings end date %@ with %@, and blocklist %@ with %@ (%@ of %@)", [settings valueForKey: @"BlockEndDate"], endDate, [settings valueForKey: @"ActiveBlocklist"], blocklist, [blocklist class], [blocklist[0] class]);
     [settings setValue: blocklist forKey: @"ActiveBlocklist"];
+    [settings setValue: @(isAllowlist) forKey: @"ActiveBlockAsWhitelist"];
     [settings setValue: endDate forKey: @"BlockEndDate"];
+    NSLog(@"And now ActiveBlocklist is %@", [settings valueForKey: @"ActiveBlocklist"]);
     
     if([blocklist count] <= 0 || ![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
         NSLog(@"ERROR: Blocklist is empty, or block end date is in the past");
@@ -102,7 +104,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
         // settings just in case.
         PacketFilter* pf = [[PacketFilter alloc] init];
         HostFileBlocker* hostFileBlocker = [[HostFileBlocker alloc] init];
-        if(![pf containsSelfControlBlock] || (![[settings valueForKey: @"BlockAsWhitelist"] boolValue] && ![hostFileBlocker containsSelfControlBlock])) {
+        if(![pf containsSelfControlBlock] || (![[settings valueForKey: @"ActiveBlockAsWhitelist"] boolValue] && ![hostFileBlocker containsSelfControlBlock])) {
             // The firewall is missing at least the block header.  Let's clear everything
             // before we re-add to make sure everything goes smoothly.
 

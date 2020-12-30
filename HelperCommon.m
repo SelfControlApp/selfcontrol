@@ -39,8 +39,8 @@ void addRulesToFirewall(uid_t controllingUID) {
 	BOOL allowLocalNetworks = [[settings valueForKey: @"AllowLocalNetworks"] boolValue];
 	BOOL includeLinkedDomains = [[settings valueForKey: @"IncludeLinkedDomains"] boolValue];
 
-	// get value for BlockAsWhitelist
-	BOOL blockAsAllowlist = [[settings valueForKey: @"BlockAsWhitelist"] boolValue];
+	// get value for ActiveBlockAsWhitelist
+	BOOL blockAsAllowlist = [[settings valueForKey: @"ActiveBlockAsWhitelist"] boolValue];
 
 	BlockManager* blockManager = [[BlockManager alloc] initAsAllowlist: blockAsAllowlist allowLocal: allowLocalNetworks includeCommonSubdomains: shouldEvaluateCommonSubdomains includeLinkedDomains: includeLinkedDomains];
 

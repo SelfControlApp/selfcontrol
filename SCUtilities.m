@@ -170,6 +170,8 @@
     // TODO: will this work setting nil instead of [NSDate dateWithTimeIntervalSince1970: 0]?
     [settings setValue: nil forKey: @"BlockEndDate"];
     [settings setValue: nil forKey: @"BlockIsRunning"];
+    [settings setValue: nil forKey: @"ActiveBlocklist"];
+    [settings setValue: nil forKey: @"ActiveBlockAsWhitelist"];
 }
 
 + (void) removeBlockFromSettingsForUID:(uid_t)uid {
@@ -203,7 +205,7 @@
 + (BOOL)writeBlocklistToFileURL:(NSURL*)targetFileURL settings:(SCSettings*)settings errorDescription:(NSString**)errDescriptionRef {
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
     NSDictionary* saveDict = @{@"HostBlacklist": [defaults arrayForKey: @"Blocklist"],
-                               @"BlockAsWhitelist": [settings valueForKey: @"BlockAsWhitelist"]};
+                               @"BlockAsWhitelist": [defaults objectForKey: @"BlockAsWhitelist"]};
 
     NSString* saveDataErr;
     NSData* saveData = [NSPropertyListSerialization dataFromPropertyList: saveDict format: NSPropertyListBinaryFormat_v1_0 errorDescription: &saveDataErr];
@@ -224,18 +226,18 @@
     return YES;
 }
 
-+ (BOOL)readBlocklistFromFile:(NSURL*)fileURL toSettings:(SCSettings*)settings {
++ (NSDictionary*)readBlocklistFromFile:(NSURL*)fileURL {
     NSDictionary* openedDict = [NSDictionary dictionaryWithContentsOfURL: fileURL];
     
     if (openedDict == nil || openedDict[@"HostBlacklist"] == nil || openedDict[@"BlockAsWhitelist"] == nil) {
         NSLog(@"ERROR: Could not read a valid block from file %@", fileURL);
-        return NO;
+        return nil;
     }
     
-    [settings setValue: openedDict[@"HostBlacklist"] forKey: @"Blocklist"];
-    [settings setValue: openedDict[@"BlockAsWhitelist"] forKey: @"BlockAsWhitelist"];
-    
-    return YES;
+    return @{
+        @"Blocklist": openedDict[@"HostBlacklist"],
+        @"BlockAsWhitelist": openedDict[@"BlockAsWhitelist"]
+    };
 }
 
 @end

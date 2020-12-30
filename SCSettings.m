@@ -129,12 +129,14 @@ float const SYNC_LEEWAY_SECS = 30;
     return @{
         @"BlockEndDate": [NSDate distantPast],
         @"ActiveBlocklist": @[],
+        @"ActiveBlockAsWhitelist": @NO,
+
         @"EvaluateCommonSubdomains": @YES,
         @"IncludeLinkedDomains": @YES,
         @"BlockSoundShouldPlay": @NO,
         @"BlockSound": @5,
         @"ClearCaches": @YES,
-        @"BlockAsWhitelist": @NO,
+        @"ActiveBlockAsWhitelist": @NO,
         @"AllowLocalNetworks": @YES,
         @"BlockIsRunning": @NO, // tells us whether a block is actually running on the system (to the best of our knowledge)
         
@@ -282,6 +284,7 @@ float const SYNC_LEEWAY_SECS = 30;
 
             if (writeSuccessful) {
                 self.lastSynchronizedWithDisk = [NSDate date];
+                NSLog(@"wrote %@ to %@", plistData, self.securedSettingsFilePath);
             }
 
             if (!writeSuccessful) {
@@ -423,11 +426,16 @@ float const SYNC_LEEWAY_SECS = 30;
     
     if (latestSettingsDict != nil) {
         NSLog(@"Migrating all settings from %@", latestSettingsDict);
-//        for (NSString* key in [[self defaultSettingsDict] allKeys]) {
-//            if (latestSettingsDict[key] != nil) {
-//                [self setValue: latestSettingsDict[key] forKey: key];
-//            }
-//        }
+
+        for (NSString* key in [[self defaultSettingsDict] allKeys]) {
+            if (latestSettingsDict[key] != nil) {
+                [self setValue: latestSettingsDict[key] forKey: key];
+            }
+        }
+
+        // Blocklist setting no longer in use (moved to ActiveBlocklist)
+        [self setValue: nil forKey: @"Blocklist"];
+
         NSLog(@"Migrated!");
         return;
     }
@@ -459,7 +467,7 @@ float const SYNC_LEEWAY_SECS = 30;
     // BlockStartedDate was migrated to a simpler BlockEndDate property (which doesn't require BlockDuration to function)
     // so we need to specially convert the old BlockStartedDate into BlockEndDates
     // NOTE: we do NOT set BlockIsRunning to YES in Settings for a legacy migration
-    // Why? the old version of the helper tool si still involved, and it doesn't know
+    // Why? the old version of the helper tool is still involved, and it doesn't know
     // to clear that setting. So it will stay stuck on.
     if ([SCUtilities blockIsRunningInLegacyDictionary: lockDict]) {
         [self setValue: [SCUtilities endDateFromLegacyBlockDictionary: lockDict] forKey: @"BlockEndDate"];
@@ -483,7 +491,7 @@ float const SYNC_LEEWAY_SECS = 30;
 
     // clear keys out of user defaults which are now stored in SCSettings
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    NSArray* keysToClear = @[
+    NSArray* defaultsKeysToClear = @[
                              @"BlockStartedDate",
                              @"HostBlacklist",
                              @"EvaluateCommonSubdomains",
@@ -491,11 +499,19 @@ float const SYNC_LEEWAY_SECS = 30;
                              @"BlockSoundShouldPlay",
                              @"BlockSound",
                              @"ClearCaches",
-                             @"BlockAsWhitelist",
                              @"AllowLocalNetworks"
                              ];
-    for (NSString* key in keysToClear) {
+    for (NSString* key in defaultsKeysToClear) {
         [userDefaults removeObjectForKey: key];
+    }
+    
+    // clear keys out of SCSettings which are no longer used
+    NSArray* settingsKeysToClear = @[
+                             @"Blocklist",
+                             @"BlockAsWhitelist"
+                             ];
+    for (NSString* key in settingsKeysToClear) {
+        [self setValue:nil forKey: key];
     }
 }
 - (void)startSyncTimer {

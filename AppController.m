@@ -290,7 +290,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     }
     
     // Display "blocklist" or "allowlist" as appropriate
-    NSString* listType = [[settings_ valueForKey: @"BlockAsWhitelist"] boolValue] ? @"Allowlist" : @"Blocklist";
+    NSString* listType = [defaults_ boolForKey: @"BlockAsWhitelist"] ? @"Allowlist" : @"Blocklist";
     NSString* editListString = NSLocalizedString(([NSString stringWithFormat: @"Edit %@", listType]), @"Edit list button / menu item");
     
     editBlocklistButton_.title = editListString;
@@ -722,6 +722,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
             //   [self.xpc getVersion];
             [self.xpc startBlockWithControllingUID: 501 // TODO: don't hardcode the user ID
                                          blocklist: [self->defaults_ arrayForKey: @"Blocklist"]
+                                       isAllowlist: [self->defaults_ boolForKey: @"BlockAsWhitelist"]
                                            endDate: [self->settings_ valueForKey: @"BlockEndDate"]
                                      authorization: [NSData new]
                                              reply:^(NSError * _Nonnull error) {
@@ -944,7 +945,14 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	long result = [oPanel runModal];
 	if (result == NSOKButton) {
 		if([oPanel.URLs count] > 0) {
-            [SCUtilities readBlocklistFromFile: oPanel.URLs[0] toSettings: settings_];
+            NSDictionary* settingsFromFile = [SCUtilities readBlocklistFromFile: oPanel.URLs[0]];
+            
+            if (settingsFromFile != nil) {
+                [defaults_ setObject: settingsFromFile[@"Blocklist"] forKey: @"Blocklist"];
+                [defaults_ setObject: settingsFromFile[@"BlockAsWhitelist"] forKey: @"BlockAsWhitelist"];
+            } else {
+                NSLog(@"WARNING: Could not read a valid blocklist from file - ignoring.");
+            }
 
             // close the domain list (and reopen again if need be to refresh)
             BOOL domainListIsOpen = [[domainListWindowController_ window] isVisible];
@@ -969,7 +977,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	if(newBlocklist == nil || newAllowlistChoice == nil) return NO;
     
     [defaults_ setValue: newBlocklist forKey:@"Blocklist"];
-    [settings_ setValue: newAllowlistChoice forKey: @"BlockAsWhitelist"];
+    [defaults_ setObject: newAllowlistChoice forKey: @"BlockAsWhitelist"];
     
 	BOOL domainListIsOpen = [[domainListWindowController_ window] isVisible];
 	NSRect frame = [[domainListWindowController_ window] frame];
