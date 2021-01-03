@@ -84,6 +84,7 @@ BOOL appendMode = NO;
         return;
     }
     
+    hostsBlockingEnabled = YES;
     appendMode = YES;
     [pf enterAppendMode];
 }
@@ -112,6 +113,7 @@ BOOL appendMode = NO;
 }
 
 - (void)enqueueBlockEntryWithHostName:(NSString*)hostName port:(int)portNum maskLen:(int)maskLen {
+    NSLog(@"enqueueBlockEntryWithHostName %@", hostName);
 	NSBlockOperation* op = [NSBlockOperation blockOperationWithBlock:^{
 		[self addBlockEntryWithHostName: hostName port: portNum maskLen: maskLen];
 	}];
@@ -139,6 +141,7 @@ BOOL appendMode = NO;
 	}
 
 	if(hostsBlockingEnabled && ![hostName isEqualToString: @"*"] && !portNum && !isIP) {
+        NSLog(@"About to add rule for %@, append mode is %d", hostName, appendMode);
         if (appendMode) {
             [hostsBlocker appendExistingBlockWithRuleForDomain: hostName];
         } else {
@@ -160,16 +163,18 @@ BOOL appendMode = NO;
 	[self addBlockEntryWithHostName: hostName port: portNum maskLen: maskLen];
     
     NSArray* relatedEntries = [self relatedBlockEntriesForEntry: hostInfo];
+    NSLog(@"Enqueuing related entries to %@: %@", hostName, relatedEntries);
     for (NSDictionary* relatedHostInfo in relatedEntries) {
-        NSString* relatedHostName = hostInfo[@"hostName"];
-        int relatedPortNum = [hostInfo[@"port"] intValue];
-        int relatedMaskLen = [hostInfo[@"maskLen"] intValue];
+        NSString* relatedHostName = relatedHostInfo[@"hostName"];
+        int relatedPortNum = [relatedHostInfo[@"port"] intValue];
+        int relatedMaskLen = [relatedHostInfo[@"maskLen"] intValue];
 
         [self enqueueBlockEntryWithHostName: relatedHostName port: relatedPortNum maskLen: relatedMaskLen];
     }
 }
 
 - (void)addBlockEntries:(NSArray*)blockList {
+    NSLog(@"addBlockEntries %@", blockList);
 	for(int i = 0; i < [blockList count]; i++) {
 		NSBlockOperation* op = [NSBlockOperation blockOperationWithBlock:^{
 			[self addBlockEntryFromString: blockList[i]];
