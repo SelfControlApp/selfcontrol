@@ -28,6 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setValue:(id)value forKey:(NSString*)key stopPropagation:(BOOL)stopPropagation;
 - (void)setValue:(nullable id)value forKey:(NSString*)key;
 - (id)valueForKey:(NSString*)key;
+- (BOOL)boolForKey:(NSString*)key
 - (void)migrateLegacySettings;
 - (void)clearLegacySettings;
 

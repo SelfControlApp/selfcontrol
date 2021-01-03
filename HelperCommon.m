@@ -35,15 +35,17 @@ BOOL blockIsRunningInSettingsOrDefaults(uid_t controllingUID) {
 
 void addRulesToFirewall(uid_t controllingUID) {
     SCSettings* settings = [SCSettings settingsForUser: controllingUID];
-    BOOL shouldEvaluateCommonSubdomains = [[settings valueForKey: @"EvaluateCommonSubdomains"] boolValue];
-	BOOL allowLocalNetworks = [[settings valueForKey: @"AllowLocalNetworks"] boolValue];
-	BOOL includeLinkedDomains = [[settings valueForKey: @"IncludeLinkedDomains"] boolValue];
+    BOOL shouldEvaluateCommonSubdomains = [settings boolForKey: @"EvaluateCommonSubdomains"];
+	BOOL allowLocalNetworks = [settings boolForKey: @"AllowLocalNetworks"];
+	BOOL includeLinkedDomains = [settings boolForKey: @"IncludeLinkedDomains"];
 
 	// get value for ActiveBlockAsWhitelist
-	BOOL blockAsAllowlist = [[settings valueForKey: @"ActiveBlockAsWhitelist"] boolValue];
+	BOOL blockAsAllowlist = [settings boolForKey: @"ActiveBlockAsWhitelist"];
 
 	BlockManager* blockManager = [[BlockManager alloc] initAsAllowlist: blockAsAllowlist allowLocal: allowLocalNetworks includeCommonSubdomains: shouldEvaluateCommonSubdomains includeLinkedDomains: includeLinkedDomains];
 
+    NSLog(@"About to run BlockManager commands");
+    
 	[blockManager prepareToAddBlock];
 	[blockManager addBlockEntries: [settings valueForKey: @"ActiveBlocklist"]];
 	[blockManager finalizeBlock];
@@ -60,7 +62,7 @@ void removeRulesFromFirewall(uid_t controllingUID) {
 	//  notification) before we sleep to play the sound.  Otherwise,
 	// the app seems unresponsive and slow.
     SCSettings* settings = [SCSettings settingsForUser: controllingUID];
-    if([[settings valueForKey: @"BlockSoundShouldPlay"] boolValue]) {
+    if([settings boolForKey: @"BlockSoundShouldPlay"]) {
 		// Map the tags used in interface builder to the sound
         NSArray* systemSoundNames = [SCConstants systemSoundNames];
         NSSound* alertSound = [NSSound soundNamed: systemSoundNames[[[settings valueForKey: @"BlockSound"] intValue]]];
@@ -120,7 +122,7 @@ NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, int port) {
 
 void clearCachesIfRequested(uid_t controllingUID) {
     SCSettings* settings = [SCSettings settingsForUser: controllingUID];
-    if(![[settings valueForKey: @"ClearCaches"] boolValue]) {
+    if(![settings boolForKey: @"ClearCaches"]) {
         return;
     }
     

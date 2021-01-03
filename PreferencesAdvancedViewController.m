@@ -22,10 +22,10 @@
     
 - (void)refreshFromSecuredSettings {
     SCSettings* settings = [SCSettings currentUserSettings];
-    BOOL clearCaches = [[settings valueForKey: @"ClearCaches"] boolValue];
-    BOOL allowLocalNetworks = [[settings valueForKey: @"AllowLocalNetworks"] boolValue];
-    BOOL evaluateCommonSubdomains = [[settings valueForKey: @"EvaluateCommonSubdomains"] boolValue];
-    BOOL includeLinkedDomains = [[settings valueForKey: @"IncludeLinkedDomains"] boolValue];
+    BOOL clearCaches = [settings boolForKey: @"ClearCaches"];
+    BOOL allowLocalNetworks = [settings boolForKey: @"AllowLocalNetworks"];
+    BOOL evaluateCommonSubdomains = [settings boolForKey: @"EvaluateCommonSubdomains"];
+    BOOL includeLinkedDomains = [settings boolForKey: @"IncludeLinkedDomains"];
     
     self.clearCachesCheckbox.state = clearCaches;
     self.allowLocalCheckbox.state = allowLocalNetworks;

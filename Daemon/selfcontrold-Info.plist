@@ -51,6 +51,11 @@
 	<true/>
 	<key>NSHumanReadableCopyright</key>
 	<string>Free and open-source under the GPL.</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>

@@ -47,32 +47,42 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 	[configText appendString: @"pass out proto tcp from any to any port 68\n"];
 }
 
+- (NSArray<NSString*>*)ruleStringsForIP:(NSString*)ip port:(int)port maskLen:(int)maskLen {
+    NSMutableString* rule = [NSMutableString stringWithString: @"from any to "];
+
+    if (ip) {
+        [rule appendString: ip];
+    } else {
+        [rule appendString: @"any"];
+    }
+
+    if (maskLen) {
+        [rule appendString: [NSString stringWithFormat: @"/%d", maskLen]];
+    }
+
+    if (port) {
+        [rule appendString: [NSString stringWithFormat: @" port %d", port]];
+    }
+
+    if (isAllowlist) {
+        return @[
+            [NSString stringWithFormat: @"pass out proto tcp %@\n", rule],
+            [NSString stringWithFormat: @"pass out proto udp %@\n", rule]
+        ];
+    } else {
+        return @[
+            [NSString stringWithFormat: @"block return out proto tcp %@\n", rule],
+            [NSString stringWithFormat: @"block return out proto udp %@\n", rule]
+        ];
+    }
+}
 - (void)addRuleWithIP:(NSString*)ip port:(int)port maskLen:(int)maskLen {
-	NSMutableString* rule = [NSMutableString stringWithString: @"from any to "];
-
-	if (ip) {
-		[rule appendString: ip];
-	} else {
-		[rule appendString: @"any"];
-	}
-
-	if (maskLen) {
-		[rule appendString: [NSString stringWithFormat: @"/%d", maskLen]];
-	}
-
-	if (port) {
-		[rule appendString: [NSString stringWithFormat: @" port %d", port]];
-	}
-
-	@synchronized(self) {
-		if (isAllowlist) {
-			[rules appendString: [NSString stringWithFormat: @"pass out proto tcp %@\n", rule]];
-			[rules appendString: [NSString stringWithFormat: @"pass out proto udp %@\n", rule]];
-		} else {
-			[rules appendString: [NSString stringWithFormat: @"block return out proto tcp %@\n", rule]];
-			[rules appendString: [NSString stringWithFormat: @"block return out proto udp %@\n", rule]];
-		}
-	}
+    @synchronized(self) {
+        NSArray<NSString*>* ruleStrings = [self ruleStringsForIP: ip port: port maskLen: maskLen];
+        for (NSString* ruleString in ruleStrings) {
+            [rules appendString: ruleString];
+        }
+    }
 }
 
 - (void)writeConfiguration {
@@ -86,6 +96,34 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 	}
 
 	[filterConfiguration writeToFile: @"/etc/pf.anchors/org.eyebeam" atomically: true encoding: NSUTF8StringEncoding error: nil];
+}
+
+- (void)appendRulesToCurrentBlockConfiguration:(NSArray<NSDictionary*>*)newEntryDicts {
+    if (newEntryDicts.count < 1) return;
+    if (isAllowlist) {
+        NSLog(@"WARNING: Can't append rules to allowlist blocks - ignoring");
+        return;
+    }
+    
+    // open the file and prepare to write to the very bottom (no footer since it's not an allowlist)
+    NSFileHandle* fileHandle = [NSFileHandle fileHandleForWritingAtPath: @"/etc/pf.anchors/org.eyebeam"];
+    if (!fileHandle) {
+        NSLog(@"ERROR: Failed to get handle for pf.anchors file while attempting to append rules");
+        return;
+    }
+
+    [fileHandle seekToEndOfFile];
+    for (NSDictionary* entryHostInfo in newEntryDicts) {
+        NSString* hostName = hostInfo[@"hostName"];
+        int portNum = [hostInfo[@"port"] intValue];
+        int maskLen = [hostInfo[@"maskLen"] intValue];
+
+        NSArray<NSString*>* ruleStrings = [self ruleStringsForIP: hostName port: port maskLen: maskLen];
+        for (NSString* ruleString in ruleStrings) {
+            [fileHandle writeData: [ruleString dataUsingEncoding:NSUTF8StringEncoding]];
+        }
+    }
+    [fileHandle closeFile];
 }
 
 - (int)startBlock {
@@ -117,6 +155,17 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 	}
 
 	return [task terminationStatus];
+}
+- (int)refreshPFRules {
+    NSArray* args = [@"-f /etc/pf.conf -F states" componentsSeparatedByString: @" "];
+
+    NSTask* task = [[NSTask alloc] init];
+    [task setLaunchPath: kPfctlExecutablePath];
+    [task setArguments: args];
+    [task launch];
+    [task waitUntilExit];
+
+    return [task terminationStatus];
 }
 
 - (void)writePFToken:(NSString*)token error:(NSError**)error {

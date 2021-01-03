@@ -276,7 +276,7 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
     // finally: if the helper tool marked that it detected tampering, make sure
     // we follow through and set the cheater wallpaper (helper tool can't do it itself)
-    if ([[settings_ valueForKey: @"TamperingDetected"] boolValue]) {
+    if ([settings_ boolForKey: @"TamperingDetected"]) {
         NSURL* cheaterBackgroundURL = [[NSBundle mainBundle] URLForResource: @"cheater-background" withExtension: @"png"];
             NSArray<NSScreen *>* screens = [NSScreen screens];
         for (NSScreen* screen in screens) {
@@ -926,7 +926,13 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 	/* if successful, save file under designated name */
 	if (runResult == NSOKButton) {
         NSString* errDescription;
-        [SCUtilities writeBlocklistToFileURL: sp.URL settings: settings_ errorDescription: &errDescription];
+        [SCUtilities writeBlocklistToFileURL: sp.URL
+                                   blockInfo: @{
+                                       @"Blocklist": [defaults_ arrayForKey: @"Blocklist"],
+                                       @"BlockAsWhitelist": [defaults_ objectForKey: @"BlockAsWhitelist"]
+                                       
+                                   }
+                                   errorDescription: &errDescription];
 
         if(errDescription) {
 			NSError* displayErr = [NSError errorWithDomain: kSelfControlErrorDomain code: -902 userInfo: @{NSLocalizedDescriptionKey: [@"Error 902: " stringByAppendingString: errDescription]}];

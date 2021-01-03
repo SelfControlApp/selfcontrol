@@ -42,7 +42,7 @@
 + (NSDate*) endDateFromLegacyBlockDictionary:(NSDictionary *)dict;
 
 // read and write saved block files
-+ (BOOL)writeBlocklistToFileURL:(NSURL*)targetFileURL settings:(SCSettings*)settings errorDescription:(NSString**)errDescriptionRef;
++ (BOOL)writeBlocklistToFileURL:(NSURL*)targetFileURL blockInfo:(NSDictionary*)blockInfo errorDescription:(NSString**)errDescriptionRef;
 + (NSDictionary*)readBlocklistFromFile:(NSURL*)fileURL;
 
 @end

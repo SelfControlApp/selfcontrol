@@ -22,8 +22,8 @@
 
 - (void)refreshBlockSoundFromSettings {
     SCSettings* settings = [SCSettings currentUserSettings];
-    BOOL blockSoundShouldPlay = [[settings valueForKey: @"BlockSoundShouldPlay"] boolValue];
-    NSInteger blockSoundIndex = [[settings valueForKey: @"BlockSound"] integerValue];
+    BOOL blockSoundShouldPlay = [settings boolForKey: @"BlockSoundShouldPlay"];
+    NSInteger blockSoundIndex = [[settings boolForKey: @"BlockSound"] integerValue];
     
     self.playSoundCheckbox.state = blockSoundShouldPlay;
     [self.soundMenu selectItemAtIndex: blockSoundIndex];

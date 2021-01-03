@@ -22,5 +22,6 @@
 - (int)stopBlock:(BOOL)force;
 - (void)addSelfControlConfig;
 - (BOOL)containsSelfControlBlock;
+- (int)refreshPFRules;
 
 @end

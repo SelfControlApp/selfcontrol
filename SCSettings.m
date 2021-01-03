@@ -389,6 +389,9 @@ float const SYNC_LEEWAY_SECS = 30;
 
     return value;
 }
+- (BOOL)boolForKey:(NSString*)key {
+    return [[self valueForKey: key] boolValue];
+}
 
 // We might have "legacy" block settings hiding in one of two places:
 //  - a "lock file" at /etc/SelfControl.lock (aka SelfControlLegacyLockFilePath)

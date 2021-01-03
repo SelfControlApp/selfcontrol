@@ -202,10 +202,9 @@
     return [startDate dateByAddingTimeInterval: (duration * 60)];
 }
 
-+ (BOOL)writeBlocklistToFileURL:(NSURL*)targetFileURL settings:(SCSettings*)settings errorDescription:(NSString**)errDescriptionRef {
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-    NSDictionary* saveDict = @{@"HostBlacklist": [defaults arrayForKey: @"Blocklist"],
-                               @"BlockAsWhitelist": [defaults objectForKey: @"BlockAsWhitelist"]};
++ (BOOL)writeBlocklistToFileURL:(NSURL*)targetFileURL blockInfo:(NSDictionary*)blockInfo errorDescription:(NSString**)errDescriptionRef {
+    NSDictionary* saveDict = @{@"HostBlacklist": [blockInfo objectForKey: @"Blocklist"],
+                               @"BlockAsWhitelist": [blockInfo objectForKey: @"BlockAsWhitelist"]};
 
     NSString* saveDataErr;
     NSData* saveData = [NSPropertyListSerialization dataFromPropertyList: saveDict format: NSPropertyListBinaryFormat_v1_0 errorDescription: &saveDataErr];
