@@ -137,4 +137,21 @@
     }];
 }
 
+- (void)updateBlocklistWithControllingUID:(uid_t)controllingUID newBlocklist:(NSArray<NSString*>*)newBlocklist authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
+    [self connectAndExecuteCommandBlock:^(NSError * connectError) {
+        if (connectError != nil) {
+            NSLog(@"Blocklist update failed with connection error: %@", connectError);
+            reply(connectError);
+        } else {
+            [[self.daemonConnection remoteObjectProxyWithErrorHandler:^(NSError * proxyError) {
+                NSLog(@"Blocklist update command failed with remote object proxy error: %@", proxyError);
+                reply(proxyError);
+            }] updateBlocklistWithControllingUID: controllingUID newBlocklist: newBlocklist authorization: [NSData new] reply:^(NSError* error) {
+                NSLog(@"Blocklist update failed with error = %@\n", error);
+                reply(error);
+            }];
+        }
+    }];
+}
+
 @end

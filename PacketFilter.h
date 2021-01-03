@@ -22,6 +22,8 @@
 - (int)stopBlock:(BOOL)force;
 - (void)addSelfControlConfig;
 - (BOOL)containsSelfControlBlock;
+- (void)enterAppendMode;
+- (void)finishAppending;
 - (int)refreshPFRules;
 
 @end

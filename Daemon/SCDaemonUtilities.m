@@ -78,13 +78,10 @@
                                                includeCommonSubdomains: [settings boolForKey: @"AllowLocalNetworks"]
                                                   includeLinkedDomains: [settings boolForKey: @"IncludeLinkedDomains"]];
     [blockManager enterAppendMode];
-    
-    [blockManager prepareToAddBlock];
-//    [blockManager addBlockEntries: [settings valueForKey: @"ActiveBlocklist"]];
-    [blockManager finalizeBlock];
+    [blockManager addBlockEntries: added];
+    [blockManager finishAppending];
 
-    
-    [settings setValue: blocklist forKey: @"ActiveBlocklist"];
+    [settings setValue: newBlocklist forKey: @"ActiveBlocklist"];
 }
 
 @end

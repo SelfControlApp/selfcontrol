@@ -10,6 +10,7 @@
 #import "HelperCommon.h"
 #import "PacketFilter.h"
 #import "SCDaemonUtilities.h"
+#import "BlockManager.h"
 
 NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
@@ -64,6 +65,65 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
         clearCachesIfRequested(controllingUID);
 
         NSLog(@"INFO: Block successfully added.");
+        reply(nil);
+    }
+}
+
++ (void)updateBlocklist:(uid_t)controllingUID newBlocklist:(NSArray<NSString*>*)newBlocklist authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
+    @synchronized (self) {
+        NSLog(@"updating blocklist in methods");
+        if (!blockIsRunningInSettingsOrDefaults(controllingUID)) {
+            NSLog(@"ERROR: Can't update blocklist since block isn't running");
+            NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain code: -213 userInfo: @{
+                NSLocalizedDescriptionKey: NSLocalizedString(@"Refreshing blocklist, but no block is currently running", nil)
+            }];
+            reply(err);
+            return;
+        }
+        
+        SCSettings* settings = [SCSettings settingsForUser: controllingUID];
+            
+        if ([settings boolForKey: @"ActiveBlockAsWhitelist"]) {
+            NSLog(@"ERROR: Attempting to update active blocklist, but this is not possible with an allowlist block");
+            // TODO: replace this with a better error code
+            NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain code: -213 userInfo: @{
+                NSLocalizedDescriptionKey: NSLocalizedString(@"Attempting to update active blocklist, but this is not possible with an allowlist block", nil)
+            }];
+            reply(err);
+            return;
+        }
+        
+        NSArray* activeBlocklist = [settings valueForKey: @"ActiveBlocklist"];
+        NSMutableArray* added = [NSMutableArray arrayWithArray: newBlocklist];
+        [added removeObjectsInArray: activeBlocklist];
+        NSMutableArray* removed = [NSMutableArray arrayWithArray: activeBlocklist];
+        [removed removeObjectsInArray: newBlocklist];
+        
+        // throw a warning if something got removed for some reason, since we ignore them
+        if (removed.count > 0) {
+            NSLog(@"WARNING: Active blocklist has removed items; these will not be updated. Removed items are %@", removed);
+        }
+        
+        BlockManager* blockManager = [[BlockManager alloc] initAsAllowlist: [settings boolForKey: @"ActiveBlockAsWhitelist"]
+                                                                allowLocal: [settings boolForKey: @"EvaluateCommonSubdomains"]
+                                                   includeCommonSubdomains: [settings boolForKey: @"AllowLocalNetworks"]
+                                                      includeLinkedDomains: [settings boolForKey: @"IncludeLinkedDomains"]];
+        [blockManager enterAppendMode];
+        NSLog(@"adding block entries for %@ (diffed new arr %@ from old %@)", added, newBlocklist, activeBlocklist);
+        [blockManager addBlockEntries: added];
+        [blockManager finishAppending];
+        
+        [settings setValue: newBlocklist forKey: @"ActiveBlocklist"];
+        [settings synchronizeSettings]; // make sure everyone knows about our new list
+
+        // TODO: is this still necessary in the new daemon world?
+        sendConfigurationChangedNotification();
+
+        // Clear all caches if the user has the correct preference set, so
+        // that blocked pages are not loaded from a cache.
+        clearCachesIfRequested(controllingUID);
+
+        NSLog(@"INFO: Blocklist successfully updated.");
         reply(nil);
     }
 }

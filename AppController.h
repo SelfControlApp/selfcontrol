@@ -110,7 +110,7 @@
 
 // Called by timerWindowController_ after its sheet returns, to add a specified
 // host to the blocklist (and refresh the block to use the new blocklist).  Launches
-// a new thread with refreshBlock:
+// a new thread with addToBlocklist:
 - (void)addToBlockList:(NSString*)host lock:(NSLock*)lock;
 
 // Called by timerWindowController_ after its sheet returns, to add a specified
@@ -129,7 +129,7 @@
 // Gets authorization for and then immediately refreshes the block by calling
 // SelfControl's helper tool with the appropriate arguments.  Meant to be called
 // as a separate thread.
-- (void)refreshBlock:(NSLock*)lockToUse;
+- (void)updateActiveBlocklist:(NSLock*)lockToUse;
 
 // open preferences panel
 - (IBAction)openPreferences:(id)sender;

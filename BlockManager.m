@@ -25,6 +25,8 @@
 
 @implementation BlockManager
 
+BOOL appendMode = NO;
+
 - (BlockManager*)init {
 	return [self initAsAllowlist: NO allowLocal: YES includeCommonSubdomains: YES];
 }
@@ -73,11 +75,27 @@
 }
 
 - (void)enterAppendMode {
+    if (isAllowlist) {
+        NSLog(@"ERROR: can't append to allowlist block");
+        return;
+    }
     if(![hostsBlocker containsSelfControlBlock]) {
         NSLog(@"ERROR: can't append to hosts block that doesn't yet exist");
         return;
     }
-    [hostsBlocker enterAppendMode];
+    
+    appendMode = YES;
+    [pf enterAppendMode];
+}
+- (void)finishAppending {
+    NSLog(@"About to run operation queue for appending...");
+    [opQueue waitUntilAllOperationsAreFinished];
+    NSLog(@"Operation queue ran!");
+
+    [hostsBlocker writeNewFileContents];
+    [pf finishAppending];
+    [pf refreshPFRules];
+    appendMode = NO;
 }
 
 - (void)finalizeBlock {
@@ -121,7 +139,11 @@
 	}
 
 	if(hostsBlockingEnabled && ![hostName isEqualToString: @"*"] && !portNum && !isIP) {
-		[hostsBlocker addRuleBlockingDomain: hostName];
+        if (appendMode) {
+            [hostsBlocker appendExistingBlockWithRuleForDomain: hostName];
+        } else {
+            [hostsBlocker addRuleBlockingDomain: hostName];
+        }
 	}
 }
 
@@ -154,24 +176,6 @@
 		}];
 		[opQueue addOperation: op];
 	}
-}
-
-- (void)appendBlockEntriesToRunningBlock:(NSArray<NSString*>*)addedBlocklistStrings {
-    /// no operations queue here, presumably we didn't add too much so it's OK to just do it in one loop
-    for (NSString* addedBlockString in addedBlocklistStrings) {
-        NSDictionary* originalHostInfo = [self parseHostString: subdomain];
-        // nil means that we don't have anything valid to block in this entry
-        if (originalHostInfo == nil) continue;
-
-        NSArray* relatedEntries = [self relatedBlockEntriesForEntry: originalHostInfo];
-        NSArray* allEntries = [relatedEntries arrayByAddingObject: originalHostInfo];
-
-        for (NSDictionary* hostInfoDict in allEntries) {
-            [pf append]
-        }
-    }
-    // refresh pf rules so the new rules get read in
-    // [pfManager refreshPFRules];
 }
 
 - (BOOL)clearBlock {
@@ -359,6 +363,8 @@
             [relatedEntries addObject: hostInfo];
         }
     }
+    
+    return relatedEntries;
 }
 
 - (NSDictionary*)parseHostString:(NSString*)hostString {

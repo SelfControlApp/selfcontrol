@@ -12,6 +12,8 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 
 @implementation PacketFilter
 
+NSFileHandle* appendFileHandle;
+
 - (PacketFilter*)initAsAllowlist: (BOOL)allowlist {
 	if (self = [super init]) {
 		isAllowlist = allowlist;
@@ -80,7 +82,11 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
     @synchronized(self) {
         NSArray<NSString*>* ruleStrings = [self ruleStringsForIP: ip port: port maskLen: maskLen];
         for (NSString* ruleString in ruleStrings) {
-            [rules appendString: ruleString];
+            if (appendFileHandle) {
+                [appendFileHandle writeData: [ruleString dataUsingEncoding:NSUTF8StringEncoding]];
+            } else {
+                [rules appendString: ruleString];
+            }
         }
     }
 }
@@ -98,6 +104,26 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 	[filterConfiguration writeToFile: @"/etc/pf.anchors/org.eyebeam" atomically: true encoding: NSUTF8StringEncoding error: nil];
 }
 
+- (void)enterAppendMode {
+    if (isAllowlist) {
+        NSLog(@"WARNING: Can't append rules to allowlist blocks - ignoring");
+        return;
+    }
+    
+    // open the file and prepare to write to the very bottom (no footer since it's not an allowlist)
+    appendFileHandle = [NSFileHandle fileHandleForWritingAtPath: @"/etc/pf.anchors/org.eyebeam"];
+    if (!appendFileHandle) {
+        NSLog(@"ERROR: Failed to get handle for pf.anchors file while attempting to append rules");
+        return;
+    }
+
+    [appendFileHandle seekToEndOfFile];
+}
+- (void)finishAppending {
+    [appendFileHandle closeFile];
+    appendFileHandle = nil;
+}
+
 - (void)appendRulesToCurrentBlockConfiguration:(NSArray<NSDictionary*>*)newEntryDicts {
     if (newEntryDicts.count < 1) return;
     if (isAllowlist) {
@@ -106,6 +132,8 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
     }
     
     // open the file and prepare to write to the very bottom (no footer since it's not an allowlist)
+    // NOTE FOR FUTURE: NSFileHandle can't append lines to the middle of the file anyway,
+    // would need to read in the whole thing + write out again
     NSFileHandle* fileHandle = [NSFileHandle fileHandleForWritingAtPath: @"/etc/pf.anchors/org.eyebeam"];
     if (!fileHandle) {
         NSLog(@"ERROR: Failed to get handle for pf.anchors file while attempting to append rules");
@@ -114,11 +142,11 @@ NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
 
     [fileHandle seekToEndOfFile];
     for (NSDictionary* entryHostInfo in newEntryDicts) {
-        NSString* hostName = hostInfo[@"hostName"];
-        int portNum = [hostInfo[@"port"] intValue];
-        int maskLen = [hostInfo[@"maskLen"] intValue];
+        NSString* hostName = entryHostInfo[@"hostName"];
+        int portNum = [entryHostInfo[@"port"] intValue];
+        int maskLen = [entryHostInfo[@"maskLen"] intValue];
 
-        NSArray<NSString*>* ruleStrings = [self ruleStringsForIP: hostName port: port maskLen: maskLen];
+        NSArray<NSString*>* ruleStrings = [self ruleStringsForIP: hostName port: portNum maskLen: maskLen];
         for (NSString* ruleString in ruleStrings) {
             [fileHandle writeData: [ruleString dataUsingEncoding:NSUTF8StringEncoding]];
         }

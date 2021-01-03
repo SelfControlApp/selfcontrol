@@ -42,6 +42,7 @@
 - (BlockManager*)initAsAllowlist:(BOOL)allowlist allowLocal:(BOOL)local includeCommonSubdomains:(BOOL)blockCommon includeLinkedDomains:(BOOL)includeLinked;
 
 - (void)enterAppendMode;
+- (void)finishAppending;
 - (void)prepareToAddBlock;
 - (void)finalizeBlock;
 - (void)addBlockEntryFromString:(NSString*)entry;

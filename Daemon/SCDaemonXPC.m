@@ -16,9 +16,15 @@
 
 // TODO: make this run without dependence on the user or even settings - should just pass the blocklist right to the method
 - (void)startBlockWithControllingUID:(uid_t)controllingUID blocklist:(NSArray<NSString*>*)blocklist isAllowlist:(BOOL)isAllowlist endDate:(NSDate*)endDate authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
-    NSLog(@"XPC method called: startBlockWithReply");
+    NSLog(@"XPC method called: startBlockWithControllingUID");
     
     [SCDaemonBlockMethods startBlockWithControllingUID: controllingUID blocklist: blocklist isAllowlist:isAllowlist endDate: endDate authorization: authData reply: reply];
+}
+
+- (void)updateBlocklistWithControllingUID:(uid_t)controllingUID newBlocklist:(NSArray<NSString*>*)newBlocklist authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
+    NSLog(@"XPC method called: updateBlocklistWithControllingUID");
+    
+    [SCDaemonBlockMethods updateBlocklist: controllingUID newBlocklist: newBlocklist authorization: authData reply: reply];
 }
 
 - (BOOL) checkup {
