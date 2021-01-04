@@ -114,7 +114,7 @@
 - (void)addToBlockList:(NSString*)host lock:(NSLock*)lock;
 
 // Called by timerWindowController_ after its sheet returns, to add a specified
-// number of minutes to the black timer. Launches a new thread with refreshBlock.
+// number of minutes to the black timer.
 - (void)extendBlockTime:(NSInteger)minutes lock:(NSLock*)lock;
 
 // Converts a failure exit code from a helper tool invocation into an NSError,

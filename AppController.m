@@ -815,6 +815,8 @@ NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     // synchronize it to disk to the helper tool knows immediately
     [settings_ synchronizeSettings];
     
+    // TODO: send configuration changed notification so the helper tool knows faster?
+    
     // let the timer know it needs to recalculate
     [timerWindowController_ performSelectorOnMainThread:@selector(blockEndDateUpdated)
                                              withObject: nil
