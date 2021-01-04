@@ -622,7 +622,7 @@
                 // ok, the new helper tool is installed! refresh the connection, then it's time to start the block
                 [self.xpc refreshConnectionAndRun:^{
                     NSLog(@"Refreshed connection and ready to start block!");
-                    [self.xpc startBlockWithControllingUID: 501 // TODO: don't hardcode the user ID
+                    [self.xpc startBlockWithControllingUID: getuid()
                                                  blocklist: [self->defaults_ arrayForKey: @"Blocklist"]
                                                isAllowlist: [self->defaults_ boolForKey: @"BlockAsWhitelist"]
                                                    endDate: [self->settings_ valueForKey: @"BlockEndDate"]
@@ -655,7 +655,7 @@
     // ok, the new helper tool is installed! refresh the connection, then it's time to start the block
     [self.xpc refreshConnectionAndRun:^{
         NSLog(@"Refreshed connection updating active blocklist!");
-        [self.xpc updateBlocklistWithControllingUID: 501 // TODO: don't hardcode the user ID
+        [self.xpc updateBlocklistWithControllingUID: getuid()
                                        newBlocklist: [self->defaults_ arrayForKey: @"Blocklist"]
                                       authorization: [NSData new]
                                               reply:^(NSError * _Nonnull error) {
