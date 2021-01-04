@@ -56,14 +56,6 @@
 
 @property (assign) BOOL addingBlock;
 
-// Returns an autoreleased instance of the path to the helper tool inside
-// SelfControl's bundle
-@property (nonatomic, readonly, copy) NSString *selfControlHelperToolPath;
-
-// Returns as a UTF-8 encoded C-string the path to the helper tool inside
-// SelfControl's bundle
-- (char*)selfControlHelperToolPathUTF8String;
-
 // Called when the block duration slider is moved.  Updates the label that gives
 // the block duration in words (hours and minutes).
 - (IBAction)updateTimeSliderDisplay:(id)sender;

@@ -11,8 +11,7 @@
 #import "PacketFilter.h"
 #import "SCDaemonUtilities.h"
 #import "BlockManager.h"
-
-NSString* const kSelfControlErrorDomain = @"SelfControlErrorDomain";
+#import "SCConstants.h"
 
 @implementation SCDaemonBlockMethods
 

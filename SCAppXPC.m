@@ -7,6 +7,8 @@
 
 #import "SCAppXPC.h"
 #import "SCDaemonProtocol.h"
+#import <ServiceManagement/ServiceManagement.h>
+#import "SCConstants.h"
 
 @interface SCAppXPC () {}
 
@@ -38,8 +40,8 @@
         connection.invalidationHandler = ^{
             // If the connection gets invalidated then, on the main thread, nil out our
             // reference to it.  This ensures that we attempt to rebuild it the next time around.
-            connection.invalidationHandler = nil;
-            NSLog(@"called invalidation handler");
+            connection.invalidationHandler = connection.interruptionHandler = nil;
+            NSLog(@"called invalidation handler, self.daemonConnection is %@", self.daemonConnection);
                         
             if (connection == self.daemonConnection) {
                 // dispatch_sync on main thread would deadlock, so be careful
@@ -57,12 +59,84 @@
                 NSLog(@"connection invalidated");
             } else NSLog(@"not invalidating connection cause they don't match");
         };
+        // our interruption handler is just our invalidation handler, except we retry afterward
+        connection.interruptionHandler = ^{
+            NSLog(@"Helper tool connection interrupted");
+            connection.invalidationHandler();
+
+            // interruptions may have happened because the daemon crashed
+            // so wait a second and try to reconnect
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                NSLog(@"Retrying helper tool connection!");
+                [self connectToHelperTool];
+            });
+        };
+
         #pragma clang diagnostic pop
         [self.daemonConnection resume];
         
         NSLog(@"Started helper connection!");
     }
 }
+
+- (void)installHelperTool:(void(^)(NSError*))callback {
+    AuthorizationRef authorizationRef;
+    NSLog(@"helper tool path is %@", [self selfControlHelperToolPath]);
+    char* helperToolPath = [self selfControlHelperToolPathUTF8String];
+    NSUInteger helperToolPathSize = strlen(helperToolPath);
+    AuthorizationItem right = {
+        kSMRightBlessPrivilegedHelper,
+        helperToolPathSize,
+        helperToolPath,
+        0
+    };
+    AuthorizationRights authRights = {
+        1,
+        &right
+    };
+    AuthorizationFlags myFlags = kAuthorizationFlagDefaults |
+    kAuthorizationFlagExtendRights |
+    kAuthorizationFlagInteractionAllowed;
+    OSStatus status;
+
+    status = AuthorizationCreate (&authRights,
+                                  kAuthorizationEmptyEnvironment,
+                                  myFlags,
+                                  &authorizationRef);
+
+    if(status) {
+        NSLog(@"ERROR: Failed to authorize installing selfcontrold.");
+        callback([NSError errorWithDomain: @"SelfControlErrorDomain" code: status userInfo: nil]);
+        return;
+    }
+
+    CFErrorRef cfError;
+    BOOL result = (BOOL)SMJobBless(
+                                   kSMDomainSystemLaunchd,
+                                   CFSTR("org.eyebeam.selfcontrold"),
+                                   authorizationRef,
+                                   &cfError);
+
+    if(!result) {
+        NSError* error = CFBridgingRelease(cfError);
+        
+        NSLog(@"WARNING: Authorized installation of selfcontrold returned failure status code %d and error %@", (int)status, error);
+
+        NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
+                                           code: status
+                                       userInfo: @{NSLocalizedDescriptionKey: [NSString stringWithFormat: @"Error %d received from the Security Server.", (int)status]}];
+        callback(err);
+        return;
+    } else {
+        NSLog(@"succeeded in installing helper tool");
+        callback(nil);
+    }
+}
+
+- (BOOL)connectionIsActive {
+    return (self.daemonConnection != nil);
+}
+
 - (void)refreshConnectionAndRun:(void(^)(void))callback {
     // when we're refreshing the connection, we can end up in a slightly awkward situation:
     // if we call invalidate, but immediately start to reconnect before daemonConnection can be nil'd out
@@ -83,6 +157,7 @@
         callback();
     };
     
+    NSLog(@"About to invalidate connection on main thread");
     [self.daemonConnection performSelectorOnMainThread: @selector(invalidate) withObject: nil waitUntilDone: YES];
     
 }
@@ -152,6 +227,32 @@
             }];
         }
     }];
+}
+
+- (NSString*)selfControlHelperToolPath {
+    static NSString* path;
+
+    // Cache the path so it doesn't have to be searched for again.
+    if(!path) {
+        NSBundle* thisBundle = [NSBundle mainBundle];
+        path = [thisBundle.bundlePath stringByAppendingString: @"/Contents/Library/LaunchServices/org.eyebeam.selfcontrold"];
+    }
+
+    return path;
+}
+
+- (char*)selfControlHelperToolPathUTF8String {
+    static char* path;
+
+    // Cache the converted path so it doesn't have to be converted again
+    if(!path) {
+        path = malloc(512);
+        [[self selfControlHelperToolPath] getCString: path
+                                           maxLength: 512
+                                            encoding: NSUTF8StringEncoding];
+    }
+
+    return path;
 }
 
 @end
