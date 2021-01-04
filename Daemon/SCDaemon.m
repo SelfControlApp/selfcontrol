@@ -38,6 +38,23 @@ static NSString* serviceName = @"org.eyebeam.selfcontrold";
 #pragma mark - NSXPCListenerDelegate
 
 - (BOOL)listener:(NSXPCListener *)listener shouldAcceptNewConnection:(NSXPCConnection *)newConnection {
+    // There is a potential security issue / race condition with matching based on PID, but seems unlikely in this case
+    NSDictionary* guestAttributes = @{
+        (id)kSecGuestAttributePid: @(newConnection.processIdentifier)
+    };
+    SecCodeRef guest;
+    SecCodeCopyGuestWithAttributes(NULL, (__bridge CFDictionaryRef _Nullable)(guestAttributes), kSecCSDefaultFlags, &guest);
+    SecRequirementRef isSelfControlApp;
+    // TODO: should this check for a specific certificate? currently only verifies that it's an Apple-signed app with identifier org.eyebeam.SelfControl
+    SecRequirementCreateWithString(CFSTR("anchor apple generic and identifier \"org.eyebeam.SelfControl\""), kSecCSDefaultFlags, &isSelfControlApp);
+    OSStatus clientValidityStatus = SecCodeCheckValidity(guest, kSecCSDefaultFlags, isSelfControlApp);
+    
+    if (clientValidityStatus) {
+        NSError* error = [NSError errorWithDomain: NSOSStatusErrorDomain code: clientValidityStatus userInfo: nil];
+        NSLog(@"Rejecting XPC connection because of invalid client signing. Error was %@", error);
+        return NO;
+    }
+    
     SCDaemonXPC* scdXPC = [[SCDaemonXPC alloc] init];
     newConnection.exportedInterface = [NSXPCInterface interfaceWithProtocol: @protocol(SCDaemonProtocol)];
     newConnection.exportedObject = scdXPC;
