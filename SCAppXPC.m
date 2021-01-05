@@ -230,7 +230,7 @@
     }];
 }
 
-- (void)startBlockWithControllingUID:(uid_t)controllingUID blocklist:(NSArray<NSString*>*)blocklist isAllowlist:(BOOL)isAllowlist endDate:(NSDate*)endDate authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
+- (void)startBlockWithControllingUID:(uid_t)controllingUID blocklist:(NSArray<NSString*>*)blocklist isAllowlist:(BOOL)isAllowlist endDate:(NSDate*)endDate reply:(void(^)(NSError* error))reply {
     NSLog(@"sending install command block");
     [self connectAndExecuteCommandBlock:^(NSError * connectError) {
         if (connectError != nil) {
@@ -248,7 +248,7 @@
     }];
 }
 
-- (void)updateBlocklistWithControllingUID:(uid_t)controllingUID newBlocklist:(NSArray<NSString*>*)newBlocklist authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
+- (void)updateBlocklistWithControllingUID:(uid_t)controllingUID newBlocklist:(NSArray<NSString*>*)newBlocklist reply:(void(^)(NSError* error))reply {
     [self connectAndExecuteCommandBlock:^(NSError * connectError) {
         if (connectError != nil) {
             NSLog(@"Blocklist update failed with connection error: %@", connectError);
@@ -257,7 +257,7 @@
             [[self.daemonConnection remoteObjectProxyWithErrorHandler:^(NSError * proxyError) {
                 NSLog(@"Blocklist update command failed with remote object proxy error: %@", proxyError);
                 reply(proxyError);
-            }] updateBlocklistWithControllingUID: controllingUID newBlocklist: newBlocklist authorization: [NSData new] reply:^(NSError* error) {
+            }] updateBlocklistWithControllingUID: controllingUID newBlocklist: newBlocklist authorization: self.authorization reply:^(NSError* error) {
                 NSLog(@"Blocklist update failed with error = %@\n", error);
                 reply(error);
             }];

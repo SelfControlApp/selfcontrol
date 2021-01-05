@@ -137,7 +137,6 @@ NSString* const kDefaultHostsFileContents = @"##\n"
 
 - (void)appendExistingBlockWithRuleForDomain:(NSString*)domainName {
     [strLock lock];
-    NSLog(@"host file blocker: append rule to block domain %@", domainName);
     NSRange footerLocation = [newFileContents rangeOfString: kHostFileBlockerSelfControlFooter];
     if (footerLocation.location == NSNotFound) {
         // we can't append if a block isn't in the file already!
@@ -150,9 +149,7 @@ NSString* const kDefaultHostsFileContents = @"##\n"
         for (NSString* ruleString in ruleStrings) {
             [combinedRuleString appendString: ruleString];
         }
-        
-        NSLog(@"inserting combined rule string %@ at %d", combinedRuleString, footerLocation.location);
-        
+                
         [newFileContents insertString: combinedRuleString atIndex: footerLocation.location];
     }
     [strLock unlock];

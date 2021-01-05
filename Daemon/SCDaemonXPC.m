@@ -24,6 +24,8 @@
         NSLog(@"ERROR: XPC authorization failed due to error %@", error);
         reply(error);
         return;
+    } else {
+        NSLog(@"AUTHORIZATION ACCEPTED for startBlock with authData %@ and command %s", authData, sel_getName(_cmd));
     }
 
     [SCDaemonBlockMethods startBlockWithControllingUID: controllingUID blocklist: blocklist isAllowlist:isAllowlist endDate: endDate authorization: authData reply: reply];
@@ -32,11 +34,23 @@
 - (void)updateBlocklistWithControllingUID:(uid_t)controllingUID newBlocklist:(NSArray<NSString*>*)newBlocklist authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
     NSLog(@"XPC method called: updateBlocklistWithControllingUID");
     
+    NSError* error = [SCXPCAuthorization checkAuthorization: authData command: _cmd];
+    if (error != nil) {
+        NSLog(@"ERROR: XPC authorization failed due to error %@", error);
+        reply(error);
+        return;
+    } else {
+        NSLog(@"AUTHORIZATION ACCEPTED for updateBlocklist with authData %@ and command %s", authData, sel_getName(_cmd));
+    }
+    
     [SCDaemonBlockMethods updateBlocklist: controllingUID newBlocklist: newBlocklist authorization: authData reply: reply];
 }
 
 - (BOOL) checkup {
     NSLog(@"XPC method called: checkup");
+
+    // no authorization needed to run a checkup
+
     return YES;
 }
 

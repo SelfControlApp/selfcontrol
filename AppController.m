@@ -426,6 +426,8 @@
 
 - (void)addToBlockList:(NSString*)host lock:(NSLock*)lock {
     NSLog(@"addToBlocklist: %@", host);
+    // Note we RETRIEVE the latest list from settings (ActiveBlocklist), but we SET the new list in defaults
+    // since the helper daemon should be the only one changing ActiveBlocklist
     NSMutableArray* list = [[settings_ valueForKey: @"ActiveBlocklist"] mutableCopy];
     NSArray<NSString*>* cleanedEntries = [SCUtilities cleanBlocklistEntry: host];
     
@@ -626,7 +628,6 @@
                                                  blocklist: [self->defaults_ arrayForKey: @"Blocklist"]
                                                isAllowlist: [self->defaults_ boolForKey: @"BlockAsWhitelist"]
                                                    endDate: [self->settings_ valueForKey: @"BlockEndDate"]
-                                             authorization: [NSData new]
                                                      reply:^(NSError * _Nonnull error) {
                         NSLog(@"WOO started block with error %@", error);
                         if (error != nil) {
@@ -657,7 +658,6 @@
         NSLog(@"Refreshed connection updating active blocklist!");
         [self.xpc updateBlocklistWithControllingUID: getuid()
                                        newBlocklist: [self->defaults_ arrayForKey: @"Blocklist"]
-                                      authorization: [NSData new]
                                               reply:^(NSError * _Nonnull error) {
             NSLog(@"WOO updated block with error %@", error);
             

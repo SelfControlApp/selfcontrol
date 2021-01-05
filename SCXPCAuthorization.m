@@ -15,6 +15,8 @@ static NSString * kCommandKeyAuthRightName    = @"authRightName";
 static NSString * kCommandKeyAuthRightDefault = @"authRightDefault";
 static NSString * kCommandKeyAuthRightDesc    = @"authRightDescription";
 
+static NSDictionary* kAuthorizationRuleAuthenticateAsAdmin5MinTimeout;
+
 // copied from Apple's Even Better Authorization Sample code
 + (NSError *)checkAuthorization:(NSData *)authData command:(SEL)command
     // Check that the client denoted by authData is allowed to run the specified command.
@@ -78,31 +80,38 @@ static NSString * kCommandKeyAuthRightDesc    = @"authRightDescription";
     static dispatch_once_t sOnceToken;
     static NSDictionary *  sCommandInfo;
     
+    // static var needs to bre defined before first use
+    if (kAuthorizationRuleAuthenticateAsAdmin5MinTimeout == nil) {
+        kAuthorizationRuleAuthenticateAsAdmin5MinTimeout = @{
+            @"class": @"user",
+            @"group": @"admin",
+            @"timeout": @300, // 5 minutes
+            @"version": @1 // not entirely sure what this does TBH
+        };
+    }
+    
     dispatch_once(&sOnceToken, ^{
         sCommandInfo = @{
             NSStringFromSelector(@selector(startBlockWithControllingUID:blocklist:isAllowlist:endDate:authorization:reply:)) : @{
                 kCommandKeyAuthRightName    : @"org.eyebeam.SelfControl.startBlock",
-                kCommandKeyAuthRightDefault : @kAuthorizationRuleAuthenticateAsAdmin,
+                kCommandKeyAuthRightDefault : kAuthorizationRuleAuthenticateAsAdmin5MinTimeout,
                 kCommandKeyAuthRightDesc    : NSLocalizedString(
                     @"SelfControl needs your username and password to start the block.",
-                    @"prompt shown when user is required to authorize to read the license key"
+                    @"prompt shown when user is required to authorize to start block"
                 )
             },
-            NSStringFromSelector(@selector(writeLicenseKey:authorization:withReply:)) : @{
-                kCommandKeyAuthRightName    : @"com.example.apple-samplecode.EBAS.writeLicenseKey",
-                kCommandKeyAuthRightDefault : @kAuthorizationRuleAuthenticateAsAdmin,
+            NSStringFromSelector(@selector(updateBlocklistWithControllingUID:newBlocklist:authorization:reply:)) : @{
+                kCommandKeyAuthRightName    : @"org.eyebeam.SelfControl.updateBlocklist",
+                kCommandKeyAuthRightDefault : kAuthorizationRuleAuthenticateAsAdmin5MinTimeout,
                 kCommandKeyAuthRightDesc    : NSLocalizedString(
-                    @"EBAS is trying to write its license key.",
-                    @"prompt shown when user is required to authorize to write the license key"
+                    @"SelfControl needs your username and password to modify the blocklist",
+                    @"prompt shown when user is required to authorize to add to their blocklist"
                 )
             },
-            NSStringFromSelector(@selector(bindToLowNumberPortAuthorization:withReply:)) : @{
-                kCommandKeyAuthRightName    : @"com.example.apple-samplecode.EBAS.startWebService",
+            NSStringFromSelector(@selector(checkupBlockWithControllingUID:)) : @{
+                kCommandKeyAuthRightName    : @"org.eyebeam.SelfControl.checkupBlock",
                 kCommandKeyAuthRightDefault : @kAuthorizationRuleClassAllow,
-                kCommandKeyAuthRightDesc    : NSLocalizedString(
-                    @"EBAS is trying to start its web service.",
-                    @"prompt shown when user is required to authorize to start the web service"
-                )
+                kCommandKeyAuthRightDesc    : @"" // this string should never be shown since there are no auth restrictions
             }
         };
     });

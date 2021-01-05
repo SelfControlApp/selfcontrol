@@ -108,7 +108,6 @@
                                                    includeCommonSubdomains: [settings boolForKey: @"AllowLocalNetworks"]
                                                       includeLinkedDomains: [settings boolForKey: @"IncludeLinkedDomains"]];
         [blockManager enterAppendMode];
-        NSLog(@"adding block entries for %@ (diffed new arr %@ from old %@)", added, newBlocklist, activeBlocklist);
         [blockManager addBlockEntries: added];
         [blockManager finishAppending];
         
@@ -128,10 +127,8 @@
 }
 
 + (void)checkupBlockWithControllingUID:(uid_t)controllingUID {
-    NSLog(@"ChEcKup about to hit synchronized part");
     // TODO: is synchronized the wrong tool here? it could be several seconds for the block to start = a bunch of checkup threads piling up
     @synchronized (self) {
-        NSLog(@"checkup synchronized starting!");
         SCSettings* settings = [SCSettings settingsForUser: controllingUID];
 
         if(![SCUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]) {

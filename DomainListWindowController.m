@@ -31,7 +31,6 @@
 	if(self = [super initWithWindowNibName:@"DomainList"]) {
 
 		defaults_ = [NSUserDefaults standardUserDefaults];
-        settings_ = [SCSettings currentUserSettings];
 
         NSArray* curArray = [defaults_ arrayForKey: @"Blocklist"];
 		if(curArray == nil)

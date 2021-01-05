@@ -174,7 +174,6 @@ BOOL appendMode = NO;
 }
 
 - (void)addBlockEntries:(NSArray*)blockList {
-    NSLog(@"addBlockEntries %@", blockList);
 	for(int i = 0; i < [blockList count]; i++) {
 		NSBlockOperation* op = [NSBlockOperation blockOperationWithBlock:^{
 			[self addBlockEntryFromString: blockList[i]];
