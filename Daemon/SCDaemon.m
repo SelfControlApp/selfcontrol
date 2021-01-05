@@ -45,8 +45,7 @@ static NSString* serviceName = @"org.eyebeam.selfcontrold";
     SecCodeRef guest;
     SecCodeCopyGuestWithAttributes(NULL, (__bridge CFDictionaryRef _Nullable)(guestAttributes), kSecCSDefaultFlags, &guest);
     SecRequirementRef isSelfControlApp;
-    // TODO: should this check for a specific certificate? currently only verifies that it's an Apple-signed app with identifier org.eyebeam.SelfControl
-    SecRequirementCreateWithString(CFSTR("anchor apple generic and identifier \"org.eyebeam.SelfControl\""), kSecCSDefaultFlags, &isSelfControlApp);
+    SecRequirementCreateWithString(CFSTR("anchor apple generic and identifier \"org.eyebeam.SelfControl\" and certificate leaf[subject.OU] = L6W5L88KN7"), kSecCSDefaultFlags, &isSelfControlApp);
     OSStatus clientValidityStatus = SecCodeCheckValidity(guest, kSecCSDefaultFlags, isSelfControlApp);
     
     if (clientValidityStatus) {
