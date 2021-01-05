@@ -56,7 +56,7 @@ static NSDictionary* kAuthorizationRuleAuthenticateAsAdmin5MinTimeout;
             err = AuthorizationCopyRights(
                 authRef,
                 &rights,
-                NULL,
+                kAuthorizationEmptyEnvironment,
                 kAuthorizationFlagExtendRights | kAuthorizationFlagInteractionAllowed,
                 NULL
             );
@@ -85,7 +85,7 @@ static NSDictionary* kAuthorizationRuleAuthenticateAsAdmin5MinTimeout;
         kAuthorizationRuleAuthenticateAsAdmin5MinTimeout = @{
             @"class": @"user",
             @"group": @"admin",
-            @"timeout": @300, // 5 minutes
+            @"timeout": @(300), // 5 minutes
             @"version": @1 // not entirely sure what this does TBH
         };
     }
@@ -101,17 +101,12 @@ static NSDictionary* kAuthorizationRuleAuthenticateAsAdmin5MinTimeout;
                 )
             },
             NSStringFromSelector(@selector(updateBlocklistWithControllingUID:newBlocklist:authorization:reply:)) : @{
-                kCommandKeyAuthRightName    : @"org.eyebeam.SelfControl.updateBlocklist",
+                kCommandKeyAuthRightName    : @"org.eyebeam.SelfControl.modifyBlock",
                 kCommandKeyAuthRightDefault : kAuthorizationRuleAuthenticateAsAdmin5MinTimeout,
                 kCommandKeyAuthRightDesc    : NSLocalizedString(
                     @"SelfControl needs your username and password to modify the blocklist",
                     @"prompt shown when user is required to authorize to add to their blocklist"
                 )
-            },
-            NSStringFromSelector(@selector(checkupBlockWithControllingUID:)) : @{
-                kCommandKeyAuthRightName    : @"org.eyebeam.SelfControl.checkupBlock",
-                kCommandKeyAuthRightDefault : @kAuthorizationRuleClassAllow,
-                kCommandKeyAuthRightDesc    : @"" // this string should never be shown since there are no auth restrictions
             }
         };
     });

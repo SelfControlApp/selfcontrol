@@ -35,7 +35,7 @@
     // with an assert.  In the release build we continue with self->_authRef as NULL, which will
     // cause all authorized operations to fail.
     
-    err = AuthorizationCreate(NULL, NULL, 0, &self->_authRef);
+    err = AuthorizationCreate(NULL, kAuthorizationEmptyEnvironment, 0, &self->_authRef);
     if (err == errAuthorizationSuccess) {
         err = AuthorizationMakeExternalForm(self->_authRef, &extForm);
         self.authorization = [[NSData alloc] initWithBytes: &extForm length: sizeof(extForm)];
