@@ -54,6 +54,8 @@
 		CB62FC4824B132B300ADBC40 /* SCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */; };
 		CB62FC4924B1330700ADBC40 /* LaunchctlHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */; };
 		CB6840A5247A3E5500E51564 /* SelfControlKillerIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = CB6840A4247A3E5500E51564 /* SelfControlKillerIcon.icns */; };
+		CB69C4EE25A3FD8A0030CFCD /* SCXPCAuthorization.m in Sources */ = {isa = PBXBuildFile; fileRef = CB69C4ED25A3FD8A0030CFCD /* SCXPCAuthorization.m */; };
+		CB69C4EF25A3FD8A0030CFCD /* SCXPCAuthorization.m in Sources */ = {isa = PBXBuildFile; fileRef = CB69C4ED25A3FD8A0030CFCD /* SCXPCAuthorization.m */; };
 		CB73616219E5086A00E0924F /* AllowlistScraper.m in Sources */ = {isa = PBXBuildFile; fileRef = CB73615F19E4FDA000E0924F /* AllowlistScraper.m */; };
 		CB74D1152480E506002B2079 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB32D2AD21902D9D00B8CD68 /* IOKit.framework */; };
 		CB74D1162480E506002B2079 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9E901D0F397FFA006DE6E4 /* Security.framework */; };
@@ -241,6 +243,8 @@
 		CB62FC3C24B1298500ADBC40 /* SCDaemonBlockMethods.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCDaemonBlockMethods.h; sourceTree = "<group>"; };
 		CB62FC3D24B1298500ADBC40 /* SCDaemonBlockMethods.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCDaemonBlockMethods.m; sourceTree = "<group>"; };
 		CB6840A4247A3E5500E51564 /* SelfControlKillerIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SelfControlKillerIcon.icns; sourceTree = "<group>"; };
+		CB69C4EC25A3FD8A0030CFCD /* SCXPCAuthorization.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCXPCAuthorization.h; sourceTree = "<group>"; };
+		CB69C4ED25A3FD8A0030CFCD /* SCXPCAuthorization.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCXPCAuthorization.m; sourceTree = "<group>"; };
 		CB6ED5662085C70200012817 /* da */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = da; path = da.lproj/FirstTime.xib; sourceTree = "<group>"; };
 		CB7026181CD7177400D7C7F0 /* fr */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CB7026191CD7177400D7C7F0 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -569,6 +573,8 @@
 		CB4294DF0F53D865008E10CA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				CB69C4EC25A3FD8A0030CFCD /* SCXPCAuthorization.h */,
+				CB69C4ED25A3FD8A0030CFCD /* SCXPCAuthorization.m */,
 				CBD266E111ED84F700042CD8 /* SelfControlCommon.h */,
 				CB25806416C237F10059C99A /* NSString+IPAddress.h */,
 				CB25806516C237F10059C99A /* NSString+IPAddress.m */,
@@ -1159,6 +1165,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
+				CB69C4EE25A3FD8A0030CFCD /* SCXPCAuthorization.m in Sources */,
 				CB529BBF0F32B7ED00564FB8 /* AppController.m in Sources */,
 				CBB1731920F05C07007FCAE9 /* SCUtilities.m in Sources */,
 				F5B8CBEE19EE21C30026F3A5 /* SCTimeIntervalFormatter.m in Sources */,
@@ -1206,6 +1213,7 @@
 				CB62FC3E24B1298500ADBC40 /* SCDaemonBlockMethods.m in Sources */,
 				CB62FC4124B1328F00ADBC40 /* HelperCommon.m in Sources */,
 				CB8086D424837607004B88BD /* SCDaemonXPC.m in Sources */,
+				CB69C4EF25A3FD8A0030CFCD /* SCXPCAuthorization.m in Sources */,
 				CB62FC4324B1329500ADBC40 /* PacketFilter.m in Sources */,
 				CB62FC4224B1329200ADBC40 /* BlockManager.m in Sources */,
 			);
@@ -1554,6 +1562,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CODE_SIGN_FLAGS = "-o library";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -1600,6 +1609,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CODE_SIGN_FLAGS = "-o library";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
 				STRIP_INSTALLED_PRODUCT = NO;

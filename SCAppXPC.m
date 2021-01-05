@@ -9,14 +9,47 @@
 #import "SCDaemonProtocol.h"
 #import <ServiceManagement/ServiceManagement.h>
 #import "SCConstants.h"
+#import "SCXPCAuthorization.h"
 
-@interface SCAppXPC () {}
+@interface SCAppXPC () {
+    AuthorizationRef    _authRef;
+}
 
 @property (atomic, strong, readwrite) NSXPCConnection* daemonConnection;
+@property (atomic, copy, readwrite) NSData* authorization;
 
 @end
 
 @implementation SCAppXPC
+
+- (void)setupAuthorization {
+    // this all mostly copied from Apple's Even Better Authorization Sample
+    OSStatus err;
+    AuthorizationExternalForm extForm;
+
+    // Create our connection to the authorization system.
+    //
+    // If we can't create an authorization reference then the app is not going to be able
+    // to do anything requiring authorization.  Generally this only happens when you launch
+    // the app in some wacky, and typically unsupported, way.  In the debug build we flag that
+    // with an assert.  In the release build we continue with self->_authRef as NULL, which will
+    // cause all authorized operations to fail.
+    
+    err = AuthorizationCreate(NULL, NULL, 0, &self->_authRef);
+    if (err == errAuthorizationSuccess) {
+        err = AuthorizationMakeExternalForm(self->_authRef, &extForm);
+        self.authorization = [[NSData alloc] initWithBytes: &extForm length: sizeof(extForm)];
+    }
+    assert(err == errAuthorizationSuccess);
+    
+    // If we successfully connected to Authorization Services, add definitions for our default
+    // rights (unless they're already in the database).
+    
+    if (self->_authRef) {
+        [SCXPCAuthorization setupAuthorizationRights: self->_authRef];
+    }
+
+}
 
 // Ensures that we're connected to our helper tool
 // should only be called from the main thread
@@ -24,6 +57,9 @@
 - (void)connectToHelperTool {
     assert([NSThread isMainThread]);
     NSLog(@"Connecting to helper tool, daemon connection is %@", self.daemonConnection);
+    
+    [self setupAuthorization];
+    
     if (self.daemonConnection == nil) {
         self.daemonConnection = [[NSXPCConnection alloc] initWithMachServiceName: @"org.eyebeam.selfcontrold" options: NSXPCConnectionPrivileged];
         self.daemonConnection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(SCDaemonProtocol)];
@@ -204,7 +240,7 @@
             [[self.daemonConnection remoteObjectProxyWithErrorHandler:^(NSError * proxyError) {
                 NSLog(@"Install command failed with remote object proxy error: %@", proxyError);
                 reply(proxyError);
-            }] startBlockWithControllingUID: controllingUID blocklist: blocklist isAllowlist:isAllowlist endDate:endDate authorization: [NSData new] reply:^(NSError* error) {
+            }] startBlockWithControllingUID: controllingUID blocklist: blocklist isAllowlist:isAllowlist endDate:endDate authorization: self.authorization reply:^(NSError* error) {
                 NSLog(@"Install failed with error = %@\n", error);
                 reply(error);
             }];

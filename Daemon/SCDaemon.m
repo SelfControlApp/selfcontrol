@@ -12,6 +12,13 @@
 
 static NSString* serviceName = @"org.eyebeam.selfcontrold";
 
+@interface NSXPCConnection(PrivateAuditToken)
+
+// This property exists, but it's private. Make it available:
+@property (nonatomic, readonly) audit_token_t auditToken;
+
+@end
+
 @interface SCDaemon () <NSXPCListenerDelegate>
 
 @property (nonatomic, strong, readwrite) NSXPCListener* listener;
@@ -38,14 +45,15 @@ static NSString* serviceName = @"org.eyebeam.selfcontrold";
 #pragma mark - NSXPCListenerDelegate
 
 - (BOOL)listener:(NSXPCListener *)listener shouldAcceptNewConnection:(NSXPCConnection *)newConnection {
-    // There is a potential security issue / race condition with matching based on PID, but seems unlikely in this case
+    // There is a potential security issue / race condition with matching based on PID, so we use the (technically private) auditToken instead
+    audit_token_t auditToken = newConnection.auditToken;
     NSDictionary* guestAttributes = @{
-        (id)kSecGuestAttributePid: @(newConnection.processIdentifier)
+        (id)kSecGuestAttributeAudit: [NSData dataWithBytes: &auditToken length: sizeof(audit_token_t)]
     };
     SecCodeRef guest;
     SecCodeCopyGuestWithAttributes(NULL, (__bridge CFDictionaryRef _Nullable)(guestAttributes), kSecCSDefaultFlags, &guest);
     SecRequirementRef isSelfControlApp;
-    SecRequirementCreateWithString(CFSTR("anchor apple generic and identifier \"org.eyebeam.SelfControl\" and certificate leaf[subject.OU] = L6W5L88KN7"), kSecCSDefaultFlags, &isSelfControlApp);
+    SecRequirementCreateWithString(CFSTR("anchor apple generic and identifier \"org.eyebeam.SelfControl\" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = L6W5L88KN7)"), kSecCSDefaultFlags, &isSelfControlApp);
     OSStatus clientValidityStatus = SecCodeCheckValidity(guest, kSecCSDefaultFlags, isSelfControlApp);
     
     if (clientValidityStatus) {

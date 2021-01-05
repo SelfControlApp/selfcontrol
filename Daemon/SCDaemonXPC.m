@@ -8,6 +8,7 @@
 #import "SCDaemonXPC.h"
 #import "version-header.h"
 #import "SCDaemonBlockMethods.h"
+#import "SCXPCAuthorization.h"
 
 @implementation SCDaemonXPC
 
@@ -18,6 +19,13 @@
 - (void)startBlockWithControllingUID:(uid_t)controllingUID blocklist:(NSArray<NSString*>*)blocklist isAllowlist:(BOOL)isAllowlist endDate:(NSDate*)endDate authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
     NSLog(@"XPC method called: startBlockWithControllingUID");
     
+    NSError* error = [SCXPCAuthorization checkAuthorization: authData command: _cmd];
+    if (error != nil) {
+        NSLog(@"ERROR: XPC authorization failed due to error %@", error);
+        reply(error);
+        return;
+    }
+
     [SCDaemonBlockMethods startBlockWithControllingUID: controllingUID blocklist: blocklist isAllowlist:isAllowlist endDate: endDate authorization: authData reply: reply];
 }
 
