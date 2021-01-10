@@ -13,7 +13,7 @@
 #import "BlockManager.h"
 #import "SCConstants.h"
 
-NSTimeInterval METHOD_LOCK_TIMEOUT = 10.0;
+NSTimeInterval METHOD_LOCK_TIMEOUT = 5.0;
 NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for checkups, because we'd prefer not to have tons pile up
 
 @implementation SCDaemonBlockMethods
@@ -34,7 +34,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain code: -401 userInfo: @{
             NSLocalizedDescriptionKey: NSLocalizedString(@"Timed out acquiring request lock", nil)
         }];
-        NSLog(@"ERROR: Timed out acquiring request lock");
+        NSLog(@"ERROR: Timed out acquiring request lock (after %f seconds)", timeout);
 
         if (reply != nil) {
             reply(err);
