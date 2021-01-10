@@ -11,6 +11,7 @@
 #include <pwd.h>
 #import "SCUtilities.h"
 #import <AppKit/AppKit.h>
+#import "SCConstants.h"
 
 float const SYNC_INTERVAL_SECS = 30;
 float const SYNC_LEEWAY_SECS = 30;
@@ -115,7 +116,6 @@ float const SYNC_LEEWAY_SECS = 30;
 }
 - (NSString*)securedSettingsFilePath {
     NSArray<NSURL*>* libraryURLs = [[NSFileManager defaultManager] URLsForDirectory: NSLibraryDirectory inDomains: NSLocalDomainMask];
-    NSLog(@"secured settings file path got lib URLs: %@", libraryURLs);
     
     return [NSString stringWithFormat: @"/etc/%@", [self settingsFileName]];
 }
@@ -238,6 +238,16 @@ float const SYNC_LEEWAY_SECS = 30;
     }
 }
 - (void)writeSettingsWithCompletion:(nullable void(^)(NSError* _Nullable))completionBlock {
+    if (geteuid() != 0) {
+        NSLog(@"Attempting to write out SCSettings with non-root permissions (%d), failing...", geteuid());
+        if (completionBlock != nil) {
+            completionBlock([NSError errorWithDomain: kSelfControlErrorDomain code: -501 userInfo: @{
+                NSLocalizedDescriptionKey: NSLocalizedString(@"Attempting to write out SCSettings with non-root permissions (%d), failing...", nil)
+            }]);
+        }
+        return;
+    }
+
     @synchronized (self) {
         if ([[NSUserDefaults standardUserDefaults] boolForKey: @"isTest"]) {
             // no writing to disk during unit tests
@@ -312,7 +322,7 @@ float const SYNC_LEEWAY_SECS = 30;
         [self setValue: [NSDate date] forKey: @"LastSettingsUpdate"];
     }
     
-    if ([lastSettingsUpdate timeIntervalSinceDate: self.lastSynchronizedWithDisk] > 0) {
+    if ([lastSettingsUpdate timeIntervalSinceDate: self.lastSynchronizedWithDisk] > 0 && geteuid() == 0) {
         NSLog(@" --> Writing settings to disk (haven't been written since %@)", self.lastSynchronizedWithDisk);
         [self writeSettingsWithCompletion: completionBlock];
     } else {
@@ -324,11 +334,6 @@ float const SYNC_LEEWAY_SECS = 30;
 }
 
 - (void)setValue:(id)value forKey:(NSString*)key stopPropagation:(BOOL)stopPropagation {
-    if (geteuid() != 0) {
-        NSLog(@"Attempting to set SCSettings value as non-root user (%d), failing...", geteuid());
-        return;
-    }
-
     // we can't store nils in a dictionary
     // so we sneak around it
     if (value == nil) {
@@ -583,6 +588,19 @@ float const SYNC_LEEWAY_SECS = 30;
         
         // mirror the change on our own instance - but don't propagate the change to avoid loopin
         [self setValue: note.userInfo[@"value"] forKey: note.userInfo[@"key"] stopPropagation: YES];
+        
+        // and then make a note to go refresh from disk in the near future (but debounce so we don't do this a million times for rapid changes)
+        static dispatch_source_t debouncedReloadTimer = nil;
+        if (debouncedReloadTimer != nil) {
+            dispatch_source_cancel(debouncedReloadTimer);
+            debouncedReloadTimer = nil;
+        }
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        double throttleSecs = 0.25f;
+        debouncedReloadTimer = CreateDebounceDispatchTimer(throttleSecs, queue, ^{
+            NSLog(@"Reloading settings due to propagated changes");
+            [self reloadSettings];
+        });
     }
 }
 

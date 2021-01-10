@@ -35,6 +35,9 @@
 // Uses seteuid to check both settings and defaults for whether the block is running, or not
 BOOL blockIsRunningInSettingsOrDefaults(uid_t controllingUID);
 
+// Uses seteuid to retrieve the defaults dictionary for a given user (for use in sudo helper tool)
+NSDictionary* defaultsDictForUser(uid_t controllingUID);
+
 // Reads the domain block list from the settings for SelfControl, and adds deny
 // rules for all of the IPs (or the A DNS record IPS for doamin names) to the
 // ipfw firewall.

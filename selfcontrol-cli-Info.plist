@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleDisplayName</key>
-	<string>selfcontrold</string>
+	<string>selfcontrol</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -30,7 +30,7 @@
 	<key>CFBundleIconFile</key>
 	<string>SelfControlIcon</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.eyebeam.selfcontrold</string>
+	<string>org.eyebeam.selfcontrol-cli</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -50,9 +50,10 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
-	<key>SMAuthorizedClients</key>
-	<array>
-		<string>anchor apple generic and (identifier &quot;org.eyebeam.SelfControl&quot; or identifier &quot;org.eyebeam.selfcontrol-cli&quot;) and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = L6W5L88KN7)</string>
-	</array>
+	<key>SMPrivilegedExecutables</key>
+	<dict>
+		<key>org.eyebeam.selfcontrold</key>
+		<string>anchor apple generic and identifier &quot;org.eyebeam.selfcontrold&quot; and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = L6W5L88KN7)</string>
+	</dict>
 </dict>
 </plist>

@@ -5,13 +5,13 @@
 //  Created by Charlie Stigler on 7/4/20.
 //
 
-#import "SCAppXPC.h"
+#import "SCXPCClient.h"
 #import "SCDaemonProtocol.h"
 #import <ServiceManagement/ServiceManagement.h>
 #import "SCConstants.h"
 #import "SCXPCAuthorization.h"
 
-@interface SCAppXPC () {
+@interface SCXPCClient () {
     AuthorizationRef    _authRef;
 }
 
@@ -20,7 +20,7 @@
 
 @end
 
-@implementation SCAppXPC
+@implementation SCXPCClient
 
 - (void)setupAuthorization {
     // this all mostly copied from Apple's Even Better Authorization Sample
@@ -87,6 +87,7 @@
                 } else {
                     // running this synchronously ensures that the daemonConnection is nil'd out even if
                     // reinstantiate the connection immediately
+                    NSLog(@"About to dispatch_sync");
                     dispatch_sync(dispatch_get_main_queue(), ^{
                         self.daemonConnection = nil;
                         NSLog(@"set daemonConnection to nil via dispatch_sync");
@@ -189,7 +190,9 @@
     
     // wait until the invalidation handler runs, then run our callback
     self.daemonConnection.invalidationHandler = ^{
+        NSLog(@"invalidationHandler ran!");
         standardInvalidationHandler();
+        NSLog(@"about to call the ol callback!");
         callback();
     };
     

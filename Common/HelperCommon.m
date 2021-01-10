@@ -33,6 +33,21 @@ BOOL blockIsRunningInSettingsOrDefaults(uid_t controllingUID) {
     return response;
 }
 
+NSDictionary* defaultsDictForUser(uid_t controllingUID) {
+    // pull up the user's defaults to check for the existence of a legacy block
+    // to do that, we have to seteuid to the controlling UID so NSUserDefaults thinks we're them
+    seteuid(controllingUID);
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    [defaults addSuiteNamed: @"org.eyebeam.SelfControl"];
+    [defaults synchronize];
+    NSDictionary* dictValue = [defaults dictionaryRepresentation];
+    // reset the euid so nothing else gets funky
+    [NSUserDefaults resetStandardUserDefaults];
+    seteuid(0);
+    
+    return dictValue;
+}
+
 void addRulesToFirewall(uid_t controllingUID) {
     SCSettings* settings = [SCSettings settingsForUser: controllingUID];
     BOOL shouldEvaluateCommonSubdomains = [settings boolForKey: @"EvaluateCommonSubdomains"];

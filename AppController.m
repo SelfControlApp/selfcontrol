@@ -30,12 +30,12 @@
 #import <LetsMove/PFMoveApplication.h>
 #import "SCSettings.h"
 #import <ServiceManagement/ServiceManagement.h>
-#import "SCAppXPC.h"
+#import "SCXPCClient.h"
 #import "SCConstants.h"
 
 @interface AppController () {}
 
-@property (atomic, strong, readwrite) SCAppXPC* xpc;
+@property (atomic, strong, readwrite) SCXPCClient* xpc;
 
 @end
 
@@ -328,7 +328,7 @@
 	[NSApplication sharedApplication].delegate = self;
     
     // start up our daemon XPC
-    self.xpc = [SCAppXPC new];
+    self.xpc = [SCXPCClient new];
      [self.xpc connectToHelperTool];
 
 	// Register observers on both distributed and normal notification centers

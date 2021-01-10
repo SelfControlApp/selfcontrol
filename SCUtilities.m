@@ -11,6 +11,19 @@
 
 @implementation SCUtilities
 
+// copied from stevenojo's GitHub snippet: https://gist.github.com/stevenojo/e1dcc2b3e2fd4ed1f411eef88e254cb0
+dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queue_t queue, dispatch_block_t block) {
+    dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+    
+    if (timer) {
+        dispatch_source_set_timer(timer, dispatch_time(DISPATCH_TIME_NOW, debounceTime * NSEC_PER_SEC), DISPATCH_TIME_FOREVER, (1ull * NSEC_PER_SEC) / 10);
+        dispatch_source_set_event_handler(timer, block);
+        dispatch_resume(timer);
+    }
+    
+    return timer;
+}
+
 // Standardize and clean up the input value so it'll block properly (and look good doing it)
 // note that if the user entered line breaks, we'll split it into many entries, so this can return multiple
 // cleaned entries in the NSArray it returns
@@ -114,7 +127,7 @@
 }
 
 
-+ (BOOL) blockIsRunningWithSettings:(SCSettings*)settings defaults:(NSUserDefaults*)defaults {
++ (BOOL) blockIsRunningWithSettings:(SCSettings*)settings defaultsDict:(NSDictionary*)defaultsDict {
     // first we look for the answer in the SCSettings system
     if ([SCUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]) {
         return YES;
@@ -127,9 +140,7 @@
     }
 
     // finally, we should check the legacy ways of storing a block (defaults and lockfile)
-
-    [defaults synchronize];
-    if ([SCUtilities blockIsRunningInDictionary: defaults.dictionaryRepresentation]) {
+    if ([SCUtilities blockIsRunningInDictionary: defaultsDict]) {
         return YES;
     }
 
@@ -137,6 +148,10 @@
     // we'll assume we're clear of blocks.  Checking pf would be nice but usually requires
     // root permissions, so it would be difficult to do here.
     return [[NSFileManager defaultManager] fileExistsAtPath: SelfControlLegacyLockFilePath];
+}
++ (BOOL) blockIsRunningWithSettings:(SCSettings*)settings defaults:(NSUserDefaults*)defaults {
+    [defaults synchronize];
+    return [SCUtilities blockIsRunningWithSettings: settings defaultsDict: defaults.dictionaryRepresentation];
 }
 
 // returns YES if a block is actively running (to the best of our knowledge), and NO otherwise
