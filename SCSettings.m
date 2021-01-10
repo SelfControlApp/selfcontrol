@@ -238,17 +238,17 @@ float const SYNC_LEEWAY_SECS = 30;
     }
 }
 - (void)writeSettingsWithCompletion:(nullable void(^)(NSError* _Nullable))completionBlock {
-    if (geteuid() != 0) {
-        NSLog(@"Attempting to write out SCSettings with non-root permissions (%d), failing...", geteuid());
-        if (completionBlock != nil) {
-            completionBlock([NSError errorWithDomain: kSelfControlErrorDomain code: -501 userInfo: @{
-                NSLocalizedDescriptionKey: NSLocalizedString(@"Attempting to write out SCSettings with non-root permissions (%d), failing...", nil)
-            }]);
-        }
-        return;
-    }
-
     @synchronized (self) {
+        if (geteuid() != 0) {
+            NSLog(@"Attempting to write out SCSettings with non-root permissions (%u), failing...", geteuid());
+            if (completionBlock != nil) {
+                completionBlock([NSError errorWithDomain: kSelfControlErrorDomain code: -501 userInfo: @{
+                    NSLocalizedDescriptionKey: NSLocalizedString(@"Attempting to write out SCSettings with non-root permissions (%d), failing...", nil)
+                }]);
+            }
+            return;
+        }
+
         if ([[NSUserDefaults standardUserDefaults] boolForKey: @"isTest"]) {
             // no writing to disk during unit tests
             NSLog(@"Would write settings to disk now (but no writing during unit tests)");

@@ -24,7 +24,6 @@
 		CB1CA65E25ABA6150084A551 /* SCXPCClient.m in Sources */ = {isa = PBXBuildFile; fileRef = CB62FC3A24B124B900ADBC40 /* SCXPCClient.m */; };
 		CB1CA66525ABA6240084A551 /* SCXPCAuthorization.m in Sources */ = {isa = PBXBuildFile; fileRef = CB69C4ED25A3FD8A0030CFCD /* SCXPCAuthorization.m */; };
 		CB1E7A6E0F9AEA9B00D158BC /* ERRORS in Resources */ = {isa = PBXBuildFile; fileRef = CB1E7A6D0F9AEA9B00D158BC /* ERRORS */; };
-		CB1ED4480F56686400EFECEE /* org.eyebeam.SelfControl in Copy Executable Helper Tools */ = {isa = PBXBuildFile; fileRef = CBA2AFD20F39EC12005AFEBE /* org.eyebeam.SelfControl */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		CB20C5D8245699D700B9D749 /* version-header.h in Sources */ = {isa = PBXBuildFile; fileRef = CB20C5D7245699D700B9D749 /* version-header.h */; };
 		CB249FED19D782230087BBB6 /* SelfControlIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = CB249FEC19D782230087BBB6 /* SelfControlIcon.icns */; };
 		CB25806216C1FDBE0059C99A /* BlockManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806116C1FDBE0059C99A /* BlockManager.m */; };
@@ -121,6 +120,7 @@
 		CBE4401B0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE4401A0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m */; };
 		CBE44FEB19E50900004E9706 /* AllowlistScraper.m in Sources */ = {isa = PBXBuildFile; fileRef = CB73615F19E4FDA000E0924F /* AllowlistScraper.m */; };
 		CBE5C40B0F4D4531003DB900 /* ButtonWithPopupMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE5C40A0F4D4531003DB900 /* ButtonWithPopupMenu.m */; };
+		CBED7D9925ABB911003080D6 /* selfcontrol-cli in Copy Executable Helper Tools */ = {isa = PBXBuildFile; fileRef = CBA2AFD20F39EC12005AFEBE /* selfcontrol-cli */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		CBEE50C10F48C21F00F5DF1C /* TimerWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */; };
 		CBF3B574217BADD7006D5F52 /* SCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF3B573217BADD7006D5F52 /* SCSettings.m */; };
 		F5B8CBEE19EE21C30026F3A5 /* SCTimeIntervalFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F5B8CBED19EE21C30026F3A5 /* SCTimeIntervalFormatter.m */; };
@@ -164,8 +164,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 6;
 			files = (
+				CBED7D9925ABB911003080D6 /* selfcontrol-cli in Copy Executable Helper Tools */,
 				CBE2BB5619D10CCC0077124F /* SCKillerHelper in Copy Executable Helper Tools */,
-				CB1ED4480F56686400EFECEE /* org.eyebeam.SelfControl in Copy Executable Helper Tools */,
 			);
 			name = "Copy Executable Helper Tools";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -284,7 +284,7 @@
 		CB9C812B19CFBB8400CDCAE1 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		CB9E90190F397FF6006DE6E4 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		CB9E901D0F397FFA006DE6E4 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		CBA2AFD20F39EC12005AFEBE /* org.eyebeam.SelfControl */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = org.eyebeam.SelfControl; sourceTree = BUILT_PRODUCTS_DIR; };
+		CBA2AFD20F39EC12005AFEBE /* selfcontrol-cli */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "selfcontrol-cli"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBA2AFD70F39EC46005AFEBE /* HelperMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperMain.h; sourceTree = "<group>"; };
 		CBA2AFD80F39EC46005AFEBE /* HelperMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelperMain.m; sourceTree = "<group>"; };
 		CBB0AE280FA74566006229B3 /* HostFileBlocker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostFileBlocker.h; sourceTree = "<group>"; };
@@ -495,7 +495,7 @@
 			isa = PBXGroup;
 			children = (
 				8D1107320486CEB800E47090 /* SelfControl.app */,
-				CBA2AFD20F39EC12005AFEBE /* org.eyebeam.SelfControl */,
+				CBA2AFD20F39EC12005AFEBE /* selfcontrol-cli */,
 				CB9C80F719CFB79700CDCAE1 /* SelfControl Killer.app */,
 				CB9C811B19CFBA8500CDCAE1 /* SCKillerHelper */,
 				CB0EEF5D20FD8CE00024D27B /* SelfControlTests.xctest */,
@@ -846,9 +846,9 @@
 			productReference = CB9C811B19CFBA8500CDCAE1 /* SCKillerHelper */;
 			productType = "com.apple.product-type.tool";
 		};
-		CBA2AFD10F39EC12005AFEBE /* selfcontrol */ = {
+		CBA2AFD10F39EC12005AFEBE /* selfcontrol-cli */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CBA2AFD60F39EC33005AFEBE /* Build configuration list for PBXNativeTarget "selfcontrol" */;
+			buildConfigurationList = CBA2AFD60F39EC33005AFEBE /* Build configuration list for PBXNativeTarget "selfcontrol-cli" */;
 			buildPhases = (
 				CB20C5D6245696C500B9D749 /* ShellScript */,
 				CBA2AFCF0F39EC12005AFEBE /* Sources */,
@@ -858,9 +858,9 @@
 			);
 			dependencies = (
 			);
-			name = selfcontrol;
+			name = "selfcontrol-cli";
 			productName = "selfcontrol-helper";
-			productReference = CBA2AFD20F39EC12005AFEBE /* org.eyebeam.SelfControl */;
+			productReference = CBA2AFD20F39EC12005AFEBE /* selfcontrol-cli */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -934,7 +934,7 @@
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* SelfControl */,
-				CBA2AFD10F39EC12005AFEBE /* selfcontrol */,
+				CBA2AFD10F39EC12005AFEBE /* selfcontrol-cli */,
 				CB9C80F619CFB79700CDCAE1 /* SelfControl Killer */,
 				CB9C811A19CFBA8500CDCAE1 /* SCKillerHelper */,
 				CB0EEF5C20FD8CE00024D27B /* SelfControlTests */,
@@ -1055,7 +1055,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "LOCATION=\"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\n\n# Usually set by Xcode\nCODE_SIGN_IDENTITY=\"Developer ID Application: Charlie Stigler (L6W5L88KN7)\"\n\necho \"location: \"\necho $LOCATION\n\n# codesign --verbose --force --sign \"$CODE_SIGN_IDENTITY\" \"$LOCATION/Sparkle.framework/Versions/A\"\n";
+			shellScript = "LINK_LOCATION=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/Contents/MacOS/org.eyebeam.SelfControl\"\n\n# Usually set by Xcode\nCODE_SIGN_IDENTITY=\"Developer ID Application: Charlie Stigler (L6W5L88KN7)\"\n\necho \"link location: \"\necho $LINK_LOCATION\n\n# Symlink selfcontrol CLI to org.eyebeam.SelfControl for legacy usage\nif ! [[ -L \"$LINK_LOCATION\" ]]\nthen\n    ln -s \"./selfcontrol-cli\" \"$LINK_LOCATION\"\nfi\n\n# codesign --verbose --force --sign \"$CODE_SIGN_IDENTITY\" \"$LOCATION/Sparkle.framework/Versions/A\"\n";
 		};
 		CB74D1062480E506002B2079 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1308,7 +1308,7 @@
 		};
 		CBEF43D00F7BB7F6009A9FDF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = CBA2AFD10F39EC12005AFEBE /* selfcontrol */;
+			target = CBA2AFD10F39EC12005AFEBE /* selfcontrol-cli */;
 			targetProxy = CBEF43CF0F7BB7F6009A9FDF /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1968,7 +1968,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MARKETING_VERSION = 4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.eyebeam.selfcontrol-cli";
-				PRODUCT_NAME = org.eyebeam.SelfControl;
+				PRODUCT_NAME = "selfcontrol-cli";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
@@ -1997,7 +1997,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MARKETING_VERSION = 4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.eyebeam.selfcontrol-cli";
-				PRODUCT_NAME = org.eyebeam.SelfControl;
+				PRODUCT_NAME = "selfcontrol-cli";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
@@ -2064,7 +2064,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CBA2AFD60F39EC33005AFEBE /* Build configuration list for PBXNativeTarget "selfcontrol" */ = {
+		CBA2AFD60F39EC33005AFEBE /* Build configuration list for PBXNativeTarget "selfcontrol-cli" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CBA2AFD40F39EC14005AFEBE /* Debug */,
