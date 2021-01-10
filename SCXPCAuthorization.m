@@ -107,6 +107,14 @@ static NSDictionary* kAuthorizationRuleAuthenticateAsAdmin5MinTimeout;
                     @"SelfControl needs your username and password to modify the blocklist",
                     @"prompt shown when user is required to authorize to add to their blocklist"
                 )
+            },
+            NSStringFromSelector(@selector(updateBlockEndDateWithControllingUID:newEndDate:authorization:reply:)) : @{
+                kCommandKeyAuthRightName    : @"org.eyebeam.SelfControl.modifyBlock",
+                kCommandKeyAuthRightDefault : kAuthorizationRuleAuthenticateAsAdmin5MinTimeout,
+                kCommandKeyAuthRightDesc    : NSLocalizedString(
+                    @"SelfControl needs your username and password to extend the block",
+                    @"prompt shown when user is required to authorize to extend their blockc"
+                )
             }
         };
     });

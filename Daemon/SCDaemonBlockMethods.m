@@ -126,6 +126,50 @@
     }
 }
 
++ (void)updateBlockEndDate:(uid_t)controllingUID newEndDate:(NSDate*)newEndDate authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
+    @synchronized (self) {
+        NSLog(@"updating block end date in methods");
+        if (!blockIsRunningInSettingsOrDefaults(controllingUID)) {
+            NSLog(@"ERROR: Can't update block end date since block isn't running");
+            NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain code: -213 userInfo: @{
+                NSLocalizedDescriptionKey: NSLocalizedString(@"Updating block end date, but no block is currently running", nil)
+            }];
+            reply(err);
+            return;
+        }
+        
+        SCSettings* settings = [SCSettings settingsForUser: controllingUID];
+        
+        // this can only be used to *extend* the block end date - not shorten it!
+        // and we also won't let them extend by more than 24 hours at a time, for safety...
+        // TODO: they should be able to extend up to MaxBlockLength minutes, right?
+        NSDate* currentEndDate = [settings valueForKey: @"BlockEndDate"];
+        if ([newEndDate timeIntervalSinceDate: currentEndDate] < 0) {
+            NSLog(@"ERROR: Can't update block end date to an earlier date");
+            NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain code: -301 userInfo: @{
+                NSLocalizedDescriptionKey: NSLocalizedString(@"Can't update block end date to an earlier date", nil)
+            }];
+            reply(err);
+        }
+        if ([newEndDate timeIntervalSinceDate: currentEndDate] > 86400) { // 86400 seconds = 1 day
+            NSLog(@"ERROR: Can't extend block end date by more than 1 day at a time");
+            NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain code: -302 userInfo: @{
+                NSLocalizedDescriptionKey: NSLocalizedString(@"Can't extend block end date by more than 1 day at a time", nil)
+            }];
+            reply(err);
+        }
+        
+        [settings setValue: newEndDate forKey: @"BlockEndDate"];
+        [settings synchronizeSettings]; // make sure everyone knows about our new end date
+
+        // TODO: is this still necessary in the new daemon world?
+        sendConfigurationChangedNotification();
+
+        NSLog(@"INFO: Block successfully extended.");
+        reply(nil);
+    }
+}
+
 + (void)checkupBlockWithControllingUID:(uid_t)controllingUID {
     // TODO: is synchronized the wrong tool here? it could be several seconds for the block to start = a bunch of checkup threads piling up
     @synchronized (self) {

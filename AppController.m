@@ -501,13 +501,14 @@
         
         return;
     }
-    
-    [NSThread detachNewThreadSelector: @selector(extendBlockDuration:)
-                             toTarget: self
-                           withObject: @{
-                                         @"lock": lock,
-                                         @"minutesToAdd": @(minutesToAdd)
-                                                                                                    }];
+  
+    [self updateBlockEndDate: lock minutesToAdd: minutesToAdd];
+//    [NSThread detachNewThreadSelector: @selector(extendBlockDuration:)
+//                             toTarget: self
+//                           withObject: @{
+//                                         @"lock": lock,
+//                                         @"minutesToAdd": @(minutesToAdd)
+//                                                                                                    }];
 }
 
 - (void)dealloc {
@@ -653,7 +654,6 @@
     // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
     [settings_ synchronizeSettings];
 
-    // ok, the new helper tool is installed! refresh the connection, then it's time to start the block
     [self.xpc refreshConnectionAndRun:^{
         NSLog(@"Refreshed connection updating active blocklist!");
         [self.xpc updateBlocklistWithControllingUID: getuid()
@@ -685,31 +685,48 @@
     [defaults_ synchronize];
 }
 
-- (void)extendBlockDuration:(NSDictionary*)options {
-    NSInteger minutesToAdd = [options[@"minutesToAdd"] integerValue];
-    minutesToAdd = MAX(minutesToAdd, 0); // make sure there's no funny business with negative minutes
-    
-    NSDate* oldBlockEndDate = [settings_ valueForKey: @"BlockEndDate"];
-    NSDate* newBlockEndDate = [oldBlockEndDate dateByAddingTimeInterval: (minutesToAdd * 60)];
-    
-    // Before we try to extend the block, make sure the block time didn't run out (or is about to run out) in the meantime
-    if (![SCUtilities blockShouldBeRunningInDictionary: settings_.dictionaryRepresentation] || [oldBlockEndDate timeIntervalSinceNow] < 1) {
-        // we're done, or will be by the time we get to it! so just let it expire. they can restart it.
+- (void)updateBlockEndDate:(NSLock*)lockToUse minutesToAdd:(NSInteger)minutesToAdd {
+    NSLog(@"updateBlockEndDate");
+    if(![lockToUse tryLock]) {
         return;
     }
 
-    // set the new block end date
-    [settings_ setValue: newBlockEndDate forKey: @"BlockEndDate"];
-    
-    // synchronize it to disk to the helper tool knows immediately
+    minutesToAdd = MAX(minutesToAdd, 0); // make sure there's no funny business with negative minutes
+    NSDate* oldBlockEndDate = [settings_ valueForKey: @"BlockEndDate"];
+    NSDate* newBlockEndDate = [oldBlockEndDate dateByAddingTimeInterval: (minutesToAdd * 60)];
+
+    // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
     [settings_ synchronizeSettings];
-    
-    // TODO: send configuration changed notification so the helper tool knows faster?
-    
-    // let the timer know it needs to recalculate
-    [timerWindowController_ performSelectorOnMainThread:@selector(blockEndDateUpdated)
-                                             withObject: nil
-                                          waitUntilDone: YES];
+
+    [self.xpc refreshConnectionAndRun:^{
+        // Before we try to extend the block, make sure the block time didn't run out (or is about to run out) in the meantime
+        if (![SCUtilities blockShouldBeRunningInDictionary: self->settings_.dictionaryRepresentation] || [oldBlockEndDate timeIntervalSinceNow] < 1) {
+            // we're done, or will be by the time we get to it! so just let it expire. they can restart it.
+            [lockToUse unlock];
+            return;
+        }
+
+        NSLog(@"Refreshed connection updating active block end date!");
+        [self.xpc updateBlockEndDateWithControllingUID: getuid()
+                                       newEndDate: newBlockEndDate
+                                              reply:^(NSError * _Nonnull error) {
+            NSLog(@"WOO updated block end date with error %@", error);
+            
+            [self->timerWindowController_ performSelectorOnMainThread:@selector(closeAddSheet:) withObject: self waitUntilDone: YES];
+            // let the timer know it needs to recalculate
+            [self->timerWindowController_ performSelectorOnMainThread:@selector(blockEndDateUpdated)
+                                                     withObject: nil
+                                                  waitUntilDone: YES];
+
+            if (error != nil) {
+                [NSApp performSelectorOnMainThread: @selector(presentError:)
+                                        withObject: error
+                                     waitUntilDone: YES];
+            }
+            
+            [lockToUse unlock];
+        }];
+    }];
 }
 
 - (IBAction)save:(id)sender {
