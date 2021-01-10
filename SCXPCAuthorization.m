@@ -92,7 +92,7 @@ static NSDictionary* kAuthorizationRuleAuthenticateAsAdmin5MinTimeout;
     
     dispatch_once(&sOnceToken, ^{
         sCommandInfo = @{
-            NSStringFromSelector(@selector(startBlockWithControllingUID:blocklist:isAllowlist:endDate:authorization:reply:)) : @{
+            NSStringFromSelector(@selector(startBlockWithControllingUID:blocklist:isAllowlist:endDate:blockSettings:authorization:reply:)) : @{
                 kCommandKeyAuthRightName    : @"org.eyebeam.SelfControl.startBlock",
                 kCommandKeyAuthRightDefault : kAuthorizationRuleAuthenticateAsAdmin5MinTimeout,
                 kCommandKeyAuthRightDesc    : NSLocalizedString(

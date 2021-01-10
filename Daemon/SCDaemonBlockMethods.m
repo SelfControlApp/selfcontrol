@@ -15,7 +15,7 @@
 
 @implementation SCDaemonBlockMethods
 
-+ (void)startBlockWithControllingUID:(uid_t)controllingUID blocklist:(NSArray<NSString*>*)blocklist isAllowlist:(BOOL)isAllowlist endDate:(NSDate*)endDate authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
++ (void)startBlockWithControllingUID:(uid_t)controllingUID blocklist:(NSArray<NSString*>*)blocklist isAllowlist:(BOOL)isAllowlist endDate:(NSDate*)endDate blockSettings:(NSDictionary*)blockSettings authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
     @synchronized (self) {
         NSLog(@"startign block in methods");
         if (blockIsRunningInSettingsOrDefaults(controllingUID)) {
@@ -37,6 +37,15 @@
         [settings setValue: blocklist forKey: @"ActiveBlocklist"];
         [settings setValue: @(isAllowlist) forKey: @"ActiveBlockAsWhitelist"];
         [settings setValue: endDate forKey: @"BlockEndDate"];
+        
+        // update all the settings for the block, which we're basically just copying from defaults to settings
+        [settings setValue: blockSettings[@"ClearCaches"] forKey: @"ClearCaches"];
+        [settings setValue: blockSettings[@"AllowLocalNetworks"] forKey: @"AllowLocalNetworks"];
+        [settings setValue: blockSettings[@"EvaluateCommonSubdomains"] forKey: @"EvaluateCommonSubdomains"];
+        [settings setValue: blockSettings[@"IncludeLinkedDomains"] forKey: @"IncludeLinkedDomains"];
+        [settings setValue: blockSettings[@"BlockSoundShouldPlay"] forKey: @"BlockSoundShouldPlay"];
+        [settings setValue: blockSettings[@"BlockSound"] forKey: @"BlockSound"];
+        
         NSLog(@"And now ActiveBlocklist is %@", [settings valueForKey: @"ActiveBlocklist"]);
         
         if([blocklist count] <= 0 || ![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {

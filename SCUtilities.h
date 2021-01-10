@@ -26,7 +26,6 @@
 
 // Main app functions taking NSUserDefaults and SCSettings
 
-+ (void) startBlockInSettings:(SCSettings*)settings withBlockDuration:(NSTimeInterval)blockDuration;
 + (void) removeBlockFromSettings:(SCSettings*)settings;
 + (void) removeBlockFromSettingsForUID:(uid_t)uid;
 

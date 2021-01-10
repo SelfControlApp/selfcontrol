@@ -117,7 +117,7 @@ float const SYNC_LEEWAY_SECS = 30;
     NSArray<NSURL*>* libraryURLs = [[NSFileManager defaultManager] URLsForDirectory: NSLibraryDirectory inDomains: NSLocalDomainMask];
     NSLog(@"secured settings file path got lib URLs: %@", libraryURLs);
     
-    return [NSString stringWithFormat: @"/Users/Shared/%@", [self settingsFileName]];
+    return [NSString stringWithFormat: @"/etc/%@", [self settingsFileName]];
 }
 - (NSString*)legacySecuredSettingsFilePathForUser:(uid_t)userId {
     NSString* homeDir = [self homeDirectoryForUid: userId];
@@ -131,13 +131,6 @@ float const SYNC_LEEWAY_SECS = 30;
         @"ActiveBlocklist": @[],
         @"ActiveBlockAsWhitelist": @NO,
 
-        @"EvaluateCommonSubdomains": @YES,
-        @"IncludeLinkedDomains": @YES,
-        @"BlockSoundShouldPlay": @NO,
-        @"BlockSound": @5,
-        @"ClearCaches": @YES,
-        @"ActiveBlockAsWhitelist": @NO,
-        @"AllowLocalNetworks": @YES,
         @"BlockIsRunning": @NO, // tells us whether a block is actually running on the system (to the best of our knowledge)
         
         @"TamperingDetected": @NO,
@@ -276,8 +269,8 @@ float const SYNC_LEEWAY_SECS = 30;
             NSError* chmodErr;
             BOOL chmodSuccessful = [[NSFileManager defaultManager]
                                     setAttributes: @{
-                                        @"NSFileOwnerAccountID": [NSNumber numberWithUnsignedLong: self.userId],
-                                        @"NSFilePosixPermissions": [NSNumber numberWithShort: 0777]
+                                        @"NSFileOwnerAccountID": [NSNumber numberWithUnsignedLong: 0],
+                                        @"NSFilePosixPermissions": [NSNumber numberWithShort: 0755]
                                     }
                                     ofItemAtPath: self.securedSettingsFilePath
                                     error: &chmodErr];
@@ -331,6 +324,11 @@ float const SYNC_LEEWAY_SECS = 30;
 }
 
 - (void)setValue:(id)value forKey:(NSString*)key stopPropagation:(BOOL)stopPropagation {
+    if (geteuid() != 0) {
+        NSLog(@"Attempting to set SCSettings value as non-root user (%d), failing...", geteuid());
+        return;
+    }
+
     // we can't store nils in a dictionary
     // so we sneak around it
     if (value == nil) {
@@ -482,6 +480,9 @@ float const SYNC_LEEWAY_SECS = 30;
 // NOTE: this method always clears the user defaults for the current user, regardless of what instance
 // it's called on
 - (void)clearLegacySettings {
+    // TODO: figure out what this should do in the new world!
+    return;
+    
     // make sure the settings dictionary is set up (and migration has occurred if necessary)
     [self initializeSettingsDict];
 

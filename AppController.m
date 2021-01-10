@@ -60,7 +60,13 @@
 									  @"MaxBlockLength": @1440,
 									  @"BlockLengthInterval": @15,
 									  @"WhitelistAlertSuppress": @NO,
-									  @"GetStartedShown": @NO
+									  @"GetStartedShown": @NO,
+                                      @"EvaluateCommonSubdomains": @YES,
+                                      @"IncludeLinkedDomains": @YES,
+                                      @"BlockSoundShouldPlay": @NO,
+                                      @"BlockSound": @5,
+                                      @"ClearCaches": @YES,
+                                      @"AllowLocalNetworks": @YES
                                       };
 
 		[defaults_ registerDefaults:appDefaults];
@@ -616,8 +622,9 @@
             } else {
                 // helper tool installed successfully, let's prepare to start the block!
                 // for legacy reasons, BlockDuration is in minutes, so convert it to seconds before passing it through]
-                NSTimeInterval blockDurationSecs = [[self->defaults_ valueForKey: @"BlockDuration"] intValue] * 60;
-                [SCUtilities startBlockInSettings: self->settings_ withBlockDuration: blockDurationSecs];
+                // sanity check duration (must be above zero)
+                NSTimeInterval blockDurationSecs = MAX([[self->defaults_ valueForKey: @"BlockDuration"] intValue] * 60, 0);
+                NSDate* newBlockEndDate = [NSDate dateWithTimeIntervalSinceNow: blockDurationSecs];
                 
                 // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
                 [self->settings_ synchronizeSettings];
@@ -628,7 +635,15 @@
                     [self.xpc startBlockWithControllingUID: getuid()
                                                  blocklist: [self->defaults_ arrayForKey: @"Blocklist"]
                                                isAllowlist: [self->defaults_ boolForKey: @"BlockAsWhitelist"]
-                                                   endDate: [self->settings_ valueForKey: @"BlockEndDate"]
+                                                   endDate: newBlockEndDate
+                                             blockSettings: @{
+                                                                @"ClearCaches": [self->defaults_ valueForKey: @"ClearCaches"],
+                                                                @"AllowLocalNetworks": [self->defaults_ valueForKey: @"AllowLocalNetworks"],
+                                                                @"EvaluateCommonSubdomains": [self->defaults_ valueForKey: @"EvaluateCommonSubdomains"],
+                                                                @"IncludeLinkedDomains": [self->defaults_ valueForKey: @"IncludeLinkedDomains"],
+                                                                @"BlockSoundShouldPlay": [self->defaults_ valueForKey: @"BlockSoundShouldPlay"],
+                                                                @"BlockSound": [self->defaults_ valueForKey: @"BlockSound"]
+                                                            }
                                                      reply:^(NSError * _Nonnull error) {
                         NSLog(@"WOO started block with error %@", error);
                         if (error != nil) {
@@ -636,8 +651,12 @@
                                                     withObject: error
                                                  waitUntilDone: YES];
                         }
-                        self.addingBlock = false;
-                        [self refreshUserInterface];
+                        
+                        // get the new settings
+                        [settings_ synchronizeSettingsWithCompletion:^(NSError * _Nullable error) {
+                            self.addingBlock = false;
+                            [self refreshUserInterface];
+                        }];
                     }];
                 }];
             }

@@ -155,17 +155,6 @@
     }
 }
 
-+ (void) startBlockInSettings:(SCSettings*)settings withBlockDuration:(NSTimeInterval)blockDuration {
-    // sanity check duration (must be above zero)
-    blockDuration = MAX(blockDuration, 0);
-    
-    // assume the block is starting now
-    NSDate* blockEndDate = [NSDate dateWithTimeIntervalSinceNow: blockDuration];
-    
-    [settings setValue: blockEndDate forKey: @"BlockEndDate"];
-}
-
-
 + (void) removeBlockFromSettings:(SCSettings*)settings {
     // TODO: will this work setting nil instead of [NSDate dateWithTimeIntervalSince1970: 0]?
     [settings setValue: nil forKey: @"BlockEndDate"];

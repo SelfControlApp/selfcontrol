@@ -10,10 +10,5 @@
 #import "MASPreferencesViewController.h"
 
 @interface PreferencesAdvancedViewController : NSViewController <MASPreferencesViewController>
-
-@property IBOutlet NSButton* clearCachesCheckbox;
-@property IBOutlet NSButton* allowLocalCheckbox;
-@property IBOutlet NSButton* includeSubdomainsCheckbox;
-@property IBOutlet NSButton* includeLinkedSitesCheckbox;
     
 @end
