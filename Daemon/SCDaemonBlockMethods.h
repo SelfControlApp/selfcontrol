@@ -11,6 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SCDaemonBlockMethods : NSObject
 
+@property (class, readonly) NSLock* daemonMethodLock;
+
 + (void)startBlockWithControllingUID:(uid_t)controllingUID blocklist:(NSArray<NSString*>*)blocklist isAllowlist:(BOOL)isAllowlist endDate:(NSDate*)endDate blockSettings:(NSDictionary*)blockSettings authorization:(NSData *)authData reply:(void(^)(NSError* error))reply;
 
 + (void)checkupBlockWithControllingUID:(uid_t)controllingUID;
