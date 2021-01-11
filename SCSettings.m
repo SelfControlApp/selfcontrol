@@ -15,7 +15,7 @@
 
 float const SYNC_INTERVAL_SECS = 30;
 float const SYNC_LEEWAY_SECS = 30;
-NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
+NSString* const SETTINGS_FILE_DIR = @"/usr/local/etcx/";
 
 @interface SCSettings ()
 
@@ -97,6 +97,11 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
 
 - (instancetype)initWithUserId:(uid_t)userId {
     if (self = [super init]) {
+        // we will only write out settings if we have root permissions (i.e. the EUID is 0)
+        // otherwise, we won't/shouldn't have permissions to write to the settings file
+        // in practice, what this means is that the daemon writes settings, and the app/CLI only read
+        _readOnly = (geteuid() != 0);
+        
         _userId = userId;
         _settingsDict = nil;
         
@@ -131,8 +136,16 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
         @"ActiveBlockAsWhitelist": @NO,
 
         @"BlockIsRunning": @NO, // tells us whether a block is actually running on the system (to the best of our knowledge)
-        
         @"TamperingDetected": @NO,
+        
+        // block settings
+        // the user sets these in defaults, then when a block is started they're copied over to settings
+        @"EvaluateCommonSubdomains": @YES,
+        @"IncludeLinkedDomains": @YES,
+        @"BlockSoundShouldPlay": @NO,
+        @"BlockSound": @5,
+        @"ClearCaches": @YES,
+        @"AllowLocalNetworks": @YES,
 
         @"SettingsVersionNumber": @0,
         @"LastSettingsUpdate": [NSDate distantPast] // special value that keeps track of when we last updated our settings
@@ -156,7 +169,9 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
             [self migrateLegacySettings];
             
             // write out our brand-new migrated settings to disk!
-            [self writeSettings];
+            if (!self.readOnly) {
+                [self writeSettings];
+            }
         }
         
         // we're now current with disk!
@@ -238,11 +253,11 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
 }
 - (void)writeSettingsWithCompletion:(nullable void(^)(NSError* _Nullable))completionBlock {
     @synchronized (self) {
-        if (geteuid() != 0) {
-            NSLog(@"Attempting to write out SCSettings with non-root permissions (%u), failing...", geteuid());
+        if (self.readOnly) {
+            NSLog(@"WARNING: Read-only SCSettings instance can't write out settings");
             if (completionBlock != nil) {
                 completionBlock([NSError errorWithDomain: kSelfControlErrorDomain code: -501 userInfo: @{
-                    NSLocalizedDescriptionKey: NSLocalizedString(@"Attempting to write out SCSettings with non-root permissions (%d), failing...", nil)
+                    NSLocalizedDescriptionKey: NSLocalizedString(@"Read-only SCSettings instance can't write out settings", nil)
                 }]);
             }
             return;
@@ -335,7 +350,7 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
         [self setValue: [NSDate date] forKey: @"LastSettingsUpdate"];
     }
     
-    if ([lastSettingsUpdate timeIntervalSinceDate: self.lastSynchronizedWithDisk] > 0 && geteuid() == 0) {
+    if ([lastSettingsUpdate timeIntervalSinceDate: self.lastSynchronizedWithDisk] > 0 && !self.readOnly) {
         NSLog(@" --> Writing settings to disk (haven't been written since %@)", self.lastSynchronizedWithDisk);
         [self writeSettingsWithCompletion: completionBlock];
     } else {
@@ -347,6 +362,14 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
 }
 
 - (void)setValue:(id)value forKey:(NSString*)key stopPropagation:(BOOL)stopPropagation {
+    // if we're a readonly instance, we generally shouldn't be allowing values to be set
+    // the only exception is receiving value updates (via notification) from other processes
+    // in which case stopPropagation will be true
+    if (self.readOnly && !stopPropagation) {
+        NSLog(@"WARNING: Read-only SCSettings instance can't update values (setting %@ to %@)", key, value);
+        return;
+    }
+    
     // we can't store nils in a dictionary
     // so we sneak around it
     if (value == nil) {
@@ -372,7 +395,7 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
     
     // notify other instances (presumably in other processes)
     // stopPropagation is a flag that stops one setting change from bouncing back and forth for ages
-    // between two processes
+    // between two processes. It indicates that the change started in another process
     if (!stopPropagation) {
         [[NSDistributedNotificationCenter defaultCenter] postNotificationName: @"org.eyebeam.SelfControl.SCSettingsValueChanged"
                                                                        object: self.description
@@ -594,30 +617,30 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
 
     if (!noteMoreRecentThanSettings) {
         NSLog(@"Ignoring setting change notification as %@ is older than %@", noteSettingUpdated, ourSettingsLastUpdated);
-        [self synchronizeSettings];
-        return;
     } else {
         NSLog(@"Accepting propagated change (%@ --> %@) since version %d is newer than %d and/or %@ is newer than %@", note.userInfo[@"key"], note.userInfo[@"value"], noteVersionNumber, ourSettingsVersionNumber, noteSettingUpdated, ourSettingsLastUpdated);
         
         // mirror the change on our own instance - but don't propagate the change to avoid loopin
         [self setValue: note.userInfo[@"value"] forKey: note.userInfo[@"key"] stopPropagation: YES];
-        
-        // and then make a note to go refresh from disk in the near future (but debounce so we don't do this a million times for rapid changes)
-        static dispatch_source_t debouncedReloadTimer = nil;
-        if (debouncedReloadTimer != nil) {
-            dispatch_source_cancel(debouncedReloadTimer);
-            debouncedReloadTimer = nil;
-        }
-        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-        double throttleSecs = 0.25f;
-        debouncedReloadTimer = CreateDebounceDispatchTimer(throttleSecs, queue, ^{
-            NSLog(@"Reloading settings due to propagated changes");
-            [self reloadSettings];
-        });
     }
+    
+    // regardless of which is more recent, we should really go get the new deal from disk
+    // in the near future (but debounce so we don't do this a million times for rapid changes)
+    static dispatch_source_t debouncedSyncTimer = nil;
+    if (debouncedSyncTimer != nil) {
+        dispatch_source_cancel(debouncedSyncTimer);
+        debouncedSyncTimer = nil;
+    }
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    double throttleSecs = 0.25f;
+    debouncedSyncTimer = CreateDebounceDispatchTimer(throttleSecs, queue, ^{
+        NSLog(@"Syncing settings due to propagated changes");
+        [self synchronizeSettings];
+    });
 }
 
 - (void)dealloc {
+    // TODO: should we kill the debounced timer above also?
     [self cancelSyncTimer];
 }
 

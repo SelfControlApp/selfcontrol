@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (readonly) uid_t userId;
 @property (readonly) NSDictionary* dictionaryRepresentation;
+@property (nonatomic, readonly, getter=isReadOnly) BOOL readOnly;
 
 + (instancetype)currentUserSettings;
 + (instancetype)settingsForUser:(uid_t)uid;
