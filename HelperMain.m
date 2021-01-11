@@ -132,7 +132,7 @@ int main(int argc, char* argv[]) {
             dispatch_semaphore_t installingBlockSema = dispatch_semaphore_create(0);
             
             NSLog(@"About to install helper tool");
-            [xpc installHelperTool:^(NSError * _Nonnull error) {
+            [xpc installDaemon:^(NSError * _Nonnull error) {
                 if (error != nil) {
                     NSLog(@"ERROR: Failed to install helper tool with error %@", error);
                     printStatus(-402);

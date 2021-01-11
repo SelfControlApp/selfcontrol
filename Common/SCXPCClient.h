@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SCXPCClient : NSObject
 
 - (void)connectToHelperTool;
-- (void)installHelperTool:(void(^)(NSError*))callback;
+- (void)installDaemon:(void(^)(NSError*))callback;
 - (void)refreshConnectionAndRun:(void(^)(void))callback;
 - (void)connectAndExecuteCommandBlock:(void(^)(NSError *))commandBlock;
 

@@ -15,6 +15,7 @@
 
 float const SYNC_INTERVAL_SECS = 30;
 float const SYNC_LEEWAY_SECS = 30;
+NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
 
 @interface SCSettings ()
 
@@ -115,9 +116,7 @@ float const SYNC_LEEWAY_SECS = 30;
     return [NSString stringWithFormat: @".%@.plist", [self sha1: [NSString stringWithFormat: @"SelfControlUserPreferences%@", [self getSerialNumber]]]];
 }
 - (NSString*)securedSettingsFilePath {
-    NSArray<NSURL*>* libraryURLs = [[NSFileManager defaultManager] URLsForDirectory: NSLibraryDirectory inDomains: NSLocalDomainMask];
-    
-    return [NSString stringWithFormat: @"/etc/%@", [self settingsFileName]];
+    return [NSString stringWithFormat: @"%@%@", SETTINGS_FILE_DIR, [self settingsFileName]];
 }
 - (NSString*)legacySecuredSettingsFilePathForUser:(uid_t)userId {
     NSString* homeDir = [self homeDirectoryForUid: userId];
@@ -269,6 +268,19 @@ float const SYNC_LEEWAY_SECS = 30;
                 if (completionBlock != nil) completionBlock(serializationErr);
                 return;
             }
+            
+            NSError* createDirectoryErr;
+            BOOL createDirectorySuccessful = [[NSFileManager defaultManager] createDirectoryAtURL: [NSURL fileURLWithPath: SETTINGS_FILE_DIR]
+                                                                      withIntermediateDirectories: YES
+                                                                                       attributes: @{
+                                                                                           NSFileOwnerAccountID: [NSNumber numberWithUnsignedLong: 0],
+                                                                                           NSFileGroupOwnerAccountID: [NSNumber numberWithUnsignedLong: 0],
+                                                                                           NSFilePosixPermissions: [NSNumber numberWithShort: 0755]
+                                                                                       }
+                                                                                            error: &createDirectoryErr];
+            if (!createDirectorySuccessful) {
+                NSLog(@"WARNING: Failed to create %@ folder to store SCSettings. Error was %@", SETTINGS_FILE_DIR, createDirectoryErr);
+            }
 
             NSError* writeErr;
             BOOL writeSuccessful = [plistData writeToFile: self.securedSettingsFilePath
@@ -279,8 +291,9 @@ float const SYNC_LEEWAY_SECS = 30;
             NSError* chmodErr;
             BOOL chmodSuccessful = [[NSFileManager defaultManager]
                                     setAttributes: @{
-                                        @"NSFileOwnerAccountID": [NSNumber numberWithUnsignedLong: 0],
-                                        @"NSFilePosixPermissions": [NSNumber numberWithShort: 0755]
+                                        NSFileOwnerAccountID: [NSNumber numberWithUnsignedLong: 0],
+                                        NSFileGroupOwnerAccountID: [NSNumber numberWithUnsignedLong: 0],
+                                        NSFilePosixPermissions: [NSNumber numberWithShort: 0755]
                                     }
                                     ofItemAtPath: self.securedSettingsFilePath
                                     error: &chmodErr];

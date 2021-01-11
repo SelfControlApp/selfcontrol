@@ -77,24 +77,21 @@
             // If the connection gets invalidated then, on the main thread, nil out our
             // reference to it.  This ensures that we attempt to rebuild it the next time around.
             connection.invalidationHandler = connection.interruptionHandler = nil;
-            NSLog(@"called invalidation handler, self.daemonConnection is %@", self.daemonConnection);
                         
             if (connection == self.daemonConnection) {
                 // dispatch_sync on main thread would deadlock, so be careful
                 if ([NSThread isMainThread]) {
                     self.daemonConnection = nil;
-                    NSLog(@"set daemonConnection to nil on main thread");
                 } else {
                     // running this synchronously ensures that the daemonConnection is nil'd out even if
                     // reinstantiate the connection immediately
                     NSLog(@"About to dispatch_sync");
                     dispatch_sync(dispatch_get_main_queue(), ^{
                         self.daemonConnection = nil;
-                        NSLog(@"set daemonConnection to nil via dispatch_sync");
                     });
                 }
                 NSLog(@"connection invalidated");
-            } else NSLog(@"not invalidating connection cause they don't match");
+            }
         };
         // our interruption handler is just our invalidation handler, except we retry afterward
         connection.interruptionHandler = ^{
@@ -116,15 +113,14 @@
     }
 }
 
-- (void)installHelperTool:(void(^)(NSError*))callback {
+- (void)installDaemon:(void(^)(NSError*))callback {
     AuthorizationRef authorizationRef;
-    NSLog(@"helper tool path is %@", [self selfControlHelperToolPath]);
-    char* helperToolPath = [self selfControlHelperToolPathUTF8String];
-    NSUInteger helperToolPathSize = strlen(helperToolPath);
+    char* daemonPath = [self selfControlHelperToolPathUTF8String];
+    NSUInteger daemonPathSize = strlen(daemonPath);
     AuthorizationItem right = {
         kSMRightBlessPrivilegedHelper,
-        helperToolPathSize,
-        helperToolPath,
+        daemonPathSize,
+        daemonPath,
         0
     };
     AuthorizationRights authRights = {
@@ -165,7 +161,7 @@
         callback(err);
         return;
     } else {
-        NSLog(@"succeeded in installing helper tool");
+        NSLog(@"Daemon installed successfully!");
         callback(nil);
     }
 }
@@ -179,10 +175,8 @@
     // if we call invalidate, but immediately start to reconnect before daemonConnection can be nil'd out
     // then we risk trying to use the invalidated connection
     // the fix? nil out daemonConnection before invalidating it in the refresh case
-    NSLog(@"refresh connection");
     
     if (self.daemonConnection == nil) {
-        NSLog(@"no daemon connection to invalidate");
         callback();
         return;
     }
@@ -190,15 +184,11 @@
     
     // wait until the invalidation handler runs, then run our callback
     self.daemonConnection.invalidationHandler = ^{
-        NSLog(@"invalidationHandler ran!");
         standardInvalidationHandler();
-        NSLog(@"about to call the ol callback!");
         callback();
     };
     
-    NSLog(@"About to invalidate connection on main thread");
     [self.daemonConnection performSelectorOnMainThread: @selector(invalidate) withObject: nil waitUntilDone: YES];
-    
 }
 
 // Also copied from Apple's EvenBetterAuthorizationSample
@@ -234,7 +224,6 @@
 }
 
 - (void)startBlockWithControllingUID:(uid_t)controllingUID blocklist:(NSArray<NSString*>*)blocklist isAllowlist:(BOOL)isAllowlist endDate:(NSDate*)endDate blockSettings:(NSDictionary*)blockSettings reply:(void(^)(NSError* error))reply {
-    NSLog(@"sending install command block");
     [self connectAndExecuteCommandBlock:^(NSError * connectError) {
         if (connectError != nil) {
             NSLog(@"Install command failed with connection error: %@", connectError);

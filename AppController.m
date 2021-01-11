@@ -611,7 +611,7 @@
 	@autoreleasepool {
 		self.addingBlock = true;
 		[self refreshUserInterface];
-        [self.xpc installHelperTool:^(NSError * _Nonnull error) {
+        [self.xpc installDaemon:^(NSError * _Nonnull error) {
             if (error != nil) {
                 [NSApp performSelectorOnMainThread: @selector(presentError:)
                                         withObject: error
