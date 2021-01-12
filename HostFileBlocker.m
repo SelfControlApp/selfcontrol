@@ -127,7 +127,6 @@ NSString* const kDefaultHostsFileContents = @"##\n"
 
 - (void)addRuleBlockingDomain:(NSString*)domainName {
 	[strLock lock];
-    NSLog(@"host file blocker: add rule to block domain %@", domainName);
     NSArray<NSString*>* ruleStrings = [self ruleStringsToBlockDomain: domainName];
     for (NSString* ruleString in ruleStrings) {
         [newFileContents appendString: ruleString];

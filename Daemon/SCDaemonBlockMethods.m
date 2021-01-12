@@ -49,13 +49,11 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
 
 
 + (void)startBlockWithControllingUID:(uid_t)controllingUID blocklist:(NSArray<NSString*>*)blocklist isAllowlist:(BOOL)isAllowlist endDate:(NSDate*)endDate blockSettings:(NSDictionary*)blockSettings authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
-    NSLog(@"startign block in methods (euid = %u, uid = %u)", geteuid(), getuid());
     if (![SCDaemonBlockMethods lockOrTimeout: reply]) {
         return;
     }
-    NSLog(@"ACQUIRED LOCK (euid = %u, uid = %u)", geteuid(), getuid());
     
-    if (blockIsRunningInSettingsOrDefaults(controllingUID)) {
+    if ([SCUtilities anyBlockIsRunning: controllingUID]) {
         NSLog(@"ERROR: Can't start block since a block is already running");
         NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain code: -299 userInfo: @{
             NSLocalizedDescriptionKey: NSLocalizedString(@"Can't start block since a block is already running", nil)
@@ -67,8 +65,6 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     
     // clear any legacy block information - no longer useful and could potentially confuse things
     // but first, copy it over one more time (this should've already happened once in the app, but you never know)
-    NSLog(@"BEFORE CHECKIKNG LEGACY SETTINGS (euid = %u, uid = %u)", geteuid(), getuid());
-
     if ([SCUtilities legacySettingsFound: controllingUID]) {
         [SCUtilities copyLegacySettingsToDefaults: controllingUID];
         [SCUtilities clearLegacySettings: controllingUID];
@@ -76,7 +72,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         // if we had legacy settings, there's a small chance the old helper tool could still be around
         // make sure it's dead and gone
         [LaunchctlHelper unloadLaunchdJobWithPlistAt:@"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
-    }    NSLog(@"BEFORE CHECKIKNG LEGACY SETTINGS (euid = %u, uid = %u)", geteuid(), getuid());
+    }
 
     SCSettings* settings = [SCSettings sharedSettings];
     // update SCSettings with the blocklist and end date that've been requested
@@ -92,9 +88,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     [settings setValue: blockSettings[@"IncludeLinkedDomains"] forKey: @"IncludeLinkedDomains"];
     [settings setValue: blockSettings[@"BlockSoundShouldPlay"] forKey: @"BlockSoundShouldPlay"];
     [settings setValue: blockSettings[@"BlockSound"] forKey: @"BlockSound"];
-    
-    NSLog(@"And now ActiveBlocklist is %@", [settings valueForKey: @"ActiveBlocklist"]);
-    
+
     if([blocklist count] <= 0 || ![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
         NSLog(@"ERROR: Blocklist is empty, or block end date is in the past");
         NSLog(@"Block End Date: %@ (%@), vs now is %@", [settings valueForKey: @"BlockEndDate"], [[settings valueForKey: @"BlockEndDate"] class], [NSDate date]);
@@ -131,7 +125,16 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         return;
     }
     
-    if (!blockIsRunningInSettingsOrDefaults(controllingUID)) {
+    if ([SCUtilities legacyBlockIsRunning: controllingUID]) {
+        NSLog(@"ERROR: Can't update blocklist because a legacy block is running");
+        NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain code: -344 userInfo: @{
+            NSLocalizedDescriptionKey: NSLocalizedString(@"Can't update blocklist because a legacy block is running", nil)
+        }];
+        reply(err);
+        [self.daemonMethodLock unlock];
+        return;
+    }
+    if (![SCUtilities modernBlockIsRunning]) {
         NSLog(@"ERROR: Can't update blocklist since block isn't running");
         NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain code: -213 userInfo: @{
             NSLocalizedDescriptionKey: NSLocalizedString(@"Refreshing blocklist, but no block is currently running", nil)
@@ -195,10 +198,19 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     }
 
     NSLog(@"updating block end date in methods");
-    if (!blockIsRunningInSettingsOrDefaults(controllingUID)) {
+    if ([SCUtilities legacyBlockIsRunning: controllingUID]) {
+        NSLog(@"ERROR: Can't update block end date because a legacy block is running");
+        NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain code: -344 userInfo: @{
+            NSLocalizedDescriptionKey: NSLocalizedString(@"Can't update block end date because a legacy block is running", nil)
+        }];
+        reply(err);
+        [self.daemonMethodLock unlock];
+        return;
+    }
+    if (![SCUtilities modernBlockIsRunning]) {
         NSLog(@"ERROR: Can't update block end date since block isn't running");
         NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain code: -213 userInfo: @{
-            NSLocalizedDescriptionKey: NSLocalizedString(@"Updating block end date, but no block is currently running", nil)
+            NSLocalizedDescriptionKey: NSLocalizedString(@"Refreshing block end date, but no block is currently running", nil)
         }];
         reply(err);
         [self.daemonMethodLock unlock];
@@ -246,7 +258,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
 
     SCSettings* settings = [SCSettings sharedSettings];
 
-    if(![SCUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]) {
+    if(![SCUtilities anyBlockIsRunning: controllingUID]) {
         // No block appears to be running at all in our settings.
         // Most likely, the user removed it trying to get around the block. Boo!
         // but for safety and to avoid permablocks (we no longer know when the block should end)

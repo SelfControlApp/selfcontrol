@@ -14,7 +14,7 @@
 
 float const SYNC_INTERVAL_SECS = 30;
 float const SYNC_LEEWAY_SECS = 30;
-NSString* const SETTINGS_FILE_DIR = @"/usr/local/etcx/";
+NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
 
 @interface SCSettings ()
 
@@ -236,7 +236,6 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etcx/";
     }
 }
 - (void)writeSettingsWithCompletion:(nullable void(^)(NSError* _Nullable))completionBlock {
-    NSLog(@"STARTING WRITESETTINGSWITHCOMPLETION (euid = %u, uid = %u)", geteuid(), getuid());
     @synchronized (self) {
         if (self.readOnly) {
             NSLog(@"WARNING: Read-only SCSettings instance can't write out settings");
@@ -257,7 +256,6 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etcx/";
         
         // don't spend time on the main thread writing out files - it's OK for this to happen without blocking other things
         dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            NSLog(@"STARTING DISPATCH SYNC (euid = %u, uid = %u)", geteuid(), getuid());
             NSError* serializationErr;
             NSData* plistData = [NSPropertyListSerialization dataWithPropertyList: self.settingsDict
                                                                            format: NSPropertyListBinaryFormat_v1_0
@@ -280,7 +278,7 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etcx/";
                                                                                        }
                                                                                             error: &createDirectoryErr];
             if (!createDirectorySuccessful) {
-                NSLog(@"WARNING: Failed to create %@ folder to store SCSettings (euid = %u, uid = %u). Error was %@", SETTINGS_FILE_DIR, geteuid(), getuid(), createDirectoryErr);
+                NSLog(@"WARNING: Failed to create %@ folder to store SCSettings. Error was %@", SETTINGS_FILE_DIR, createDirectoryErr);
             }
 
             NSError* writeErr;

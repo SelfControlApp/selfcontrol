@@ -35,14 +35,16 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
 // Helper tool functions dealing with dictionaries and setDefaultsValue helper
 
 // uses the below methods as well as filesystem checks to see if the block is REALLY running or not
-+ (BOOL) blockIsRunningWithSettings:(SCSettings*)settings defaults:(NSUserDefaults*)defaults;
-+ (BOOL) blockIsRunningWithSettings:(SCSettings*)settings defaultsDict:(NSDictionary*)defaultsDict;
++ (BOOL)anyBlockIsRunning:(uid_t)controllingUID;
++ (BOOL)anyBlockIsRunning;
++ (BOOL)modernBlockIsRunning;
++ (BOOL)legacyBlockIsRunning:(uid_t)controllingUID;
++ (BOOL)legacyBlockIsRunning;
 
 + (BOOL) blockIsRunningInDictionary:(NSDictionary*)dict;
 + (BOOL) blockShouldBeRunningInDictionary:(NSDictionary *)dict;
 
 + (BOOL) blockIsRunningInLegacyDictionary:(NSDictionary*)dict;
-+ (NSDate*) endDateFromLegacyBlockDictionary:(NSDictionary *)dict;
 
 // read and write saved block files
 + (BOOL)writeBlocklistToFileURL:(NSURL*)targetFileURL blockInfo:(NSDictionary*)blockInfo errorDescription:(NSString**)errDescriptionRef;
@@ -51,7 +53,6 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
 // migration methods
 + (BOOL)legacySettingsFound:(uid_t)controllingUID;
 + (BOOL)legacySettingsFound;
-+ (BOOL)legacyBlockIsRunning:(uid_t)controllingUID;
 + (void)copyLegacySettingsToDefaults:(uid_t)controllingUID;
 + (void)copyLegacySettingsToDefaults;
 + (void)clearLegacySettings:(uid_t)controllingUID;

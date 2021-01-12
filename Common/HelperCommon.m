@@ -14,25 +14,6 @@
 #import "SCConstants.h"
 #import <ServiceManagement/ServiceManagement.h>
 
-BOOL blockIsRunningInSettingsOrDefaults(uid_t controllingUID) {
-    SCSettings* settings = [SCSettings sharedSettings];
-
-    // pull up the user's defaults to check for the existence of a legacy block
-    // to do that, we have to seteuid to the controlling UID so NSUserDefaults thinks we're them
-    seteuid(controllingUID);
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-    [defaults addSuiteNamed: @"org.eyebeam.SelfControl"];
-    [defaults synchronize];
-    NSDictionary* defaultsDict = defaults.dictionaryRepresentation;
-    // reset the euid so nothing else gets funky
-    [NSUserDefaults resetStandardUserDefaults];
-    seteuid(0);
-
-    BOOL response = [SCUtilities blockIsRunningWithSettings: settings defaultsDict: defaultsDict];
-        
-    return response;
-}
-
 void addRulesToFirewall() {
     SCSettings* settings = [SCSettings sharedSettings];
     BOOL shouldEvaluateCommonSubdomains = [settings boolForKey: @"EvaluateCommonSubdomains"];

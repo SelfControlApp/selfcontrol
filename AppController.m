@@ -362,7 +362,7 @@
 }
 
 - (BOOL)blockIsRunning {
-    return [SCUtilities blockIsRunningWithSettings: settings_ defaults: defaults_];
+    return [SCUtilities anyBlockIsRunning];
 }
 
 - (IBAction)showDomainList:(id)sender {

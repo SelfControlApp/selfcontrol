@@ -51,7 +51,7 @@ int main(int argc, char* argv[]) {
         }
         
 		if([modeString isEqual: @"--install"]) {
-            if (blockIsRunningInSettingsOrDefaults(controllingUID)) {
+            if ([SCUtilities anyBlockIsRunning: controllingUID]) {
                 NSLog(@"ERROR: Block is already running");
                 printStatus(-222);
                 exit(EX_CONFIG);
@@ -185,7 +185,7 @@ int main(int argc, char* argv[]) {
             NSLog(@" - Printing SelfControl secured settings for debug: - ");
             NSLog(@"%@", [settings dictionaryRepresentation]);
         } else if ([modeString isEqualToString: @"--is-running"]) {
-            BOOL blockIsRunning = [SCUtilities blockIsRunningWithSettings: settings defaultsDict: defaultsDict];
+            BOOL blockIsRunning = [SCUtilities anyBlockIsRunning: controllingUID];
             NSLog(@"%@", blockIsRunning ? @"YES" : @"NO");
         } else if ([modeString isEqualToString: @"--version"]) {
             NSLog(SELFCONTROL_VERSION_STRING);

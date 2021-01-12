@@ -148,31 +148,59 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
     return dictValue;
 }
 
++ (BOOL)anyBlockIsRunning:(uid_t)controllingUID {
+    return [SCUtilities modernBlockIsRunning] || [self legacyBlockIsRunning: controllingUID];
+}
++ (BOOL)anyBlockIsRunning {
+    return [SCUtilities anyBlockIsRunning: 0];
+}
 
-+ (BOOL) blockIsRunningWithSettings:(SCSettings*)settings defaultsDict:(NSDictionary*)defaultsDict {
-    // first we look for the answer in the SCSettings system
++ (BOOL)modernBlockIsRunning {
+    SCSettings* settings = [SCSettings sharedSettings];
+    
     if ([SCUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]) {
         return YES;
     }
-
-    // next we check the host file, and see if a block is in there
+    
+    // just in case something went wrong with settings, check the hosts file to see if there's reallya  block there
     NSString* hostFileContents = [NSString stringWithContentsOfFile: @"/etc/hosts" encoding: NSUTF8StringEncoding error: NULL];
     if(hostFileContents != nil && [hostFileContents rangeOfString: @"# BEGIN SELFCONTROL BLOCK"].location != NSNotFound) {
         return YES;
     }
 
-    // finally, we should check the legacy ways of storing a block (defaults and lockfile)
-    if ([SCUtilities blockIsRunningInDictionary: defaultsDict]) {
+    return NO;
+}
+
++ (BOOL)legacyBlockIsRunning:(uid_t)controllingUID {
+    // first see if there's a legacy settings file from v3.x
+    if (!controllingUID) controllingUID = getuid();
+    NSString* legacySettingsPath = [SCUtilities legacySecuredSettingsFilePathForUser: controllingUID];
+    NSDictionary* legacySettingsDict = [NSDictionary dictionaryWithContentsOfFile: legacySettingsPath];
+    if ([SCUtilities blockIsRunningInLegacyDictionary: legacySettingsDict]) {
+        return YES;
+    }
+    
+    // nope? OK, how about a lock file from pre-3.0?
+    if ([[NSFileManager defaultManager] fileExistsAtPath: SelfControlLegacyLockFilePath]) {
+        return YES;
+    }
+    
+    // hmm, is there anything in defaults from pre-3.0?
+    NSDictionary* defaultsDict = [SCUtilities defaultsDictForUser: controllingUID];
+    if ([SCUtilities blockIsRunningInLegacyDictionary: defaultsDict]) {
         return YES;
     }
 
-    // If there's no block in the hosts file, SCSettings block in the defaults, and no lock-file,
-    // we'll assume we're clear of blocks.  Checking pf would be nice but usually requires
-    // root permissions, so it would be difficult to do here.
-    return [[NSFileManager defaultManager] fileExistsAtPath: SelfControlLegacyLockFilePath];
+    // last try: check the host file, and see if a block is in there
+    NSString* hostFileContents = [NSString stringWithContentsOfFile: @"/etc/hosts" encoding: NSUTF8StringEncoding error: NULL];
+    if(hostFileContents != nil && [hostFileContents rangeOfString: @"# BEGIN SELFCONTROL BLOCK"].location != NSNotFound) {
+        return YES;
+    }
+    
+    return NO;
 }
-+ (BOOL) blockIsRunningWithSettings:(SCSettings*)settings defaults:(NSUserDefaults*)defaults {
-    return [SCUtilities blockIsRunningWithSettings: settings defaultsDict: defaults.dictionaryRepresentation];
++ (BOOL)legacyBlockIsRunning {
+    return [SCUtilities legacyBlockIsRunning: 0];
 }
 
 // returns YES if a block is actively running (to the best of our knowledge), and NO otherwise
@@ -213,18 +241,6 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
     } else {
         return NO;
     }
-}
-+ (NSDate*) endDateFromLegacyBlockDictionary:(NSDictionary *)dict {
-    NSDate* startDate = [dict objectForKey: @"BlockStartedDate"];
-    NSTimeInterval duration = [[dict objectForKey: @"BlockDuration"] floatValue];
-    
-    // if we don't have a start date in the past and a duration greater than 0, we don't have a block end date
-    if (startDate == nil || [startDate timeIntervalSinceNow] >= 0 || duration <= 0) {
-        return [NSDate distantPast];
-    }
-    
-    // convert the legacy start date to an end date
-    return [startDate dateByAddingTimeInterval: (duration * 60)];
 }
 
 + (BOOL)writeBlocklistToFileURL:(NSURL*)targetFileURL blockInfo:(NSDictionary*)blockInfo errorDescription:(NSString**)errDescriptionRef {
@@ -279,39 +295,24 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
 // check all legacy settings (old secured settings, lockfile, old-school defaults)
 // to see if there's anything there
 + (BOOL)legacySettingsFound:(uid_t)controllingUID {
+    if (!controllingUID) controllingUID = getuid();
     NSFileManager* fileMan = [NSFileManager defaultManager];
-    NSString* legacySettingsPath = [SCUtilities legacySecuredSettingsFilePathForUser: getuid()];
+    NSString* legacySettingsPath = [SCUtilities legacySecuredSettingsFilePathForUser: controllingUID];
     NSArray* defaultsHostBlacklist;
+
     if (geteuid() == 0 && controllingUID) {
-        // we're running as root, so get the defaults dictionary using our special function
+        // we're running as root, so get the defaults dictionary using our special function)
         NSDictionary* defaultsDict = [SCUtilities defaultsDictForUser: controllingUID];
         defaultsHostBlacklist = defaultsDict[@"HostBlacklist"];
     } else {
         // normal times, just use standard defaults
-        defaultsHostBlacklist = [[NSUserDefaults standardUserDefaults] arrayForKey: @"HostBlacklist"];
+        defaultsHostBlacklist = [[NSUserDefaults standardUserDefaults] objectForKey: @"HostBlacklist"];
     }
     
-    return (defaultsHostBlacklist != nil) || [fileMan fileExistsAtPath: legacySettingsPath] || [fileMan fileExistsAtPath: SelfControlLegacyLockFilePath];
+    return defaultsHostBlacklist || [fileMan fileExistsAtPath: legacySettingsPath] || [fileMan fileExistsAtPath: SelfControlLegacyLockFilePath];
 }
 + (BOOL)legacySettingsFound {
     return [SCUtilities legacySettingsFound: 0];
-}
-
-+ (BOOL)legacyBlockIsRunning:(uid_t)controllingUID {
-    NSString* legacySettingsPath = [SCUtilities legacySecuredSettingsFilePathForUser: controllingUID || getuid()];
-    NSDictionary* legacySettingsDict = [NSDictionary dictionaryWithContentsOfFile: legacySettingsPath];
-    NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLegacyLockFilePath];
-    // note that the defaults will generally only be defined in the main app, not helper tool (because helper tool runs as root)
-    NSDictionary* defaultsDict = [SCUtilities defaultsDictForUser: controllingUID];
-
-    // if we're gonna clear settings, there can't be a block running anywhere. otherwise, we should wait!
-    if ([SCUtilities blockIsRunningInLegacyDictionary: lockDict] ||
-        [SCUtilities blockIsRunningInLegacyDictionary: defaultsDict] ||
-        [SCUtilities blockIsRunningInLegacyDictionary: legacySettingsDict]) {
-        return YES;
-    } else {
-        return NO;
-    }
 }
 
 // copies settings from legacy locations (user-based secured settings used from 3.0-3.0.3,
@@ -327,6 +328,7 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
         NSLog(@"WARNING: Can't copy legacy settings to defaults, because SCSettings is being run as root and no controlling UID was sent.");
         return;
     }
+    if (!controllingUID) controllingUID = getuid();
 
     NSDictionary<NSString*, id>* defaultDefaults = SCConstants.defaultUserDefaults;
     // if we're running this as a normal user (generally that means app/CLI), it's easy: just get the standard user defaults
@@ -343,7 +345,7 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
     
     NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLegacyLockFilePath];
     
-    NSString* legacySettingsPath = [SCUtilities legacySecuredSettingsFilePathForUser: controllingUID || getuid()];
+    NSString* legacySettingsPath = [SCUtilities legacySecuredSettingsFilePathForUser: controllingUID];
     NSDictionary* settingsFromDisk = [NSDictionary dictionaryWithContentsOfFile: legacySettingsPath];
     
     // if we have a v3.x settings dictionary, copy what we can from that
@@ -449,6 +451,7 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
         [defaults removeObjectForKey: key];
     }
 
+    [defaults synchronize];
     [NSUserDefaults resetStandardUserDefaults];
     seteuid(0);
     

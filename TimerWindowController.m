@@ -94,7 +94,7 @@
 
 
 - (void)blockEnded {
-	if(![SCUtilities blockIsRunningWithSettings: settings_ defaults: [NSUserDefaults standardUserDefaults]]) {
+	if(![SCUtilities anyBlockIsRunning]) {
 		[timerUpdater_ invalidate];
 		timerUpdater_ = nil;
 
