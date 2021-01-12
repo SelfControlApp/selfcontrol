@@ -49,16 +49,36 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
 
 
 + (void)startBlockWithControllingUID:(uid_t)controllingUID blocklist:(NSArray<NSString*>*)blocklist isAllowlist:(BOOL)isAllowlist endDate:(NSDate*)endDate blockSettings:(NSDictionary*)blockSettings authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
-    NSLog(@"startign block in methods");
+    NSLog(@"startign block in methods (euid = %u, uid = %u)", geteuid(), getuid());
     if (![SCDaemonBlockMethods lockOrTimeout: reply]) {
         return;
     }
+    NSLog(@"ACQUIRED LOCK (euid = %u, uid = %u)", geteuid(), getuid());
     
-    // clear any legacy block information - no longer useful since we're using SCSettings now
-    // (and could potentially confuse things)
-    SCSettings* settings = [SCSettings settingsForUser: controllingUID];
-    [settings clearLegacySettings];
+    if (blockIsRunningInSettingsOrDefaults(controllingUID)) {
+        NSLog(@"ERROR: Can't start block since a block is already running");
+        NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain code: -299 userInfo: @{
+            NSLocalizedDescriptionKey: NSLocalizedString(@"Can't start block since a block is already running", nil)
+        }];
+        reply(err);
+        [self.daemonMethodLock unlock];
+        return;
+    }
     
+    // clear any legacy block information - no longer useful and could potentially confuse things
+    // but first, copy it over one more time (this should've already happened once in the app, but you never know)
+    NSLog(@"BEFORE CHECKIKNG LEGACY SETTINGS (euid = %u, uid = %u)", geteuid(), getuid());
+
+    if ([SCUtilities legacySettingsFound: controllingUID]) {
+        [SCUtilities copyLegacySettingsToDefaults: controllingUID];
+        [SCUtilities clearLegacySettings: controllingUID];
+        
+        // if we had legacy settings, there's a small chance the old helper tool could still be around
+        // make sure it's dead and gone
+        [LaunchctlHelper unloadLaunchdJobWithPlistAt:@"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
+    }    NSLog(@"BEFORE CHECKIKNG LEGACY SETTINGS (euid = %u, uid = %u)", geteuid(), getuid());
+
+    SCSettings* settings = [SCSettings sharedSettings];
     // update SCSettings with the blocklist and end date that've been requested
     NSLog(@"Replacing settings end date %@ with %@, and blocklist %@ with %@ (%@ of %@)", [settings valueForKey: @"BlockEndDate"], endDate, [settings valueForKey: @"ActiveBlocklist"], blocklist, [blocklist class], [blocklist[0] class]);
     [settings setValue: blocklist forKey: @"ActiveBlocklist"];
@@ -87,7 +107,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     }
 
     NSLog(@"Adding firewall rules...");
-    addRulesToFirewall(controllingUID);
+    addRulesToFirewall();
     [settings setValue: @YES forKey: @"BlockIsRunning"];
     [settings synchronizeSettings]; // synchronize ASAP since BlockIsRunning is a really important one
 
@@ -121,7 +141,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         return;
     }
     
-    SCSettings* settings = [SCSettings settingsForUser: controllingUID];
+    SCSettings* settings = [SCSettings sharedSettings];
         
     if ([settings boolForKey: @"ActiveBlockAsWhitelist"]) {
         NSLog(@"ERROR: Attempting to update active blocklist, but this is not possible with an allowlist block");
@@ -185,7 +205,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         return;
     }
     
-    SCSettings* settings = [SCSettings settingsForUser: controllingUID];
+    SCSettings* settings = [SCSettings sharedSettings];
     
     // this can only be used to *extend* the block end date - not shorten it!
     // and we also won't let them extend by more than 24 hours at a time, for safety...
@@ -224,7 +244,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         return;
     }
 
-    SCSettings* settings = [SCSettings settingsForUser: controllingUID];
+    SCSettings* settings = [SCSettings sharedSettings];
 
     if(![SCUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]) {
         // No block appears to be running at all in our settings.
@@ -235,7 +255,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         NSLog(@"INFO: Checkup ran, no active block found.");
         removeBlock(controllingUID);
 
-        [SCDaemonUtilities unloadDaemonJobForUID: controllingUID];
+        [SCDaemonUtilities unloadDaemonJob];
         
         // execution should never reach this point because we've unloaded
         syncSettingsAndExit(settings, EX_SOFTWARE);
@@ -254,7 +274,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         NSLog(@"INFO: Checkup ran, block expired, removing block.");
         
         removeBlock(controllingUID);
-        [SCDaemonUtilities unloadDaemonJobForUID: controllingUID];
+        [SCDaemonUtilities unloadDaemonJob];
 
         // Execution should never reach this point.  Launchd unloading the job in
         // should have killed this process. TODO: but maybe doesn't always with a daemon?
@@ -289,7 +309,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
             [hostFileBlocker deleteBackupHostsFile];
 
             // Perform the re-add of the rules
-            addRulesToFirewall(controllingUID);
+            addRulesToFirewall();
             
             clearCachesIfRequested(controllingUID);
             NSLog(@"INFO: Checkup ran, readded block rules.");

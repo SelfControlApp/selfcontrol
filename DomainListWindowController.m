@@ -153,7 +153,6 @@
    forTableColumn:(NSTableColumn *)tableColumn
 			  row:(int)row {
 	// this method is really inefficient. rewrite/optimize later.
-	[defaults_ synchronize];
 
 	// Initialize the cell's text color to black
 	[cell setTextColor: NSColor.textColor];

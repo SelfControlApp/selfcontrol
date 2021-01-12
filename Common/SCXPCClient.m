@@ -278,10 +278,11 @@
     static NSString* path;
 
     // Cache the path so it doesn't have to be searched for again.
-    if(!path) {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
         NSBundle* thisBundle = [NSBundle mainBundle];
         path = [thisBundle.bundlePath stringByAppendingString: @"/Contents/Library/LaunchServices/org.eyebeam.selfcontrold"];
-    }
+    });
 
     return path;
 }
@@ -290,12 +291,13 @@
     static char* path;
 
     // Cache the converted path so it doesn't have to be converted again
-    if(!path) {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
         path = malloc(512);
         [[self selfControlHelperToolPath] getCString: path
                                            maxLength: 512
                                             encoding: NSUTF8StringEncoding];
-    }
+    });
 
     return path;
 }

@@ -133,7 +133,7 @@ NSDictionary* veryLongBlockLegacyDict; // year-long block, one day in
 }
 
 - (void) testStartingAndRemovingBlocks {
-    SCSettings* settings = [SCSettings currentUserSettings];
+    SCSettings* settings = [SCSettings sharedSettings];
 
     XCTAssert(![SCUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]);
     XCTAssert(![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]);
@@ -145,11 +145,11 @@ NSDictionary* veryLongBlockLegacyDict; // year-long block, one day in
     XCTAssert(round(timeToBlockEnd) == 21600);
 
     // test removing a block
-    [SCUtilities removeBlockFromSettings: settings];
+    [SCUtilities removeBlockFromSettings];
     XCTAssert(![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]);
 }
 - (void) testModernBlockDetection {
-    SCSettings* settings = [SCSettings currentUserSettings];
+    SCSettings* settings = [SCSettings sharedSettings];
 
     XCTAssert(![SCUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]);
     XCTAssert(![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]);
@@ -165,7 +165,7 @@ NSDictionary* veryLongBlockLegacyDict; // year-long block, one day in
     XCTAssert([SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]);
 
     // remove the block
-    [SCUtilities removeBlockFromSettings: settings];
+    [SCUtilities removeBlockFromSettings];
     XCTAssert(![SCUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]);
     XCTAssert(![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]);
 }

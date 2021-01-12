@@ -8,6 +8,8 @@
 #import "SCUtilities.h"
 #import "HelperCommon.h"
 #import "SCSettings.h"
+#import "SCConstants.h"
+#include <pwd.h>
 
 @implementation SCUtilities
 
@@ -126,6 +128,26 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
     return @[[NSString stringWithFormat: @"%@%@%@", str, maskString, portString]];
 }
 
++ (NSDictionary*) defaultsDictForUser:(uid_t) controllingUID {
+    if (geteuid() != 0) {
+        // if we're not root, we can't just get defaults for some arbitrary user
+        return nil;
+    }
+    
+    // pull up the user's defaults in the old legacy way
+    // to do that, we have to seteuid to the controlling UID so NSUserDefaults thinks we're them
+    seteuid(controllingUID);
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    [defaults addSuiteNamed: @"org.eyebeam.SelfControl"];
+    [defaults synchronize];
+    NSDictionary* dictValue = [defaults dictionaryRepresentation];
+    // reset the euid so nothing else gets funky
+    [NSUserDefaults resetStandardUserDefaults];
+    seteuid(0);
+    
+    return dictValue;
+}
+
 
 + (BOOL) blockIsRunningWithSettings:(SCSettings*)settings defaultsDict:(NSDictionary*)defaultsDict {
     // first we look for the answer in the SCSettings system
@@ -150,7 +172,6 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
     return [[NSFileManager defaultManager] fileExistsAtPath: SelfControlLegacyLockFilePath];
 }
 + (BOOL) blockIsRunningWithSettings:(SCSettings*)settings defaults:(NSUserDefaults*)defaults {
-    [defaults synchronize];
     return [SCUtilities blockIsRunningWithSettings: settings defaultsDict: defaults.dictionaryRepresentation];
 }
 
@@ -170,24 +191,24 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
     }
 }
 
-+ (void) removeBlockFromSettings:(SCSettings*)settings {
++ (void) removeBlockFromSettings {
     // TODO: will this work setting nil instead of [NSDate dateWithTimeIntervalSince1970: 0]?
+    SCSettings* settings = [SCSettings sharedSettings];
     [settings setValue: nil forKey: @"BlockEndDate"];
     [settings setValue: nil forKey: @"BlockIsRunning"];
     [settings setValue: nil forKey: @"ActiveBlocklist"];
     [settings setValue: nil forKey: @"ActiveBlockAsWhitelist"];
 }
 
-+ (void) removeBlockFromSettingsForUID:(uid_t)uid {
-    SCSettings* settings = [SCSettings settingsForUser: uid];
-    [SCUtilities removeBlockFromSettings: settings];
-}
-
 + (BOOL)blockIsRunningInLegacyDictionary:(NSDictionary*)dict {
-    NSDate* blockStartedDate = [dict objectForKey:@"BlockStartedDate"];
+    if (dict == nil) return NO;
 
-    // the block is running if BlockStartedDate exists and isn't equal to the default value
-    if (blockStartedDate != nil && ![blockStartedDate isEqualToDate: [NSDate distantFuture]]) {
+    NSDate* blockStartedDate = [dict objectForKey:@"BlockStartedDate"];
+    BOOL blockIsRunningValue = [[dict objectForKey: @"BlockIsRunning"] boolValue];
+
+    // for v3.0-3.0.3: the block is running if the BlockIsRunning key is true
+    // super old legacy (pre-3.0): the block is running if BlockStartedDate exists and isn't equal to the default value
+    if (blockIsRunningValue || (blockStartedDate != nil && ![blockStartedDate isEqualToDate: [NSDate distantFuture]])) {
         return YES;
     } else {
         return NO;
@@ -242,5 +263,205 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
         @"BlockAsWhitelist": openedDict[@"BlockAsWhitelist"]
     };
 }
+
+// migration functions
+
++ (NSString*)homeDirectoryForUid:(uid_t)uid {
+    struct passwd *pwd = getpwuid(uid);
+    return [NSString stringWithCString: pwd->pw_dir encoding: NSString.defaultCStringEncoding];
+}
+
++ (NSString*)legacySecuredSettingsFilePathForUser:(uid_t)userId {
+    NSString* homeDir = [SCUtilities homeDirectoryForUid: userId];
+    return [[NSString stringWithFormat: @"%@/Library/Preferences/%@", homeDir, SCSettings.settingsFileName] stringByExpandingTildeInPath];
+}
+
+// check all legacy settings (old secured settings, lockfile, old-school defaults)
+// to see if there's anything there
++ (BOOL)legacySettingsFound:(uid_t)controllingUID {
+    NSFileManager* fileMan = [NSFileManager defaultManager];
+    NSString* legacySettingsPath = [SCUtilities legacySecuredSettingsFilePathForUser: getuid()];
+    NSArray* defaultsHostBlacklist;
+    if (geteuid() == 0 && controllingUID) {
+        // we're running as root, so get the defaults dictionary using our special function
+        NSDictionary* defaultsDict = [SCUtilities defaultsDictForUser: controllingUID];
+        defaultsHostBlacklist = defaultsDict[@"HostBlacklist"];
+    } else {
+        // normal times, just use standard defaults
+        defaultsHostBlacklist = [[NSUserDefaults standardUserDefaults] arrayForKey: @"HostBlacklist"];
+    }
+    
+    return (defaultsHostBlacklist != nil) || [fileMan fileExistsAtPath: legacySettingsPath] || [fileMan fileExistsAtPath: SelfControlLegacyLockFilePath];
+}
++ (BOOL)legacySettingsFound {
+    return [SCUtilities legacySettingsFound: 0];
+}
+
++ (BOOL)legacyBlockIsRunning:(uid_t)controllingUID {
+    NSString* legacySettingsPath = [SCUtilities legacySecuredSettingsFilePathForUser: controllingUID || getuid()];
+    NSDictionary* legacySettingsDict = [NSDictionary dictionaryWithContentsOfFile: legacySettingsPath];
+    NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLegacyLockFilePath];
+    // note that the defaults will generally only be defined in the main app, not helper tool (because helper tool runs as root)
+    NSDictionary* defaultsDict = [SCUtilities defaultsDictForUser: controllingUID];
+
+    // if we're gonna clear settings, there can't be a block running anywhere. otherwise, we should wait!
+    if ([SCUtilities blockIsRunningInLegacyDictionary: lockDict] ||
+        [SCUtilities blockIsRunningInLegacyDictionary: defaultsDict] ||
+        [SCUtilities blockIsRunningInLegacyDictionary: legacySettingsDict]) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+// copies settings from legacy locations (user-based secured settings used from 3.0-3.0.3,
+// or older defaults/lockfile used pre-3.0) to their modern destinations in NSUserDefaults.
+// does NOT update any of the values in SCSettings, and does NOT clear out settings from anywhere
+// that makes this safe to call anytime, includig while a block is running
++ (void)copyLegacySettingsToDefaults:(uid_t)controllingUID {
+    NSLog(@"Copying legacy settings to defaults...");
+    BOOL runningAsRoot = (geteuid() == 0);
+    if (runningAsRoot && !controllingUID) {
+        // if we're running as root, but we didn't get a valid non-root controlling UID
+        // we don't really have anywhere to copy those legacy settings to, because root doesn't have defaults
+        NSLog(@"WARNING: Can't copy legacy settings to defaults, because SCSettings is being run as root and no controlling UID was sent.");
+        return;
+    }
+
+    NSDictionary<NSString*, id>* defaultDefaults = SCConstants.defaultUserDefaults;
+    // if we're running this as a normal user (generally that means app/CLI), it's easy: just get the standard user defaults
+    // if we're running this as root, we need to be given a UID target, then we imitate them to grab their defaults
+    NSUserDefaults* defaults;
+    if (runningAsRoot) {
+        seteuid(controllingUID);
+        defaults = [NSUserDefaults standardUserDefaults];
+        [defaults addSuiteNamed: @"org.eyebeam.SelfControl"];
+        [defaults synchronize];
+    } else {
+        defaults = [NSUserDefaults standardUserDefaults];
+    }
+    
+    NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLegacyLockFilePath];
+    
+    NSString* legacySettingsPath = [SCUtilities legacySecuredSettingsFilePathForUser: controllingUID || getuid()];
+    NSDictionary* settingsFromDisk = [NSDictionary dictionaryWithContentsOfFile: legacySettingsPath];
+    
+    // if we have a v3.x settings dictionary, copy what we can from that
+    if (settingsFromDisk != nil) {
+        NSLog(@"Migrating all settings from legacy secured settings file %@", legacySettingsPath);
+
+        // we assume the settings from disk are newer / should override existing values
+        // UNLESS the user has set a default to its non-default value
+
+        // we'll look at all the possible keys in defaults - some of them should really
+        // have never ended up in settings at any point, but shouldn't matter
+        for (NSString* key in [defaultDefaults allKeys]) {
+            id settingsValue = settingsFromDisk[key];
+            id defaultsValue = [defaults objectForKey: key];
+            
+            // we have a value from settings, and the defaults value is unset or equal to the default value
+            // so pull the value from settings in!
+            if (settingsValue != nil && (defaultsValue == nil || [defaultsValue isEqualTo: defaultDefaults[key]])) {
+                NSLog(@"Migrating keypair (%@, %@) from settings to defaults", key, settingsValue);
+                [defaults setObject: settingsValue forKey: key];
+            }
+        }
+
+        NSLog(@"Done migrating preferences from legacy secured settings to defaults!");
+    }
+
+    // if we're on a pre-3.0 version, we may need to migrate the blocklist from defaults or the lock dictionary
+    // the Blocklist attribute used to be named HostBlacklist, so needs a special migration
+    NSArray<NSString*>* blocklistInDefaults = [defaults arrayForKey: @"Blocklist"];
+    // of course, don't overwrite if we already have a blocklist in today's defaults
+    if (blocklistInDefaults == nil || blocklistInDefaults.count == 0) {
+        if (lockDict != nil && lockDict[@"HostBlacklist"] != nil) {
+            [defaults setObject: lockDict[@"HostBlacklist"] forKey: @"Blocklist"];
+            NSLog(@"Migrated blocklist from pre-3.0 lock dictionary: %@", lockDict[@"HostBlacklist"]);
+        } else if ([defaults objectForKey: @"HostBlacklist"] != nil) {
+            [defaults setObject: [defaults objectForKey: @"HostBlacklist"] forKey: @"Blocklist"];
+            NSLog(@"Migrated blocklist from pre-3.0 legacy defaults: %@", [defaults objectForKey: @"HostBlacklist"]);
+        }
+    }
+    
+    // if we're running as root and imitated the user to get their defaults, we need to put things back in place when done
+    if (runningAsRoot) {
+        [NSUserDefaults resetStandardUserDefaults];
+        seteuid(0);
+    }
+    
+    NSLog(@"Done copying settings!");
+}
+
++ (void)copyLegacySettingsToDefaults {
+    [SCUtilities copyLegacySettingsToDefaults: 0];
+}
+
+// We might have "legacy" block settings hiding in one of three places:
+//  - a "lock file" at /etc/SelfControl.lock (aka SelfControlLegacyLockFilePath)
+//  - the defaults system
+//  - a v3.x per-user secured settings file
+// we should check for block settings in all of these places and get rid of them
++ (void)clearLegacySettings:(uid_t)controllingUID {
+    NSLog(@"Clearing legacy settings!");
+    
+    BOOL runningAsRoot = (geteuid() == 0);
+    if (!runningAsRoot || !controllingUID) {
+        // if we're not running as root, or we didn't get a valid non-root controlling UID
+        // we won't have permissions to make this work. This method MUST be called with root perms
+        NSLog(@"ERROR: Can't clear legacy settings, because we aren't running as root.");
+        return;
+    }
+    
+    // if we're gonna clear settings, there can't be a block running anywhere. otherwise, we should wait!
+    if ([SCUtilities legacyBlockIsRunning: controllingUID]) {
+        NSLog(@"ERROR: Can't clear legacy settings because a block is ongoing!");
+        return;
+    }
+
+    // besides Blocklist and the values copied from the v3.0-3.0.3 settings file to defaults in copyLegacySettingsToDefaults
+    // we actually don't need to move anything else over! Why?
+    //   1. The other settings from 3.0-3.0.3 don't matter as long as a block isn't running (i.e. BlockIsRunning should be false
+    //      and BlockEndDate shouldn't be set).
+    //   2. All of the non-block settings from pre-3.0 can stay in defaults, ahd BlockStartedDate should be false if no block running
+    // so all that's left is to clear out the legacy crap for good
+
+    // first, clear the pre-3.0 lock dictionary
+    NSError* removeLockFileErr;
+    NSFileManager* fileMan = [NSFileManager defaultManager];
+    if(![fileMan removeItemAtPath: SelfControlLegacyLockFilePath error: &removeLockFileErr] && [fileMan fileExistsAtPath: SelfControlLegacyLockFilePath]) {
+        NSLog(@"WARNING: Could not remove legacy SelfControl lock file because of error: %@", removeLockFileErr);
+    }
+    
+    // then, clear keys out of defaults which aren't used
+    // prepare defaults by imitating the appropriate user
+    seteuid(controllingUID);
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    [defaults addSuiteNamed: @"org.eyebeam.SelfControl"];
+    [defaults synchronize];
+
+    NSArray* defaultsKeysToClear = @[
+                             @"BlockStartedDate",
+                             @"BlockEndDate",
+                             @"HostBlacklist"
+                             ];
+    for (NSString* key in defaultsKeysToClear) {
+        [defaults removeObjectForKey: key];
+    }
+
+    [NSUserDefaults resetStandardUserDefaults];
+    seteuid(0);
+    
+    // finally, clear the old settings file if they have it from a v3.0-3.0.3 version
+    NSError* removeOldSettingsFileErr;
+    NSString* legacySettingsPath = [SCUtilities legacySecuredSettingsFilePathForUser: controllingUID];
+    if(![fileMan removeItemAtPath: legacySettingsPath error: &removeOldSettingsFileErr] && [fileMan fileExistsAtPath: legacySettingsPath]) {
+        NSLog(@"WARNING: Could not remove legacy SelfControl lock file because of error: %@", removeOldSettingsFileErr);
+    }
+    
+    // and that's it! note that we don't touch the modern SCSettings at all, and that's OK - it'll restart from scratch and be fine
+    NSLog(@"Cleared legacy settings!");
+}
+
 
 @end

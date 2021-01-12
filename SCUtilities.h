@@ -26,10 +26,11 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
 // eventually, another way to do this would just be to convert all blockStartedDates to blockEndDates on launch,
 // but that sounds risky (updating lock files is not guaranteed) and this seems safer for now...
 
++ (NSDictionary*) defaultsDictForUser:(uid_t)controllingUID;
+
 // Main app functions taking NSUserDefaults and SCSettings
 
-+ (void) removeBlockFromSettings:(SCSettings*)settings;
-+ (void) removeBlockFromSettingsForUID:(uid_t)uid;
++ (void) removeBlockFromSettings;
 
 // Helper tool functions dealing with dictionaries and setDefaultsValue helper
 
@@ -46,5 +47,13 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
 // read and write saved block files
 + (BOOL)writeBlocklistToFileURL:(NSURL*)targetFileURL blockInfo:(NSDictionary*)blockInfo errorDescription:(NSString**)errDescriptionRef;
 + (NSDictionary*)readBlocklistFromFile:(NSURL*)fileURL;
+
+// migration methods
++ (BOOL)legacySettingsFound:(uid_t)controllingUID;
++ (BOOL)legacySettingsFound;
++ (BOOL)legacyBlockIsRunning:(uid_t)controllingUID;
++ (void)copyLegacySettingsToDefaults:(uid_t)controllingUID;
++ (void)copyLegacySettingsToDefaults;
++ (void)clearLegacySettings:(uid_t)controllingUID;
 
 @end

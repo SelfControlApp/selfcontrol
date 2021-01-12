@@ -49,27 +49,15 @@
 	if(self = [super init]) {
 
 		defaults_ = [NSUserDefaults standardUserDefaults];
-        settings_ = [SCSettings currentUserSettings];
-        
-		NSDictionary* appDefaults = @{
-                                      @"Blocklist": @[],
-									  @"HighlightInvalidHosts": @YES,
-									  @"VerifyInternetConnection": @YES,
-									  @"TimerWindowFloats": @NO,
-									  @"BadgeApplicationIcon": @YES,
-									  @"MaxBlockLength": @1440,
-									  @"BlockLengthInterval": @15,
-									  @"WhitelistAlertSuppress": @NO,
-									  @"GetStartedShown": @NO,
-                                      @"EvaluateCommonSubdomains": @YES,
-                                      @"IncludeLinkedDomains": @YES,
-                                      @"BlockSoundShouldPlay": @NO,
-                                      @"BlockSound": @5,
-                                      @"ClearCaches": @YES,
-                                      @"AllowLocalNetworks": @YES
-                                      };
+        settings_ = [SCSettings sharedSettings];
 
-		[defaults_ registerDefaults:appDefaults];
+		[defaults_ registerDefaults: SCConstants.defaultUserDefaults];
+        
+        // go copy over any preferences from legacy setting locations
+        // (we won't clear any old data yet - we leave that to the daemon)
+        if ([SCUtilities legacySettingsFound]) {
+            [SCUtilities copyLegacySettingsToDefaults];
+        }
 
 		self.addingBlock = false;
 
@@ -130,7 +118,6 @@
 }
 
 - (IBAction)addBlock:(id)sender {
-	[defaults_ synchronize];
     if ([self blockIsRunning]) {
 		// This method shouldn't be getting called, a block is on so the Start button should be disabled.
 		NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
@@ -200,10 +187,6 @@
 		}
 	} else { // block is off
 		if(blockWasOn) { // if we just switched states to off...
-            // Now that the current block is over, we can go ahead and remove the legacy block info
-            // and migrate them to the new SCSettings system
-            [[SCSettings currentUserSettings] clearLegacySettings];
-
 			[timerWindowController_ blockEnded];
 
 			// Makes sure the domain list will refresh when it comes back
@@ -221,8 +204,6 @@
 
 			[self closeTimerWindow];
 		}
-
-		[defaults_ synchronize];
 
 		[self updateTimeSliderDisplay: blockDurationSlider_];
 
@@ -246,7 +227,6 @@
 		// if block's off, and we haven't shown it yet, show the first-time modal
 		if (![defaults_ boolForKey: @"GetStartedShown"]) {
 			[defaults_ setBool: YES forKey: @"GetStartedShown"];
-			[defaults_ synchronize];
 			[self showGetStartedWindow: self];
 		}
 	}
@@ -278,7 +258,7 @@
 
 - (void)handleConfigurationChangedNotification {
     // if our configuration changed, we should assume the settings may have changed
-    [[SCSettings currentUserSettings] reloadSettings];
+    [[SCSettings sharedSettings] reloadSettings];
     // and our interface may need to change to match!
     [self refreshUserInterface];
 }
@@ -628,6 +608,7 @@
                 
                 // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
                 [self->settings_ synchronizeSettings];
+                [self->defaults_ synchronize];
 
                 // ok, the new helper tool is installed! refresh the connection, then it's time to start the block
                 [self.xpc refreshConnectionAndRun:^{
@@ -653,7 +634,7 @@
                         }
                         
                         // get the new settings
-                        [settings_ synchronizeSettingsWithCompletion:^(NSError * _Nullable error) {
+                        [self->settings_ synchronizeSettingsWithCompletion:^(NSError * _Nullable error) {
                             self.addingBlock = false;
                             [self refreshUserInterface];
                         }];
@@ -672,6 +653,7 @@
 
     // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
     [settings_ synchronizeSettings];
+    [defaults_ synchronize];
 
     [self.xpc refreshConnectionAndRun:^{
         NSLog(@"Refreshed connection updating active blocklist!");
@@ -701,7 +683,6 @@
     }
 
     [defaults_ setInteger: [newBlockDuration intValue] forKey: @"BlockDuration"];
-    [defaults_ synchronize];
 }
 
 - (void)updateBlockEndDate:(NSLock*)lockToUse minutesToAdd:(NSInteger)minutesToAdd {
@@ -716,6 +697,7 @@
 
     // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
     [settings_ synchronizeSettings];
+    [defaults_ synchronize];
 
     [self.xpc refreshConnectionAndRun:^{
         // Before we try to extend the block, make sure the block time didn't run out (or is about to run out) in the meantime

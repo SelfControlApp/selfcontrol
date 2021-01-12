@@ -15,7 +15,7 @@
 #import <ServiceManagement/ServiceManagement.h>
 
 BOOL blockIsRunningInSettingsOrDefaults(uid_t controllingUID) {
-    SCSettings* settings = [SCSettings settingsForUser: controllingUID];
+    SCSettings* settings = [SCSettings sharedSettings];
 
     // pull up the user's defaults to check for the existence of a legacy block
     // to do that, we have to seteuid to the controlling UID so NSUserDefaults thinks we're them
@@ -23,33 +23,18 @@ BOOL blockIsRunningInSettingsOrDefaults(uid_t controllingUID) {
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
     [defaults addSuiteNamed: @"org.eyebeam.SelfControl"];
     [defaults synchronize];
-    
-    BOOL response = [SCUtilities blockIsRunningWithSettings: settings defaults: defaults];
-    
+    NSDictionary* defaultsDict = defaults.dictionaryRepresentation;
     // reset the euid so nothing else gets funky
     [NSUserDefaults resetStandardUserDefaults];
     seteuid(0);
-    
+
+    BOOL response = [SCUtilities blockIsRunningWithSettings: settings defaultsDict: defaultsDict];
+        
     return response;
 }
 
-NSDictionary* defaultsDictForUser(uid_t controllingUID) {
-    // pull up the user's defaults to check for the existence of a legacy block
-    // to do that, we have to seteuid to the controlling UID so NSUserDefaults thinks we're them
-    seteuid(controllingUID);
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-    [defaults addSuiteNamed: @"org.eyebeam.SelfControl"];
-    [defaults synchronize];
-    NSDictionary* dictValue = [defaults dictionaryRepresentation];
-    // reset the euid so nothing else gets funky
-    [NSUserDefaults resetStandardUserDefaults];
-    seteuid(0);
-    
-    return dictValue;
-}
-
-void addRulesToFirewall(uid_t controllingUID) {
-    SCSettings* settings = [SCSettings settingsForUser: controllingUID];
+void addRulesToFirewall() {
+    SCSettings* settings = [SCSettings sharedSettings];
     BOOL shouldEvaluateCommonSubdomains = [settings boolForKey: @"EvaluateCommonSubdomains"];
 	BOOL allowLocalNetworks = [settings boolForKey: @"AllowLocalNetworks"];
 	BOOL includeLinkedDomains = [settings boolForKey: @"IncludeLinkedDomains"];
@@ -67,7 +52,7 @@ void addRulesToFirewall(uid_t controllingUID) {
 
 }
 
-void removeRulesFromFirewall(uid_t controllingUID) {
+void removeRulesFromFirewall() {
 	// options don't really matter because we're only using it to clear
 	BlockManager* blockManager = [[BlockManager alloc] init];
 	[blockManager clearBlock];
@@ -76,10 +61,10 @@ void removeRulesFromFirewall(uid_t controllingUID) {
 	//  it is important that the UI get updated (by the posted
 	//  notification) before we sleep to play the sound.  Otherwise,
 	// the app seems unresponsive and slow.
-    SCSettings* settings = [SCSettings settingsForUser: controllingUID];
+    SCSettings* settings = [SCSettings sharedSettings];
     if([settings boolForKey: @"BlockSoundShouldPlay"]) {
 		// Map the tags used in interface builder to the sound
-        NSArray* systemSoundNames = [SCConstants systemSoundNames];
+        NSArray* systemSoundNames = SCConstants.systemSoundNames;
         NSSound* alertSound = [NSSound soundNamed: systemSoundNames[[[settings valueForKey: @"BlockSound"] intValue]]];
 		if(!alertSound)
 			NSLog(@"WARNING: Alert sound not found.");
@@ -136,7 +121,7 @@ NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, int port) {
 }
 
 void clearCachesIfRequested(uid_t controllingUID) {
-    SCSettings* settings = [SCSettings settingsForUser: controllingUID];
+    SCSettings* settings = [SCSettings sharedSettings];
     if(![settings boolForKey: @"ClearCaches"]) {
         return;
     }
@@ -201,15 +186,11 @@ void printStatus(int status) {
 }
 
 void removeBlock(uid_t controllingUID) {
-    SCSettings* settings = [SCSettings settingsForUser: controllingUID];
+    SCSettings* settings = [SCSettings sharedSettings];
 
-    [SCUtilities removeBlockFromSettingsForUID: controllingUID];
-	removeRulesFromFirewall(controllingUID);
-    
-    // go ahead and remove any remaining legacy block info at the same time to avoid confusion
-    // (and migrate them to the new SCSettings system if not already migrated)
-    [settings clearLegacySettings];
-    
+    [SCUtilities removeBlockFromSettings];
+	removeRulesFromFirewall();
+        
     // always synchronize settings ASAP after removing a block to let everybody else know
     [settings synchronizeSettings];
 

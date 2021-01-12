@@ -8,7 +8,6 @@
 #import "SCSettings.h"
 #include <IOKit/IOKitLib.h>
 #import <CommonCrypto/CommonCrypto.h>
-#include <pwd.h>
 #import "SCUtilities.h"
 #import <AppKit/AppKit.h>
 #import "SCConstants.h"
@@ -31,7 +30,7 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etcx/";
 /* TODO: move these two functions to a utility class */
 
 // by Martin R et al on StackOverflow: https://stackoverflow.com/a/15451318
-- (NSString *)getSerialNumber {
++ (NSString *)getSerialNumber {
     NSString *serial = nil;
     io_service_t platformExpert = IOServiceGetMatchingService(kIOMasterPortDefault,
                                                               IOServiceMatching("IOPlatformExpertDevice"));
@@ -49,7 +48,7 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etcx/";
     return serial;
 }
 // by hypercrypt et al on StackOverflow: https://stackoverflow.com/a/7571583
-- (NSString *)sha1:(NSString*)stringToHash
++ (NSString *)sha1:(NSString*)stringToHash
 {
     NSData *data = [stringToHash dataUsingEncoding:NSUTF8StringEncoding];
     uint8_t digest[CC_SHA1_DIGEST_LENGTH];
@@ -65,44 +64,23 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etcx/";
     
     return output;
 }
-- (NSString*)homeDirectoryForUid:(uid_t)uid {
-    struct passwd *pwd = getpwuid(uid);
-    return [NSString stringWithCString: pwd->pw_dir encoding: NSString.defaultCStringEncoding];
-}
 
-+ (instancetype)settingsForUser:(uid_t)uid {
-    // on first run, set up a cache of SCSettings objects so can reuse the same one for a given user
-    static NSMutableDictionary* settingsForUserIds;
++ (instancetype)sharedSettings {
+    static SCSettings* globalSettings = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        settingsForUserIds = [NSMutableDictionary new];
+        globalSettings = [SCSettings new];
     });
-    
-    @synchronized (settingsForUserIds) {
-        if (settingsForUserIds[@(uid)] == nil) {
-            // no settings object yet for this UID, instantiate one
-            settingsForUserIds[@(uid)] = [[self alloc] initWithUserId: uid];
-        }
-    }
-    
-    // return the settings object we've got cached for this user id!
-    return settingsForUserIds[@(uid)];
-}
-+ (instancetype)currentUserSettings {
-    return [SCSettings settingsForUser: getuid()];
-}
-+ (instancetype)sharedSettings {
-    return [SCSettings settingsForUser: 0];
+    return globalSettings;
 }
 
-- (instancetype)initWithUserId:(uid_t)userId {
+- (instancetype)init {
     if (self = [super init]) {
         // we will only write out settings if we have root permissions (i.e. the EUID is 0)
         // otherwise, we won't/shouldn't have permissions to write to the settings file
         // in practice, what this means is that the daemon writes settings, and the app/CLI only read
         _readOnly = (geteuid() != 0);
         
-        _userId = userId;
         _settingsDict = nil;
         
         [[NSDistributedNotificationCenter defaultCenter] addObserver: self
@@ -113,19 +91,26 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etcx/";
     }
     return self;
 }
-- (instancetype)init {
-    return [self initWithUserId: 0];
-}
 
-- (NSString*)settingsFileName {
-    return [NSString stringWithFormat: @".%@.plist", [self sha1: [NSString stringWithFormat: @"SelfControlUserPreferences%@", [self getSerialNumber]]]];
++ (NSString*)settingsFileName {
+    static NSString* fileName = nil;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        fileName = [NSString stringWithFormat: @".%@.plist", [SCSettings sha1: [NSString stringWithFormat: @"SelfControlUserPreferences%@", [SCSettings getSerialNumber]]]];
+    });
+
+    return fileName;
 }
-- (NSString*)securedSettingsFilePath {
-    return [NSString stringWithFormat: @"%@%@", SETTINGS_FILE_DIR, [self settingsFileName]];
-}
-- (NSString*)legacySecuredSettingsFilePathForUser:(uid_t)userId {
-    NSString* homeDir = [self homeDirectoryForUid: userId];
-    return [[NSString stringWithFormat: @"%@/Library/Preferences/%@", homeDir, [self settingsFileName]] stringByExpandingTildeInPath];
++ (NSString*)securedSettingsFilePath {
+    static NSString* filePath = nil;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        filePath = [NSString stringWithFormat: @"%@%@", SETTINGS_FILE_DIR, SCSettings.settingsFileName];
+    });
+
+    return filePath;
 }
 
 // NOTE: there should be a default setting for each valid setting, even if it's nil/zero/etc
@@ -156,7 +141,7 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etcx/";
     // make sure we only load the settings dictionary once, even if called simultaneously from multiple threads
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        self->_settingsDict = [NSMutableDictionary dictionaryWithContentsOfFile: [self securedSettingsFilePath]];
+        self->_settingsDict = [NSMutableDictionary dictionaryWithContentsOfFile: SCSettings.securedSettingsFilePath];
         
         BOOL isTest = [[NSUserDefaults standardUserDefaults] boolForKey: @"isTest"];
         if (isTest) NSLog(@"Ignoring settings on disk because we're unit-testing");
@@ -166,9 +151,8 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etcx/";
         // also if we're running tests, just use the default dict
         if (self->_settingsDict == nil || isTest) {
             self->_settingsDict = [[self defaultSettingsDict] mutableCopy];
-            [self migrateLegacySettings];
             
-            // write out our brand-new migrated settings to disk!
+            // write out our brand-new settings to disk!
             if (!self.readOnly) {
                 [self writeSettings];
             }
@@ -214,7 +198,7 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etcx/";
     }
 
     @synchronized (self) {
-        NSDictionary* settingsFromDisk = [NSDictionary dictionaryWithContentsOfFile: [self securedSettingsFilePath]];
+        NSDictionary* settingsFromDisk = [NSDictionary dictionaryWithContentsOfFile: SCSettings.securedSettingsFilePath];
         
         int diskSettingsVersion = [settingsFromDisk[@"SettingsVersionNumber"] intValue];
         int memorySettingsVersion = [[self valueForKey: @"SettingsVersionNumber"] intValue];
@@ -252,6 +236,7 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etcx/";
     }
 }
 - (void)writeSettingsWithCompletion:(nullable void(^)(NSError* _Nullable))completionBlock {
+    NSLog(@"STARTING WRITESETTINGSWITHCOMPLETION (euid = %u, uid = %u)", geteuid(), getuid());
     @synchronized (self) {
         if (self.readOnly) {
             NSLog(@"WARNING: Read-only SCSettings instance can't write out settings");
@@ -272,6 +257,7 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etcx/";
         
         // don't spend time on the main thread writing out files - it's OK for this to happen without blocking other things
         dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSLog(@"STARTING DISPATCH SYNC (euid = %u, uid = %u)", geteuid(), getuid());
             NSError* serializationErr;
             NSData* plistData = [NSPropertyListSerialization dataWithPropertyList: self.settingsDict
                                                                            format: NSPropertyListBinaryFormat_v1_0
@@ -294,11 +280,11 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etcx/";
                                                                                        }
                                                                                             error: &createDirectoryErr];
             if (!createDirectorySuccessful) {
-                NSLog(@"WARNING: Failed to create %@ folder to store SCSettings. Error was %@", SETTINGS_FILE_DIR, createDirectoryErr);
+                NSLog(@"WARNING: Failed to create %@ folder to store SCSettings (euid = %u, uid = %u). Error was %@", SETTINGS_FILE_DIR, geteuid(), getuid(), createDirectoryErr);
             }
 
             NSError* writeErr;
-            BOOL writeSuccessful = [plistData writeToFile: self.securedSettingsFilePath
+            BOOL writeSuccessful = [plistData writeToFile: SCSettings.securedSettingsFilePath
                                                   options: NSDataWritingAtomic
                                                     error: &writeErr
                                     ];
@@ -310,19 +296,19 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etcx/";
                                         NSFileGroupOwnerAccountID: [NSNumber numberWithUnsignedLong: 0],
                                         NSFilePosixPermissions: [NSNumber numberWithShort: 0755]
                                     }
-                                    ofItemAtPath: self.securedSettingsFilePath
+                                    ofItemAtPath: SCSettings.securedSettingsFilePath
                                     error: &chmodErr];
 
             if (writeSuccessful) {
                 self.lastSynchronizedWithDisk = [NSDate date];
-                NSLog(@"wrote %@ to %@", plistData, self.securedSettingsFilePath);
+                NSLog(@"wrote %@ to %@", plistData, SCSettings.securedSettingsFilePath);
             }
 
             if (!writeSuccessful) {
-                NSLog(@"Failed to write secured settings to file %@", self.securedSettingsFilePath);
+                NSLog(@"Failed to write secured settings to file %@", SCSettings.securedSettingsFilePath);
                 if (completionBlock != nil) completionBlock(writeErr);
             } else if (!chmodSuccessful) {
-                NSLog(@"Failed to change secured settings file owner/permissions secured settings for file %@ with error %@", self.securedSettingsFilePath, chmodErr);
+                NSLog(@"Failed to change secured settings file owner/permissions secured settings for file %@ with error %@", SCSettings.securedSettingsFilePath, chmodErr);
                 if (completionBlock != nil) completionBlock(chmodErr);
             } else {
                 if (completionBlock != nil) completionBlock(nil);
@@ -432,133 +418,6 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etcx/";
     return [[self valueForKey: key] boolValue];
 }
 
-// We might have "legacy" block settings hiding in one of two places:
-//  - a "lock file" at /etc/SelfControl.lock (aka SelfControlLegacyLockFilePath)
-//  - the defaults system
-// we should check for block settings in both of these places and move them to the new SCSettings system
-// (defaults continues to be used for some settings that only affect the UI and don't need to be read by helper tools)
-// NOTE: this method should only be called when SCSettings is uninitialized, since it will overwrite any existing settings
-// NOTE2: this method does NOT clear the settings from legacy locations, because that may break ongoing blocks being cleared
-//        by older versions of the helper tool. Instead, we will clean out legacy locations from the helper when
-//        blocks are started or finished.
-// NOTE3: this method always pulls user defaults for the current user, regardless of what instance it's called on
-- (void)migrateLegacySettings {
-    // try to migrate from the user-based secured settings model (v3.0-3.0.3)
-    // basically, we're gonna take the most-recently-updated settings, if they exist
-    // of course, we can only access settings that are readable to us, i.e.
-    // if this first gets run as user X, they generally won't be able to read user Y's prefs
-    NSFileManager* fileManager = [NSFileManager defaultManager];
-    NSArray<NSURL*>* libraryURLs = [fileManager URLsForDirectory: NSLibraryDirectory inDomains: NSAllDomainsMask];
-    NSMutableArray<NSString*>* preferencePaths = [NSMutableArray arrayWithCapacity: libraryURLs.count];
-    for (NSURL* libraryURL in libraryURLs) {
-        [preferencePaths addObject: [NSString stringWithFormat: @"%@/Preferences/%@", libraryURL.path, [self settingsFileName]]];
-    }
-    NSDictionary* latestSettingsDict;
-    for (NSString* prefPath in preferencePaths) {
-        if ([fileManager isReadableFileAtPath: prefPath]) {
-
-            NSDictionary* settingsFromDisk = [NSDictionary dictionaryWithContentsOfFile: prefPath];
-            if (!settingsFromDisk) continue;
-            
-            if (latestSettingsDict == nil || [settingsFromDisk[@"LastSettingsUpdate"] timeIntervalSinceDate: latestSettingsDict[@"LastSettingsUpdate"]] > 0) {
-                latestSettingsDict = settingsFromDisk;
-            }
-        }
-    }
-    
-    if (latestSettingsDict != nil) {
-        NSLog(@"Migrating all settings from %@", latestSettingsDict);
-
-        for (NSString* key in [[self defaultSettingsDict] allKeys]) {
-            if (latestSettingsDict[key] != nil) {
-                [self setValue: latestSettingsDict[key] forKey: key];
-            }
-        }
-
-        // Blocklist setting no longer in use (moved to ActiveBlocklist)
-        [self setValue: nil forKey: @"Blocklist"];
-
-        NSLog(@"Migrated!");
-        return;
-    }
-    
-    
-    // if no user-based secured settings exist, we try to read from the even older legacy defaults settings
-    
-    
-    NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLegacyLockFilePath];
-    // note that the defaults will generally only be defined in the main app, not helper tool (because helper tool runs as root)
-    NSDictionary* userDefaultsDict = [NSUserDefaults standardUserDefaults].dictionaryRepresentation;
-    
-    // prefer reading from the lock file, using defaults as a backup only
-    for (NSString* key in [[self defaultSettingsDict] allKeys]) {
-        if (lockDict[key] != nil) {
-            [self setValue: lockDict[key] forKey: key];
-        } else if (userDefaultsDict[key] != nil) {
-            [self setValue: userDefaultsDict[key] forKey: key];
-        }
-    }
-
-    // Blocklist attribute was renamed so needs a special migration
-    if (lockDict[@"HostBlacklist"] != nil) {
-        [self setValue: lockDict[@"HostBlacklist"] forKey: @"Blocklist"];
-    } else if (userDefaultsDict[@"HostBlacklist"] != nil) {
-        [self setValue: userDefaultsDict[@"HostBlacklist"] forKey: @"Blocklist"];
-    }
-
-    // BlockStartedDate was migrated to a simpler BlockEndDate property (which doesn't require BlockDuration to function)
-    // so we need to specially convert the old BlockStartedDate into BlockEndDates
-    // NOTE: we do NOT set BlockIsRunning to YES in Settings for a legacy migration
-    // Why? the old version of the helper tool is still involved, and it doesn't know
-    // to clear that setting. So it will stay stuck on.
-    if ([SCUtilities blockIsRunningInLegacyDictionary: lockDict]) {
-        [self setValue: [SCUtilities endDateFromLegacyBlockDictionary: lockDict] forKey: @"BlockEndDate"];
-    } else if ([SCUtilities blockIsRunningInDictionary: userDefaultsDict]) {
-        [self setValue: [SCUtilities endDateFromLegacyBlockDictionary: userDefaultsDict] forKey: @"BlockEndDate"];
-    }
-}
-
-// NOTE: this method always clears the user defaults for the current user, regardless of what instance
-// it's called on
-- (void)clearLegacySettings {
-    // TODO: figure out what this should do in the new world!
-    return;
-    
-    // make sure the settings dictionary is set up (and migration has occurred if necessary)
-    [self initializeSettingsDict];
-
-    NSError* err;
-
-    // no more need for the old lock file!
-    if(![[NSFileManager defaultManager] removeItemAtPath: SelfControlLegacyLockFilePath error: &err] && [[NSFileManager defaultManager] fileExistsAtPath: SelfControlLegacyLockFilePath]) {
-        NSLog(@"WARNING: Could not remove legacy SelfControl lock file because of error: %@", err);
-    }
-
-    // clear keys out of user defaults which are now stored in SCSettings
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    NSArray* defaultsKeysToClear = @[
-                             @"BlockStartedDate",
-                             @"HostBlacklist",
-                             @"EvaluateCommonSubdomains",
-                             @"IncludeLinkedDomains",
-                             @"BlockSoundShouldPlay",
-                             @"BlockSound",
-                             @"ClearCaches",
-                             @"AllowLocalNetworks"
-                             ];
-    for (NSString* key in defaultsKeysToClear) {
-        [userDefaults removeObjectForKey: key];
-    }
-    
-    // clear keys out of SCSettings which are no longer used
-    NSArray* settingsKeysToClear = @[
-                             @"Blocklist",
-                             @"BlockAsWhitelist"
-                             ];
-    for (NSString* key in settingsKeysToClear) {
-        [self setValue:nil forKey: key];
-    }
-}
 - (void)startSyncTimer {
     if (self.syncTimer != nil) {
         // we already have a timer, so no need to start another

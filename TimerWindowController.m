@@ -35,7 +35,7 @@
 
 - (TimerWindowController*) init {
 	if(self = [super init]) {
-        settings_ = [SCSettings currentUserSettings];
+        settings_ = [SCSettings sharedSettings];
         
 		// We need a block to prevent us from running multiple copies of the "Add to Block"
 		// sheet.
@@ -331,11 +331,8 @@
         if (bytesRead < 1) break;
     }
         
-    // Now that[ the current block is over, we can go ahead and remove the legacy block info
-    // and migrate them to the new SCSettings system
-    // (and reload settings so the timer window knows the block is done)
-    [[SCSettings currentUserSettings] reloadSettings];
-    [[SCSettings currentUserSettings] clearLegacySettings];
+    // reload settings so the timer window knows the block is done
+    [[SCSettings sharedSettings] reloadSettings];
         
     // update the UI _before_ we run the alert,
     // so the main window doesn't steal the focus from the alert

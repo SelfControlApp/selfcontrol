@@ -24,17 +24,6 @@
 
 @implementation LaunchctlHelper
 
-+ (int)loadLaunchdJobWithPlistAt:(NSString*)pathToLaunchdPlist {
-	NSTask* task = [[NSTask alloc] init];
-	[task setLaunchPath: @"/bin/launchctl"];
-	[task setArguments: @[@"load",
-						  @"-w",
-						  pathToLaunchdPlist]];
-	[task launch];
-	[task waitUntilExit];
-	return [task terminationStatus];
-}
-
 + (int)unloadLaunchdJobWithPlistAt:(NSString*)pathToLaunchdPlist {
 	NSTask* task = [[NSTask alloc] init];
 	[task setLaunchPath: @"/bin/launchctl"];

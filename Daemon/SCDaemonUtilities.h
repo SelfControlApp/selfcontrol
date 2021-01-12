@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SCDaemonUtilities : NSObject
 
-+ (void)unloadDaemonJobForUID:(uid_t)controllingUID;
++ (void)unloadDaemonJob;
 
 @end
 

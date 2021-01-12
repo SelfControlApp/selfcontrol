@@ -23,12 +23,12 @@
 - (void)viewDidLoad  {
     // set the valid sounds in the Block Sound menu
     [self.soundMenu removeAllItems];
-    [self.soundMenu addItemsWithTitles: [SCConstants systemSoundNames]];
+    [self.soundMenu addItemsWithTitles: SCConstants.systemSoundNames];
 }
 
 - (IBAction)soundSelectionChanged:(NSPopUpButton*)sender {
 	// Map the tags used in interface builder to the sound
-    NSArray<NSString*>* systemSoundNames = [SCConstants systemSoundNames];
+    NSArray<NSString*>* systemSoundNames = SCConstants.systemSoundNames;
 	
     NSString* selectedSoundName = sender.titleOfSelectedItem;
     NSInteger blockSoundIndex = [systemSoundNames indexOfObject: selectedSoundName];

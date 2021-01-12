@@ -91,6 +91,7 @@ static NSDictionary* kAuthorizationRuleAuthenticateAsAdmin5MinTimeout;
     }
     
     dispatch_once(&sOnceToken, ^{
+        #pragma clang diagnostic ignored "-Wundeclared-selector"
         sCommandInfo = @{
             NSStringFromSelector(@selector(startBlockWithControllingUID:blocklist:isAllowlist:endDate:blockSettings:authorization:reply:)) : @{
                 kCommandKeyAuthRightName    : @"org.eyebeam.SelfControl.startBlock",
@@ -116,6 +117,7 @@ static NSDictionary* kAuthorizationRuleAuthenticateAsAdmin5MinTimeout;
                     @"prompt shown when user is required to authorize to extend their blockc"
                 )
             }
+            #pragma clang diagnostic pop
         };
     });
     return sCommandInfo;

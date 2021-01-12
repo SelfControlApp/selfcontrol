@@ -39,13 +39,13 @@ int main(int argc, char* argv[]) {
 		// We'll need the controlling UID to know what settings to read
 		uid_t controllingUID = [@(argv[1]) intValue];
 
-        SCSettings* settings = [SCSettings settingsForUser: controllingUID];
+        SCSettings* settings = [SCSettings sharedSettings];
         
         NSDictionary* defaultsDict;
         // if we're running as root/sudo and we have a controlling UID, use defaults for the controlling user (legacy behavior)
         // otherwise, just use the current user's defaults (modern behavior)
         if (geteuid() == 0 && controllingUID > 0) {
-            defaultsDict = defaultsDictForUser(controllingUID);
+            defaultsDict = [SCUtilities defaultsDictForUser: controllingUID];
         } else {
             defaultsDict = [NSUserDefaults standardUserDefaults].dictionaryRepresentation;
         }
@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
 
             NSArray* blocklist;
             NSDate* blockEndDate;
-            BOOL blockAsWhitelist;
+            BOOL blockAsWhitelist = NO;
             NSDictionary* blockSettings;
             
             // there are two ways we can read in the core block parameters (Blocklist, BlockEndDate, BlockAsWhitelist):

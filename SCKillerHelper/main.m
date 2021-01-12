@@ -84,7 +84,7 @@ int main(int argc, char* argv[]) {
 		seteuid(0);
 
         // and print new secured settings, if they exist
-        SCSettings* settings = [SCSettings settingsForUser: controllingUID];
+        SCSettings* settings = [SCSettings sharedSettings];
         [log appendFormat: @"Current secured settings:\n\n:%@\n", settings.dictionaryRepresentation];
 
 		NSFileManager* fileManager = [NSFileManager defaultManager];
@@ -194,7 +194,7 @@ int main(int argc, char* argv[]) {
         
         // Now that the current block is over, we can go ahead and remove the legacy block info
         // and migrate them to the new SCSettings system
-        [settings clearLegacySettings];
+        // [settings clearLegacySettings];
         [log appendString: @"\nMigrating settings to new system...\n"];
         
         // OK, make sure all settings are synced before this thing exits
