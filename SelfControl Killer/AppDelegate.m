@@ -52,7 +52,7 @@
 	}
     
     // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
-    [[SCSettings currentUserSettings] synchronizeSettings];
+    [[SCSettings sharedSettings] synchronizeSettings];
 
 	char uidString[10];
 	snprintf(uidString, sizeof(uidString), "%d", getuid());
@@ -93,10 +93,11 @@
 	static NSString* path;
 
 	// Cache the path so it doesn't have to be searched for again.
-	if(!path) {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
 		NSBundle* thisBundle = [NSBundle mainBundle];
 		path = [thisBundle pathForAuxiliaryExecutable: @"SCKillerHelper"];
-	}
+    });
 
 	return path;
 }

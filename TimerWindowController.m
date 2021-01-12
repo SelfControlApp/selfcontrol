@@ -35,7 +35,7 @@
 
 - (TimerWindowController*) init {
 	if(self = [super init]) {
-        settings_ = [SCSettings currentUserSettings];
+        settings_ = [SCSettings sharedSettings];
         
 		// We need a block to prevent us from running multiple copies of the "Add to Block"
 		// sheet.
@@ -73,10 +73,24 @@
     killBlockButton_.attributedTitle = killBlockMutableAttributedTitle;
 
 	killBlockButton_.hidden = YES;
-	addToBlockButton_.hidden = NO;
-    extendBlockButton_.hidden = NO;
+	addToBlockButton_.enabled = NO;
+    extendBlockButton_.enabled = NO;
 
-    blockEndingDate_ = [settings_ valueForKey: @"BlockEndDate"];
+    if ([SCUtilities modernBlockIsRunning]) {
+        blockEndingDate_ = [settings_ valueForKey: @"BlockEndDate"];
+    } else {
+        // legacy block!
+        blockEndingDate_ = [SCUtilities legacyBlockEndDate];
+        
+        // if it's a legacy block, we will disable some features
+        // since it's too difficult to get these working across versions.
+        // the user will just have to wait until their next block to do these things!
+        if ([SCUtilities legacyBlockIsRunning]) {
+            addToBlockButton_.enabled = YES;
+            extendBlockButton_.enabled = YES;
+        }
+
+    }
 
 	[self updateTimerDisplay: nil];
 
@@ -94,7 +108,7 @@
 
 
 - (void)blockEnded {
-	if(![SCUtilities blockIsRunningWithSettings: settings_ defaults: [NSUserDefaults standardUserDefaults]]) {
+	if(![SCUtilities anyBlockIsRunning]) {
 		[timerUpdater_ invalidate];
 		timerUpdater_ = nil;
 
@@ -191,7 +205,10 @@
 	}
     
     // make sure add to list is disabled if it's an allowlist block
-    addToBlockButton_.hidden = [[NSUserDefaults standardUserDefaults] boolForKey: @"BlockAsWhitelist"];
+    // don't worry about it for a legacy block! the buttons are disabled anyway so it doesn't matter
+    if ([SCUtilities modernBlockIsRunning]) {
+        addToBlockButton_.hidden = [settings_ boolForKey: @"ActiveBlockAsWhitelist"];
+    }
 }
 
 - (void)windowShouldClose:(NSNotification *)notification {
@@ -255,7 +272,13 @@
 }
 
 - (void) blockEndDateUpdated {
-    blockEndingDate_ = [settings_ valueForKey: @"BlockEndDate"];
+    if ([SCUtilities modernBlockIsRunning]) {
+        blockEndingDate_ = [settings_ valueForKey: @"BlockEndDate"];
+
+    } else {
+        // legacy block!
+        blockEndingDate_ = [SCUtilities legacyBlockEndDate];
+    }
     
     [self performSelectorOnMainThread: @selector(updateTimerDisplay:) withObject:nil waitUntilDone: YES];
 }
@@ -331,11 +354,8 @@
         if (bytesRead < 1) break;
     }
         
-    // Now that[ the current block is over, we can go ahead and remove the legacy block info
-    // and migrate them to the new SCSettings system
-    // (and reload settings so the timer window knows the block is done)
-    [[SCSettings currentUserSettings] reloadSettings];
-    [[SCSettings currentUserSettings] clearLegacySettings];
+    // reload settings so the timer window knows the block is done
+    [[SCSettings sharedSettings] reloadSettings];
         
     // update the UI _before_ we run the alert,
     // so the main window doesn't steal the focus from the alert

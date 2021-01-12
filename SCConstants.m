@@ -12,20 +12,55 @@ NSString *const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 @implementation SCConstants
 
 +  (NSArray<NSString*>*)systemSoundNames {
-    return @[@"Basso",
-             @"Blow",
-             @"Bottle",
-             @"Frog",
-             @"Funk",
-             @"Glass",
-             @"Hero",
-             @"Morse",
-             @"Ping",
-             @"Pop",
-             @"Purr",
-             @"Sosumi",
-             @"Submarine",
-             @"Tink"];
+    static NSArray<NSString*>* soundsArr = nil;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        soundsArr = @[@"Basso",
+                      @"Blow",
+                      @"Bottle",
+                      @"Frog",
+                      @"Funk",
+                      @"Glass",
+                      @"Hero",
+                      @"Morse",
+                      @"Ping",
+                      @"Pop",
+                      @"Purr",
+                      @"Sosumi",
+                      @"Submarine",
+                      @"Tink"];
+    });
+    
+    return soundsArr;
+}
+
++ (NSDictionary<NSString*, id>*)defaultUserDefaults {
+    static NSDictionary<NSString*, id>* defaultDefaultsDict = nil;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        defaultDefaultsDict = @{
+            @"Blocklist": @[],
+            @"BlockAsWhitelist": @NO,
+            @"HighlightInvalidHosts": @YES,
+            @"VerifyInternetConnection": @YES,
+            @"TimerWindowFloats": @NO,
+            @"BadgeApplicationIcon": @YES,
+            @"MaxBlockLength": @1440,
+            @"BlockLengthInterval": @15,
+            @"WhitelistAlertSuppress": @NO,
+            @"GetStartedShown": @NO,
+            @"EvaluateCommonSubdomains": @YES,
+            @"IncludeLinkedDomains": @YES,
+            @"BlockSoundShouldPlay": @NO,
+            @"BlockSound": @5,
+            @"ClearCaches": @YES,
+            @"AllowLocalNetworks": @YES
+        };
+    });
+    
+    return defaultDefaultsDict;
 }
 
 @end

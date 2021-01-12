@@ -39,19 +39,19 @@ int main(int argc, char* argv[]) {
 		// We'll need the controlling UID to know what settings to read
 		uid_t controllingUID = [@(argv[1]) intValue];
 
-        SCSettings* settings = [SCSettings settingsForUser: controllingUID];
+        SCSettings* settings = [SCSettings sharedSettings];
         
         NSDictionary* defaultsDict;
         // if we're running as root/sudo and we have a controlling UID, use defaults for the controlling user (legacy behavior)
         // otherwise, just use the current user's defaults (modern behavior)
         if (geteuid() == 0 && controllingUID > 0) {
-            defaultsDict = defaultsDictForUser(controllingUID);
+            defaultsDict = [SCUtilities defaultsDictForUser: controllingUID];
         } else {
             defaultsDict = [NSUserDefaults standardUserDefaults].dictionaryRepresentation;
         }
         
 		if([modeString isEqual: @"--install"]) {
-            if (blockIsRunningInSettingsOrDefaults(controllingUID)) {
+            if ([SCUtilities anyBlockIsRunning: controllingUID]) {
                 NSLog(@"ERROR: Block is already running");
                 printStatus(-222);
                 exit(EX_CONFIG);
@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
 
             NSArray* blocklist;
             NSDate* blockEndDate;
-            BOOL blockAsWhitelist;
+            BOOL blockAsWhitelist = NO;
             NSDictionary* blockSettings;
             
             // there are two ways we can read in the core block parameters (Blocklist, BlockEndDate, BlockAsWhitelist):
@@ -185,7 +185,7 @@ int main(int argc, char* argv[]) {
             NSLog(@" - Printing SelfControl secured settings for debug: - ");
             NSLog(@"%@", [settings dictionaryRepresentation]);
         } else if ([modeString isEqualToString: @"--is-running"]) {
-            BOOL blockIsRunning = [SCUtilities blockIsRunningWithSettings: settings defaultsDict: defaultsDict];
+            BOOL blockIsRunning = [SCUtilities anyBlockIsRunning: controllingUID];
             NSLog(@"%@", blockIsRunning ? @"YES" : @"NO");
         } else if ([modeString isEqualToString: @"--version"]) {
             NSLog(SELFCONTROL_VERSION_STRING);

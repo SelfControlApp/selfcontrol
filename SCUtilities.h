@@ -26,25 +26,36 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
 // eventually, another way to do this would just be to convert all blockStartedDates to blockEndDates on launch,
 // but that sounds risky (updating lock files is not guaranteed) and this seems safer for now...
 
++ (NSDictionary*) defaultsDictForUser:(uid_t)controllingUID;
+
 // Main app functions taking NSUserDefaults and SCSettings
 
-+ (void) removeBlockFromSettings:(SCSettings*)settings;
-+ (void) removeBlockFromSettingsForUID:(uid_t)uid;
++ (void) removeBlockFromSettings;
 
 // Helper tool functions dealing with dictionaries and setDefaultsValue helper
 
 // uses the below methods as well as filesystem checks to see if the block is REALLY running or not
-+ (BOOL) blockIsRunningWithSettings:(SCSettings*)settings defaults:(NSUserDefaults*)defaults;
-+ (BOOL) blockIsRunningWithSettings:(SCSettings*)settings defaultsDict:(NSDictionary*)defaultsDict;
++ (BOOL)anyBlockIsRunning:(uid_t)controllingUID;
++ (BOOL)anyBlockIsRunning;
++ (BOOL)modernBlockIsRunning;
++ (BOOL)legacyBlockIsRunning:(uid_t)controllingUID;
++ (BOOL)legacyBlockIsRunning;
 
 + (BOOL) blockIsRunningInDictionary:(NSDictionary*)dict;
 + (BOOL) blockShouldBeRunningInDictionary:(NSDictionary *)dict;
 
 + (BOOL) blockIsRunningInLegacyDictionary:(NSDictionary*)dict;
-+ (NSDate*) endDateFromLegacyBlockDictionary:(NSDictionary *)dict;
 
 // read and write saved block files
 + (BOOL)writeBlocklistToFileURL:(NSURL*)targetFileURL blockInfo:(NSDictionary*)blockInfo errorDescription:(NSString**)errDescriptionRef;
 + (NSDictionary*)readBlocklistFromFile:(NSURL*)fileURL;
+
+// migration methods
++ (BOOL)legacySettingsFound:(uid_t)controllingUID;
++ (BOOL)legacySettingsFound;
++ (NSDate*)legacyBlockEndDate;
++ (void)copyLegacySettingsToDefaults:(uid_t)controllingUID;
++ (void)copyLegacySettingsToDefaults;
++ (void)clearLegacySettings:(uid_t)controllingUID;
 
 @end

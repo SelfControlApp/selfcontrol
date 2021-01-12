@@ -141,7 +141,6 @@ BOOL appendMode = NO;
 	}
 
 	if(hostsBlockingEnabled && ![hostName isEqualToString: @"*"] && !portNum && !isIP) {
-        NSLog(@"About to add rule for %@, append mode is %d", hostName, appendMode);
         if (appendMode) {
             [hostsBlocker appendExistingBlockWithRuleForDomain: hostName];
         } else {

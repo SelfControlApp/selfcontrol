@@ -10,6 +10,7 @@
 #import <ServiceManagement/ServiceManagement.h>
 #import "SCConstants.h"
 #import "SCXPCAuthorization.h"
+#import "SCUtilities.h"
 
 @interface SCXPCClient () {
     AuthorizationRef    _authRef;
@@ -90,7 +91,7 @@
                         self.daemonConnection = nil;
                     });
                 }
-                NSLog(@"connection invalidated");
+                NSLog(@"CONNECTION INVALIDATED");
             }
         };
         // our interruption handler is just our invalidation handler, except we retry afterward
@@ -108,9 +109,13 @@
 
         #pragma clang diagnostic pop
         [self.daemonConnection resume];
-        
+                
         NSLog(@"Started helper connection!");
     }
+}
+
+- (BOOL)isConnected {
+    return (self.daemonConnection != nil);
 }
 
 - (void)installDaemon:(void(^)(NSError*))callback {
@@ -207,17 +212,17 @@
     commandBlock(nil);
 }
 
-// Called when the user clicks the Get Version button.  This is the simplest form of
-// NSXPCConnection request because it doesn't require any authorization.
-- (void)getVersion {
+- (void)getVersion:(void(^)(NSString* version, NSError* error))reply {
     [self connectAndExecuteCommandBlock:^(NSError * connectError) {
         if (connectError != nil) {
-            NSLog(@"%@", connectError);
+            NSLog(@"Failed to get daemon version with connection error: %@", connectError);
+            reply(nil, connectError);
         } else {
             [[self.daemonConnection remoteObjectProxyWithErrorHandler:^(NSError * proxyError) {
-                NSLog(@"%@", proxyError);
-            }] getVersionWithReply:^(NSString *version) {
-                NSLog(@"version = %@\n", version);
+                NSLog(@"Failed to get daemon version with remote object proxy error: %@", proxyError);
+                reply(nil, proxyError);
+            }] getVersionWithReply:^(NSString * _Nonnull version) {
+                reply(version, nil);
             }];
         }
     }];
@@ -278,10 +283,11 @@
     static NSString* path;
 
     // Cache the path so it doesn't have to be searched for again.
-    if(!path) {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
         NSBundle* thisBundle = [NSBundle mainBundle];
         path = [thisBundle.bundlePath stringByAppendingString: @"/Contents/Library/LaunchServices/org.eyebeam.selfcontrold"];
-    }
+    });
 
     return path;
 }
@@ -290,12 +296,13 @@
     static char* path;
 
     // Cache the converted path so it doesn't have to be converted again
-    if(!path) {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
         path = malloc(512);
         [[self selfControlHelperToolPath] getCString: path
                                            maxLength: 512
                                             encoding: NSUTF8StringEncoding];
-    }
+    });
 
     return path;
 }

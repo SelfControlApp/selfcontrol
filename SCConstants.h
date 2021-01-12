@@ -13,7 +13,8 @@ FOUNDATION_EXPORT NSString *const kSelfControlErrorDomain;
 
 @interface SCConstants : NSObject
 
-+ (NSArray<NSString*>*) systemSoundNames;
+@property (class, readonly, nonatomic) NSArray<NSString*>* systemSoundNames;
+@property (class, readonly, nonatomic) NSDictionary<NSString*, id>* const defaultUserDefaults;
 
 @end
 

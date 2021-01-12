@@ -32,6 +32,7 @@
 #import <ServiceManagement/ServiceManagement.h>
 #import "SCXPCClient.h"
 #import "SCConstants.h"
+#import "version-header.h"
 
 @interface AppController () {}
 
@@ -49,27 +50,15 @@
 	if(self = [super init]) {
 
 		defaults_ = [NSUserDefaults standardUserDefaults];
-        settings_ = [SCSettings currentUserSettings];
-        
-		NSDictionary* appDefaults = @{
-                                      @"Blocklist": @[],
-									  @"HighlightInvalidHosts": @YES,
-									  @"VerifyInternetConnection": @YES,
-									  @"TimerWindowFloats": @NO,
-									  @"BadgeApplicationIcon": @YES,
-									  @"MaxBlockLength": @1440,
-									  @"BlockLengthInterval": @15,
-									  @"WhitelistAlertSuppress": @NO,
-									  @"GetStartedShown": @NO,
-                                      @"EvaluateCommonSubdomains": @YES,
-                                      @"IncludeLinkedDomains": @YES,
-                                      @"BlockSoundShouldPlay": @NO,
-                                      @"BlockSound": @5,
-                                      @"ClearCaches": @YES,
-                                      @"AllowLocalNetworks": @YES
-                                      };
+        settings_ = [SCSettings sharedSettings];
 
-		[defaults_ registerDefaults:appDefaults];
+		[defaults_ registerDefaults: SCConstants.defaultUserDefaults];
+        
+        // go copy over any preferences from legacy setting locations
+        // (we won't clear any old data yet - we leave that to the daemon)
+        if ([SCUtilities legacySettingsFound]) {
+            [SCUtilities copyLegacySettingsToDefaults];
+        }
 
 		self.addingBlock = false;
 
@@ -130,7 +119,6 @@
 }
 
 - (IBAction)addBlock:(id)sender {
-	[defaults_ synchronize];
     if ([self blockIsRunning]) {
 		// This method shouldn't be getting called, a block is on so the Start button should be disabled.
 		NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
@@ -198,12 +186,8 @@
 			[initialWindow_ close];
 			[self closeDomainList];
 		}
-	} else { // block is off
+    } else { // block is off
 		if(blockWasOn) { // if we just switched states to off...
-            // Now that the current block is over, we can go ahead and remove the legacy block info
-            // and migrate them to the new SCSettings system
-            [[SCSettings currentUserSettings] clearLegacySettings];
-
 			[timerWindowController_ blockEnded];
 
 			// Makes sure the domain list will refresh when it comes back
@@ -221,8 +205,6 @@
 
 			[self closeTimerWindow];
 		}
-
-		[defaults_ synchronize];
 
 		[self updateTimeSliderDisplay: blockDurationSlider_];
 
@@ -246,7 +228,6 @@
 		// if block's off, and we haven't shown it yet, show the first-time modal
 		if (![defaults_ boolForKey: @"GetStartedShown"]) {
 			[defaults_ setBool: YES forKey: @"GetStartedShown"];
-			[defaults_ synchronize];
 			[self showGetStartedWindow: self];
 		}
 	}
@@ -278,7 +259,7 @@
 
 - (void)handleConfigurationChangedNotification {
     // if our configuration changed, we should assume the settings may have changed
-    [[SCSettings currentUserSettings] reloadSettings];
+    [[SCSettings sharedSettings] reloadSettings];
     // and our interface may need to change to match!
     [self refreshUserInterface];
 }
@@ -329,9 +310,37 @@
     
     // start up our daemon XPC
     self.xpc = [SCXPCClient new];
-     [self.xpc connectToHelperTool];
+    [self.xpc connectToHelperTool];
+    
+    // if we don't have a connection within 0.5 seconds,
+    // OR we get back a connection with an old daemon version
+    // AND we're running a modern block (which should have a daemon running it)
+    // something's wrong with our app-daemon connection. This probably means one of two things:
+    //   1. The daemon got unloaded somehow and failed to restart. This is a big problem because the block won't come off.
+    //   2. The daemon doesn't want to talk to us anymore, potentially because we've changed our signing certificate. This is a
+    //      smaller problem, but still not great because the app can't communicate anything to the daemon.
+    //   3. There's a daemon but it's an old version, and should be replaced.
+    // in any case, let's go try to reinstall the daemon
+    // (we debounce this call so it happens only once, after the connection has been invalidated for an extended period)
+    if ([SCUtilities modernBlockIsRunning]) {
+        [NSTimer scheduledTimerWithTimeInterval: 0.5 repeats: NO block:^(NSTimer * _Nonnull timer) {
+            [self.xpc getVersion:^(NSString * _Nonnull daemonVersion, NSError * _Nonnull error) {
+                if (error == nil) {
+                    if ([SELFCONTROL_VERSION_STRING compare: daemonVersion options: NSNumericSearch] == NSOrderedDescending) {
+                        NSLog(@"Daemon version of %@ is out of date (current version is %@).", daemonVersion, SELFCONTROL_VERSION_STRING);
+                        [self reinstallDaemon];
+                    } else {
+                        NSLog(@"Daemon version of %@ is up-to-date!", daemonVersion);
+                    }
+                } else {
+                    NSLog(@"ERROR: Fetching daemon version failed with error %@", error);
+                    [self reinstallDaemon];
+                }
+            }];
+        }];
+    }
 
-	// Register observers on both distributed and normal notification centers
+    // Register observers on both distributed and normal notification centers
 	// to receive notifications from the helper tool and the other parts of the
 	// main SelfControl app.  Note that they are divided thusly because distributed
 	// notifications are very expensive and should be minimized.
@@ -381,8 +390,23 @@
     [settings_ synchronizeSettings];
 }
 
+- (void)reinstallDaemon {
+    NSLog(@"Attempting to reinstall daemon...");
+    [self.xpc installDaemon:^(NSError * _Nonnull error) {
+        if (error == nil) {
+            NSLog(@"Reinstalled daemon successfully!");
+            
+            NSLog(@"Retrying helper tool connection...");
+            [self.xpc performSelectorOnMainThread: @selector(connectToHelperTool) withObject: nil waitUntilDone: YES];
+        } else {
+            NSLog(@"ERROR: Reinstalling daemon failed with error %@", error);
+            [NSApp presentError: error];
+        }
+    }];
+}
+
 - (BOOL)blockIsRunning {
-    return [SCUtilities blockIsRunningWithSettings: settings_ defaults: defaults_];
+    return [SCUtilities anyBlockIsRunning];
 }
 
 - (IBAction)showDomainList:(id)sender {
@@ -628,6 +652,7 @@
                 
                 // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
                 [self->settings_ synchronizeSettings];
+                [self->defaults_ synchronize];
 
                 // ok, the new helper tool is installed! refresh the connection, then it's time to start the block
                 [self.xpc refreshConnectionAndRun:^{
@@ -653,7 +678,7 @@
                         }
                         
                         // get the new settings
-                        [settings_ synchronizeSettingsWithCompletion:^(NSError * _Nullable error) {
+                        [self->settings_ synchronizeSettingsWithCompletion:^(NSError * _Nullable error) {
                             self.addingBlock = false;
                             [self refreshUserInterface];
                         }];
@@ -672,6 +697,7 @@
 
     // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
     [settings_ synchronizeSettings];
+    [defaults_ synchronize];
 
     [self.xpc refreshConnectionAndRun:^{
         NSLog(@"Refreshed connection updating active blocklist!");
@@ -701,7 +727,6 @@
     }
 
     [defaults_ setInteger: [newBlockDuration intValue] forKey: @"BlockDuration"];
-    [defaults_ synchronize];
 }
 
 - (void)updateBlockEndDate:(NSLock*)lockToUse minutesToAdd:(NSInteger)minutesToAdd {
@@ -716,6 +741,7 @@
 
     // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
     [settings_ synchronizeSettings];
+    [defaults_ synchronize];
 
     [self.xpc refreshConnectionAndRun:^{
         // Before we try to extend the block, make sure the block time didn't run out (or is about to run out) in the meantime

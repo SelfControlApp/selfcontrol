@@ -133,7 +133,7 @@ NSDictionary* veryLongBlockLegacyDict; // year-long block, one day in
 }
 
 - (void) testStartingAndRemovingBlocks {
-    SCSettings* settings = [SCSettings currentUserSettings];
+    SCSettings* settings = [SCSettings sharedSettings];
 
     XCTAssert(![SCUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]);
     XCTAssert(![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]);
@@ -145,11 +145,11 @@ NSDictionary* veryLongBlockLegacyDict; // year-long block, one day in
     XCTAssert(round(timeToBlockEnd) == 21600);
 
     // test removing a block
-    [SCUtilities removeBlockFromSettings: settings];
+    [SCUtilities removeBlockFromSettings];
     XCTAssert(![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]);
 }
 - (void) testModernBlockDetection {
-    SCSettings* settings = [SCSettings currentUserSettings];
+    SCSettings* settings = [SCSettings sharedSettings];
 
     XCTAssert(![SCUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]);
     XCTAssert(![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]);
@@ -165,7 +165,7 @@ NSDictionary* veryLongBlockLegacyDict; // year-long block, one day in
     XCTAssert([SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]);
 
     // remove the block
-    [SCUtilities removeBlockFromSettings: settings];
+    [SCUtilities removeBlockFromSettings];
     XCTAssert(![SCUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]);
     XCTAssert(![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]);
 }
@@ -181,25 +181,6 @@ NSDictionary* veryLongBlockLegacyDict; // year-long block, one day in
     XCTAssert([SCUtilities blockIsRunningInLegacyDictionary: negativeBlockDurationLegacyDict]); // negative still might be running?
     XCTAssert([SCUtilities blockIsRunningInLegacyDictionary: veryLongBlockLegacyDict]);
     XCTAssert(![SCUtilities blockIsRunningInLegacyDictionary: emptyLegacyDict]);
-    
-    // test endDateFromLegacyBlockDictionary
-    NSDate* activeBlockEndDate = [SCUtilities endDateFromLegacyBlockDictionary: activeBlockLegacyDict];
-    NSDate* expiredBlockEndDate = [SCUtilities endDateFromLegacyBlockDictionary: expiredBlockLegacyDict];
-    NSDate* noBlockBlockEndDate = [SCUtilities endDateFromLegacyBlockDictionary: noBlockLegacyDict];
-    NSDate* noBlock2BlockEndDate = [SCUtilities endDateFromLegacyBlockDictionary: noBlockLegacyDict2];
-    NSDate* futureStartBlockEndDate = [SCUtilities endDateFromLegacyBlockDictionary: futureStartDateLegacyDict];
-    NSDate* negativeDurationBlockEndDate = [SCUtilities endDateFromLegacyBlockDictionary: negativeBlockDurationLegacyDict];
-    NSDate* veryLongBlockEndDate = [SCUtilities endDateFromLegacyBlockDictionary: veryLongBlockLegacyDict];
-    NSDate* emptyBlockEndDate = [SCUtilities endDateFromLegacyBlockDictionary: emptyLegacyDict];
-
-    XCTAssert(round([activeBlockEndDate timeIntervalSinceNow]) == 300); // 5 min from now
-    XCTAssert(round([expiredBlockEndDate timeIntervalSinceNow]) == -10); // 10 seconds ago
-    XCTAssert([noBlockBlockEndDate isEqualToDate: [NSDate distantPast]]); // no block should be active
-    XCTAssert([noBlock2BlockEndDate isEqualToDate: [NSDate distantPast]]); // no block should be active
-    XCTAssert([futureStartBlockEndDate isEqualToDate: [NSDate distantPast]]); // no block should be active
-    XCTAssert([negativeDurationBlockEndDate isEqualToDate: [NSDate distantPast]]); // no block should be active
-    XCTAssert(round([veryLongBlockEndDate timeIntervalSinceNow]) == 25833600); // 299 days from now
-    XCTAssert([emptyBlockEndDate isEqualToDate: [NSDate distantPast]]); // block should be expired
 }
 
 @end

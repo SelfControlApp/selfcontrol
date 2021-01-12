@@ -16,10 +16,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) NSDictionary* dictionaryRepresentation;
 @property (nonatomic, readonly, getter=isReadOnly) BOOL readOnly;
 
-+ (instancetype)currentUserSettings;
-+ (instancetype)settingsForUser:(uid_t)uid;
+@property (class, nonatomic, readonly) NSString* settingsFileName;
+@property (class, nonatomic, readonly) NSString* securedSettingsFilePath;
 
-- (NSString*)securedSettingsFilePath;
++ (instancetype)sharedSettings;
 
 - (void)reloadSettings;
 - (void)writeSettingsWithCompletion:(nullable void(^)(NSError* _Nullable))completionBlock;
@@ -30,8 +30,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setValue:(nullable id)value forKey:(NSString*)key;
 - (id)valueForKey:(NSString*)key;
 - (BOOL)boolForKey:(NSString*)key;
-- (void)migrateLegacySettings;
-- (void)clearLegacySettings;
 
 @end
 

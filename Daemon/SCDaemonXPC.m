@@ -12,10 +12,6 @@
 
 @implementation SCDaemonXPC
 
-// TODO: CHECK AUTHORIZATION ON WRITE METHODS!
-
-
-// TODO: make this run without dependence on the user or even settings - should just pass the blocklist right to the method
 - (void)startBlockWithControllingUID:(uid_t)controllingUID blocklist:(NSArray<NSString*>*)blocklist isAllowlist:(BOOL)isAllowlist endDate:(NSDate*)endDate blockSettings:(NSDictionary*)blockSettings authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
     NSLog(@"XPC method called: startBlockWithControllingUID");
     
