@@ -400,6 +400,7 @@
             [self.xpc performSelectorOnMainThread: @selector(connectToHelperTool) withObject: nil waitUntilDone: YES];
         } else {
             NSLog(@"ERROR: Reinstalling daemon failed with error %@", error);
+            [NSApp presentError: error];
         }
     }];
 }

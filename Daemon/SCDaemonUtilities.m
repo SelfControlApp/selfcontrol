@@ -14,6 +14,7 @@
 @implementation SCDaemonUtilities
 
 + (void)unloadDaemonJob {
+    NSLog(@"Unloading SelfControl daemon...");
     SCSettings* settings = [SCSettings sharedSettings];
 
     // we're about to unload the launchd job
@@ -27,7 +28,7 @@
         CFErrorRef cfError;
         SMJobRemove(kSMDomainSystemLaunchd, CFSTR("org.eyebeam.selfcontrold"), NULL, NO, &cfError);
         if (cfError) {
-            NSLog(@"Failed to remove selfcontrold daemon with error %@", cfError);
+            NSLog(@"WARNING: Failed to remove selfcontrold daemon with error %@", cfError);
         }
     }];
         
