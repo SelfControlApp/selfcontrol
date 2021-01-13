@@ -73,10 +73,24 @@
     killBlockButton_.attributedTitle = killBlockMutableAttributedTitle;
 
 	killBlockButton_.hidden = YES;
-	addToBlockButton_.hidden = NO;
-    extendBlockButton_.hidden = NO;
+	addToBlockButton_.enabled = NO;
+    extendBlockButton_.enabled = NO;
 
-    blockEndingDate_ = [settings_ valueForKey: @"BlockEndDate"];
+    if ([SCUtilities modernBlockIsRunning]) {
+        blockEndingDate_ = [settings_ valueForKey: @"BlockEndDate"];
+    } else {
+        // legacy block!
+        blockEndingDate_ = [SCUtilities legacyBlockEndDate];
+        
+        // if it's a legacy block, we will disable some features
+        // since it's too difficult to get these working across versions.
+        // the user will just have to wait until their next block to do these things!
+        if ([SCUtilities legacyBlockIsRunning]) {
+            addToBlockButton_.enabled = YES;
+            extendBlockButton_.enabled = YES;
+        }
+
+    }
 
 	[self updateTimerDisplay: nil];
 
@@ -191,7 +205,10 @@
 	}
     
     // make sure add to list is disabled if it's an allowlist block
-    addToBlockButton_.hidden = [[NSUserDefaults standardUserDefaults] boolForKey: @"BlockAsWhitelist"];
+    // don't worry about it for a legacy block! the buttons are disabled anyway so it doesn't matter
+    if ([SCUtilities modernBlockIsRunning]) {
+        addToBlockButton_.hidden = [settings_ boolForKey: @"ActiveBlockAsWhitelist"];
+    }
 }
 
 - (void)windowShouldClose:(NSNotification *)notification {
@@ -255,7 +272,13 @@
 }
 
 - (void) blockEndDateUpdated {
-    blockEndingDate_ = [settings_ valueForKey: @"BlockEndDate"];
+    if ([SCUtilities modernBlockIsRunning]) {
+        blockEndingDate_ = [settings_ valueForKey: @"BlockEndDate"];
+
+    } else {
+        // legacy block!
+        blockEndingDate_ = [SCUtilities legacyBlockEndDate];
+    }
     
     [self performSelectorOnMainThread: @selector(updateTimerDisplay:) withObject:nil waitUntilDone: YES];
 }

@@ -53,6 +53,7 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
 // migration methods
 + (BOOL)legacySettingsFound:(uid_t)controllingUID;
 + (BOOL)legacySettingsFound;
++ (NSDate*)legacyBlockEndDate;
 + (void)copyLegacySettingsToDefaults:(uid_t)controllingUID;
 + (void)copyLegacySettingsToDefaults;
 + (void)clearLegacySettings:(uid_t)controllingUID;

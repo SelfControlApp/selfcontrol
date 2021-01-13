@@ -149,7 +149,18 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
 }
 
 + (BOOL)anyBlockIsRunning:(uid_t)controllingUID {
-    return [SCUtilities modernBlockIsRunning] || [self legacyBlockIsRunning: controllingUID];
+    BOOL blockIsRunning = [SCUtilities modernBlockIsRunning] || [self legacyBlockIsRunning: controllingUID];
+    
+    // TODO: should this logic be here, or no?
+//    if (!blockIsRunning) {
+//        // last try if we can't find a block anywhere: check the host file, and see if a block is in there
+//        NSString* hostFileContents = [NSString stringWithContentsOfFile: @"/etc/hosts" encoding: NSUTF8StringEncoding error: NULL];
+//        if(hostFileContents != nil && [hostFileContents rangeOfString: @"# BEGIN SELFCONTROL BLOCK"].location != NSNotFound) {
+//            blockIsRunning = YES;
+//        }
+//    }
+
+    return blockIsRunning;
 }
 + (BOOL)anyBlockIsRunning {
     return [SCUtilities anyBlockIsRunning: 0];
@@ -162,12 +173,6 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
         return YES;
     }
     
-    // just in case something went wrong with settings, check the hosts file to see if there's reallya  block there
-    NSString* hostFileContents = [NSString stringWithContentsOfFile: @"/etc/hosts" encoding: NSUTF8StringEncoding error: NULL];
-    if(hostFileContents != nil && [hostFileContents rangeOfString: @"# BEGIN SELFCONTROL BLOCK"].location != NSNotFound) {
-        return YES;
-    }
-
     return NO;
 }
 
@@ -188,12 +193,6 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
     // hmm, is there anything in defaults from pre-3.0?
     NSDictionary* defaultsDict = [SCUtilities defaultsDictForUser: controllingUID];
     if ([SCUtilities blockIsRunningInLegacyDictionary: defaultsDict]) {
-        return YES;
-    }
-
-    // last try: check the host file, and see if a block is in there
-    NSString* hostFileContents = [NSString stringWithContentsOfFile: @"/etc/hosts" encoding: NSUTF8StringEncoding error: NULL];
-    if(hostFileContents != nil && [hostFileContents rangeOfString: @"# BEGIN SELFCONTROL BLOCK"].location != NSNotFound) {
         return YES;
     }
     
@@ -315,6 +314,36 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
     return [SCUtilities legacySettingsFound: 0];
 }
 
++ (NSDate*)legacyBlockEndDate {
+    // if we're running this as a normal user (generally that means app/CLI), it's easy: just get the standard user defaults
+    // if we're running this as root, we need to be given a UID target, then we imitate them to grab their defaults
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLegacyLockFilePath];
+    NSString* legacySettingsPath = [SCUtilities legacySecuredSettingsFilePathForUser: getuid()];
+    NSDictionary* settingsFromDisk = [NSDictionary dictionaryWithContentsOfFile: legacySettingsPath];
+    
+    // if we have a v3.x settings dictionary, take from that
+    if (settingsFromDisk != nil && settingsFromDisk[@"BlockEndDate"] != nil) {
+        return settingsFromDisk[@"BlockEndDate"];
+    }
+
+    // otherwise, we can look in defaults or the lockfile, both from pre-3.x versions
+    // these would have BlockStartedDate + BlockDuration instead of BlockEndDate, so conversion is needed
+    NSDate* startDate = [defaults objectForKey: @"BlockStartedDate"];
+    NSTimeInterval duration = [defaults floatForKey: @"BlockDuration"];
+    
+    // if defaults didn't have valid values, try the lockfile
+    if (startDate == nil || [startDate timeIntervalSinceNow] >= 0 || duration <= 0) {
+        startDate = lockDict[@"BlockStartedDate"];
+        duration = [lockDict[@"BlockStartedDate"] floatValue];
+    }
+    if (startDate == nil || [startDate timeIntervalSinceNow] >= 0 || duration <= 0) {
+        // if still not, we give up! no end date found, so call it the past
+        return [NSDate distantPast];
+    }
+    return [startDate dateByAddingTimeInterval: (duration * 60)];
+}
+    
 // copies settings from legacy locations (user-based secured settings used from 3.0-3.0.3,
 // or older defaults/lockfile used pre-3.0) to their modern destinations in NSUserDefaults.
 // does NOT update any of the values in SCSettings, and does NOT clear out settings from anywhere

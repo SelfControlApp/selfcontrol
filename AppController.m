@@ -185,7 +185,7 @@
 			[initialWindow_ close];
 			[self closeDomainList];
 		}
-	} else { // block is off
+    } else { // block is off
 		if(blockWasOn) { // if we just switched states to off...
 			[timerWindowController_ blockEnded];
 
