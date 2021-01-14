@@ -56,7 +56,6 @@ NSString* const kDefaultHostsFileContents = @"##\n"
 	[strLock lock];
 
 	newFileContents = [NSMutableString stringWithContentsOfFile: kHostFileBlockerPath usedEncoding: &stringEnc error: NULL];
-
 	if(!newFileContents) {
 		newFileContents = [NSMutableString stringWithString: kDefaultHostsFileContents];
 	}

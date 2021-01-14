@@ -496,6 +496,20 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
     });
 }
 
+- (void)resetAllSettingsToDefaults {
+    // we _basically_ just copy the default settings dict in,
+    // except we leave the settings version number and last settings update
+    // intact - that helps keep us in sync with any other instances
+    NSDictionary* defaultSettings = [self defaultSettingsDict];
+    for (NSString* key in defaultSettings) {
+        if ([key isEqualToString: @"SettingsVersionNumber"] || [key isEqualToString: @"LastSettingsUpdate"]) {
+            continue;
+        }
+        
+        [self setValue: defaultSettings[key] forKey: key];
+    }
+}
+
 - (void)dealloc {
     // TODO: should we kill the debounced timer above also?
     [self cancelSyncTimer];

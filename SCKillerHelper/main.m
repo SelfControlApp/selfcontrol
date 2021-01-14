@@ -12,11 +12,15 @@
 #import "BlockManager.h"
 #import "SCSettings.h"
 #import "HelperCommon.h"
+#import <ServiceManagement/ServiceManagement.h>
 
 #define LOG_FILE @"~/Documents/SelfControl-Killer.log"
 
 int main(int argc, char* argv[]) {
 	@autoreleasepool {
+        // make sure to expand the tilde before we setuid to 0, otherwise this won't work
+        NSString* logFilePath = [LOG_FILE stringByExpandingTildeInPath];
+        NSMutableString* log = [NSMutableString stringWithString: @"===SelfControl-Killer Log File===\n\n"];
 
 		if(geteuid()) {
 			NSLog(@"ERROR: Helper tool must be run as root.");
@@ -29,9 +33,9 @@ int main(int argc, char* argv[]) {
 		}
 
 		int controllingUID = [@(argv[1]) intValue];
-		NSString* logFilePath = [LOG_FILE stringByExpandingTildeInPath];
-
-		NSMutableString* log = [NSMutableString stringWithString: @"===SelfControl-Killer Log File===\n\n"];
+        // we need to setuid to root, otherwise launchctl won't find system launch daemons
+        // depite the EUID being 0 as expected - not sure why that is
+        setuid(0);
 
 		/* FIRST TASK: print debug info */
 
@@ -41,7 +45,7 @@ int main(int argc, char* argv[]) {
 		[log appendFormat: @"SelfControl Version: %@\n", version];
 
 		// print system version
-		[log appendFormat: @"System Version: Mac OS X %@", [[NSProcessInfo processInfo] operatingSystemVersionString]];
+		[log appendFormat: @"System Version: Mac OS X %@\n\n", [[NSProcessInfo processInfo] operatingSystemVersionString]];
 
 		// print launchd daemons
 		int status;
@@ -79,13 +83,21 @@ int main(int argc, char* argv[]) {
 		[task waitUntilExit];
 		status = [task terminationStatus];
 		if(defaultsList) {
-			[log appendFormat: @"Current user defaults:\n\n%@\n", defaultsList];
+			[log appendFormat: @"Current user (%u) defaults:\n\n%@\n", getuid(), defaultsList];
 		}
 		seteuid(0);
 
         // and print new secured settings, if they exist
         SCSettings* settings = [SCSettings sharedSettings];
         [log appendFormat: @"Current secured settings:\n\n:%@\n", settings.dictionaryRepresentation];
+        
+        NSString* legacySettingsPath = [SCUtilities legacySecuredSettingsFilePathForUser: controllingUID];
+        NSDictionary* legacySettingsDict = [NSDictionary dictionaryWithContentsOfFile: legacySettingsPath];
+        if (legacySettingsDict) {
+            [log appendFormat: @"Legacy (3.0-3.0.3) secured settings:\n\n:%@\n", legacySettingsDict];
+        } else {
+            [log appendFormat: @"Couldn't find legacy settings (from v3.0-3.0.3).\n\n"];
+        }
 
 		NSFileManager* fileManager = [NSFileManager defaultManager];
 
@@ -101,7 +113,7 @@ int main(int argc, char* argv[]) {
 		if([mainConf length]) {
 			[log appendFormat: @"pf.conf file contents:\n\n%@\n", mainConf];
 		} else {
-			[log appendString: @"Could not find pf.conf file.\n"];
+			[log appendString: @"Could not find pf.conf file.\n\n"];
 		}
 
 		// print org.eyebeam pf anchors
@@ -119,9 +131,16 @@ int main(int argc, char* argv[]) {
                                                      @"-w",
 													 @"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"]];
 		[task waitUntilExit];
-		
-		status = [task terminationStatus];
-		[log appendFormat: @"Unloading the launchd daemon returned: %d\n\n", status];
+        status = [task terminationStatus];
+		[log appendFormat: @"Unloading the legacy (1.0 - 3.0.3) launchd daemon returned: %d\n\n", status];
+        
+        CFErrorRef cfError;
+        SMJobRemove(kSMDomainSystemLaunchd, CFSTR("org.eyebeam.selfcontrold"), NULL, NO, &cfError);
+        if (cfError) {
+            [log appendFormat: @"Failed to remove selfcontrold daemon (4.x) with error %@\n\n", cfError];
+        } else {
+            [log appendFormat: @"Successfully removed selfcontrold daemon (4.x)!\n\n"];
+        }
 
 		BlockManager* bm = [[BlockManager alloc] init];
 		BOOL cleared = [bm forceClearBlock];
@@ -142,12 +161,20 @@ int main(int argc, char* argv[]) {
 		[log appendFormat: @"Deleting BlockStartedDate from defaults returned: %d\n", status];
 		seteuid(0);
         
-        // clear BlockEndDate (new date value) from secured settings
-        [settings setValue: nil forKey: @"BlockEndDate"];
-        [settings setValue: nil forKey: @"BlockIsRunning"];
+        // clear all modern secured settings (the user's copies of each setting will still be stored in defaults)
+        [settings resetAllSettingsToDefaults];
         [settings synchronizeSettings];
-        [log appendFormat: @"Deleted BlockEndDate and BlockIsRunning from secured settings\n"];
+        [log appendFormat: @"Reset all modern secured settings to default values.\n"];
         
+        // TODO: clear legacy settings
+        if ([SCUtilities legacySettingsFound: controllingUID]) {
+            [SCUtilities copyLegacySettingsToDefaults: controllingUID];
+            [SCUtilities clearLegacySettings: controllingUID];
+            [log appendFormat: @"Found, copied, and cleared legacy settings (v3.0-3.0.3)!\n"];
+        } else {
+            [log appendFormat: @"No legacy settings (v3.0-3.0.3) found.\n"];
+        }
+
 		// remove PF token
 		if([fileManager removeItemAtPath: @"/etc/SelfControlPFToken" error: nil]) {
 			[log appendString: @"\nRemoved PF token file successfully.\n"];
@@ -191,12 +218,7 @@ int main(int argc, char* argv[]) {
 				}
 			}
 		}
-        
-        // Now that the current block is over, we can go ahead and remove the legacy block info
-        // and migrate them to the new SCSettings system
-        // [settings clearLegacySettings];
-        [log appendString: @"\nMigrating settings to new system...\n"];
-        
+                
         // OK, make sure all settings are synced before this thing exits
         [settings synchronizeSettingsWithCompletion:^(NSError* err) {
             if (err != nil) {
