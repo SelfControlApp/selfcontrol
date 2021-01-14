@@ -51,6 +51,7 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
 + (NSDictionary*)readBlocklistFromFile:(NSURL*)fileURL;
 
 // migration methods
++ (NSString*)legacySecuredSettingsFilePathForUser:(uid_t)userId;
 + (BOOL)legacySettingsFound:(uid_t)controllingUID;
 + (BOOL)legacySettingsFound;
 + (NSDate*)legacyBlockEndDate;
