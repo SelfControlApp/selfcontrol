@@ -73,8 +73,8 @@
     killBlockButton_.attributedTitle = killBlockMutableAttributedTitle;
 
 	killBlockButton_.hidden = YES;
-	addToBlockButton_.enabled = NO;
-    extendBlockButton_.enabled = NO;
+	addToBlockButton_.hidden = NO;
+    extendBlockButton_.hidden = NO;
 
     if ([SCUtilities modernBlockIsRunning]) {
         blockEndingDate_ = [settings_ valueForKey: @"BlockEndDate"];
