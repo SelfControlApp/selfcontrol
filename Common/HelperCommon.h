@@ -58,8 +58,8 @@ void clearOSDNSCache(void);
 // Prints out the given status code to stdout using printf
 void printStatus(int status);
 
-// Removes block via settings, host file rules and ipfw rules, unloading the
-// org.eyebeam.SelfControl item, deleting user caches if requested, and migrating legacy settings.
+// Removes block via settings, host file rules and ipfw rules,
+// deleting user caches if requested, and migrating legacy settings.
 void removeBlock(uid_t controllingUID);
 
 void sendConfigurationChangedNotification(void);

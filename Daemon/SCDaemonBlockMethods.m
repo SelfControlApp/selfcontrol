@@ -71,7 +71,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         
         // if we had legacy settings, there's a small chance the old helper tool could still be around
         // make sure it's dead and gone
-        [LaunchctlHelper unloadLaunchdJobWithPlistAt:@"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
+        [LaunchctlHelper unloadLaunchdJobWithPlistAt: @"/Library/LaunchDaemons/org.eyebeam.SelfControl.plist"];
     }
 
     SCSettings* settings = [SCSettings sharedSettings];
