@@ -18,6 +18,9 @@
 
 int main(int argc, char* argv[]) {
 	@autoreleasepool {
+        // make sure to expand the tilde before we setuid to 0, otherwise this won't work
+        NSString* logFilePath = [LOG_FILE stringByExpandingTildeInPath];
+        NSMutableString* log = [NSMutableString stringWithString: @"===SelfControl-Killer Log File===\n\n"];
 
 		if(geteuid()) {
 			NSLog(@"ERROR: Helper tool must be run as root.");
@@ -30,9 +33,9 @@ int main(int argc, char* argv[]) {
 		}
 
 		int controllingUID = [@(argv[1]) intValue];
-		NSString* logFilePath = [LOG_FILE stringByExpandingTildeInPath];
-
-		NSMutableString* log = [NSMutableString stringWithString: @"===SelfControl-Killer Log File===\n\n"];
+        // we need to setuid to root, otherwise launchctl won't find system launch daemons
+        // depite the EUID being 0 as expected - not sure why that is
+        setuid(0);
 
 		/* FIRST TASK: print debug info */
 
