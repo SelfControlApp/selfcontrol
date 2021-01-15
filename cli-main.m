@@ -24,15 +24,15 @@
 #import "HelperCommon.h"
 #import "SCUtilities.h"
 #import "SCSettings.h"
-#import "version-header.h"
-#import "SCConstants.h"
 #import "SCXPCClient.h"
 
 // The main method which deals which most of the logic flow and execution of
 // the CLI helper tool.  Posts an SCConfigurationChangedNotification if the block
 // is enabled or disabled.
 int main(int argc, char* argv[]) {
-	@autoreleasepool {
+    [SCSentry startSentry: @"org.eyebeam.selfcontrol-cli"];
+
+    @autoreleasepool {
 		if(argc < 3 || argv[1] == NULL || argv[2] == NULL) {
 			NSLog(@"ERROR: Not enough arguments");
 			exit(EX_USAGE);
@@ -54,6 +54,8 @@ int main(int argc, char* argv[]) {
         }
         
 		if([modeString isEqual: @"--install"]) {
+            [SCSentry addBreadcrumb: @"CLI method --install called" category: @"cli"];
+
             if ([SCUtilities anyBlockIsRunning: controllingUID]) {
                 NSLog(@"ERROR: Block is already running");
                 exit(EX_CONFIG);
@@ -107,6 +109,7 @@ int main(int argc, char* argv[]) {
                 @"IncludeLinkedDomains": defaultsDict[@"IncludeLinkedDomains"],
                 @"BlockSoundShouldPlay": defaultsDict[@"BlockSoundShouldPlay"],
                 @"BlockSound": defaultsDict[@"BlockSound"],
+                @"EnableErrorReporting": defaultsDict[@"EnableErrorReporting"]
             };
 
             if([blocklist count] == 0 || [blockEndDate timeIntervalSinceNow] < 1) {
@@ -174,16 +177,20 @@ int main(int argc, char* argv[]) {
             }
         }
 		if([modeString isEqual: @"--remove"]) {
+            [SCSentry addBreadcrumb: @"CLI method --remove called" category: @"cli"];
 			// So you think you can rid yourself of SelfControl just like that?
 			NSLog(@"INFO: Nice try.");
             exit(EX_UNAVAILABLE);
         } else if ([modeString isEqualToString: @"--print-settings"]) {
+            [SCSentry addBreadcrumb: @"CLI method --print-settings called" category: @"cli"];
             NSLog(@" - Printing SelfControl secured settings for debug: - ");
             NSLog(@"%@", [settings dictionaryRepresentation]);
         } else if ([modeString isEqualToString: @"--is-running"]) {
+            [SCSentry addBreadcrumb: @"CLI method --is-running called" category: @"cli"];
             BOOL blockIsRunning = [SCUtilities anyBlockIsRunning: controllingUID];
             NSLog(@"%@", blockIsRunning ? @"YES" : @"NO");
         } else if ([modeString isEqualToString: @"--version"]) {
+            [SCSentry addBreadcrumb: @"CLI method --version called" category: @"cli"];
             NSLog(SELFCONTROL_VERSION_STRING);
         }
 

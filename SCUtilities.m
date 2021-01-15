@@ -8,7 +8,6 @@
 #import "SCUtilities.h"
 #import "HelperCommon.h"
 #import "SCSettings.h"
-#import "SCConstants.h"
 #include <pwd.h>
 
 @implementation SCUtilities
@@ -219,7 +218,6 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
 }
 
 + (void) removeBlockFromSettings {
-    // TODO: will this work setting nil instead of [NSDate dateWithTimeIntervalSince1970: 0]?
     SCSettings* settings = [SCSettings sharedSettings];
     [settings setValue: nil forKey: @"BlockEndDate"];
     [settings setValue: nil forKey: @"BlockIsRunning"];
@@ -421,6 +419,7 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
         seteuid(0);
     }
     
+    [SCSentry addBreadcrumb: @"Copied legacy settings to defaults successfully" category: @"settings"];
     NSLog(@"Done copying settings!");
 }
 
@@ -492,6 +491,7 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
     }
     
     // and that's it! note that we don't touch the modern SCSettings at all, and that's OK - it'll restart from scratch and be fine
+    [SCSentry addBreadcrumb: @"Cleared legacy settings successfully" category: @"settings"];
     NSLog(@"Cleared legacy settings!");
 }
 

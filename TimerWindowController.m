@@ -89,7 +89,6 @@
             addToBlockButton_.enabled = YES;
             extendBlockButton_.enabled = YES;
         }
-
     }
 
 	[self updateTimerDisplay: nil];
@@ -103,6 +102,11 @@
 	//If the dialog isn't focused, instead of getting a NSTimer, we get null.
 	//Scheduling the timer from the main thread seems to work.
 	[self performSelectorOnMainThread: @selector(hackAroundMainThreadtimer:) withObject: timerUpdater_ waitUntilDone: YES];
+    
+    // the timer is a good time to prompt them to enable error reporting! nothing else is happening
+    [NSTimer scheduledTimerWithTimeInterval: 3.0 repeats: NO block:^(NSTimer * _Nonnull timer) {
+        [SCSentry showErrorReportingPromptIfNeeded];
+    }];
 }
 
 
@@ -121,6 +125,9 @@
 		[timerLabel_ sizeToFit];
 
 		[self resetStrikes];
+        
+        [SCSentry addBreadcrumb: @"Block ended and timer window is closing" category: @"app"];
+
 	}
 }
 
@@ -152,7 +159,12 @@
 
 		if(numStrikes > 10) {
 			// OK, this is taking longer than it should. Enable manual block removal.
-			if (numStrikes == 10) NSLog(@"WARNING: Block should have ended a minute ago! Probable failure to remove.");
+            if (numStrikes == 10) {
+                NSLog(@"WARNING: Block should have ended a minute ago! Probable failure to remove.");
+                NSError* err = [SCErr errorWithCode: 105];
+                [SCSentry captureError: err];
+            }
+
 			addToBlockButton_.hidden = YES;
             extendBlockButton_.hidden = YES;
 			killBlockButton_.hidden = NO;
@@ -341,7 +353,7 @@
 		NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", status);
 
         NSError* err = [SCErr errorWithCode: 400];
-
+        [SCSentry captureError: err];
 		[NSApp presentError: err];
 
 		return;
@@ -363,6 +375,13 @@
     [self.appController performSelectorOnMainThread:@selector(refreshUserInterface)
                                          withObject:nil
                                       waitUntilDone:YES];
+    
+    // send some debug info to Sentry to help us track this issue
+    [SCSentry captureMessage: @"User manually cleared SelfControl block from the timer window"];
+//    [SCSentry captureMessage: @"User manually cleared SelfControl block from the timer window" withScopeBlock:^(SentryScope * _Nonnull scope) {
+//        SentryAttachment* fileAttachment = [[SentryAttachment alloc] initWithPath: [@"~/Documents/SelfControl-Killer.log" stringByExpandingTildeInPath]];
+//        [scope addAttachment: fileAttachment];
+//    }];
     
     NSAlert* alert = [[NSAlert alloc] init];
     [alert setMessageText: @"Success!"];

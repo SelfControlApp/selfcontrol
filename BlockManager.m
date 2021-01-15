@@ -275,6 +275,7 @@ BOOL appendMode = NO;
 		// pulled list of facebook IP ranges from https://developers.facebook.com/docs/sharing/webmasters/crawler
 		// TODO: pull these automatically by running:
 		// whois -h whois.radb.net -- '-i origin AS32934' | grep ^route
+        // (looks like they now use 2 different AS numbers: https://www.facebook.com/peering/)
 		NSArray* facebookIPs = @[@"31.13.24.0/21",
                                  @"31.13.64.0/18",
                                  @"45.64.40.0/22",

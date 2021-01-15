@@ -10,7 +10,6 @@
 #import <CommonCrypto/CommonCrypto.h>
 #import "SCUtilities.h"
 #import <AppKit/AppKit.h>
-#import "SCConstants.h"
 
 float const SYNC_INTERVAL_SECS = 30;
 float const SYNC_LEEWAY_SECS = 30;
@@ -131,6 +130,7 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
         @"BlockSound": @5,
         @"ClearCaches": @YES,
         @"AllowLocalNetworks": @YES,
+        @"EnableErrorReporting": @NO,
 
         @"SettingsVersionNumber": @0,
         @"LastSettingsUpdate": [NSDate distantPast] // special value that keeps track of when we last updated our settings
@@ -156,11 +156,12 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
             if (!self.readOnly) {
                 [self writeSettings];
             }
+            [SCSentry addBreadcrumb: @"Initialized SCSettings to default settings" category: @"settings"];
         }
         
         // we're now current with disk!
         self->lastSynchronizedWithDisk = [NSDate date];
-        
+
         [self startSyncTimer];
     });
 }
@@ -231,7 +232,7 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
             _settingsDict = [settingsFromDisk mutableCopy];
             self.lastSynchronizedWithDisk = [NSDate date];
             NSLog(@"Newer SCSettings found on disk (version %d vs %d with time interval %f), updating...", diskSettingsVersion, memorySettingsVersion, [diskSettingsLastUpdated timeIntervalSinceDate: memorySettingsLastUpdated]);
-            
+            [SCSentry addBreadcrumb: @"Updated SCSettings to newer settings found on disk" category: @"settings"];
         }
     }
 }
@@ -239,8 +240,10 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
     @synchronized (self) {
         if (self.readOnly) {
             NSLog(@"WARNING: Read-only SCSettings instance can't write out settings");
+            NSError* err = [SCErr errorWithCode: 600];
+            [SCSentry captureError: err];
             if (completionBlock != nil) {
-                completionBlock([SCErr errorWithCode: 600]);
+                completionBlock(err);
             }
             return;
         }
@@ -301,11 +304,14 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
 
             if (!writeSuccessful) {
                 NSLog(@"Failed to write secured settings to file %@", SCSettings.securedSettingsFilePath);
+                [SCSentry captureError: writeErr];
                 if (completionBlock != nil) completionBlock(writeErr);
             } else if (!chmodSuccessful) {
                 NSLog(@"Failed to change secured settings file owner/permissions secured settings for file %@ with error %@", SCSettings.securedSettingsFilePath, chmodErr);
+                [SCSentry captureError: chmodErr];
                 if (completionBlock != nil) completionBlock(chmodErr);
             } else {
+                [SCSentry addBreadcrumb: @"Successfully wrote SCSettings out to file" category: @"settings"];
                 if (completionBlock != nil) completionBlock(nil);
             }
         });
@@ -390,6 +396,7 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
          ];
     }
 }
+
 - (void)setValue:(id)value forKey:(NSString*)key {
     [self setValue: value forKey: key stopPropagation: NO];
 }
@@ -438,6 +445,39 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
 
     dispatch_source_cancel(self.syncTimer);
     self.syncTimer = nil;
+}
+
+- (void)updateSentryContext {
+    // make sure Sentry has the latest context in the event of a crash
+    
+    NSMutableDictionary* dictCopy = [self.settingsDict mutableCopy];
+    
+    // fill in any gaps with default values (like we did if they called valueForKey:)
+    for (NSString* key in [[self defaultSettingsDict] allKeys]) {
+        if (dictCopy[key] == nil) {
+            dictCopy[key] = [self defaultSettingsDict][key];
+        }
+    }
+    
+    // eliminate privacy-sensitive data (i.e. blocklist)
+    // but store the blocklist length as a useful piece of debug info
+    id activeBlocklist = dictCopy[@"ActiveBlocklist"];
+    NSUInteger blocklistLength = (activeBlocklist == nil) ? 0 : ((NSArray*)activeBlocklist).count;
+    [dictCopy setObject: @(blocklistLength) forKey: @"ActiveBlocklistLength"];
+    [dictCopy removeObjectForKey: @"Blocklist"];
+    [dictCopy removeObjectForKey: @"ActiveBlocklist"];
+
+    // and serialize dates to string, since Sentry has a hard time with that
+    NSArray<NSString*>* dateKeys = @[@"BlockEndDate", @"LastSettingsUpdate"];
+    for (NSString* dateKey in dateKeys) {
+        dictCopy[dateKey] = [NSDateFormatter localizedStringFromDate: dictCopy[dateKey]
+                                                                 dateStyle: NSDateFormatterShortStyle
+                                                                 timeStyle: NSDateFormatterFullStyle];
+    }
+
+    [SentrySDK configureScope:^(SentryScope * _Nonnull scope) {
+        [scope setContextValue: dictCopy forKey: @"SCSettings"];
+    }];
 }
 
 - (void)onSettingChanged:(NSNotification*)note {

@@ -15,6 +15,7 @@
 
 + (void)unloadDaemonJob {
     NSLog(@"Unloading SelfControl daemon...");
+    [SCSentry addBreadcrumb: @"Daemon about to unload" category: @"daemon"];
     SCSettings* settings = [SCSettings sharedSettings];
 
     // we're about to unload the launchd job

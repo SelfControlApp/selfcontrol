@@ -11,7 +11,6 @@
 #import "PacketFilter.h"
 #import "SCDaemonUtilities.h"
 #import "BlockManager.h"
-#import "SCConstants.h"
 
 NSTimeInterval METHOD_LOCK_TIMEOUT = 5.0;
 NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for checkups, because we'd prefer not to have tons pile up
@@ -31,6 +30,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     if (![self.daemonMethodLock lockBeforeDate: [NSDate dateWithTimeIntervalSinceNow: timeout]]) {
         // if we couldn't get a lock within 10 seconds, something is weird
         // but we probably shouldn't still run, because that's just unexpected at that point
+        // don't capture this error on Sentry because it's very usual for checkups to timeout
         NSError* err = [SCErr errorWithCode: 300];
         NSLog(@"ERROR: Timed out acquiring request lock (after %f seconds)", timeout);
 
@@ -51,9 +51,12 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         return;
     }
     
+    [SCSentry addBreadcrumb: @"Daemon method startBlock called" category: @"daemon"];
+    
     if ([SCUtilities anyBlockIsRunning: controllingUID]) {
         NSLog(@"ERROR: Can't start block since a block is already running");
         NSError* err = [SCErr errorWithCode: 301];
+        [SCSentry captureError: err];
         reply(err);
         [self.daemonMethodLock unlock];
         return;
@@ -84,11 +87,13 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     [settings setValue: blockSettings[@"IncludeLinkedDomains"] forKey: @"IncludeLinkedDomains"];
     [settings setValue: blockSettings[@"BlockSoundShouldPlay"] forKey: @"BlockSoundShouldPlay"];
     [settings setValue: blockSettings[@"BlockSound"] forKey: @"BlockSound"];
+    [settings setValue: blockSettings[@"EnableErrorReporting"] forKey: @"EnableErrorReporting"];
 
     if([blocklist count] <= 0 || ![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
         NSLog(@"ERROR: Blocklist is empty, or block end date is in the past");
         NSLog(@"Block End Date: %@ (%@), vs now is %@", [settings valueForKey: @"BlockEndDate"], [[settings valueForKey: @"BlockEndDate"] class], [NSDate date]);
         NSError* err = [SCErr errorWithCode: 302];
+        [SCSentry captureError: err];
         reply(err);
         [self.daemonMethodLock unlock];
         return;
@@ -108,20 +113,23 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     // that blocked pages are not loaded from a cache.
     clearCachesIfRequested(controllingUID);
 
+    [SCSentry addBreadcrumb: @"Daemon added block successfully" category: @"daemon"];
     NSLog(@"INFO: Block successfully added.");
     reply(nil);
+
     [self.daemonMethodLock unlock];
 }
 
 + (void)updateBlocklist:(uid_t)controllingUID newBlocklist:(NSArray<NSString*>*)newBlocklist authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
-    NSLog(@"updating blocklist in methods");
     if (![SCDaemonBlockMethods lockOrTimeout: reply]) {
         return;
     }
     
+    [SCSentry addBreadcrumb: @"Daemon method updateBlocklist called" category: @"daemon"];
     if ([SCUtilities legacyBlockIsRunning: controllingUID]) {
         NSLog(@"ERROR: Can't update blocklist because a legacy block is running");
         NSError* err = [SCErr errorWithCode: 303];
+        [SCSentry captureError: err];
         reply(err);
         [self.daemonMethodLock unlock];
         return;
@@ -129,6 +137,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     if (![SCUtilities modernBlockIsRunning]) {
         NSLog(@"ERROR: Can't update blocklist since block isn't running");
         NSError* err = [SCErr errorWithCode: 304];
+        [SCSentry captureError: err];
         reply(err);
         [self.daemonMethodLock unlock];
         return;
@@ -139,6 +148,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     if ([settings boolForKey: @"ActiveBlockAsWhitelist"]) {
         NSLog(@"ERROR: Attempting to update active blocklist, but this is not possible with an allowlist block");
         NSError* err = [SCErr errorWithCode: 305];
+        [SCSentry captureError: err];
         reply(err);
         [self.daemonMethodLock unlock];
         return;
@@ -173,21 +183,24 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     // that blocked pages are not loaded from a cache.
     clearCachesIfRequested(controllingUID);
 
+    [SCSentry addBreadcrumb: @"Daemon updated blocklist successfully" category: @"daemon"];
     NSLog(@"INFO: Blocklist successfully updated.");
     reply(nil);
+
     [self.daemonMethodLock unlock];
 }
 
 + (void)updateBlockEndDate:(uid_t)controllingUID newEndDate:(NSDate*)newEndDate authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
     if (![SCDaemonBlockMethods lockOrTimeout: reply]) {
-        NSLog(@"NOPE IT DIDNT HAPPEN");
         return;
     }
+    
+    [SCSentry addBreadcrumb: @"Daemon method updateBlockEndDate called" category: @"daemon"];
 
-    NSLog(@"updating block end date in methods");
     if ([SCUtilities legacyBlockIsRunning: controllingUID]) {
         NSLog(@"ERROR: Can't update block end date because a legacy block is running");
         NSError* err = [SCErr errorWithCode: 306];
+        [SCSentry captureError: err];
         reply(err);
         [self.daemonMethodLock unlock];
         return;
@@ -195,6 +208,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     if (![SCUtilities modernBlockIsRunning]) {
         NSLog(@"ERROR: Can't update block end date since block isn't running");
         NSError* err = [SCErr errorWithCode: 307];
+        [SCSentry captureError: err];
         reply(err);
         [self.daemonMethodLock unlock];
         return;
@@ -209,12 +223,14 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     if ([newEndDate timeIntervalSinceDate: currentEndDate] < 0) {
         NSLog(@"ERROR: Can't update block end date to an earlier date");
         NSError* err = [SCErr errorWithCode: 308];
+        [SCSentry captureError: err];
         reply(err);
         [self.daemonMethodLock unlock];
     }
     if ([newEndDate timeIntervalSinceDate: currentEndDate] > 86400) { // 86400 seconds = 1 day
         NSLog(@"ERROR: Can't extend block end date by more than 1 day at a time");
         NSError* err = [SCErr errorWithCode: 309];
+        [SCSentry captureError: err];
         reply(err);
         [self.daemonMethodLock unlock];
     }
@@ -225,6 +241,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     // TODO: is this still necessary in the new daemon world?
     sendConfigurationChangedNotification();
 
+    [SCSentry addBreadcrumb: @"Daemon extended block successfully" category: @"daemon"];
     NSLog(@"INFO: Block successfully extended.");
     reply(nil);
     [self.daemonMethodLock unlock];
@@ -234,6 +251,8 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     if (![SCDaemonBlockMethods lockOrTimeout: nil timeout: CHECKUP_LOCK_TIMEOUT]) {
         return;
     }
+    
+    [SCSentry addBreadcrumb: @"Daemon method checkupBlock called" category: @"daemon"];
 
     SCSettings* settings = [SCSettings sharedSettings];
     NSTimeInterval integrityCheckIntervalSecs = 10.0;
@@ -249,6 +268,9 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         // we should clear the block now.
         // but let them know that we noticed their (likely) cheating and we're not happy!
         NSLog(@"INFO: Checkup ran, no active block found.");
+        
+        [SCSentry captureMessage: @"Checkup ran and no active block found! Removing block, tampering suspected..."];
+        
         removeBlock(controllingUID);
 
         [SCDaemonUtilities unloadDaemonJob];
@@ -270,6 +292,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         NSLog(@"INFO: Checkup ran, block expired, removing block.");
         
         removeBlock(controllingUID);
+        [SCSentry addBreadcrumb: @"Daemon found and cleared expired block" category: @"daemon"];
         [SCDaemonUtilities unloadDaemonJob];
 
         // Execution should never reach this point.  Launchd unloading the job in
@@ -311,6 +334,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
             
             clearCachesIfRequested(controllingUID);
 
+            [SCSentry addBreadcrumb: @"Daemon found compromised block integrity and re-added rules" category: @"daemon"];
             NSLog(@"INFO: Checkup ran, readded block rules.");
         } else NSLog(@"INFO: Checkup ran with integrity check, no action needed.");
     }

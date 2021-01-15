@@ -8,9 +8,9 @@
 #import "SCXPCClient.h"
 #import "SCDaemonProtocol.h"
 #import <ServiceManagement/ServiceManagement.h>
-#import "SCConstants.h"
 #import "SCXPCAuthorization.h"
 #import "SCUtilities.h"
+#import "SCErr.h"
 
 @interface SCXPCClient () {
     AuthorizationRef    _authRef;
@@ -144,7 +144,9 @@
 
     if(status) {
         NSLog(@"ERROR: Failed to authorize installing selfcontrold.");
-        callback([SCErr errorWithCode: 501]);
+        NSError* err = [SCErr errorWithCode: 501];
+        // this usually just means the user clicked Cancel, so don't report to Sentry
+        callback(err);
         return;
     }
 
@@ -161,6 +163,7 @@
         NSLog(@"WARNING: Authorized installation of selfcontrold returned failure status code %d and error %@", (int)status, error);
 
         NSError* err = [SCErr errorWithCode: 500 subDescription: error.localizedDescription];
+        [SCSentry captureError: err];
 
         callback(err);
         return;
@@ -215,10 +218,12 @@
     [self connectAndExecuteCommandBlock:^(NSError * connectError) {
         if (connectError != nil) {
             NSLog(@"Failed to get daemon version with connection error: %@", connectError);
+            [SCSentry captureError: connectError];
             reply(nil, connectError);
         } else {
             [[self.daemonConnection remoteObjectProxyWithErrorHandler:^(NSError * proxyError) {
                 NSLog(@"Failed to get daemon version with remote object proxy error: %@", proxyError);
+                [SCSentry captureError: proxyError];
                 reply(nil, proxyError);
             }] getVersionWithReply:^(NSString * _Nonnull version) {
                 reply(version, nil);
@@ -230,14 +235,19 @@
 - (void)startBlockWithControllingUID:(uid_t)controllingUID blocklist:(NSArray<NSString*>*)blocklist isAllowlist:(BOOL)isAllowlist endDate:(NSDate*)endDate blockSettings:(NSDictionary*)blockSettings reply:(void(^)(NSError* error))reply {
     [self connectAndExecuteCommandBlock:^(NSError * connectError) {
         if (connectError != nil) {
+            [SCSentry captureError: connectError];
             NSLog(@"Install command failed with connection error: %@", connectError);
             reply(connectError);
         } else {
             [[self.daemonConnection remoteObjectProxyWithErrorHandler:^(NSError * proxyError) {
                 NSLog(@"Install command failed with remote object proxy error: %@", proxyError);
+                [SCSentry captureError: proxyError];
                 reply(proxyError);
             }] startBlockWithControllingUID: controllingUID blocklist: blocklist isAllowlist:isAllowlist endDate:endDate blockSettings: blockSettings authorization: self.authorization reply:^(NSError* error) {
-                NSLog(@"Install failed with error = %@\n", error);
+                if (error != nil) {
+                    NSLog(@"Install failed with error = %@\n", error);
+                    [SCSentry captureError: error];
+                }
                 reply(error);
             }];
         }
@@ -248,13 +258,18 @@
     [self connectAndExecuteCommandBlock:^(NSError * connectError) {
         if (connectError != nil) {
             NSLog(@"Blocklist update failed with connection error: %@", connectError);
+            [SCSentry captureError: connectError];
             reply(connectError);
         } else {
             [[self.daemonConnection remoteObjectProxyWithErrorHandler:^(NSError * proxyError) {
                 NSLog(@"Blocklist update command failed with remote object proxy error: %@", proxyError);
+                [SCSentry captureError: proxyError];
                 reply(proxyError);
             }] updateBlocklistWithControllingUID: controllingUID newBlocklist: newBlocklist authorization: self.authorization reply:^(NSError* error) {
-                NSLog(@"Blocklist update failed with error = %@\n", error);
+                if (error != nil) {
+                    NSLog(@"Blocklist update failed with error = %@\n", error);
+                    [SCSentry captureError: error];
+                }
                 reply(error);
             }];
         }
@@ -265,13 +280,18 @@
     [self connectAndExecuteCommandBlock:^(NSError * connectError) {
         if (connectError != nil) {
             NSLog(@"Block end date update failed with connection error: %@", connectError);
+            [SCSentry captureError: connectError];
             reply(connectError);
         } else {
             [[self.daemonConnection remoteObjectProxyWithErrorHandler:^(NSError * proxyError) {
                 NSLog(@"Block end date update command failed with remote object proxy error: %@", proxyError);
+                [SCSentry captureError: proxyError];
                 reply(proxyError);
             }] updateBlockEndDateWithControllingUID: controllingUID newEndDate: newEndDate authorization: self.authorization reply:^(NSError* error) {
-                NSLog(@"Block end date update failed with error = %@\n", error);
+                if (error != nil) {
+                    NSLog(@"Block end date update failed with error = %@\n", error);
+                    [SCSentry captureError: error];
+                }
                 reply(error);
             }];
         }
