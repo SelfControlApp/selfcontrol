@@ -1,5 +1,5 @@
 //
-//  helpermain.m
+//  cli-main.m
 //  SelfControl
 //
 //  Created by Charlie Stigler on 2/4/09.
@@ -20,18 +20,21 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#import "HelperMain.h"
+#import "PacketFilter.h"
+#import "HelperCommon.h"
 #import "SCUtilities.h"
 #import "SCSettings.h"
 #import "version-header.h"
 #import "SCConstants.h"
 #import "SCXPCClient.h"
 
+// The main method which deals which most of the logic flow and execution of
+// the CLI helper tool.  Posts an SCConfigurationChangedNotification if the block
+// is enabled or disabled.
 int main(int argc, char* argv[]) {
 	@autoreleasepool {
 		if(argc < 3 || argv[1] == NULL || argv[2] == NULL) {
 			NSLog(@"ERROR: Not enough arguments");
-			printStatus(-202);
 			exit(EX_USAGE);
 		}
 
@@ -53,7 +56,6 @@ int main(int argc, char* argv[]) {
 		if([modeString isEqual: @"--install"]) {
             if ([SCUtilities anyBlockIsRunning: controllingUID]) {
                 NSLog(@"ERROR: Block is already running");
-                printStatus(-222);
                 exit(EX_CONFIG);
             }
 
@@ -75,16 +77,14 @@ int main(int argc, char* argv[]) {
                 if (blockEndDateArg == nil || [blockEndDateArg timeIntervalSinceNow] < 1) {
                     pathToBlocklistFile = nil;
                     NSLog(@"Error: Block end date argument %@ is invalid", @(argv[4]));
-                    printStatus(-220);
-                    syncSettingsAndExit(settings, EX_IOERR);
+                    exit(EX_IOERR);
                 } else {
                     blockEndDate = blockEndDateArg;
                     NSDictionary* readProperties = [SCUtilities readBlocklistFromFile: [NSURL fileURLWithPath: pathToBlocklistFile]];
                     
                     if (readProperties == nil) {
                         NSLog(@"ERROR: Block could not be read from file %@", pathToBlocklistFile);
-                        printStatus(-221);
-                        syncSettingsAndExit(settings, EX_IOERR);
+                        exit(EX_IOERR);
                     }
                     
                     blocklist = readProperties[@"Blocklist"];
@@ -113,8 +113,7 @@ int main(int argc, char* argv[]) {
                 // ya can't start a block without a blocklist, and it can't run for less than a second
                 // because that's silly
                 NSLog(@"ERROR: Blocklist is empty, or block does not end in the future.");
-                printStatus(-210);
-                syncSettingsAndExit(settings, EX_CONFIG);
+                exit(EX_CONFIG);
             }
 
 			// We should try to delete the old helper tool if it exists, to avoid confusion
@@ -134,9 +133,8 @@ int main(int argc, char* argv[]) {
             NSLog(@"About to install helper tool");
             [xpc installDaemon:^(NSError * _Nonnull error) {
                 if (error != nil) {
-                    NSLog(@"ERROR: Failed to install helper tool with error %@", error);
-                    printStatus(-402);
-                    syncSettingsAndExit(settings, EX_SOFTWARE);
+                    NSLog(@"ERROR: Failed to install daemon with error %@", error);
+                    exit(EX_SOFTWARE);
                     return;
                 } else {
                     // ok, the new helper tool is installed! refresh the connection, then it's time to start the block
@@ -151,8 +149,7 @@ int main(int argc, char* argv[]) {
                             NSLog(@"WOO started block with error %@", error);
                             if (error != nil) {
                                 NSLog(@"ERROR: Daemon failed to start block with error %@", error);
-                                printStatus(-403);
-                                syncSettingsAndExit(settings, EX_SOFTWARE);
+                                exit(EX_SOFTWARE);
                                 return;
                             }
                             
@@ -179,8 +176,7 @@ int main(int argc, char* argv[]) {
 		if([modeString isEqual: @"--remove"]) {
 			// So you think you can rid yourself of SelfControl just like that?
 			NSLog(@"INFO: Nice try.");
-			printStatus(-212);
-			syncSettingsAndExit(settings, EX_UNAVAILABLE);
+            exit(EX_UNAVAILABLE);
         } else if ([modeString isEqualToString: @"--print-settings"]) {
             NSLog(@" - Printing SelfControl secured settings for debug: - ");
             NSLog(@"%@", [settings dictionaryRepresentation]);
@@ -191,12 +187,8 @@ int main(int argc, char* argv[]) {
             NSLog(SELFCONTROL_VERSION_STRING);
         }
 
-		// by putting printStatus first (which tells the app we didn't crash), we fake it to
-		// avoid memory-managment crashes (calling [pool drain] is essentially optional)
-		printStatus(0);
-
         // final sync before we exit
-        syncSettingsAndExit(settings, EXIT_SUCCESS);
+        exit(EXIT_SUCCESS);
 	}
 
     // wait, how'd we get out of the autorelease block without hitting the exit just above this?

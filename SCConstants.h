@@ -9,8 +9,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-FOUNDATION_EXPORT NSString *const kSelfControlErrorDomain;
-
 @interface SCConstants : NSObject
 
 @property (class, readonly, nonatomic) NSArray<NSString*>* systemSoundNames;

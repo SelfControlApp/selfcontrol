@@ -1,0 +1,42 @@
+/* 
+  SCError.strings
+  SelfControl
+
+  Created by Charlie Stigler on 1/13/21.
+  
+*/
+
+// 0-99 = general / generic errors
+
+// 100 - 199 = errors generated in the app
+"100" = "You can't start block, because the blocklist is empty.";
+"101" = "There was an error saving the blocklist to a file: %@";
+"102" = "You can't add to the blocklist, because no block is currently running.";
+"103" = "You can't extend block duration, because no block is currently running.";
+"104" = "You can't start a block, because another block is currently running.";
+
+// 200 - 299 = errors generated in the CLI
+
+// 300-399 = errors generated in the daemon
+"300" = "Command failed because of a timeout acquiring the request lock.";
+"301" = "SelfControl couldn't start a block because a block is already running.";
+"302" = "SelfControl couldn't start a block because the blocklist is empty, or the block end date is in the past.";
+"303" = "SelfControl couldn't update the blocklist because the current block was started with an older version of SelfControl.";
+"304" = "SelfControl couldn't add to the blocklist because no block is currently running.";
+"305" = "SelfControl won't add to the blocklist because the current block uses an allowlist.";
+"306" = "SelfControl could't extend the block duration bcecause the current block was started with an older version of SelfControl.";
+"307" = "SelfControl couldn't extend the block duration because no block is currently running.";
+"308" = "SelfControl won't update the block to end at an earlier date - it can only be extended.";
+"309" = "SelfControl won't extend the block by more than 24 hours at a time.";
+"310" = "There was an error switching alert sounds because that sound name is unknown.";
+"310" = "There was an error switching alert sounds because the system couldn't find that sound.";
+
+// 400-499 = errors generated in the killer
+"400" = "SelfControl couldn't manually clear the block, because there was an error running the helper tool.";
+
+// 500-599 = errors generated in the XPC client
+"500" = "There was an error trying to install SelfControl's helper tool: %@";
+"501" = "There was an error authorizing the installation of SelfControl's helper tool.";
+
+// 600-699 = errors generated in SCSettings
+"600" = "Unable to write SCSettings from a normal (non-root) account.";

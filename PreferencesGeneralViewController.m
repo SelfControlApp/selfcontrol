@@ -34,9 +34,7 @@
     NSInteger blockSoundIndex = [systemSoundNames indexOfObject: selectedSoundName];
     if (blockSoundIndex == NSNotFound) {
         NSLog(@"WARNING: User selected unknown alert sound %@.", selectedSoundName);
-        NSError* err = [NSError errorWithDomain: @"SelfControlErrorDomain"
-                                           code: -902
-                                       userInfo: @{NSLocalizedDescriptionKey: @"Error -902: Unknown sound selected."}];
+        NSError* err = [SCErr errorWithCode: 310];
         [NSApp presentError: err];
         return;
     }
@@ -45,9 +43,7 @@
     NSSound* alertSound = [NSSound soundNamed: systemSoundNames[blockSoundIndex]];
 	if(!alertSound) {
 		NSLog(@"WARNING: Alert sound not found.");
-		NSError* err = [NSError errorWithDomain: @"SelfControlErrorDomain"
-										   code: -901
-									   userInfo: @{NSLocalizedDescriptionKey: @"Error -901: Selected sound not found."}];
+        NSError* err = [SCErr errorWithCode: 311];
 		[NSApp presentError: err];
 	} else {
 		[alertSound play];
