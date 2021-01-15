@@ -31,8 +31,7 @@
 #import "SCSettings.h"
 #import <ServiceManagement/ServiceManagement.h>
 #import "SCXPCClient.h"
-#import "SCConstants.h"
-#import "version-header.h"
+#import <Sentry/Sentry.h>
 
 @interface AppController () {}
 
@@ -50,15 +49,7 @@
 	if(self = [super init]) {
 
 		defaults_ = [NSUserDefaults standardUserDefaults];
-        settings_ = [SCSettings sharedSettings];
-
 		[defaults_ registerDefaults: SCConstants.defaultUserDefaults];
-        
-        // go copy over any preferences from legacy setting locations
-        // (we won't clear any old data yet - we leave that to the daemon)
-        if ([SCUtilities legacySettingsFound]) {
-            [SCUtilities copyLegacySettingsToDefaults];
-        }
 
 		self.addingBlock = false;
 
@@ -122,6 +113,7 @@
     if ([self blockIsRunning]) {
 		// This method shouldn't be getting called, a block is on so the Start button should be disabled.
         NSError* err = [SCErr errorWithCode: 104];
+        [SCSentry captureError: err];
         [NSApp presentError: err];
 		return;
 	}
@@ -130,7 +122,7 @@
 		// this should definitely not be happening.  Exit.
 
         NSError* err = [SCErr errorWithCode: 101];
-
+        [SCSentry captureError: err];
 		[NSApp presentError: err];
 
 		return;
@@ -171,7 +163,7 @@
 		// already refreshing the UI, no need to wait and do it again
 		return;
 	}
-
+    
 	BOOL blockWasOn = blockIsOn;
 	blockIsOn = [self blockIsRunning];
 
@@ -304,6 +296,15 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	[NSApplication sharedApplication].delegate = self;
     
+    [SCSentry startSentry: @"org.eyebeam.SelfControl"];
+
+    settings_ = [SCSettings sharedSettings];
+    // go copy over any preferences from legacy setting locations
+    // (we won't clear any old data yet - we leave that to the daemon)
+    if ([SCUtilities legacySettingsFound]) {
+        [SCUtilities copyLegacySettingsToDefaults];
+    }
+
     // start up our daemon XPC
     self.xpc = [SCXPCClient new];
     [self.xpc connectToHelperTool];
@@ -370,8 +371,8 @@
 
 	[self refreshUserInterface];
 
-    NSOperatingSystemVersion minRequiredVersion = (NSOperatingSystemVersion){10,8,0}; // Mountain Lion
-    NSString* minRequiredVersionString = @"10.8 (Mountain Lion)";
+    NSOperatingSystemVersion minRequiredVersion = (NSOperatingSystemVersion){10,10,0}; // Mountain Lion
+    NSString* minRequiredVersionString = @"10.10 (Yosemite)";
 	if (![[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion: minRequiredVersion]) {
 		NSLog(@"ERROR: Unsupported version for SelfControl");
 		NSAlert* unsupportedVersionAlert = [[NSAlert alloc] init];
@@ -474,7 +475,7 @@
 		[self refreshUserInterface];
 
         NSError* err = [SCErr errorWithCode: 102];
-
+        [SCSentry captureError: err];
 		[NSApp presentError: err];
 
 		return;
@@ -518,7 +519,7 @@
         [self refreshUserInterface];
         
         NSError* err = [SCErr errorWithCode: 103];
-        
+        [SCSentry captureError: err];
         [NSApp presentError: err];
         
         return;
@@ -721,6 +722,7 @@
 
         if(errDescription) {
             NSError* displayErr = [SCErr errorWithCode: 105 subDescription: errDescription];
+            [SCSentry captureError: displayErr];
             NSBeep();
 			[NSApp presentError: displayErr];
 			return;

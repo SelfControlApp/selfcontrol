@@ -6,7 +6,6 @@
 //
 
 #import "SCDaemonXPC.h"
-#import "version-header.h"
 #import "SCDaemonBlockMethods.h"
 #import "SCXPCAuthorization.h"
 

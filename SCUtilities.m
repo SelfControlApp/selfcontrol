@@ -8,7 +8,6 @@
 #import "SCUtilities.h"
 #import "HelperCommon.h"
 #import "SCSettings.h"
-#import "SCConstants.h"
 #include <pwd.h>
 
 @implementation SCUtilities
@@ -219,7 +218,6 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
 }
 
 + (void) removeBlockFromSettings {
-    // TODO: will this work setting nil instead of [NSDate dateWithTimeIntervalSince1970: 0]?
     SCSettings* settings = [SCSettings sharedSettings];
     [settings setValue: nil forKey: @"BlockEndDate"];
     [settings setValue: nil forKey: @"BlockIsRunning"];

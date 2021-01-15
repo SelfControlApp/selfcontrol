@@ -152,7 +152,12 @@
 
 		if(numStrikes > 10) {
 			// OK, this is taking longer than it should. Enable manual block removal.
-			if (numStrikes == 10) NSLog(@"WARNING: Block should have ended a minute ago! Probable failure to remove.");
+            if (numStrikes == 10) {
+                NSLog(@"WARNING: Block should have ended a minute ago! Probable failure to remove.");
+                NSError* err = [SCErr errorWithCode: 105];
+                [SCSentry captureError: err];
+            }
+
 			addToBlockButton_.hidden = YES;
             extendBlockButton_.hidden = YES;
 			killBlockButton_.hidden = NO;
@@ -341,7 +346,7 @@
 		NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", status);
 
         NSError* err = [SCErr errorWithCode: 400];
-
+        [SCSentry captureError: err];
 		[NSApp presentError: err];
 
 		return;

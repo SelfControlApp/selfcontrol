@@ -11,7 +11,6 @@
 #import "PacketFilter.h"
 #import "SCDaemonUtilities.h"
 #import "BlockManager.h"
-#import "SCConstants.h"
 
 NSTimeInterval METHOD_LOCK_TIMEOUT = 5.0;
 NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for checkups, because we'd prefer not to have tons pile up
@@ -31,6 +30,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     if (![self.daemonMethodLock lockBeforeDate: [NSDate dateWithTimeIntervalSinceNow: timeout]]) {
         // if we couldn't get a lock within 10 seconds, something is weird
         // but we probably shouldn't still run, because that's just unexpected at that point
+        // don't capture this error on Sentry because it's very usual for checkups to timeout
         NSError* err = [SCErr errorWithCode: 300];
         NSLog(@"ERROR: Timed out acquiring request lock (after %f seconds)", timeout);
 
@@ -54,6 +54,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     if ([SCUtilities anyBlockIsRunning: controllingUID]) {
         NSLog(@"ERROR: Can't start block since a block is already running");
         NSError* err = [SCErr errorWithCode: 301];
+        [SCSentry captureError: err];
         reply(err);
         [self.daemonMethodLock unlock];
         return;
@@ -89,6 +90,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         NSLog(@"ERROR: Blocklist is empty, or block end date is in the past");
         NSLog(@"Block End Date: %@ (%@), vs now is %@", [settings valueForKey: @"BlockEndDate"], [[settings valueForKey: @"BlockEndDate"] class], [NSDate date]);
         NSError* err = [SCErr errorWithCode: 302];
+        [SCSentry captureError: err];
         reply(err);
         [self.daemonMethodLock unlock];
         return;
@@ -122,6 +124,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     if ([SCUtilities legacyBlockIsRunning: controllingUID]) {
         NSLog(@"ERROR: Can't update blocklist because a legacy block is running");
         NSError* err = [SCErr errorWithCode: 303];
+        [SCSentry captureError: err];
         reply(err);
         [self.daemonMethodLock unlock];
         return;
@@ -129,6 +132,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     if (![SCUtilities modernBlockIsRunning]) {
         NSLog(@"ERROR: Can't update blocklist since block isn't running");
         NSError* err = [SCErr errorWithCode: 304];
+        [SCSentry captureError: err];
         reply(err);
         [self.daemonMethodLock unlock];
         return;
@@ -139,6 +143,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     if ([settings boolForKey: @"ActiveBlockAsWhitelist"]) {
         NSLog(@"ERROR: Attempting to update active blocklist, but this is not possible with an allowlist block");
         NSError* err = [SCErr errorWithCode: 305];
+        [SCSentry captureError: err];
         reply(err);
         [self.daemonMethodLock unlock];
         return;
@@ -188,6 +193,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     if ([SCUtilities legacyBlockIsRunning: controllingUID]) {
         NSLog(@"ERROR: Can't update block end date because a legacy block is running");
         NSError* err = [SCErr errorWithCode: 306];
+        [SCSentry captureError: err];
         reply(err);
         [self.daemonMethodLock unlock];
         return;
@@ -195,6 +201,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     if (![SCUtilities modernBlockIsRunning]) {
         NSLog(@"ERROR: Can't update block end date since block isn't running");
         NSError* err = [SCErr errorWithCode: 307];
+        [SCSentry captureError: err];
         reply(err);
         [self.daemonMethodLock unlock];
         return;
@@ -209,12 +216,14 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     if ([newEndDate timeIntervalSinceDate: currentEndDate] < 0) {
         NSLog(@"ERROR: Can't update block end date to an earlier date");
         NSError* err = [SCErr errorWithCode: 308];
+        [SCSentry captureError: err];
         reply(err);
         [self.daemonMethodLock unlock];
     }
     if ([newEndDate timeIntervalSinceDate: currentEndDate] > 86400) { // 86400 seconds = 1 day
         NSLog(@"ERROR: Can't extend block end date by more than 1 day at a time");
         NSError* err = [SCErr errorWithCode: 309];
+        [SCSentry captureError: err];
         reply(err);
         [self.daemonMethodLock unlock];
     }
@@ -249,6 +258,9 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         // we should clear the block now.
         // but let them know that we noticed their (likely) cheating and we're not happy!
         NSLog(@"INFO: Checkup ran, no active block found.");
+        
+        [SCSentry captureMessage: @"Checkup ran and no active block found! Removing block, tampering suspected..."];
+        
         removeBlock(controllingUID);
 
         [SCDaemonUtilities unloadDaemonJob];

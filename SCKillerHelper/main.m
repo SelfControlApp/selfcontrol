@@ -166,7 +166,6 @@ int main(int argc, char* argv[]) {
         [settings synchronizeSettings];
         [log appendFormat: @"Reset all modern secured settings to default values.\n"];
         
-        // TODO: clear legacy settings
         if ([SCUtilities legacySettingsFound: controllingUID]) {
             [SCUtilities copyLegacySettingsToDefaults: controllingUID];
             [SCUtilities clearLegacySettings: controllingUID];

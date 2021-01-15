@@ -11,7 +11,6 @@
 #include "BlockManager.h"
 #import "SCUtilities.h"
 #import "SCSettings.h"
-#import "SCConstants.h"
 #import <ServiceManagement/ServiceManagement.h>
 
 void addRulesToFirewall() {

@@ -8,9 +8,9 @@
 #import "SCXPCClient.h"
 #import "SCDaemonProtocol.h"
 #import <ServiceManagement/ServiceManagement.h>
-#import "SCConstants.h"
 #import "SCXPCAuthorization.h"
 #import "SCUtilities.h"
+#import "SCErr.h"
 
 @interface SCXPCClient () {
     AuthorizationRef    _authRef;
@@ -144,7 +144,9 @@
 
     if(status) {
         NSLog(@"ERROR: Failed to authorize installing selfcontrold.");
-        callback([SCErr errorWithCode: 501]);
+        NSError* err = [SCErr errorWithCode: 501];
+        // this usually just means the user clicked Cancel, so don't report to Sentry
+        callback(err);
         return;
     }
 
@@ -161,6 +163,7 @@
         NSLog(@"WARNING: Authorized installation of selfcontrold returned failure status code %d and error %@", (int)status, error);
 
         NSError* err = [SCErr errorWithCode: 500 subDescription: error.localizedDescription];
+        [SCSentry captureError: err];
 
         callback(err);
         return;

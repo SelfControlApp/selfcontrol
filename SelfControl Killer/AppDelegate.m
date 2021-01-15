@@ -68,6 +68,7 @@
 		NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", status);
 
         NSError* err = [SCErr errorWithCode: 400];
+        [SCSentry captureError: err];
 
 		[NSApp presentError: err];
 

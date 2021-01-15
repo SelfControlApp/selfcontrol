@@ -24,15 +24,15 @@
 #import "HelperCommon.h"
 #import "SCUtilities.h"
 #import "SCSettings.h"
-#import "version-header.h"
-#import "SCConstants.h"
 #import "SCXPCClient.h"
 
 // The main method which deals which most of the logic flow and execution of
 // the CLI helper tool.  Posts an SCConfigurationChangedNotification if the block
 // is enabled or disabled.
 int main(int argc, char* argv[]) {
-	@autoreleasepool {
+    [SCSentry startSentry: @"org.eyebeam.selfcontrol-cli"];
+
+    @autoreleasepool {
 		if(argc < 3 || argv[1] == NULL || argv[2] == NULL) {
 			NSLog(@"ERROR: Not enough arguments");
 			exit(EX_USAGE);
