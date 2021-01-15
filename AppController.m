@@ -121,19 +121,15 @@
 - (IBAction)addBlock:(id)sender {
     if ([self blockIsRunning]) {
 		// This method shouldn't be getting called, a block is on so the Start button should be disabled.
-		NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
-										   code: -102
-									   userInfo: @{NSLocalizedDescriptionKey: @"We can't start a block, because one is currently ongoing."}];
-		[NSApp presentError: err];
+        NSError* err = [SCErr errorWithCode: 104];
+        [NSApp presentError: err];
 		return;
 	}
 	if([[defaults_ arrayForKey: @"Blocklist"] count] == 0) {
 		// Since the Start button should be disabled when the blocklist has no entries,
 		// this should definitely not be happening.  Exit.
 
-		NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
-										   code: -102
-									   userInfo: @{NSLocalizedDescriptionKey: @"Error -102: Attempting to add block, but no blocklist is set."}];
+        NSError* err = [SCErr errorWithCode: 101];
 
 		[NSApp presentError: err];
 
@@ -477,9 +473,7 @@
 		// before we return.
 		[self refreshUserInterface];
 
-		NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
-										   code: -103
-									   userInfo: @{NSLocalizedDescriptionKey: @"Error -103: Attempting to add host to block, but no block appears to be in progress."}];
+        NSError* err = [SCErr errorWithCode: 102];
 
 		[NSApp presentError: err];
 
@@ -523,9 +517,7 @@
         // before we return.
         [self refreshUserInterface];
         
-        NSError* err = [NSError errorWithDomain:kSelfControlErrorDomain
-                                           code: -103
-                                       userInfo: @{NSLocalizedDescriptionKey: @"Error -103: Attempting to extend block time, but no block appears to be in progress."}];
+        NSError* err = [SCErr errorWithCode: 103];
         
         [NSApp presentError: err];
         
@@ -560,75 +552,6 @@
 
 - (void)setDomainListWindowController:(id)newController {
 	domainListWindowController_ = newController;
-}
-
-- (NSError*)errorFromHelperToolStatusCode:(int)status {
-	NSString* domain = kSelfControlErrorDomain;
-	NSMutableString* description = [NSMutableString stringWithFormat: @"Error %d: ", status];
-	switch(status) {
-		case -201:
-			[description appendString: @"Helper tool not launched as root."];
-			break;
-		case -202:
-			[description appendString: @"Helper tool launched with insufficient arguments."];
-			break;
-		case -203:
-			[description appendString: @"Host blocklist not set"];
-			break;
-		case -204:
-			[description appendString: @"Could not write launchd plist file to LaunchDaemons folder."];
-			break;
-		case -205:
-			[description appendString: @"Could not create PrivilegedHelperTools directory."];
-			break;
-		case -206:
-			[description appendString: @"Could not change permissions on PrivilegedHelperTools directory."];
-			break;
-		case -207:
-			[description appendString: @"Could not delete old helper binary."];
-			break;
-		case -208:
-			[description appendString: @"Could not copy SelfControl's helper binary to PrivilegedHelperTools directory."];
-			break;
-		case -209:
-			[description appendString: @"Could not change permissions on SelfControl's helper binary."];
-			break;
-		case -210:
-			[description appendString: @"Insufficient block information found."];
-			break;
-		case -211:
-			[description appendString: @"Launch daemon load returned a failure status code."];
-			break;
-		case -212:
-			[description appendString: @"Remove option called."];
-			break;
-		case -213:
-			[description appendString: @"Refreshing domain blocklist, but no block is currently ongoing."];
-			break;
-		case -214:
-			[description appendString: @"Insufficient block information found."];
-			break;
-		case -215:
-			[description appendString: @"Checkup ran but no block found."];
-			break;
-		case -216:
-			[description appendString: @"Could not write lock file."];
-			break;
-		case -217:
-			[description appendString: @"Could not write lock file."];
-			break;
-		case -218:
-			[description appendString: @"Could not remove SelfControl lock file."];
-			break;
-		case -219:
-			[description appendString: @"SelfControl lock file already exists.  Please try your block again."];
-			break;
-
-		default:
-			[description appendString: [NSString stringWithFormat: @"Helper tool failed with unknown error code: %d", status]];
-	}
-
-	return [NSError errorWithDomain: domain code: status userInfo: @{NSLocalizedDescriptionKey: description}];
 }
 
 - (void)installBlock {
@@ -797,7 +720,7 @@
                                    errorDescription: &errDescription];
 
         if(errDescription) {
-			NSError* displayErr = [NSError errorWithDomain: kSelfControlErrorDomain code: -902 userInfo: @{NSLocalizedDescriptionKey: [@"Error 902: " stringByAppendingString: errDescription]}];
+            NSError* displayErr = [SCErr errorWithCode: 105 subDescription: errDescription];
             NSBeep();
 			[NSApp presentError: displayErr];
 			return;

@@ -7,8 +7,6 @@
 
 #import "SCConstants.h"
 
-NSString *const kSelfControlErrorDomain = @"SelfControlErrorDomain";
-
 @implementation SCConstants
 
 +  (NSArray<NSString*>*)systemSoundNames {

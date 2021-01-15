@@ -240,9 +240,7 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
         if (self.readOnly) {
             NSLog(@"WARNING: Read-only SCSettings instance can't write out settings");
             if (completionBlock != nil) {
-                completionBlock([NSError errorWithDomain: kSelfControlErrorDomain code: -501 userInfo: @{
-                    NSLocalizedDescriptionKey: NSLocalizedString(@"Read-only SCSettings instance can't write out settings", nil)
-                }]);
+                completionBlock([SCErr errorWithCode: 600]);
             }
             return;
         }
@@ -299,7 +297,6 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
 
             if (writeSuccessful) {
                 self.lastSynchronizedWithDisk = [NSDate date];
-                NSLog(@"wrote %@ to %@", plistData, SCSettings.securedSettingsFilePath);
             }
 
             if (!writeSuccessful) {

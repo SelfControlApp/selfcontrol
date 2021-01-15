@@ -144,7 +144,7 @@
 
     if(status) {
         NSLog(@"ERROR: Failed to authorize installing selfcontrold.");
-        callback([NSError errorWithDomain: @"SelfControlErrorDomain" code: status userInfo: nil]);
+        callback([SCErr errorWithCode: 501]);
         return;
     }
 
@@ -160,9 +160,8 @@
         
         NSLog(@"WARNING: Authorized installation of selfcontrold returned failure status code %d and error %@", (int)status, error);
 
-        NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain
-                                           code: status
-                                       userInfo: @{NSLocalizedDescriptionKey: [NSString stringWithFormat: @"Error %d received from the Security Server.", (int)status]}];
+        NSError* err = [SCErr errorWithCode: 500 subDescription: error.localizedDescription];
+
         callback(err);
         return;
     } else {

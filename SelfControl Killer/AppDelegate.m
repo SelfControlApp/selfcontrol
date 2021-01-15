@@ -67,7 +67,7 @@
 	if(status) {
 		NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", status);
 
-		NSError* err = [NSError errorWithDomain: @"org.eyebeam.SelfControl-Killer" code: status userInfo: @{NSLocalizedDescriptionKey: @"Error executing privileged helper tool."}];
+        NSError* err = [SCErr errorWithCode: 400];
 
 		[NSApp presentError: err];
 

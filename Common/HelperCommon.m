@@ -161,11 +161,6 @@ void clearOSDNSCache() {
     NSLog(@"Cleared OS DNS caches");
 }
 
-void printStatus(int status) {
-	printf("%d", status);
-	fflush(stdout);
-}
-
 void removeBlock(uid_t controllingUID) {
     SCSettings* settings = [SCSettings sharedSettings];
 

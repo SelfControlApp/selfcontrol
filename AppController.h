@@ -109,10 +109,6 @@
 // number of minutes to the black timer.
 - (void)extendBlockTime:(NSInteger)minutes lock:(NSLock*)lock;
 
-// Converts a failure exit code from a helper tool invocation into an NSError,
-// ready to be presented to the user.
-- (NSError*)errorFromHelperToolStatusCode:(int)status;
-
 // Gets authorization for and then immediately adds the block by calling
 // SelfControl's helper tool with the appropriate arguments.  Meant to be called
 // as a separate thread.

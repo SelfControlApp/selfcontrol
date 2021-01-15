@@ -17,7 +17,7 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-// All the functions etc. formerly used for HelperMain are now separated into this file.
+// All the functions etc. formerly used for the helper tool are now separated into this file.
 // This is so that another helper tool can be created that easily uses those same functions.
 
 // imports for all helper tools
@@ -35,10 +35,10 @@
 // Reads the domain block list from the settings for SelfControl, and adds deny
 // rules for all of the IPs (or the A DNS record IPS for doamin names) to the
 // ipfw firewall.
-void addRulesToFirewall();
+void addRulesToFirewall(void);
 
 // Removes from ipfw all rules that were created by SelfControl.
-void removeRulesFromFirewall();
+void removeRulesFromFirewall(void);
 
 // Returns an autoreleased NSSet containing all IP adresses for evaluated
 // "common subdomains" for the specified hostname
@@ -54,9 +54,6 @@ void clearBrowserCaches(uid_t controllingUID);
 
 // Clear only the OS-level DNS cache
 void clearOSDNSCache(void);
-
-// Prints out the given status code to stdout using printf
-void printStatus(int status);
 
 // Removes block via settings, host file rules and ipfw rules,
 // deleting user caches if requested, and migrating legacy settings.

@@ -247,7 +247,7 @@ NSFileHandle* appendFileHandle;
 
 - (BOOL)containsSelfControlBlock {
 	NSString* mainConf = [NSString stringWithContentsOfFile: @"/etc/pf.conf" encoding: NSUTF8StringEncoding error: nil];
-	return [mainConf rangeOfString: @"org.eyebeam"].location != NSNotFound;
+	return mainConf != nil && [mainConf rangeOfString: @"org.eyebeam"].location != NSNotFound;
 }
 
 @end

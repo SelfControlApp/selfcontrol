@@ -31,9 +31,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     if (![self.daemonMethodLock lockBeforeDate: [NSDate dateWithTimeIntervalSinceNow: timeout]]) {
         // if we couldn't get a lock within 10 seconds, something is weird
         // but we probably shouldn't still run, because that's just unexpected at that point
-        NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain code: -401 userInfo: @{
-            NSLocalizedDescriptionKey: NSLocalizedString(@"Timed out acquiring request lock", nil)
-        }];
+        NSError* err = [SCErr errorWithCode: 300];
         NSLog(@"ERROR: Timed out acquiring request lock (after %f seconds)", timeout);
 
         if (reply != nil) {
@@ -55,9 +53,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     
     if ([SCUtilities anyBlockIsRunning: controllingUID]) {
         NSLog(@"ERROR: Can't start block since a block is already running");
-        NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain code: -299 userInfo: @{
-            NSLocalizedDescriptionKey: NSLocalizedString(@"Can't start block since a block is already running", nil)
-        }];
+        NSError* err = [SCErr errorWithCode: 301];
         reply(err);
         [self.daemonMethodLock unlock];
         return;
@@ -92,9 +88,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     if([blocklist count] <= 0 || ![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
         NSLog(@"ERROR: Blocklist is empty, or block end date is in the past");
         NSLog(@"Block End Date: %@ (%@), vs now is %@", [settings valueForKey: @"BlockEndDate"], [[settings valueForKey: @"BlockEndDate"] class], [NSDate date]);
-        NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain code: -210 userInfo: @{
-            NSLocalizedDescriptionKey: NSLocalizedString(@"Blocklist is empty, or block end date is in the past", nil)
-        }];
+        NSError* err = [SCErr errorWithCode: 302];
         reply(err);
         [self.daemonMethodLock unlock];
         return;
@@ -127,18 +121,14 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     
     if ([SCUtilities legacyBlockIsRunning: controllingUID]) {
         NSLog(@"ERROR: Can't update blocklist because a legacy block is running");
-        NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain code: -344 userInfo: @{
-            NSLocalizedDescriptionKey: NSLocalizedString(@"Can't update blocklist because a legacy block is running", nil)
-        }];
+        NSError* err = [SCErr errorWithCode: 303];
         reply(err);
         [self.daemonMethodLock unlock];
         return;
     }
     if (![SCUtilities modernBlockIsRunning]) {
         NSLog(@"ERROR: Can't update blocklist since block isn't running");
-        NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain code: -213 userInfo: @{
-            NSLocalizedDescriptionKey: NSLocalizedString(@"Refreshing blocklist, but no block is currently running", nil)
-        }];
+        NSError* err = [SCErr errorWithCode: 304];
         reply(err);
         [self.daemonMethodLock unlock];
         return;
@@ -148,10 +138,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         
     if ([settings boolForKey: @"ActiveBlockAsWhitelist"]) {
         NSLog(@"ERROR: Attempting to update active blocklist, but this is not possible with an allowlist block");
-        // TODO: replace this with a better error code
-        NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain code: -213 userInfo: @{
-            NSLocalizedDescriptionKey: NSLocalizedString(@"Attempting to update active blocklist, but this is not possible with an allowlist block", nil)
-        }];
+        NSError* err = [SCErr errorWithCode: 305];
         reply(err);
         [self.daemonMethodLock unlock];
         return;
@@ -200,18 +187,14 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     NSLog(@"updating block end date in methods");
     if ([SCUtilities legacyBlockIsRunning: controllingUID]) {
         NSLog(@"ERROR: Can't update block end date because a legacy block is running");
-        NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain code: -344 userInfo: @{
-            NSLocalizedDescriptionKey: NSLocalizedString(@"Can't update block end date because a legacy block is running", nil)
-        }];
+        NSError* err = [SCErr errorWithCode: 306];
         reply(err);
         [self.daemonMethodLock unlock];
         return;
     }
     if (![SCUtilities modernBlockIsRunning]) {
         NSLog(@"ERROR: Can't update block end date since block isn't running");
-        NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain code: -213 userInfo: @{
-            NSLocalizedDescriptionKey: NSLocalizedString(@"Refreshing block end date, but no block is currently running", nil)
-        }];
+        NSError* err = [SCErr errorWithCode: 307];
         reply(err);
         [self.daemonMethodLock unlock];
         return;
@@ -225,17 +208,13 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     NSDate* currentEndDate = [settings valueForKey: @"BlockEndDate"];
     if ([newEndDate timeIntervalSinceDate: currentEndDate] < 0) {
         NSLog(@"ERROR: Can't update block end date to an earlier date");
-        NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain code: -301 userInfo: @{
-            NSLocalizedDescriptionKey: NSLocalizedString(@"Can't update block end date to an earlier date", nil)
-        }];
+        NSError* err = [SCErr errorWithCode: 308];
         reply(err);
         [self.daemonMethodLock unlock];
     }
     if ([newEndDate timeIntervalSinceDate: currentEndDate] > 86400) { // 86400 seconds = 1 day
         NSLog(@"ERROR: Can't extend block end date by more than 1 day at a time");
-        NSError* err = [NSError errorWithDomain: kSelfControlErrorDomain code: -302 userInfo: @{
-            NSLocalizedDescriptionKey: NSLocalizedString(@"Can't extend block end date by more than 1 day at a time", nil)
-        }];
+        NSError* err = [SCErr errorWithCode: 309];
         reply(err);
         [self.daemonMethodLock unlock];
     }
@@ -295,7 +274,6 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
 
         // Execution should never reach this point.  Launchd unloading the job in
         // should have killed this process. TODO: but maybe doesn't always with a daemon?
-        printStatus(-216);
         syncSettingsAndExit(settings, EX_SOFTWARE);
     } else if ([[NSDate date] timeIntervalSinceDate: lastBlockIntegrityCheck] > integrityCheckIntervalSecs) {
         lastBlockIntegrityCheck = [NSDate date];
