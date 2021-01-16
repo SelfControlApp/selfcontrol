@@ -185,29 +185,3 @@ void sendConfigurationChangedNotification() {
                                                                  userInfo: nil
                                                                   options: NSNotificationDeliverImmediately | NSNotificationPostToAllSessions];
 }
-
-void syncSettingsAndExit(SCSettings* settings, int status) {
-    // this should always be run on the main thread so it blocks main()
-    if (![NSThread isMainThread]) {
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            syncSettingsAndExit(settings, status);
-        });
-    }
-
-    [settings synchronizeSettingsWithCompletion:^(NSError* err) {
-        if (err != nil) {
-            NSLog(@"WARNING: Settings failed to synchronize before exit, with error %@", err);
-        }
-        
-        exit(status);
-    }];
-        
-    // wait 5 seconds. assuming the synchronization completes during that time,
-    // it'll exit() for us and we'll never get to the other side of this wait
-    sleep(5);
-        
-    // uh-oh, looks like it's 5 seconds later and the sync hasn't completed yet. Bad news.
-    NSLog(@"WARNING: Settings sync timed out before exiting");
-    
-    exit(status);
-}

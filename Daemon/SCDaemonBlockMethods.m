@@ -273,12 +273,6 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         
         removeBlock(controllingUID);
 
-        [SCDaemonUtilities unloadDaemonJob];
-        
-        // execution should never reach this point because we've unloaded
-        syncSettingsAndExit(settings, EX_SOFTWARE);
-
-        // get rid of this block
         // Temporarily disabled the TamperingDetection flag because it was sometimes causing false positives
         // (i.e. people having the background set repeatedly despite no attempts to cheat)
         // We will try to bring this feature back once we can debug it
@@ -286,6 +280,11 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         // [settings setValue: @YES forKey: @"TamperingDetected"];
         //        [settings synchronizeSettings];
         //
+        
+        [SCDaemonUtilities unloadDaemonJob];
+        
+        // execution should never reach this point because we've unloaded
+        exit(EX_SOFTWARE);
     }
 
     if (![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
@@ -293,11 +292,11 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         
         removeBlock(controllingUID);
         [SCSentry addBreadcrumb: @"Daemon found and cleared expired block" category: @"daemon"];
+        
         [SCDaemonUtilities unloadDaemonJob];
-
-        // Execution should never reach this point.  Launchd unloading the job in
-        // should have killed this process. TODO: but maybe doesn't always with a daemon?
-        syncSettingsAndExit(settings, EX_SOFTWARE);
+        
+        // execution should never reach this point because we've unloaded
+        exit(EX_SOFTWARE);
     } else if ([[NSDate date] timeIntervalSinceDate: lastBlockIntegrityCheck] > integrityCheckIntervalSecs) {
         lastBlockIntegrityCheck = [NSDate date];
         // The block is still on.  Every once in a while, we should

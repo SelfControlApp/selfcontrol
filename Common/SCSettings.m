@@ -341,11 +341,35 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
         NSLog(@" --> Writing settings to disk (haven't been written since %@)", self.lastSynchronizedWithDisk);
         [self writeSettingsWithCompletion: completionBlock];
     } else {
-        if(completionBlock != nil) completionBlock(nil);
+        if(completionBlock != nil) {
+            // don't just run the callback asynchronously, since it makes this method harder to reason about
+            // (it'd sometimes call back synchronously and sometimes async)
+//            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                completionBlock(nil);
+//            });
+        }
     }
 }
 - (void)synchronizeSettings {
     [self synchronizeSettingsWithCompletion: nil];
+}
+
+- (void)syncSettingsAndWait:(int)timeoutSecs error:(NSError* __strong *)errPtr {
+    dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+
+    // do this on another thread so it doesn't deadlock our semaphore
+    // (also dispatch_async ensures correct behavior even if synchronizeSettingsWithCompletion itself returns synchronously)
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self synchronizeSettingsWithCompletion:^(NSError* err) {
+            *errPtr = err;
+            
+            dispatch_semaphore_signal(sema);
+        }];
+    });
+    
+    if (dispatch_semaphore_wait(sema, dispatch_time(DISPATCH_TIME_NOW, timeoutSecs * NSEC_PER_SEC))) {
+        *errPtr = [SCErr errorWithCode: 601];
+    }
 }
 
 - (void)setValue:(id)value forKey:(NSString*)key stopPropagation:(BOOL)stopPropagation {

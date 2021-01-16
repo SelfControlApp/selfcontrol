@@ -135,7 +135,7 @@ int main(int argc, char* argv[]) {
 		[log appendFormat: @"Unloading the legacy (1.0 - 3.0.3) launchd daemon returned: %d\n\n", status];
         
         CFErrorRef cfError;
-        SMJobRemove(kSMDomainSystemLaunchd, CFSTR("org.eyebeam.selfcontrold"), NULL, NO, &cfError);
+        SMJobRemove(kSMDomainSystemLaunchd, CFSTR("org.eyebeam.selfcontrold"), NULL, YES, &cfError);
         if (cfError) {
             [log appendFormat: @"Failed to remove selfcontrold daemon (4.x) with error %@\n\n", cfError];
         } else {
