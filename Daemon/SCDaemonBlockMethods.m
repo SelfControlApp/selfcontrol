@@ -126,7 +126,6 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     }
     
     [SCSentry addBreadcrumb: @"Daemon method updateBlocklist called" category: @"daemon"];
-    [SentrySDK crash];
     if ([SCUtilities legacyBlockIsRunning: controllingUID]) {
         NSLog(@"ERROR: Can't update blocklist because a legacy block is running");
         NSError* err = [SCErr errorWithCode: 303];

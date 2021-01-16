@@ -55,7 +55,7 @@
 	if ([domainList_ count] == 0) {
 		[self addDomain: self];
 	}
-    [SCSentry captureMessage: @"domain window test error"];
+
     [self updateWindowTitle];
 }
 

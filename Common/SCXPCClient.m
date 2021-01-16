@@ -266,8 +266,10 @@
                 [SCSentry captureError: proxyError];
                 reply(proxyError);
             }] updateBlocklistWithControllingUID: controllingUID newBlocklist: newBlocklist authorization: self.authorization reply:^(NSError* error) {
-                NSLog(@"Blocklist update failed with error = %@\n", error);
-                [SCSentry captureError: error];
+                if (error != nil) {
+                    NSLog(@"Blocklist update failed with error = %@\n", error);
+                    [SCSentry captureError: error];
+                }
                 reply(error);
             }];
         }
@@ -286,8 +288,10 @@
                 [SCSentry captureError: proxyError];
                 reply(proxyError);
             }] updateBlockEndDateWithControllingUID: controllingUID newEndDate: newEndDate authorization: self.authorization reply:^(NSError* error) {
-                NSLog(@"Block end date update failed with error = %@\n", error);
-                [SCSentry captureError: error];
+                if (error != nil) {
+                    NSLog(@"Block end date update failed with error = %@\n", error);
+                    [SCSentry captureError: error];
+                }
                 reply(error);
             }];
         }

@@ -43,15 +43,16 @@
     }
 }
 
-+ (void)showErrorReportingPromptIfNeeded {
+// returns YES if we turned on error reporting based on the prompt return
++ (BOOL)showErrorReportingPromptIfNeeded {
     // no need to show the prompt if we're root (aka in the CLI/daemon), or already enabled error reporting, or if the user already dismissed it
-    if (!geteuid()) return;
-    if ([SCSentry errorReportingEnabled]) return;
+    if (!geteuid()) return NO;
+    if ([SCSentry errorReportingEnabled]) return NO;
     
     // if they've already dismissed this once, don't show it again
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
     if ([defaults boolForKey: @"ErrorReportingPromptDismissed"]) {
-        return;
+        return NO;
     }
     
     NSAlert* alert = [[NSAlert alloc] init];
@@ -64,10 +65,13 @@
     if (modalResponse == NSAlertFirstButtonReturn) {
         [defaults setBool: YES forKey: @"EnableErrorReporting"];
         [defaults setBool: YES forKey: @"ErrorReportingPromptDismissed"];
+        return YES;
     } else if (modalResponse == NSAlertSecondButtonReturn) {
         [defaults setBool: NO forKey: @"EnableErrorReporting"];
         [defaults setBool: YES forKey: @"ErrorReportingPromptDismissed"];
     } // if the modal exited some other way, do nothing
+    
+    return NO;
 }
 
 + (void)updateDefaultsContext {
@@ -102,7 +106,16 @@
 
 + (void)captureError:(NSError*)error {
     if (![SCSentry errorReportingEnabled]) {
-        return;
+        // if we're root (CLI/daemon), we can't show prompts
+        if (!geteuid()) {
+            return;
+        }
+        
+        // prompt 'em to turn on error reports now if we haven't already! if they do we can continue
+        BOOL enabledReports = [SCSentry showErrorReportingPromptIfNeeded];
+        if (!enabledReports) {
+            return;
+        }
     }
 
     NSLog(@"Reporting error %@ to Sentry...", error);
@@ -113,7 +126,16 @@
 
 + (void)captureMessage:(NSString*)message withScopeBlock:(nullable void (^)(SentryScope * _Nonnull))block {
     if (![SCSentry errorReportingEnabled]) {
-        return;
+        // if we're root (CLI/daemon), we can't show prompts
+        if (!geteuid()) {
+            return;
+        }
+        
+        // prompt 'em to turn on error reports now if we haven't already! if they do we can continue
+        BOOL enabledReports = [SCSentry showErrorReportingPromptIfNeeded];
+        if (!enabledReports) {
+            return;
+        }
     }
 
     NSLog(@"Reporting message %@ to Sentry...", message);

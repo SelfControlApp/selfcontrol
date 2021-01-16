@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)captureError:(NSError*)error;
 + (void)captureMessage:(NSString*)message withScopeBlock:(nullable void (^)(SentryScope * _Nonnull))block;
 + (void)captureMessage:(NSString*)message;
-+ (void)showErrorReportingPromptIfNeeded;
++ (BOOL)showErrorReportingPromptIfNeeded;
 
 @end
 
