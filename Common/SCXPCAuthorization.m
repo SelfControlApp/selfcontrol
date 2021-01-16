@@ -101,7 +101,7 @@ static NSDictionary* kAuthorizationRuleAuthenticateAsAdmin5MinTimeout;
                     @"prompt shown when user is required to authorize to start block"
                 )
             },
-            NSStringFromSelector(@selector(updateBlocklistWithControllingUID:newBlocklist:authorization:reply:)) : @{
+            NSStringFromSelector(@selector(updateBlocklist:authorization:reply:)) : @{
                 kCommandKeyAuthRightName    : @"org.eyebeam.SelfControl.modifyBlock",
                 kCommandKeyAuthRightDefault : kAuthorizationRuleAuthenticateAsAdmin5MinTimeout,
                 kCommandKeyAuthRightDesc    : NSLocalizedString(
@@ -109,7 +109,7 @@ static NSDictionary* kAuthorizationRuleAuthenticateAsAdmin5MinTimeout;
                     @"prompt shown when user is required to authorize to add to their blocklist"
                 )
             },
-            NSStringFromSelector(@selector(updateBlockEndDateWithControllingUID:newEndDate:authorization:reply:)) : @{
+            NSStringFromSelector(@selector(updateBlockEndDate:authorization:reply:)) : @{
                 kCommandKeyAuthRightName    : @"org.eyebeam.SelfControl.modifyBlock",
                 kCommandKeyAuthRightDefault : kAuthorizationRuleAuthenticateAsAdmin5MinTimeout,
                 kCommandKeyAuthRightDesc    : NSLocalizedString(

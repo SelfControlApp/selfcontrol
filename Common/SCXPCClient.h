@@ -20,8 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)getVersion:(void(^)(NSString* version, NSError* error))reply;
 - (void)startBlockWithControllingUID:(uid_t)controllingUID blocklist:(NSArray<NSString*>*)blocklist isAllowlist:(BOOL)isAllowlist endDate:(NSDate*)endDate blockSettings:(NSDictionary*)blockSettings reply:(void(^)(NSError* error))reply;
-- (void)updateBlocklistWithControllingUID:(uid_t)controllingUID newBlocklist:(NSArray<NSString*>*)newBlocklist reply:(void(^)(NSError* error))reply;
-- (void)updateBlockEndDateWithControllingUID:(uid_t)controllingUID newEndDate:(NSDate*)newEndDate reply:(void(^)(NSError* error))reply;
+- (void)updateBlocklist:(NSArray<NSString*>*)newBlocklist reply:(void(^)(NSError* error))reply;
+- (void)updateBlockEndDate:(NSDate*)newEndDate reply:(void(^)(NSError* error))reply;
 
 @end
 

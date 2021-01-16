@@ -254,7 +254,7 @@
     }];
 }
 
-- (void)updateBlocklistWithControllingUID:(uid_t)controllingUID newBlocklist:(NSArray<NSString*>*)newBlocklist reply:(void(^)(NSError* error))reply {
+- (void)updateBlocklist:(NSArray<NSString*>*)newBlocklist reply:(void(^)(NSError* error))reply {
     [self connectAndExecuteCommandBlock:^(NSError * connectError) {
         if (connectError != nil) {
             NSLog(@"Blocklist update failed with connection error: %@", connectError);
@@ -265,7 +265,7 @@
                 NSLog(@"Blocklist update command failed with remote object proxy error: %@", proxyError);
                 [SCSentry captureError: proxyError];
                 reply(proxyError);
-            }] updateBlocklistWithControllingUID: controllingUID newBlocklist: newBlocklist authorization: self.authorization reply:^(NSError* error) {
+            }] updateBlocklist: newBlocklist authorization: self.authorization reply:^(NSError* error) {
                 if (error != nil) {
                     NSLog(@"Blocklist update failed with error = %@\n", error);
                     [SCSentry captureError: error];
@@ -276,7 +276,7 @@
     }];
 }
 
-- (void)updateBlockEndDateWithControllingUID:(uid_t)controllingUID newEndDate:(NSDate*)newEndDate reply:(void(^)(NSError* error))reply {
+- (void)updateBlockEndDate:(NSDate*)newEndDate reply:(void(^)(NSError* error))reply {
     [self connectAndExecuteCommandBlock:^(NSError * connectError) {
         if (connectError != nil) {
             NSLog(@"Block end date update failed with connection error: %@", connectError);
@@ -287,7 +287,7 @@
                 NSLog(@"Block end date update command failed with remote object proxy error: %@", proxyError);
                 [SCSentry captureError: proxyError];
                 reply(proxyError);
-            }] updateBlockEndDateWithControllingUID: controllingUID newEndDate: newEndDate authorization: self.authorization reply:^(NSError* error) {
+            }] updateBlockEndDate: newEndDate authorization: self.authorization reply:^(NSError* error) {
                 if (error != nil) {
                     NSLog(@"Block end date update failed with error = %@\n", error);
                     [SCSentry captureError: error];

@@ -52,6 +52,16 @@ NSString* const kDefaultHostsFileContents = @"##\n"
 	return self;
 }
 
++ (BOOL)blockFoundInHostsFile {
+    // last try if we can't find a block anywhere: check the host file, and see if a block is in there
+    NSString* hostFileContents = [NSString stringWithContentsOfFile: kHostFileBlockerPath encoding: NSUTF8StringEncoding error: NULL];
+    if(hostFileContents != nil && [hostFileContents rangeOfString: kHostFileBlockerSelfControlHeader].location != NSNotFound) {
+        return YES;
+    }
+    
+    return NO;
+}
+
 - (void)revertFileContentsToDisk {
 	[strLock lock];
 

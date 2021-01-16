@@ -27,8 +27,8 @@
     [SCDaemonBlockMethods startBlockWithControllingUID: controllingUID blocklist: blocklist isAllowlist:isAllowlist endDate: endDate blockSettings:blockSettings authorization: authData reply: reply];
 }
 
-- (void)updateBlocklistWithControllingUID:(uid_t)controllingUID newBlocklist:(NSArray<NSString*>*)newBlocklist authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
-    NSLog(@"XPC method called: updateBlocklistWithControllingUID");
+- (void)updateBlocklist:(NSArray<NSString*>*)newBlocklist authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
+    NSLog(@"XPC method called: updateBlocklist");
     
     NSError* error = [SCXPCAuthorization checkAuthorization: authData command: _cmd];
     if (error != nil) {
@@ -40,11 +40,11 @@
         NSLog(@"AUTHORIZATION ACCEPTED for updateBlocklist with authData %@ and command %s", authData, sel_getName(_cmd));
     }
     
-    [SCDaemonBlockMethods updateBlocklist: controllingUID newBlocklist: newBlocklist authorization: authData reply: reply];
+    [SCDaemonBlockMethods updateBlocklist: newBlocklist authorization: authData reply: reply];
 }
 
-- (void)updateBlockEndDateWithControllingUID:(uid_t)controllingUID newEndDate:(NSDate*)newEndDate authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
-    NSLog(@"XPC method called: updateBlockEndDateWithControllingUID");
+- (void)updateBlockEndDate:(NSDate*)newEndDate authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
+    NSLog(@"XPC method called: updateBlockEndDate");
     
     NSError* error = [SCXPCAuthorization checkAuthorization: authData command: _cmd];
     if (error != nil) {
@@ -56,7 +56,7 @@
         NSLog(@"AUTHORIZATION ACCEPTED for updateBlockENdDate with authData %@ and command %s", authData, sel_getName(_cmd));
     }
     
-    [SCDaemonBlockMethods updateBlockEndDate:controllingUID newEndDate: newEndDate authorization: authData reply: reply];
+    [SCDaemonBlockMethods updateBlockEndDate: newEndDate authorization: authData reply: reply];
 }
 
 - (BOOL) checkup {

@@ -135,7 +135,7 @@ int main(int argc, char* argv[]) {
 		[log appendFormat: @"Unloading the legacy (1.0 - 3.0.3) launchd daemon returned: %d\n\n", status];
         
         CFErrorRef cfError;
-        SMJobRemove(kSMDomainSystemLaunchd, CFSTR("org.eyebeam.selfcontrold"), NULL, NO, &cfError);
+        SMJobRemove(kSMDomainSystemLaunchd, CFSTR("org.eyebeam.selfcontrold"), NULL, YES, &cfError);
         if (cfError) {
             [log appendFormat: @"Failed to remove selfcontrold daemon (4.x) with error %@\n\n", cfError];
         } else {
@@ -166,9 +166,9 @@ int main(int argc, char* argv[]) {
         [settings synchronizeSettings];
         [log appendFormat: @"Reset all modern secured settings to default values.\n"];
         
-        if ([SCUtilities legacySettingsFound: controllingUID]) {
+        if ([SCUtilities legacySettingsFoundForUser: controllingUID]) {
             [SCUtilities copyLegacySettingsToDefaults: controllingUID];
-            [SCUtilities clearLegacySettings: controllingUID];
+            [SCUtilities clearLegacySettingsForUser: controllingUID];
             [log appendFormat: @"Found, copied, and cleared legacy settings (v3.0-3.0.3)!\n"];
         } else {
             [log appendFormat: @"No legacy settings (v3.0-3.0.3) found.\n"];
@@ -219,33 +219,24 @@ int main(int argc, char* argv[]) {
 		}
                 
         // OK, make sure all settings are synced before this thing exits
-        [settings synchronizeSettingsWithCompletion:^(NSError* err) {
-            if (err != nil) {
-                [log appendFormat: @"\nWARNING: Settings failed to synchronize before exit, with error %@", err];
-            }
+        NSError* syncSettingsErr = nil;
+        [settings syncSettingsAndWait: 5 error: &syncSettingsErr];
+        
+        if (syncSettingsErr != nil) {
+            [log appendFormat: @"\nWARNING: Settings failed to synchronize before exit, with error %@", syncSettingsErr];
+        }
 
-            // let the main app know to refresh
-           sendConfigurationChangedNotification();
+       [log appendString: @"\n===SelfControl-Killer complete!==="];
 
-           [log appendString: @"\n===SelfControl-Killer complete!==="];
+       [log writeToFile: logFilePath
+             atomically: YES
+               encoding: NSUTF8StringEncoding
+                  error: nil];
 
-           [log writeToFile: logFilePath
-                 atomically: YES
-                   encoding: NSUTF8StringEncoding
-                      error: nil];
             
-            exit(EX_OK);
-        }];
-        
-        // only wait 5 seconds for the sync to finish, otherwise exit anyway
-        sleep(5);
-        
-        [log appendString: @"\nWARNING: Settings timed out synchronizing before exit"];
-        [log writeToFile: logFilePath
-        atomically: YES
-          encoding: NSUTF8StringEncoding
-             error: nil];
-        
+        // let the main app know to refresh
+       sendConfigurationChangedNotification();
+
         exit(EX_OK);
 	}
 }

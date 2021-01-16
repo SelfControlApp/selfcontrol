@@ -21,6 +21,7 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
 @property (readonly) NSMutableDictionary* settingsDict;
 @property NSDate* lastSynchronizedWithDisk;
 @property dispatch_source_t syncTimer;
+@property dispatch_source_t debouncedChangeTimer;
 
 @end
 
@@ -341,11 +342,35 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
         NSLog(@" --> Writing settings to disk (haven't been written since %@)", self.lastSynchronizedWithDisk);
         [self writeSettingsWithCompletion: completionBlock];
     } else {
-        if(completionBlock != nil) completionBlock(nil);
+        if(completionBlock != nil) {
+            // don't just run the callback asynchronously, since it makes this method harder to reason about
+            // (it'd sometimes call back synchronously and sometimes async)
+//            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                completionBlock(nil);
+//            });
+        }
     }
 }
 - (void)synchronizeSettings {
     [self synchronizeSettingsWithCompletion: nil];
+}
+
+- (void)syncSettingsAndWait:(int)timeoutSecs error:(NSError* __strong *)errPtr {
+    dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+
+    // do this on another thread so it doesn't deadlock our semaphore
+    // (also dispatch_async ensures correct behavior even if synchronizeSettingsWithCompletion itself returns synchronously)
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self synchronizeSettingsWithCompletion:^(NSError* err) {
+            *errPtr = err;
+            
+            dispatch_semaphore_signal(sema);
+        }];
+    });
+    
+    if (dispatch_semaphore_wait(sema, dispatch_time(DISPATCH_TIME_NOW, timeoutSecs * NSEC_PER_SEC))) {
+        *errPtr = [SCErr errorWithCode: 601];
+    }
 }
 
 - (void)setValue:(id)value forKey:(NSString*)key stopPropagation:(BOOL)stopPropagation {
@@ -437,14 +462,16 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
         dispatch_resume(self.syncTimer);
     }
 }
-- (void)cancelSyncTimer {
-    if (self.syncTimer == nil) {
-        // no active timer, no need to cancel
-        return;
+- (void)cancelSyncTimers {
+    if (self.syncTimer != nil) {
+        dispatch_source_cancel(self.syncTimer);
+        self.syncTimer = nil;
     }
-
-    dispatch_source_cancel(self.syncTimer);
-    self.syncTimer = nil;
+    
+    if (self.debouncedChangeTimer != nil) {
+        dispatch_source_cancel(self.debouncedChangeTimer);
+        self.debouncedChangeTimer = nil;
+    }
 }
 
 - (void)updateSentryContext {
@@ -520,14 +547,13 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
     
     // regardless of which is more recent, we should really go get the new deal from disk
     // in the near future (but debounce so we don't do this a million times for rapid changes)
-    static dispatch_source_t debouncedSyncTimer = nil;
-    if (debouncedSyncTimer != nil) {
-        dispatch_source_cancel(debouncedSyncTimer);
-        debouncedSyncTimer = nil;
+    if (self.debouncedChangeTimer != nil) {
+        dispatch_source_cancel(self.debouncedChangeTimer);
+        self.debouncedChangeTimer = nil;
     }
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     double throttleSecs = 0.25f;
-    debouncedSyncTimer = CreateDebounceDispatchTimer(throttleSecs, queue, ^{
+    self.debouncedChangeTimer = CreateDebounceDispatchTimer(throttleSecs, queue, ^{
         NSLog(@"Syncing settings due to propagated changes");
         [self synchronizeSettings];
     });
@@ -548,8 +574,7 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
 }
 
 - (void)dealloc {
-    // TODO: should we kill the debounced timer above also?
-    [self cancelSyncTimer];
+    [self cancelSyncTimers];
 }
 
 @synthesize settingsDict = _settingsDict, lastSynchronizedWithDisk;

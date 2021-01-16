@@ -27,8 +27,7 @@
 #import "SCXPCClient.h"
 
 // The main method which deals which most of the logic flow and execution of
-// the CLI helper tool.  Posts an SCConfigurationChangedNotification if the block
-// is enabled or disabled.
+// the CLI tool.
 int main(int argc, char* argv[]) {
     [SCSentry startSentry: @"org.eyebeam.selfcontrol-cli"];
 
@@ -56,7 +55,7 @@ int main(int argc, char* argv[]) {
 		if([modeString isEqual: @"--install"]) {
             [SCSentry addBreadcrumb: @"CLI method --install called" category: @"cli"];
 
-            if ([SCUtilities anyBlockIsRunning: controllingUID]) {
+            if ([SCUtilities anyBlockIsRunning]) {
                 NSLog(@"ERROR: Block is already running");
                 exit(EX_CONFIG);
             }
@@ -155,10 +154,7 @@ int main(int argc, char* argv[]) {
                                 exit(EX_SOFTWARE);
                                 return;
                             }
-                            
-                            // TODO: is this necessary?
-                            sendConfigurationChangedNotification();
-                            
+
                             NSLog(@"INFO: Block successfully added.");
                             dispatch_semaphore_signal(installingBlockSema);
                         }];
@@ -187,7 +183,7 @@ int main(int argc, char* argv[]) {
             NSLog(@"%@", [settings dictionaryRepresentation]);
         } else if ([modeString isEqualToString: @"--is-running"]) {
             [SCSentry addBreadcrumb: @"CLI method --is-running called" category: @"cli"];
-            BOOL blockIsRunning = [SCUtilities anyBlockIsRunning: controllingUID];
+            BOOL blockIsRunning = [SCUtilities anyBlockIsRunning];
             NSLog(@"%@", blockIsRunning ? @"YES" : @"NO");
         } else if ([modeString isEqualToString: @"--version"]) {
             [SCSentry addBreadcrumb: @"CLI method --version called" category: @"cli"];

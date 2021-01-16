@@ -112,23 +112,20 @@
 
 
 - (void)blockEnded {
-	if(![SCUtilities anyBlockIsRunning]) {
-		[timerUpdater_ invalidate];
-		timerUpdater_ = nil;
+    [timerUpdater_ invalidate];
+    timerUpdater_ = nil;
 
-		[timerLabel_ setStringValue: NSLocalizedString(@"Block not active", @"block not active string")];
-		[timerLabel_ setFont: [[NSFontManager sharedFontManager]
-							   convertFont: [timerLabel_ font]
-							   toSize: 37]
-		 ];
+    [timerLabel_ setStringValue: NSLocalizedString(@"Block not active", @"block not active string")];
+    [timerLabel_ setFont: [[NSFontManager sharedFontManager]
+                           convertFont: [timerLabel_ font]
+                           toSize: 37]
+     ];
 
-		[timerLabel_ sizeToFit];
+    [timerLabel_ sizeToFit];
 
-		[self resetStrikes];
-        
-        [SCSentry addBreadcrumb: @"Block ended and timer window is closing" category: @"app"];
-
-	}
+    [self resetStrikes];
+    
+    [SCSentry addBreadcrumb: @"Block ended and timer window is closing" category: @"app"];
 }
 
 
