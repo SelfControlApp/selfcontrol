@@ -54,7 +54,9 @@
             @"BlockSoundShouldPlay": @NO,
             @"BlockSound": @5,
             @"ClearCaches": @YES,
-            @"AllowLocalNetworks": @YES
+            @"AllowLocalNetworks": @YES,
+            @"EnableErrorReporting": @NO,
+            @"ErrorReportingPromptDismissed": @NO
         };
     });
     

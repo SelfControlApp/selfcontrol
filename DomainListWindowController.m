@@ -46,7 +46,6 @@
 - (void)awakeFromNib  {
     NSInteger indexToSelect = [defaults_ boolForKey: @"BlockAsWhitelist"] ? 1 : 0;
     [allowlistRadioMatrix_ selectCellAtRow: indexToSelect column: 0];
-    
     [self updateWindowTitle];
 }
 
@@ -56,7 +55,7 @@
 	if ([domainList_ count] == 0) {
 		[self addDomain: self];
 	}
-    
+    [SCSentry captureMessage: @"domain window test error"];
     [self updateWindowTitle];
 }
 

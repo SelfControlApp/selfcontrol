@@ -64,6 +64,7 @@ static NSString* serviceName = @"org.eyebeam.selfcontrold";
     if (clientValidityStatus) {
         NSError* error = [NSError errorWithDomain: NSOSStatusErrorDomain code: clientValidityStatus userInfo: nil];
         NSLog(@"Rejecting XPC connection because of invalid client signing. Error was %@", error);
+        [SCSentry captureError: error];
         return NO;
     }
     
@@ -74,6 +75,7 @@ static NSString* serviceName = @"org.eyebeam.selfcontrold";
     [newConnection resume];
     
     NSLog(@"Accepted new connection!");
+    [SCSentry addBreadcrumb: @"Daemon accepted new connection" category: @"daemon"];
     
     return YES;
 }

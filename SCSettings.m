@@ -130,6 +130,7 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
         @"BlockSound": @5,
         @"ClearCaches": @YES,
         @"AllowLocalNetworks": @YES,
+        @"EnableErrorReporting": @NO,
 
         @"SettingsVersionNumber": @0,
         @"LastSettingsUpdate": [NSDate distantPast] // special value that keeps track of when we last updated our settings
@@ -155,6 +156,7 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
             if (!self.readOnly) {
                 [self writeSettings];
             }
+            [SCSentry addBreadcrumb: @"Initialized SCSettings to default settings" category: @"settings"];
         }
         
         // we're now current with disk!
@@ -230,7 +232,7 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
             _settingsDict = [settingsFromDisk mutableCopy];
             self.lastSynchronizedWithDisk = [NSDate date];
             NSLog(@"Newer SCSettings found on disk (version %d vs %d with time interval %f), updating...", diskSettingsVersion, memorySettingsVersion, [diskSettingsLastUpdated timeIntervalSinceDate: memorySettingsLastUpdated]);
-            
+            [SCSentry addBreadcrumb: @"Updated SCSettings to newer settings found on disk" category: @"settings"];
         }
     }
 }
@@ -302,11 +304,14 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
 
             if (!writeSuccessful) {
                 NSLog(@"Failed to write secured settings to file %@", SCSettings.securedSettingsFilePath);
+                [SCSentry captureError: writeErr];
                 if (completionBlock != nil) completionBlock(writeErr);
             } else if (!chmodSuccessful) {
                 NSLog(@"Failed to change secured settings file owner/permissions secured settings for file %@ with error %@", SCSettings.securedSettingsFilePath, chmodErr);
+                [SCSentry captureError: chmodErr];
                 if (completionBlock != nil) completionBlock(chmodErr);
             } else {
+                [SCSentry addBreadcrumb: @"Successfully wrote SCSettings out to file" category: @"settings"];
                 if (completionBlock != nil) completionBlock(nil);
             }
         });

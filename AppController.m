@@ -246,6 +246,7 @@
 }
 
 - (void)handleConfigurationChangedNotification {
+    [SCSentry addBreadcrumb: @"Received configuration changed notification" category: @"app"];
     // if our configuration changed, we should assume the settings may have changed
     [[SCSettings sharedSettings] reloadSettings];
     // and our interface may need to change to match!
@@ -267,6 +268,7 @@
 }
 
 - (IBAction)openPreferences:(id)sender {
+    [SCSentry addBreadcrumb: @"Opening preferences window" category: @"app"];
 	if (preferencesWindowController_ == nil) {
 		NSViewController* generalViewController = [[PreferencesGeneralViewController alloc] init];
 		NSViewController* advancedViewController = [[PreferencesAdvancedViewController alloc] init];
@@ -278,6 +280,7 @@
 }
 
 - (IBAction)showGetStartedWindow:(id)sender {
+    [SCSentry addBreadcrumb: @"Showing \"Get Started\" window" category: @"app"];
 	if (!getStartedWindowController) {
 		getStartedWindowController = [[NSWindowController alloc] initWithWindowNibName: @"FirstTime"];
 	}
@@ -325,8 +328,10 @@
                 if (error == nil) {
                     if ([SELFCONTROL_VERSION_STRING compare: daemonVersion options: NSNumericSearch] == NSOrderedDescending) {
                         NSLog(@"Daemon version of %@ is out of date (current version is %@).", daemonVersion, SELFCONTROL_VERSION_STRING);
+                        [SCSentry addBreadcrumb: @"Detected out-of-date daemon" category: @"app"];
                         [self reinstallDaemon];
                     } else {
+                        [SCSentry addBreadcrumb: @"Detected up-to-date daemon" category:@"app"];
                         NSLog(@"Daemon version of %@ is up-to-date!", daemonVersion);
                     }
                 } else {
@@ -375,6 +380,7 @@
     NSString* minRequiredVersionString = @"10.10 (Yosemite)";
 	if (![[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion: minRequiredVersion]) {
 		NSLog(@"ERROR: Unsupported version for SelfControl");
+        [SCSentry captureMessage: @"Unsupported operating system version"];
 		NSAlert* unsupportedVersionAlert = [[NSAlert alloc] init];
 		[unsupportedVersionAlert setMessageText: NSLocalizedString(@"Unsupported version", nil)];
         [unsupportedVersionAlert setInformativeText: [NSString stringWithFormat: NSLocalizedString(@"This version of SelfControl only supports Mac OS X version %@ or higher. To download a version for older operating systems, please go to www.selfcontrolapp.com", nil), minRequiredVersionString]];
@@ -389,9 +395,11 @@
 
 - (void)reinstallDaemon {
     NSLog(@"Attempting to reinstall daemon...");
+    [SCSentry addBreadcrumb: @"Reinstalling daemon" category:@"app"];
     [self.xpc installDaemon:^(NSError * _Nonnull error) {
         if (error == nil) {
             NSLog(@"Reinstalled daemon successfully!");
+            [SCSentry addBreadcrumb: @"Daemon reinstalled successfully" category:@"app"];
             
             NSLog(@"Retrying helper tool connection...");
             [self.xpc performSelectorOnMainThread: @selector(connectToHelperTool) withObject: nil waitUntilDone: YES];
@@ -407,6 +415,7 @@
 }
 
 - (IBAction)showDomainList:(id)sender {
+    [SCSentry addBreadcrumb: @"Showing domain list" category:@"app"];
 	if([self blockIsRunning] || self.addingBlock) {
 		NSAlert* blockInProgressAlert = [[NSAlert alloc] init];
 		[blockInProgressAlert setMessageText: NSLocalizedString(@"Block in progress", @"Block in progress error title")];
@@ -556,6 +565,7 @@
 }
 
 - (void)installBlock {
+    [SCSentry addBreadcrumb: @"App running installBlock method" category:@"app"];
 	@autoreleasepool {
 		self.addingBlock = true;
 		[self refreshUserInterface];
@@ -568,6 +578,7 @@
                 [self refreshUserInterface];
                 return;
             } else {
+                [SCSentry addBreadcrumb: @"Daemon installed successfully (en route to installing block)" category:@"app"];
                 // helper tool installed successfully, let's prepare to start the block!
                 // for legacy reasons, BlockDuration is in minutes, so convert it to seconds before passing it through]
                 // sanity check duration (must be above zero)
@@ -591,7 +602,8 @@
                                                                 @"EvaluateCommonSubdomains": [self->defaults_ valueForKey: @"EvaluateCommonSubdomains"],
                                                                 @"IncludeLinkedDomains": [self->defaults_ valueForKey: @"IncludeLinkedDomains"],
                                                                 @"BlockSoundShouldPlay": [self->defaults_ valueForKey: @"BlockSoundShouldPlay"],
-                                                                @"BlockSound": [self->defaults_ valueForKey: @"BlockSound"]
+                                                                @"BlockSound": [self->defaults_ valueForKey: @"BlockSound"],
+                                                                @"EnableErrorReporting": [self->defaults_ valueForKey: @"EnableErrorReporting"]
                                                             }
                                                      reply:^(NSError * _Nonnull error) {
                         NSLog(@"WOO started block with error %@", error);
@@ -599,6 +611,8 @@
                             [NSApp performSelectorOnMainThread: @selector(presentError:)
                                                     withObject: error
                                                  waitUntilDone: YES];
+                        } else {
+                            [SCSentry addBreadcrumb: @"Block started successfully" category:@"app"];
                         }
                         
                         // get the new settings
@@ -614,10 +628,11 @@
 }
 
 - (void)updateActiveBlocklist:(NSLock*)lockToUse {
-    NSLog(@"updateActiveBlocklist");
 	if(![lockToUse tryLock]) {
 		return;
 	}
+    
+    [SCSentry addBreadcrumb: @"App running updateActiveBlocklist method" category:@"app"];
 
     // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
     [settings_ synchronizeSettings];
@@ -628,14 +643,14 @@
         [self.xpc updateBlocklistWithControllingUID: getuid()
                                        newBlocklist: [self->defaults_ arrayForKey: @"Blocklist"]
                                               reply:^(NSError * _Nonnull error) {
-            NSLog(@"WOO updated block with error %@", error);
-            
             [self->timerWindowController_ performSelectorOnMainThread:@selector(closeAddSheet:) withObject: self waitUntilDone: YES];
             
             if (error != nil) {
                 [NSApp performSelectorOnMainThread: @selector(presentError:)
                                         withObject: error
                                      waitUntilDone: YES];
+            } else {
+                [SCSentry addBreadcrumb: @"Blocklist updated successfully" category:@"app"];
             }
             
             [lockToUse unlock];
@@ -654,10 +669,10 @@
 }
 
 - (void)updateBlockEndDate:(NSLock*)lockToUse minutesToAdd:(NSInteger)minutesToAdd {
-    NSLog(@"updateBlockEndDate");
     if(![lockToUse tryLock]) {
         return;
     }
+    [SCSentry addBreadcrumb: @"App running updateBlockEndDate method" category:@"app"];
 
     minutesToAdd = MAX(minutesToAdd, 0); // make sure there's no funny business with negative minutes
     NSDate* oldBlockEndDate = [settings_ valueForKey: @"BlockEndDate"];
@@ -679,8 +694,6 @@
         [self.xpc updateBlockEndDateWithControllingUID: getuid()
                                        newEndDate: newBlockEndDate
                                               reply:^(NSError * _Nonnull error) {
-            NSLog(@"WOO updated block end date with error %@", error);
-            
             [self->timerWindowController_ performSelectorOnMainThread:@selector(closeAddSheet:) withObject: self waitUntilDone: YES];
             // let the timer know it needs to recalculate
             [self->timerWindowController_ performSelectorOnMainThread:@selector(blockEndDateUpdated)
@@ -691,6 +704,8 @@
                 [NSApp performSelectorOnMainThread: @selector(presentError:)
                                         withObject: error
                                      waitUntilDone: YES];
+            } else {
+                [SCSentry addBreadcrumb: @"App extended block duration successfully" category:@"app"];
             }
             
             [lockToUse unlock];
@@ -726,7 +741,9 @@
             NSBeep();
 			[NSApp presentError: displayErr];
 			return;
-		}
+        } else {
+            [SCSentry addBreadcrumb: @"Saved blocklist to file" category:@"app"];
+        }
 	}
 }
 
@@ -743,6 +760,7 @@
             if (settingsFromFile != nil) {
                 [defaults_ setObject: settingsFromFile[@"Blocklist"] forKey: @"Blocklist"];
                 [defaults_ setObject: settingsFromFile[@"BlockAsWhitelist"] forKey: @"BlockAsWhitelist"];
+                [SCSentry addBreadcrumb: @"Opened blocklist from file" category:@"app"];
             } else {
                 NSLog(@"WARNING: Could not read a valid blocklist from file - ignoring.");
             }
@@ -784,6 +802,7 @@
 }
 
 - (IBAction)openFAQ:(id)sender {
+    [SCSentry addBreadcrumb: @"Opened SelfControl FAQ" category:@"app"];
 	NSURL *url=[NSURL URLWithString: @"https://github.com/SelfControlApp/selfcontrol/wiki/FAQ#q-selfcontrols-timer-is-at-0000-and-i-cant-start-a-new-block-and-im-freaking-out"];
 	[[NSWorkspace sharedWorkspace] openURL: url];
 }

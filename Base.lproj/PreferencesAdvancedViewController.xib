@@ -8,10 +8,6 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="PreferencesAdvancedViewController">
             <connections>
-                <outlet property="allowLocalCheckbox" destination="gkT-O1-AZS" id="GAV-ty-Dny"/>
-                <outlet property="clearCachesCheckbox" destination="dSg-wR-arw" id="Vh3-ua-zBv"/>
-                <outlet property="includeLinkedSitesCheckbox" destination="P7c-ml-UCV" id="Uhz-Nv-os4"/>
-                <outlet property="includeSubdomainsCheckbox" destination="tez-LB-kje" id="ONt-L0-rzg"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>

@@ -16,11 +16,11 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Tfc-ma-8Pt" customClass="SUUpdater"/>
         <customView id="Hz6-mo-xeY">
-            <rect key="frame" x="0.0" y="0.0" width="480" height="173"/>
+            <rect key="frame" x="0.0" y="0.0" width="480" height="198"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RmI-NP-U9P">
-                    <rect key="frame" x="18" y="61" width="444" height="18"/>
+                    <rect key="frame" x="18" y="53" width="444" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Timer window should float on top of other windows" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="ZTQ-hm-LIP">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -31,7 +31,7 @@
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GAL-tt-bnj">
-                    <rect key="frame" x="18" y="95" width="189" height="18"/>
+                    <rect key="frame" x="18" y="87" width="189" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Play sound on completion:" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="zMX-XR-Bg2">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -42,7 +42,7 @@
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cl7-Ls-HNx">
-                    <rect key="frame" x="18" y="129" width="444" height="18"/>
+                    <rect key="frame" x="18" y="154" width="444" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Automatically check for updates" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="mFo-x6-OdZ">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -53,7 +53,7 @@
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wSe-TV-7lB">
-                    <rect key="frame" x="18" y="27" width="444" height="18"/>
+                    <rect key="frame" x="18" y="19" width="444" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Show countdown in Dock" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="deK-DV-3UF">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -64,7 +64,7 @@
                     </connections>
                 </button>
                 <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aVc-DN-GnM">
-                    <rect key="frame" x="211" y="91" width="102" height="26"/>
+                    <rect key="frame" x="211" y="83" width="102" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="center" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" inset="2" id="boQ-cQ-XTo">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -73,12 +73,23 @@
                     </popUpButtonCell>
                     <connections>
                         <action selector="soundSelectionChanged:" target="-2" id="jn4-kC-4Y3"/>
-                        <binding destination="4wD-T6-SpY" name="enabled" keyPath="values.BlockSoundShouldPlay" id="3II-RK-Syp"/>
                         <binding destination="4wD-T6-SpY" name="selectedIndex" keyPath="values.BlockSound" id="GDF-4e-Ljl"/>
+                        <binding destination="4wD-T6-SpY" name="enabled" keyPath="values.BlockSoundShouldPlay" id="3II-RK-Syp"/>
                     </connections>
                 </popUpButton>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pcu-Oa-Ctn">
+                    <rect key="frame" x="18" y="120" width="444" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Automatically send anonymized error reports" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="xG3-ic-opZ">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="4wD-T6-SpY" name="value" keyPath="values.EnableErrorReporting" id="F6M-tK-Z9e"/>
+                    </connections>
+                </button>
             </subviews>
-            <point key="canvasLocation" x="136" y="-64.5"/>
+            <point key="canvasLocation" x="136" y="-52"/>
         </customView>
         <userDefaultsController representsSharedInstance="YES" id="4wD-T6-SpY"/>
         <dictionaryController objectClassName="_NSDictionaryControllerKeyValuePair" id="lbP-fI-BYl"/>
