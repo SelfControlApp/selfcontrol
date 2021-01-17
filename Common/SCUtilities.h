@@ -53,6 +53,8 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
 
 + (NSError*)clearBrowserCaches;
 
++ (BOOL)errorIsAuthCanceled:(NSError*)err;
+
 // migration methods
 + (NSString*)legacySecuredSettingsFilePathForUser:(uid_t)userId;
 + (BOOL)legacySettingsFoundForUser:(uid_t)controllingUID;

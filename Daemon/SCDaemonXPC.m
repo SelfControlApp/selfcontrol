@@ -8,6 +8,7 @@
 #import "SCDaemonXPC.h"
 #import "SCDaemonBlockMethods.h"
 #import "SCXPCAuthorization.h"
+#import "SCUtilities.h"
 
 @implementation SCDaemonXPC
 
@@ -16,8 +17,10 @@
     
     NSError* error = [SCXPCAuthorization checkAuthorization: authData command: _cmd];
     if (error != nil) {
-        NSLog(@"ERROR: XPC authorization failed due to error %@", error);
-        [SCSentry captureError: error];
+        if (![SCUtilities errorIsAuthCanceled: error]) {
+            NSLog(@"ERROR: XPC authorization failed due to error %@", error);
+            [SCSentry captureError: error];
+        }
         reply(error);
         return;
     } else {
@@ -32,8 +35,10 @@
     
     NSError* error = [SCXPCAuthorization checkAuthorization: authData command: _cmd];
     if (error != nil) {
-        NSLog(@"ERROR: XPC authorization failed due to error %@", error);
-        [SCSentry captureError: error];
+        if (![SCUtilities errorIsAuthCanceled: error]) {
+            NSLog(@"ERROR: XPC authorization failed due to error %@", error);
+            [SCSentry captureError: error];
+        }
         reply(error);
         return;
     } else {
@@ -48,8 +53,10 @@
     
     NSError* error = [SCXPCAuthorization checkAuthorization: authData command: _cmd];
     if (error != nil) {
-        NSLog(@"ERROR: XPC authorization failed due to error %@", error);
-        [SCSentry captureError: error];
+        if (![SCUtilities errorIsAuthCanceled: error]) {
+            NSLog(@"ERROR: XPC authorization failed due to error %@", error);
+            [SCSentry captureError: error];
+        }
         reply(error);
         return;
     } else {

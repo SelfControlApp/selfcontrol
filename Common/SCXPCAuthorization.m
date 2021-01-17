@@ -23,9 +23,6 @@ static NSDictionary* kAuthorizationRuleAuthenticateAsAdmin5MinTimeout;
     // authData is expected to be an NSData with an AuthorizationExternalForm embedded inside.
 {
     #pragma unused(authData)
-    NSError *                   error;
-    OSStatus                    err;
-    OSStatus                    junk;
     AuthorizationRef            authRef;
 
     assert(command != nil);
@@ -33,45 +30,41 @@ static NSDictionary* kAuthorizationRuleAuthenticateAsAdmin5MinTimeout;
     authRef = NULL;
 
     // First check that authData looks reasonable.
-    
-    error = nil;
     if ( (authData == nil) || ([authData length] != sizeof(AuthorizationExternalForm)) ) {
-        error = [NSError errorWithDomain:NSOSStatusErrorDomain code:paramErr userInfo:nil];
+        return [NSError errorWithDomain:NSOSStatusErrorDomain code:paramErr userInfo:nil];
     }
     
     // Create an authorization ref from that the external form data contained within.
+    OSStatus extFormStatus = AuthorizationCreateFromExternalForm([authData bytes], &authRef);
+    if (extFormStatus != errAuthorizationSuccess) {
+        return [NSError errorWithDomain: NSOSStatusErrorDomain code: extFormStatus userInfo: nil];
+    }
+
+    // Authorize the right associated with the command.
+
+    AuthorizationItem   oneRight = { NULL, 0, NULL, 0 };
+    AuthorizationRights rights   = { 1, &oneRight };
+    AuthorizationFlags flags = kAuthorizationFlagDefaults | kAuthorizationFlagExtendRights | kAuthorizationFlagInteractionAllowed;
+
+    oneRight.name = [[SCXPCAuthorization authorizationRightForCommand:command] UTF8String];
+    assert(oneRight.name != NULL);
     
-    if (error == nil) {
-        err = AuthorizationCreateFromExternalForm([authData bytes], &authRef);
-        
-        // Authorize the right associated with the command.
-        
-        if (err == errAuthorizationSuccess) {
-            AuthorizationItem   oneRight = { NULL, 0, NULL, 0 };
-            AuthorizationRights rights   = { 1, &oneRight };
-
-            oneRight.name = [[SCXPCAuthorization authorizationRightForCommand:command] UTF8String];
-            assert(oneRight.name != NULL);
-            
-            err = AuthorizationCopyRights(
-                authRef,
-                &rights,
-                kAuthorizationEmptyEnvironment,
-                kAuthorizationFlagExtendRights | kAuthorizationFlagInteractionAllowed,
-                NULL
-            );
-        }
-        if (err != errAuthorizationSuccess) {
-            error = [NSError errorWithDomain:NSOSStatusErrorDomain code:err userInfo:nil];
-        }
-    }
-
+    OSStatus authStatus = AuthorizationCopyRights(
+        authRef,
+        &rights,
+        kAuthorizationEmptyEnvironment,
+        flags,
+        NULL
+    );
     if (authRef != NULL) {
-        junk = AuthorizationFree(authRef, 0);
-        assert(junk == errAuthorizationSuccess);
+        AuthorizationFree(authRef, 0);
     }
 
-    return error;
+    if (authStatus != errAuthorizationSuccess) {
+        return [NSError errorWithDomain: NSOSStatusErrorDomain code: authStatus userInfo: nil];
+    }
+
+    return nil;
 }
 
 
@@ -86,37 +79,36 @@ static NSDictionary* kAuthorizationRuleAuthenticateAsAdmin5MinTimeout;
             @"class": @"user",
             @"group": @"admin",
             @"timeout": @(300), // 5 minutes
+            @"shared": @(YES),
             @"version": @1 // not entirely sure what this does TBH
         };
     }
     
     dispatch_once(&sOnceToken, ^{
         #pragma clang diagnostic ignored "-Wundeclared-selector"
+        
+        
+        NSDictionary* startBlockCommandInfo = @{
+            kCommandKeyAuthRightName    : @"org.eyebeam.SelfControl.startBlock",
+            kCommandKeyAuthRightDefault : kAuthorizationRuleAuthenticateAsAdmin5MinTimeout,
+            kCommandKeyAuthRightDesc    : NSLocalizedString(
+                @"SelfControl needs your username and password to start the block.",
+                @"prompt shown when user is required to authorize to start block"
+            )
+        };
+        NSDictionary* modifyBlockCommandInfo = @{
+            kCommandKeyAuthRightName    : @"org.eyebeam.SelfControl.modifyBlock",
+            kCommandKeyAuthRightDefault : kAuthorizationRuleAuthenticateAsAdmin5MinTimeout,
+            kCommandKeyAuthRightDesc    : NSLocalizedString(
+                @"SelfControl needs your username and password to modify the block",
+                @"prompt shown when user is required to authorize to modify their block"
+            )
+        };
+        
         sCommandInfo = @{
-            NSStringFromSelector(@selector(startBlockWithControllingUID:blocklist:isAllowlist:endDate:blockSettings:authorization:reply:)) : @{
-                kCommandKeyAuthRightName    : @"org.eyebeam.SelfControl.startBlock",
-                kCommandKeyAuthRightDefault : kAuthorizationRuleAuthenticateAsAdmin5MinTimeout,
-                kCommandKeyAuthRightDesc    : NSLocalizedString(
-                    @"SelfControl needs your username and password to start the block.",
-                    @"prompt shown when user is required to authorize to start block"
-                )
-            },
-            NSStringFromSelector(@selector(updateBlocklist:authorization:reply:)) : @{
-                kCommandKeyAuthRightName    : @"org.eyebeam.SelfControl.modifyBlock",
-                kCommandKeyAuthRightDefault : kAuthorizationRuleAuthenticateAsAdmin5MinTimeout,
-                kCommandKeyAuthRightDesc    : NSLocalizedString(
-                    @"SelfControl needs your username and password to modify the blocklist",
-                    @"prompt shown when user is required to authorize to add to their blocklist"
-                )
-            },
-            NSStringFromSelector(@selector(updateBlockEndDate:authorization:reply:)) : @{
-                kCommandKeyAuthRightName    : @"org.eyebeam.SelfControl.modifyBlock",
-                kCommandKeyAuthRightDefault : kAuthorizationRuleAuthenticateAsAdmin5MinTimeout,
-                kCommandKeyAuthRightDesc    : NSLocalizedString(
-                    @"SelfControl needs your username and password to extend the block",
-                    @"prompt shown when user is required to authorize to extend their blockc"
-                )
-            }
+            NSStringFromSelector(@selector(startBlockWithControllingUID:blocklist:isAllowlist:endDate:blockSettings:authorization:reply:)) : startBlockCommandInfo,
+            NSStringFromSelector(@selector(updateBlocklist:authorization:reply:)) : modifyBlockCommandInfo,
+            NSStringFromSelector(@selector(updateBlockEndDate:authorization:reply:)) : modifyBlockCommandInfo
             #pragma clang diagnostic pop
         };
     });
@@ -165,6 +157,7 @@ static NSDictionary* kAuthorizationRuleAuthenticateAsAdmin5MinTimeout;
         
         blockErr = AuthorizationRightGet([authRightName UTF8String], NULL);
         if (blockErr == errAuthorizationDenied) {
+            NSLog(@"setting auth right default for %@: %@", authRightName, authRightDefault);
             blockErr = AuthorizationRightSet(
                 authRef,                                    // authRef
                 [authRightName UTF8String],                 // rightName

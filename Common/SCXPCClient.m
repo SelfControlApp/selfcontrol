@@ -24,32 +24,50 @@
 @implementation SCXPCClient
 
 - (void)setupAuthorization {
-    // this all mostly copied from Apple's Even Better Authorization Sample
-    OSStatus err;
-    AuthorizationExternalForm extForm;
+    // this is mostly copied from Apple's Even Better Authorization Sample
 
     // Create our connection to the authorization system.
     //
     // If we can't create an authorization reference then the app is not going to be able
     // to do anything requiring authorization.  Generally this only happens when you launch
-    // the app in some wacky, and typically unsupported, way.  In the debug build we flag that
-    // with an assert.  In the release build we continue with self->_authRef as NULL, which will
-    // cause all authorized operations to fail.
+    // the app in some wacky, and typically unsupported, way.
     
-    err = AuthorizationCreate(NULL, kAuthorizationEmptyEnvironment, 0, &self->_authRef);
-    if (err == errAuthorizationSuccess) {
-        err = AuthorizationMakeExternalForm(self->_authRef, &extForm);
+    // if we've already got an authorization session, no need to make another
+    if (self.authorization) {
+        return;
+    }
+    
+    AuthorizationRef authRef;
+    OSStatus errCode = AuthorizationCreate(NULL, kAuthorizationEmptyEnvironment, 0, &authRef);
+    if (errCode) {
+        NSError* err = [NSError errorWithDomain: NSOSStatusErrorDomain code: errCode userInfo: nil];
+        NSLog(@"Failed to set up initial authorization with error %@", err);
+        [SCSentry captureError: err];
+    } else {
+        [self updateStoredAuthorization: authRef];
+    }
+}
+
+- (void)updateStoredAuthorization:(AuthorizationRef)authRef {
+    self->_authRef = authRef;
+    if (!self->_authRef) {
+        self.authorization = nil;
+        return;
+    }
+    
+    AuthorizationExternalForm extForm;
+    OSStatus errCode = AuthorizationMakeExternalForm(self->_authRef, &extForm);
+    if (errCode) {
+        NSError* err = [NSError errorWithDomain: NSOSStatusErrorDomain code: errCode userInfo: nil];
+        NSLog(@"Failed to update stored authorization with error %@", err);
+        [SCSentry captureError: err];
+    } else {
         self.authorization = [[NSData alloc] initWithBytes: &extForm length: sizeof(extForm)];
     }
-    assert(err == errAuthorizationSuccess);
-    
+
     // If we successfully connected to Authorization Services, add definitions for our default
     // rights (unless they're already in the database).
-    
-    if (self->_authRef) {
-        [SCXPCAuthorization setupAuthorizationRights: self->_authRef];
-    }
-
+    [SCXPCAuthorization setupAuthorizationRights: self->_authRef];
 }
 
 // Ensures that we're connected to our helper tool
@@ -119,34 +137,45 @@
 }
 
 - (void)installDaemon:(void(^)(NSError*))callback {
-    AuthorizationRef authorizationRef;
-    char* daemonPath = [self selfControlHelperToolPathUTF8String];
-    NSUInteger daemonPathSize = strlen(daemonPath);
-    AuthorizationItem right = {
-        kSMRightBlessPrivilegedHelper,
-        daemonPathSize,
-        daemonPath,
-        0
+    AuthorizationItem blessRight = {
+        kSMRightBlessPrivilegedHelper, 0, NULL, 0
     };
-    AuthorizationRights authRights = {
-        1,
-        &right
+    AuthorizationItem startBlockRight = {
+        "org.eyebeam.SelfControl.startBlock", 0, NULL, 0
     };
+    AuthorizationItem rightsArr[] = { blessRight, startBlockRight };
+
+    AuthorizationRights authRights;
+    authRights.count = 2;
+    authRights.items = rightsArr;
+
     AuthorizationFlags myFlags = kAuthorizationFlagDefaults |
     kAuthorizationFlagExtendRights |
     kAuthorizationFlagInteractionAllowed;
     OSStatus status;
-
-    status = AuthorizationCreate (&authRights,
-                                  kAuthorizationEmptyEnvironment,
-                                  myFlags,
-                                  &authorizationRef);
+    
+    status = AuthorizationCopyRights(
+                                           self->_authRef,
+                                           &authRights,
+                                           kAuthorizationEmptyEnvironment,
+                                           myFlags,
+                                           NULL
+                                       );
 
     if(status) {
-        NSLog(@"ERROR: Failed to authorize installing selfcontrold.");
-        NSError* err = [SCErr errorWithCode: 501];
-        // this usually just means the user clicked Cancel, so don't report to Sentry
-        callback(err);
+        // if it's just the user cancelling, make that obvious
+        // to any listeners so they can ignore it appropriately
+        if (status == -60006) {
+            callback([SCErr errorWithCode: 1]);
+        } else {
+            NSLog(@"ERROR: Failed to authorize installing selfcontrold with status %d.", status);
+
+            NSError* err = [SCErr errorWithCode: 501];
+            [SCSentry captureError: err];
+            
+            callback(err);
+        }
+
         return;
     }
 
@@ -154,7 +183,7 @@
     BOOL result = (BOOL)SMJobBless(
                                    kSMDomainSystemLaunchd,
                                    CFSTR("org.eyebeam.selfcontrold"),
-                                   authorizationRef,
+                                   self->_authRef,
                                    &cfError);
 
     if(!result) {
@@ -163,7 +192,9 @@
         NSLog(@"WARNING: Authorized installation of selfcontrold returned failure status code %d and error %@", (int)status, error);
 
         NSError* err = [SCErr errorWithCode: 500 subDescription: error.localizedDescription];
-        [SCSentry captureError: err];
+        if (![SCUtilities errorIsAuthCanceled: error]) {
+            [SCSentry captureError: err];
+        }
 
         callback(err);
         return;
@@ -236,16 +267,16 @@
     [self connectAndExecuteCommandBlock:^(NSError * connectError) {
         if (connectError != nil) {
             [SCSentry captureError: connectError];
-            NSLog(@"Install command failed with connection error: %@", connectError);
+            NSLog(@"Start block command failed with connection error: %@", connectError);
             reply(connectError);
         } else {
             [[self.daemonConnection remoteObjectProxyWithErrorHandler:^(NSError * proxyError) {
-                NSLog(@"Install command failed with remote object proxy error: %@", proxyError);
+                NSLog(@"Start block command failed with remote object proxy error: %@", proxyError);
                 [SCSentry captureError: proxyError];
                 reply(proxyError);
             }] startBlockWithControllingUID: controllingUID blocklist: blocklist isAllowlist:isAllowlist endDate:endDate blockSettings: blockSettings authorization: self.authorization reply:^(NSError* error) {
-                if (error != nil) {
-                    NSLog(@"Install failed with error = %@\n", error);
+                if (error != nil && ![SCUtilities errorIsAuthCanceled: error]) {
+                    NSLog(@"Start block failed with error = %@\n", error);
                     [SCSentry captureError: error];
                 }
                 reply(error);
@@ -266,7 +297,7 @@
                 [SCSentry captureError: proxyError];
                 reply(proxyError);
             }] updateBlocklist: newBlocklist authorization: self.authorization reply:^(NSError* error) {
-                if (error != nil) {
+                if (error != nil && ![SCUtilities errorIsAuthCanceled: error]) {
                     NSLog(@"Blocklist update failed with error = %@\n", error);
                     [SCSentry captureError: error];
                 }
@@ -288,7 +319,7 @@
                 [SCSentry captureError: proxyError];
                 reply(proxyError);
             }] updateBlockEndDate: newEndDate authorization: self.authorization reply:^(NSError* error) {
-                if (error != nil) {
+                if (error != nil && ![SCUtilities errorIsAuthCanceled: error]) {
                     NSLog(@"Block end date update failed with error = %@\n", error);
                     [SCSentry captureError: error];
                 }

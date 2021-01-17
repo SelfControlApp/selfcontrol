@@ -326,8 +326,11 @@
 								  &authorizationRef);
 
 	if(status) {
-		NSLog(@"ERROR: Failed to authorize block kill.");
-		return;
+        if (status != -60006) {
+            NSError* err = [SCErr errorWithCode: 501];
+            [SCSentry captureError: err];
+        }
+        return;
 	}
     
     // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid

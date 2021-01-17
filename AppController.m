@@ -405,8 +405,10 @@
             NSLog(@"Retrying helper tool connection...");
             [self.xpc performSelectorOnMainThread: @selector(connectToHelperTool) withObject: nil waitUntilDone: YES];
         } else {
-            NSLog(@"ERROR: Reinstalling daemon failed with error %@", error);
-            [NSApp presentError: error];
+            if (![SCUtilities errorIsAuthCanceled: error]) {
+                NSLog(@"ERROR: Reinstalling daemon failed with error %@", error);
+                [NSApp presentError: error];
+            }
         }
     }];
 }
@@ -578,9 +580,11 @@
 		[self refreshUserInterface];
         [self.xpc installDaemon:^(NSError * _Nonnull error) {
             if (error != nil) {
-                [NSApp performSelectorOnMainThread: @selector(presentError:)
-                                        withObject: error
-                                     waitUntilDone: YES];
+                if (![SCUtilities errorIsAuthCanceled: error]) {
+                    [NSApp performSelectorOnMainThread: @selector(presentError:)
+                                            withObject: error
+                                         waitUntilDone: YES];
+                }
                 self.addingBlock = false;
                 [self refreshUserInterface];
                 return;
@@ -614,10 +618,12 @@
                                                             }
                                                      reply:^(NSError * _Nonnull error) {
                         NSLog(@"WOO started block with error %@", error);
-                        if (error != nil) {
-                            [NSApp performSelectorOnMainThread: @selector(presentError:)
-                                                    withObject: error
-                                                 waitUntilDone: YES];
+                        if (error != nil ) {
+                            if (![SCUtilities errorIsAuthCanceled: error]) {
+                                [NSApp performSelectorOnMainThread: @selector(presentError:)
+                                                        withObject: error
+                                                     waitUntilDone: YES];
+                                }
                         } else {
                             [SCSentry addBreadcrumb: @"Block started successfully" category:@"app"];
                         }
@@ -652,9 +658,11 @@
             [self->timerWindowController_ performSelectorOnMainThread:@selector(closeAddSheet:) withObject: self waitUntilDone: YES];
             
             if (error != nil) {
-                [NSApp performSelectorOnMainThread: @selector(presentError:)
-                                        withObject: error
-                                     waitUntilDone: YES];
+                if (![SCUtilities errorIsAuthCanceled: error]) {
+                    [NSApp performSelectorOnMainThread: @selector(presentError:)
+                                            withObject: error
+                                         waitUntilDone: YES];
+                }
             } else {
                 [SCSentry addBreadcrumb: @"Blocklist updated successfully" category:@"app"];
             }
@@ -706,9 +714,11 @@
                                                   waitUntilDone: YES];
 
             if (error != nil) {
-                [NSApp performSelectorOnMainThread: @selector(presentError:)
-                                        withObject: error
-                                     waitUntilDone: YES];
+                if (![SCUtilities errorIsAuthCanceled: error]) {
+                    [NSApp performSelectorOnMainThread: @selector(presentError:)
+                                            withObject: error
+                                         waitUntilDone: YES];
+                }
             } else {
                 [SCSentry addBreadcrumb: @"App extended block duration successfully" category:@"app"];
             }
