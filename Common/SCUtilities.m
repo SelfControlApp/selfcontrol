@@ -277,6 +277,54 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
     };
 }
 
++ (NSError*)clearBrowserCaches {
+    NSFileManager* fileManager = [NSFileManager defaultManager];
+    NSError* retErr = nil;
+
+    NSURL* usersFolderURL = [NSURL fileURLWithPath: @"/Users"];
+    NSArray<NSURL *>* homeDirectoryURLs = [fileManager contentsOfDirectoryAtURL: usersFolderURL
+                                                     includingPropertiesForKeys: @[NSURLPathKey, NSURLIsDirectoryKey, NSURLIsReadableKey]
+                                                                        options: NSDirectoryEnumerationSkipsHiddenFiles
+                                                                          error: &retErr];
+    if (homeDirectoryURLs == nil || homeDirectoryURLs.count == 0) {
+        if (retErr != nil) {
+            return retErr;
+        } else {
+            return [SCErr errorWithCode: 700];
+        }
+    }
+    NSArray<NSString*>* cacheDirPathComponents = @[
+        // chrome
+        @"/Library/Caches/Google/Chrome/Default",
+        @"/Library/Caches/Google/Chrome/com.google.Chrome",
+        
+        // firefox
+        @"/Library/Caches/Firefox/Profiles",
+        
+        // safari
+        @"/Library/Caches/com.apple.Safari",
+        @"/Library/Containers/com.apple.Safari/Data/Library/Caches" // this one seems to fail due to permissions issues, but not sure how to fix
+    ];
+    
+    
+    NSMutableArray<NSURL*>* cacheDirURLs = [NSMutableArray arrayWithCapacity: cacheDirPathComponents.count * homeDirectoryURLs.count];
+    for (NSURL* homeDirURL in homeDirectoryURLs) {
+        for (NSString* cacheDirPathComponent in cacheDirPathComponents) {
+            [cacheDirURLs addObject: [homeDirURL URLByAppendingPathComponent: cacheDirPathComponent isDirectory: YES]];
+        }
+    }
+    
+    for (NSURL* cacheDirURL in cacheDirURLs) {
+        NSLog(@"Clearing browser cache folder %@", cacheDirURL);
+        // removeItemAtURL will return errors if the file doesn't exist
+        // so we don't track the errors - best effort is OK
+        [fileManager removeItemAtURL: cacheDirURL error: nil];
+    }
+    
+    return nil;
+}
+
+
 // migration functions
 
 + (NSString*)homeDirectoryForUid:(uid_t)uid {

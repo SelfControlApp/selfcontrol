@@ -589,6 +589,8 @@
 		CB1CA64C25ABA5990084A551 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				CBB1731220F041F4007FCAE9 /* SCUtilities.h */,
+				CBB1731320F041F4007FCAE9 /* SCUtilities.m */,
 				CBADC27C25B22BC7000EE5BB /* SCSentry.h */,
 				CBADC27D25B22BC7000EE5BB /* SCSentry.m */,
 				CB1465B625B027E700130D2E /* SCErr.h */,
@@ -637,8 +639,6 @@
 				CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */,
 				CBC2F8650F4674E300CF2A42 /* LaunchctlHelper.h */,
 				CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */,
-				CBB1731220F041F4007FCAE9 /* SCUtilities.h */,
-				CBB1731320F041F4007FCAE9 /* SCUtilities.m */,
 				CB5DFCB52251DD1F0084CEC2 /* SCConstants.h */,
 				CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */,
 				F5B8CBEB19EE21340026F3A5 /* Formatters */,

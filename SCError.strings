@@ -41,3 +41,6 @@
 
 // 600-699 = errors generated in SCSettings
 "600" = "Unable to write SCSettings from a normal (non-root) account.";
+
+// 700-799 = errors generated in SCUtilities or other utility functions
+"700" = "SelfControl couldn't clear your browser caches, because it couldn't read the user home directories.";

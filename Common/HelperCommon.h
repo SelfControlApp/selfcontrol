@@ -47,16 +47,16 @@ NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, int port);
 // Checks the settings system to see whether the user wants their web browser
 // caches cleared, and deletes the specific cache folders for a few common
 // web browsers if it is required.
-void clearCachesIfRequested(uid_t controllingUID);
+void clearCachesIfRequested(void);
 
 // Clear only the caches for browsers
-void clearBrowserCaches(uid_t controllingUID);
+void clearBrowserCaches(void);
 
 // Clear only the OS-level DNS cache
 void clearOSDNSCache(void);
 
 // Removes block via settings, host file rules and ipfw rules,
 // deleting user caches if requested, and migrating legacy settings.
-void removeBlock(uid_t controllingUID);
+void removeBlock(void);
 
 void sendConfigurationChangedNotification(void);

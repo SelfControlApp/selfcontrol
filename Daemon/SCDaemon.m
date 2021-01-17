@@ -38,7 +38,7 @@ static NSString* serviceName = @"org.eyebeam.selfcontrold";
     [self.listener resume];
     [NSTimer scheduledTimerWithTimeInterval: 1 repeats: YES block:^(NSTimer * _Nonnull timer) {
         // TODO: DON'T HARDCODE THIS VALUE
-        [SCDaemonBlockMethods checkupBlockWithControllingUID: 501];
+        [SCDaemonBlockMethods checkupBlock];
     }];    
 }
 

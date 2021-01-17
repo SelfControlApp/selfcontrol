@@ -111,7 +111,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
 
     // Clear all caches if the user has the correct preference set, so
     // that blocked pages are not loaded from a cache.
-    clearCachesIfRequested(controllingUID);
+    clearCachesIfRequested();
 
     [SCSentry addBreadcrumb: @"Daemon added block successfully" category: @"daemon"];
     NSLog(@"INFO: Block successfully added.");
@@ -181,7 +181,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
 
     // Clear all caches if the user has the correct preference set, so
     // that blocked pages are not loaded from a cache.
-    clearCachesIfRequested(controllingUID);
+    clearCachesIfRequested();
 
     [SCSentry addBreadcrumb: @"Daemon updated blocklist successfully" category: @"daemon"];
     NSLog(@"INFO: Blocklist successfully updated.");
@@ -247,7 +247,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     [self.daemonMethodLock unlock];
 }
 
-+ (void)checkupBlockWithControllingUID:(uid_t)controllingUID {
++ (void)checkupBlock {
     if (![SCDaemonBlockMethods lockOrTimeout: nil timeout: CHECKUP_LOCK_TIMEOUT]) {
         return;
     }
@@ -261,7 +261,10 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         lastBlockIntegrityCheck = [NSDate distantPast];
     }
 
-    if(![SCUtilities anyBlockIsRunning: controllingUID]) {
+    // technically, anyBlockIsRunning without a controllingUID won't find some legacy blocks
+    // but there should never be a case where the daemon is running with a legacy block,
+    // so this _should_ be OK. (and it's very annoying to have to pass controllingUID everywhere)
+    if(![SCUtilities anyBlockIsRunning]) {
         // No block appears to be running at all in our settings.
         // Most likely, the user removed it trying to get around the block. Boo!
         // but for safety and to avoid permablocks (we no longer know when the block should end)
@@ -271,7 +274,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         
         [SCSentry captureMessage: @"Checkup ran and no active block found! Removing block, tampering suspected..."];
         
-        removeBlock(controllingUID);
+        removeBlock();
 
         // Temporarily disabled the TamperingDetection flag because it was sometimes causing false positives
         // (i.e. people having the background set repeatedly despite no attempts to cheat)
@@ -290,7 +293,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     if (![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
         NSLog(@"INFO: Checkup ran, block expired, removing block.");
         
-        removeBlock(controllingUID);
+        removeBlock();
         [SCSentry addBreadcrumb: @"Daemon found and cleared expired block" category: @"daemon"];
         
         [SCDaemonUtilities unloadDaemonJob];
@@ -331,7 +334,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
             // Perform the re-add of the rules
             addRulesToFirewall();
             
-            clearCachesIfRequested(controllingUID);
+            clearCachesIfRequested();
 
             [SCSentry addBreadcrumb: @"Daemon found compromised block integrity and re-added rules" category: @"daemon"];
             NSLog(@"INFO: Checkup ran, readded block rules.");
