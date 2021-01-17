@@ -47,8 +47,12 @@
 								  &authorizationRef);
 
 	if(status) {
-		NSLog(@"ERROR: Failed to authorize block kill.");
-		return;
+        // if it's just the user cancelling, make that obvious
+        // to any listeners so they can ignore it appropriately
+        if (status != -60006) {
+            NSLog(@"ERROR: Failed to authorize block kill with status %d.", status);
+        }
+        return;
 	}
     
     // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
@@ -67,10 +71,13 @@
 	if(status) {
 		NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", status);
 
-        NSError* err = [SCErr errorWithCode: 400];
-        [SCSentry captureError: err];
+        /// --60006 just means auth is cancelled, not really an "error" per se
+        if (status != -60006) {
+            NSError* err = [SCErr errorWithCode: 400];
+            [SCSentry captureError: err];
 
-		[NSApp presentError: err];
+            [NSApp presentError: err];
+        }
 
 		return;
 	} else {

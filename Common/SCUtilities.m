@@ -238,6 +238,20 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
     }
 }
 
+
++ (BOOL)errorIsAuthCanceled:(NSError*)err {
+    if (err == nil) return NO;
+    
+    if ([err.domain isEqualToString: NSOSStatusErrorDomain] && err.code == -60006) {
+        return YES;
+    }
+    if (err.domain == kSelfControlErrorDomain && err.code == 1) {
+        return YES;
+    }
+    
+    return NO;
+}
+
 + (BOOL)writeBlocklistToFileURL:(NSURL*)targetFileURL blockInfo:(NSDictionary*)blockInfo errorDescription:(NSString**)errDescriptionRef {
     NSDictionary* saveDict = @{@"HostBlacklist": [blockInfo objectForKey: @"Blocklist"],
                                @"BlockAsWhitelist": [blockInfo objectForKey: @"BlockAsWhitelist"]};

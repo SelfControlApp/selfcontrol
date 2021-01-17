@@ -143,10 +143,19 @@
                                   &authorizationRef);
 
     if(status) {
-        NSLog(@"ERROR: Failed to authorize installing selfcontrold.");
-        NSError* err = [SCErr errorWithCode: 501];
-        // this usually just means the user clicked Cancel, so don't report to Sentry
-        callback(err);
+        // if it's just the user cancelling, make that obvious
+        // to any listeners so they can ignore it appropriately
+        if (status == -60006) {
+            callback([SCErr errorWithCode: 1]);
+        } else {
+            NSLog(@"ERROR: Failed to authorize installing selfcontrold with status %d.", status);
+
+            NSError* err = [SCErr errorWithCode: 501];
+            [SCSentry captureError: err];
+            
+            callback(err);
+        }
+
         return;
     }
 
@@ -163,7 +172,9 @@
         NSLog(@"WARNING: Authorized installation of selfcontrold returned failure status code %d and error %@", (int)status, error);
 
         NSError* err = [SCErr errorWithCode: 500 subDescription: error.localizedDescription];
-        [SCSentry captureError: err];
+        if (![SCUtilities errorIsAuthCanceled: error]) {
+            [SCSentry captureError: err];
+        }
 
         callback(err);
         return;
@@ -236,16 +247,16 @@
     [self connectAndExecuteCommandBlock:^(NSError * connectError) {
         if (connectError != nil) {
             [SCSentry captureError: connectError];
-            NSLog(@"Install command failed with connection error: %@", connectError);
+            NSLog(@"Start block command failed with connection error: %@", connectError);
             reply(connectError);
         } else {
             [[self.daemonConnection remoteObjectProxyWithErrorHandler:^(NSError * proxyError) {
-                NSLog(@"Install command failed with remote object proxy error: %@", proxyError);
+                NSLog(@"Start block command failed with remote object proxy error: %@", proxyError);
                 [SCSentry captureError: proxyError];
                 reply(proxyError);
             }] startBlockWithControllingUID: controllingUID blocklist: blocklist isAllowlist:isAllowlist endDate:endDate blockSettings: blockSettings authorization: self.authorization reply:^(NSError* error) {
-                if (error != nil) {
-                    NSLog(@"Install failed with error = %@\n", error);
+                if (error != nil && ![SCUtilities errorIsAuthCanceled: error]) {
+                    NSLog(@"Start block failed with error = %@\n", error);
                     [SCSentry captureError: error];
                 }
                 reply(error);
@@ -266,7 +277,7 @@
                 [SCSentry captureError: proxyError];
                 reply(proxyError);
             }] updateBlocklist: newBlocklist authorization: self.authorization reply:^(NSError* error) {
-                if (error != nil) {
+                if (error != nil && ![SCUtilities errorIsAuthCanceled: error]) {
                     NSLog(@"Blocklist update failed with error = %@\n", error);
                     [SCSentry captureError: error];
                 }
@@ -288,7 +299,7 @@
                 [SCSentry captureError: proxyError];
                 reply(proxyError);
             }] updateBlockEndDate: newEndDate authorization: self.authorization reply:^(NSError* error) {
-                if (error != nil) {
+                if (error != nil && ![SCUtilities errorIsAuthCanceled: error]) {
                     NSLog(@"Block end date update failed with error = %@\n", error);
                     [SCSentry captureError: error];
                 }
