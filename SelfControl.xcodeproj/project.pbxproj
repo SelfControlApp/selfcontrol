@@ -48,6 +48,8 @@
 		CB529BBF0F32B7ED00564FB8 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB529BBE0F32B7ED00564FB8 /* AppController.m */; };
 		CB54D44C0F93E33300AA22E9 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9E901D0F397FFA006DE6E4 /* Security.framework */; };
 		CB587E500F50FE8800C66A09 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB587E4F0F50FE8800C66A09 /* SystemConfiguration.framework */; };
+		CB58948025B3FC6D00E9A5C0 /* HostFileBlocker.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB0AE290FA74566006229B3 /* HostFileBlocker.m */; };
+		CB58948725B3FC6F00E9A5C0 /* HostFileBlocker.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB0AE290FA74566006229B3 /* HostFileBlocker.m */; };
 		CB5DFCB72251DD1F0084CEC2 /* SCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */; };
 		CB5DFCB82251DD1F0084CEC2 /* SCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */; };
 		CB5DFCBA2251DD1F0084CEC2 /* SCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */; };
@@ -1221,6 +1223,7 @@
 				CB529BBF0F32B7ED00564FB8 /* AppController.m in Sources */,
 				CB1465B825B027E700130D2E /* SCErr.m in Sources */,
 				CBB1731920F05C07007FCAE9 /* SCUtilities.m in Sources */,
+				CB58948025B3FC6D00E9A5C0 /* HostFileBlocker.m in Sources */,
 				F5B8CBEE19EE21C30026F3A5 /* SCTimeIntervalFormatter.m in Sources */,
 				CBD4848A19D764440020F949 /* PreferencesGeneralViewController.m in Sources */,
 				CB1CA65E25ABA6150084A551 /* SCXPCClient.m in Sources */,
@@ -1283,6 +1286,7 @@
 				CB9C80FC19CFB79700CDCAE1 /* main.m in Sources */,
 				CB5DFCBA2251DD1F0084CEC2 /* SCConstants.m in Sources */,
 				CB32D2AC21902CF800B8CD68 /* SCSettings.m in Sources */,
+				CB58948725B3FC6F00E9A5C0 /* HostFileBlocker.m in Sources */,
 				CB1465BA25B027E700130D2E /* SCErr.m in Sources */,
 				CBB1731C20F05C0A007FCAE9 /* SCUtilities.m in Sources */,
 				CBADC28025B22BC7000EE5BB /* SCSentry.m in Sources */,
