@@ -106,8 +106,12 @@ void clearCachesIfRequested() {
         return;
     }
     
-    // TODO: do something with the NSError returned by this method
-    [SCUtilities clearBrowserCaches];
+    NSError* err = [SCUtilities clearBrowserCaches];
+    if (err) {
+        NSLog(@"WARNING: Error clearing browser caches: %@", err);
+        [SCSentry captureError: err];
+    }
+
     clearOSDNSCache();
 }
 

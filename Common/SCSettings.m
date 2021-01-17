@@ -21,6 +21,7 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
 @property (readonly) NSMutableDictionary* settingsDict;
 @property NSDate* lastSynchronizedWithDisk;
 @property dispatch_source_t syncTimer;
+@property dispatch_source_t debouncedChangeTimer;
 
 @end
 
@@ -461,14 +462,16 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
         dispatch_resume(self.syncTimer);
     }
 }
-- (void)cancelSyncTimer {
-    if (self.syncTimer == nil) {
-        // no active timer, no need to cancel
-        return;
+- (void)cancelSyncTimers {
+    if (self.syncTimer != nil) {
+        dispatch_source_cancel(self.syncTimer);
+        self.syncTimer = nil;
     }
-
-    dispatch_source_cancel(self.syncTimer);
-    self.syncTimer = nil;
+    
+    if (self.debouncedChangeTimer != nil) {
+        dispatch_source_cancel(self.debouncedChangeTimer);
+        self.debouncedChangeTimer = nil;
+    }
 }
 
 - (void)updateSentryContext {
@@ -544,14 +547,13 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
     
     // regardless of which is more recent, we should really go get the new deal from disk
     // in the near future (but debounce so we don't do this a million times for rapid changes)
-    static dispatch_source_t debouncedSyncTimer = nil;
-    if (debouncedSyncTimer != nil) {
-        dispatch_source_cancel(debouncedSyncTimer);
-        debouncedSyncTimer = nil;
+    if (self.debouncedChangeTimer != nil) {
+        dispatch_source_cancel(self.debouncedChangeTimer);
+        self.debouncedChangeTimer = nil;
     }
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     double throttleSecs = 0.25f;
-    debouncedSyncTimer = CreateDebounceDispatchTimer(throttleSecs, queue, ^{
+    self.debouncedChangeTimer = CreateDebounceDispatchTimer(throttleSecs, queue, ^{
         NSLog(@"Syncing settings due to propagated changes");
         [self synchronizeSettings];
     });
@@ -572,8 +574,7 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
 }
 
 - (void)dealloc {
-    // TODO: should we kill the debounced timer above also?
-    [self cancelSyncTimer];
+    [self cancelSyncTimers];
 }
 
 @synthesize settingsDict = _settingsDict, lastSynchronizedWithDisk;

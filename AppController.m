@@ -32,6 +32,7 @@
 #import <ServiceManagement/ServiceManagement.h>
 #import "SCXPCClient.h"
 #import <Sentry/Sentry.h>
+#import "HostFileBlocker.h"
 
 @interface AppController () {}
 
@@ -411,7 +412,11 @@
 }
 
 - (BOOL)blockIsRunning {
-    return [SCUtilities anyBlockIsRunning];
+    // we'll say a block is running if we find the block info, but
+    // also, importantly, if we find a block still going in the hosts file
+    // that way if this happens, the user will still see the timer window -
+    // which will let them manually clear the remaining block info after 10 seconds
+    return [SCUtilities anyBlockIsRunning] || [HostFileBlocker blockFoundInHostsFile];
 }
 
 - (IBAction)showDomainList:(id)sender {
@@ -515,9 +520,11 @@
 
 - (void)extendBlockTime:(NSInteger)minutesToAdd lock:(NSLock*)lock {
     // sanity check: extending a block for 0 minutes is useless; 24 hour should be impossible
-    NSInteger MINUTES_IN_DAY = 24 * 60 * 60;
-    if(minutesToAdd < 1 || minutesToAdd > MINUTES_IN_DAY)
-        return;
+    NSInteger maxBlockLength = [defaults_ integerForKey: @"MaxBlockLength"];
+    if(minutesToAdd < 1) return;
+    if (minutesToAdd > maxBlockLength) {
+        minutesToAdd = maxBlockLength;
+    }
     
     // ensure block health before we try to change it
     if(![self blockIsRunning]) {

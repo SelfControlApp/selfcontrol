@@ -106,7 +106,6 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
 
     NSLog(@"Firewall rules added!");
     
-    // TODO: is this still necessary in the new daemon world?
     sendConfigurationChangedNotification();
 
     // Clear all caches if the user has the correct preference set, so
@@ -176,7 +175,6 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     [settings setValue: newBlocklist forKey: @"ActiveBlocklist"];
     [settings synchronizeSettings]; // make sure everyone knows about our new list
 
-    // TODO: is this still necessary in the new daemon world?
     sendConfigurationChangedNotification();
 
     // Clear all caches if the user has the correct preference set, so
@@ -238,7 +236,6 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     [settings setValue: newEndDate forKey: @"BlockEndDate"];
     [settings synchronizeSettings]; // make sure everyone knows about our new end date
 
-    // TODO: is this still necessary in the new daemon world?
     sendConfigurationChangedNotification();
 
     [SCSentry addBreadcrumb: @"Daemon extended block successfully" category: @"daemon"];
@@ -273,6 +270,8 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         
         removeBlock();
 
+        sendConfigurationChangedNotification();
+        
         // Temporarily disabled the TamperingDetection flag because it was sometimes causing false positives
         // (i.e. people having the background set repeatedly despite no attempts to cheat)
         // We will try to bring this feature back once we can debug it
@@ -291,6 +290,9 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         NSLog(@"INFO: Checkup ran, block expired, removing block.");
         
         removeBlock();
+        
+        sendConfigurationChangedNotification();
+        
         [SCSentry addBreadcrumb: @"Daemon found and cleared expired block" category: @"daemon"];
         
         [SCDaemonUtilities unloadDaemonJob];

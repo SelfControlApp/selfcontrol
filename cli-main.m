@@ -27,8 +27,7 @@
 #import "SCXPCClient.h"
 
 // The main method which deals which most of the logic flow and execution of
-// the CLI helper tool.  Posts an SCConfigurationChangedNotification if the block
-// is enabled or disabled.
+// the CLI tool.
 int main(int argc, char* argv[]) {
     [SCSentry startSentry: @"org.eyebeam.selfcontrol-cli"];
 
@@ -155,10 +154,7 @@ int main(int argc, char* argv[]) {
                                 exit(EX_SOFTWARE);
                                 return;
                             }
-                            
-                            // TODO: is this necessary?
-                            sendConfigurationChangedNotification();
-                            
+
                             NSLog(@"INFO: Block successfully added.");
                             dispatch_semaphore_signal(installingBlockSema);
                         }];

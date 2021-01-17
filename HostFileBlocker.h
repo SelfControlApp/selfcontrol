@@ -30,6 +30,8 @@
 	NSFileManager* fileMan;
 }
 
++ (BOOL)blockFoundInHostsFile;
+
 - (BOOL)deleteBackupHostsFile;
 
 - (void)revertFileContentsToDisk;

@@ -149,15 +149,6 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
 
 + (BOOL)anyBlockIsRunning {
     BOOL blockIsRunning = [SCUtilities modernBlockIsRunning] || [self legacyBlockIsRunning];
-    
-    // TODO: should this logic be here, or no?
-//    if (!blockIsRunning) {
-//        // last try if we can't find a block anywhere: check the host file, and see if a block is in there
-//        NSString* hostFileContents = [NSString stringWithContentsOfFile: @"/etc/hosts" encoding: NSUTF8StringEncoding error: NULL];
-//        if(hostFileContents != nil && [hostFileContents rangeOfString: @"# BEGIN SELFCONTROL BLOCK"].location != NSNotFound) {
-//            blockIsRunning = YES;
-//        }
-//    }
 
     return blockIsRunning;
 }

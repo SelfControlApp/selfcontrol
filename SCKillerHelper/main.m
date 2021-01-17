@@ -219,33 +219,24 @@ int main(int argc, char* argv[]) {
 		}
                 
         // OK, make sure all settings are synced before this thing exits
-        [settings synchronizeSettingsWithCompletion:^(NSError* err) {
-            if (err != nil) {
-                [log appendFormat: @"\nWARNING: Settings failed to synchronize before exit, with error %@", err];
-            }
+        NSError* syncSettingsErr = nil;
+        [settings syncSettingsAndWait: 5 error: &syncSettingsErr];
+        
+        if (syncSettingsErr != nil) {
+            [log appendFormat: @"\nWARNING: Settings failed to synchronize before exit, with error %@", syncSettingsErr];
+        }
 
-            // let the main app know to refresh
-           sendConfigurationChangedNotification();
+       [log appendString: @"\n===SelfControl-Killer complete!==="];
 
-           [log appendString: @"\n===SelfControl-Killer complete!==="];
+       [log writeToFile: logFilePath
+             atomically: YES
+               encoding: NSUTF8StringEncoding
+                  error: nil];
 
-           [log writeToFile: logFilePath
-                 atomically: YES
-                   encoding: NSUTF8StringEncoding
-                      error: nil];
             
-            exit(EX_OK);
-        }];
-        
-        // only wait 5 seconds for the sync to finish, otherwise exit anyway
-        sleep(5);
-        
-        [log appendString: @"\nWARNING: Settings timed out synchronizing before exit"];
-        [log writeToFile: logFilePath
-        atomically: YES
-          encoding: NSUTF8StringEncoding
-             error: nil];
-        
+        // let the main app know to refresh
+       sendConfigurationChangedNotification();
+
         exit(EX_OK);
 	}
 }
