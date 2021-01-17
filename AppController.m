@@ -304,7 +304,7 @@
     settings_ = [SCSettings sharedSettings];
     // go copy over any preferences from legacy setting locations
     // (we won't clear any old data yet - we leave that to the daemon)
-    if ([SCUtilities legacySettingsFound]) {
+    if ([SCUtilities legacySettingsFoundForCurrentUser]) {
         [SCUtilities copyLegacySettingsToDefaults];
     }
 
@@ -640,9 +640,8 @@
 
     [self.xpc refreshConnectionAndRun:^{
         NSLog(@"Refreshed connection updating active blocklist!");
-        [self.xpc updateBlocklistWithControllingUID: getuid()
-                                       newBlocklist: [self->defaults_ arrayForKey: @"Blocklist"]
-                                              reply:^(NSError * _Nonnull error) {
+        [self.xpc updateBlocklist: [self->defaults_ arrayForKey: @"Blocklist"]
+                            reply:^(NSError * _Nonnull error) {
             [self->timerWindowController_ performSelectorOnMainThread:@selector(closeAddSheet:) withObject: self waitUntilDone: YES];
             
             if (error != nil) {
@@ -691,9 +690,8 @@
         }
 
         NSLog(@"Refreshed connection updating active block end date!");
-        [self.xpc updateBlockEndDateWithControllingUID: getuid()
-                                       newEndDate: newBlockEndDate
-                                              reply:^(NSError * _Nonnull error) {
+        [self.xpc updateBlockEndDate: newBlockEndDate
+                               reply:^(NSError * _Nonnull error) {
             [self->timerWindowController_ performSelectorOnMainThread:@selector(closeAddSheet:) withObject: self waitUntilDone: YES];
             // let the timer know it needs to recalculate
             [self->timerWindowController_ performSelectorOnMainThread:@selector(blockEndDateUpdated)

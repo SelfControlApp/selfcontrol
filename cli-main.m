@@ -56,7 +56,7 @@ int main(int argc, char* argv[]) {
 		if([modeString isEqual: @"--install"]) {
             [SCSentry addBreadcrumb: @"CLI method --install called" category: @"cli"];
 
-            if ([SCUtilities anyBlockIsRunning: controllingUID]) {
+            if ([SCUtilities anyBlockIsRunning]) {
                 NSLog(@"ERROR: Block is already running");
                 exit(EX_CONFIG);
             }
@@ -187,7 +187,7 @@ int main(int argc, char* argv[]) {
             NSLog(@"%@", [settings dictionaryRepresentation]);
         } else if ([modeString isEqualToString: @"--is-running"]) {
             [SCSentry addBreadcrumb: @"CLI method --is-running called" category: @"cli"];
-            BOOL blockIsRunning = [SCUtilities anyBlockIsRunning: controllingUID];
+            BOOL blockIsRunning = [SCUtilities anyBlockIsRunning];
             NSLog(@"%@", blockIsRunning ? @"YES" : @"NO");
         } else if ([modeString isEqualToString: @"--version"]) {
             [SCSentry addBreadcrumb: @"CLI method --version called" category: @"cli"];

@@ -53,7 +53,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     
     [SCSentry addBreadcrumb: @"Daemon method startBlock called" category: @"daemon"];
     
-    if ([SCUtilities anyBlockIsRunning: controllingUID]) {
+    if ([SCUtilities anyBlockIsRunning]) {
         NSLog(@"ERROR: Can't start block since a block is already running");
         NSError* err = [SCErr errorWithCode: 301];
         [SCSentry captureError: err];
@@ -64,9 +64,9 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     
     // clear any legacy block information - no longer useful and could potentially confuse things
     // but first, copy it over one more time (this should've already happened once in the app, but you never know)
-    if ([SCUtilities legacySettingsFound: controllingUID]) {
+    if ([SCUtilities legacySettingsFoundForUser: controllingUID]) {
         [SCUtilities copyLegacySettingsToDefaults: controllingUID];
-        [SCUtilities clearLegacySettings: controllingUID];
+        [SCUtilities clearLegacySettingsForUser: controllingUID];
         
         // if we had legacy settings, there's a small chance the old helper tool could still be around
         // make sure it's dead and gone
@@ -120,13 +120,13 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     [self.daemonMethodLock unlock];
 }
 
-+ (void)updateBlocklist:(uid_t)controllingUID newBlocklist:(NSArray<NSString*>*)newBlocklist authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
++ (void)updateBlocklist:(NSArray<NSString*>*)newBlocklist authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
     if (![SCDaemonBlockMethods lockOrTimeout: reply]) {
         return;
     }
     
     [SCSentry addBreadcrumb: @"Daemon method updateBlocklist called" category: @"daemon"];
-    if ([SCUtilities legacyBlockIsRunning: controllingUID]) {
+    if ([SCUtilities legacyBlockIsRunning]) {
         NSLog(@"ERROR: Can't update blocklist because a legacy block is running");
         NSError* err = [SCErr errorWithCode: 303];
         [SCSentry captureError: err];
@@ -190,14 +190,14 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     [self.daemonMethodLock unlock];
 }
 
-+ (void)updateBlockEndDate:(uid_t)controllingUID newEndDate:(NSDate*)newEndDate authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
++ (void)updateBlockEndDate:(NSDate*)newEndDate authorization:(NSData *)authData reply:(void(^)(NSError* error))reply {
     if (![SCDaemonBlockMethods lockOrTimeout: reply]) {
         return;
     }
     
     [SCSentry addBreadcrumb: @"Daemon method updateBlockEndDate called" category: @"daemon"];
 
-    if ([SCUtilities legacyBlockIsRunning: controllingUID]) {
+    if ([SCUtilities legacyBlockIsRunning]) {
         NSLog(@"ERROR: Can't update block end date because a legacy block is running");
         NSError* err = [SCErr errorWithCode: 306];
         [SCSentry captureError: err];
@@ -261,9 +261,6 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         lastBlockIntegrityCheck = [NSDate distantPast];
     }
 
-    // technically, anyBlockIsRunning without a controllingUID won't find some legacy blocks
-    // but there should never be a case where the daemon is running with a legacy block,
-    // so this _should_ be OK. (and it's very annoying to have to pass controllingUID everywhere)
     if(![SCUtilities anyBlockIsRunning]) {
         // No block appears to be running at all in our settings.
         // Most likely, the user removed it trying to get around the block. Boo!

@@ -35,30 +35,31 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
 // Helper tool functions dealing with dictionaries and setDefaultsValue helper
 
 // uses the below methods as well as filesystem checks to see if the block is REALLY running or not
-+ (BOOL)anyBlockIsRunning:(uid_t)controllingUID;
 + (BOOL)anyBlockIsRunning;
 + (BOOL)modernBlockIsRunning;
-+ (BOOL)legacyBlockIsRunning:(uid_t)controllingUID;
 + (BOOL)legacyBlockIsRunning;
 
 + (BOOL) blockIsRunningInDictionary:(NSDictionary*)dict;
 + (BOOL) blockShouldBeRunningInDictionary:(NSDictionary *)dict;
 
++ (BOOL)legacyBlockIsRunningInSettingsFile:(NSURL*)settingsFileURL;
 + (BOOL) blockIsRunningInLegacyDictionary:(NSDictionary*)dict;
 
 // read and write saved block files
 + (BOOL)writeBlocklistToFileURL:(NSURL*)targetFileURL blockInfo:(NSDictionary*)blockInfo errorDescription:(NSString**)errDescriptionRef;
 + (NSDictionary*)readBlocklistFromFile:(NSURL*)fileURL;
 
++ (NSArray<NSURL*>*)allUserHomeDirectoryURLs:(NSError**)errPtr;
+
 + (NSError*)clearBrowserCaches;
 
 // migration methods
 + (NSString*)legacySecuredSettingsFilePathForUser:(uid_t)userId;
-+ (BOOL)legacySettingsFound:(uid_t)controllingUID;
-+ (BOOL)legacySettingsFound;
++ (BOOL)legacySettingsFoundForUser:(uid_t)controllingUID;
++ (BOOL)legacySettingsFoundForCurrentUser;
 + (NSDate*)legacyBlockEndDate;
 + (void)copyLegacySettingsToDefaults:(uid_t)controllingUID;
 + (void)copyLegacySettingsToDefaults;
-+ (void)clearLegacySettings:(uid_t)controllingUID;
++ (NSError*)clearLegacySettingsForUser:(uid_t)controllingUID;
 
 @end

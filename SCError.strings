@@ -44,3 +44,5 @@
 
 // 700-799 = errors generated in SCUtilities or other utility functions
 "700" = "SelfControl couldn't clear your browser caches, because it couldn't read the user home directories.";
+"701" = "SelfControl couldn't clear out your settings from old version of SelfControl, because we had insufficient permissions.";
+"702" = "SelfControl couldn't clear out your settings from old version of SelfControl, because a block from an older version is ongoing.";

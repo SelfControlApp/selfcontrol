@@ -147,8 +147,8 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
     return dictValue;
 }
 
-+ (BOOL)anyBlockIsRunning:(uid_t)controllingUID {
-    BOOL blockIsRunning = [SCUtilities modernBlockIsRunning] || [self legacyBlockIsRunning: controllingUID];
++ (BOOL)anyBlockIsRunning {
+    BOOL blockIsRunning = [SCUtilities modernBlockIsRunning] || [self legacyBlockIsRunning];
     
     // TODO: should this logic be here, or no?
 //    if (!blockIsRunning) {
@@ -161,9 +161,6 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
 
     return blockIsRunning;
 }
-+ (BOOL)anyBlockIsRunning {
-    return [SCUtilities anyBlockIsRunning: 0];
-}
 
 + (BOOL)modernBlockIsRunning {
     SCSettings* settings = [SCSettings sharedSettings];
@@ -175,30 +172,40 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
     return NO;
 }
 
-+ (BOOL)legacyBlockIsRunning:(uid_t)controllingUID {
++ (BOOL)legacyBlockIsRunning {
     // first see if there's a legacy settings file from v3.x
-    if (!controllingUID) controllingUID = getuid();
-    NSString* legacySettingsPath = [SCUtilities legacySecuredSettingsFilePathForUser: controllingUID];
-    NSDictionary* legacySettingsDict = [NSDictionary dictionaryWithContentsOfFile: legacySettingsPath];
-    if ([SCUtilities blockIsRunningInLegacyDictionary: legacySettingsDict]) {
-        return YES;
+    // which could be in any user's home folder
+    NSError* homeDirErr = nil;
+    NSArray<NSURL *>* homeDirectoryURLs = [SCUtilities allUserHomeDirectoryURLs: &homeDirErr];
+    if (homeDirectoryURLs != nil) {
+        for (NSURL* homeDirURL in homeDirectoryURLs) {
+            NSString* relativeSettingsPath = [NSString stringWithFormat: @"/Library/Preferences/%@", SCSettings.settingsFileName];
+            NSURL* settingsFileURL = [homeDirURL URLByAppendingPathComponent: relativeSettingsPath isDirectory: NO];
+            
+            if ([SCUtilities legacyBlockIsRunningInSettingsFile: settingsFileURL]) {
+                return YES;
+            }
+        }
     }
-    
+
     // nope? OK, how about a lock file from pre-3.0?
     if ([[NSFileManager defaultManager] fileExistsAtPath: SelfControlLegacyLockFilePath]) {
         return YES;
     }
     
-    // hmm, is there anything in defaults from pre-3.0?
-    NSDictionary* defaultsDict = [SCUtilities defaultsDictForUser: controllingUID];
-    if ([SCUtilities blockIsRunningInLegacyDictionary: defaultsDict]) {
-        return YES;
-    }
+    // we don't check defaults anymore, though pre-3.0 blocks did
+    // have data stored there. That should be covered by the lockfile anyway
     
     return NO;
 }
-+ (BOOL)legacyBlockIsRunning {
-    return [SCUtilities legacyBlockIsRunning: 0];
+
++ (BOOL)legacyBlockIsRunningInSettingsFile:(NSURL*)settingsFileURL {
+    NSDictionary* legacySettingsDict = [NSDictionary dictionaryWithContentsOfURL: settingsFileURL];
+    
+    // if the file doesn't exist, there's definitely no block
+    if (legacySettingsDict == nil) return NO;
+    
+    return [SCUtilities blockIsRunningInLegacyDictionary: legacySettingsDict];
 }
 
 // returns YES if a block is actively running (to the best of our knowledge), and NO otherwise
@@ -277,10 +284,9 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
     };
 }
 
-+ (NSError*)clearBrowserCaches {
-    NSFileManager* fileManager = [NSFileManager defaultManager];
++ (NSArray<NSURL*>*)allUserHomeDirectoryURLs:(NSError**)errPtr {
     NSError* retErr = nil;
-
+    NSFileManager* fileManager = [NSFileManager defaultManager];
     NSURL* usersFolderURL = [NSURL fileURLWithPath: @"/Users"];
     NSArray<NSURL *>* homeDirectoryURLs = [fileManager contentsOfDirectoryAtURL: usersFolderURL
                                                      includingPropertiesForKeys: @[NSURLPathKey, NSURLIsDirectoryKey, NSURLIsReadableKey]
@@ -288,11 +294,26 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
                                                                           error: &retErr];
     if (homeDirectoryURLs == nil || homeDirectoryURLs.count == 0) {
         if (retErr != nil) {
-            return retErr;
+            *errPtr = retErr;
         } else {
-            return [SCErr errorWithCode: 700];
+            *errPtr = [SCErr errorWithCode: 700];
         }
+        
+        [SCSentry captureError: *errPtr];
+        
+        return nil;
     }
+    
+    return homeDirectoryURLs;
+}
+
++ (NSError*)clearBrowserCaches {
+    NSFileManager* fileManager = [NSFileManager defaultManager];
+
+    NSError* homeDirErr = nil;
+    NSArray<NSURL *>* homeDirectoryURLs = [SCUtilities allUserHomeDirectoryURLs: &homeDirErr];
+    if (homeDirectoryURLs == nil) return homeDirErr;
+    
     NSArray<NSString*>* cacheDirPathComponents = @[
         // chrome
         @"/Library/Caches/Google/Chrome/Default",
@@ -339,8 +360,7 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
 
 // check all legacy settings (old secured settings, lockfile, old-school defaults)
 // to see if there's anything there
-+ (BOOL)legacySettingsFound:(uid_t)controllingUID {
-    if (!controllingUID) controllingUID = getuid();
++ (BOOL)legacySettingsFoundForUser:(uid_t)controllingUID {
     NSFileManager* fileMan = [NSFileManager defaultManager];
     NSString* legacySettingsPath = [SCUtilities legacySecuredSettingsFilePathForUser: controllingUID];
     NSArray* defaultsHostBlacklist;
@@ -356,13 +376,13 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
     
     return defaultsHostBlacklist || [fileMan fileExistsAtPath: legacySettingsPath] || [fileMan fileExistsAtPath: SelfControlLegacyLockFilePath];
 }
-+ (BOOL)legacySettingsFound {
-    return [SCUtilities legacySettingsFound: 0];
++ (BOOL)legacySettingsFoundForCurrentUser {
+    return [SCUtilities legacySettingsFoundForUser: getuid()];
 }
 
 + (NSDate*)legacyBlockEndDate {
     // if we're running this as a normal user (generally that means app/CLI), it's easy: just get the standard user defaults
-    // if we're running this as root, we need to be given a UID target, then we imitate them to grab their defaults
+    // this method can't be run as root, it won't work
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
     NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLegacyLockFilePath];
     NSString* legacySettingsPath = [SCUtilities legacySecuredSettingsFilePathForUser: getuid()];
@@ -480,7 +500,7 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
 //  - the defaults system
 //  - a v3.x per-user secured settings file
 // we should check for block settings in all of these places and get rid of them
-+ (void)clearLegacySettings:(uid_t)controllingUID {
++ (NSError*)clearLegacySettingsForUser:(uid_t)controllingUID {
     NSLog(@"Clearing legacy settings!");
     
     BOOL runningAsRoot = (geteuid() == 0);
@@ -488,15 +508,21 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
         // if we're not running as root, or we didn't get a valid non-root controlling UID
         // we won't have permissions to make this work. This method MUST be called with root perms
         NSLog(@"ERROR: Can't clear legacy settings, because we aren't running as root.");
-        return;
+        NSError* err = [SCErr errorWithCode: 701];
+        [SCSentry captureError: err];
+        return err;
     }
     
     // if we're gonna clear settings, there can't be a block running anywhere. otherwise, we should wait!
-    if ([SCUtilities legacyBlockIsRunning: controllingUID]) {
+    if ([SCUtilities legacyBlockIsRunning]) {
         NSLog(@"ERROR: Can't clear legacy settings because a block is ongoing!");
-        return;
+        NSError* err = [SCErr errorWithCode: 702];
+        [SCSentry captureError: err];
+        return err;
     }
-
+    
+    NSFileManager* fileMan = [NSFileManager defaultManager];
+ 
     // besides Blocklist and the values copied from the v3.0-3.0.3 settings file to defaults in copyLegacySettingsToDefaults
     // we actually don't need to move anything else over! Why?
     //   1. The other settings from 3.0-3.0.3 don't matter as long as a block isn't running (i.e. BlockIsRunning should be false
@@ -504,11 +530,14 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
     //   2. All of the non-block settings from pre-3.0 can stay in defaults, ahd BlockStartedDate should be false if no block running
     // so all that's left is to clear out the legacy crap for good
 
+    // if an error happens trying to clear any portion of the old settings,
+    // we'll remember it, log it, and return it, but still try to clear the rest (best-effort)
+    NSError* retErr = nil;
+    
     // first, clear the pre-3.0 lock dictionary
-    NSError* removeLockFileErr;
-    NSFileManager* fileMan = [NSFileManager defaultManager];
-    if(![fileMan removeItemAtPath: SelfControlLegacyLockFilePath error: &removeLockFileErr] && [fileMan fileExistsAtPath: SelfControlLegacyLockFilePath]) {
-        NSLog(@"WARNING: Could not remove legacy SelfControl lock file because of error: %@", removeLockFileErr);
+    if(![fileMan removeItemAtPath: SelfControlLegacyLockFilePath error: &retErr] && [fileMan fileExistsAtPath: SelfControlLegacyLockFilePath]) {
+        NSLog(@"WARNING: Could not remove legacy SelfControl lock file because of error: %@", retErr);
+        [SCSentry captureError: retErr];
     }
     
     // then, clear keys out of defaults which aren't used
@@ -517,7 +546,6 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
     [defaults addSuiteNamed: @"org.eyebeam.SelfControl"];
     [defaults synchronize];
-
     NSArray* defaultsKeysToClear = @[
                              @"BlockStartedDate",
                              @"BlockEndDate",
@@ -526,21 +554,29 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
     for (NSString* key in defaultsKeysToClear) {
         [defaults removeObjectForKey: key];
     }
-
     [defaults synchronize];
     [NSUserDefaults resetStandardUserDefaults];
     seteuid(0);
     
-    // finally, clear the old settings file if they have it from a v3.0-3.0.3 version
-    NSError* removeOldSettingsFileErr;
-    NSString* legacySettingsPath = [SCUtilities legacySecuredSettingsFilePathForUser: controllingUID];
-    if(![fileMan removeItemAtPath: legacySettingsPath error: &removeOldSettingsFileErr] && [fileMan fileExistsAtPath: legacySettingsPath]) {
-        NSLog(@"WARNING: Could not remove legacy SelfControl lock file because of error: %@", removeOldSettingsFileErr);
+    // clear all legacy per-user secured settings (v3.0-3.0.3) in every user's home folder
+    NSArray<NSURL *>* homeDirectoryURLs = [SCUtilities allUserHomeDirectoryURLs: &retErr];
+    if (homeDirectoryURLs != nil) {
+        for (NSURL* homeDirURL in homeDirectoryURLs) {
+            NSString* relativeSettingsPath = [NSString stringWithFormat: @"/Library/Preferences/%@", SCSettings.settingsFileName];
+            NSURL* settingsFileURL = [homeDirURL URLByAppendingPathComponent: relativeSettingsPath isDirectory: NO];
+            
+            if(![fileMan removeItemAtURL: settingsFileURL error: &retErr] && [fileMan fileExistsAtPath: settingsFileURL.path]) {
+                NSLog(@"WARNING: Could not remove legacy SelfControl settings file at URL %@ because of error: %@", settingsFileURL, retErr);
+                [SCSentry captureError: retErr];
+            }
+        }
     }
-    
+
     // and that's it! note that we don't touch the modern SCSettings at all, and that's OK - it'll restart from scratch and be fine
     [SCSentry addBreadcrumb: @"Cleared legacy settings successfully" category: @"settings"];
     NSLog(@"Cleared legacy settings!");
+    
+    return retErr;
 }
 
 
