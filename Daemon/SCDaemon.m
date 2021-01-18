@@ -36,9 +36,11 @@ static NSString* serviceName = @"org.eyebeam.selfcontrold";
 
 - (void)start {
     [self.listener resume];
-    [NSTimer scheduledTimerWithTimeInterval: 1 repeats: YES block:^(NSTimer * _Nonnull timer) {
-        [SCDaemonBlockMethods checkupBlock];
-    }];    
+    [NSTimer scheduledTimerWithTimeInterval: 5 repeats: NO block:^(NSTimer * _Nonnull timer) {
+        [NSTimer scheduledTimerWithTimeInterval: 1 repeats: YES block:^(NSTimer * _Nonnull timer) {
+            [SCDaemonBlockMethods checkupBlock];
+        }];
+    }];
 }
 
 #pragma mark - NSXPCListenerDelegate

@@ -86,37 +86,36 @@ static NSDictionary* kAuthorizationRuleAuthenticateAsAdmin5MinTimeout;
             @"class": @"user",
             @"group": @"admin",
             @"timeout": @(300), // 5 minutes
+            @"shared": @(YES),
             @"version": @1 // not entirely sure what this does TBH
         };
     }
     
     dispatch_once(&sOnceToken, ^{
         #pragma clang diagnostic ignored "-Wundeclared-selector"
+        
+        
+        NSDictionary* startBlockCommandInfo = @{
+            kCommandKeyAuthRightName    : @"org.eyebeam.SelfControl.startBlock",
+            kCommandKeyAuthRightDefault : kAuthorizationRuleAuthenticateAsAdmin5MinTimeout,
+            kCommandKeyAuthRightDesc    : NSLocalizedString(
+                @"SelfControl needs your username and password to start the block.",
+                @"prompt shown when user is required to authorize to start block"
+            )
+        };
+        NSDictionary* modifyBlockCommandInfo = @{
+            kCommandKeyAuthRightName    : @"org.eyebeam.SelfControl.modifyBlock",
+            kCommandKeyAuthRightDefault : kAuthorizationRuleAuthenticateAsAdmin5MinTimeout,
+            kCommandKeyAuthRightDesc    : NSLocalizedString(
+                @"SelfControl needs your username and password to modify the block",
+                @"prompt shown when user is required to authorize to modify their block"
+            )
+        };
+        
         sCommandInfo = @{
-            NSStringFromSelector(@selector(startBlockWithControllingUID:blocklist:isAllowlist:endDate:blockSettings:authorization:reply:)) : @{
-                kCommandKeyAuthRightName    : @"org.eyebeam.SelfControl.startBlock",
-                kCommandKeyAuthRightDefault : kAuthorizationRuleAuthenticateAsAdmin5MinTimeout,
-                kCommandKeyAuthRightDesc    : NSLocalizedString(
-                    @"SelfControl needs your username and password to start the block.",
-                    @"prompt shown when user is required to authorize to start block"
-                )
-            },
-            NSStringFromSelector(@selector(updateBlocklist:authorization:reply:)) : @{
-                kCommandKeyAuthRightName    : @"org.eyebeam.SelfControl.modifyBlock",
-                kCommandKeyAuthRightDefault : kAuthorizationRuleAuthenticateAsAdmin5MinTimeout,
-                kCommandKeyAuthRightDesc    : NSLocalizedString(
-                    @"SelfControl needs your username and password to modify the blocklist",
-                    @"prompt shown when user is required to authorize to add to their blocklist"
-                )
-            },
-            NSStringFromSelector(@selector(updateBlockEndDate:authorization:reply:)) : @{
-                kCommandKeyAuthRightName    : @"org.eyebeam.SelfControl.modifyBlock",
-                kCommandKeyAuthRightDefault : kAuthorizationRuleAuthenticateAsAdmin5MinTimeout,
-                kCommandKeyAuthRightDesc    : NSLocalizedString(
-                    @"SelfControl needs your username and password to extend the block",
-                    @"prompt shown when user is required to authorize to extend their blockc"
-                )
-            }
+            NSStringFromSelector(@selector(startBlockWithControllingUID:blocklist:isAllowlist:endDate:blockSettings:authorization:reply:)) : startBlockCommandInfo,
+            NSStringFromSelector(@selector(updateBlocklist:authorization:reply:)) : modifyBlockCommandInfo,
+            NSStringFromSelector(@selector(updateBlockEndDate:authorization:reply:)) : modifyBlockCommandInfo
             #pragma clang diagnostic pop
         };
     });
@@ -165,6 +164,7 @@ static NSDictionary* kAuthorizationRuleAuthenticateAsAdmin5MinTimeout;
         
         blockErr = AuthorizationRightGet([authRightName UTF8String], NULL);
         if (blockErr == errAuthorizationDenied) {
+            NSLog(@"setting auth right default for %@: %@", authRightName, authRightDefault);
             blockErr = AuthorizationRightSet(
                 authRef,                                    // authRef
                 [authRightName UTF8String],                 // rightName

@@ -120,22 +120,25 @@
 
 - (void)installDaemon:(void(^)(NSError*))callback {
     AuthorizationRef authorizationRef;
-    char* daemonPath = [self selfControlHelperToolPathUTF8String];
-    NSUInteger daemonPathSize = strlen(daemonPath);
-    AuthorizationItem right = {
-        kSMRightBlessPrivilegedHelper,
-        daemonPathSize,
-        daemonPath,
-        0
+    AuthorizationItem blessRight = {
+        kSMRightBlessPrivilegedHelper, 0, NULL, 0
     };
-    AuthorizationRights authRights = {
-        1,
-        &right
+    AuthorizationItem startBlockRight = {
+        "org.eyebeam.SelfControl.startBlock", 0, NULL, 0
     };
+    AuthorizationItem rightsArr[] = { blessRight, startBlockRight };
+
+    AuthorizationRights authRights;
+    authRights.count = 2;
+    authRights.items = rightsArr;
+
     AuthorizationFlags myFlags = kAuthorizationFlagDefaults |
     kAuthorizationFlagExtendRights |
     kAuthorizationFlagInteractionAllowed;
     OSStatus status;
+    
+//    AuthorizationItem sharedEnvItem = { kAuthorizationEnvironmentShared, 0, NULL, 0 };
+//    AuthorizationEnvironment authEnv = { 1, &sharedEnvItem };
 
     status = AuthorizationCreate (&authRights,
                                   kAuthorizationEmptyEnvironment,
