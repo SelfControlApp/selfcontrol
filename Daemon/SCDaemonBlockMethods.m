@@ -11,6 +11,7 @@
 #import "PacketFilter.h"
 #import "SCDaemonUtilities.h"
 #import "BlockManager.h"
+#import "SCDaemon.h"
 
 NSTimeInterval METHOD_LOCK_TIMEOUT = 5.0;
 NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for checkups, because we'd prefer not to have tons pile up
@@ -50,6 +51,11 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     if (![SCDaemonBlockMethods lockOrTimeout: reply]) {
         return;
     }
+    
+    // we reset at the _end_ of every method, but we'll also reset at the _start_ here
+    // because startBlock can sometimes take a while, and it'd be a shame if the daemon killed itself
+    // before we were done
+    [[SCDaemon sharedDaemon] resetInactivityTimer];
     
     [SCSentry addBreadcrumb: @"Daemon method startBlock called" category: @"daemon"];
     
@@ -116,6 +122,8 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     NSLog(@"INFO: Block successfully added.");
     reply(nil);
 
+    [[SCDaemon sharedDaemon] resetInactivityTimer];
+    [[SCDaemon sharedDaemon] startCheckupTimer];
     [self.daemonMethodLock unlock];
 }
 
@@ -185,6 +193,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     NSLog(@"INFO: Blocklist successfully updated.");
     reply(nil);
 
+    [[SCDaemon sharedDaemon] resetInactivityTimer];
     [self.daemonMethodLock unlock];
 }
 
@@ -241,6 +250,8 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     [SCSentry addBreadcrumb: @"Daemon extended block successfully" category: @"daemon"];
     NSLog(@"INFO: Block successfully extended.");
     reply(nil);
+    
+    [[SCDaemon sharedDaemon] resetInactivityTimer];
     [self.daemonMethodLock unlock];
 }
 
@@ -280,13 +291,9 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         //        [settings synchronizeSettings];
         //
         
-        [SCDaemonUtilities unloadDaemonJob];
-        
-        // execution should never reach this point because we've unloaded
-        exit(EX_SOFTWARE);
-    }
-
-    if (![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
+        // once the checkups stop, the daemon will clear itself in a while due to inactivity
+        [[SCDaemon sharedDaemon] stopCheckupTimer];
+    } else if (![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
         NSLog(@"INFO: Checkup ran, block expired, removing block.");
         
         removeBlock();
@@ -295,10 +302,8 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         
         [SCSentry addBreadcrumb: @"Daemon found and cleared expired block" category: @"daemon"];
         
-        [SCDaemonUtilities unloadDaemonJob];
-        
-        // execution should never reach this point because we've unloaded
-        exit(EX_SOFTWARE);
+        // once the checkups stop, the daemon will clear itself in a while due to inactivity
+        [[SCDaemon sharedDaemon] stopCheckupTimer];
     } else if ([[NSDate date] timeIntervalSinceDate: lastBlockIntegrityCheck] > integrityCheckIntervalSecs) {
         lastBlockIntegrityCheck = [NSDate date];
         // The block is still on.  Every once in a while, we should
@@ -340,6 +345,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         } else NSLog(@"INFO: Checkup ran with integrity check, no action needed.");
     }
     
+    [[SCDaemon sharedDaemon] resetInactivityTimer];
     [self.daemonMethodLock unlock];
 }
 
