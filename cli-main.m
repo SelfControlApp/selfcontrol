@@ -148,7 +148,6 @@ int main(int argc, char* argv[]) {
                                                        endDate: blockEndDate
                                                  blockSettings: blockSettings
                                                          reply:^(NSError * _Nonnull error) {
-                            NSLog(@"WOO started block with error %@", error);
                             if (error != nil) {
                                 NSLog(@"ERROR: Daemon failed to start block with error %@", error);
                                 exit(EX_SOFTWARE);

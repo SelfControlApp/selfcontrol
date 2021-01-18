@@ -617,7 +617,6 @@
                                                                 @"EnableErrorReporting": [self->defaults_ valueForKey: @"EnableErrorReporting"]
                                                             }
                                                      reply:^(NSError * _Nonnull error) {
-                        NSLog(@"WOO started block with error %@", error);
                         if (error != nil ) {
                             if (![SCUtilities errorIsAuthCanceled: error]) {
                                 [NSApp performSelectorOnMainThread: @selector(presentError:)

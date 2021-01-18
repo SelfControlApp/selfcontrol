@@ -9,8 +9,12 @@
 #import "SCDaemonProtocol.h"
 #import "SCDaemonXPC.h"
 #import"SCDaemonBlockMethods.h"
+#import "SCUtilities.h"
+#import "HostFileBlocker.h"
+#import "SCDaemonUtilities.h"
 
 static NSString* serviceName = @"org.eyebeam.selfcontrold";
+float const INACTIVITY_LIMIT_SECS = 60 * 2; // 2 minutes
 
 @interface NSXPCConnection(PrivateAuditToken)
 
@@ -22,10 +26,22 @@ static NSString* serviceName = @"org.eyebeam.selfcontrold";
 @interface SCDaemon () <NSXPCListenerDelegate>
 
 @property (nonatomic, strong, readwrite) NSXPCListener* listener;
+@property (strong, readwrite) NSTimer* checkupTimer;
+@property (strong, readwrite) NSTimer* inactivityTimer;
+@property (nonatomic, strong, readwrite) NSDate* lastActivityDate;
 
 @end
 
 @implementation SCDaemon
+
++ (instancetype)sharedDaemon {
+    static SCDaemon* daemon = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        daemon = [SCDaemon new];
+    });
+    return daemon;
+}
 
 - (id) init {
     _listener = [[NSXPCListener alloc] initWithMachServiceName: serviceName];
@@ -36,11 +52,84 @@ static NSString* serviceName = @"org.eyebeam.selfcontrold";
 
 - (void)start {
     [self.listener resume];
-    [NSTimer scheduledTimerWithTimeInterval: 5 repeats: NO block:^(NSTimer * _Nonnull timer) {
-        [NSTimer scheduledTimerWithTimeInterval: 1 repeats: YES block:^(NSTimer * _Nonnull timer) {
-            [SCDaemonBlockMethods checkupBlock];
-        }];
+
+    // if there's any evidence of a block (i.e. an official one running,
+    // OR just block remnants remaining in hosts), we should start
+    // running checkup regularly so the block gets found/removed
+    // at the proper time.
+    // we do NOT run checkup if there's no block, because it can result
+    // in the daemon actually unloading itself before the app has a chance
+    // to start the block
+    if ([SCUtilities anyBlockIsRunning] || [HostFileBlocker blockFoundInHostsFile]) {
+        [self startCheckupTimer];
+    }
+    
+    [self startInactivityTimer];
+    [self resetInactivityTimer];
+}
+
+- (void)startCheckupTimer {
+    // this method must always be called on the main thread, so the timer will work properly
+    if (![NSThread isMainThread]) {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self startCheckupTimer];
+        });
+        return;
+    }
+
+    // if the timer's already running, don't stress it!
+    if (self.checkupTimer != nil) {
+        return;
+    }
+    
+    self.checkupTimer = [NSTimer scheduledTimerWithTimeInterval: 1 repeats: YES block:^(NSTimer * _Nonnull timer) {
+        [SCDaemonBlockMethods checkupBlock];
     }];
+
+    // run the first checkup immediately!
+    [SCDaemonBlockMethods checkupBlock];
+}
+- (void)stopCheckupTimer {
+    if (self.checkupTimer == nil) {
+        return;
+    }
+    
+    [self.checkupTimer invalidate];
+    self.checkupTimer = nil;
+}
+
+
+- (void)startInactivityTimer {
+    self.inactivityTimer = [NSTimer scheduledTimerWithTimeInterval: 15.0 repeats: YES block:^(NSTimer * _Nonnull timer) {
+        // we haven't had any activity in a while, the daemon appears to be idling
+        // so kill it to avoid the user having unnecessary processes running!
+        if ([[NSDate date] timeIntervalSinceDate: self.lastActivityDate] > INACTIVITY_LIMIT_SECS) {
+            // if we're inactive but also there's a block running, that's a bad thing
+            // start the checkups going again - unclear why they would've stopped
+            if ([SCUtilities anyBlockIsRunning] || [HostFileBlocker blockFoundInHostsFile]) {
+                [self startCheckupTimer];
+                [SCDaemonBlockMethods checkupBlock];
+                return;
+            }
+            
+            NSLog(@"Daemon inactive for more than %f seconds, exiting!", INACTIVITY_LIMIT_SECS);
+            [SCDaemonUtilities unloadDaemonJob];
+        }
+    }];
+}
+- (void)resetInactivityTimer {
+    self.lastActivityDate = [NSDate date];
+}
+
+- (void)dealloc {
+    if (self.checkupTimer) {
+        [self.checkupTimer invalidate];
+        self.checkupTimer = nil;
+    }
+    if (self.inactivityTimer) {
+        [self.inactivityTimer invalidate];
+        self.inactivityTimer = nil;
+    }
 }
 
 #pragma mark - NSXPCListenerDelegate
@@ -72,7 +161,7 @@ static NSString* serviceName = @"org.eyebeam.selfcontrold";
     SCDaemonXPC* scdXPC = [[SCDaemonXPC alloc] init];
     newConnection.exportedInterface = [NSXPCInterface interfaceWithProtocol: @protocol(SCDaemonProtocol)];
     newConnection.exportedObject = scdXPC;
-    
+
     [newConnection resume];
     
     NSLog(@"Accepted new connection!");
