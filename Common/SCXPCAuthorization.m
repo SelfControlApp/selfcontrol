@@ -23,9 +23,6 @@ static NSDictionary* kAuthorizationRuleAuthenticateAsAdmin5MinTimeout;
     // authData is expected to be an NSData with an AuthorizationExternalForm embedded inside.
 {
     #pragma unused(authData)
-    NSError *                   error;
-    OSStatus                    err;
-    OSStatus                    junk;
     AuthorizationRef            authRef;
 
     assert(command != nil);
@@ -33,45 +30,41 @@ static NSDictionary* kAuthorizationRuleAuthenticateAsAdmin5MinTimeout;
     authRef = NULL;
 
     // First check that authData looks reasonable.
-    
-    error = nil;
     if ( (authData == nil) || ([authData length] != sizeof(AuthorizationExternalForm)) ) {
-        error = [NSError errorWithDomain:NSOSStatusErrorDomain code:paramErr userInfo:nil];
+        return [NSError errorWithDomain:NSOSStatusErrorDomain code:paramErr userInfo:nil];
     }
     
     // Create an authorization ref from that the external form data contained within.
+    OSStatus extFormStatus = AuthorizationCreateFromExternalForm([authData bytes], &authRef);
+    if (extFormStatus != errAuthorizationSuccess) {
+        return [NSError errorWithDomain: NSOSStatusErrorDomain code: extFormStatus userInfo: nil];
+    }
+
+    // Authorize the right associated with the command.
+
+    AuthorizationItem   oneRight = { NULL, 0, NULL, 0 };
+    AuthorizationRights rights   = { 1, &oneRight };
+    AuthorizationFlags flags = kAuthorizationFlagDefaults | kAuthorizationFlagExtendRights | kAuthorizationFlagInteractionAllowed;
+
+    oneRight.name = [[SCXPCAuthorization authorizationRightForCommand:command] UTF8String];
+    assert(oneRight.name != NULL);
     
-    if (error == nil) {
-        err = AuthorizationCreateFromExternalForm([authData bytes], &authRef);
-        
-        // Authorize the right associated with the command.
-        
-        if (err == errAuthorizationSuccess) {
-            AuthorizationItem   oneRight = { NULL, 0, NULL, 0 };
-            AuthorizationRights rights   = { 1, &oneRight };
-
-            oneRight.name = [[SCXPCAuthorization authorizationRightForCommand:command] UTF8String];
-            assert(oneRight.name != NULL);
-            
-            err = AuthorizationCopyRights(
-                authRef,
-                &rights,
-                kAuthorizationEmptyEnvironment,
-                kAuthorizationFlagExtendRights | kAuthorizationFlagInteractionAllowed,
-                NULL
-            );
-        }
-        if (err != errAuthorizationSuccess) {
-            error = [NSError errorWithDomain:NSOSStatusErrorDomain code:err userInfo:nil];
-        }
-    }
-
+    OSStatus authStatus = AuthorizationCopyRights(
+        authRef,
+        &rights,
+        kAuthorizationEmptyEnvironment,
+        flags,
+        NULL
+    );
     if (authRef != NULL) {
-        junk = AuthorizationFree(authRef, 0);
-        assert(junk == errAuthorizationSuccess);
+        AuthorizationFree(authRef, 0);
     }
 
-    return error;
+    if (authStatus != errAuthorizationSuccess) {
+        return [NSError errorWithDomain: NSOSStatusErrorDomain code: authStatus userInfo: nil];
+    }
+
+    return nil;
 }
 
 
