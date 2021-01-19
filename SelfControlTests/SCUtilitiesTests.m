@@ -7,6 +7,8 @@
 
 #import <XCTest/XCTest.h>
 #import "SCUtilities.h"
+#import "SCSentry.h"
+#import "SCErr.h"
 #import "SCSettings.h"
 
 @interface SCUtilitiesTests : XCTestCase
@@ -31,6 +33,10 @@ NSDictionary* veryLongBlockLegacyDict; // year-long block, one day in
 }
 
 + (void)setUp {
+    // SCSettings shouldn't be readOnly during our tests
+    // so we can test changing values
+    [SCSettings sharedSettings].readOnly = NO;
+    
     // Initialize the sample legacy setting dictionaries
     activeBlockLegacyDict = @{
         @"BlockStartedDate": [NSDate dateWithTimeIntervalSinceNow: -300], // 5 minutes ago
@@ -132,42 +138,30 @@ NSDictionary* veryLongBlockLegacyDict; // year-long block, one day in
     XCTAssert([cleaned[4] isEqualToString: @"reader.google.com"]);
 }
 
-- (void) testStartingAndRemovingBlocks {
-    SCSettings* settings = [SCSettings sharedSettings];
-
-    XCTAssert(![SCUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]);
-    XCTAssert(![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]);
-
-    // test starting a block
-    [SCUtilities startBlockInSettings: settings withBlockDuration: 21600];
-    XCTAssert([SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]);
-    NSTimeInterval timeToBlockEnd = [[settings valueForKey: @"BlockEndDate"] timeIntervalSinceNow];
-    XCTAssert(round(timeToBlockEnd) == 21600);
-
-    // test removing a block
-    [SCUtilities removeBlockFromSettings];
-    XCTAssert(![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]);
-}
 - (void) testModernBlockDetection {
     SCSettings* settings = [SCSettings sharedSettings];
 
-    XCTAssert(![SCUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]);
-    XCTAssert(![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]);
+    XCTAssert(![SCUtilities modernBlockIsRunning]);
+    XCTAssert([SCUtilities currentBlockIsExpired]);
 
-    // test starting a block
-    [SCUtilities startBlockInSettings: settings withBlockDuration: 21600];
-    XCTAssert(![SCUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]);
-    XCTAssert([SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]);
-
-    // turn the block "on"
+    // test a block that should have expired 5 minutes ago
     [settings setValue: @YES forKey: @"BlockIsRunning"];
-    XCTAssert([SCUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]);
-    XCTAssert([SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]);
+    [settings setValue: @[ @"facebook.com", @"reddit.com" ] forKey: @"ActiveBlocklist"];
+    [settings setValue: @NO forKey: @"ActiveBlockAsWhitelist"];
+    [settings setValue: [NSDate dateWithTimeIntervalSinceNow: -300] forKey: @"BlockEndDate"];
 
-    // remove the block
+    XCTAssert([SCUtilities modernBlockIsRunning]);
+    XCTAssert([SCUtilities currentBlockIsExpired]);
+
+    // test block that should still be running
+    [settings setValue: [NSDate dateWithTimeIntervalSinceNow: 300] forKey: @"BlockEndDate"];
+    XCTAssert([SCUtilities modernBlockIsRunning]);
+    XCTAssert(![SCUtilities currentBlockIsExpired]);
+
+    // test removing a block
     [SCUtilities removeBlockFromSettings];
-    XCTAssert(![SCUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]);
-    XCTAssert(![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]);
+    XCTAssert(![SCUtilities modernBlockIsRunning]);
+    XCTAssert([SCUtilities currentBlockIsExpired]);
 }
 
 - (void) testLegacyBlockDetection {

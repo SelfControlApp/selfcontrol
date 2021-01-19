@@ -95,7 +95,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     [settings setValue: blockSettings[@"BlockSound"] forKey: @"BlockSound"];
     [settings setValue: blockSettings[@"EnableErrorReporting"] forKey: @"EnableErrorReporting"];
 
-    if([blocklist count] <= 0 || ![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
+    if([blocklist count] <= 0 || [SCUtilities currentBlockIsExpired]) {
         NSLog(@"ERROR: Blocklist is empty, or block end date is in the past");
         NSLog(@"Block End Date: %@ (%@), vs now is %@", [settings valueForKey: @"BlockEndDate"], [[settings valueForKey: @"BlockEndDate"] class], [NSDate date]);
         NSError* err = [SCErr errorWithCode: 302];
@@ -293,7 +293,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         
         // once the checkups stop, the daemon will clear itself in a while due to inactivity
         [[SCDaemon sharedDaemon] stopCheckupTimer];
-    } else if (![SCUtilities blockShouldBeRunningInDictionary: settings.dictionaryRepresentation]) {
+    } else if ([SCUtilities currentBlockIsExpired]) {
         NSLog(@"INFO: Checkup ran, block expired, removing block.");
         
         removeBlock();

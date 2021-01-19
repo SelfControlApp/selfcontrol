@@ -156,11 +156,7 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
 + (BOOL)modernBlockIsRunning {
     SCSettings* settings = [SCSettings sharedSettings];
     
-    if ([SCUtilities blockIsRunningInDictionary: settings.dictionaryRepresentation]) {
-        return YES;
-    }
-    
-    return NO;
+    return [settings boolForKey: @"BlockIsRunning"];
 }
 
 + (BOOL)legacyBlockIsRunning {
@@ -199,26 +195,21 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
     return [SCUtilities blockIsRunningInLegacyDictionary: legacySettingsDict];
 }
 
-// returns YES if a block is actively running (to the best of our knowledge), and NO otherwise
-+ (BOOL) blockIsRunningInDictionary:(NSDictionary *)dict {
-    // simple: the block is running if BlockIsRunning is set to true!
-    return [[dict valueForKey: @"BlockIsRunning"] boolValue];
-}
-
-// returns YES if the block should be active based on the specified end time (i.e. it is in the future), or NO otherwise
-+ (BOOL) blockShouldBeRunningInDictionary:(NSDictionary *)dict {
+// returns YES if the block should have expired active based on the specified end time (i.e. the end time is in the past), or NO otherwise
++ (BOOL)currentBlockIsExpired {
     // the block should be running if the end date hasn't arrived yet
-    if ([[dict objectForKey: @"BlockEndDate"] timeIntervalSinceNow] > 0) {
-        return YES;
-    } else {
+    SCSettings* settings = [SCSettings sharedSettings];
+    if ([[settings valueForKey: @"BlockEndDate"] timeIntervalSinceNow] > 0) {
         return NO;
+    } else {
+        return YES;
     }
 }
 
 + (void) removeBlockFromSettings {
     SCSettings* settings = [SCSettings sharedSettings];
+    [settings setValue: @NO forKey: @"BlockIsRunning"];
     [settings setValue: nil forKey: @"BlockEndDate"];
-    [settings setValue: nil forKey: @"BlockIsRunning"];
     [settings setValue: nil forKey: @"ActiveBlocklist"];
     [settings setValue: nil forKey: @"ActiveBlockAsWhitelist"];
 }

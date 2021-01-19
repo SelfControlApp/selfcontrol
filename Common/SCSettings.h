@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (readonly) uid_t userId;
 @property (readonly) NSDictionary* dictionaryRepresentation;
-@property (nonatomic, readonly, getter=isReadOnly) BOOL readOnly;
+@property (nonatomic, getter=isReadOnly) BOOL readOnly;
 
 @property (class, nonatomic, readonly) NSString* settingsFileName;
 @property (class, nonatomic, readonly) NSString* securedSettingsFilePath;

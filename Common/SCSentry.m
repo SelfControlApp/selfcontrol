@@ -8,10 +8,15 @@
 #import "SCSentry.h"
 #import "SCSettings.h"
 
+#ifndef TESTING
+#import <Sentry/Sentry.h>
+#endif
+
 @implementation SCSentry
 
 //org.eyebeam.SelfControl
 + (void)startSentry:(NSString*)componentId {
+#ifndef TESTING
     [SentrySDK startWithConfigureOptions:^(SentryOptions *options) {
         options.dsn = @"https://58fbe7145368418998067f88896007b2@o504820.ingest.sentry.io/5592195";
         options.debug = YES; // Enabled debug when first installing is always helpful
@@ -31,9 +36,16 @@
     [SentrySDK configureScope:^(SentryScope * _Nonnull scope) {
         [scope setTagValue: [[NSLocale currentLocale] localeIdentifier] forKey: @"localeId"];
     }];
+#endif
 }
 
 + (BOOL)errorReportingEnabled {
+#ifdef TESTING
+    // don't report to Sentry while unit-testing!
+    if ([[NSUserDefaults standardUserDefaults] boolForKey: @"isTest"]) {
+        return YES;
+    }
+#endif
     if (geteuid() != 0) {
         NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
         return [defaults boolForKey: @"EnableErrorReporting"];
@@ -91,17 +103,21 @@
     [defaultsDict removeObjectForKey: @"Blocklist"];
     [defaultsDict removeObjectForKey: @"SULastCheckTime"];
 
+#ifndef TESTING
     [SentrySDK configureScope:^(SentryScope * _Nonnull scope) {
         [scope setContextValue: defaultsDict forKey: @"NSUserDefaults"];
     }];
+#endif
 }
 
 + (void)addBreadcrumb:(NSString*)message category:(NSString*)category {
+#ifndef TESTING
     SentryBreadcrumb* crumb = [[SentryBreadcrumb alloc] init];
     crumb.level = kSentryLevelInfo;
     crumb.category = category;
     crumb.message = message;
     [SentrySDK addBreadcrumb: crumb];
+#endif
 }
 
 + (void)captureError:(NSError*)error {
@@ -121,7 +137,9 @@
     NSLog(@"Reporting error %@ to Sentry...", error);
     [[SCSettings sharedSettings] updateSentryContext];
     [SCSentry updateDefaultsContext];
+#ifndef TESTING
     [SentrySDK captureError: error];
+#endif
 }
 
 + (void)captureMessage:(NSString*)message withScopeBlock:(nullable void (^)(SentryScope * _Nonnull))block {
@@ -142,11 +160,13 @@
     [[SCSettings sharedSettings] updateSentryContext];
     [SCSentry updateDefaultsContext];
     
+#ifndef TESTING
     if (block != nil) {
         [SentrySDK captureMessage: message withScopeBlock: block];
     } else {
         [SentrySDK captureMessage: message];
     }
+#endif
 }
 
 + (void)captureMessage:(NSString*)message {
