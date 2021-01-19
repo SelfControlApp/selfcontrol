@@ -39,8 +39,7 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
 + (BOOL)modernBlockIsRunning;
 + (BOOL)legacyBlockIsRunning;
 
-+ (BOOL) blockIsRunningInDictionary:(NSDictionary*)dict;
-+ (BOOL) blockShouldBeRunningInDictionary:(NSDictionary *)dict;
++ (BOOL) currentBlockIsExpired;
 
 + (BOOL)legacyBlockIsRunningInSettingsFile:(NSURL*)settingsFileURL;
 + (BOOL) blockIsRunningInLegacyDictionary:(NSDictionary*)dict;

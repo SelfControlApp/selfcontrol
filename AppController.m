@@ -31,7 +31,6 @@
 #import "SCSettings.h"
 #import <ServiceManagement/ServiceManagement.h>
 #import "SCXPCClient.h"
-#import <Sentry/Sentry.h>
 #import "HostFileBlocker.h"
 
 @interface AppController () {}
@@ -697,7 +696,7 @@
 
     [self.xpc refreshConnectionAndRun:^{
         // Before we try to extend the block, make sure the block time didn't run out (or is about to run out) in the meantime
-        if (![SCUtilities blockShouldBeRunningInDictionary: self->settings_.dictionaryRepresentation] || [oldBlockEndDate timeIntervalSinceNow] < 1) {
+        if ([SCUtilities currentBlockIsExpired] || [oldBlockEndDate timeIntervalSinceNow] < 1) {
             // we're done, or will be by the time we get to it! so just let it expire. they can restart it.
             [lockToUse unlock];
             return;

@@ -6,7 +6,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <Sentry/Sentry.h>
+
+@class SentryScope;
 
 NS_ASSUME_NONNULL_BEGIN
 
