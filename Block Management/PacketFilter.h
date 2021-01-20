@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class SCBlockEntry;
+
 @interface PacketFilter : NSObject {
 	NSMutableString* rules;
 	BOOL isAllowlist;

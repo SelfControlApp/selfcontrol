@@ -22,6 +22,7 @@
 
 #import "BlockManager.h"
 #import "AllowlistScraper.h"
+#import "SCBlockEntry.h"
 
 @implementation BlockManager
 
@@ -112,67 +113,63 @@ BOOL appendMode = NO;
 	[pf startBlock];
 }
 
-- (void)enqueueBlockEntryWithHostName:(NSString*)hostName port:(int)portNum maskLen:(int)maskLen {
-    NSLog(@"enqueueBlockEntryWithHostName %@", hostName);
+- (void)enqueueBlockEntry:(SCBlockEntry*)entry {
+    NSLog(@"enqueue entry %@", entry);
 	NSBlockOperation* op = [NSBlockOperation blockOperationWithBlock:^{
-		[self addBlockEntryWithHostName: hostName port: portNum maskLen: maskLen];
+        [self addBlockEntry: entry];
 	}];
 	[opQueue addOperation: op];
 }
 
-- (void)addBlockEntryWithHostName:(NSString*)hostName port:(int)portNum maskLen:(int)maskLen {
-	BOOL isIP = [hostName isValidIPAddress];
-	BOOL isIPv4 = [hostName isValidIPv4Address];
+- (void)addBlockEntry:(SCBlockEntry*)entry {
+    // nil entries = something didn't parse right
+    if (entry == nil) return;
 
-	if([hostName isEqualToString: @"*"]) {
-		[pf addRuleWithIP: nil port: portNum maskLen: 0];
+	BOOL isIP = [entry.hostname isValidIPAddress];
+	BOOL isIPv4 = [entry.hostname isValidIPv4Address];
+
+	if([entry.hostname isEqualToString: @"*"]) {
+		[pf addRuleWithIP: nil port: entry.port maskLen: 0];
 	} else if(isIPv4) { // current we do NOT do ipfw blocking for IPv6
-		[pf addRuleWithIP: hostName port: portNum maskLen: maskLen];
-	} else if(!isIP && (![self domainIsGoogle: hostName] || isAllowlist)) { // domain name
+		[pf addRuleWithIP: entry.hostname port: entry.port maskLen: entry.maskLen];
+	} else if(!isIP && (![self domainIsGoogle: entry.hostname] || isAllowlist)) { // domain name
 		// on blocklist blocks where the domain is Google, we don't use ipfw to block
 		// because we'd end up blocking more than the user wants (i.e. Search/Reader)
-		NSArray* addresses = [self ipAddressesForDomainName: hostName];
+		NSArray* addresses = [self ipAddressesForDomainName: entry.hostname];
 
 		for(int i = 0; i < [addresses count]; i++) {
 			NSString* ip = addresses[i];
 
-			[pf addRuleWithIP: ip port: portNum maskLen: maskLen];
+			[pf addRuleWithIP: ip port: entry.port maskLen: entry.maskLen];
 		}
 	}
 
-	if(hostsBlockingEnabled && ![hostName isEqualToString: @"*"] && !portNum && !isIP) {
+	if(hostsBlockingEnabled && ![entry.hostname isEqualToString: @"*"] && !entry.port && !isIP) {
         if (appendMode) {
-            [hostsBlocker appendExistingBlockWithRuleForDomain: hostName];
+            [hostsBlocker appendExistingBlockWithRuleForDomain: entry.hostname];
         } else {
-            [hostsBlocker addRuleBlockingDomain: hostName];
+            [hostsBlocker addRuleBlockingDomain: entry.hostname];
         }
 	}
 }
 
-- (void)addBlockEntryFromString:(NSString*)entry {
-	NSDictionary* hostInfo = [self parseHostString: entry];
+- (void)addBlockEntryFromString:(NSString*)entryString {
+    NSLog(@"adding block entry from string: %@", entryString);
+    SCBlockEntry* entry = [SCBlockEntry entryFromString: entryString];
 
     // nil means that we don't have anything valid to block in this entry
-    if (hostInfo == nil) return;
+    if (entry == nil) return;
 
-	NSString* hostName = hostInfo[@"hostName"];
-	int portNum = [hostInfo[@"port"] intValue];
-	int maskLen = [hostInfo[@"maskLen"] intValue];
-
-	[self addBlockEntryWithHostName: hostName port: portNum maskLen: maskLen];
+    [self addBlockEntry: entry];
     
-    NSArray* relatedEntries = [self relatedBlockEntriesForEntry: hostInfo];
-    NSLog(@"Enqueuing related entries to %@: %@", hostName, relatedEntries);
-    for (NSDictionary* relatedHostInfo in relatedEntries) {
-        NSString* relatedHostName = relatedHostInfo[@"hostName"];
-        int relatedPortNum = [relatedHostInfo[@"port"] intValue];
-        int relatedMaskLen = [relatedHostInfo[@"maskLen"] intValue];
-
-        [self enqueueBlockEntryWithHostName: relatedHostName port: relatedPortNum maskLen: relatedMaskLen];
+    NSArray<SCBlockEntry*>* relatedEntries = [self relatedBlockEntriesForEntry: entry];
+    NSLog(@"Enqueuing related entries to %@: %@", entry, relatedEntries);
+    for (SCBlockEntry* relatedEntry in relatedEntries) {
+        [self enqueueBlockEntry: relatedEntry];
     }
 }
 
-- (void)addBlockEntries:(NSArray*)blockList {
+- (void)addBlockEntriesFromStrings:(NSArray<NSString*>*)blockList {
 	for(int i = 0; i < [blockList count]; i++) {
 		NSBlockOperation* op = [NSBlockOperation blockOperationWithBlock:^{
 			[self addBlockEntryFromString: blockList[i]];
@@ -342,85 +339,31 @@ BOOL appendMode = NO;
 	return [googleTester evaluateWithObject: domainName];
 }
 
-- (NSArray<NSDictionary*>*)relatedBlockEntriesForEntry:(NSDictionary*)entryHostInfo {
+- (NSArray<SCBlockEntry*>*)relatedBlockEntriesForEntry:(SCBlockEntry*)entry {
     // nil means that we don't have anything valid to block in this entry, therefore no related entries either
-    if (entryHostInfo == nil) return @[];
+    if (entry == nil) return @[];
     
-    NSMutableArray<NSDictionary*>* relatedEntries = [NSMutableArray array];
+    NSMutableArray<SCBlockEntry*>* relatedEntries = [NSMutableArray array];
 
-    NSString* hostName = entryHostInfo[@"hostName"];
-
-    if (isAllowlist && includeLinkedDomains && ![hostName isValidIPAddress]) {
-        NSArray* relatedDomains = [[AllowlistScraper relatedDomains: hostName] allObjects];
-        [relatedEntries addObjectsFromArray: relatedDomains];
+    if (isAllowlist && includeLinkedDomains && ![entry.hostname isValidIPAddress]) {
+        NSArray<SCBlockEntry*>* scrapedEntries = [[AllowlistScraper relatedBlockEntries: entry.hostname] allObjects];
+        [relatedEntries addObjectsFromArray: scrapedEntries];
     }
 
-    if(![hostName isValidIPAddress] && includeCommonSubdomains) {
-        NSArray<NSString*>* commonSubdomains = [self commonSubdomainsForHostName: hostName];
+    if(![entry.hostname isValidIPAddress] && includeCommonSubdomains) {
+        NSArray<NSString*>* commonSubdomains = [self commonSubdomainsForHostName: entry.hostname];
 
         for (NSString* subdomain in commonSubdomains) {
             // we do not pull port, we leave the port number the same as we got it
-            NSDictionary* hostInfo = [self parseHostString: subdomain];
+            SCBlockEntry* subdomainEntry = [SCBlockEntry entryFromString: subdomain];
 
-            if (hostInfo == nil) continue;
+            if (subdomainEntry == nil) continue;
             
-            [relatedEntries addObject: hostInfo];
+            [relatedEntries addObject: subdomainEntry];
         }
     }
     
     return relatedEntries;
-}
-
-- (NSDictionary*)parseHostString:(NSString*)hostString {
-    // don't do anything with blank hostnames, however they got on the list...
-    // otherwise they could end up screwing up the block
-    if (![[hostString stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]] length]) {
-        return nil;
-    }
-
-	NSString* hostName;
-    // returning 0 for either of these values means "couldn't find it in the string"
-    int maskLen = 0;
-    int portNum = 0;
-
-	NSArray* splitString = [hostString componentsSeparatedByString: @"/"];
-	hostName = splitString[0];
-
-	NSString* stringToSearchForPort = splitString[0];
-
-	if([splitString count] >= 2) {
-		maskLen = [splitString[1] intValue];
-
-		// we expect the port number to come after the IP/masklen
-		stringToSearchForPort = splitString[1];
-	}
-
-	splitString = [stringToSearchForPort componentsSeparatedByString: @":"];
-
-	// only if hostName wasn't already split off by the maskLen
-	if([stringToSearchForPort isEqualToString: hostName]) {
-		hostName = splitString[0];
-	}
-
-	if([splitString count] >= 2) {
-		portNum = [splitString[1] intValue];
-	}
-
-	if([hostName isEqualToString: @""]) {
-		hostName = @"*";
-	}
-
-    // we won't block host * (everywhere) without a port number... it's just too likely to be mistaken.
-    // Use a allowlist if that's what you want!
-    if ([hostName isEqualToString: @"*"] && !portNum) {
-        return nil;
-    }
-    
-    return @{
-        @"hostName": hostName,
-        @"port": @(portNum),
-        @"maskLen": @(maskLen)
-    };
 }
 
 @end

@@ -25,7 +25,7 @@
     NSLog(@"About to run BlockManager commands");
     
     [blockManager prepareToAddBlock];
-    [blockManager addBlockEntries: [settings valueForKey: @"ActiveBlocklist"]];
+    [blockManager addBlockEntriesFromStrings: [settings valueForKey: @"ActiveBlocklist"]];
     [blockManager finalizeBlock];
 
 }

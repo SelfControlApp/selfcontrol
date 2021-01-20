@@ -25,6 +25,8 @@
 #import "HostFileBlocker.h"
 #import "NSString+IPAddress.h"
 
+@class SCBlockEntry;
+
 @interface BlockManager : NSObject {
 	NSOperationQueue* opQueue;
 	PacketFilter* pf;
@@ -46,8 +48,8 @@
 - (void)prepareToAddBlock;
 - (void)finalizeBlock;
 - (void)addBlockEntryFromString:(NSString*)entry;
-- (void)addBlockEntryWithHostName:(NSString*)hostName port:(int)portNum maskLen:(int)maskLen;
-- (void)addBlockEntries:(NSArray*)blockList;
+- (void)addBlockEntry:(SCBlockEntry*)entry;
+- (void)addBlockEntriesFromStrings:(NSArray<NSString*>*)blockList;
 - (BOOL)clearBlock;
 - (BOOL)forceClearBlock;
 - (BOOL)blockIsActive;
@@ -55,6 +57,5 @@
 - (NSArray*)commonSubdomainsForHostName:(NSString*)hostName;
 - (NSArray*)ipAddressesForDomainName:(NSString*)domainName;
 - (BOOL)domainIsGoogle:(NSString*)domainName;
-- (NSDictionary*)parseHostString:(NSString*)hostString;
 
 @end
