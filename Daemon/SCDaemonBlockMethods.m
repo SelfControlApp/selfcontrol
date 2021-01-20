@@ -7,11 +7,11 @@
 
 #import "SCDaemonBlockMethods.h"
 #import "SCSettings.h"
-#import "HelperCommon.h"
+#import "SCHelperToolUtilities.h"
 #import "PacketFilter.h"
-#import "SCDaemonUtilities.h"
 #import "BlockManager.h"
 #import "SCDaemon.h"
+#import "LaunchctlHelper.h"
 
 NSTimeInterval METHOD_LOCK_TIMEOUT = 5.0;
 NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for checkups, because we'd prefer not to have tons pile up
@@ -106,17 +106,17 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     }
 
     NSLog(@"Adding firewall rules...");
-    addRulesToFirewall();
+    [SCHelperToolUtilities installBlockRulesFromSettings];
     [settings setValue: @YES forKey: @"BlockIsRunning"];
     [settings synchronizeSettings]; // synchronize ASAP since BlockIsRunning is a really important one
 
     NSLog(@"Firewall rules added!");
     
-    sendConfigurationChangedNotification();
+    [SCHelperToolUtilities sendConfigurationChangedNotification];
 
     // Clear all caches if the user has the correct preference set, so
     // that blocked pages are not loaded from a cache.
-    clearCachesIfRequested();
+    [SCHelperToolUtilities clearCachesIfRequested];
 
     [SCSentry addBreadcrumb: @"Daemon added block successfully" category: @"daemon"];
     NSLog(@"INFO: Block successfully added.");
@@ -183,11 +183,11 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     [settings setValue: newBlocklist forKey: @"ActiveBlocklist"];
     [settings synchronizeSettings]; // make sure everyone knows about our new list
 
-    sendConfigurationChangedNotification();
+    [SCHelperToolUtilities sendConfigurationChangedNotification];
 
     // Clear all caches if the user has the correct preference set, so
     // that blocked pages are not loaded from a cache.
-    clearCachesIfRequested();
+    [SCHelperToolUtilities clearCachesIfRequested];
 
     [SCSentry addBreadcrumb: @"Daemon updated blocklist successfully" category: @"daemon"];
     NSLog(@"INFO: Blocklist successfully updated.");
@@ -245,7 +245,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     [settings setValue: newEndDate forKey: @"BlockEndDate"];
     [settings synchronizeSettings]; // make sure everyone knows about our new end date
 
-    sendConfigurationChangedNotification();
+    [SCHelperToolUtilities sendConfigurationChangedNotification];
 
     [SCSentry addBreadcrumb: @"Daemon extended block successfully" category: @"daemon"];
     NSLog(@"INFO: Block successfully extended.");
@@ -279,9 +279,9 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         
         [SCSentry captureMessage: @"Checkup ran and no active block found! Removing block, tampering suspected..."];
         
-        removeBlock();
+        [SCHelperToolUtilities removeBlock];
 
-        sendConfigurationChangedNotification();
+        [SCHelperToolUtilities sendConfigurationChangedNotification];
         
         // Temporarily disabled the TamperingDetection flag because it was sometimes causing false positives
         // (i.e. people having the background set repeatedly despite no attempts to cheat)
@@ -296,9 +296,9 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     } else if ([SCBlockUtilities currentBlockIsExpired]) {
         NSLog(@"INFO: Checkup ran, block expired, removing block.");
         
-        removeBlock();
+        [SCHelperToolUtilities removeBlock];
         
-        sendConfigurationChangedNotification();
+        [SCHelperToolUtilities sendConfigurationChangedNotification];
         
         [SCSentry addBreadcrumb: @"Daemon found and cleared expired block" category: @"daemon"];
         
@@ -336,9 +336,9 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
             [hostFileBlocker deleteBackupHostsFile];
 
             // Perform the re-add of the rules
-            addRulesToFirewall();
+            [SCHelperToolUtilities installBlockRulesFromSettings];
             
-            clearCachesIfRequested();
+            [SCHelperToolUtilities clearCachesIfRequested];
 
             [SCSentry addBreadcrumb: @"Daemon found compromised block integrity and re-added rules" category: @"daemon"];
             NSLog(@"INFO: Checkup ran, readded block rules.");

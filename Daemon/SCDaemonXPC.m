@@ -65,14 +65,6 @@
     [SCDaemonBlockMethods updateBlockEndDate: newEndDate authorization: authData reply: reply];
 }
 
-- (BOOL) checkup {
-    NSLog(@"XPC method called: checkup");
-
-    // no authorization needed to run a checkup
-
-    return YES;
-}
-
 // Part of the HelperToolProtocol.  Returns the version number of the tool.  Note that never
 // requires authorization.
 - (void)getVersionWithReply:(void(^)(NSString * version))reply {

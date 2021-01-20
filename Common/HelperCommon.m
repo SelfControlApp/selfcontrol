@@ -12,7 +12,7 @@
 #import "SCSettings.h"
 #import <ServiceManagement/ServiceManagement.h>
 
-void addRulesToFirewall() {
+void installBlockRulesFromSettings() {
     SCSettings* settings = [SCSettings sharedSettings];
     BOOL shouldEvaluateCommonSubdomains = [settings boolForKey: @"EvaluateCommonSubdomains"];
 	BOOL allowLocalNetworks = [settings boolForKey: @"AllowLocalNetworks"];
@@ -31,7 +31,7 @@ void addRulesToFirewall() {
 
 }
 
-void removeRulesFromFirewall() {
+void uninstallBlockRules() {
 	// options don't really matter because we're only using it to clear
 	BlockManager* blockManager = [[BlockManager alloc] init];
 	[blockManager clearBlock];
@@ -57,61 +57,19 @@ void removeRulesFromFirewall() {
 	}
 }
 
-NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, int port) {
-	NSMutableSet* evaluatedAddresses = [NSMutableSet set];
-
-	// If the domain ends in facebook.com...  Special case for Facebook because
-	// users will often forget to block some of its many mirror subdomains that resolve
-	// to different IPs, i.e. hs.facebook.com.  Thanks to Danielle for raising this issue.
-	if([hostName rangeOfString: @"facebook.com"].location == ([hostName length] - 12)) {
-		[evaluatedAddresses addObject: @"69.63.176.0/20"];
-	}
-
-	// Block the domain with no subdomains, if www.domain is blocked
-	else if([hostName rangeOfString: @"www."].location == 0) {
-		NSHost* modifiedHost = [NSHost hostWithName: [hostName substringFromIndex: 4]];
-
-		if(modifiedHost) {
-			NSArray* addresses = [modifiedHost addresses];
-
-			for(int j = 0; j < [addresses count]; j++) {
-				if(port != -1)
-					[evaluatedAddresses addObject: [NSString stringWithFormat: @"%@:%d", addresses[j], port]];
-				else [evaluatedAddresses addObject: addresses[j]];
-			}
-		}
-	}
-	// Or block www.domain otherwise
-	else {
-		NSHost* modifiedHost = [NSHost hostWithName: [@"www." stringByAppendingString: hostName]];
-
-		if(modifiedHost) {
-			NSArray* addresses = [modifiedHost addresses];
-
-			for(int j = 0; j < [addresses count]; j++) {
-				if(port != -1)
-					[evaluatedAddresses addObject: [NSString stringWithFormat: @"%@:%d", addresses[j], port]];
-				else [evaluatedAddresses addObject: addresses[j]];
-			}
-		}
-	}
-
-	return evaluatedAddresses;
-}
-
 void clearCachesIfRequested() {
     SCSettings* settings = [SCSettings sharedSettings];
     if(![settings boolForKey: @"ClearCaches"]) {
         return;
     }
     
-    NSError* err = [SCMiscUtilities clearBrowserCaches];
+    NSError* err = [SCHelperToolUtilities clearBrowserCaches];
     if (err) {
         NSLog(@"WARNING: Error clearing browser caches: %@", err);
         [SCSentry captureError: err];
     }
 
-    clearOSDNSCache();
+    [SCHelperToolUtilities clearOSDNSCache];
 }
 
 void clearOSDNSCache() {
@@ -141,17 +99,17 @@ void removeBlock() {
     SCSettings* settings = [SCSettings sharedSettings];
 
     [SCBlockUtilities removeBlockFromSettings];
-	removeRulesFromFirewall();
+	[SCHelperToolUtilities uninstallBlockRules];
         
     // always synchronize settings ASAP after removing a block to let everybody else know
     [settings synchronizeSettings];
 
     // let the main app know things have changed so it can update the UI!
-    sendConfigurationChangedNotification();
+    [SCHelperToolUtilities sendConfigurationChangedNotification];
 
     NSLog(@"INFO: Block cleared.");
     
-    clearCachesIfRequested();
+    [SCHelperToolUtilities clearCachesIfRequested];
 }
 
 void sendConfigurationChangedNotification() {

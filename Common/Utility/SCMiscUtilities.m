@@ -5,7 +5,7 @@
 //  Created by Charles Stigler on 07/07/2018.
 //
 
-#import "HelperCommon.h"
+#import "SCHelperToolUtilities.h"
 #import "SCSettings.h"
 
 @implementation SCMiscUtilities
@@ -179,44 +179,6 @@
     }
     
     return homeDirectoryURLs;
-}
-
-+ (NSError*)clearBrowserCaches {
-    NSFileManager* fileManager = [NSFileManager defaultManager];
-
-    NSError* homeDirErr = nil;
-    NSArray<NSURL *>* homeDirectoryURLs = [SCMiscUtilities allUserHomeDirectoryURLs: &homeDirErr];
-    if (homeDirectoryURLs == nil) return homeDirErr;
-    
-    NSArray<NSString*>* cacheDirPathComponents = @[
-        // chrome
-        @"/Library/Caches/Google/Chrome/Default",
-        @"/Library/Caches/Google/Chrome/com.google.Chrome",
-        
-        // firefox
-        @"/Library/Caches/Firefox/Profiles",
-        
-        // safari
-        @"/Library/Caches/com.apple.Safari",
-        @"/Library/Containers/com.apple.Safari/Data/Library/Caches" // this one seems to fail due to permissions issues, but not sure how to fix
-    ];
-    
-    
-    NSMutableArray<NSURL*>* cacheDirURLs = [NSMutableArray arrayWithCapacity: cacheDirPathComponents.count * homeDirectoryURLs.count];
-    for (NSURL* homeDirURL in homeDirectoryURLs) {
-        for (NSString* cacheDirPathComponent in cacheDirPathComponents) {
-            [cacheDirURLs addObject: [homeDirURL URLByAppendingPathComponent: cacheDirPathComponent isDirectory: YES]];
-        }
-    }
-    
-    for (NSURL* cacheDirURL in cacheDirURLs) {
-        NSLog(@"Clearing browser cache folder %@", cacheDirURL);
-        // removeItemAtURL will return errors if the file doesn't exist
-        // so we don't track the errors - best effort is OK
-        [fileManager removeItemAtURL: cacheDirURL error: nil];
-    }
-    
-    return nil;
 }
 
 @end

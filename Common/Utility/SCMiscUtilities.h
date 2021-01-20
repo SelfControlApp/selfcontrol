@@ -21,8 +21,6 @@
 
 + (NSArray<NSURL*>*)allUserHomeDirectoryURLs:(NSError**)errPtr;
 
-+ (NSError*)clearBrowserCaches;
-
 + (BOOL)errorIsAuthCanceled:(NSError*)err;
 
 

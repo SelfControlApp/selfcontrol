@@ -11,9 +11,10 @@
 #import <unistd.h>
 #import "BlockManager.h"
 #import "SCSettings.h"
-#import "HelperCommon.h"
+#import "SCHelperToolUtilities.h"
 #import <ServiceManagement/ServiceManagement.h>
 #import "SCMigrationUtilities.h"
+#import <sysexits.h>
 
 #define LOG_FILE @"~/Documents/SelfControl-Killer.log"
 
@@ -236,7 +237,7 @@ int main(int argc, char* argv[]) {
 
             
         // let the main app know to refresh
-       sendConfigurationChangedNotification();
+       [SCHelperToolUtilities sendConfigurationChangedNotification];
 
         exit(EX_OK);
 	}

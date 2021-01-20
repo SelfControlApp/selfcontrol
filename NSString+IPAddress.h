@@ -23,6 +23,7 @@
 #import <Foundation/Foundation.h>
 #include <arpa/inet.h>
 
+// methods to check whether the string is a valid IP address
 @interface NSString (IPAddress)
 
 @property (nonatomic, getter=isValidIPv4Address, readonly) BOOL validIPv4Address;

@@ -11,5 +11,6 @@
 #import "SCMigrationUtilities.h"
 #import "SCBlockUtilities.h"
 #import "SCMiscUtilities.h"
+#import "SCHelperToolUtilities.h"
 
 #endif /* SCUtility_h */

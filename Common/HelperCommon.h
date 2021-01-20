@@ -33,14 +33,10 @@
 // Reads the domain block list from the settings for SelfControl, and adds deny
 // rules for all of the IPs (or the A DNS record IPS for doamin names) to the
 // ipfw firewall.
-void addRulesToFirewall(void);
+void installBlockRulesFromSettings(void);
 
 // Removes from ipfw all rules that were created by SelfControl.
-void removeRulesFromFirewall(void);
-
-// Returns an autoreleased NSSet containing all IP adresses for evaluated
-// "common subdomains" for the specified hostname
-NSSet* getEvaluatedHostNamesFromCommonSubdomains(NSString* hostName, int port);
+void uninstallBlockRules(void);
 
 // Checks the settings system to see whether the user wants their web browser
 // caches cleared, and deletes the specific cache folders for a few common

@@ -10,6 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+// Implementations for SC XPC methods
+// (see SCDaemonProtocol for all method prototypes)
 @interface SCDaemonXPC : NSObject <SCDaemonProtocol>
 
 @end

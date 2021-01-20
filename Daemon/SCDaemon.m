@@ -10,7 +10,6 @@
 #import "SCDaemonXPC.h"
 #import"SCDaemonBlockMethods.h"
 #import "HostFileBlocker.h"
-#import "SCDaemonUtilities.h"
 
 static NSString* serviceName = @"org.eyebeam.selfcontrold";
 float const INACTIVITY_LIMIT_SECS = 60 * 2; // 2 minutes
@@ -112,7 +111,7 @@ float const INACTIVITY_LIMIT_SECS = 60 * 2; // 2 minutes
             }
             
             NSLog(@"Daemon inactive for more than %f seconds, exiting!", INACTIVITY_LIMIT_SECS);
-            [SCDaemonUtilities unloadDaemonJob];
+            [SCHelperToolUtilities unloadDaemonJob];
         }
     }];
 }

@@ -21,10 +21,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "PacketFilter.h"
-#import "HelperCommon.h"
+#import "SCHelperToolUtilities.h"
 #import "SCSettings.h"
 #import "SCXPCClient.h"
 #import "SCBlockFileReaderWriter.h"
+#import <sysexits.h>
 
 // The main method which deals which most of the logic flow and execution of
 // the CLI tool.
