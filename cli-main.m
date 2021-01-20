@@ -193,8 +193,4 @@ int main(int argc, char* argv[]) {
         // final sync before we exit
         exit(EXIT_SUCCESS);
 	}
-
-    // wait, how'd we get out of the autorelease block without hitting the exit just above this?
-    // whoops, something broke
-	exit(EX_SOFTWARE);
 }

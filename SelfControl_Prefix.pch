@@ -8,6 +8,7 @@
 #import <Cocoa/Cocoa.h>
 
 #import "version-header.h"
+#import "DeprecationSilencers.h"
 #import "SCUtility.h"
 #import "SCErr.h"
 #import "SCConstants.h"

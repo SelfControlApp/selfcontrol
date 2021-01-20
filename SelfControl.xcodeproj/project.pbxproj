@@ -103,6 +103,9 @@
 		CB81AA3E25B7D152006956F7 /* SCHelperToolUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81AA3925B7D152006956F7 /* SCHelperToolUtilities.m */; };
 		CB81AA3F25B7D152006956F7 /* SCHelperToolUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81AA3925B7D152006956F7 /* SCHelperToolUtilities.m */; };
 		CB81AA4025B7D152006956F7 /* SCHelperToolUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81AA3925B7D152006956F7 /* SCHelperToolUtilities.m */; };
+		CB81AAB725B7E6C7006956F7 /* DeprecationSilencers.h in Headers */ = {isa = PBXBuildFile; fileRef = CB81AAB625B7E6C7006956F7 /* DeprecationSilencers.h */; };
+		CB81AB2525B7EFA4006956F7 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB81AB2325B7EF74006956F7 /* Sparkle.framework */; };
+		CB81AB2625B7EFA4006956F7 /* Sparkle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB81AB2325B7EF74006956F7 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CB850F3925130F5300EE2E2D /* NSString+IPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806516C237F10059C99A /* NSString+IPAddress.m */; };
 		CB90BF830F49F430006D202D /* HostImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB90BF820F49F430006D202D /* HostImporter.m */; };
 		CB9365620F8581B000EF284E /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = CB9365610F8581B000EF284E /* dsa_pub.pem */; };
@@ -186,6 +189,17 @@
 				CBE2BB5619D10CCC0077124F /* SCKillerHelper in Copy Executable Helper Tools */,
 			);
 			name = "Copy Executable Helper Tools";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB81AB2725B7EFA4006956F7 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				CB81AB2625B7EFA4006956F7 /* Sparkle.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		CB9C813119CFBBD300CDCAE1 /* Copy Helper Tools */ = {
@@ -293,6 +307,8 @@
 		CB81A9F125B7C5F7006956F7 /* SCBlockFileReaderWriter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCBlockFileReaderWriter.m; sourceTree = "<group>"; };
 		CB81AA3825B7D152006956F7 /* SCHelperToolUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCHelperToolUtilities.h; sourceTree = "<group>"; };
 		CB81AA3925B7D152006956F7 /* SCHelperToolUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCHelperToolUtilities.m; sourceTree = "<group>"; };
+		CB81AAB625B7E6C7006956F7 /* DeprecationSilencers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeprecationSilencers.h; sourceTree = "<group>"; };
+		CB81AB2325B7EF74006956F7 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		CB90BF810F49F430006D202D /* HostImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostImporter.h; sourceTree = "<group>"; };
 		CB90BF820F49F430006D202D /* HostImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HostImporter.m; sourceTree = "<group>"; };
 		CB9365610F8581B000EF284E /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
@@ -340,7 +356,6 @@
 		CBCA91111960D87300AFD20C /* PacketFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketFilter.m; sourceTree = "<group>"; };
 		CBCA91271961381F00AFD20C /* tr */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CBCA912B1961384600AFD20C /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		CBD4848219D75F6D0020F949 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		CBD4848519D7611F0020F949 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		CBD4848619D7611F0020F949 /* TemplateIcon2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TemplateIcon2x.png; sourceTree = "<group>"; };
 		CBD4848719D764440020F949 /* PreferencesGeneralViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesGeneralViewController.h; sourceTree = "<group>"; };
@@ -437,6 +452,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB32D2AE21902D9D00B8CD68 /* IOKit.framework in Frameworks */,
+				CB81AB2525B7EFA4006956F7 /* Sparkle.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				CB587E500F50FE8800C66A09 /* SystemConfiguration.framework in Frameworks */,
 				CBB3FD7A0F53834B00244132 /* Security.framework in Frameworks */,
@@ -505,10 +521,10 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CBD4848219D75F6D0020F949 /* Sparkle.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				CB587E4F0F50FE8800C66A09 /* SystemConfiguration.framework */,
 				CB9E901D0F397FFA006DE6E4 /* Security.framework */,
+				CB81AB2325B7EF74006956F7 /* Sparkle.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -536,7 +552,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* SelfControl */ = {
 			isa = PBXGroup;
 			children = (
 				CBDFFF4B24A07DB300622CEE /* SelfControl.entitlements */,
@@ -630,6 +646,7 @@
 				CB69C4ED25A3FD8A0030CFCD /* SCXPCAuthorization.m */,
 				CB62FC3924B124B900ADBC40 /* SCXPCClient.h */,
 				CB62FC3A24B124B900ADBC40 /* SCXPCClient.m */,
+				CB81AAB625B7E6C7006956F7 /* DeprecationSilencers.h */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -803,6 +820,7 @@
 			files = (
 				CB81A94825B7B5B5006956F7 /* SCMigrationUtilities.h in Headers */,
 				CB81AA3A25B7D152006956F7 /* SCHelperToolUtilities.h in Headers */,
+				CB81AAB725B7E6C7006956F7 /* DeprecationSilencers.h in Headers */,
 				CB81A9CF25B7C269006956F7 /* SCBlockUtilities.h in Headers */,
 				CB81A9F225B7C5F7006956F7 /* SCBlockFileReaderWriter.h in Headers */,
 			);
@@ -824,6 +842,7 @@
 				CBDFFF4624A044C900622CEE /* Copy Daemon Launch Service */,
 				CB5E5FF81C3A5FD10038F331 /* ShellScript */,
 				7D55904F6A3D627B837007A9 /* [CP] Embed Pods Frameworks */,
+				CB81AB2725B7EFA4006956F7 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -992,7 +1011,7 @@
 				Base,
 				da,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* SelfControl */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1598,7 +1617,6 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/Pods/Sparkle",
 				);
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1632,7 +1650,6 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/Pods/Sparkle",
 				);
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

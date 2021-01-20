@@ -247,13 +247,16 @@
 }
 
 - (void)showAllowlistWarning {
-    if(![defaults_ boolForKey: @"WhitelistAlertSuppress"]) {
-        NSAlert* a = [NSAlert alertWithMessageText: NSLocalizedString(@"Are you sure you want an allowlist block?", @"Allowlist block confirmation prompt") defaultButton: NSLocalizedString(@"OK", @"OK button") alternateButton: @"" otherButton: @"" informativeTextWithFormat: NSLocalizedString(@"An allowlist block means that everything on the internet BESIDES your specified list will be blocked.  This includes the web, email, SSH, and anything else your computer accesses via the internet.  If a web site requires resources such as images or scripts from a site that is not on your allowlist, the site may not work properly.", @"allowlist block explanation")];
-        if([a respondsToSelector: @selector(setShowsSuppressionButton:)]) {
-            [a setShowsSuppressionButton: YES];
-        }
-        [a runModal];
-        if([a respondsToSelector: @selector(suppressionButton)] && [[a suppressionButton] state] == NSOnState) {
+    if(![defaults_ boolForKey: @"WhitelistAlertSuppress"]) {        
+        NSAlert* alert = [NSAlert new];
+        alert.messageText = NSLocalizedString(@"Are you sure you want an allowlist block?", @"Allowlist block confirmation prompt");
+        alert.buttons[0].title = NSLocalizedString(@"OK", @"OK button");
+        alert.informativeText = NSLocalizedString(@"An allowlist block means that everything on the internet BESIDES your specified list will be blocked.  This includes the web, email, SSH, and anything else your computer accesses via the internet.  If a web site requires resources such as images or scripts from a site that is not on your allowlist, the site may not work properly.", @"allowlist block explanation");
+        alert.showsSuppressionButton = YES;
+
+        [alert runModal];
+
+        if (alert.suppressionButton.state == NSOnState) {
             [defaults_ setBool: YES forKey: @"WhitelistAlertSuppress"];
         }
     }

@@ -16,6 +16,7 @@
 "103" = "You can't extend block duration, because no block is currently running.";
 "104" = "You can't start a block, because another block is currently running.";
 "105" = "The block wasn't removed at the scheduled time, for unknown reasons.";
+"106" = "Data couldn't be written to that location.";
 
 // 200 - 299 = errors generated in the CLI
 

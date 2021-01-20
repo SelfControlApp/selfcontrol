@@ -84,12 +84,12 @@
 - (NSString *)timeSliderDisplayStringFromNumberOfMinutes:(NSInteger)numberOfMinutes {
     static NSCalendar* gregorian = nil;
     if (gregorian == nil) {
-        gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     }
 
     NSRange secondsRangePerMinute = [gregorian
-                                     rangeOfUnit:NSSecondCalendarUnit
-                                     inUnit:NSMinuteCalendarUnit
+                                     rangeOfUnit:NSCalendarUnitSecond
+                                     inUnit:NSCalendarUnitMinute
                                      forDate:[NSDate date]];
     NSUInteger numberOfSecondsPerMinute = NSMaxRange(secondsRangePerMinute);
 
@@ -255,7 +255,7 @@
 
 - (void)showTimerWindow {
 	if(timerWindowController_ == nil) {
-		[NSBundle loadNibNamed: @"TimerWindow" owner: self];
+        [[NSBundle mainBundle] loadNibNamed: @"TimerWindow" owner: self topLevelObjects: nil];
 	} else {
 		[[timerWindowController_ window] makeKeyAndOrderFront: self];
 		[[timerWindowController_ window] center];
@@ -433,7 +433,7 @@
 	}
 
 	if(domainListWindowController_ == nil) {
-		[NSBundle loadNibNamed: @"DomainList" owner: self];
+        [[NSBundle mainBundle] loadNibNamed: @"DomainList" owner: self topLevelObjects: nil];
 	}
 	[domainListWindowController_ showWindow: self];
 }
@@ -739,17 +739,17 @@
 
 	/* if successful, save file under designated name */
 	if (runResult == NSModalResponseOK) {
-        NSString* errDescription;
+        NSError* err;
         [SCBlockFileReaderWriter writeBlocklistToFileURL: sp.URL
                                    blockInfo: @{
                                        @"Blocklist": [defaults_ arrayForKey: @"Blocklist"],
                                        @"BlockAsWhitelist": [defaults_ objectForKey: @"BlockAsWhitelist"]
                                        
                                    }
-                                   errorDescription: &errDescription];
+                                   error: &err];
 
-        if(errDescription) {
-            NSError* displayErr = [SCErr errorWithCode: 105 subDescription: errDescription];
+        if (err != nil) {
+            NSError* displayErr = [SCErr errorWithCode: 105 subDescription: err.localizedDescription];
             [SCSentry captureError: displayErr];
             NSBeep();
 			[NSApp presentError: displayErr];
