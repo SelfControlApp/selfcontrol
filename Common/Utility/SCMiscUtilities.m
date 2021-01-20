@@ -7,6 +7,8 @@
 
 #import "SCHelperToolUtilities.h"
 #import "SCSettings.h"
+#import <CommonCrypto/CommonCrypto.h>
+#include <IOKit/IOKitLib.h>
 
 @implementation SCMiscUtilities
 
@@ -21,6 +23,42 @@
     }
     
     return timer;
+}
+
+// by Martin R et al on StackOverflow: https://stackoverflow.com/a/15451318
++ (NSString *)getSerialNumber {
+    NSString *serial = nil;
+    io_service_t platformExpert = IOServiceGetMatchingService(kIOMasterPortDefault,
+                                                              IOServiceMatching("IOPlatformExpertDevice"));
+    if (platformExpert) {
+        CFTypeRef serialNumberAsCFString =
+        IORegistryEntryCreateCFProperty(platformExpert,
+                                        CFSTR(kIOPlatformSerialNumberKey),
+                                        kCFAllocatorDefault, 0);
+        if (serialNumberAsCFString) {
+            serial = CFBridgingRelease(serialNumberAsCFString);
+        }
+        
+        IOObjectRelease(platformExpert);
+    }
+    return serial;
+}
+// by hypercrypt et al on StackOverflow: https://stackoverflow.com/a/7571583
++ (NSString *)sha1:(NSString*)stringToHash
+{
+    NSData *data = [stringToHash dataUsingEncoding:NSUTF8StringEncoding];
+    uint8_t digest[CC_SHA1_DIGEST_LENGTH];
+    
+    CC_SHA1(data.bytes, (CC_LONG)data.length, digest);
+    
+    NSMutableString *output = [NSMutableString stringWithCapacity:CC_SHA1_DIGEST_LENGTH * 2];
+    
+    for (int i = 0; i < CC_SHA1_DIGEST_LENGTH; i++)
+    {
+        [output appendFormat:@"%02x", digest[i]];
+    }
+    
+    return output;
 }
 
 // Standardize and clean up the input value so it'll block properly (and look good doing it)

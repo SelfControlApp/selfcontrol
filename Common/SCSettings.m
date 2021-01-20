@@ -6,8 +6,6 @@
 //
 
 #import "SCSettings.h"
-#include <IOKit/IOKitLib.h>
-#import <CommonCrypto/CommonCrypto.h>
 #import <AppKit/AppKit.h>
 
 #ifndef TESTING
@@ -31,42 +29,6 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
 @implementation SCSettings
 
 /* TODO: move these two functions to a utility class */
-
-// by Martin R et al on StackOverflow: https://stackoverflow.com/a/15451318
-+ (NSString *)getSerialNumber {
-    NSString *serial = nil;
-    io_service_t platformExpert = IOServiceGetMatchingService(kIOMasterPortDefault,
-                                                              IOServiceMatching("IOPlatformExpertDevice"));
-    if (platformExpert) {
-        CFTypeRef serialNumberAsCFString =
-        IORegistryEntryCreateCFProperty(platformExpert,
-                                        CFSTR(kIOPlatformSerialNumberKey),
-                                        kCFAllocatorDefault, 0);
-        if (serialNumberAsCFString) {
-            serial = CFBridgingRelease(serialNumberAsCFString);
-        }
-        
-        IOObjectRelease(platformExpert);
-    }
-    return serial;
-}
-// by hypercrypt et al on StackOverflow: https://stackoverflow.com/a/7571583
-+ (NSString *)sha1:(NSString*)stringToHash
-{
-    NSData *data = [stringToHash dataUsingEncoding:NSUTF8StringEncoding];
-    uint8_t digest[CC_SHA1_DIGEST_LENGTH];
-    
-    CC_SHA1(data.bytes, (CC_LONG)data.length, digest);
-    
-    NSMutableString *output = [NSMutableString stringWithCapacity:CC_SHA1_DIGEST_LENGTH * 2];
-    
-    for (int i = 0; i < CC_SHA1_DIGEST_LENGTH; i++)
-    {
-        [output appendFormat:@"%02x", digest[i]];
-    }
-    
-    return output;
-}
 
 + (instancetype)sharedSettings {
     static SCSettings* globalSettings = nil;
@@ -100,7 +62,7 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        fileName = [NSString stringWithFormat: @".%@.plist", [SCSettings sha1: [NSString stringWithFormat: @"SelfControlUserPreferences%@", [SCSettings getSerialNumber]]]];
+        fileName = [NSString stringWithFormat: @".%@.plist", [SCMiscUtilities sha1: [NSString stringWithFormat: @"SelfControlUserPreferences%@", [SCMiscUtilities getSerialNumber]]]];
     });
 
     return fileName;
