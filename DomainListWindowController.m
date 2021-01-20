@@ -250,7 +250,7 @@
     if(![defaults_ boolForKey: @"WhitelistAlertSuppress"]) {        
         NSAlert* alert = [NSAlert new];
         alert.messageText = NSLocalizedString(@"Are you sure you want an allowlist block?", @"Allowlist block confirmation prompt");
-        alert.buttons[0].title = NSLocalizedString(@"OK", @"OK button");
+        [alert addButtonWithTitle: NSLocalizedString(@"OK", @"OK button")];
         alert.informativeText = NSLocalizedString(@"An allowlist block means that everything on the internet BESIDES your specified list will be blocked.  This includes the web, email, SSH, and anything else your computer accesses via the internet.  If a web site requires resources such as images or scripts from a site that is not on your allowlist, the site may not work properly.", @"allowlist block explanation");
         alert.showsSuppressionButton = YES;
 

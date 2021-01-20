@@ -105,28 +105,30 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
     // make sure we only load the settings dictionary once, even if called simultaneously from multiple threads
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        self->_settingsDict = [NSMutableDictionary dictionaryWithContentsOfFile: SCSettings.securedSettingsFilePath];
-        
-        BOOL isTest = [[NSUserDefaults standardUserDefaults] boolForKey: @"isTest"];
-        if (isTest) NSLog(@"Ignoring settings on disk because we're unit-testing");
-        
-        // if we don't have a settings dictionary on disk yet,
-        // set it up with the default values (and migrate legacy settings also)
-        // also if we're running tests, just use the default dict
-        if (self->_settingsDict == nil || isTest) {
-            self->_settingsDict = [[self defaultSettingsDict] mutableCopy];
+        @synchronized (self) {
+            self->_settingsDict = [NSMutableDictionary dictionaryWithContentsOfFile: SCSettings.securedSettingsFilePath];
             
-            // write out our brand-new settings to disk!
-            if (!self.readOnly) {
-                [self writeSettings];
+            BOOL isTest = [[NSUserDefaults standardUserDefaults] boolForKey: @"isTest"];
+            if (isTest) NSLog(@"Ignoring settings on disk because we're unit-testing");
+            
+            // if we don't have a settings dictionary on disk yet,
+            // set it up with the default values (and migrate legacy settings also)
+            // also if we're running tests, just use the default dict
+            if (self->_settingsDict == nil || isTest) {
+                self->_settingsDict = [[self defaultSettingsDict] mutableCopy];
+                
+                // write out our brand-new settings to disk!
+                if (!self.readOnly) {
+                    [self writeSettings];
+                }
+                [SCSentry addBreadcrumb: @"Initialized SCSettings to default settings" category: @"settings"];
             }
-            [SCSentry addBreadcrumb: @"Initialized SCSettings to default settings" category: @"settings"];
-        }
-        
-        // we're now current with disk!
-        self->lastSynchronizedWithDisk = [NSDate date];
+            
+            // we're now current with disk!
+            self->lastSynchronizedWithDisk = [NSDate date];
 
-        [self startSyncTimer];
+            [self startSyncTimer];
+        }
     });
 }
 
