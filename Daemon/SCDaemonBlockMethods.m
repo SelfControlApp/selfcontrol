@@ -182,7 +182,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
                                                includeCommonSubdomains: [settings boolForKey: @"AllowLocalNetworks"]
                                                   includeLinkedDomains: [settings boolForKey: @"IncludeLinkedDomains"]];
     [blockManager enterAppendMode];
-    [blockManager addBlockEntries: added];
+    [blockManager addBlockEntriesFromStrings: added];
     [blockManager finishAppending];
     
     [settings setValue: newBlocklist forKey: @"ActiveBlocklist"];

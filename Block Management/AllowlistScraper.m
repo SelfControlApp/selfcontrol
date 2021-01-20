@@ -7,13 +7,14 @@
 //
 
 #import "AllowlistScraper.h"
+#import "SCBlockEntry.h"
 
 @implementation AllowlistScraper
 
-+ (NSSet*)relatedDomains:(NSString*)domain; {
++ (NSSet<SCBlockEntry*>*)relatedBlockEntries:(NSString*)domain; {
 	NSURL* rootURL = [NSURL URLWithString: [NSString stringWithFormat: @"http://%@", domain]];
 	if (!rootURL) {
-		return nil;;
+		return nil;
 	}
 
 	// stale data is OK
@@ -30,7 +31,7 @@
 	}
 
 	NSDataDetector* dataDetector = [[NSDataDetector alloc] initWithTypes: NSTextCheckingTypeLink error: nil];
-	NSCountedSet* relatedDomains = [NSCountedSet set];
+	NSCountedSet<SCBlockEntry*>* relatedEntries = [NSCountedSet set];
 	[dataDetector enumerateMatchesInString: html
 								   options: kNilOptions
 									 range: NSMakeRange(0, [html length])
@@ -38,11 +39,11 @@
 									if (([result.URL.scheme isEqualToString: @"http"] || [result.URL.scheme isEqualToString: @"https"])
 										&& [result.URL.host length]
 										&& ![result.URL.host isEqualToString: rootURL.host]) {
-										[relatedDomains addObject: result.URL.host];
-									}
+                                        [relatedEntries addObject: [SCBlockEntry entryWithHostname: result.URL.host]];
+                                    }
 								}];
 
-	return relatedDomains;
+	return relatedEntries;
 }
 
 @end

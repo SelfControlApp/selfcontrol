@@ -106,6 +106,11 @@
 		CB81AAB725B7E6C7006956F7 /* DeprecationSilencers.h in Headers */ = {isa = PBXBuildFile; fileRef = CB81AAB625B7E6C7006956F7 /* DeprecationSilencers.h */; };
 		CB81AB2525B7EFA4006956F7 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB81AB2325B7EF74006956F7 /* Sparkle.framework */; };
 		CB81AB2625B7EFA4006956F7 /* Sparkle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB81AB2325B7EF74006956F7 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CB81AB8A25B8E6BE006956F7 /* SCBlockEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81AB8925B8E6BE006956F7 /* SCBlockEntry.m */; };
+		CB81AB8B25B8E6BE006956F7 /* SCBlockEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81AB8925B8E6BE006956F7 /* SCBlockEntry.m */; };
+		CB81AB8C25B8E6BE006956F7 /* SCBlockEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81AB8925B8E6BE006956F7 /* SCBlockEntry.m */; };
+		CB81AB8D25B8E6BE006956F7 /* SCBlockEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81AB8925B8E6BE006956F7 /* SCBlockEntry.m */; };
+		CB81AB8E25B8E6BE006956F7 /* SCBlockEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81AB8925B8E6BE006956F7 /* SCBlockEntry.m */; };
 		CB850F3925130F5300EE2E2D /* NSString+IPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806516C237F10059C99A /* NSString+IPAddress.m */; };
 		CB90BF830F49F430006D202D /* HostImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB90BF820F49F430006D202D /* HostImporter.m */; };
 		CB9365620F8581B000EF284E /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = CB9365610F8581B000EF284E /* dsa_pub.pem */; };
@@ -309,6 +314,8 @@
 		CB81AA3925B7D152006956F7 /* SCHelperToolUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCHelperToolUtilities.m; sourceTree = "<group>"; };
 		CB81AAB625B7E6C7006956F7 /* DeprecationSilencers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeprecationSilencers.h; sourceTree = "<group>"; };
 		CB81AB2325B7EF74006956F7 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
+		CB81AB8825B8E6BE006956F7 /* SCBlockEntry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCBlockEntry.h; sourceTree = "<group>"; };
+		CB81AB8925B8E6BE006956F7 /* SCBlockEntry.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCBlockEntry.m; sourceTree = "<group>"; };
 		CB90BF810F49F430006D202D /* HostImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostImporter.h; sourceTree = "<group>"; };
 		CB90BF820F49F430006D202D /* HostImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HostImporter.m; sourceTree = "<group>"; };
 		CB9365610F8581B000EF284E /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
@@ -562,6 +569,7 @@
 				CBD266C611ED82DB00042CD8 /* CLI */,
 				CB74D121248371E7002B2079 /* Daemon */,
 				CB4294DF0F53D865008E10CA /* App Classes */,
+				CB81AB8725B8E67D006956F7 /* Block Management */,
 				CB1CA64C25ABA5990084A551 /* Common */,
 				CB9C80F819CFB79700CDCAE1 /* SelfControl Killer */,
 				CB0EEF5E20FD8CE00024D27B /* SelfControlTests */,
@@ -666,18 +674,6 @@
 				CBD4848D19D768C90020F949 /* PreferencesAdvancedViewController.m */,
 				CBB637210F3E296000EBD135 /* DomainListWindowController.h */,
 				CBB637220F3E296000EBD135 /* DomainListWindowController.m */,
-				CBB0AE280FA74566006229B3 /* HostFileBlocker.h */,
-				CBB0AE290FA74566006229B3 /* HostFileBlocker.m */,
-				CBCA91101960D87300AFD20C /* PacketFilter.h */,
-				CBCA91111960D87300AFD20C /* PacketFilter.m */,
-				CB25806016C1FDBE0059C99A /* BlockManager.h */,
-				CB25806116C1FDBE0059C99A /* BlockManager.m */,
-				CBE440190F4BE0670062A1FE /* ThunderbirdPreferenceParser.h */,
-				CBE4401A0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m */,
-				CB90BF810F49F430006D202D /* HostImporter.h */,
-				CB90BF820F49F430006D202D /* HostImporter.m */,
-				CB73615E19E4FDA000E0924F /* AllowlistScraper.h */,
-				CB73615F19E4FDA000E0924F /* AllowlistScraper.m */,
 				CBEE50BF0F48C21F00F5DF1C /* TimerWindowController.h */,
 				CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */,
 				CBC2F8650F4674E300CF2A42 /* LaunchctlHelper.h */,
@@ -733,6 +729,27 @@
 				CB81AA3925B7D152006956F7 /* SCHelperToolUtilities.m */,
 			);
 			path = Utility;
+			sourceTree = "<group>";
+		};
+		CB81AB8725B8E67D006956F7 /* Block Management */ = {
+			isa = PBXGroup;
+			children = (
+				CB81AB8825B8E6BE006956F7 /* SCBlockEntry.h */,
+				CB81AB8925B8E6BE006956F7 /* SCBlockEntry.m */,
+				CBB0AE280FA74566006229B3 /* HostFileBlocker.h */,
+				CBB0AE290FA74566006229B3 /* HostFileBlocker.m */,
+				CBCA91101960D87300AFD20C /* PacketFilter.h */,
+				CBCA91111960D87300AFD20C /* PacketFilter.m */,
+				CB25806016C1FDBE0059C99A /* BlockManager.h */,
+				CB25806116C1FDBE0059C99A /* BlockManager.m */,
+				CBE440190F4BE0670062A1FE /* ThunderbirdPreferenceParser.h */,
+				CBE4401A0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m */,
+				CB90BF810F49F430006D202D /* HostImporter.h */,
+				CB90BF820F49F430006D202D /* HostImporter.m */,
+				CB73615E19E4FDA000E0924F /* AllowlistScraper.h */,
+				CB73615F19E4FDA000E0924F /* AllowlistScraper.m */,
+			);
+			path = "Block Management";
 			sourceTree = "<group>";
 		};
 		CB9C80F819CFB79700CDCAE1 /* SelfControl Killer */ = {
@@ -1302,6 +1319,7 @@
 				CBB1731920F05C07007FCAE9 /* SCMiscUtilities.m in Sources */,
 				CB58948025B3FC6D00E9A5C0 /* HostFileBlocker.m in Sources */,
 				F5B8CBEE19EE21C30026F3A5 /* SCTimeIntervalFormatter.m in Sources */,
+				CB81AB8A25B8E6BE006956F7 /* SCBlockEntry.m in Sources */,
 				CBD4848A19D764440020F949 /* PreferencesGeneralViewController.m in Sources */,
 				CB1CA65E25ABA6150084A551 /* SCXPCClient.m in Sources */,
 				CBEE50C10F48C21F00F5DF1C /* TimerWindowController.m in Sources */,
@@ -1356,6 +1374,7 @@
 				CB81A94E25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */,
 				CB8086D424837607004B88BD /* SCDaemonXPC.m in Sources */,
 				CB1CA65125ABA5BB0084A551 /* SCXPCClient.m in Sources */,
+				CB81AB8E25B8E6BE006956F7 /* SCBlockEntry.m in Sources */,
 				CB69C4EF25A3FD8A0030CFCD /* SCXPCAuthorization.m in Sources */,
 				CB62FC4324B1329500ADBC40 /* PacketFilter.m in Sources */,
 				CB62FC4224B1329200ADBC40 /* BlockManager.m in Sources */,
@@ -1374,6 +1393,7 @@
 				CB81A9F525B7C5F7006956F7 /* SCBlockFileReaderWriter.m in Sources */,
 				CB58948725B3FC6F00E9A5C0 /* HostFileBlocker.m in Sources */,
 				CB1465BA25B027E700130D2E /* SCErr.m in Sources */,
+				CB81AB8C25B8E6BE006956F7 /* SCBlockEntry.m in Sources */,
 				CBB1731C20F05C0A007FCAE9 /* SCMiscUtilities.m in Sources */,
 				CBADC28025B22BC7000EE5BB /* SCSentry.m in Sources */,
 				CB81A94B25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */,
@@ -1385,6 +1405,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CBADC28125B22BC7000EE5BB /* SCSentry.m in Sources */,
+				CB81AB8D25B8E6BE006956F7 /* SCBlockEntry.m in Sources */,
 				CB9C811E19CFBA8500CDCAE1 /* main.m in Sources */,
 				CB5DFCBB2251DD1F0084CEC2 /* SCConstants.m in Sources */,
 				CB9C812719CFBB6400CDCAE1 /* NSString+IPAddress.m in Sources */,
@@ -1417,6 +1438,7 @@
 				CB5DFCB82251DD1F0084CEC2 /* SCConstants.m in Sources */,
 				CB81AA3C25B7D152006956F7 /* SCHelperToolUtilities.m in Sources */,
 				CB81A9F425B7C5F7006956F7 /* SCBlockFileReaderWriter.m in Sources */,
+				CB81AB8B25B8E6BE006956F7 /* SCBlockEntry.m in Sources */,
 				CBCA91121960D87300AFD20C /* PacketFilter.m in Sources */,
 				CB73616219E5086A00E0924F /* AllowlistScraper.m in Sources */,
 				CBC2F8580F4672FE00CF2A42 /* LaunchctlHelper.m in Sources */,

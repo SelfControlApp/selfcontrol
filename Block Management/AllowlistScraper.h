@@ -8,8 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+@class SCBlockEntry;
+
 @interface AllowlistScraper : NSObject
 
-+ (NSSet*)relatedDomains:(NSString*)domain;
++ (NSSet<SCBlockEntry*>*)relatedBlockEntries:(NSString*)domain;
 
 @end
