@@ -49,7 +49,7 @@
 	if(status) {
         // if it's just the user cancelling, make that obvious
         // to any listeners so they can ignore it appropriately
-        if (status != -60006) {
+        if (status != AUTH_CANCELLED_STATUS) {
             NSLog(@"ERROR: Failed to authorize block kill with status %d.", status);
         }
         return;
@@ -71,8 +71,8 @@
 	if(status) {
 		NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", status);
 
-        /// --60006 just means auth is cancelled, not really an "error" per se
-        if (status != -60006) {
+        /// AUTH_CANCELLED_STATUS just means auth is cancelled, not really an "error" per se
+        if (status != AUTH_CANCELLED_STATUS) {
             NSError* err = [SCErr errorWithCode: 400];
             [SCSentry captureError: err];
 

@@ -9,6 +9,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+OSStatus const AUTH_CANCELLED_STATUS = -60006;
+
 @interface SCConstants : NSObject
 
 @property (class, readonly, nonatomic) NSArray<NSString*>* systemSoundNames;
