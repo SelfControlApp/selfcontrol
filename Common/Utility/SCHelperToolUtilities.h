@@ -19,9 +19,6 @@ NS_ASSUME_NONNULL_BEGIN
 // ipfw firewall.
 + (void)installBlockRulesFromSettings;
 
-// Removes from ipfw all rules that were created by SelfControl.
-+ (void)uninstallBlockRules;
-
 // calls SMJobRemove to unload the daemon from launchd
 // (which also kills the running process, synchronously)
 + (void)unloadDaemonJob;

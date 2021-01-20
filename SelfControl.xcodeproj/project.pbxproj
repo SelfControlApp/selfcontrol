@@ -59,7 +59,6 @@
 		CB62FC3E24B1298500ADBC40 /* SCDaemonBlockMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = CB62FC3D24B1298500ADBC40 /* SCDaemonBlockMethods.m */; };
 		CB62FC3F24B1327A00ADBC40 /* SCMiscUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1731320F041F4007FCAE9 /* SCMiscUtilities.m */; };
 		CB62FC4024B1327D00ADBC40 /* SCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF3B573217BADD7006D5F52 /* SCSettings.m */; };
-		CB62FC4124B1328F00ADBC40 /* HelperCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD266AE11ED7D9C00042CD8 /* HelperCommon.m */; };
 		CB62FC4224B1329200ADBC40 /* BlockManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806116C1FDBE0059C99A /* BlockManager.m */; };
 		CB62FC4324B1329500ADBC40 /* PacketFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = CBCA91111960D87300AFD20C /* PacketFilter.m */; };
 		CB62FC4424B1329800ADBC40 /* HostFileBlocker.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB0AE290FA74566006229B3 /* HostFileBlocker.m */; };
@@ -116,7 +115,6 @@
 		CB9C812219CFBB3800CDCAE1 /* PacketFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = CBCA91111960D87300AFD20C /* PacketFilter.m */; };
 		CB9C812319CFBB4400CDCAE1 /* LaunchctlHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */; };
 		CB9C812419CFBB4E00CDCAE1 /* HostFileBlocker.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB0AE290FA74566006229B3 /* HostFileBlocker.m */; };
-		CB9C812519CFBB5500CDCAE1 /* HelperCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD266AE11ED7D9C00042CD8 /* HelperCommon.m */; };
 		CB9C812619CFBB5E00CDCAE1 /* BlockManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806116C1FDBE0059C99A /* BlockManager.m */; };
 		CB9C812719CFBB6400CDCAE1 /* NSString+IPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806516C237F10059C99A /* NSString+IPAddress.m */; };
 		CB9C812819CFBB7B00CDCAE1 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9E901D0F397FFA006DE6E4 /* Security.framework */; };
@@ -146,7 +144,6 @@
 		CBBF4EE515830D7300E364D9 /* TimerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBBF4EE715830D7300E364D9 /* TimerWindow.xib */; };
 		CBC2F8580F4672FE00CF2A42 /* LaunchctlHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */; };
 		CBCA91121960D87300AFD20C /* PacketFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = CBCA91111960D87300AFD20C /* PacketFilter.m */; };
-		CBD266B011ED7D9C00042CD8 /* HelperCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD266AE11ED7D9C00042CD8 /* HelperCommon.m */; };
 		CBD2677011ED92DE00042CD8 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9E90190F397FF6006DE6E4 /* CoreFoundation.framework */; };
 		CBD2677311ED92EF00042CD8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97325FDCFA39411CA2CEA /* Foundation.framework */; };
 		CBD2677511ED92F800042CD8 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -343,8 +340,6 @@
 		CBCA91111960D87300AFD20C /* PacketFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketFilter.m; sourceTree = "<group>"; };
 		CBCA91271961381F00AFD20C /* tr */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CBCA912B1961384600AFD20C /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		CBD266AD11ED7D9C00042CD8 /* HelperCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperCommon.h; sourceTree = "<group>"; };
-		CBD266AE11ED7D9C00042CD8 /* HelperCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelperCommon.m; sourceTree = "<group>"; };
 		CBD4848219D75F6D0020F949 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		CBD4848519D7611F0020F949 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		CBD4848619D7611F0020F949 /* TemplateIcon2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TemplateIcon2x.png; sourceTree = "<group>"; };
@@ -631,8 +626,6 @@
 				CB1465B725B027E700130D2E /* SCErr.m */,
 				CBF3B572217BADD7006D5F52 /* SCSettings.h */,
 				CBF3B573217BADD7006D5F52 /* SCSettings.m */,
-				CBD266AD11ED7D9C00042CD8 /* HelperCommon.h */,
-				CBD266AE11ED7D9C00042CD8 /* HelperCommon.m */,
 				CB69C4EC25A3FD8A0030CFCD /* SCXPCAuthorization.h */,
 				CB69C4ED25A3FD8A0030CFCD /* SCXPCAuthorization.m */,
 				CB62FC3924B124B900ADBC40 /* SCXPCClient.h */,
@@ -1345,7 +1338,6 @@
 				CB81A9D525B7C269006956F7 /* SCBlockUtilities.m in Sources */,
 				CB62FC4424B1329800ADBC40 /* HostFileBlocker.m in Sources */,
 				CB62FC3E24B1298500ADBC40 /* SCDaemonBlockMethods.m in Sources */,
-				CB62FC4124B1328F00ADBC40 /* HelperCommon.m in Sources */,
 				CB81A94E25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */,
 				CB8086D424837607004B88BD /* SCDaemonXPC.m in Sources */,
 				CB1CA65125ABA5BB0084A551 /* SCXPCClient.m in Sources */,
@@ -1383,7 +1375,6 @@
 				CB9C812719CFBB6400CDCAE1 /* NSString+IPAddress.m in Sources */,
 				CBE44FEB19E50900004E9706 /* AllowlistScraper.m in Sources */,
 				CB9C812619CFBB5E00CDCAE1 /* BlockManager.m in Sources */,
-				CB9C812519CFBB5500CDCAE1 /* HelperCommon.m in Sources */,
 				CB81AA3E25B7D152006956F7 /* SCHelperToolUtilities.m in Sources */,
 				CB9C812419CFBB4E00CDCAE1 /* HostFileBlocker.m in Sources */,
 				CB81A94C25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */,
@@ -1416,7 +1407,6 @@
 				CBC2F8580F4672FE00CF2A42 /* LaunchctlHelper.m in Sources */,
 				CBB0AE2A0FA74566006229B3 /* HostFileBlocker.m in Sources */,
 				CB81A94A25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */,
-				CBD266B011ED7D9C00042CD8 /* HelperCommon.m in Sources */,
 				CB32D2A921902CB300B8CD68 /* SCSettings.m in Sources */,
 				CB1CA65025ABA5BB0084A551 /* SCXPCClient.m in Sources */,
 				CB25806216C1FDBE0059C99A /* BlockManager.m in Sources */,

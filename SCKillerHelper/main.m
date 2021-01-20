@@ -221,8 +221,7 @@ int main(int argc, char* argv[]) {
 		}
                 
         // OK, make sure all settings are synced before this thing exits
-        NSError* syncSettingsErr = nil;
-        [settings syncSettingsAndWait: 5 error: &syncSettingsErr];
+        NSError* syncSettingsErr = [settings syncSettingsAndWait: 5];
         
         if (syncSettingsErr != nil) {
             [log appendFormat: @"\nWARNING: Settings failed to synchronize before exit, with error %@", syncSettingsErr];

@@ -358,22 +358,25 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
     [self synchronizeSettingsWithCompletion: nil];
 }
 
-- (void)syncSettingsAndWait:(int)timeoutSecs error:(NSError* __strong *)errPtr {
+- (NSError*)syncSettingsAndWait:(int)timeoutSecs {
     dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+    __block NSError* retErr = nil;
 
     // do this on another thread so it doesn't deadlock our semaphore
     // (also dispatch_async ensures correct behavior even if synchronizeSettingsWithCompletion itself returns synchronously)
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [self synchronizeSettingsWithCompletion:^(NSError* err) {
-            *errPtr = err;
+            retErr = err;
             
             dispatch_semaphore_signal(sema);
         }];
     });
     
     if (dispatch_semaphore_wait(sema, dispatch_time(DISPATCH_TIME_NOW, timeoutSecs * NSEC_PER_SEC))) {
-        *errPtr = [SCErr errorWithCode: 601];
+        retErr = [SCErr errorWithCode: 601];
     }
+    
+    return retErr;
 }
 
 - (void)setValue:(id)value forKey:(NSString*)key stopPropagation:(BOOL)stopPropagation {

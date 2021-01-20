@@ -30,32 +30,6 @@
 
 }
 
-+ (void)uninstallBlockRules {
-    // options don't really matter because we're only using it to clear
-    BlockManager* blockManager = [[BlockManager alloc] init];
-    [blockManager clearBlock];
-
-    // We'll play the sound now rather than earlier, because
-    //  it is important that the UI get updated (by the posted
-    //  notification) before we sleep to play the sound.  Otherwise,
-    // the app seems unresponsive and slow.
-    SCSettings* settings = [SCSettings sharedSettings];
-    if([settings boolForKey: @"BlockSoundShouldPlay"]) {
-        // Map the tags used in interface builder to the sound
-        NSArray* systemSoundNames = SCConstants.systemSoundNames;
-        NSSound* alertSound = [NSSound soundNamed: systemSoundNames[[[settings valueForKey: @"BlockSound"] intValue]]];
-        if(!alertSound)
-            NSLog(@"WARNING: Alert sound not found.");
-        else {
-            [alertSound play];
-            // Sleeping a second is a messy way of doing this, but otherwise the
-            // sound is killed along with this process when it is unloaded in just
-            // a few lines.
-            sleep(1);
-        }
-    }
-}
-
 + (void)unloadDaemonJob {
     NSLog(@"Unloading SelfControl daemon...");
     [SCSentry addBreadcrumb: @"Daemon about to unload" category: @"daemon"];
@@ -64,8 +38,7 @@
     // we're about to unload the launchd job
     // this will kill this process, so we have to make sure
     // all settings are synced before we unload
-    NSError* syncErr;
-    [settings syncSettingsAndWait: 5.0 error: &syncErr];
+    NSError* syncErr = [settings syncSettingsAndWait: 5.0];
     if (syncErr != nil) {
         NSLog(@"WARNING: Sync failed or timed out with error %@ before unloading daemon job", syncErr);
         [SCSentry captureError: syncErr];
@@ -156,21 +129,43 @@
     NSLog(@"Cleared OS DNS caches");
 }
 
++ (void)playBlockEndSound {
+    SCSettings* settings = [SCSettings sharedSettings];
+    if([settings boolForKey: @"BlockSoundShouldPlay"]) {
+        // Map the tags used in interface builder to the sound
+        NSArray* systemSoundNames = SCConstants.systemSoundNames;
+        NSSound* alertSound = [NSSound soundNamed: systemSoundNames[[[settings valueForKey: @"BlockSound"] intValue]]];
+        if(!alertSound)
+            NSLog(@"WARNING: Alert sound not found.");
+        else {
+            [alertSound play];
+        }
+    }
+}
+
 + (void)removeBlock {
     SCSettings* settings = [SCSettings sharedSettings];
 
-    [SCBlockUtilities removeBlockFromSettings];
-    [SCHelperToolUtilities uninstallBlockRules];
+    [[BlockManager new] clearBlock];
+    
+    [SCHelperToolUtilities clearCachesIfRequested];
+
+    // play a sound letting
+    [SCHelperToolUtilities playBlockEndSound];
         
     // always synchronize settings ASAP after removing a block to let everybody else know
-    [settings synchronizeSettings];
+    // and wait until they're synced before we send the configuration change notification
+    // so the app has no chance of reading the data before we update it
+    NSError* syncErr = [settings syncSettingsAndWait: 5.0];
+    if (syncErr != nil) {
+        NSLog(@"WARNING: Sync failed or timed out with error %@ after removing block", syncErr);
+        [SCSentry captureError: syncErr];
+    }
 
     // let the main app know things have changed so it can update the UI!
     [SCHelperToolUtilities sendConfigurationChangedNotification];
 
     NSLog(@"INFO: Block cleared.");
-    
-    [SCHelperToolUtilities clearCachesIfRequested];
 }
 
 + (void)sendConfigurationChangedNotification {
