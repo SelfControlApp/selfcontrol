@@ -149,6 +149,9 @@ float const INACTIVITY_LIMIT_SECS = 60 * 2; // 2 minutes
     SecRequirementCreateWithString(CFSTR("anchor apple generic and (identifier \"org.eyebeam.SelfControl\" or identifier \"org.eyebeam.selfcontrol-cli\") and info [CFBundleShortVersionString] >= \"4.0\" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = L6W5L88KN7)"), kSecCSDefaultFlags, &isSelfControlApp);
     OSStatus clientValidityStatus = SecCodeCheckValidity(guest, kSecCSDefaultFlags, isSelfControlApp);
     
+    CFRelease(guest);
+    CFRelease(isSelfControlApp);
+    
     if (clientValidityStatus) {
         NSError* error = [NSError errorWithDomain: NSOSStatusErrorDomain code: clientValidityStatus userInfo: nil];
         NSLog(@"Rejecting XPC connection because of invalid client signing. Error was %@", error);
