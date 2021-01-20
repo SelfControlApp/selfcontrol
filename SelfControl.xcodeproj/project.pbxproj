@@ -14,7 +14,7 @@
 		9A31F3D484C646257DB308C5 /* Pods_SelfControl_Killer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA749B3BC24DC33425F27DF /* Pods_SelfControl_Killer.framework */; };
 		CB0385E119D77051004614B6 /* PreferencesAdvancedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB0385DD19D77051004614B6 /* PreferencesAdvancedViewController.xib */; };
 		CB0385E219D77051004614B6 /* PreferencesGeneralViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB0385DF19D77051004614B6 /* PreferencesGeneralViewController.xib */; };
-		CB0EEF7820FE49030024D27B /* SCUtilitiesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB0EEF7720FE49020024D27B /* SCUtilitiesTests.m */; };
+		CB0EEF7820FE49030024D27B /* SCUtilityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB0EEF7720FE49020024D27B /* SCUtilityTests.m */; };
 		CB114283222CCF19004B7868 /* SCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF3B573217BADD7006D5F52 /* SCSettings.m */; };
 		CB114284222CD4F0004B7868 /* SCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF3B573217BADD7006D5F52 /* SCSettings.m */; };
 		CB1465B825B027E700130D2E /* SCErr.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1465B725B027E700130D2E /* SCErr.m */; };
@@ -57,9 +57,8 @@
 		CB5DFCBC2251DD1F0084CEC2 /* SCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */; };
 		CB62FC3024B11A4F00ADBC40 /* selfcontrold-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB62FC2F24B11A4F00ADBC40 /* selfcontrold-Info.plist */; };
 		CB62FC3E24B1298500ADBC40 /* SCDaemonBlockMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = CB62FC3D24B1298500ADBC40 /* SCDaemonBlockMethods.m */; };
-		CB62FC3F24B1327A00ADBC40 /* SCUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1731320F041F4007FCAE9 /* SCUtilities.m */; };
+		CB62FC3F24B1327A00ADBC40 /* SCMiscUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1731320F041F4007FCAE9 /* SCMiscUtilities.m */; };
 		CB62FC4024B1327D00ADBC40 /* SCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF3B573217BADD7006D5F52 /* SCSettings.m */; };
-		CB62FC4124B1328F00ADBC40 /* HelperCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD266AE11ED7D9C00042CD8 /* HelperCommon.m */; };
 		CB62FC4224B1329200ADBC40 /* BlockManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806116C1FDBE0059C99A /* BlockManager.m */; };
 		CB62FC4324B1329500ADBC40 /* PacketFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = CBCA91111960D87300AFD20C /* PacketFilter.m */; };
 		CB62FC4424B1329800ADBC40 /* HostFileBlocker.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB0AE290FA74566006229B3 /* HostFileBlocker.m */; };
@@ -78,8 +77,33 @@
 		CB74D11F2480E55D002B2079 /* DaemonMain.m in Sources */ = {isa = PBXBuildFile; fileRef = CB74D1032480E4D9002B2079 /* DaemonMain.m */; };
 		CB74D1202480E566002B2079 /* SCDaemon.m in Sources */ = {isa = PBXBuildFile; fileRef = CB74D0FD2480E3E6002B2079 /* SCDaemon.m */; };
 		CB8086D424837607004B88BD /* SCDaemonXPC.m in Sources */ = {isa = PBXBuildFile; fileRef = CB8086D324837607004B88BD /* SCDaemonXPC.m */; };
+		CB81A94825B7B5B5006956F7 /* SCMigrationUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = CB81A94625B7B5B5006956F7 /* SCMigrationUtilities.h */; };
+		CB81A94925B7B5B5006956F7 /* SCMigrationUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81A94725B7B5B5006956F7 /* SCMigrationUtilities.m */; };
+		CB81A94A25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81A94725B7B5B5006956F7 /* SCMigrationUtilities.m */; };
+		CB81A94B25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81A94725B7B5B5006956F7 /* SCMigrationUtilities.m */; };
+		CB81A94C25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81A94725B7B5B5006956F7 /* SCMigrationUtilities.m */; };
+		CB81A94D25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81A94725B7B5B5006956F7 /* SCMigrationUtilities.m */; };
+		CB81A94E25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81A94725B7B5B5006956F7 /* SCMigrationUtilities.m */; };
+		CB81A9CF25B7C269006956F7 /* SCBlockUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = CB81A9CD25B7C269006956F7 /* SCBlockUtilities.h */; };
+		CB81A9D025B7C269006956F7 /* SCBlockUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81A9CE25B7C269006956F7 /* SCBlockUtilities.m */; };
+		CB81A9D125B7C269006956F7 /* SCBlockUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81A9CE25B7C269006956F7 /* SCBlockUtilities.m */; };
+		CB81A9D225B7C269006956F7 /* SCBlockUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81A9CE25B7C269006956F7 /* SCBlockUtilities.m */; };
+		CB81A9D325B7C269006956F7 /* SCBlockUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81A9CE25B7C269006956F7 /* SCBlockUtilities.m */; };
+		CB81A9D425B7C269006956F7 /* SCBlockUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81A9CE25B7C269006956F7 /* SCBlockUtilities.m */; };
+		CB81A9D525B7C269006956F7 /* SCBlockUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81A9CE25B7C269006956F7 /* SCBlockUtilities.m */; };
+		CB81A9F225B7C5F7006956F7 /* SCBlockFileReaderWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = CB81A9F025B7C5F7006956F7 /* SCBlockFileReaderWriter.h */; };
+		CB81A9F325B7C5F7006956F7 /* SCBlockFileReaderWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81A9F125B7C5F7006956F7 /* SCBlockFileReaderWriter.m */; };
+		CB81A9F425B7C5F7006956F7 /* SCBlockFileReaderWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81A9F125B7C5F7006956F7 /* SCBlockFileReaderWriter.m */; };
+		CB81A9F525B7C5F7006956F7 /* SCBlockFileReaderWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81A9F125B7C5F7006956F7 /* SCBlockFileReaderWriter.m */; };
+		CB81A9F625B7C5F7006956F7 /* SCBlockFileReaderWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81A9F125B7C5F7006956F7 /* SCBlockFileReaderWriter.m */; };
+		CB81A9F725B7C5F7006956F7 /* SCBlockFileReaderWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81A9F125B7C5F7006956F7 /* SCBlockFileReaderWriter.m */; };
+		CB81A9F825B7C5F7006956F7 /* SCBlockFileReaderWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81A9F125B7C5F7006956F7 /* SCBlockFileReaderWriter.m */; };
+		CB81AA3A25B7D152006956F7 /* SCHelperToolUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = CB81AA3825B7D152006956F7 /* SCHelperToolUtilities.h */; };
+		CB81AA3C25B7D152006956F7 /* SCHelperToolUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81AA3925B7D152006956F7 /* SCHelperToolUtilities.m */; };
+		CB81AA3E25B7D152006956F7 /* SCHelperToolUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81AA3925B7D152006956F7 /* SCHelperToolUtilities.m */; };
+		CB81AA3F25B7D152006956F7 /* SCHelperToolUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81AA3925B7D152006956F7 /* SCHelperToolUtilities.m */; };
+		CB81AA4025B7D152006956F7 /* SCHelperToolUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81AA3925B7D152006956F7 /* SCHelperToolUtilities.m */; };
 		CB850F3925130F5300EE2E2D /* NSString+IPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806516C237F10059C99A /* NSString+IPAddress.m */; };
-		CB850F3C2513185300EE2E2D /* SCDaemonUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB850F3B2513185300EE2E2D /* SCDaemonUtilities.m */; };
 		CB90BF830F49F430006D202D /* HostImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB90BF820F49F430006D202D /* HostImporter.m */; };
 		CB9365620F8581B000EF284E /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = CB9365610F8581B000EF284E /* dsa_pub.pem */; };
 		CB9366E80F85BEF100EF284E /* NSRemoveTemplate.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB9366E60F85BEF100EF284E /* NSRemoveTemplate.jpg */; };
@@ -91,7 +115,6 @@
 		CB9C812219CFBB3800CDCAE1 /* PacketFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = CBCA91111960D87300AFD20C /* PacketFilter.m */; };
 		CB9C812319CFBB4400CDCAE1 /* LaunchctlHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */; };
 		CB9C812419CFBB4E00CDCAE1 /* HostFileBlocker.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB0AE290FA74566006229B3 /* HostFileBlocker.m */; };
-		CB9C812519CFBB5500CDCAE1 /* HelperCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD266AE11ED7D9C00042CD8 /* HelperCommon.m */; };
 		CB9C812619CFBB5E00CDCAE1 /* BlockManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806116C1FDBE0059C99A /* BlockManager.m */; };
 		CB9C812719CFBB6400CDCAE1 /* NSString+IPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806516C237F10059C99A /* NSString+IPAddress.m */; };
 		CB9C812819CFBB7B00CDCAE1 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9E901D0F397FFA006DE6E4 /* Security.framework */; };
@@ -107,10 +130,10 @@
 		CBADC28125B22BC7000EE5BB /* SCSentry.m in Sources */ = {isa = PBXBuildFile; fileRef = CBADC27D25B22BC7000EE5BB /* SCSentry.m */; };
 		CBADC28225B22BC7000EE5BB /* SCSentry.m in Sources */ = {isa = PBXBuildFile; fileRef = CBADC27D25B22BC7000EE5BB /* SCSentry.m */; };
 		CBB0AE2A0FA74566006229B3 /* HostFileBlocker.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB0AE290FA74566006229B3 /* HostFileBlocker.m */; };
-		CBB1731520F041F4007FCAE9 /* SCUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1731320F041F4007FCAE9 /* SCUtilities.m */; };
-		CBB1731920F05C07007FCAE9 /* SCUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1731320F041F4007FCAE9 /* SCUtilities.m */; };
-		CBB1731B20F05C09007FCAE9 /* SCUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1731320F041F4007FCAE9 /* SCUtilities.m */; };
-		CBB1731C20F05C0A007FCAE9 /* SCUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1731320F041F4007FCAE9 /* SCUtilities.m */; };
+		CBB1731520F041F4007FCAE9 /* SCMiscUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1731320F041F4007FCAE9 /* SCMiscUtilities.m */; };
+		CBB1731920F05C07007FCAE9 /* SCMiscUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1731320F041F4007FCAE9 /* SCMiscUtilities.m */; };
+		CBB1731B20F05C09007FCAE9 /* SCMiscUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1731320F041F4007FCAE9 /* SCMiscUtilities.m */; };
+		CBB1731C20F05C0A007FCAE9 /* SCMiscUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1731320F041F4007FCAE9 /* SCMiscUtilities.m */; };
 		CBB3FD7A0F53834B00244132 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9E901D0F397FFA006DE6E4 /* Security.framework */; };
 		CBB7DEEA0F53313F00ABF3EA /* DomainListWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB637220F3E296000EBD135 /* DomainListWindowController.m */; };
 		CBBCA14B0F54E1B300C75324 /* org.eyebeam.SelfControl.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB4295C20F53EF8C008E10CA /* org.eyebeam.SelfControl.plist */; };
@@ -121,14 +144,13 @@
 		CBBF4EE515830D7300E364D9 /* TimerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBBF4EE715830D7300E364D9 /* TimerWindow.xib */; };
 		CBC2F8580F4672FE00CF2A42 /* LaunchctlHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */; };
 		CBCA91121960D87300AFD20C /* PacketFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = CBCA91111960D87300AFD20C /* PacketFilter.m */; };
-		CBD266B011ED7D9C00042CD8 /* HelperCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD266AE11ED7D9C00042CD8 /* HelperCommon.m */; };
 		CBD2677011ED92DE00042CD8 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9E90190F397FF6006DE6E4 /* CoreFoundation.framework */; };
 		CBD2677311ED92EF00042CD8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97325FDCFA39411CA2CEA /* Foundation.framework */; };
 		CBD2677511ED92F800042CD8 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		CBD4848A19D764440020F949 /* PreferencesGeneralViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD4848819D764440020F949 /* PreferencesGeneralViewController.m */; };
 		CBD4848F19D768C90020F949 /* PreferencesAdvancedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD4848D19D768C90020F949 /* PreferencesAdvancedViewController.m */; };
 		CBDB118C2084239D0010397E /* FirstTime.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBDB118E2084239D0010397E /* FirstTime.xib */; };
-		CBDF919A225C5A9700358B95 /* SCUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1731320F041F4007FCAE9 /* SCUtilities.m */; };
+		CBDF919A225C5A9700358B95 /* SCMiscUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1731320F041F4007FCAE9 /* SCMiscUtilities.m */; };
 		CBDFFF4724A0450200622CEE /* org.eyebeam.selfcontrold in Copy Daemon Launch Service */ = {isa = PBXBuildFile; fileRef = CB74D11D2480E506002B2079 /* org.eyebeam.selfcontrold */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		CBDFFF4924A0711800622CEE /* org.eyebeam.selfcontrold.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB8086D524837734004B88BD /* org.eyebeam.selfcontrold.plist */; };
 		CBE2BB5619D10CCC0077124F /* SCKillerHelper in Copy Executable Helper Tools */ = {isa = PBXBuildFile; fileRef = CB9C811B19CFBA8500CDCAE1 /* SCKillerHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -217,7 +239,7 @@
 		B1812886BF1D4F103F3E8D1D /* Pods-org.eyebeam.selfcontrold.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-org.eyebeam.selfcontrold.release.xcconfig"; path = "Pods/Target Support Files/Pods-org.eyebeam.selfcontrold/Pods-org.eyebeam.selfcontrold.release.xcconfig"; sourceTree = "<group>"; };
 		CB0EEF5D20FD8CE00024D27B /* SelfControlTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SelfControlTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB0EEF6120FD8CE00024D27B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CB0EEF7720FE49020024D27B /* SCUtilitiesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCUtilitiesTests.m; sourceTree = "<group>"; };
+		CB0EEF7720FE49020024D27B /* SCUtilityTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCUtilityTests.m; sourceTree = "<group>"; };
 		CB1465B625B027E700130D2E /* SCErr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SCErr.h; path = Common/SCErr.h; sourceTree = SOURCE_ROOT; };
 		CB1465B725B027E700130D2E /* SCErr.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SCErr.m; path = Common/SCErr.m; sourceTree = SOURCE_ROOT; };
 		CB1465C325B0285300130D2E /* SCError.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = SCError.strings; sourceTree = "<group>"; };
@@ -262,8 +284,15 @@
 		CB8086D224837607004B88BD /* SCDaemonXPC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCDaemonXPC.h; sourceTree = "<group>"; };
 		CB8086D324837607004B88BD /* SCDaemonXPC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCDaemonXPC.m; sourceTree = "<group>"; };
 		CB8086D524837734004B88BD /* org.eyebeam.selfcontrold.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = org.eyebeam.selfcontrold.plist; sourceTree = "<group>"; };
-		CB850F3A2513185300EE2E2D /* SCDaemonUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCDaemonUtilities.h; sourceTree = "<group>"; };
-		CB850F3B2513185300EE2E2D /* SCDaemonUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCDaemonUtilities.m; sourceTree = "<group>"; };
+		CB81A94625B7B5B5006956F7 /* SCMigrationUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCMigrationUtilities.h; sourceTree = "<group>"; };
+		CB81A94725B7B5B5006956F7 /* SCMigrationUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCMigrationUtilities.m; sourceTree = "<group>"; };
+		CB81A9CD25B7C269006956F7 /* SCBlockUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCBlockUtilities.h; sourceTree = "<group>"; };
+		CB81A9CE25B7C269006956F7 /* SCBlockUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCBlockUtilities.m; sourceTree = "<group>"; };
+		CB81A9E225B7C2A8006956F7 /* SCUtility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCUtility.h; sourceTree = "<group>"; };
+		CB81A9F025B7C5F7006956F7 /* SCBlockFileReaderWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCBlockFileReaderWriter.h; sourceTree = "<group>"; };
+		CB81A9F125B7C5F7006956F7 /* SCBlockFileReaderWriter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCBlockFileReaderWriter.m; sourceTree = "<group>"; };
+		CB81AA3825B7D152006956F7 /* SCHelperToolUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCHelperToolUtilities.h; sourceTree = "<group>"; };
+		CB81AA3925B7D152006956F7 /* SCHelperToolUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCHelperToolUtilities.m; sourceTree = "<group>"; };
 		CB90BF810F49F430006D202D /* HostImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostImporter.h; sourceTree = "<group>"; };
 		CB90BF820F49F430006D202D /* HostImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HostImporter.m; sourceTree = "<group>"; };
 		CB9365610F8581B000EF284E /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
@@ -288,8 +317,8 @@
 		CBADC27D25B22BC7000EE5BB /* SCSentry.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCSentry.m; sourceTree = "<group>"; };
 		CBB0AE280FA74566006229B3 /* HostFileBlocker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostFileBlocker.h; sourceTree = "<group>"; };
 		CBB0AE290FA74566006229B3 /* HostFileBlocker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HostFileBlocker.m; sourceTree = "<group>"; };
-		CBB1731220F041F4007FCAE9 /* SCUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCUtilities.h; sourceTree = "<group>"; };
-		CBB1731320F041F4007FCAE9 /* SCUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCUtilities.m; sourceTree = "<group>"; };
+		CBB1731220F041F4007FCAE9 /* SCMiscUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCMiscUtilities.h; sourceTree = "<group>"; };
+		CBB1731320F041F4007FCAE9 /* SCMiscUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCMiscUtilities.m; sourceTree = "<group>"; };
 		CBB60BE31F12F19E00DCB597 /* distribution-build.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = "distribution-build.rb"; sourceTree = "<group>"; };
 		CBB637210F3E296000EBD135 /* DomainListWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DomainListWindowController.h; sourceTree = "<group>"; };
 		CBB637220F3E296000EBD135 /* DomainListWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DomainListWindowController.m; sourceTree = "<group>"; };
@@ -311,9 +340,6 @@
 		CBCA91111960D87300AFD20C /* PacketFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketFilter.m; sourceTree = "<group>"; };
 		CBCA91271961381F00AFD20C /* tr */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CBCA912B1961384600AFD20C /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		CBD266AD11ED7D9C00042CD8 /* HelperCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperCommon.h; sourceTree = "<group>"; };
-		CBD266AE11ED7D9C00042CD8 /* HelperCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelperCommon.m; sourceTree = "<group>"; };
-		CBD266E111ED84F700042CD8 /* SelfControlCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelfControlCommon.h; sourceTree = "<group>"; };
 		CBD4848219D75F6D0020F949 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		CBD4848519D7611F0020F949 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		CBD4848619D7611F0020F949 /* TemplateIcon2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TemplateIcon2x.png; sourceTree = "<group>"; };
@@ -582,7 +608,7 @@
 		CB0EEF5E20FD8CE00024D27B /* SelfControlTests */ = {
 			isa = PBXGroup;
 			children = (
-				CB0EEF7720FE49020024D27B /* SCUtilitiesTests.m */,
+				CB0EEF7720FE49020024D27B /* SCUtilityTests.m */,
 				CB0EEF6120FD8CE00024D27B /* Info.plist */,
 			);
 			path = SelfControlTests;
@@ -591,16 +617,15 @@
 		CB1CA64C25ABA5990084A551 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				CBB1731220F041F4007FCAE9 /* SCUtilities.h */,
-				CBB1731320F041F4007FCAE9 /* SCUtilities.m */,
+				CB81A9E325B7C2B9006956F7 /* Utility */,
 				CBADC27C25B22BC7000EE5BB /* SCSentry.h */,
 				CBADC27D25B22BC7000EE5BB /* SCSentry.m */,
+				CB81A9F025B7C5F7006956F7 /* SCBlockFileReaderWriter.h */,
+				CB81A9F125B7C5F7006956F7 /* SCBlockFileReaderWriter.m */,
 				CB1465B625B027E700130D2E /* SCErr.h */,
 				CB1465B725B027E700130D2E /* SCErr.m */,
 				CBF3B572217BADD7006D5F52 /* SCSettings.h */,
 				CBF3B573217BADD7006D5F52 /* SCSettings.m */,
-				CBD266AD11ED7D9C00042CD8 /* HelperCommon.h */,
-				CBD266AE11ED7D9C00042CD8 /* HelperCommon.m */,
 				CB69C4EC25A3FD8A0030CFCD /* SCXPCAuthorization.h */,
 				CB69C4ED25A3FD8A0030CFCD /* SCXPCAuthorization.m */,
 				CB62FC3924B124B900ADBC40 /* SCXPCClient.h */,
@@ -612,7 +637,6 @@
 		CB4294DF0F53D865008E10CA /* App Classes */ = {
 			isa = PBXGroup;
 			children = (
-				CBD266E111ED84F700042CD8 /* SelfControlCommon.h */,
 				CB25806416C237F10059C99A /* NSString+IPAddress.h */,
 				CB25806516C237F10059C99A /* NSString+IPAddress.m */,
 				CBE5C4090F4D4531003DB900 /* ButtonWithPopupMenu.h */,
@@ -671,13 +695,27 @@
 				CB62FC3D24B1298500ADBC40 /* SCDaemonBlockMethods.m */,
 				CB8086D224837607004B88BD /* SCDaemonXPC.h */,
 				CB8086D324837607004B88BD /* SCDaemonXPC.m */,
-				CB850F3A2513185300EE2E2D /* SCDaemonUtilities.h */,
-				CB850F3B2513185300EE2E2D /* SCDaemonUtilities.m */,
 				CB74D122248374E6002B2079 /* SCDaemonProtocol.h */,
 				CB62FC2F24B11A4F00ADBC40 /* selfcontrold-Info.plist */,
 				CB8086D524837734004B88BD /* org.eyebeam.selfcontrold.plist */,
 			);
 			path = Daemon;
+			sourceTree = "<group>";
+		};
+		CB81A9E325B7C2B9006956F7 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				CB81A9E225B7C2A8006956F7 /* SCUtility.h */,
+				CB81A94625B7B5B5006956F7 /* SCMigrationUtilities.h */,
+				CB81A94725B7B5B5006956F7 /* SCMigrationUtilities.m */,
+				CB81A9CD25B7C269006956F7 /* SCBlockUtilities.h */,
+				CB81A9CE25B7C269006956F7 /* SCBlockUtilities.m */,
+				CBB1731220F041F4007FCAE9 /* SCMiscUtilities.h */,
+				CBB1731320F041F4007FCAE9 /* SCMiscUtilities.m */,
+				CB81AA3825B7D152006956F7 /* SCHelperToolUtilities.h */,
+				CB81AA3925B7D152006956F7 /* SCHelperToolUtilities.m */,
+			);
+			path = Utility;
 			sourceTree = "<group>";
 		};
 		CB9C80F819CFB79700CDCAE1 /* SelfControl Killer */ = {
@@ -763,6 +801,10 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB81A94825B7B5B5006956F7 /* SCMigrationUtilities.h in Headers */,
+				CB81AA3A25B7D152006956F7 /* SCHelperToolUtilities.h in Headers */,
+				CB81A9CF25B7C269006956F7 /* SCBlockUtilities.h in Headers */,
+				CB81A9F225B7C5F7006956F7 /* SCBlockFileReaderWriter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -773,6 +815,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "SelfControl" */;
 			buildPhases = (
+				CB81A92E25B7B4B8006956F7 /* ShellScript */,
 				10CA088CE7CF641F4F172445 /* [CP] Check Pods Manifest.lock */,
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072C0486CEB800E47090 /* Sources */,
@@ -1156,7 +1199,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "buildNumber=$(xcodebuild -project SelfControl.xcodeproj/ -showBuildSettings | grep \"CURRENT_PROJECT_VERSION\" | sed 's/[ ]*CURRENT_PROJECT_VERSION = //')\n\necho \"#define SELFCONTROL_VERSION_STRING @\\\"${buildNumber}\\\"\" > \"${PROJECT_DIR}/version-header.h\"\n";
+			shellScript = "# buildNumber=$(xcodebuild -project SelfControl.xcodeproj/ -showBuildSettings | grep \"CURRENT_PROJECT_VERSION\" | sed 's/[ ]*CURRENT_PROJECT_VERSION = //')\necho \"#define SELFCONTROL_VERSION_STRING @\\\"${MARKETING_VERSION}\\\"\" > \"${PROJECT_DIR}/version-header.h\"\n";
 		};
 		CB5E5FF81C3A5FD10038F331 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1186,7 +1229,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "buildNumber=$(xcodebuild -project SelfControl.xcodeproj/ -showBuildSettings | grep \"CURRENT_PROJECT_VERSION\" | sed 's/[ ]*CURRENT_PROJECT_VERSION = //')\n\necho \"#define SELFCONTROL_VERSION_STRING @\\\"${buildNumber}\\\"\" > \"${PROJECT_DIR}/version-header.h\"\n";
+			shellScript = "echo \"#define SELFCONTROL_VERSION_STRING @\\\"${MARKETING_VERSION}\\\"\" > \"${PROJECT_DIR}/version-header.h\"\n";
+		};
+		CB81A92E25B7B4B8006956F7 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\necho \"#define SELFCONTROL_VERSION_STRING @\\\"${MARKETING_VERSION}\\\"\" > \"${PROJECT_DIR}/version-header.h\"\n";
 		};
 		FFF74CE7FF453369A49FFE5B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1221,8 +1281,10 @@
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				CB1CA66525ABA6240084A551 /* SCXPCAuthorization.m in Sources */,
 				CB529BBF0F32B7ED00564FB8 /* AppController.m in Sources */,
+				CB81A94925B7B5B5006956F7 /* SCMigrationUtilities.m in Sources */,
+				CB81A9F325B7C5F7006956F7 /* SCBlockFileReaderWriter.m in Sources */,
 				CB1465B825B027E700130D2E /* SCErr.m in Sources */,
-				CBB1731920F05C07007FCAE9 /* SCUtilities.m in Sources */,
+				CBB1731920F05C07007FCAE9 /* SCMiscUtilities.m in Sources */,
 				CB58948025B3FC6D00E9A5C0 /* HostFileBlocker.m in Sources */,
 				F5B8CBEE19EE21C30026F3A5 /* SCTimeIntervalFormatter.m in Sources */,
 				CBD4848A19D764440020F949 /* PreferencesGeneralViewController.m in Sources */,
@@ -1233,6 +1295,7 @@
 				CBE4401B0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m in Sources */,
 				CBE5C40B0F4D4531003DB900 /* ButtonWithPopupMenu.m in Sources */,
 				CBD4848F19D768C90020F949 /* PreferencesAdvancedViewController.m in Sources */,
+				CB81A9D025B7C269006956F7 /* SCBlockUtilities.m in Sources */,
 				CBB7DEEA0F53313F00ABF3EA /* DomainListWindowController.m in Sources */,
 				CBF3B574217BADD7006D5F52 /* SCSettings.m in Sources */,
 				CB25806616C237F10059C99A /* NSString+IPAddress.m in Sources */,
@@ -1243,10 +1306,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CBDF919A225C5A9700358B95 /* SCUtilities.m in Sources */,
+				CBDF919A225C5A9700358B95 /* SCMiscUtilities.m in Sources */,
 				CB5DFCBC2251DD1F0084CEC2 /* SCConstants.m in Sources */,
+				CB81AA3F25B7D152006956F7 /* SCHelperToolUtilities.m in Sources */,
+				CB81A9D425B7C269006956F7 /* SCBlockUtilities.m in Sources */,
+				CB81A9F725B7C5F7006956F7 /* SCBlockFileReaderWriter.m in Sources */,
 				CB114284222CD4F0004B7868 /* SCSettings.m in Sources */,
-				CB0EEF7820FE49030024D27B /* SCUtilitiesTests.m in Sources */,
+				CB0EEF7820FE49030024D27B /* SCUtilityTests.m in Sources */,
+				CB81A94D25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1259,17 +1326,19 @@
 				CB62FC4624B132A300ADBC40 /* HostImporter.m in Sources */,
 				CB62FC4724B132A600ADBC40 /* AllowlistScraper.m in Sources */,
 				CB62FC4524B1329F00ADBC40 /* ThunderbirdPreferenceParser.m in Sources */,
+				CB81A9F825B7C5F7006956F7 /* SCBlockFileReaderWriter.m in Sources */,
 				CB74D1202480E566002B2079 /* SCDaemon.m in Sources */,
 				CBADC28225B22BC7000EE5BB /* SCSentry.m in Sources */,
 				CB62FC4024B1327D00ADBC40 /* SCSettings.m in Sources */,
-				CB62FC3F24B1327A00ADBC40 /* SCUtilities.m in Sources */,
+				CB62FC3F24B1327A00ADBC40 /* SCMiscUtilities.m in Sources */,
 				CB1465BC25B027E700130D2E /* SCErr.m in Sources */,
+				CB81AA4025B7D152006956F7 /* SCHelperToolUtilities.m in Sources */,
 				CB62FC4924B1330700ADBC40 /* LaunchctlHelper.m in Sources */,
 				CB62FC4824B132B300ADBC40 /* SCConstants.m in Sources */,
+				CB81A9D525B7C269006956F7 /* SCBlockUtilities.m in Sources */,
 				CB62FC4424B1329800ADBC40 /* HostFileBlocker.m in Sources */,
-				CB850F3C2513185300EE2E2D /* SCDaemonUtilities.m in Sources */,
 				CB62FC3E24B1298500ADBC40 /* SCDaemonBlockMethods.m in Sources */,
-				CB62FC4124B1328F00ADBC40 /* HelperCommon.m in Sources */,
+				CB81A94E25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */,
 				CB8086D424837607004B88BD /* SCDaemonXPC.m in Sources */,
 				CB1CA65125ABA5BB0084A551 /* SCXPCClient.m in Sources */,
 				CB69C4EF25A3FD8A0030CFCD /* SCXPCAuthorization.m in Sources */,
@@ -1282,14 +1351,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB81A9D225B7C269006956F7 /* SCBlockUtilities.m in Sources */,
 				CB9C80FF19CFB79700CDCAE1 /* AppDelegate.m in Sources */,
 				CB9C80FC19CFB79700CDCAE1 /* main.m in Sources */,
 				CB5DFCBA2251DD1F0084CEC2 /* SCConstants.m in Sources */,
 				CB32D2AC21902CF800B8CD68 /* SCSettings.m in Sources */,
+				CB81A9F525B7C5F7006956F7 /* SCBlockFileReaderWriter.m in Sources */,
 				CB58948725B3FC6F00E9A5C0 /* HostFileBlocker.m in Sources */,
 				CB1465BA25B027E700130D2E /* SCErr.m in Sources */,
-				CBB1731C20F05C0A007FCAE9 /* SCUtilities.m in Sources */,
+				CBB1731C20F05C0A007FCAE9 /* SCMiscUtilities.m in Sources */,
 				CBADC28025B22BC7000EE5BB /* SCSentry.m in Sources */,
+				CB81A94B25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1303,15 +1375,18 @@
 				CB9C812719CFBB6400CDCAE1 /* NSString+IPAddress.m in Sources */,
 				CBE44FEB19E50900004E9706 /* AllowlistScraper.m in Sources */,
 				CB9C812619CFBB5E00CDCAE1 /* BlockManager.m in Sources */,
-				CB9C812519CFBB5500CDCAE1 /* HelperCommon.m in Sources */,
+				CB81AA3E25B7D152006956F7 /* SCHelperToolUtilities.m in Sources */,
 				CB9C812419CFBB4E00CDCAE1 /* HostFileBlocker.m in Sources */,
+				CB81A94C25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */,
 				CB1CA64F25ABA5BB0084A551 /* SCXPCClient.m in Sources */,
 				CB114283222CCF19004B7868 /* SCSettings.m in Sources */,
+				CB81A9D325B7C269006956F7 /* SCBlockUtilities.m in Sources */,
 				CB9C812319CFBB4400CDCAE1 /* LaunchctlHelper.m in Sources */,
 				CB1CA64D25ABA5BB0084A551 /* SCXPCAuthorization.m in Sources */,
 				CB9C812219CFBB3800CDCAE1 /* PacketFilter.m in Sources */,
 				CB1465BB25B027E700130D2E /* SCErr.m in Sources */,
-				CBB1731B20F05C09007FCAE9 /* SCUtilities.m in Sources */,
+				CBB1731B20F05C09007FCAE9 /* SCMiscUtilities.m in Sources */,
+				CB81A9F625B7C5F7006956F7 /* SCBlockFileReaderWriter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1321,20 +1396,23 @@
 			files = (
 				CBADC27F25B22BC7000EE5BB /* SCSentry.m in Sources */,
 				CB1CA64E25ABA5BB0084A551 /* SCXPCAuthorization.m in Sources */,
+				CB81A9D125B7C269006956F7 /* SCBlockUtilities.m in Sources */,
 				CB20C5D8245699D700B9D749 /* version-header.h in Sources */,
 				CBA2AFD90F39EC46005AFEBE /* cli-main.m in Sources */,
 				CB5DFCB82251DD1F0084CEC2 /* SCConstants.m in Sources */,
+				CB81AA3C25B7D152006956F7 /* SCHelperToolUtilities.m in Sources */,
+				CB81A9F425B7C5F7006956F7 /* SCBlockFileReaderWriter.m in Sources */,
 				CBCA91121960D87300AFD20C /* PacketFilter.m in Sources */,
 				CB73616219E5086A00E0924F /* AllowlistScraper.m in Sources */,
 				CBC2F8580F4672FE00CF2A42 /* LaunchctlHelper.m in Sources */,
 				CBB0AE2A0FA74566006229B3 /* HostFileBlocker.m in Sources */,
-				CBD266B011ED7D9C00042CD8 /* HelperCommon.m in Sources */,
+				CB81A94A25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */,
 				CB32D2A921902CB300B8CD68 /* SCSettings.m in Sources */,
 				CB1CA65025ABA5BB0084A551 /* SCXPCClient.m in Sources */,
 				CB25806216C1FDBE0059C99A /* BlockManager.m in Sources */,
 				CB25806716C237F10059C99A /* NSString+IPAddress.m in Sources */,
 				CB1465B925B027E700130D2E /* SCErr.m in Sources */,
-				CBB1731520F041F4007FCAE9 /* SCUtilities.m in Sources */,
+				CBB1731520F041F4007FCAE9 /* SCMiscUtilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1767,7 +1845,7 @@
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "$(SRCROOT)/Daemon/selfcontrold-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MARKETING_VERSION = 4.0;
+				MARKETING_VERSION = "4.0 alpha";
 				OTHER_LDFLAGS = (
 					"-sectcreate",
 					__TEXT,
@@ -1808,7 +1886,7 @@
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "$(SRCROOT)/Daemon/selfcontrold-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MARKETING_VERSION = 4.0;
+				MARKETING_VERSION = "4.0 alpha";
 				OTHER_LDFLAGS = (
 					"-sectcreate",
 					__TEXT,
@@ -1870,6 +1948,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = "SelfControl Killer/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MARKETING_VERSION = "4.0 alpha";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.selfcontrolapp.SelfControl-Killer";
@@ -1910,6 +1989,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = "SelfControl Killer/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MARKETING_VERSION = "4.0 alpha";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.selfcontrolapp.SelfControl-Killer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2019,7 +2099,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/selfcontrol-cli-Info.plist";
 				INFOPLIST_PREPROCESS = YES;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MARKETING_VERSION = 4.0;
+				MARKETING_VERSION = "4.0 alpha";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.eyebeam.selfcontrol-cli";
 				PRODUCT_NAME = "selfcontrol-cli";
 				PROVISIONING_PROFILE = "";
@@ -2049,7 +2129,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/selfcontrol-cli-Info.plist";
 				INFOPLIST_PREPROCESS = YES;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MARKETING_VERSION = 4.0;
+				MARKETING_VERSION = "4.0 alpha";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.eyebeam.selfcontrol-cli";
 				PRODUCT_NAME = "selfcontrol-cli";
 				PROVISIONING_PROFILE = "";

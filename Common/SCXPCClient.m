@@ -9,7 +9,6 @@
 #import "SCDaemonProtocol.h"
 #import <ServiceManagement/ServiceManagement.h>
 #import "SCXPCAuthorization.h"
-#import "SCUtilities.h"
 #import "SCErr.h"
 
 @interface SCXPCClient () {
@@ -192,7 +191,7 @@
         NSLog(@"WARNING: Authorized installation of selfcontrold returned failure status code %d and error %@", (int)status, error);
 
         NSError* err = [SCErr errorWithCode: 500 subDescription: error.localizedDescription];
-        if (![SCUtilities errorIsAuthCanceled: error]) {
+        if (![SCMiscUtilities errorIsAuthCanceled: error]) {
             [SCSentry captureError: err];
         }
 
@@ -275,7 +274,7 @@
                 [SCSentry captureError: proxyError];
                 reply(proxyError);
             }] startBlockWithControllingUID: controllingUID blocklist: blocklist isAllowlist:isAllowlist endDate:endDate blockSettings: blockSettings authorization: self.authorization reply:^(NSError* error) {
-                if (error != nil && ![SCUtilities errorIsAuthCanceled: error]) {
+                if (error != nil && ![SCMiscUtilities errorIsAuthCanceled: error]) {
                     NSLog(@"Start block failed with error = %@\n", error);
                     [SCSentry captureError: error];
                 }
@@ -297,7 +296,7 @@
                 [SCSentry captureError: proxyError];
                 reply(proxyError);
             }] updateBlocklist: newBlocklist authorization: self.authorization reply:^(NSError* error) {
-                if (error != nil && ![SCUtilities errorIsAuthCanceled: error]) {
+                if (error != nil && ![SCMiscUtilities errorIsAuthCanceled: error]) {
                     NSLog(@"Blocklist update failed with error = %@\n", error);
                     [SCSentry captureError: error];
                 }
@@ -319,7 +318,7 @@
                 [SCSentry captureError: proxyError];
                 reply(proxyError);
             }] updateBlockEndDate: newEndDate authorization: self.authorization reply:^(NSError* error) {
-                if (error != nil && ![SCUtilities errorIsAuthCanceled: error]) {
+                if (error != nil && ![SCMiscUtilities errorIsAuthCanceled: error]) {
                     NSLog(@"Block end date update failed with error = %@\n", error);
                     [SCSentry captureError: error];
                 }

@@ -21,10 +21,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "PacketFilter.h"
-#import "HelperCommon.h"
-#import "SCUtilities.h"
+#import "SCHelperToolUtilities.h"
 #import "SCSettings.h"
 #import "SCXPCClient.h"
+#import "SCBlockFileReaderWriter.h"
+#import <sysexits.h>
 
 // The main method which deals which most of the logic flow and execution of
 // the CLI tool.
@@ -47,7 +48,7 @@ int main(int argc, char* argv[]) {
         // if we're running as root/sudo and we have a controlling UID, use defaults for the controlling user (legacy behavior)
         // otherwise, just use the current user's defaults (modern behavior)
         if (geteuid() == 0 && controllingUID > 0) {
-            defaultsDict = [SCUtilities defaultsDictForUser: controllingUID];
+            defaultsDict = [SCMiscUtilities defaultsDictForUser: controllingUID];
         } else {
             defaultsDict = [NSUserDefaults standardUserDefaults].dictionaryRepresentation;
         }
@@ -55,7 +56,7 @@ int main(int argc, char* argv[]) {
 		if([modeString isEqual: @"--install"]) {
             [SCSentry addBreadcrumb: @"CLI method --install called" category: @"cli"];
 
-            if ([SCUtilities anyBlockIsRunning]) {
+            if ([SCBlockUtilities anyBlockIsRunning]) {
                 NSLog(@"ERROR: Block is already running");
                 exit(EX_CONFIG);
             }
@@ -81,7 +82,7 @@ int main(int argc, char* argv[]) {
                     exit(EX_IOERR);
                 } else {
                     blockEndDate = blockEndDateArg;
-                    NSDictionary* readProperties = [SCUtilities readBlocklistFromFile: [NSURL fileURLWithPath: pathToBlocklistFile]];
+                    NSDictionary* readProperties = [SCBlockFileReaderWriter readBlocklistFromFile: [NSURL fileURLWithPath: pathToBlocklistFile]];
                     
                     if (readProperties == nil) {
                         NSLog(@"ERROR: Block could not be read from file %@", pathToBlocklistFile);
@@ -182,7 +183,7 @@ int main(int argc, char* argv[]) {
             NSLog(@"%@", [settings dictionaryRepresentation]);
         } else if ([modeString isEqualToString: @"--is-running"]) {
             [SCSentry addBreadcrumb: @"CLI method --is-running called" category: @"cli"];
-            BOOL blockIsRunning = [SCUtilities anyBlockIsRunning];
+            BOOL blockIsRunning = [SCBlockUtilities anyBlockIsRunning];
             NSLog(@"%@", blockIsRunning ? @"YES" : @"NO");
         } else if ([modeString isEqualToString: @"--version"]) {
             [SCSentry addBreadcrumb: @"CLI method --version called" category: @"cli"];

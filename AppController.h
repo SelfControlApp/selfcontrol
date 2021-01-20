@@ -29,7 +29,6 @@
 #import <Security/Security.h>
 #import <SystemConfiguration/SCNetwork.h>
 #import <unistd.h>
-#import "SelfControlCommon.h"
 #import "SCSettings.h"
 
 // The main controller for the SelfControl app, which includes several methods
@@ -74,16 +73,13 @@
 // user interface.  Called very often by several parts of the program.
 - (void)refreshUserInterface;
 
-- (void)handleConfigurationChangedNotification;
-
 // Called when the "Edit blocklist" button is clicked or the menu item is
 // selected.  Allocates a new DomainListWindowController if necessary and opens
 // the domain blocklist window.  Spawns an alert box if a block is in progress.
 - (IBAction)showDomainList:(id)sender;
 
-// Returns YES if, according to a flag set in the user defaults system, the
-// SelfControl launchd daemon (and therefore the block) is loaded.  Returns NO
-// if it is not.
+// Returns YES if, according to settings or the hostfile, the
+// SelfControl block is running  Returns NO if it is not.
 @property (nonatomic, readonly) BOOL blockIsRunning;
 
 // Allocates a new TimerWindowController if necessary and opens the timer window.
@@ -136,6 +132,7 @@
 // Changed property to manual accessor for pre-Leopard compatibility
 @property (nonatomic, readonly, strong) id initialWindow;
 
+// opens the SelfControl FAQ in the default browser
 - (IBAction)openFAQ:(id)sender;
 
 @end

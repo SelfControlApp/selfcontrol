@@ -23,7 +23,6 @@
 
 
 #import "TimerWindowController.h"
-#import "SCUtilities.h"
 
 @interface TimerWindowController ()
 
@@ -76,16 +75,16 @@
 	addToBlockButton_.hidden = NO;
     extendBlockButton_.hidden = NO;
 
-    if ([SCUtilities modernBlockIsRunning]) {
+    if ([SCBlockUtilities modernBlockIsRunning]) {
         blockEndingDate_ = [settings_ valueForKey: @"BlockEndDate"];
     } else {
         // legacy block!
-        blockEndingDate_ = [SCUtilities legacyBlockEndDate];
+        blockEndingDate_ = [SCMigrationUtilities legacyBlockEndDate];
         
         // if it's a legacy block, we will disable some features
         // since it's too difficult to get these working across versions.
         // the user will just have to wait until their next block to do these things!
-        if ([SCUtilities legacyBlockIsRunning]) {
+        if ([SCBlockUtilities legacyBlockIsRunning]) {
             addToBlockButton_.enabled = YES;
             extendBlockButton_.enabled = YES;
         }
@@ -215,7 +214,7 @@
     
     // make sure add to list is disabled if it's an allowlist block
     // don't worry about it for a legacy block! the buttons are disabled anyway so it doesn't matter
-    if ([SCUtilities modernBlockIsRunning]) {
+    if ([SCBlockUtilities modernBlockIsRunning]) {
         addToBlockButton_.hidden = [settings_ boolForKey: @"ActiveBlockAsWhitelist"];
     }
 }
@@ -281,12 +280,12 @@
 }
 
 - (void) blockEndDateUpdated {
-    if ([SCUtilities modernBlockIsRunning]) {
+    if ([SCBlockUtilities modernBlockIsRunning]) {
         blockEndingDate_ = [settings_ valueForKey: @"BlockEndDate"];
 
     } else {
         // legacy block!
-        blockEndingDate_ = [SCUtilities legacyBlockEndDate];
+        blockEndingDate_ = [SCMigrationUtilities legacyBlockEndDate];
     }
     
     [self performSelectorOnMainThread: @selector(updateTimerDisplay:) withObject:nil waitUntilDone: YES];

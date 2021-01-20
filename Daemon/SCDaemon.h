@@ -9,10 +9,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+// SCDaemon is the top-level class that runs the SelfControl
+// daemon process (selfcontrold). It runs from DaemonMain.
 @interface SCDaemon : NSObject
 
+// Singleton instance of SCDaemon
 + (instancetype)sharedDaemon;
 
+
+// Starts the daemon tasks, including accepting XPC connections
+// and running block checkup jobs if necessary
 - (void)start;
 
 // Starts checking up on the block on a regular basis

@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 #import "SCDaemon.h"
 
+// Entry point for the SelfControl daemon process (selfcontrold)
 int main(int argc, const char *argv[]) {
     [SCSentry startSentry: @"org.eyebeam.selfcontrold"];
 

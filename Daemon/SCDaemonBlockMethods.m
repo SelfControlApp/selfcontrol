@@ -7,11 +7,11 @@
 
 #import "SCDaemonBlockMethods.h"
 #import "SCSettings.h"
-#import "HelperCommon.h"
+#import "SCHelperToolUtilities.h"
 #import "PacketFilter.h"
-#import "SCDaemonUtilities.h"
 #import "BlockManager.h"
 #import "SCDaemon.h"
+#import "LaunchctlHelper.h"
 
 NSTimeInterval METHOD_LOCK_TIMEOUT = 5.0;
 NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for checkups, because we'd prefer not to have tons pile up
@@ -59,7 +59,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     
     [SCSentry addBreadcrumb: @"Daemon method startBlock called" category: @"daemon"];
     
-    if ([SCUtilities anyBlockIsRunning]) {
+    if ([SCBlockUtilities anyBlockIsRunning]) {
         NSLog(@"ERROR: Can't start block since a block is already running");
         NSError* err = [SCErr errorWithCode: 301];
         [SCSentry captureError: err];
@@ -70,9 +70,9 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     
     // clear any legacy block information - no longer useful and could potentially confuse things
     // but first, copy it over one more time (this should've already happened once in the app, but you never know)
-    if ([SCUtilities legacySettingsFoundForUser: controllingUID]) {
-        [SCUtilities copyLegacySettingsToDefaults: controllingUID];
-        [SCUtilities clearLegacySettingsForUser: controllingUID];
+    if ([SCMigrationUtilities legacySettingsFoundForUser: controllingUID]) {
+        [SCMigrationUtilities copyLegacySettingsToDefaults: controllingUID];
+        [SCMigrationUtilities clearLegacySettingsForUser: controllingUID];
         
         // if we had legacy settings, there's a small chance the old helper tool could still be around
         // make sure it's dead and gone
@@ -95,7 +95,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     [settings setValue: blockSettings[@"BlockSound"] forKey: @"BlockSound"];
     [settings setValue: blockSettings[@"EnableErrorReporting"] forKey: @"EnableErrorReporting"];
 
-    if([blocklist count] <= 0 || [SCUtilities currentBlockIsExpired]) {
+    if([blocklist count] <= 0 || [SCBlockUtilities currentBlockIsExpired]) {
         NSLog(@"ERROR: Blocklist is empty, or block end date is in the past");
         NSLog(@"Block End Date: %@ (%@), vs now is %@", [settings valueForKey: @"BlockEndDate"], [[settings valueForKey: @"BlockEndDate"] class], [NSDate date]);
         NSError* err = [SCErr errorWithCode: 302];
@@ -106,17 +106,17 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     }
 
     NSLog(@"Adding firewall rules...");
-    addRulesToFirewall();
+    [SCHelperToolUtilities installBlockRulesFromSettings];
     [settings setValue: @YES forKey: @"BlockIsRunning"];
     [settings synchronizeSettings]; // synchronize ASAP since BlockIsRunning is a really important one
 
     NSLog(@"Firewall rules added!");
     
-    sendConfigurationChangedNotification();
+    [SCHelperToolUtilities sendConfigurationChangedNotification];
 
     // Clear all caches if the user has the correct preference set, so
     // that blocked pages are not loaded from a cache.
-    clearCachesIfRequested();
+    [SCHelperToolUtilities clearCachesIfRequested];
 
     [SCSentry addBreadcrumb: @"Daemon added block successfully" category: @"daemon"];
     NSLog(@"INFO: Block successfully added.");
@@ -133,7 +133,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     }
     
     [SCSentry addBreadcrumb: @"Daemon method updateBlocklist called" category: @"daemon"];
-    if ([SCUtilities legacyBlockIsRunning]) {
+    if ([SCBlockUtilities legacyBlockIsRunning]) {
         NSLog(@"ERROR: Can't update blocklist because a legacy block is running");
         NSError* err = [SCErr errorWithCode: 303];
         [SCSentry captureError: err];
@@ -141,7 +141,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         [self.daemonMethodLock unlock];
         return;
     }
-    if (![SCUtilities modernBlockIsRunning]) {
+    if (![SCBlockUtilities modernBlockIsRunning]) {
         NSLog(@"ERROR: Can't update blocklist since block isn't running");
         NSError* err = [SCErr errorWithCode: 304];
         [SCSentry captureError: err];
@@ -183,11 +183,11 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     [settings setValue: newBlocklist forKey: @"ActiveBlocklist"];
     [settings synchronizeSettings]; // make sure everyone knows about our new list
 
-    sendConfigurationChangedNotification();
+    [SCHelperToolUtilities sendConfigurationChangedNotification];
 
     // Clear all caches if the user has the correct preference set, so
     // that blocked pages are not loaded from a cache.
-    clearCachesIfRequested();
+    [SCHelperToolUtilities clearCachesIfRequested];
 
     [SCSentry addBreadcrumb: @"Daemon updated blocklist successfully" category: @"daemon"];
     NSLog(@"INFO: Blocklist successfully updated.");
@@ -204,7 +204,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     
     [SCSentry addBreadcrumb: @"Daemon method updateBlockEndDate called" category: @"daemon"];
 
-    if ([SCUtilities legacyBlockIsRunning]) {
+    if ([SCBlockUtilities legacyBlockIsRunning]) {
         NSLog(@"ERROR: Can't update block end date because a legacy block is running");
         NSError* err = [SCErr errorWithCode: 306];
         [SCSentry captureError: err];
@@ -212,7 +212,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         [self.daemonMethodLock unlock];
         return;
     }
-    if (![SCUtilities modernBlockIsRunning]) {
+    if (![SCBlockUtilities modernBlockIsRunning]) {
         NSLog(@"ERROR: Can't update block end date since block isn't running");
         NSError* err = [SCErr errorWithCode: 307];
         [SCSentry captureError: err];
@@ -245,7 +245,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     [settings setValue: newEndDate forKey: @"BlockEndDate"];
     [settings synchronizeSettings]; // make sure everyone knows about our new end date
 
-    sendConfigurationChangedNotification();
+    [SCHelperToolUtilities sendConfigurationChangedNotification];
 
     [SCSentry addBreadcrumb: @"Daemon extended block successfully" category: @"daemon"];
     NSLog(@"INFO: Block successfully extended.");
@@ -269,7 +269,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         lastBlockIntegrityCheck = [NSDate distantPast];
     }
 
-    if(![SCUtilities anyBlockIsRunning]) {
+    if(![SCBlockUtilities anyBlockIsRunning]) {
         // No block appears to be running at all in our settings.
         // Most likely, the user removed it trying to get around the block. Boo!
         // but for safety and to avoid permablocks (we no longer know when the block should end)
@@ -279,9 +279,9 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         
         [SCSentry captureMessage: @"Checkup ran and no active block found! Removing block, tampering suspected..."];
         
-        removeBlock();
+        [SCHelperToolUtilities removeBlock];
 
-        sendConfigurationChangedNotification();
+        [SCHelperToolUtilities sendConfigurationChangedNotification];
         
         // Temporarily disabled the TamperingDetection flag because it was sometimes causing false positives
         // (i.e. people having the background set repeatedly despite no attempts to cheat)
@@ -293,15 +293,15 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         
         // once the checkups stop, the daemon will clear itself in a while due to inactivity
         [[SCDaemon sharedDaemon] stopCheckupTimer];
-    } else if ([SCUtilities currentBlockIsExpired]) {
+    } else if ([SCBlockUtilities currentBlockIsExpired]) {
         NSLog(@"INFO: Checkup ran, block expired, removing block.");
         
-        removeBlock();
+        [SCHelperToolUtilities removeBlock];
         
-        sendConfigurationChangedNotification();
+        [SCHelperToolUtilities sendConfigurationChangedNotification];
         
         [SCSentry addBreadcrumb: @"Daemon found and cleared expired block" category: @"daemon"];
-        
+
         // once the checkups stop, the daemon will clear itself in a while due to inactivity
         [[SCDaemon sharedDaemon] stopCheckupTimer];
     } else if ([[NSDate date] timeIntervalSinceDate: lastBlockIntegrityCheck] > integrityCheckIntervalSecs) {
@@ -336,9 +336,9 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
             [hostFileBlocker deleteBackupHostsFile];
 
             // Perform the re-add of the rules
-            addRulesToFirewall();
+            [SCHelperToolUtilities installBlockRulesFromSettings];
             
-            clearCachesIfRequested();
+            [SCHelperToolUtilities clearCachesIfRequested];
 
             [SCSentry addBreadcrumb: @"Daemon found compromised block integrity and re-added rules" category: @"daemon"];
             NSLog(@"INFO: Checkup ran, readded block rules.");

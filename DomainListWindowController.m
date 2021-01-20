@@ -22,7 +22,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "DomainListWindowController.h"
-#import "SCUtilities.h"
 #import "AppController.h"
 
 @implementation DomainListWindowController
@@ -130,7 +129,7 @@
 		return;
 	}
     
-    NSArray<NSString*>* cleanedEntries = [SCUtilities cleanBlocklistEntry: newString];
+    NSArray<NSString*>* cleanedEntries = [SCMiscUtilities cleanBlocklistEntry: newString];
     
     for (int i = 0; i < cleanedEntries.count; i++) {
         NSString* entry = cleanedEntries[i];
