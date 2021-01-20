@@ -102,14 +102,14 @@ class SelfControlRelease
     
     def get_dsa_signature
         puts "Generating DSA signature for archive at path #{@archive_path}"
-        puts "Command: #{SOURCE_FOLDER}/Pods/Sparkle/bin/old_dsa_scripts/sign_update \"#{@archive_path}\" /Volumes/SelfControl\ Keys\ and\ Secrets/Sparkle\ Signing\ Keys/dsa_priv.pem"
-        return `#{SOURCE_FOLDER}/Pods/Sparkle/bin/old_dsa_scripts/sign_update \"#{@archive_path}\" \"/Volumes/SelfControl\ Keys\ and\ Secrets/Sparkle\ Signing\ Keys/dsa_priv.pem\"`.chomp
+        puts "Command: #{SOURCE_FOLDER}/Sparkle/bin/old_dsa_scripts/sign_update \"#{@archive_path}\" /Volumes/SelfControl\ Keys\ and\ Secrets/Sparkle\ Signing\ Keys/dsa_priv.pem"
+        return `#{SOURCE_FOLDER}/Sparkle/bin/old_dsa_scripts/sign_update \"#{@archive_path}\" \"/Volumes/SelfControl\ Keys\ and\ Secrets/Sparkle\ Signing\ Keys/dsa_priv.pem\"`.chomp
     end
     
     def get_eddsa_signature_and_length_parameters
         puts "Generating edDSA signature parameters for archive at path #{@archive_path}"
-        puts "Command: #{SOURCE_FOLDER}/Pods/Sparkle/bin/sign_update \"#{@archive_path}\""
-        return `#{SOURCE_FOLDER}/Pods/Sparkle/bin/sign_update \"#{@archive_path}\"`.chomp
+        puts "Command: #{SOURCE_FOLDER}/Sparkle/bin/sign_update \"#{@archive_path}\""
+        return `#{SOURCE_FOLDER}/Sparkle/bin/sign_update \"#{@archive_path}\"`.chomp
     end
     
     def create_appcast_xml_snippet

@@ -84,12 +84,12 @@
 - (NSString *)timeSliderDisplayStringFromNumberOfMinutes:(NSInteger)numberOfMinutes {
     static NSCalendar* gregorian = nil;
     if (gregorian == nil) {
-        gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     }
 
     NSRange secondsRangePerMinute = [gregorian
-                                     rangeOfUnit:NSSecondCalendarUnit
-                                     inUnit:NSMinuteCalendarUnit
+                                     rangeOfUnit:NSCalendarUnitSecond
+                                     inUnit:NSCalendarUnitMinute
                                      forDate:[NSDate date]];
     NSUInteger numberOfSecondsPerMinute = NSMaxRange(secondsRangePerMinute);
 
@@ -255,7 +255,7 @@
 
 - (void)showTimerWindow {
 	if(timerWindowController_ == nil) {
-		[NSBundle loadNibNamed: @"TimerWindow" owner: self];
+        [[NSBundle mainBundle] loadNibNamed: @"TimerWindow" owner: self topLevelObjects: nil];
 	} else {
 		[[timerWindowController_ window] makeKeyAndOrderFront: self];
 		[[timerWindowController_ window] center];
@@ -433,7 +433,7 @@
 	}
 
 	if(domainListWindowController_ == nil) {
-		[NSBundle loadNibNamed: @"DomainList" owner: self];
+        [[NSBundle mainBundle] loadNibNamed: @"DomainList" owner: self topLevelObjects: nil];
 	}
 	[domainListWindowController_ showWindow: self];
 }
@@ -738,18 +738,18 @@
 	runResult = [sp runModal];
 
 	/* if successful, save file under designated name */
-	if (runResult == NSOKButton) {
-        NSString* errDescription;
+	if (runResult == NSModalResponseOK) {
+        NSError* err;
         [SCBlockFileReaderWriter writeBlocklistToFileURL: sp.URL
                                    blockInfo: @{
                                        @"Blocklist": [defaults_ arrayForKey: @"Blocklist"],
                                        @"BlockAsWhitelist": [defaults_ objectForKey: @"BlockAsWhitelist"]
                                        
                                    }
-                                   errorDescription: &errDescription];
+                                   error: &err];
 
-        if(errDescription) {
-            NSError* displayErr = [SCErr errorWithCode: 105 subDescription: errDescription];
+        if (err != nil) {
+            NSError* displayErr = [SCErr errorWithCode: 105 subDescription: err.localizedDescription];
             [SCSentry captureError: displayErr];
             NSBeep();
 			[NSApp presentError: displayErr];
@@ -760,60 +760,46 @@
 	}
 }
 
+- (BOOL)openSavedBlockFileAtURL:(NSURL*)fileURL {
+    NSDictionary* settingsFromFile = [SCBlockFileReaderWriter readBlocklistFromFile: fileURL];
+    
+    if (settingsFromFile != nil) {
+        [defaults_ setObject: settingsFromFile[@"Blocklist"] forKey: @"Blocklist"];
+        [defaults_ setObject: settingsFromFile[@"BlockAsWhitelist"] forKey: @"BlockAsWhitelist"];
+        [SCSentry addBreadcrumb: @"Opened blocklist from file" category:@"app"];
+    } else {
+        NSLog(@"WARNING: Could not read a valid blocklist from file - ignoring.");
+        return NO;
+    }
+
+    // close the domain list (and reopen again if need be to refresh)
+    BOOL domainListIsOpen = [[domainListWindowController_ window] isVisible];
+    NSRect frame = [[domainListWindowController_ window] frame];
+    [self closeDomainList];
+    if(domainListIsOpen) {
+        [self showDomainList: self];
+        [[domainListWindowController_ window] setFrame: frame display: YES];
+    }
+    
+    [self refreshUserInterface];
+    return YES;
+}
+
 - (IBAction)open:(id)sender {
-    NSLog(@"CALLED OPEN OPENING FILE!");
 	NSOpenPanel* oPanel = [NSOpenPanel openPanel];
 	oPanel.allowedFileTypes = @[@"selfcontrol"];
 	oPanel.allowsMultipleSelection = NO;
 
 	long result = [oPanel runModal];
-	if (result == NSOKButton) {
+	if (result == NSModalResponseOK) {
 		if([oPanel.URLs count] > 0) {
-            NSDictionary* settingsFromFile = [SCBlockFileReaderWriter readBlocklistFromFile: oPanel.URLs[0]];
-            
-            if (settingsFromFile != nil) {
-                [defaults_ setObject: settingsFromFile[@"Blocklist"] forKey: @"Blocklist"];
-                [defaults_ setObject: settingsFromFile[@"BlockAsWhitelist"] forKey: @"BlockAsWhitelist"];
-                [SCSentry addBreadcrumb: @"Opened blocklist from file" category:@"app"];
-            } else {
-                NSLog(@"WARNING: Could not read a valid blocklist from file - ignoring.");
-            }
-
-            // close the domain list (and reopen again if need be to refresh)
-            BOOL domainListIsOpen = [[domainListWindowController_ window] isVisible];
-			NSRect frame = [[domainListWindowController_ window] frame];
-			[self closeDomainList];
-			if(domainListIsOpen) {
-				[self showDomainList: self];
-				[[domainListWindowController_ window] setFrame: frame display: YES];
-			}
-            
-            [self refreshUserInterface];
+            [self openSavedBlockFileAtURL: oPanel.URLs[0]];
 		}
 	}
 }
 
 - (BOOL)application:(NSApplication*)theApplication openFile:(NSString*)filename {
-    NSLog(@"CALLED APPLICATION OPEN FILE!");
-	NSDictionary* openedDict = [NSDictionary dictionaryWithContentsOfFile: filename];
-	if(openedDict == nil) return NO;
-
-	NSArray* newBlocklist = openedDict[@"HostBlacklist"];
-	NSNumber* newAllowlistChoice = openedDict[@"BlockAsWhitelist"];
-	if(newBlocklist == nil || newAllowlistChoice == nil) return NO;
-    
-    [defaults_ setValue: newBlocklist forKey:@"Blocklist"];
-    [defaults_ setObject: newAllowlistChoice forKey: @"BlockAsWhitelist"];
-    
-	BOOL domainListIsOpen = [[domainListWindowController_ window] isVisible];
-	NSRect frame = [[domainListWindowController_ window] frame];
-	[self closeDomainList];
-	if(domainListIsOpen) {
-		[self showDomainList: self];
-		[[domainListWindowController_ window] setFrame: frame display: YES];
-	}
-
-	return YES;
+    return [self openSavedBlockFileAtURL: [NSURL fileURLWithPath: filename]];
 }
 
 - (IBAction)openFAQ:(id)sender {

@@ -9,25 +9,24 @@
 
 @implementation SCBlockFileReaderWriter
 
-+ (BOOL)writeBlocklistToFileURL:(NSURL*)targetFileURL blockInfo:(NSDictionary*)blockInfo errorDescription:(NSString**)errDescriptionRef {
++ (BOOL)writeBlocklistToFileURL:(NSURL*)targetFileURL blockInfo:(NSDictionary*)blockInfo error:(NSError**)errRef {
     NSDictionary* saveDict = @{@"HostBlacklist": [blockInfo objectForKey: @"Blocklist"],
                                @"BlockAsWhitelist": [blockInfo objectForKey: @"BlockAsWhitelist"]};
 
-    NSString* saveDataErr;
-    NSData* saveData = [NSPropertyListSerialization dataFromPropertyList: saveDict format: NSPropertyListBinaryFormat_v1_0 errorDescription: &saveDataErr];
-    if (saveDataErr != nil) {
-        *errDescriptionRef = saveDataErr;
+    NSData* saveData = [NSPropertyListSerialization dataWithPropertyList: saveDict format: NSPropertyListBinaryFormat_v1_0 options: 0 error: errRef];
+    if (*errRef != nil) {
         return NO;
     }
 
     if (![saveData writeToURL: targetFileURL atomically: YES]) {
         NSLog(@"ERROR: Failed to write blocklist to URL %@", targetFileURL);
+        *errRef = [SCErr errorWithCode: 106];
         return NO;
     }
     
     // for prettiness sake, attempt to hide the file extension
     NSDictionary* attribs = @{NSFileExtensionHidden: @YES};
-    [[NSFileManager defaultManager] setAttributes: attribs ofItemAtPath: [targetFileURL path] error: NULL];
+    [[NSFileManager defaultManager] setAttributes: attribs ofItemAtPath: [targetFileURL path] error: errRef];
     
     return YES;
 }

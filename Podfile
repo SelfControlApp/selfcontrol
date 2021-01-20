@@ -1,5 +1,8 @@
 source 'https://github.com/CocoaPods/Specs.git'
-platform :osx, '10.10'
+
+minVersion = '10.10'
+
+platform :osx, minVersion
 
 # cocoapods-prune-localizations doesn't appear to auto-detect pods properly, so using a manual list
 supported_locales = ['Base', 'da', 'de', 'en', 'es', 'fr', 'it', 'ja', 'ko', 'nl', 'pt-BR', 'sv', 'tr', 'zh-Hans']
@@ -9,24 +12,34 @@ target "SelfControl" do
     use_frameworks! :linkage => :static
     pod 'MASPreferences', '~> 1.1.4'
     pod 'FormatterKit/TimeIntervalFormatter', '~> 1.8.0'
-    pod 'Sparkle', '~> 1.22'
     pod 'LetsMove', '~> 1.24'
-    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '6.1.2'
+    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '6.1.3'
 end
 
 target "SelfControl Killer" do
     use_frameworks! :linkage => :static
-    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '6.1.2'
+    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '6.1.3'
 end
 
 # we can't use_frameworks on these because they're command-line tools
 # Sentry says we need use_frameworks, but they seem to work OK anyway?
 target "SCKillerHelper" do
-    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '6.1.2'
+    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '6.1.3'
 end
 target "selfcontrol-cli" do
-    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '6.1.2'
+    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '6.1.3'
 end
 target "org.eyebeam.selfcontrold" do
-    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '6.1.2'
+    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '6.1.3'
+end
+
+post_install do |pi|
+   pi.pods_project.targets.each do |t|
+       t.build_configurations.each do |bc|
+           if Gem::Version.new(bc.build_settings['MACOSX_DEPLOYMENT_TARGET']) < Gem::Version.new(minVersion)
+#            if bc.build_settings['MACOSX_DEPLOYMENT_TARGET'] == '8.0'
+               bc.build_settings['MACOSX_DEPLOYMENT_TARGET'] = minVersion
+           end
+       end
+   end
 end
