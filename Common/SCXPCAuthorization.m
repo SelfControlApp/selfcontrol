@@ -15,7 +15,7 @@ static NSString * kCommandKeyAuthRightName    = @"authRightName";
 static NSString * kCommandKeyAuthRightDefault = @"authRightDefault";
 static NSString * kCommandKeyAuthRightDesc    = @"authRightDescription";
 
-static NSDictionary* kAuthorizationRuleAuthenticateAsAdmin5MinTimeout;
+static NSDictionary* kAuthorizationRuleAuthenticateAsAdmin2MinTimeout;
 
 // copied from Apple's Even Better Authorization Sample code
 + (NSError *)checkAuthorization:(NSData *)authData command:(SEL)command
@@ -74,11 +74,11 @@ static NSDictionary* kAuthorizationRuleAuthenticateAsAdmin5MinTimeout;
     static NSDictionary *  sCommandInfo;
     
     // static var needs to bre defined before first use
-    if (kAuthorizationRuleAuthenticateAsAdmin5MinTimeout == nil) {
-        kAuthorizationRuleAuthenticateAsAdmin5MinTimeout = @{
+    if (kAuthorizationRuleAuthenticateAsAdmin2MinTimeout == nil) {
+        kAuthorizationRuleAuthenticateAsAdmin2MinTimeout = @{
             @"class": @"user",
             @"group": @"admin",
-            @"timeout": @(300), // 5 minutes
+            @"timeout": @(120), // 2 minutes
             @"shared": @(YES),
             @"version": @1 // not entirely sure what this does TBH
         };
@@ -90,7 +90,7 @@ static NSDictionary* kAuthorizationRuleAuthenticateAsAdmin5MinTimeout;
         
         NSDictionary* startBlockCommandInfo = @{
             kCommandKeyAuthRightName    : @"org.eyebeam.SelfControl.startBlock",
-            kCommandKeyAuthRightDefault : kAuthorizationRuleAuthenticateAsAdmin5MinTimeout,
+            kCommandKeyAuthRightDefault : kAuthorizationRuleAuthenticateAsAdmin2MinTimeout,
             kCommandKeyAuthRightDesc    : NSLocalizedString(
                 @"SelfControl needs your username and password to start the block.",
                 @"prompt shown when user is required to authorize to start block"
@@ -98,7 +98,7 @@ static NSDictionary* kAuthorizationRuleAuthenticateAsAdmin5MinTimeout;
         };
         NSDictionary* modifyBlockCommandInfo = @{
             kCommandKeyAuthRightName    : @"org.eyebeam.SelfControl.modifyBlock",
-            kCommandKeyAuthRightDefault : kAuthorizationRuleAuthenticateAsAdmin5MinTimeout,
+            kCommandKeyAuthRightDefault : kAuthorizationRuleAuthenticateAsAdmin2MinTimeout,
             kCommandKeyAuthRightDesc    : NSLocalizedString(
                 @"SelfControl needs your username and password to modify the block",
                 @"prompt shown when user is required to authorize to modify their block"
