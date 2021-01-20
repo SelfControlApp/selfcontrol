@@ -108,7 +108,12 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     NSLog(@"Adding firewall rules...");
     [SCHelperToolUtilities installBlockRulesFromSettings];
     [settings setValue: @YES forKey: @"BlockIsRunning"];
-    [settings synchronizeSettings]; // synchronize ASAP since BlockIsRunning is a really important one
+    
+    NSError* syncErr = [settings syncSettingsAndWait: 5]; // synchronize ASAP since BlockIsRunning is a really important one
+    if (syncErr != nil) {
+        NSLog(@"WARNING: Sync failed or timed out with error %@ after starting block", syncErr);
+        [SCSentry captureError: syncErr];
+    }
 
     NSLog(@"Firewall rules added!");
     
@@ -181,7 +186,13 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     [blockManager finishAppending];
     
     [settings setValue: newBlocklist forKey: @"ActiveBlocklist"];
-    [settings synchronizeSettings]; // make sure everyone knows about our new list
+    
+    // make sure everyone knows about our new list
+    NSError* syncErr = [settings syncSettingsAndWait: 5];
+    if (syncErr != nil) {
+        NSLog(@"WARNING: Sync failed or timed out with error %@ after updating blocklist", syncErr);
+        [SCSentry captureError: syncErr];
+    }
 
     [SCHelperToolUtilities sendConfigurationChangedNotification];
 
@@ -243,7 +254,13 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     }
     
     [settings setValue: newEndDate forKey: @"BlockEndDate"];
-    [settings synchronizeSettings]; // make sure everyone knows about our new end date
+    
+    // make sure everyone knows about our new end date
+    NSError* syncErr = [settings syncSettingsAndWait: 5];
+    if (syncErr != nil) {
+        NSLog(@"WARNING: Sync failed or timed out with error %@ after extending block", syncErr);
+        [SCSentry captureError: syncErr];
+    }
 
     [SCHelperToolUtilities sendConfigurationChangedNotification];
 
