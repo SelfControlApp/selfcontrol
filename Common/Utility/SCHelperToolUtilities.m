@@ -144,8 +144,7 @@
 }
 
 + (void)removeBlock {
-    SCSettings* settings = [SCSettings sharedSettings];
-
+    [SCBlockUtilities removeBlockFromSettings];
     [[BlockManager new] clearBlock];
     
     [SCHelperToolUtilities clearCachesIfRequested];
@@ -156,7 +155,7 @@
     // always synchronize settings ASAP after removing a block to let everybody else know
     // and wait until they're synced before we send the configuration change notification
     // so the app has no chance of reading the data before we update it
-    NSError* syncErr = [settings syncSettingsAndWait: 5.0];
+    NSError* syncErr = [[SCSettings sharedSettings] syncSettingsAndWait: 5.0];
     if (syncErr != nil) {
         NSLog(@"WARNING: Sync failed or timed out with error %@ after removing block", syncErr);
         [SCSentry captureError: syncErr];

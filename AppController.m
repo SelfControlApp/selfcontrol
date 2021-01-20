@@ -761,6 +761,7 @@
 }
 
 - (IBAction)open:(id)sender {
+    NSLog(@"CALLED OPEN OPENING FILE!");
 	NSOpenPanel* oPanel = [NSOpenPanel openPanel];
 	oPanel.allowedFileTypes = @[@"selfcontrol"];
 	oPanel.allowsMultipleSelection = NO;
@@ -793,6 +794,7 @@
 }
 
 - (BOOL)application:(NSApplication*)theApplication openFile:(NSString*)filename {
+    NSLog(@"CALLED APPLICATION OPEN FILE!");
 	NSDictionary* openedDict = [NSDictionary dictionaryWithContentsOfFile: filename];
 	if(openedDict == nil) return NO;
 

@@ -1845,7 +1845,7 @@
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "$(SRCROOT)/Daemon/selfcontrold-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MARKETING_VERSION = 4.0;
+				MARKETING_VERSION = "4.0 alpha";
 				OTHER_LDFLAGS = (
 					"-sectcreate",
 					__TEXT,
@@ -1886,7 +1886,7 @@
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "$(SRCROOT)/Daemon/selfcontrold-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MARKETING_VERSION = 4.0;
+				MARKETING_VERSION = "4.0 alpha";
 				OTHER_LDFLAGS = (
 					"-sectcreate",
 					__TEXT,
@@ -1948,6 +1948,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = "SelfControl Killer/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MARKETING_VERSION = "4.0 alpha";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.selfcontrolapp.SelfControl-Killer";
@@ -1988,6 +1989,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = "SelfControl Killer/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MARKETING_VERSION = "4.0 alpha";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.selfcontrolapp.SelfControl-Killer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2097,7 +2099,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/selfcontrol-cli-Info.plist";
 				INFOPLIST_PREPROCESS = YES;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MARKETING_VERSION = 4.0;
+				MARKETING_VERSION = "4.0 alpha";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.eyebeam.selfcontrol-cli";
 				PRODUCT_NAME = "selfcontrol-cli";
 				PROVISIONING_PROFILE = "";
@@ -2127,7 +2129,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/selfcontrol-cli-Info.plist";
 				INFOPLIST_PREPROCESS = YES;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MARKETING_VERSION = 4.0;
+				MARKETING_VERSION = "4.0 alpha";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.eyebeam.selfcontrol-cli";
 				PRODUCT_NAME = "selfcontrol-cli";
 				PROVISIONING_PROFILE = "";
