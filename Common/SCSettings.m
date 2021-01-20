@@ -94,7 +94,11 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
         @"BlockSound": @5,
         @"ClearCaches": @YES,
         @"AllowLocalNetworks": @YES,
-        @"EnableErrorReporting": @NO,
+        // why default error reporting on here, but off in defaults?
+        // generally, error reporting in settings should _always_ be copied by defaults
+        // if the default settings are used, that's an error that we want to report
+        // and obviously we can't trust the EnableErrorReporting setting at that point!
+        @"EnableErrorReporting": @YES,
 
         @"SettingsVersionNumber": @0,
         @"LastSettingsUpdate": [NSDate distantPast] // special value that keeps track of when we last updated our settings
