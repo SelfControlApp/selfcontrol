@@ -304,8 +304,8 @@
     settings_ = [SCSettings sharedSettings];
     // go copy over any preferences from legacy setting locations
     // (we won't clear any old data yet - we leave that to the daemon)
-    if ([SCUtilities legacySettingsFoundForCurrentUser]) {
-        [SCUtilities copyLegacySettingsToDefaults];
+    if ([SCMigrationUtilities legacySettingsFoundForCurrentUser]) {
+        [SCMigrationUtilities copyLegacySettingsToDefaults];
     }
 
     // start up our daemon XPC

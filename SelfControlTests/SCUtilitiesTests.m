@@ -167,14 +167,14 @@ NSDictionary* veryLongBlockLegacyDict; // year-long block, one day in
 - (void) testLegacyBlockDetection {
     // test blockIsRunningInLegacyDictionary
     // the block is "running" even if it's expired, since it hasn't been removed
-    XCTAssert([SCUtilities blockIsRunningInLegacyDictionary: activeBlockLegacyDict]);
-    XCTAssert([SCUtilities blockIsRunningInLegacyDictionary: expiredBlockLegacyDict]);
-    XCTAssert(![SCUtilities blockIsRunningInLegacyDictionary: noBlockLegacyDict]);
-    XCTAssert(![SCUtilities blockIsRunningInLegacyDictionary: noBlockLegacyDict2]);
-    XCTAssert([SCUtilities blockIsRunningInLegacyDictionary: futureStartDateLegacyDict]);
-    XCTAssert([SCUtilities blockIsRunningInLegacyDictionary: negativeBlockDurationLegacyDict]); // negative still might be running?
-    XCTAssert([SCUtilities blockIsRunningInLegacyDictionary: veryLongBlockLegacyDict]);
-    XCTAssert(![SCUtilities blockIsRunningInLegacyDictionary: emptyLegacyDict]);
+    XCTAssert([SCMigrationUtilities blockIsRunningInLegacyDictionary: activeBlockLegacyDict]);
+    XCTAssert([SCMigrationUtilities blockIsRunningInLegacyDictionary: expiredBlockLegacyDict]);
+    XCTAssert(![SCMigrationUtilities blockIsRunningInLegacyDictionary: noBlockLegacyDict]);
+    XCTAssert(![SCMigrationUtilities blockIsRunningInLegacyDictionary: noBlockLegacyDict2]);
+    XCTAssert([SCMigrationUtilities blockIsRunningInLegacyDictionary: futureStartDateLegacyDict]);
+    XCTAssert([SCMigrationUtilities blockIsRunningInLegacyDictionary: negativeBlockDurationLegacyDict]); // negative still might be running?
+    XCTAssert([SCMigrationUtilities blockIsRunningInLegacyDictionary: veryLongBlockLegacyDict]);
+    XCTAssert(![SCMigrationUtilities blockIsRunningInLegacyDictionary: emptyLegacyDict]);
 }
 
 @end

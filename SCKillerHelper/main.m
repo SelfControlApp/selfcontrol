@@ -13,6 +13,7 @@
 #import "SCSettings.h"
 #import "HelperCommon.h"
 #import <ServiceManagement/ServiceManagement.h>
+#import "SCMigrationUtilities.h"
 
 #define LOG_FILE @"~/Documents/SelfControl-Killer.log"
 
@@ -91,7 +92,7 @@ int main(int argc, char* argv[]) {
         SCSettings* settings = [SCSettings sharedSettings];
         [log appendFormat: @"Current secured settings:\n\n:%@\n", settings.dictionaryRepresentation];
         
-        NSString* legacySettingsPath = [SCUtilities legacySecuredSettingsFilePathForUser: controllingUID];
+        NSString* legacySettingsPath = [SCMigrationUtilities legacySecuredSettingsFilePathForUser: controllingUID];
         NSDictionary* legacySettingsDict = [NSDictionary dictionaryWithContentsOfFile: legacySettingsPath];
         if (legacySettingsDict) {
             [log appendFormat: @"Legacy (3.0-3.0.3) secured settings:\n\n:%@\n", legacySettingsDict];
@@ -166,9 +167,9 @@ int main(int argc, char* argv[]) {
         [settings synchronizeSettings];
         [log appendFormat: @"Reset all modern secured settings to default values.\n"];
         
-        if ([SCUtilities legacySettingsFoundForUser: controllingUID]) {
-            [SCUtilities copyLegacySettingsToDefaults: controllingUID];
-            [SCUtilities clearLegacySettingsForUser: controllingUID];
+        if ([SCMigrationUtilities legacySettingsFoundForUser: controllingUID]) {
+            [SCMigrationUtilities copyLegacySettingsToDefaults: controllingUID];
+            [SCMigrationUtilities clearLegacySettingsForUser: controllingUID];
             [log appendFormat: @"Found, copied, and cleared legacy settings (v3.0-3.0.3)!\n"];
         } else {
             [log appendFormat: @"No legacy settings (v3.0-3.0.3) found.\n"];

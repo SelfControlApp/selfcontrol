@@ -29,7 +29,6 @@
 #import <Security/Security.h>
 #import <SystemConfiguration/SCNetwork.h>
 #import <unistd.h>
-#import "SelfControlCommon.h"
 #import "SCSettings.h"
 
 // The main controller for the SelfControl app, which includes several methods

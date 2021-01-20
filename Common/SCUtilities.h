@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SCMigrationUtilities.h"
 
 @class SCSettings;
 
@@ -41,8 +42,6 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
 
 + (BOOL) currentBlockIsExpired;
 
-+ (BOOL)legacyBlockIsRunningInSettingsFile:(NSURL*)settingsFileURL;
-+ (BOOL) blockIsRunningInLegacyDictionary:(NSDictionary*)dict;
 
 // read and write saved block files
 + (BOOL)writeBlocklistToFileURL:(NSURL*)targetFileURL blockInfo:(NSDictionary*)blockInfo errorDescription:(NSString**)errDescriptionRef;
@@ -54,13 +53,5 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
 
 + (BOOL)errorIsAuthCanceled:(NSError*)err;
 
-// migration methods
-+ (NSString*)legacySecuredSettingsFilePathForUser:(uid_t)userId;
-+ (BOOL)legacySettingsFoundForUser:(uid_t)controllingUID;
-+ (BOOL)legacySettingsFoundForCurrentUser;
-+ (NSDate*)legacyBlockEndDate;
-+ (void)copyLegacySettingsToDefaults:(uid_t)controllingUID;
-+ (void)copyLegacySettingsToDefaults;
-+ (NSError*)clearLegacySettingsForUser:(uid_t)controllingUID;
 
 @end

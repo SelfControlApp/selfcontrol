@@ -28,7 +28,6 @@
 #import <Cocoa/Cocoa.h>
 #import <sysexits.h>
 #import "HostFileBlocker.h"
-#import "SelfControlCommon.h"
 #import "SCUtilities.h"
 #import "SCSettings.h"
 

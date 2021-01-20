@@ -24,7 +24,6 @@
 #import <Cocoa/Cocoa.h>
 #import "HostImporter.h"
 #import "ThunderbirdPreferenceParser.h"
-#import "SelfControlCommon.h"
 #import "SCSettings.h"
 
 // A subclass of NSWindowController created to manage the domain list (actually

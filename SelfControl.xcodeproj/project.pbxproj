@@ -78,6 +78,13 @@
 		CB74D11F2480E55D002B2079 /* DaemonMain.m in Sources */ = {isa = PBXBuildFile; fileRef = CB74D1032480E4D9002B2079 /* DaemonMain.m */; };
 		CB74D1202480E566002B2079 /* SCDaemon.m in Sources */ = {isa = PBXBuildFile; fileRef = CB74D0FD2480E3E6002B2079 /* SCDaemon.m */; };
 		CB8086D424837607004B88BD /* SCDaemonXPC.m in Sources */ = {isa = PBXBuildFile; fileRef = CB8086D324837607004B88BD /* SCDaemonXPC.m */; };
+		CB81A94825B7B5B5006956F7 /* SCMigrationUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = CB81A94625B7B5B5006956F7 /* SCMigrationUtilities.h */; };
+		CB81A94925B7B5B5006956F7 /* SCMigrationUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81A94725B7B5B5006956F7 /* SCMigrationUtilities.m */; };
+		CB81A94A25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81A94725B7B5B5006956F7 /* SCMigrationUtilities.m */; };
+		CB81A94B25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81A94725B7B5B5006956F7 /* SCMigrationUtilities.m */; };
+		CB81A94C25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81A94725B7B5B5006956F7 /* SCMigrationUtilities.m */; };
+		CB81A94D25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81A94725B7B5B5006956F7 /* SCMigrationUtilities.m */; };
+		CB81A94E25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81A94725B7B5B5006956F7 /* SCMigrationUtilities.m */; };
 		CB850F3925130F5300EE2E2D /* NSString+IPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806516C237F10059C99A /* NSString+IPAddress.m */; };
 		CB850F3C2513185300EE2E2D /* SCDaemonUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB850F3B2513185300EE2E2D /* SCDaemonUtilities.m */; };
 		CB90BF830F49F430006D202D /* HostImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB90BF820F49F430006D202D /* HostImporter.m */; };
@@ -262,6 +269,8 @@
 		CB8086D224837607004B88BD /* SCDaemonXPC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCDaemonXPC.h; sourceTree = "<group>"; };
 		CB8086D324837607004B88BD /* SCDaemonXPC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCDaemonXPC.m; sourceTree = "<group>"; };
 		CB8086D524837734004B88BD /* org.eyebeam.selfcontrold.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = org.eyebeam.selfcontrold.plist; sourceTree = "<group>"; };
+		CB81A94625B7B5B5006956F7 /* SCMigrationUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCMigrationUtilities.h; sourceTree = "<group>"; };
+		CB81A94725B7B5B5006956F7 /* SCMigrationUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCMigrationUtilities.m; sourceTree = "<group>"; };
 		CB850F3A2513185300EE2E2D /* SCDaemonUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCDaemonUtilities.h; sourceTree = "<group>"; };
 		CB850F3B2513185300EE2E2D /* SCDaemonUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCDaemonUtilities.m; sourceTree = "<group>"; };
 		CB90BF810F49F430006D202D /* HostImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostImporter.h; sourceTree = "<group>"; };
@@ -313,7 +322,6 @@
 		CBCA912B1961384600AFD20C /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CBD266AD11ED7D9C00042CD8 /* HelperCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperCommon.h; sourceTree = "<group>"; };
 		CBD266AE11ED7D9C00042CD8 /* HelperCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelperCommon.m; sourceTree = "<group>"; };
-		CBD266E111ED84F700042CD8 /* SelfControlCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelfControlCommon.h; sourceTree = "<group>"; };
 		CBD4848219D75F6D0020F949 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		CBD4848519D7611F0020F949 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		CBD4848619D7611F0020F949 /* TemplateIcon2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TemplateIcon2x.png; sourceTree = "<group>"; };
@@ -591,6 +599,8 @@
 		CB1CA64C25ABA5990084A551 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				CB81A94625B7B5B5006956F7 /* SCMigrationUtilities.h */,
+				CB81A94725B7B5B5006956F7 /* SCMigrationUtilities.m */,
 				CBB1731220F041F4007FCAE9 /* SCUtilities.h */,
 				CBB1731320F041F4007FCAE9 /* SCUtilities.m */,
 				CBADC27C25B22BC7000EE5BB /* SCSentry.h */,
@@ -612,7 +622,6 @@
 		CB4294DF0F53D865008E10CA /* App Classes */ = {
 			isa = PBXGroup;
 			children = (
-				CBD266E111ED84F700042CD8 /* SelfControlCommon.h */,
 				CB25806416C237F10059C99A /* NSString+IPAddress.h */,
 				CB25806516C237F10059C99A /* NSString+IPAddress.m */,
 				CBE5C4090F4D4531003DB900 /* ButtonWithPopupMenu.h */,
@@ -763,6 +772,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB81A94825B7B5B5006956F7 /* SCMigrationUtilities.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1239,6 +1249,7 @@
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				CB1CA66525ABA6240084A551 /* SCXPCAuthorization.m in Sources */,
 				CB529BBF0F32B7ED00564FB8 /* AppController.m in Sources */,
+				CB81A94925B7B5B5006956F7 /* SCMigrationUtilities.m in Sources */,
 				CB1465B825B027E700130D2E /* SCErr.m in Sources */,
 				CBB1731920F05C07007FCAE9 /* SCUtilities.m in Sources */,
 				CB58948025B3FC6D00E9A5C0 /* HostFileBlocker.m in Sources */,
@@ -1265,6 +1276,7 @@
 				CB5DFCBC2251DD1F0084CEC2 /* SCConstants.m in Sources */,
 				CB114284222CD4F0004B7868 /* SCSettings.m in Sources */,
 				CB0EEF7820FE49030024D27B /* SCUtilitiesTests.m in Sources */,
+				CB81A94D25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1288,6 +1300,7 @@
 				CB850F3C2513185300EE2E2D /* SCDaemonUtilities.m in Sources */,
 				CB62FC3E24B1298500ADBC40 /* SCDaemonBlockMethods.m in Sources */,
 				CB62FC4124B1328F00ADBC40 /* HelperCommon.m in Sources */,
+				CB81A94E25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */,
 				CB8086D424837607004B88BD /* SCDaemonXPC.m in Sources */,
 				CB1CA65125ABA5BB0084A551 /* SCXPCClient.m in Sources */,
 				CB69C4EF25A3FD8A0030CFCD /* SCXPCAuthorization.m in Sources */,
@@ -1308,6 +1321,7 @@
 				CB1465BA25B027E700130D2E /* SCErr.m in Sources */,
 				CBB1731C20F05C0A007FCAE9 /* SCUtilities.m in Sources */,
 				CBADC28025B22BC7000EE5BB /* SCSentry.m in Sources */,
+				CB81A94B25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1323,6 +1337,7 @@
 				CB9C812619CFBB5E00CDCAE1 /* BlockManager.m in Sources */,
 				CB9C812519CFBB5500CDCAE1 /* HelperCommon.m in Sources */,
 				CB9C812419CFBB4E00CDCAE1 /* HostFileBlocker.m in Sources */,
+				CB81A94C25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */,
 				CB1CA64F25ABA5BB0084A551 /* SCXPCClient.m in Sources */,
 				CB114283222CCF19004B7868 /* SCSettings.m in Sources */,
 				CB9C812319CFBB4400CDCAE1 /* LaunchctlHelper.m in Sources */,
@@ -1346,6 +1361,7 @@
 				CB73616219E5086A00E0924F /* AllowlistScraper.m in Sources */,
 				CBC2F8580F4672FE00CF2A42 /* LaunchctlHelper.m in Sources */,
 				CBB0AE2A0FA74566006229B3 /* HostFileBlocker.m in Sources */,
+				CB81A94A25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */,
 				CBD266B011ED7D9C00042CD8 /* HelperCommon.m in Sources */,
 				CB32D2A921902CB300B8CD68 /* SCSettings.m in Sources */,
 				CB1CA65025ABA5BB0084A551 /* SCXPCClient.m in Sources */,

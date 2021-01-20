@@ -70,9 +70,9 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     
     // clear any legacy block information - no longer useful and could potentially confuse things
     // but first, copy it over one more time (this should've already happened once in the app, but you never know)
-    if ([SCUtilities legacySettingsFoundForUser: controllingUID]) {
-        [SCUtilities copyLegacySettingsToDefaults: controllingUID];
-        [SCUtilities clearLegacySettingsForUser: controllingUID];
+    if ([SCMigrationUtilities legacySettingsFoundForUser: controllingUID]) {
+        [SCMigrationUtilities copyLegacySettingsToDefaults: controllingUID];
+        [SCMigrationUtilities clearLegacySettingsForUser: controllingUID];
         
         // if we had legacy settings, there's a small chance the old helper tool could still be around
         // make sure it's dead and gone

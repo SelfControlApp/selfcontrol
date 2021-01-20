@@ -6,7 +6,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SelfControlCommon.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

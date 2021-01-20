@@ -80,7 +80,7 @@
         blockEndingDate_ = [settings_ valueForKey: @"BlockEndDate"];
     } else {
         // legacy block!
-        blockEndingDate_ = [SCUtilities legacyBlockEndDate];
+        blockEndingDate_ = [SCMigrationUtilities legacyBlockEndDate];
         
         // if it's a legacy block, we will disable some features
         // since it's too difficult to get these working across versions.
@@ -286,7 +286,7 @@
 
     } else {
         // legacy block!
-        blockEndingDate_ = [SCUtilities legacyBlockEndDate];
+        blockEndingDate_ = [SCMigrationUtilities legacyBlockEndDate];
     }
     
     [self performSelectorOnMainThread: @selector(updateTimerDisplay:) withObject:nil waitUntilDone: YES];
