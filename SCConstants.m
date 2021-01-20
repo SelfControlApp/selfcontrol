@@ -7,6 +7,8 @@
 
 #import "SCConstants.h"
 
+OSStatus const AUTH_CANCELLED_STATUS = -60006;
+
 @implementation SCConstants
 
 +  (NSArray<NSString*>*)systemSoundNames {

@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-OSStatus const AUTH_CANCELLED_STATUS = -60006;
+extern OSStatus const AUTH_CANCELLED_STATUS;
 
 @interface SCConstants : NSObject
 
