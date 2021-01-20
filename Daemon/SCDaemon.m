@@ -146,7 +146,9 @@ float const INACTIVITY_LIMIT_SECS = 60 * 2; // 2 minutes
     SecRequirementRef isSelfControlApp;
     // versions before 4.0 didn't have hardened code signing, so aren't trustworthy to talk to the daemon
     // (plus the daemon didn't exist before 4.0 so there's really no reason they should want to run it!)
-    SecRequirementCreateWithString(CFSTR("anchor apple generic and (identifier \"org.eyebeam.SelfControl\" or identifier \"org.eyebeam.selfcontrol-cli\") and info [CFBundleShortVersionString] >= \"4.0\" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = L6W5L88KN7)"), kSecCSDefaultFlags, &isSelfControlApp);
+    // TODO: does this work using build number? are old versions really unable to connect?
+    // TODO: move this to the final 4.0 build number
+    SecRequirementCreateWithString(CFSTR("anchor apple generic and (identifier \"org.eyebeam.SelfControl\" or identifier \"org.eyebeam.selfcontrol-cli\") and info [CFBundleVersion] >= \"399\" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = L6W5L88KN7)"), kSecCSDefaultFlags, &isSelfControlApp);
     OSStatus clientValidityStatus = SecCodeCheckValidity(guest, kSecCSDefaultFlags, isSelfControlApp);
     
     CFRelease(guest);

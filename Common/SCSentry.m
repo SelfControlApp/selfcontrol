@@ -67,23 +67,27 @@
         return NO;
     }
     
-    NSAlert* alert = [[NSAlert alloc] init];
-    [alert setMessageText: NSLocalizedString(@"Enable automatic error reporting", "Title of error reporting prompt")];
-    [alert setInformativeText:NSLocalizedString(@"SelfControl can automatically send bug reports to help us improve the software. All data is anonymized, your blocklist is never shared, and no identifying information is sent.", @"Message explaining error reporting")];
-    [alert addButtonWithTitle: NSLocalizedString(@"Enable Error Reporting", @"Button to enable error reporting")];
-    [alert addButtonWithTitle: NSLocalizedString(@"Don't Send Reports", "Button to decline error reporting")];
+    // all UI stuff goes on main thread
+    __block BOOL errorReportingEnabled = NO;
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        NSAlert* alert = [[NSAlert alloc] init];
+        [alert setMessageText: NSLocalizedString(@"Enable automatic error reporting", "Title of error reporting prompt")];
+        [alert setInformativeText:NSLocalizedString(@"SelfControl can automatically send bug reports to help us improve the software. All data is anonymized, your blocklist is never shared, and no identifying information is sent.", @"Message explaining error reporting")];
+        [alert addButtonWithTitle: NSLocalizedString(@"Enable Error Reporting", @"Button to enable error reporting")];
+        [alert addButtonWithTitle: NSLocalizedString(@"Don't Send Reports", "Button to decline error reporting")];
+        
+        NSModalResponse modalResponse = [alert runModal];
+        if (modalResponse == NSAlertFirstButtonReturn) {
+            [defaults setBool: YES forKey: @"EnableErrorReporting"];
+            [defaults setBool: YES forKey: @"ErrorReportingPromptDismissed"];
+            errorReportingEnabled = YES;
+        } else if (modalResponse == NSAlertSecondButtonReturn) {
+            [defaults setBool: NO forKey: @"EnableErrorReporting"];
+            [defaults setBool: YES forKey: @"ErrorReportingPromptDismissed"];
+        } // if the modal exited some other way, do nothing
+    });
     
-    NSModalResponse modalResponse = [alert runModal];
-    if (modalResponse == NSAlertFirstButtonReturn) {
-        [defaults setBool: YES forKey: @"EnableErrorReporting"];
-        [defaults setBool: YES forKey: @"ErrorReportingPromptDismissed"];
-        return YES;
-    } else if (modalResponse == NSAlertSecondButtonReturn) {
-        [defaults setBool: NO forKey: @"EnableErrorReporting"];
-        [defaults setBool: YES forKey: @"ErrorReportingPromptDismissed"];
-    } // if the modal exited some other way, do nothing
-    
-    return NO;
+    return errorReportingEnabled;
 }
 
 + (void)updateDefaultsContext {

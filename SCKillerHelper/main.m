@@ -44,7 +44,8 @@ int main(int argc, char* argv[]) {
 		// print SC version:
 		NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
 		NSString* version = [infoDict objectForKey:@"CFBundleShortVersionString"];
-		[log appendFormat: @"SelfControl Version: %@\n", version];
+        NSString* buildNumber = [infoDict objectForKey: @"CFBundleVersion"];
+		[log appendFormat: @"SelfControl Version: %@ (%@)\n", version, buildNumber];
 
 		// print system version
 		[log appendFormat: @"System Version: Mac OS X %@\n\n", [[NSProcessInfo processInfo] operatingSystemVersionString]];

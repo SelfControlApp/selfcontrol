@@ -1610,7 +1610,7 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 4.0a;
+				CURRENT_PROJECT_VERSION = 399;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = L6W5L88KN7;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1625,7 +1625,7 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MARKETING_VERSION = "4.0 alpha";
+				MARKETING_VERSION = 3.9.9;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.eyebeam.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = SelfControl;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1643,7 +1643,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 4.0a;
+				CURRENT_PROJECT_VERSION = 399;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = L6W5L88KN7;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1657,7 +1657,7 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MARKETING_VERSION = "4.0 alpha";
+				MARKETING_VERSION = 3.9.9;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.eyebeam.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = SelfControl;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1858,7 +1858,7 @@
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "$(SRCROOT)/Daemon/selfcontrold-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MARKETING_VERSION = "4.0 alpha";
+				MARKETING_VERSION = 3.9.9;
 				OTHER_LDFLAGS = (
 					"-sectcreate",
 					__TEXT,
@@ -1899,7 +1899,7 @@
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "$(SRCROOT)/Daemon/selfcontrold-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MARKETING_VERSION = "4.0 alpha";
+				MARKETING_VERSION = 3.9.9;
 				OTHER_LDFLAGS = (
 					"-sectcreate",
 					__TEXT,
@@ -1942,7 +1942,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 4.0;
+				CURRENT_PROJECT_VERSION = 399;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1989,7 +1989,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 4.0;
+				CURRENT_PROJECT_VERSION = 399;
 				DEVELOPMENT_TEAM = L6W5L88KN7;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2112,7 +2112,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/selfcontrol-cli-Info.plist";
 				INFOPLIST_PREPROCESS = YES;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MARKETING_VERSION = "4.0 alpha";
+				MARKETING_VERSION = 3.9.9;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.eyebeam.selfcontrol-cli";
 				PRODUCT_NAME = "selfcontrol-cli";
 				PROVISIONING_PROFILE = "";
@@ -2142,7 +2142,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/selfcontrol-cli-Info.plist";
 				INFOPLIST_PREPROCESS = YES;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MARKETING_VERSION = "4.0 alpha";
+				MARKETING_VERSION = 3.9.9;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.eyebeam.selfcontrol-cli";
 				PRODUCT_NAME = "selfcontrol-cli";
 				PROVISIONING_PROFILE = "";
