@@ -28,8 +28,6 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
 
 @implementation SCSettings
 
-/* TODO: move these two functions to a utility class */
-
 + (instancetype)sharedSettings {
     static SCSettings* globalSettings = nil;
     static dispatch_once_t onceToken;

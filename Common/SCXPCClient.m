@@ -164,7 +164,7 @@
     if(status) {
         // if it's just the user cancelling, make that obvious
         // to any listeners so they can ignore it appropriately
-        if (status == -60006) {
+        if (status == AUTH_CANCELLED_STATUS) {
             callback([SCErr errorWithCode: 1]);
         } else {
             NSLog(@"ERROR: Failed to authorize installing selfcontrold with status %d.", status);

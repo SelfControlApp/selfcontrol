@@ -186,7 +186,7 @@
 + (BOOL)errorIsAuthCanceled:(NSError*)err {
     if (err == nil) return NO;
     
-    if ([err.domain isEqualToString: NSOSStatusErrorDomain] && err.code == -60006) {
+    if ([err.domain isEqualToString: NSOSStatusErrorDomain] && err.code == AUTH_CANCELLED_STATUS) {
         return YES;
     }
     if (err.domain == kSelfControlErrorDomain && err.code == 1) {

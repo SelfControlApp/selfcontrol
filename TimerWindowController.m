@@ -321,7 +321,7 @@
 								  &authorizationRef);
 
 	if(status) {
-        if (status != -60006) {
+        if (status != AUTH_CANCELLED_STATUS) {
             NSError* err = [SCErr errorWithCode: 501];
             [SCSentry captureError: err];
         }
