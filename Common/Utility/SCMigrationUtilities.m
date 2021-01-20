@@ -10,7 +10,6 @@
 #import "SCMigrationUtilities.h"
 #import <pwd.h>
 #import "SCSettings.h"
-#import "SCUtilities.h"
 
 @implementation SCMigrationUtilities
 
@@ -33,7 +32,7 @@
 
     if (geteuid() == 0 && controllingUID) {
         // we're running as root, so get the defaults dictionary using our special function)
-        NSDictionary* defaultsDict = [SCUtilities defaultsDictForUser: controllingUID];
+        NSDictionary* defaultsDict = [SCMiscUtilities defaultsDictForUser: controllingUID];
         defaultsHostBlacklist = defaultsDict[@"HostBlacklist"];
     } else {
         // normal times, just use standard defaults
@@ -208,7 +207,7 @@
     }
     
     // if we're gonna clear settings, there can't be a block running anywhere. otherwise, we should wait!
-    if ([SCUtilities legacyBlockIsRunning]) {
+    if ([SCBlockUtilities legacyBlockIsRunning]) {
         NSLog(@"ERROR: Can't clear legacy settings because a block is ongoing!");
         NSError* err = [SCErr errorWithCode: 702];
         [SCSentry captureError: err];
@@ -253,7 +252,7 @@
     seteuid(0);
     
     // clear all legacy per-user secured settings (v3.0-3.0.3) in every user's home folder
-    NSArray<NSURL *>* homeDirectoryURLs = [SCUtilities allUserHomeDirectoryURLs: &retErr];
+    NSArray<NSURL *>* homeDirectoryURLs = [SCMiscUtilities allUserHomeDirectoryURLs: &retErr];
     if (homeDirectoryURLs != nil) {
         for (NSURL* homeDirURL in homeDirectoryURLs) {
             NSString* relativeSettingsPath = [NSString stringWithFormat: @"/Library/Preferences/%@", SCSettings.settingsFileName];

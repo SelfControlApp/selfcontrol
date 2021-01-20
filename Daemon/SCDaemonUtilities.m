@@ -8,7 +8,6 @@
 #import "SCDaemonUtilities.h"
 #import <ServiceManagement/ServiceManagement.h>
 #import "SCSettings.h"
-#import "SCUtilities.h"
 #import "BlockManager.h"
 
 @implementation SCDaemonUtilities

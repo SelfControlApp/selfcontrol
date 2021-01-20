@@ -59,7 +59,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     
     [SCSentry addBreadcrumb: @"Daemon method startBlock called" category: @"daemon"];
     
-    if ([SCUtilities anyBlockIsRunning]) {
+    if ([SCBlockUtilities anyBlockIsRunning]) {
         NSLog(@"ERROR: Can't start block since a block is already running");
         NSError* err = [SCErr errorWithCode: 301];
         [SCSentry captureError: err];
@@ -95,7 +95,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     [settings setValue: blockSettings[@"BlockSound"] forKey: @"BlockSound"];
     [settings setValue: blockSettings[@"EnableErrorReporting"] forKey: @"EnableErrorReporting"];
 
-    if([blocklist count] <= 0 || [SCUtilities currentBlockIsExpired]) {
+    if([blocklist count] <= 0 || [SCBlockUtilities currentBlockIsExpired]) {
         NSLog(@"ERROR: Blocklist is empty, or block end date is in the past");
         NSLog(@"Block End Date: %@ (%@), vs now is %@", [settings valueForKey: @"BlockEndDate"], [[settings valueForKey: @"BlockEndDate"] class], [NSDate date]);
         NSError* err = [SCErr errorWithCode: 302];
@@ -133,7 +133,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     }
     
     [SCSentry addBreadcrumb: @"Daemon method updateBlocklist called" category: @"daemon"];
-    if ([SCUtilities legacyBlockIsRunning]) {
+    if ([SCBlockUtilities legacyBlockIsRunning]) {
         NSLog(@"ERROR: Can't update blocklist because a legacy block is running");
         NSError* err = [SCErr errorWithCode: 303];
         [SCSentry captureError: err];
@@ -141,7 +141,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         [self.daemonMethodLock unlock];
         return;
     }
-    if (![SCUtilities modernBlockIsRunning]) {
+    if (![SCBlockUtilities modernBlockIsRunning]) {
         NSLog(@"ERROR: Can't update blocklist since block isn't running");
         NSError* err = [SCErr errorWithCode: 304];
         [SCSentry captureError: err];
@@ -204,7 +204,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     
     [SCSentry addBreadcrumb: @"Daemon method updateBlockEndDate called" category: @"daemon"];
 
-    if ([SCUtilities legacyBlockIsRunning]) {
+    if ([SCBlockUtilities legacyBlockIsRunning]) {
         NSLog(@"ERROR: Can't update block end date because a legacy block is running");
         NSError* err = [SCErr errorWithCode: 306];
         [SCSentry captureError: err];
@@ -212,7 +212,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         [self.daemonMethodLock unlock];
         return;
     }
-    if (![SCUtilities modernBlockIsRunning]) {
+    if (![SCBlockUtilities modernBlockIsRunning]) {
         NSLog(@"ERROR: Can't update block end date since block isn't running");
         NSError* err = [SCErr errorWithCode: 307];
         [SCSentry captureError: err];
@@ -269,7 +269,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         lastBlockIntegrityCheck = [NSDate distantPast];
     }
 
-    if(![SCUtilities anyBlockIsRunning]) {
+    if(![SCBlockUtilities anyBlockIsRunning]) {
         // No block appears to be running at all in our settings.
         // Most likely, the user removed it trying to get around the block. Boo!
         // but for safety and to avoid permablocks (we no longer know when the block should end)
@@ -293,7 +293,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         
         // once the checkups stop, the daemon will clear itself in a while due to inactivity
         [[SCDaemon sharedDaemon] stopCheckupTimer];
-    } else if ([SCUtilities currentBlockIsExpired]) {
+    } else if ([SCBlockUtilities currentBlockIsExpired]) {
         NSLog(@"INFO: Checkup ran, block expired, removing block.");
         
         removeBlock();

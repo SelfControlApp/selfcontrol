@@ -6,12 +6,12 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "SCUtilities.h"
+#import "SCUtility.h"
 #import "SCSentry.h"
 #import "SCErr.h"
 #import "SCSettings.h"
 
-@interface SCUtilitiesTests : XCTestCase
+@interface SCUtilityTests : XCTestCase
 
 @end
 
@@ -26,7 +26,7 @@ NSDictionary* futureStartDateLegacyDict; // start date is in the future
 NSDictionary* negativeBlockDurationLegacyDict; // block duration is negative
 NSDictionary* veryLongBlockLegacyDict; // year-long block, one day in
 
-@implementation SCUtilitiesTests
+@implementation SCUtilityTests
 
 - (NSUserDefaults*)testDefaults {
     return [[NSUserDefaults alloc] initWithSuiteName: @"BlockDateUtilitiesTests"];
@@ -82,54 +82,54 @@ NSDictionary* veryLongBlockLegacyDict; // year-long block, one day in
 
 - (void) testCleanBlocklistEntries {
     // ignores weird invalid entries
-    XCTAssert([SCUtilities cleanBlocklistEntry: nil].count == 0);
-    XCTAssert([SCUtilities cleanBlocklistEntry: @""].count == 0);
-    XCTAssert([SCUtilities cleanBlocklistEntry: @"      "].count == 0);
-    XCTAssert([SCUtilities cleanBlocklistEntry: @"  \n\n   \n***!@#$%^*()+=<>,/?| "].count == 0);
-    XCTAssert([SCUtilities cleanBlocklistEntry: @"://}**"].count == 0);
+    XCTAssert([SCMiscUtilities cleanBlocklistEntry: nil].count == 0);
+    XCTAssert([SCMiscUtilities cleanBlocklistEntry: @""].count == 0);
+    XCTAssert([SCMiscUtilities cleanBlocklistEntry: @"      "].count == 0);
+    XCTAssert([SCMiscUtilities cleanBlocklistEntry: @"  \n\n   \n***!@#$%^*()+=<>,/?| "].count == 0);
+    XCTAssert([SCMiscUtilities cleanBlocklistEntry: @"://}**"].count == 0);
     
     // can take a plain hostname
-    NSArray* cleaned = [SCUtilities cleanBlocklistEntry: @"selfcontrolapp.com"];
+    NSArray* cleaned = [SCMiscUtilities cleanBlocklistEntry: @"selfcontrolapp.com"];
     XCTAssert(cleaned.count == 1 && [[cleaned firstObject] isEqualToString: @"selfcontrolapp.com"]);
     
     // and lowercase it
-    cleaned = [SCUtilities cleanBlocklistEntry: @"selFconTROLapp.com"];
+    cleaned = [SCMiscUtilities cleanBlocklistEntry: @"selFconTROLapp.com"];
     XCTAssert(cleaned.count == 1 && [[cleaned firstObject] isEqualToString: @"selfcontrolapp.com"]);
     
     // with subdomains
-    cleaned = [SCUtilities cleanBlocklistEntry: @"www.selFconTROLapp.com"];
+    cleaned = [SCMiscUtilities cleanBlocklistEntry: @"www.selFconTROLapp.com"];
     XCTAssert(cleaned.count == 1 && [[cleaned firstObject] isEqualToString: @"www.selfcontrolapp.com"]);
     
     // with http scheme
-    cleaned = [SCUtilities cleanBlocklistEntry: @"http://www.selFconTROLapp.com"];
+    cleaned = [SCMiscUtilities cleanBlocklistEntry: @"http://www.selFconTROLapp.com"];
     XCTAssert(cleaned.count == 1 && [[cleaned firstObject] isEqualToString: @"www.selfcontrolapp.com"]);
     
     // with https scheme
-    cleaned = [SCUtilities cleanBlocklistEntry: @"https://www.selFconTROLapp.com"];
+    cleaned = [SCMiscUtilities cleanBlocklistEntry: @"https://www.selFconTROLapp.com"];
     XCTAssert(cleaned.count == 1 && [[cleaned firstObject] isEqualToString: @"www.selfcontrolapp.com"]);
     
     // with ftp scheme
-    cleaned = [SCUtilities cleanBlocklistEntry: @"ftp://www.selFconTROLapp.com"];
+    cleaned = [SCMiscUtilities cleanBlocklistEntry: @"ftp://www.selFconTROLapp.com"];
     XCTAssert(cleaned.count == 1 && [[cleaned firstObject] isEqualToString: @"www.selfcontrolapp.com"]);
     
     // with port
-    cleaned = [SCUtilities cleanBlocklistEntry: @"https://www.selFconTROLapp.com:73"];
+    cleaned = [SCMiscUtilities cleanBlocklistEntry: @"https://www.selFconTROLapp.com:73"];
     XCTAssert(cleaned.count == 1 && [[cleaned firstObject] isEqualToString: @"www.selfcontrolapp.com:73"]);
     
     // strips username/password
-    cleaned = [SCUtilities cleanBlocklistEntry: @"http://charlie:mypass@cnn.com:54"];
+    cleaned = [SCMiscUtilities cleanBlocklistEntry: @"http://charlie:mypass@cnn.com:54"];
     XCTAssert(cleaned.count == 1 && [[cleaned firstObject] isEqualToString: @"cnn.com:54"]);
     
     // strips path etc
-    cleaned = [SCUtilities cleanBlocklistEntry: @"http://mysite.com/my/path/is/very/long.php?querystring=ydfjkl&otherquerystring=%40%80%20#cool"];
+    cleaned = [SCMiscUtilities cleanBlocklistEntry: @"http://mysite.com/my/path/is/very/long.php?querystring=ydfjkl&otherquerystring=%40%80%20#cool"];
     XCTAssert(cleaned.count == 1 && [[cleaned firstObject] isEqualToString: @"mysite.com"]);
     
     // CIDR IP ranges
-    cleaned = [SCUtilities cleanBlocklistEntry: @"127.0.0.1/20"];
+    cleaned = [SCMiscUtilities cleanBlocklistEntry: @"127.0.0.1/20"];
     XCTAssert(cleaned.count == 1 && [[cleaned firstObject] isEqualToString: @"127.0.0.1/20"]);
     
     // can split entries by newlines
-    cleaned = [SCUtilities cleanBlocklistEntry: @"http://charlie:mypass@cnn.com:54\nhttps://selfcontrolAPP.com\n192.168.1.1/24\ntest.com\n{}*&\nhttps://reader.google.com/mypath/is/great.php"];
+    cleaned = [SCMiscUtilities cleanBlocklistEntry: @"http://charlie:mypass@cnn.com:54\nhttps://selfcontrolAPP.com\n192.168.1.1/24\ntest.com\n{}*&\nhttps://reader.google.com/mypath/is/great.php"];
     XCTAssert(cleaned.count == 5);
     XCTAssert([cleaned[0] isEqualToString: @"cnn.com:54"]);
     XCTAssert([cleaned[1] isEqualToString: @"selfcontrolapp.com"]);
@@ -141,8 +141,8 @@ NSDictionary* veryLongBlockLegacyDict; // year-long block, one day in
 - (void) testModernBlockDetection {
     SCSettings* settings = [SCSettings sharedSettings];
 
-    XCTAssert(![SCUtilities modernBlockIsRunning]);
-    XCTAssert([SCUtilities currentBlockIsExpired]);
+    XCTAssert(![SCBlockUtilities modernBlockIsRunning]);
+    XCTAssert([SCBlockUtilities currentBlockIsExpired]);
 
     // test a block that should have expired 5 minutes ago
     [settings setValue: @YES forKey: @"BlockIsRunning"];
@@ -150,18 +150,18 @@ NSDictionary* veryLongBlockLegacyDict; // year-long block, one day in
     [settings setValue: @NO forKey: @"ActiveBlockAsWhitelist"];
     [settings setValue: [NSDate dateWithTimeIntervalSinceNow: -300] forKey: @"BlockEndDate"];
 
-    XCTAssert([SCUtilities modernBlockIsRunning]);
-    XCTAssert([SCUtilities currentBlockIsExpired]);
+    XCTAssert([SCBlockUtilities modernBlockIsRunning]);
+    XCTAssert([SCBlockUtilities currentBlockIsExpired]);
 
     // test block that should still be running
     [settings setValue: [NSDate dateWithTimeIntervalSinceNow: 300] forKey: @"BlockEndDate"];
-    XCTAssert([SCUtilities modernBlockIsRunning]);
-    XCTAssert(![SCUtilities currentBlockIsExpired]);
+    XCTAssert([SCBlockUtilities modernBlockIsRunning]);
+    XCTAssert(![SCBlockUtilities currentBlockIsExpired]);
 
     // test removing a block
-    [SCUtilities removeBlockFromSettings];
-    XCTAssert(![SCUtilities modernBlockIsRunning]);
-    XCTAssert([SCUtilities currentBlockIsExpired]);
+    [SCBlockUtilities removeBlockFromSettings];
+    XCTAssert(![SCBlockUtilities modernBlockIsRunning]);
+    XCTAssert([SCBlockUtilities currentBlockIsExpired]);
 }
 
 - (void) testLegacyBlockDetection {

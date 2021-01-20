@@ -25,13 +25,13 @@
 #import "PreferencesGeneralViewController.h"
 #import "PreferencesAdvancedViewController.h"
 #import "SCTimeIntervalFormatter.h"
-#import "SCUtilities.h"
 #import <SystemConfiguration/SystemConfiguration.h>
 #import <LetsMove/PFMoveApplication.h>
 #import "SCSettings.h"
 #import <ServiceManagement/ServiceManagement.h>
 #import "SCXPCClient.h"
 #import "HostFileBlocker.h"
+#import "SCBlockFileReaderWriter.h"
 
 @interface AppController () {}
 
@@ -322,7 +322,7 @@
     //   3. There's a daemon but it's an old version, and should be replaced.
     // in any case, let's go try to reinstall the daemon
     // (we debounce this call so it happens only once, after the connection has been invalidated for an extended period)
-    if ([SCUtilities modernBlockIsRunning]) {
+    if ([SCBlockUtilities modernBlockIsRunning]) {
         [NSTimer scheduledTimerWithTimeInterval: 0.5 repeats: NO block:^(NSTimer * _Nonnull timer) {
             [self.xpc getVersion:^(NSString * _Nonnull daemonVersion, NSError * _Nonnull error) {
                 if (error == nil) {
@@ -404,7 +404,7 @@
             NSLog(@"Retrying helper tool connection...");
             [self.xpc performSelectorOnMainThread: @selector(connectToHelperTool) withObject: nil waitUntilDone: YES];
         } else {
-            if (![SCUtilities errorIsAuthCanceled: error]) {
+            if (![SCMiscUtilities errorIsAuthCanceled: error]) {
                 NSLog(@"ERROR: Reinstalling daemon failed with error %@", error);
                 [NSApp presentError: error];
             }
@@ -417,7 +417,7 @@
     // also, importantly, if we find a block still going in the hosts file
     // that way if this happens, the user will still see the timer window -
     // which will let them manually clear the remaining block info after 10 seconds
-    return [SCUtilities anyBlockIsRunning] || [HostFileBlocker blockFoundInHostsFile];
+    return [SCBlockUtilities anyBlockIsRunning] || [HostFileBlocker blockFoundInHostsFile];
 }
 
 - (IBAction)showDomainList:(id)sender {
@@ -471,7 +471,7 @@
     // Note we RETRIEVE the latest list from settings (ActiveBlocklist), but we SET the new list in defaults
     // since the helper daemon should be the only one changing ActiveBlocklist
     NSMutableArray* list = [[settings_ valueForKey: @"ActiveBlocklist"] mutableCopy];
-    NSArray<NSString*>* cleanedEntries = [SCUtilities cleanBlocklistEntry: host];
+    NSArray<NSString*>* cleanedEntries = [SCMiscUtilities cleanBlocklistEntry: host];
     
     if (cleanedEntries.count == 0) return;
     
@@ -579,7 +579,7 @@
 		[self refreshUserInterface];
         [self.xpc installDaemon:^(NSError * _Nonnull error) {
             if (error != nil) {
-                if (![SCUtilities errorIsAuthCanceled: error]) {
+                if (![SCMiscUtilities errorIsAuthCanceled: error]) {
                     [NSApp performSelectorOnMainThread: @selector(presentError:)
                                             withObject: error
                                          waitUntilDone: YES];
@@ -617,7 +617,7 @@
                                                             }
                                                      reply:^(NSError * _Nonnull error) {
                         if (error != nil ) {
-                            if (![SCUtilities errorIsAuthCanceled: error]) {
+                            if (![SCMiscUtilities errorIsAuthCanceled: error]) {
                                 [NSApp performSelectorOnMainThread: @selector(presentError:)
                                                         withObject: error
                                                      waitUntilDone: YES];
@@ -656,7 +656,7 @@
             [self->timerWindowController_ performSelectorOnMainThread:@selector(closeAddSheet:) withObject: self waitUntilDone: YES];
             
             if (error != nil) {
-                if (![SCUtilities errorIsAuthCanceled: error]) {
+                if (![SCMiscUtilities errorIsAuthCanceled: error]) {
                     [NSApp performSelectorOnMainThread: @selector(presentError:)
                                             withObject: error
                                          waitUntilDone: YES];
@@ -696,7 +696,7 @@
 
     [self.xpc refreshConnectionAndRun:^{
         // Before we try to extend the block, make sure the block time didn't run out (or is about to run out) in the meantime
-        if ([SCUtilities currentBlockIsExpired] || [oldBlockEndDate timeIntervalSinceNow] < 1) {
+        if ([SCBlockUtilities currentBlockIsExpired] || [oldBlockEndDate timeIntervalSinceNow] < 1) {
             // we're done, or will be by the time we get to it! so just let it expire. they can restart it.
             [lockToUse unlock];
             return;
@@ -712,7 +712,7 @@
                                                   waitUntilDone: YES];
 
             if (error != nil) {
-                if (![SCUtilities errorIsAuthCanceled: error]) {
+                if (![SCMiscUtilities errorIsAuthCanceled: error]) {
                     [NSApp performSelectorOnMainThread: @selector(presentError:)
                                             withObject: error
                                          waitUntilDone: YES];
@@ -740,7 +740,7 @@
 	/* if successful, save file under designated name */
 	if (runResult == NSOKButton) {
         NSString* errDescription;
-        [SCUtilities writeBlocklistToFileURL: sp.URL
+        [SCBlockFileReaderWriter writeBlocklistToFileURL: sp.URL
                                    blockInfo: @{
                                        @"Blocklist": [defaults_ arrayForKey: @"Blocklist"],
                                        @"BlockAsWhitelist": [defaults_ objectForKey: @"BlockAsWhitelist"]
@@ -768,7 +768,7 @@
 	long result = [oPanel runModal];
 	if (result == NSOKButton) {
 		if([oPanel.URLs count] > 0) {
-            NSDictionary* settingsFromFile = [SCUtilities readBlocklistFromFile: oPanel.URLs[0]];
+            NSDictionary* settingsFromFile = [SCBlockFileReaderWriter readBlocklistFromFile: oPanel.URLs[0]];
             
             if (settingsFromFile != nil) {
                 [defaults_ setObject: settingsFromFile[@"Blocklist"] forKey: @"Blocklist"];

@@ -1,18 +1,17 @@
 //
-//  SCBlockDateUtilities.m
+//  SCMiscUtilities.m
 //  SelfControl
 //
 //  Created by Charles Stigler on 07/07/2018.
 //
 
-#import "SCUtilities.h"
 #import "HelperCommon.h"
 #import "SCSettings.h"
 
-@implementation SCUtilities
+@implementation SCMiscUtilities
 
 // copied from stevenojo's GitHub snippet: https://gist.github.com/stevenojo/e1dcc2b3e2fd4ed1f411eef88e254cb0
-dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queue_t queue, dispatch_block_t block) {
++ (dispatch_source_t)createDebounceDispatchTimer:(double)debounceTime queue:(dispatch_queue_t)queue block:(dispatch_block_t)block {
     dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
     
     if (timer) {
@@ -40,7 +39,7 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
         NSMutableArray* returnArr = [NSMutableArray new];
         for (NSString* splitEntry in splitEntries) {
             // recursion makes the rest of the code prettier
-            NSArray<NSString*>* cleanedSubEntries = [SCUtilities cleanBlocklistEntry: splitEntry];
+            NSArray<NSString*>* cleanedSubEntries = [SCMiscUtilities cleanBlocklistEntry: splitEntry];
             [returnArr addObjectsFromArray: cleanedSubEntries];
         }
         return returnArr;
@@ -146,64 +145,6 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
     return dictValue;
 }
 
-+ (BOOL)anyBlockIsRunning {
-    BOOL blockIsRunning = [SCUtilities modernBlockIsRunning] || [self legacyBlockIsRunning];
-
-    return blockIsRunning;
-}
-
-+ (BOOL)modernBlockIsRunning {
-    SCSettings* settings = [SCSettings sharedSettings];
-    
-    return [settings boolForKey: @"BlockIsRunning"];
-}
-
-+ (BOOL)legacyBlockIsRunning {
-    // first see if there's a legacy settings file from v3.x
-    // which could be in any user's home folder
-    NSError* homeDirErr = nil;
-    NSArray<NSURL *>* homeDirectoryURLs = [SCUtilities allUserHomeDirectoryURLs: &homeDirErr];
-    if (homeDirectoryURLs != nil) {
-        for (NSURL* homeDirURL in homeDirectoryURLs) {
-            NSString* relativeSettingsPath = [NSString stringWithFormat: @"/Library/Preferences/%@", SCSettings.settingsFileName];
-            NSURL* settingsFileURL = [homeDirURL URLByAppendingPathComponent: relativeSettingsPath isDirectory: NO];
-            
-            if ([SCMigrationUtilities legacyBlockIsRunningInSettingsFile: settingsFileURL]) {
-                return YES;
-            }
-        }
-    }
-
-    // nope? OK, how about a lock file from pre-3.0?
-    if ([SCMigrationUtilities legacyLockFileExists]) {
-        return YES;
-    }
-    
-    // we don't check defaults anymore, though pre-3.0 blocks did
-    // have data stored there. That should be covered by the lockfile anyway
-    
-    return NO;
-}
-
-// returns YES if the block should have expired active based on the specified end time (i.e. the end time is in the past), or NO otherwise
-+ (BOOL)currentBlockIsExpired {
-    // the block should be running if the end date hasn't arrived yet
-    SCSettings* settings = [SCSettings sharedSettings];
-    if ([[settings valueForKey: @"BlockEndDate"] timeIntervalSinceNow] > 0) {
-        return NO;
-    } else {
-        return YES;
-    }
-}
-
-+ (void) removeBlockFromSettings {
-    SCSettings* settings = [SCSettings sharedSettings];
-    [settings setValue: @NO forKey: @"BlockIsRunning"];
-    [settings setValue: nil forKey: @"BlockEndDate"];
-    [settings setValue: nil forKey: @"ActiveBlocklist"];
-    [settings setValue: nil forKey: @"ActiveBlockAsWhitelist"];
-}
-
 + (BOOL)errorIsAuthCanceled:(NSError*)err {
     if (err == nil) return NO;
     
@@ -215,43 +156,6 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
     }
     
     return NO;
-}
-
-+ (BOOL)writeBlocklistToFileURL:(NSURL*)targetFileURL blockInfo:(NSDictionary*)blockInfo errorDescription:(NSString**)errDescriptionRef {
-    NSDictionary* saveDict = @{@"HostBlacklist": [blockInfo objectForKey: @"Blocklist"],
-                               @"BlockAsWhitelist": [blockInfo objectForKey: @"BlockAsWhitelist"]};
-
-    NSString* saveDataErr;
-    NSData* saveData = [NSPropertyListSerialization dataFromPropertyList: saveDict format: NSPropertyListBinaryFormat_v1_0 errorDescription: &saveDataErr];
-    if (saveDataErr != nil) {
-        *errDescriptionRef = saveDataErr;
-        return NO;
-    }
-
-    if (![saveData writeToURL: targetFileURL atomically: YES]) {
-        NSLog(@"ERROR: Failed to write blocklist to URL %@", targetFileURL);
-        return NO;
-    }
-    
-    // for prettiness sake, attempt to hide the file extension
-    NSDictionary* attribs = @{NSFileExtensionHidden: @YES};
-    [[NSFileManager defaultManager] setAttributes: attribs ofItemAtPath: [targetFileURL path] error: NULL];
-    
-    return YES;
-}
-
-+ (NSDictionary*)readBlocklistFromFile:(NSURL*)fileURL {
-    NSDictionary* openedDict = [NSDictionary dictionaryWithContentsOfURL: fileURL];
-    
-    if (openedDict == nil || openedDict[@"HostBlacklist"] == nil || openedDict[@"BlockAsWhitelist"] == nil) {
-        NSLog(@"ERROR: Could not read a valid block from file %@", fileURL);
-        return nil;
-    }
-    
-    return @{
-        @"Blocklist": openedDict[@"HostBlacklist"],
-        @"BlockAsWhitelist": openedDict[@"BlockAsWhitelist"]
-    };
 }
 
 + (NSArray<NSURL*>*)allUserHomeDirectoryURLs:(NSError**)errPtr {
@@ -281,7 +185,7 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
     NSFileManager* fileManager = [NSFileManager defaultManager];
 
     NSError* homeDirErr = nil;
-    NSArray<NSURL *>* homeDirectoryURLs = [SCUtilities allUserHomeDirectoryURLs: &homeDirErr];
+    NSArray<NSURL *>* homeDirectoryURLs = [SCMiscUtilities allUserHomeDirectoryURLs: &homeDirErr];
     if (homeDirectoryURLs == nil) return homeDirErr;
     
     NSArray<NSString*>* cacheDirPathComponents = @[
@@ -314,10 +218,5 @@ dispatch_source_t CreateDebounceDispatchTimer(double debounceTime, dispatch_queu
     
     return nil;
 }
-
-
-// migration functions
-
-
 
 @end

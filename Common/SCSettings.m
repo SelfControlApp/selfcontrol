@@ -8,7 +8,6 @@
 #import "SCSettings.h"
 #include <IOKit/IOKitLib.h>
 #import <CommonCrypto/CommonCrypto.h>
-#import "SCUtilities.h"
 #import <AppKit/AppKit.h>
 
 #ifndef TESTING
@@ -559,10 +558,12 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
     }
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     double throttleSecs = 0.25f;
-    self.debouncedChangeTimer = CreateDebounceDispatchTimer(throttleSecs, queue, ^{
+    self.debouncedChangeTimer = [SCMiscUtilities createDebounceDispatchTimer: throttleSecs
+                                                                   queue: queue
+                                                                   block: ^{
         NSLog(@"Syncing settings due to propagated changes");
         [self synchronizeSettings];
-    });
+    }];
 }
 
 - (void)resetAllSettingsToDefaults {

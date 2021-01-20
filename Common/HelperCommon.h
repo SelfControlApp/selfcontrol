@@ -28,7 +28,6 @@
 #import <Cocoa/Cocoa.h>
 #import <sysexits.h>
 #import "HostFileBlocker.h"
-#import "SCUtilities.h"
 #import "SCSettings.h"
 
 // Reads the domain block list from the settings for SelfControl, and adds deny

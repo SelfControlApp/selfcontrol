@@ -9,7 +9,6 @@
 
 #include "HelperCommon.h"
 #include "BlockManager.h"
-#import "SCUtilities.h"
 #import "SCSettings.h"
 #import <ServiceManagement/ServiceManagement.h>
 
@@ -106,7 +105,7 @@ void clearCachesIfRequested() {
         return;
     }
     
-    NSError* err = [SCUtilities clearBrowserCaches];
+    NSError* err = [SCMiscUtilities clearBrowserCaches];
     if (err) {
         NSLog(@"WARNING: Error clearing browser caches: %@", err);
         [SCSentry captureError: err];
@@ -141,7 +140,7 @@ void clearOSDNSCache() {
 void removeBlock() {
     SCSettings* settings = [SCSettings sharedSettings];
 
-    [SCUtilities removeBlockFromSettings];
+    [SCBlockUtilities removeBlockFromSettings];
 	removeRulesFromFirewall();
         
     // always synchronize settings ASAP after removing a block to let everybody else know

@@ -8,8 +8,10 @@
 #import <Cocoa/Cocoa.h>
 
 #import "version-header.h"
+#import "SCUtility.h"
 #import "SCErr.h"
 #import "SCConstants.h"
 #import "SCSentry.h"
+#import "SCSettings.h"
 
 #endif
