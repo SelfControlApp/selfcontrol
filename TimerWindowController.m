@@ -234,11 +234,9 @@
 		return;
 	}
 
-	[NSApp beginSheet: addSheet_
-	   modalForWindow: [self window]
-		modalDelegate: self
-	   didEndSelector: @selector(didEndSheet:returnCode:contextInfo:)
-		  contextInfo: nil];
+    [self.window beginSheet: addSheet_ completionHandler:^(NSModalResponse returnCode) {
+        [self->addSheet_ orderOut: self];
+    }];
 
 	[modifyBlockLock unlock];
 }
@@ -250,11 +248,9 @@
         return;
     }
     
-    [NSApp beginSheet: extendBlockTimeSheet_
-       modalForWindow: [self window]
-        modalDelegate: self
-       didEndSelector: @selector(didEndSheet:returnCode:contextInfo:)
-          contextInfo: nil];
+    [self.window beginSheet: extendBlockTimeSheet_ completionHandler:^(NSModalResponse returnCode) {
+        [self->extendBlockTimeSheet_ orderOut: self];
+    }];
     
     [modifyBlockLock unlock];
 }

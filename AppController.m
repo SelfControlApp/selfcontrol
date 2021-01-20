@@ -738,7 +738,7 @@
 	runResult = [sp runModal];
 
 	/* if successful, save file under designated name */
-	if (runResult == NSOKButton) {
+	if (runResult == NSModalResponseOK) {
         NSString* errDescription;
         [SCBlockFileReaderWriter writeBlocklistToFileURL: sp.URL
                                    blockInfo: @{
@@ -760,60 +760,46 @@
 	}
 }
 
+- (BOOL)openSavedBlockFileAtURL:(NSURL*)fileURL {
+    NSDictionary* settingsFromFile = [SCBlockFileReaderWriter readBlocklistFromFile: fileURL];
+    
+    if (settingsFromFile != nil) {
+        [defaults_ setObject: settingsFromFile[@"Blocklist"] forKey: @"Blocklist"];
+        [defaults_ setObject: settingsFromFile[@"BlockAsWhitelist"] forKey: @"BlockAsWhitelist"];
+        [SCSentry addBreadcrumb: @"Opened blocklist from file" category:@"app"];
+    } else {
+        NSLog(@"WARNING: Could not read a valid blocklist from file - ignoring.");
+        return NO;
+    }
+
+    // close the domain list (and reopen again if need be to refresh)
+    BOOL domainListIsOpen = [[domainListWindowController_ window] isVisible];
+    NSRect frame = [[domainListWindowController_ window] frame];
+    [self closeDomainList];
+    if(domainListIsOpen) {
+        [self showDomainList: self];
+        [[domainListWindowController_ window] setFrame: frame display: YES];
+    }
+    
+    [self refreshUserInterface];
+    return YES;
+}
+
 - (IBAction)open:(id)sender {
-    NSLog(@"CALLED OPEN OPENING FILE!");
 	NSOpenPanel* oPanel = [NSOpenPanel openPanel];
 	oPanel.allowedFileTypes = @[@"selfcontrol"];
 	oPanel.allowsMultipleSelection = NO;
 
 	long result = [oPanel runModal];
-	if (result == NSOKButton) {
+	if (result == NSModalResponseOK) {
 		if([oPanel.URLs count] > 0) {
-            NSDictionary* settingsFromFile = [SCBlockFileReaderWriter readBlocklistFromFile: oPanel.URLs[0]];
-            
-            if (settingsFromFile != nil) {
-                [defaults_ setObject: settingsFromFile[@"Blocklist"] forKey: @"Blocklist"];
-                [defaults_ setObject: settingsFromFile[@"BlockAsWhitelist"] forKey: @"BlockAsWhitelist"];
-                [SCSentry addBreadcrumb: @"Opened blocklist from file" category:@"app"];
-            } else {
-                NSLog(@"WARNING: Could not read a valid blocklist from file - ignoring.");
-            }
-
-            // close the domain list (and reopen again if need be to refresh)
-            BOOL domainListIsOpen = [[domainListWindowController_ window] isVisible];
-			NSRect frame = [[domainListWindowController_ window] frame];
-			[self closeDomainList];
-			if(domainListIsOpen) {
-				[self showDomainList: self];
-				[[domainListWindowController_ window] setFrame: frame display: YES];
-			}
-            
-            [self refreshUserInterface];
+            [self openSavedBlockFileAtURL: oPanel.URLs[0]];
 		}
 	}
 }
 
 - (BOOL)application:(NSApplication*)theApplication openFile:(NSString*)filename {
-    NSLog(@"CALLED APPLICATION OPEN FILE!");
-	NSDictionary* openedDict = [NSDictionary dictionaryWithContentsOfFile: filename];
-	if(openedDict == nil) return NO;
-
-	NSArray* newBlocklist = openedDict[@"HostBlacklist"];
-	NSNumber* newAllowlistChoice = openedDict[@"BlockAsWhitelist"];
-	if(newBlocklist == nil || newAllowlistChoice == nil) return NO;
-    
-    [defaults_ setValue: newBlocklist forKey:@"Blocklist"];
-    [defaults_ setObject: newAllowlistChoice forKey: @"BlockAsWhitelist"];
-    
-	BOOL domainListIsOpen = [[domainListWindowController_ window] isVisible];
-	NSRect frame = [[domainListWindowController_ window] frame];
-	[self closeDomainList];
-	if(domainListIsOpen) {
-		[self showDomainList: self];
-		[[domainListWindowController_ window] setFrame: frame display: YES];
-	}
-
-	return YES;
+    return [self openSavedBlockFileAtURL: [NSURL fileURLWithPath: filename]];
 }
 
 - (IBAction)openFAQ:(id)sender {
