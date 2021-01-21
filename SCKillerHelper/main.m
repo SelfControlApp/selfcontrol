@@ -35,6 +35,10 @@ int main(int argc, char* argv[]) {
 		}
 
 		int controllingUID = [@(argv[1]) intValue];
+        if (controllingUID <= 0) {
+            controllingUID = getuid();
+        }
+        
         // we need to setuid to root, otherwise launchctl won't find system launch daemons
         // depite the EUID being 0 as expected - not sure why that is
         setuid(0);

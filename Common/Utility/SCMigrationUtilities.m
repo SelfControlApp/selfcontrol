@@ -15,6 +15,11 @@
 
 + (NSString*)homeDirectoryForUid:(uid_t)uid {
     struct passwd *pwd = getpwuid(uid);
+    
+    // I can't think of why getpwuid() could ever fail, but we've
+    // had a user crash report where it has! so be graceful
+    if (pwd == NULL || pwd->pw_dir == NULL) return nil;
+    
     return [NSString stringWithCString: pwd->pw_dir encoding: NSString.defaultCStringEncoding];
 }
 
@@ -116,7 +121,7 @@
         NSLog(@"WARNING: Can't copy legacy settings to defaults, because SCSettings is being run as root and no controlling UID was sent.");
         return;
     }
-    if (!controllingUID) controllingUID = getuid();
+    if (controllingUID <= 0) controllingUID = getuid();
 
     NSDictionary<NSString*, id>* defaultDefaults = SCConstants.defaultUserDefaults;
     // if we're running this as a normal user (generally that means app/CLI), it's easy: just get the standard user defaults
