@@ -32,6 +32,7 @@
 #import "HostFileBlocker.h"
 #import "SCBlockFileReaderWriter.h"
 #import "SCUIUtilities.h"
+#import <TransformerKit/NSValueTransformer+TransformerKit.h>
 
 @interface AppController () {}
 
@@ -340,11 +341,27 @@
 	[blockDurationSlider_ setMaxValue: [defaults_ integerForKey: @"MaxBlockLength"]];
 	[blockDurationSlider_ setNumberOfTickMarks: numTickMarks];
 
+    [NSValueTransformer registerValueTransformerWithName: @"BlockDurationSliderTransformer"
+                                   transformedValueClass: [NSNumber class]
+                      returningTransformedValueWithBlock:^id _Nonnull(id  _Nonnull value) {
+        // if it's not a number or convertable to one, IDK man
+        if (![value respondsToSelector: @selector(intValue)]) return @0;
+        
+        // instead of having 0 as the first option (who would ever want to start a 0-minute block?)
+        // we make it 1 minute, which is super handy for testing blocklists
+        // (of course, if the next tick mark is 1 minute anyway, we can skip that)
+        if ([value intValue] == 0 && [self->defaults_ integerForKey: @"BlockLengthInterval"] != 1) {
+            return @1;
+        }
+        
+        return value;
+    }];
 	[blockDurationSlider_ bind: @"value"
 					  toObject: [NSUserDefaultsController sharedUserDefaultsController]
 				   withKeyPath: @"values.BlockDuration"
 					   options: @{
-								  NSContinuouslyUpdatesValueBindingOption: @YES
+								  NSContinuouslyUpdatesValueBindingOption: @YES,
+                                  NSValueTransformerNameBindingOption: @"BlockDurationSliderTransformer"
 								  }];
 
 	[self refreshUserInterface];

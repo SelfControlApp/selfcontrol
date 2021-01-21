@@ -47,6 +47,7 @@ OSStatus const AUTH_CANCELLED_STATUS = -60006;
             @"VerifyInternetConnection": @YES,
             @"TimerWindowFloats": @NO,
             @"BadgeApplicationIcon": @YES,
+            @"BlockDuration": @1,
             @"MaxBlockLength": @1440,
             @"BlockLengthInterval": @15,
             @"WhitelistAlertSuppress": @NO,
