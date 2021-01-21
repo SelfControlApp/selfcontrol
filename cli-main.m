@@ -50,7 +50,9 @@ int main(int argc, char* argv[]) {
         if (geteuid() == 0 && controllingUID > 0) {
             defaultsDict = [SCMiscUtilities defaultsDictForUser: controllingUID];
         } else {
-            defaultsDict = [NSUserDefaults standardUserDefaults].dictionaryRepresentation;
+            NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+            [defaults registerDefaults: SCConstants.defaultUserDefaults];
+            defaultsDict = defaults.dictionaryRepresentation;
         }
         
 		if([modeString isEqual: @"--install"]) {

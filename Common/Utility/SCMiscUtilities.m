@@ -174,6 +174,7 @@
     seteuid(controllingUID);
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
     [defaults addSuiteNamed: @"org.eyebeam.SelfControl"];
+    [defaults registerDefaults: SCConstants.defaultUserDefaults];
     [defaults synchronize];
     NSDictionary* dictValue = [defaults dictionaryRepresentation];
     // reset the euid so nothing else gets funky

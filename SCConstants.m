@@ -58,7 +58,9 @@ OSStatus const AUTH_CANCELLED_STATUS = -60006;
             @"ClearCaches": @YES,
             @"AllowLocalNetworks": @YES,
             @"EnableErrorReporting": @NO,
-            @"ErrorReportingPromptDismissed": @NO
+            @"ErrorReportingPromptDismissed": @NO,
+            
+            @"V4MigrationComplete": @NO
         };
     });
     

@@ -126,54 +126,66 @@
         seteuid(controllingUID);
         defaults = [NSUserDefaults standardUserDefaults];
         [defaults addSuiteNamed: @"org.eyebeam.SelfControl"];
+        [defaults registerDefaults: SCConstants.defaultUserDefaults];
         [defaults synchronize];
     } else {
         defaults = [NSUserDefaults standardUserDefaults];
     }
     
-    NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLegacyLockFilePath];
+    // if we already completed a migration into these defaults, DON'T do it again!
+    // (we don't want to overwrite any changes post-migration)
+    BOOL migrationComplete = [defaults boolForKey: @"V4MigrationComplete"];
     
-    NSString* legacySettingsPath = [SCMigrationUtilities legacySecuredSettingsFilePathForUser: controllingUID];
-    NSDictionary* settingsFromDisk = [NSDictionary dictionaryWithContentsOfFile: legacySettingsPath];
-    
-    // if we have a v3.x settings dictionary, copy what we can from that
-    if (settingsFromDisk != nil) {
-        NSLog(@"Migrating all settings from legacy secured settings file %@", legacySettingsPath);
+    if (!migrationComplete) {
+        NSDictionary* lockDict = [NSDictionary dictionaryWithContentsOfFile: SelfControlLegacyLockFilePath];
+        
+        NSString* legacySettingsPath = [SCMigrationUtilities legacySecuredSettingsFilePathForUser: controllingUID];
+        NSDictionary* settingsFromDisk = [NSDictionary dictionaryWithContentsOfFile: legacySettingsPath];
+        
+        // if we have a v3.x settings dictionary, copy what we can from that
+        if (settingsFromDisk != nil) {
+            NSLog(@"Migrating all settings from legacy secured settings file %@", legacySettingsPath);
 
-        // we assume the settings from disk are newer / should override existing values
-        // UNLESS the user has set a default to its non-default value
+            // we assume the settings from disk are newer / should override existing values
+            // UNLESS the user has set a default to its non-default value
 
-        // we'll look at all the possible keys in defaults - some of them should really
-        // have never ended up in settings at any point, but shouldn't matter
-        for (NSString* key in [defaultDefaults allKeys]) {
-            id settingsValue = settingsFromDisk[key];
-            id defaultsValue = [defaults objectForKey: key];
-            
-            // we have a value from settings, and the defaults value is unset or equal to the default value
-            // so pull the value from settings in!
-            if (settingsValue != nil && (defaultsValue == nil || [defaultsValue isEqualTo: defaultDefaults[key]])) {
-                NSLog(@"Migrating keypair (%@, %@) from settings to defaults", key, settingsValue);
-                [defaults setObject: settingsValue forKey: key];
+            // we'll look at all the possible keys in defaults - some of them should really
+            // have never ended up in settings at any point, but shouldn't matter
+            for (NSString* key in [defaultDefaults allKeys]) {
+                id settingsValue = settingsFromDisk[key];
+                id defaultsValue = [defaults objectForKey: key];
+                
+                // we have a value from settings, and the defaults value is unset or equal to the default value
+                // so pull the value from settings in!
+                if (settingsValue != nil && (defaultsValue == nil || [defaultsValue isEqualTo: defaultDefaults[key]])) {
+                    NSLog(@"Migrating keypair (%@, %@) from settings to defaults", key, settingsValue);
+                    [defaults setObject: settingsValue forKey: key];
+                }
+            }
+
+            NSLog(@"Done migrating preferences from legacy secured settings to defaults!");
+        }
+
+        // if we're on a pre-3.0 version, we may need to migrate the blocklist from defaults or the lock dictionary
+        // the Blocklist attribute used to be named HostBlacklist, so needs a special migration
+        NSArray<NSString*>* blocklistInDefaults = [defaults arrayForKey: @"Blocklist"];
+        // of course, don't overwrite if we already have a blocklist in today's defaults
+        if (blocklistInDefaults == nil || blocklistInDefaults.count == 0) {
+            if (lockDict != nil && lockDict[@"HostBlacklist"] != nil) {
+                [defaults setObject: lockDict[@"HostBlacklist"] forKey: @"Blocklist"];
+                NSLog(@"Migrated blocklist from pre-3.0 lock dictionary: %@", lockDict[@"HostBlacklist"]);
+            } else if ([defaults objectForKey: @"HostBlacklist"] != nil) {
+                [defaults setObject: [defaults objectForKey: @"HostBlacklist"] forKey: @"Blocklist"];
+                NSLog(@"Migrated blocklist from pre-3.0 legacy defaults: %@", [defaults objectForKey: @"HostBlacklist"]);
             }
         }
-
-        NSLog(@"Done migrating preferences from legacy secured settings to defaults!");
-    }
-
-    // if we're on a pre-3.0 version, we may need to migrate the blocklist from defaults or the lock dictionary
-    // the Blocklist attribute used to be named HostBlacklist, so needs a special migration
-    NSArray<NSString*>* blocklistInDefaults = [defaults arrayForKey: @"Blocklist"];
-    // of course, don't overwrite if we already have a blocklist in today's defaults
-    if (blocklistInDefaults == nil || blocklistInDefaults.count == 0) {
-        if (lockDict != nil && lockDict[@"HostBlacklist"] != nil) {
-            [defaults setObject: lockDict[@"HostBlacklist"] forKey: @"Blocklist"];
-            NSLog(@"Migrated blocklist from pre-3.0 lock dictionary: %@", lockDict[@"HostBlacklist"]);
-        } else if ([defaults objectForKey: @"HostBlacklist"] != nil) {
-            [defaults setObject: [defaults objectForKey: @"HostBlacklist"] forKey: @"Blocklist"];
-            NSLog(@"Migrated blocklist from pre-3.0 legacy defaults: %@", [defaults objectForKey: @"HostBlacklist"]);
-        }
+        
+        [defaults setBool: YES forKey: @"V4MigrationComplete"];
+    } else {
+        NSLog(@"Skipping copy to defaults because migration to V4 was already completed.");
     }
     
+    [defaults synchronize];
     // if we're running as root and imitated the user to get their defaults, we need to put things back in place when done
     if (runningAsRoot) {
         [NSUserDefaults resetStandardUserDefaults];
@@ -238,6 +250,7 @@
     seteuid(controllingUID);
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
     [defaults addSuiteNamed: @"org.eyebeam.SelfControl"];
+    [defaults registerDefaults: SCConstants.defaultUserDefaults];
     [defaults synchronize];
     NSArray* defaultsKeysToClear = @[
                              @"BlockStartedDate",
