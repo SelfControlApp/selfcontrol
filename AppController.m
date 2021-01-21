@@ -25,13 +25,13 @@
 #import "PreferencesGeneralViewController.h"
 #import "PreferencesAdvancedViewController.h"
 #import "SCTimeIntervalFormatter.h"
-#import <SystemConfiguration/SystemConfiguration.h>
 #import <LetsMove/PFMoveApplication.h>
 #import "SCSettings.h"
 #import <ServiceManagement/ServiceManagement.h>
 #import "SCXPCClient.h"
 #import "HostFileBlocker.h"
 #import "SCBlockFileReaderWriter.h"
+#import "SCUIUtilities.h"
 
 @interface AppController () {}
 
@@ -75,42 +75,14 @@
 
 	// Time-display code cleaned up thanks to the contributions of many users
 
-	NSString* timeString = [self timeSliderDisplayStringFromNumberOfMinutes:numMinutes];
+	NSString* timeString = [SCUIUtilities timeSliderDisplayStringFromNumberOfMinutes:numMinutes];
 
 	[blockSliderTimeDisplayLabel_ setStringValue:timeString];
 	[submitButton_ setEnabled: (numMinutes > 0) && ([[defaults_ arrayForKey: @"Blocklist"] count] > 0)];
 }
 
-- (NSString *)timeSliderDisplayStringFromNumberOfMinutes:(NSInteger)numberOfMinutes {
-    static NSCalendar* gregorian = nil;
-    if (gregorian == nil) {
-        gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-    }
-
-    NSRange secondsRangePerMinute = [gregorian
-                                     rangeOfUnit:NSCalendarUnitSecond
-                                     inUnit:NSCalendarUnitMinute
-                                     forDate:[NSDate date]];
-    NSUInteger numberOfSecondsPerMinute = NSMaxRange(secondsRangePerMinute);
-
-    NSTimeInterval numberOfSecondsSelected = (NSTimeInterval)(numberOfSecondsPerMinute * numberOfMinutes);
-
-    NSString* displayString = [self timeSliderDisplayStringFromTimeInterval:numberOfSecondsSelected];
-    return displayString;
-}
-
-- (NSString *)timeSliderDisplayStringFromTimeInterval:(NSTimeInterval)numberOfSeconds {
-    static SCTimeIntervalFormatter* formatter = nil;
-    if (formatter == nil) {
-        formatter = [[SCTimeIntervalFormatter alloc] init];
-    }
-
-    NSString* formatted = [formatter stringForObjectValue:@(numberOfSeconds)];
-    return formatted;
-}
-
 - (IBAction)addBlock:(id)sender {
-    if ([self blockIsRunning]) {
+    if ([SCUIUtilities blockIsRunning]) {
 		// This method shouldn't be getting called, a block is on so the Start button should be disabled.
         NSError* err = [SCErr errorWithCode: 104];
         [SCSentry captureError: err];
@@ -128,7 +100,7 @@
 		return;
 	}
 
-	if([defaults_ boolForKey: @"VerifyInternetConnection"] && ![self networkConnectionIsAvailable]) {
+	if([defaults_ boolForKey: @"VerifyInternetConnection"] && ![SCUIUtilities networkConnectionIsAvailable]) {
 		NSAlert* networkUnavailableAlert = [[NSAlert alloc] init];
 		[networkUnavailableAlert setMessageText: NSLocalizedString(@"No network connection detected", "No network connection detected message")];
 		[networkUnavailableAlert setInformativeText:NSLocalizedString(@"A block cannot be started without a working network connection.  You can override this setting in Preferences.", @"Message when network connection is unavailable")];
@@ -163,9 +135,9 @@
 		// already refreshing the UI, no need to wait and do it again
 		return;
 	}
-    
+
 	BOOL blockWasOn = blockIsOn;
-	blockIsOn = [self blockIsRunning];
+	blockIsOn = [SCUIUtilities blockIsRunning];
 
 	if(blockIsOn) { // block is on
 		if(!blockWasOn) { // if we just switched states to on...
@@ -195,6 +167,7 @@
 		}
 
 		[self updateTimeSliderDisplay: blockDurationSlider_];
+        blocklistTeaserLabel_.stringValue = [SCUIUtilities blockTeaserString];
 
 		if([defaults_ integerForKey: @"BlockDuration"] != 0 && [[defaults_ arrayForKey: @"Blocklist"] count] != 0 && !self.addingBlock) {
 			[submitButton_ setEnabled: YES];
@@ -360,7 +333,7 @@
 
 	// We'll set blockIsOn to whatever is NOT right, so that in refreshUserInterface
 	// it'll fix it and properly refresh the user interface.
-	blockIsOn = ![self blockIsRunning];
+	blockIsOn = ![SCUIUtilities blockIsRunning];
 
 	// Change block duration slider for hidden user defaults settings
 	long numTickMarks = ([defaults_ integerForKey: @"MaxBlockLength"] / [defaults_ integerForKey: @"BlockLengthInterval"]) + 1;
@@ -412,17 +385,9 @@
     }];
 }
 
-- (BOOL)blockIsRunning {
-    // we'll say a block is running if we find the block info, but
-    // also, importantly, if we find a block still going in the hosts file
-    // that way if this happens, the user will still see the timer window -
-    // which will let them manually clear the remaining block info after 10 seconds
-    return [SCBlockUtilities anyBlockIsRunning] || [HostFileBlocker blockFoundInHostsFile];
-}
-
 - (IBAction)showDomainList:(id)sender {
     [SCSentry addBreadcrumb: @"Showing domain list" category:@"app"];
-	if([self blockIsRunning] || self.addingBlock) {
+	if([SCUIUtilities blockIsRunning] || self.addingBlock) {
 		NSAlert* blockInProgressAlert = [[NSAlert alloc] init];
 		[blockInProgressAlert setMessageText: NSLocalizedString(@"Block in progress", @"Block in progress error title")];
 		[blockInProgressAlert setInformativeText:NSLocalizedString(@"The blocklist cannot be edited while a block is in progress.", @"Block in progress explanation")];
@@ -455,17 +420,6 @@
 	return YES;
 }
 
-- (BOOL)networkConnectionIsAvailable {
-	SCNetworkReachabilityFlags flags;
-
-	// This method goes haywire if Google ever goes down...
-	SCNetworkReachabilityRef target = SCNetworkReachabilityCreateWithName (kCFAllocatorDefault, "google.com");
-
-    BOOL reachable = SCNetworkReachabilityGetFlags (target, &flags);
-    
-	return reachable && (flags & kSCNetworkFlagsReachable) && !(flags & kSCNetworkFlagsConnectionRequired);
-}
-
 - (void)addToBlockList:(NSString*)host lock:(NSLock*)lock {
     NSLog(@"addToBlocklist: %@", host);
     // Note we RETRIEVE the latest list from settings (ActiveBlocklist), but we SET the new list in defaults
@@ -482,7 +436,7 @@
        
 	[defaults_ setValue: list forKey: @"Blocklist"];
 
-	if(![self blockIsRunning]) {
+	if(![SCUIUtilities blockIsRunning]) {
 		// This method shouldn't be getting called, a block is not on.
 		// so the Start button should be disabled.
 		// Maybe the UI didn't get properly refreshed, so try refreshing it again
@@ -496,7 +450,7 @@
 		return;
 	}
 
-	if([defaults_ boolForKey: @"VerifyInternetConnection"] && ![self networkConnectionIsAvailable]) {
+	if([defaults_ boolForKey: @"VerifyInternetConnection"] && ![SCUIUtilities networkConnectionIsAvailable]) {
 		NSAlert* networkUnavailableAlert = [[NSAlert alloc] init];
 		[networkUnavailableAlert setMessageText: NSLocalizedString(@"No network connection detected", "No network connection detected message")];
 		[networkUnavailableAlert setInformativeText:NSLocalizedString(@"A block cannot be started without a working network connection.  You can override this setting in Preferences.", @"Message when network connection is unavailable")];
@@ -528,7 +482,7 @@
     }
     
     // ensure block health before we try to change it
-    if(![self blockIsRunning]) {
+    if(![SCUIUtilities blockIsRunning]) {
         // This method shouldn't be getting called, a block is not on.
         // so the Start button should be disabled.
         // Maybe the UI didn't get properly refreshed, so try refreshing it again

@@ -233,14 +233,14 @@
         <window title="SelfControl" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="371">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" texturedBackground="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="451" y="331" width="620" height="111"/>
+            <rect key="contentRect" x="451" y="331" width="620" height="154"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2048" height="1255"/>
             <view key="contentView" id="372">
-                <rect key="frame" x="0.0" y="0.0" width="620" height="111"/>
+                <rect key="frame" x="0.0" y="0.0" width="620" height="154"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="465">
-                        <rect key="frame" x="18" y="35" width="584" height="30"/>
+                        <rect key="frame" x="18" y="40" width="584" height="30"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="22" id="aHf-Ya-8uh"/>
                         </constraints>
@@ -251,15 +251,7 @@
                             <action selector="updateTimeSliderDisplay:" target="469" id="481"/>
                         </connections>
                     </slider>
-                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="478">
-                        <rect key="frame" x="17" y="16" width="585" height="16"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="30 minutes" id="479">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="543" userLabel="Edit Blocklist Button">
+                    <button horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="543" userLabel="Edit Blocklist Button">
                         <rect key="frame" x="479" y="9" width="122" height="23"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="hTb-jo-56c"/>
@@ -273,13 +265,13 @@
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="541">
-                        <rect key="frame" x="261" y="73" width="99" height="23"/>
+                        <rect key="frame" x="262" y="119" width="97" height="19"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="97" id="Wgy-0n-fJ9"/>
                         </constraints>
-                        <buttonCell key="cell" type="roundTextured" title="Start" bezelStyle="texturedRounded" alignment="center" state="on" borderStyle="border" inset="2" id="542">
+                        <buttonCell key="cell" type="roundRect" title="Start" bezelStyle="roundedRect" alignment="center" controlSize="large" state="on" borderStyle="border" inset="2" id="542">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
+                            <font key="font" metaFont="system" size="15"/>
                             <string key="keyEquivalent" base64-UTF8="YES">
 DQ
 </string>
@@ -288,31 +280,51 @@ DQ
                             <action selector="addBlock:" target="469" id="680"/>
                         </connections>
                     </button>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="JfI-b0-nf0" userLabel="Blocklist teaser label">
+                        <rect key="frame" x="17" y="13" width="442" height="16"/>
+                        <textFieldCell key="cell" lineBreakMode="truncatingTail" title="Blocking no sites (list is empty)" id="Yrz-Er-8xN">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="478">
+                        <rect key="frame" x="17" y="78" width="585" height="16"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="30 minutes" id="479">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="543" secondAttribute="trailing" constant="20" id="0Wn-BM-hpf"/>
                     <constraint firstItem="465" firstAttribute="trailing" secondItem="543" secondAttribute="trailing" id="Eqk-xh-OIc"/>
                     <constraint firstItem="541" firstAttribute="centerX" secondItem="372" secondAttribute="centerX" id="KyZ-Mc-sxV"/>
                     <constraint firstAttribute="bottom" secondItem="543" secondAttribute="bottom" constant="11" id="MQd-6b-WA4"/>
+                    <constraint firstItem="JfI-b0-nf0" firstAttribute="centerY" secondItem="543" secondAttribute="centerY" id="NDo-M0-Sne"/>
+                    <constraint firstItem="JfI-b0-nf0" firstAttribute="leading" secondItem="478" secondAttribute="leading" id="UNP-ql-5cB"/>
                     <constraint firstItem="478" firstAttribute="leading" secondItem="372" secondAttribute="leading" constant="19" id="WdA-X8-Sm5"/>
-                    <constraint firstAttribute="bottom" secondItem="478" secondAttribute="bottom" constant="16" id="bCa-zH-2yY"/>
                     <constraint firstItem="465" firstAttribute="centerX" secondItem="541" secondAttribute="centerX" id="fF7-jW-hAj"/>
+                    <constraint firstItem="543" firstAttribute="top" secondItem="465" secondAttribute="bottom" constant="15" id="gCe-4n-0nP"/>
                     <constraint firstItem="541" firstAttribute="top" secondItem="372" secondAttribute="top" constant="16" id="jXt-Fy-vdp"/>
                     <constraint firstItem="478" firstAttribute="trailing" secondItem="543" secondAttribute="trailing" id="jmb-Wp-H3Y"/>
+                    <constraint firstItem="543" firstAttribute="leading" secondItem="JfI-b0-nf0" secondAttribute="trailing" constant="23" id="mPT-an-Lpy"/>
                     <constraint firstItem="543" firstAttribute="leading" relation="lessThanOrEqual" secondItem="478" secondAttribute="trailing" constant="-10" id="o6E-qg-6q9"/>
-                    <constraint firstItem="478" firstAttribute="top" secondItem="465" secondAttribute="bottom" constant="9" id="sph-T0-uxn"/>
+                    <constraint firstItem="478" firstAttribute="bottom" secondItem="465" secondAttribute="top" constant="-10" id="spp-LO-oaf"/>
                 </constraints>
             </view>
             <contentBorderThickness minY="0.0" maxY="90"/>
             <connections>
                 <outlet property="delegate" destination="469" id="905"/>
             </connections>
-            <point key="canvasLocation" x="39" y="307.5"/>
+            <point key="canvasLocation" x="-106" y="525"/>
         </window>
         <customObject id="469" customClass="AppController">
             <connections>
                 <outlet property="blockDurationSlider_" destination="465" id="669"/>
                 <outlet property="blockSliderTimeDisplayLabel_" destination="478" id="670"/>
+                <outlet property="blocklistTeaserLabel_" destination="JfI-b0-nf0" id="PED-q3-MAF"/>
                 <outlet property="domainListMenuItem_" destination="503" id="673"/>
                 <outlet property="editBlocklistButton_" destination="543" id="6tH-Bv-ZNK"/>
                 <outlet property="editBlocklistMenuItem_" destination="503" id="GZy-OO-ixs"/>

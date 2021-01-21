@@ -36,6 +36,7 @@
 @interface AppController : NSObject <NSApplicationDelegate> {
 	IBOutlet NSSlider* blockDurationSlider_;
 	IBOutlet NSTextField* blockSliderTimeDisplayLabel_;
+    IBOutlet NSTextField* blocklistTeaserLabel_;
 	IBOutlet NSButton* submitButton_;
 	IBOutlet NSWindow* initialWindow_;
 
@@ -78,10 +79,6 @@
 // the domain blocklist window.  Spawns an alert box if a block is in progress.
 - (IBAction)showDomainList:(id)sender;
 
-// Returns YES if, according to settings or the hostfile, the
-// SelfControl block is running  Returns NO if it is not.
-@property (nonatomic, readonly) BOOL blockIsRunning;
-
 // Allocates a new TimerWindowController if necessary and opens the timer window.
 - (void)showTimerWindow;
 
@@ -90,11 +87,6 @@
 
 // Calls the close method of our DomainListWindowController
 - (void)closeDomainList;
-
-// Checks whether a network connection is available by checking the reachabilty
-// of google.com  This method may not be correct if the network configuration
-// was just changed a few seconds ago.
-@property (nonatomic, readonly) BOOL networkConnectionIsAvailable;
 
 // Called by timerWindowController_ after its sheet returns, to add a specified
 // host to the blocklist (and refresh the block to use the new blocklist).  Launches

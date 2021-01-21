@@ -111,6 +111,8 @@
 		CB81AB8C25B8E6BE006956F7 /* SCBlockEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81AB8925B8E6BE006956F7 /* SCBlockEntry.m */; };
 		CB81AB8D25B8E6BE006956F7 /* SCBlockEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81AB8925B8E6BE006956F7 /* SCBlockEntry.m */; };
 		CB81AB8E25B8E6BE006956F7 /* SCBlockEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81AB8925B8E6BE006956F7 /* SCBlockEntry.m */; };
+		CB81AC2A25B909E1006956F7 /* SCUIUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81AC2925B909E1006956F7 /* SCUIUtilities.m */; };
+		CB81AC2B25B909E1006956F7 /* SCUIUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CB81AC2925B909E1006956F7 /* SCUIUtilities.m */; };
 		CB850F3925130F5300EE2E2D /* NSString+IPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806516C237F10059C99A /* NSString+IPAddress.m */; };
 		CB90BF830F49F430006D202D /* HostImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB90BF820F49F430006D202D /* HostImporter.m */; };
 		CB9365620F8581B000EF284E /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = CB9365610F8581B000EF284E /* dsa_pub.pem */; };
@@ -316,6 +318,8 @@
 		CB81AB2325B7EF74006956F7 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		CB81AB8825B8E6BE006956F7 /* SCBlockEntry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCBlockEntry.h; sourceTree = "<group>"; };
 		CB81AB8925B8E6BE006956F7 /* SCBlockEntry.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCBlockEntry.m; sourceTree = "<group>"; };
+		CB81AC2825B909E1006956F7 /* SCUIUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCUIUtilities.h; sourceTree = "<group>"; };
+		CB81AC2925B909E1006956F7 /* SCUIUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCUIUtilities.m; sourceTree = "<group>"; };
 		CB90BF810F49F430006D202D /* HostImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostImporter.h; sourceTree = "<group>"; };
 		CB90BF820F49F430006D202D /* HostImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HostImporter.m; sourceTree = "<group>"; };
 		CB9365610F8581B000EF284E /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
@@ -571,10 +575,10 @@
 				CB4294DF0F53D865008E10CA /* App Classes */,
 				CB81AB8725B8E67D006956F7 /* Block Management */,
 				CB1CA64C25ABA5990084A551 /* Common */,
+				CB4294F10F53D95D008E10CA /* Interfaces */,
 				CB9C80F819CFB79700CDCAE1 /* SelfControl Killer */,
 				CB0EEF5E20FD8CE00024D27B /* SelfControlTests */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
-				CB4294F10F53D95D008E10CA /* Interfaces */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -664,6 +668,8 @@
 			children = (
 				CB25806416C237F10059C99A /* NSString+IPAddress.h */,
 				CB25806516C237F10059C99A /* NSString+IPAddress.m */,
+				CB81AC2825B909E1006956F7 /* SCUIUtilities.h */,
+				CB81AC2925B909E1006956F7 /* SCUIUtilities.m */,
 				CBE5C4090F4D4531003DB900 /* ButtonWithPopupMenu.h */,
 				CBE5C40A0F4D4531003DB900 /* ButtonWithPopupMenu.m */,
 				CB529BBD0F32B7ED00564FB8 /* AppController.h */,
@@ -1311,6 +1317,7 @@
 			files = (
 				CBADC27E25B22BC7000EE5BB /* SCSentry.m in Sources */,
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
+				CB81AC2A25B909E1006956F7 /* SCUIUtilities.m in Sources */,
 				CB1CA66525ABA6240084A551 /* SCXPCAuthorization.m in Sources */,
 				CB529BBF0F32B7ED00564FB8 /* AppController.m in Sources */,
 				CB81A94925B7B5B5006956F7 /* SCMigrationUtilities.m in Sources */,
@@ -1389,6 +1396,7 @@
 				CB9C80FF19CFB79700CDCAE1 /* AppDelegate.m in Sources */,
 				CB9C80FC19CFB79700CDCAE1 /* main.m in Sources */,
 				CB5DFCBA2251DD1F0084CEC2 /* SCConstants.m in Sources */,
+				CB81AC2B25B909E1006956F7 /* SCUIUtilities.m in Sources */,
 				CB32D2AC21902CF800B8CD68 /* SCSettings.m in Sources */,
 				CB81A9F525B7C5F7006956F7 /* SCBlockFileReaderWriter.m in Sources */,
 				CB58948725B3FC6F00E9A5C0 /* HostFileBlocker.m in Sources */,
