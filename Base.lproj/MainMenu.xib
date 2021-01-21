@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -28,7 +28,7 @@
                                     <action selector="orderFrontStandardAboutPanel:" target="-2" id="142"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Check for updates..." id="732">
+                            <menuItem title="Check for Updates..." id="732">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="checkForUpdates:" target="731" id="733"/>
@@ -234,18 +234,18 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" texturedBackground="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="451" y="331" width="620" height="111"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2048" height="1255"/>
             <view key="contentView" id="372">
                 <rect key="frame" x="0.0" y="0.0" width="620" height="111"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="465">
-                        <rect key="frame" x="18" y="40" width="584" height="25"/>
+                        <rect key="frame" x="18" y="35" width="584" height="30"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="22" id="aHf-Ya-8uh"/>
                         </constraints>
                         <sliderCell key="cell" continuous="YES" alignment="left" maxValue="1440" doubleValue="30" tickMarkPosition="below" numberOfTickMarks="97" allowsTickMarkValuesOnly="YES" sliderType="linear" id="466">
-                            <font key="font" metaFont="user"/>
+                            <font key="font" usesAppearanceFont="YES"/>
                         </sliderCell>
                         <connections>
                             <action selector="updateTimeSliderDisplay:" target="469" id="481"/>
@@ -260,7 +260,7 @@
                         </textFieldCell>
                     </textField>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="543" userLabel="Edit Blocklist Button">
-                        <rect key="frame" x="479.5" y="10" width="121" height="23"/>
+                        <rect key="frame" x="479" y="9" width="122" height="23"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="hTb-jo-56c"/>
                         </constraints>
@@ -273,7 +273,7 @@
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="541">
-                        <rect key="frame" x="261.5" y="72" width="98" height="23"/>
+                        <rect key="frame" x="261" y="73" width="99" height="23"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="97" id="Wgy-0n-fJ9"/>
                         </constraints>
