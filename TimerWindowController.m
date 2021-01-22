@@ -198,7 +198,7 @@
 	[timerLabel_ setFrame:NSRectFromCGRect(CGRectMake(0, timerLabel_.frame.origin.y, self.window.frame.size.width, timerLabel_.frame.size.height))];
 	[self resetStrikes];
     
-	if([[NSUserDefaults standardUserDefaults] boolForKey: @"BadgeApplicationIcon"]) {
+	if([[NSUserDefaults standardUserDefaults] boolForKey: @"BadgeApplicationIcon"] && [blockEndingDate_ timeIntervalSinceNow] > 0) {
 		// We want to round up the minutes--standard when we aren't displaying seconds.
 		if(numSeconds > 0 && numMinutes != 59) {
 			numMinutes++;
