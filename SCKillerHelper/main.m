@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
 			exit(EXIT_FAILURE);
 		}
 
-		int controllingUID = [@(argv[1]) intValue];
+		uid_t controllingUID = (uid_t)[@(argv[1]) intValue];
         if (controllingUID <= 0) {
             controllingUID = getuid();
         }
@@ -210,7 +210,7 @@ int main(int argc, char* argv[]) {
 
 		if([fileManager fileExistsAtPath: @"/Library/Logs/CrashReporter"]) {
 			NSArray* fileNames = [fileManager contentsOfDirectoryAtPath: @"/Library/Logs/CrashReporter" error: nil];
-			for(int i = 0; i < [fileNames count]; i++) {
+			for(NSUInteger i = 0; i < [fileNames count]; i++) {
 				NSString* fileName = fileNames[i];
 				if([fileName rangeOfString: @"SelfControl"].location != NSNotFound) {
 					[log appendFormat: @"Found crash log named %@ with contents:\n\n%@\n", fileName, [NSString stringWithContentsOfFile: [@"/Library/Logs/CrashReporter" stringByAppendingPathComponent: fileName] encoding: NSUTF8StringEncoding error: NULL]];
@@ -219,7 +219,7 @@ int main(int argc, char* argv[]) {
 		}
 		if([fileManager fileExistsAtPath: [@"~/Library/Logs/CrashReporter" stringByExpandingTildeInPath]]) {
 			NSArray* fileNames = [fileManager contentsOfDirectoryAtPath: [@"~/Library/Logs/CrashReporter" stringByExpandingTildeInPath] error: nil];
-			for(int i = 0; i < [fileNames count]; i++) {
+			for(NSUInteger i = 0; i < [fileNames count]; i++) {
 				NSString* fileName = fileNames[i];
 				if([fileName rangeOfString: @"SelfControl"].location != NSNotFound) {
 					[log appendString: [NSString stringWithFormat: @"Found crash log named %@ with contents:\n\n%@\n", fileName, [NSString stringWithContentsOfFile: [[@"~/Library/Logs/CrashReporter" stringByExpandingTildeInPath] stringByAppendingPathComponent: fileName] encoding: NSUTF8StringEncoding error: NULL]]];

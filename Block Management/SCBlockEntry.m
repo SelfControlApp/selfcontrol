@@ -15,7 +15,7 @@
 - (instancetype)initWithHostname:(NSString*)hostname {
     return [self initWithHostname: hostname port: 0 maskLen: 0];
 }
-- (instancetype)initWithHostname:(NSString*)hostname port:(int)port maskLen:(int)maskLen {
+- (instancetype)initWithHostname:(NSString*)hostname port:(NSInteger)port maskLen:(NSInteger)maskLen {
     if (self = [super init]) {
         _hostname = hostname;
         _port = port;
@@ -24,7 +24,7 @@
     return self;
 }
 
-+ (instancetype)entryWithHostname:(NSString*)hostname port:(int)port maskLen:(int)maskLen {
++ (instancetype)entryWithHostname:(NSString*)hostname port:(NSInteger)port maskLen:(NSInteger)maskLen {
     return [[SCBlockEntry alloc] initWithHostname: hostname port: port maskLen: maskLen];
 }
 
@@ -81,7 +81,7 @@
 }
 
 - (NSString*)description {
-    return [NSString stringWithFormat: @"[Entry: hostname = %@, port = %d, maskLen = %d]", self.hostname, self.port, self.maskLen];
+    return [NSString stringWithFormat: @"[Entry: hostname = %@, port = %ld, maskLen = %ld]", self.hostname, (long)self.port, (long)self.maskLen];
 }
 
 // method implementations of isEqual, isEqualToEntry, and hash are based on this answer from StackOverflow: https://stackoverflow.com/q/254281
@@ -115,8 +115,8 @@
         result = prime * result + [self.hostname hash];
     }
 
-    result = prime * result + self.port;
-    result = prime * result + self.maskLen;
+    result = prime * result + (NSUInteger)self.port;
+    result = prime * result + (NSUInteger)self.maskLen;
 
     return result;
 }

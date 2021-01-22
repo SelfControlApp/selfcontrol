@@ -28,6 +28,7 @@
 @interface TimerWindowController : NSWindowController {
     SCSettings* settings_;
 	IBOutlet NSTextField* timerLabel_;
+    IBOutlet NSTextField* blocklistTeaserLabel_;
 	NSTimer* timerUpdater_;
 	NSDate* blockEndingDate_;
 	NSLock* modifyBlockLock;
@@ -61,8 +62,8 @@
 // to take input for the host to block.
 - (IBAction) addToBlock:(id)sender;
 
-// Called after the block end date has been successfully changed
-- (void) blockEndDateUpdated;
+// Called after the block end date or other configuration has changed
+- (void)configurationChanged;
 
 // Called by the "Add to Block" sheet if the user clicks the add button, to destroy
 // the sheet and try to add the host to the block.

@@ -9,10 +9,22 @@
 #import "PacketFilter.h"
 
 NSString* const kPfctlExecutablePath = @"/sbin/pfctl";
+NSString* const kPFConfPath = @"/etc/pf.conf";
+NSString* const kPFAnchorCommand = @"anchor \"org.eyebeam\"";
 
 @implementation PacketFilter
 
 NSFileHandle* appendFileHandle;
+
++ (BOOL)blockFoundInPF {
+    // last try if we can't find a block anywhere: check the host file, and see if a block is in there
+    NSString* pfConfContents = [NSString stringWithContentsOfFile: kPFConfPath encoding: NSUTF8StringEncoding error: NULL];
+    if(pfConfContents != nil && [pfConfContents rangeOfString: kPFAnchorCommand].location != NSNotFound) {
+        return YES;
+    }
+    
+    return NO;
+}
 
 - (PacketFilter*)initAsAllowlist: (BOOL)allowlist {
 	if (self = [super init]) {
@@ -49,7 +61,7 @@ NSFileHandle* appendFileHandle;
 	[configText appendString: @"pass out proto tcp from any to any port 68\n"];
 }
 
-- (NSArray<NSString*>*)ruleStringsForIP:(NSString*)ip port:(int)port maskLen:(int)maskLen {
+- (NSArray<NSString*>*)ruleStringsForIP:(NSString*)ip port:(NSInteger)port maskLen:(NSInteger)maskLen {
     NSMutableString* rule = [NSMutableString stringWithString: @"from any to "];
 
     if (ip) {
@@ -59,11 +71,11 @@ NSFileHandle* appendFileHandle;
     }
 
     if (maskLen) {
-        [rule appendString: [NSString stringWithFormat: @"/%d", maskLen]];
+        [rule appendString: [NSString stringWithFormat: @"/%ld", (long)maskLen]];
     }
 
     if (port) {
-        [rule appendString: [NSString stringWithFormat: @" port %d", port]];
+        [rule appendString: [NSString stringWithFormat: @" port %ld", (long)port]];
     }
 
     if (isAllowlist) {
@@ -78,7 +90,7 @@ NSFileHandle* appendFileHandle;
         ];
     }
 }
-- (void)addRuleWithIP:(NSString*)ip port:(int)port maskLen:(int)maskLen {
+- (void)addRuleWithIP:(NSString*)ip port:(NSInteger)port maskLen:(NSInteger)maskLen {
     @synchronized(self) {
         NSArray<NSString*>* ruleStrings = [self ruleStringsForIP: ip port: port maskLen: maskLen];
         for (NSString* ruleString in ruleStrings) {

@@ -75,8 +75,7 @@
         if (status != AUTH_CANCELLED_STATUS) {
             NSError* err = [SCErr errorWithCode: 400];
             [SCSentry captureError: err];
-
-            [NSApp presentError: err];
+            [SCUIUtilities presentError: err];
         }
 
 		return;

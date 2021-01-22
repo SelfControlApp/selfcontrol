@@ -102,7 +102,7 @@ NSString* const kThunderbirdSupportFolderPath = @"~/Library/Thunderbird";
   
   NSDictionary* defaultProfile = nil;
   
-  for(int i = 0; i < [profiles count]; i++) {
+  for(NSUInteger i = 0; i < [profiles count]; i++) {
     NSDictionary* p = profiles[i];
     if([p[@"Default"] isEqual: @1]) {
       defaultProfile = p;
@@ -145,7 +145,7 @@ NSString* const kThunderbirdSupportFolderPath = @"~/Library/Thunderbird";
   NSArray* prefsJsLines = [[NSString stringWithContentsOfFile: pathToPrefsJsFile encoding: NSUTF8StringEncoding error: NULL] componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
   NSMutableArray* hostnames = [NSMutableArray arrayWithCapacity: 10];
   
-  for(int i = 0; i < [prefsJsLines count]; i++) {
+  for(NSUInteger i = 0; i < [prefsJsLines count]; i++) {
     NSString* line = prefsJsLines[i];
     // All of the asterisks are necessary for globbing so that any amount of
     // whitespace will work.
@@ -180,7 +180,7 @@ NSString* const kThunderbirdSupportFolderPath = @"~/Library/Thunderbird";
   NSArray* prefsJsLines = [[NSString stringWithContentsOfFile: pathToPrefsJsFile encoding: NSUTF8StringEncoding error: NULL]  componentsSeparatedByString: @"\n"];
   NSMutableArray* hostnames = [NSMutableArray arrayWithCapacity: 10];
   
-  for(int i = 0; i < [prefsJsLines count]; i++) {
+  for(NSUInteger i = 0; i < [prefsJsLines count]; i++) {
     NSString* line = prefsJsLines[i];
     if([line isLike: @"*user_pref(*\"mail.smtpserver.smtp*.hostname\"*,*\"*\"*)*;*"]) {
       NSArray* parts = [line componentsSeparatedByString: @"\""];

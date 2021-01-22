@@ -33,6 +33,8 @@
 		CB1CA65E25ABA6150084A551 /* SCXPCClient.m in Sources */ = {isa = PBXBuildFile; fileRef = CB62FC3A24B124B900ADBC40 /* SCXPCClient.m */; };
 		CB1CA66525ABA6240084A551 /* SCXPCAuthorization.m in Sources */ = {isa = PBXBuildFile; fileRef = CB69C4ED25A3FD8A0030CFCD /* SCXPCAuthorization.m */; };
 		CB20C5D8245699D700B9D749 /* version-header.h in Sources */ = {isa = PBXBuildFile; fileRef = CB20C5D7245699D700B9D749 /* version-header.h */; };
+		CB21D0A825BA7B4400236680 /* PacketFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = CBCA91111960D87300AFD20C /* PacketFilter.m */; };
+		CB21D0AE25BA7B4500236680 /* PacketFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = CBCA91111960D87300AFD20C /* PacketFilter.m */; };
 		CB249FED19D782230087BBB6 /* SelfControlIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = CB249FEC19D782230087BBB6 /* SelfControlIcon.icns */; };
 		CB25806216C1FDBE0059C99A /* BlockManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806116C1FDBE0059C99A /* BlockManager.m */; };
 		CB25806616C237F10059C99A /* NSString+IPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25806516C237F10059C99A /* NSString+IPAddress.m */; };
@@ -563,7 +565,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* SelfControl */ = {
 			isa = PBXGroup;
 			children = (
 				CBDFFF4B24A07DB300622CEE /* SelfControl.entitlements */,
@@ -1034,7 +1036,7 @@
 				Base,
 				da,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* SelfControl */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1333,6 +1335,7 @@
 				CB1CA65E25ABA6150084A551 /* SCXPCClient.m in Sources */,
 				CBEE50C10F48C21F00F5DF1C /* TimerWindowController.m in Sources */,
 				CB90BF830F49F430006D202D /* HostImporter.m in Sources */,
+				CB21D0A825BA7B4400236680 /* PacketFilter.m in Sources */,
 				CB5DFCB72251DD1F0084CEC2 /* SCConstants.m in Sources */,
 				CBE4401B0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m in Sources */,
 				CBE5C40B0F4D4531003DB900 /* ButtonWithPopupMenu.m in Sources */,
@@ -1401,6 +1404,7 @@
 				CB81AC2B25B909E1006956F7 /* SCUIUtilities.m in Sources */,
 				CB32D2AC21902CF800B8CD68 /* SCSettings.m in Sources */,
 				CB81A9F525B7C5F7006956F7 /* SCBlockFileReaderWriter.m in Sources */,
+				CB21D0AE25BA7B4500236680 /* PacketFilter.m in Sources */,
 				CB58948725B3FC6F00E9A5C0 /* HostFileBlocker.m in Sources */,
 				CB1465BA25B027E700130D2E /* SCErr.m in Sources */,
 				CB81AB8C25B8E6BE006956F7 /* SCBlockEntry.m in Sources */,
@@ -1711,6 +1715,7 @@
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
@@ -1728,12 +1733,12 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
@@ -1741,7 +1746,6 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CODE_SIGN_FLAGS = "-o library,hard,kill,runtime";
-				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_STYLE = debugging;
@@ -1760,6 +1764,7 @@
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
@@ -1776,11 +1781,11 @@
 				DEVELOPMENT_TEAM = L6W5L88KN7;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
@@ -1788,7 +1793,6 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CODE_SIGN_FLAGS = "-o library,hard,kill,runtime";
-				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_STYLE = debugging;

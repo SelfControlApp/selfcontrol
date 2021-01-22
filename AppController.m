@@ -87,7 +87,7 @@
 		// This method shouldn't be getting called, a block is on so the Start button should be disabled.
         NSError* err = [SCErr errorWithCode: 104];
         [SCSentry captureError: err];
-        [NSApp presentError: err];
+        [SCUIUtilities presentError: err];
 		return;
 	}
 	if([[defaults_ arrayForKey: @"Blocklist"] count] == 0) {
@@ -96,7 +96,7 @@
 
         NSError* err = [SCErr errorWithCode: 101];
         [SCSentry captureError: err];
-		[NSApp presentError: err];
+        [SCUIUtilities presentError: err];
 
 		return;
 	}
@@ -168,7 +168,6 @@
 		}
 
 		[self updateTimeSliderDisplay: blockDurationSlider_];
-        blocklistTeaserLabel_.stringValue = [SCUIUtilities blockTeaserString];
 
 		if([defaults_ integerForKey: @"BlockDuration"] != 0 && [[defaults_ arrayForKey: @"Blocklist"] count] != 0 && !self.addingBlock) {
 			[submitButton_ setEnabled: YES];
@@ -223,6 +222,22 @@
     [SCSentry addBreadcrumb: @"Received configuration changed notification" category: @"app"];
     // if our configuration changed, we should assume the settings may have changed
     [[SCSettings sharedSettings] reloadSettings];
+    
+    // update our blocklist teaser string
+    blocklistTeaserLabel_.stringValue = [SCUIUtilities blockTeaserStringWithMaxLength: 60];
+    
+    // let the domain list know!
+    if (domainListWindowController_ != nil) {
+        domainListWindowController_.readOnly = [SCUIUtilities blockIsRunning];
+    }
+    
+    // let the timer window know!
+    if (timerWindowController_ != nil) {
+        [timerWindowController_ performSelectorOnMainThread: @selector(configurationChanged)
+                                                 withObject: nil
+                                              waitUntilDone: NO];
+    }
+    
     // and our interface may need to change to match!
     [self refreshUserInterface];
 }
@@ -363,9 +378,11 @@
 								  NSContinuouslyUpdatesValueBindingOption: @YES,
                                   NSValueTransformerNameBindingOption: @"BlockDurationSliderTransformer"
 								  }];
+    
+    blocklistTeaserLabel_.stringValue = [SCUIUtilities blockTeaserStringWithMaxLength: 60];
 
 	[self refreshUserInterface];
-
+    
     NSOperatingSystemVersion minRequiredVersion = (NSOperatingSystemVersion){10,10,0}; // Mountain Lion
     NSString* minRequiredVersionString = @"10.10 (Yosemite)";
 	if (![[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion: minRequiredVersion]) {
@@ -396,7 +413,7 @@
         } else {
             if (![SCMiscUtilities errorIsAuthCanceled: error]) {
                 NSLog(@"ERROR: Reinstalling daemon failed with error %@", error);
-                [NSApp presentError: error];
+                [SCUIUtilities presentError: error];
             }
         }
     }];
@@ -404,20 +421,12 @@
 
 - (IBAction)showDomainList:(id)sender {
     [SCSentry addBreadcrumb: @"Showing domain list" category:@"app"];
-	if([SCUIUtilities blockIsRunning] || self.addingBlock) {
-		NSAlert* blockInProgressAlert = [[NSAlert alloc] init];
-		[blockInProgressAlert setMessageText: NSLocalizedString(@"Block in progress", @"Block in progress error title")];
-		[blockInProgressAlert setInformativeText:NSLocalizedString(@"The blocklist cannot be edited while a block is in progress.", @"Block in progress explanation")];
-		[blockInProgressAlert addButtonWithTitle: NSLocalizedString(@"OK", @"OK button")];
-		[blockInProgressAlert runModal];
-
-		return;
-	}
 
 	if(domainListWindowController_ == nil) {
         [[NSBundle mainBundle] loadNibNamed: @"DomainList" owner: self topLevelObjects: nil];
 	}
-	[domainListWindowController_ showWindow: self];
+    domainListWindowController_.readOnly = [SCUIUtilities blockIsRunning];
+    [domainListWindowController_ showWindow: self];
 }
 
 - (void)closeDomainList {
@@ -446,7 +455,7 @@
     
     if (cleanedEntries.count == 0) return;
     
-    for (int i = 0; i < cleanedEntries.count; i++) {
+    for (NSUInteger i = 0; i < cleanedEntries.count; i++) {
        NSString* entry = cleanedEntries[i];
        [list addObject: entry];
     }
@@ -462,7 +471,7 @@
 
         NSError* err = [SCErr errorWithCode: 102];
         [SCSentry captureError: err];
-		[NSApp presentError: err];
+        [SCUIUtilities presentError: err];
 
 		return;
 	}
@@ -508,7 +517,7 @@
         
         NSError* err = [SCErr errorWithCode: 103];
         [SCSentry captureError: err];
-        [NSApp presentError: err];
+        [SCUIUtilities presentError: err];
         
         return;
     }
@@ -550,11 +559,7 @@
 		[self refreshUserInterface];
         [self.xpc installDaemon:^(NSError * _Nonnull error) {
             if (error != nil) {
-                if (![SCMiscUtilities errorIsAuthCanceled: error]) {
-                    [NSApp performSelectorOnMainThread: @selector(presentError:)
-                                            withObject: error
-                                         waitUntilDone: YES];
-                }
+                [SCUIUtilities presentError: error];
                 self.addingBlock = false;
                 [self refreshUserInterface];
                 return;
@@ -587,12 +592,8 @@
                                                                 @"EnableErrorReporting": [self->defaults_ valueForKey: @"EnableErrorReporting"]
                                                             }
                                                      reply:^(NSError * _Nonnull error) {
-                        if (error != nil ) {
-                            if (![SCMiscUtilities errorIsAuthCanceled: error]) {
-                                [NSApp performSelectorOnMainThread: @selector(presentError:)
-                                                        withObject: error
-                                                     waitUntilDone: YES];
-                                }
+                        if (error != nil) {
+                            [SCUIUtilities presentError: error];
                         } else {
                             [SCSentry addBreadcrumb: @"Block started successfully" category:@"app"];
                         }
@@ -627,11 +628,7 @@
             [self->timerWindowController_ performSelectorOnMainThread:@selector(closeAddSheet:) withObject: self waitUntilDone: YES];
             
             if (error != nil) {
-                if (![SCMiscUtilities errorIsAuthCanceled: error]) {
-                    [NSApp performSelectorOnMainThread: @selector(presentError:)
-                                            withObject: error
-                                         waitUntilDone: YES];
-                }
+                [SCUIUtilities presentError: error];
             } else {
                 [SCSentry addBreadcrumb: @"Blocklist updated successfully" category:@"app"];
             }
@@ -677,17 +674,9 @@
         [self.xpc updateBlockEndDate: newBlockEndDate
                                reply:^(NSError * _Nonnull error) {
             [self->timerWindowController_ performSelectorOnMainThread:@selector(closeAddSheet:) withObject: self waitUntilDone: YES];
-            // let the timer know it needs to recalculate
-            [self->timerWindowController_ performSelectorOnMainThread:@selector(blockEndDateUpdated)
-                                                     withObject: nil
-                                                  waitUntilDone: YES];
 
             if (error != nil) {
-                if (![SCMiscUtilities errorIsAuthCanceled: error]) {
-                    [NSApp performSelectorOnMainThread: @selector(presentError:)
-                                            withObject: error
-                                         waitUntilDone: YES];
-                }
+                [SCUIUtilities presentError: error];
             } else {
                 [SCSentry addBreadcrumb: @"App extended block duration successfully" category:@"app"];
             }
@@ -723,7 +712,7 @@
             NSError* displayErr = [SCErr errorWithCode: 105 subDescription: err.localizedDescription];
             [SCSentry captureError: displayErr];
             NSBeep();
-			[NSApp presentError: displayErr];
+            [SCUIUtilities presentError: displayErr];
 			return;
         } else {
             [SCSentry addBreadcrumb: @"Saved blocklist to file" category:@"app"];

@@ -40,7 +40,7 @@ int main(int argc, char* argv[]) {
 
 		NSString* modeString = @(argv[2]);
 		// We'll need the controlling UID to know what settings to read
-		uid_t controllingUID = [@(argv[1]) intValue];
+		uid_t controllingUID = (uid_t)[@(argv[1]) intValue];
         if (controllingUID <= 0) {
             controllingUID = getuid();
         }

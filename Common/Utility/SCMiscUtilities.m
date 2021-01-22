@@ -190,7 +190,7 @@
     if ([err.domain isEqualToString: NSOSStatusErrorDomain] && err.code == AUTH_CANCELLED_STATUS) {
         return YES;
     }
-    if (err.domain == kSelfControlErrorDomain && err.code == 1) {
+    if ([err.domain isEqualToString: kSelfControlErrorDomain] && err.code == 1) {
         return YES;
     }
     

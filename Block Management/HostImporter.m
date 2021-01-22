@@ -89,7 +89,7 @@
 	NSString* sandboxedPreferences = [@"~/Library/Containers/com.apple.mail/Data/Library/Preferences/com.apple.mail" stringByExpandingTildeInPath];
 	NSDictionary* defaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName: sandboxedPreferences];
 	NSArray* incomingAccounts = defaults[@"MailAccounts"];
-	for(int i = 0; i < [incomingAccounts count]; i++) {
+	for(NSUInteger i = 0; i < [incomingAccounts count]; i++) {
 		NSMutableString* hostname = [incomingAccounts[i][@"Hostname"] mutableCopy];
 		// The LocalAccountName account has no hostname, so trying to add it would cause an error
 		if(hostname != nil) {
@@ -125,7 +125,7 @@
 	NSString* sandboxedPreferences = [@"~/Library/Containers/com.apple.mail/Data/Library/Preferences/com.apple.mail" stringByExpandingTildeInPath];
 	NSDictionary* defaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName: sandboxedPreferences];
 	NSArray* outgoingAccounts = defaults[@"DeliveryAccounts"];
-	for(int i = 0; i < [outgoingAccounts count]; i++) {
+	for(NSUInteger i = 0; i < [outgoingAccounts count]; i++) {
 		NSMutableString* hostname = [outgoingAccounts[i][@"Hostname"] mutableCopy];
 		if(hostname != nil) {
 			if([outgoingAccounts[i][@"PortNumber"] length]) {
@@ -157,7 +157,7 @@
 	if (!prefs) return hostnames;
 
 	NSArray* accounts = prefs[@"sources"];
-	for(int i = 0; i < [accounts count]; i++) {
+	for(NSUInteger i = 0; i < [accounts count]; i++) {
 		NSURL* serverURL = [NSURL URLWithString: accounts[i][@"serverURL"]];
 		if (!serverURL) continue;
 
@@ -193,7 +193,7 @@
 	if (!prefs) return hostnames;
 
 	NSArray* smtpServers = prefs[@"smtpServers"];
-	for(int i = 0; i < [smtpServers count]; i++) {
+	for(NSUInteger i = 0; i < [smtpServers count]; i++) {
 		NSURL* serverURL = [NSURL URLWithString: smtpServers[i][@"serverURL"]];
 		if (!serverURL) continue;
 

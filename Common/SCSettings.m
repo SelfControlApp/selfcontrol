@@ -324,7 +324,7 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
     [self synchronizeSettingsWithCompletion: nil];
 }
 
-- (NSError*)syncSettingsAndWait:(int)timeoutSecs {
+- (NSError*)syncSettingsAndWait:(NSInteger)timeoutSecs {
     dispatch_semaphore_t sema = dispatch_semaphore_create(0);
     __block NSError* retErr = nil;
 
@@ -338,7 +338,7 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
         }];
     });
     
-    if (dispatch_semaphore_wait(sema, dispatch_time(DISPATCH_TIME_NOW, timeoutSecs * NSEC_PER_SEC))) {
+    if (dispatch_semaphore_wait(sema, dispatch_time(DISPATCH_TIME_NOW, (int64_t)timeoutSecs * (int64_t)NSEC_PER_SEC))) {
         retErr = [SCErr errorWithCode: 601];
     }
     

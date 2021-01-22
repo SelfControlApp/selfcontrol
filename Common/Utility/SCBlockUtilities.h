@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (BOOL)currentBlockIsExpired;
 
++ (BOOL)blockRulesFoundOnSystem;
+
 + (void)removeBlockFromSettings;
 
 @end

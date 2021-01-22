@@ -11,8 +11,18 @@ NSString *const kSelfControlErrorDomain = @"SelfControlErrorDomain";
 
 @implementation SCErr
 
-+ (NSError*)errorWithCode:(int)errorCode subDescription:(NSString  * _Nullable )subDescription {
++ (NSError*)errorWithCode:(NSInteger)errorCode subDescription:(NSString  * _Nullable )subDescription {
+    BOOL descriptionNotFound = NO;
     NSString* description = SC_ERROR_LOCALIZED_DESCRIPTION(errorCode);
+    
+    // if we couldn't find a localized description key, that probably means
+    // we're in the daemon or somewhere else where .strings aren't available.
+    // flag that so the app can fill in the details later
+    if ([description isEqualToString: SC_ERROR_KEY(errorCode)]) {
+        description = [NSString stringWithFormat: @"SelfControl hit an unknown error with code %ld.", errorCode];
+        descriptionNotFound = YES;
+    }
+
     if (subDescription != nil) {
         description = [NSString stringWithFormat: description, subDescription];
     }
@@ -20,11 +30,12 @@ NSString *const kSelfControlErrorDomain = @"SelfControlErrorDomain";
     return [NSError errorWithDomain: kSelfControlErrorDomain
                                code: errorCode
                            userInfo: @{
-                               NSLocalizedDescriptionKey: description
+                               NSLocalizedDescriptionKey: description,
+                               @"SCDescriptionNotFound": @(descriptionNotFound)
                            }];
 }
 
-+ (NSError*)errorWithCode:(int)errorCode {
++ (NSError*)errorWithCode:(NSInteger)errorCode {
     return [SCErr errorWithCode: errorCode subDescription: nil];
 }
 

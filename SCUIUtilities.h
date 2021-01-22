@@ -23,7 +23,13 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)timeSliderDisplayStringFromTimeInterval:(NSTimeInterval)numberOfSeconds;
 + (NSString *)timeSliderDisplayStringFromNumberOfMinutes:(NSInteger)numberOfMinutes;
 
-+ (NSString*)blockTeaserString;
++ (NSString*)blockTeaserStringWithMaxLength:(NSInteger)maxStringLen;
+
+// presents an error via a popup in the app
+// this is mostly just a pass-through to [NSApp presentError:],
+// but it first checks if the error is in the SelfControl domain
+// and if so tries to fill in additional error fields
++ (void)presentError:(NSError*)err;
 
 @end
 

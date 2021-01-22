@@ -6,6 +6,8 @@
 //
 
 #import "SCBlockUtilities.h"
+#import "HostFileBlocker.h"
+#import "PacketFilter.h"
 
 @implementation SCBlockUtilities
 
@@ -57,6 +59,10 @@
     } else {
         return YES;
     }
+}
+
++ (BOOL)blockRulesFoundOnSystem {
+    return [PacketFilter blockFoundInPF] || [HostFileBlocker blockFoundInHostsFile];
 }
 
 + (void) removeBlockFromSettings {

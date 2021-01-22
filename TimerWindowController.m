@@ -23,6 +23,7 @@
 
 
 #import "TimerWindowController.h"
+#import "SCUIUtilities.h"
 
 @interface TimerWindowController ()
 
@@ -90,6 +91,7 @@
         }
     }
 
+    blocklistTeaserLabel_.stringValue = [SCUIUtilities blockTeaserStringWithMaxLength: 45];
 	[self updateTimerDisplay: nil];
 
 	timerUpdater_ = [NSTimer timerWithTimeInterval: 1.0
@@ -195,7 +197,7 @@
 	[timerLabel_ sizeToFit];
 	[timerLabel_ setFrame:NSRectFromCGRect(CGRectMake(0, timerLabel_.frame.origin.y, self.window.frame.size.width, timerLabel_.frame.size.height))];
 	[self resetStrikes];
-
+    
 	if([[NSUserDefaults standardUserDefaults] boolForKey: @"BadgeApplicationIcon"]) {
 		// We want to round up the minutes--standard when we aren't displaying seconds.
 		if(numSeconds > 0 && numMinutes != 59) {
@@ -275,16 +277,17 @@
     [NSApp endSheet: extendBlockTimeSheet_];
 }
 
-- (void) blockEndDateUpdated {
+- (void)configurationChanged {
     if ([SCBlockUtilities modernBlockIsRunning]) {
         blockEndingDate_ = [settings_ valueForKey: @"BlockEndDate"];
-
     } else {
         // legacy block!
         blockEndingDate_ = [SCMigrationUtilities legacyBlockEndDate];
     }
     
-    [self performSelectorOnMainThread: @selector(updateTimerDisplay:) withObject:nil waitUntilDone: YES];
+    // update the blocklist teaser in case that changed
+    blocklistTeaserLabel_.stringValue = [SCUIUtilities blockTeaserStringWithMaxLength: 45];
+    [self updateTimerDisplay: nil];
 }
 
 - (void)didEndSheet:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
@@ -349,7 +352,7 @@
 
         NSError* err = [SCErr errorWithCode: 400];
         [SCSentry captureError: err];
-		[NSApp presentError: err];
+        [SCUIUtilities presentError: err];
 
 		return;
 	}

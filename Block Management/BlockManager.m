@@ -137,7 +137,7 @@ BOOL appendMode = NO;
 		// because we'd end up blocking more than the user wants (i.e. Search/Reader)
 		NSArray* addresses = [self ipAddressesForDomainName: entry.hostname];
 
-		for(int i = 0; i < [addresses count]; i++) {
+		for(NSUInteger i = 0; i < [addresses count]; i++) {
 			NSString* ip = addresses[i];
 
 			[pf addRuleWithIP: ip port: entry.port maskLen: entry.maskLen];
@@ -170,7 +170,7 @@ BOOL appendMode = NO;
 }
 
 - (void)addBlockEntriesFromStrings:(NSArray<NSString*>*)blockList {
-	for(int i = 0; i < [blockList count]; i++) {
+	for(NSUInteger i = 0; i < [blockList count]; i++) {
 		NSBlockOperation* op = [NSBlockOperation blockOperationWithBlock:^{
 			[self addBlockEntryFromString: blockList[i]];
 		}];

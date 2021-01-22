@@ -136,7 +136,7 @@
     if([settings boolForKey: @"BlockSoundShouldPlay"]) {
         // Map the tags used in interface builder to the sound
         NSArray* systemSoundNames = SCConstants.systemSoundNames;
-        NSSound* alertSound = [NSSound soundNamed: systemSoundNames[[[settings valueForKey: @"BlockSound"] intValue]]];
+        NSSound* alertSound = [NSSound soundNamed: systemSoundNames[(NSUInteger)[[settings valueForKey: @"BlockSound"] intValue]]];
         if(!alertSound)
             NSLog(@"WARNING: Alert sound not found.");
         else {

@@ -8,11 +8,10 @@
 #import "SCUIUtilities.h"
 #import <SystemConfiguration/SystemConfiguration.h>
 #import "SCTimeIntervalFormatter.h"
-#import "HostFileBlocker.h"
 
 @implementation SCUIUtilities
 
-+ (NSString*)blockTeaserString {
++ (NSString*)blockTeaserStringWithMaxLength:(NSInteger)maxStringLen {
     NSArray<NSString*>* blocklist;
     BOOL isAllowlist;
     if ([SCUIUtilities blockIsRunning]) {
@@ -41,44 +40,47 @@
         startStr = @"Blocking ";
     }
     
-    NSMutableString* siteStr = [NSMutableString stringWithCapacity: 60];
-    int MAX_SITE_CHARS = 35;
-    int MAX_HOSTS_IN_STRING = 3;
-    int hostsInString = 0;
-    NSUInteger curIndex = 0;
-        
-    for (NSString* hostString in blocklist) {
-        if (hostString.length + siteStr.length <= MAX_SITE_CHARS && hostsInString + 1 <= MAX_HOSTS_IN_STRING) {
-            if (hostsInString > 0) {
-                if (blocklist.count > 2) {
-                    [siteStr appendString: @", "];
-                } else {
-                    [siteStr appendString: @" "];
-                }
-            }
-            
-            if (curIndex == (blocklist.count - 1) && blocklist.count > 1) {
-                [siteStr appendFormat: @"and %@", hostString];
-            } else {
-                [siteStr appendString: hostString];
-            }
+    NSMutableString* siteStr = [NSMutableString stringWithCapacity: (NSUInteger)maxStringLen];
+    NSInteger ESTIMATED_OTHERS_STR_LEN = 15; // this is a guesstimate of how long the end-string will be - we don't really know yet
+    NSInteger MAX_SITE_CHARS = (NSInteger)maxStringLen - (NSInteger)startStr.length - ESTIMATED_OTHERS_STR_LEN;
+    NSInteger MAX_HOSTS_IN_STRING = 3;
+    NSInteger hostsInString = 0;
+    NSInteger curIndex = 0;
 
-            hostsInString++;
-        } else {
-            break;
+    for (NSString* hostString in blocklist) {
+        // don't go over our max host allotment
+        if (hostsInString + 1 > MAX_HOSTS_IN_STRING) break;
+
+        // don't go over our max string length
+        if ((NSInteger)hostString.length + (NSInteger)siteStr.length > MAX_SITE_CHARS) break;
+
+        if (hostsInString > 0) {
+            if (blocklist.count > 2) {
+                [siteStr appendString: @", "];
+            } else {
+                [siteStr appendString: @" "];
+            }
         }
+        
+        if (curIndex == ((NSInteger)blocklist.count - 1) && (NSInteger)blocklist.count > 1) {
+            [siteStr appendFormat: @"and %@", hostString];
+        } else {
+            [siteStr appendString: hostString];
+        }
+
+        hostsInString++;
 
         curIndex++;
     }
     
-    int numOthers = (int)blocklist.count - hostsInString;
+    NSInteger numOthers = (NSInteger)blocklist.count - hostsInString;
     if (numOthers > 0) {
         if (hostsInString == 0) {
-            [siteStr appendFormat: @"%d %@", numOthers, numOthers > 1 ? @"sites" : @"site"];
+            [siteStr appendFormat: @"%ld %@", (long)numOthers, numOthers > 1 ? @"sites" : @"site"];
         } else if (hostsInString <= 2) {
-            [siteStr appendFormat: @" and %d %@", numOthers, numOthers > 1 ? @"others" : @"other"];
+            [siteStr appendFormat: @" and %ld %@", (long)numOthers, numOthers > 1 ? @"others" : @"other"];
         } else {
-            [siteStr appendFormat: @", and %d %@", numOthers, numOthers > 1 ? @"others" : @"other"];
+            [siteStr appendFormat: @", and %ld %@", (long)numOthers, numOthers > 1 ? @"others" : @"other"];
         }
     }
 
@@ -96,6 +98,8 @@
 }
 
 + (NSString *)timeSliderDisplayStringFromNumberOfMinutes:(NSInteger)numberOfMinutes {
+    if (numberOfMinutes < 0) return @"Invalid duration";
+
     static NSCalendar* gregorian = nil;
     if (gregorian == nil) {
         gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
@@ -105,7 +109,7 @@
                                      rangeOfUnit:NSCalendarUnitSecond
                                      inUnit:NSCalendarUnitMinute
                                      forDate:[NSDate date]];
-    NSUInteger numberOfSecondsPerMinute = NSMaxRange(secondsRangePerMinute);
+    NSInteger numberOfSecondsPerMinute = (NSInteger)NSMaxRange(secondsRangePerMinute);
 
     NSTimeInterval numberOfSecondsSelected = (NSTimeInterval)(numberOfSecondsPerMinute * numberOfMinutes);
 
@@ -119,7 +123,7 @@
     // This method goes haywire if Google ever goes down...
     SCNetworkReachabilityRef target = SCNetworkReachabilityCreateWithName (kCFAllocatorDefault, "google.com");
 
-    BOOL reachable = SCNetworkReachabilityGetFlags (target, &flags);
+    BOOL reachable = (BOOL)SCNetworkReachabilityGetFlags (target, &flags);
     
     return reachable && (flags & kSCNetworkFlagsReachable) && !(flags & kSCNetworkFlagsConnectionRequired);
 }
@@ -129,7 +133,25 @@
     // also, importantly, if we find a block still going in the hosts file
     // that way if this happens, the user will still see the timer window -
     // which will let them manually clear the remaining block info after 10 seconds
-    return [SCBlockUtilities anyBlockIsRunning] || [HostFileBlocker blockFoundInHostsFile];
+    return [SCBlockUtilities anyBlockIsRunning] || [SCBlockUtilities blockRulesFoundOnSystem];
+}
+
++ (void)presentError:(NSError*)err {
+    if (err == nil) return;
+
+    // When errors are generated in the daemon, they generally don't have access to the localized .strings
+    // files which are in our bundle, so the errors won't have a proper localized description.
+    if ([err.domain isEqualToString: kSelfControlErrorDomain] && [err.userInfo[@"SCDescriptionNotFound"] boolValue]) {
+        err = [SCErr errorWithCode: err.code];
+    }
+    
+    // we don't present auth cancelled errors, since they generally don't indicate a "real" problem
+    if ([SCMiscUtilities errorIsAuthCanceled: err]) return;
+    
+    // always present errors on the main thread since it's a UI task
+    [NSApp performSelectorOnMainThread: @selector(presentError:)
+                            withObject: err
+                         waitUntilDone: YES];
 }
 
 @end

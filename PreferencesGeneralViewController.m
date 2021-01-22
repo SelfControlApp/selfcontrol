@@ -8,6 +8,7 @@
 
 #import "PreferencesGeneralViewController.h"
 #import "SCSettings.h"
+#import "SCUIUtilities.h"
 
 @interface PreferencesGeneralViewController ()
 
@@ -30,12 +31,12 @@
     NSArray<NSString*>* systemSoundNames = SCConstants.systemSoundNames;
 	
     NSString* selectedSoundName = sender.titleOfSelectedItem;
-    NSInteger blockSoundIndex = [systemSoundNames indexOfObject: selectedSoundName];
+    NSUInteger blockSoundIndex = [systemSoundNames indexOfObject: selectedSoundName];
     if (blockSoundIndex == NSNotFound) {
         NSLog(@"WARNING: User selected unknown alert sound %@.", selectedSoundName);
         NSError* err = [SCErr errorWithCode: 310];
         [SCSentry captureError: err];
-        [NSApp presentError: err];
+        [SCUIUtilities presentError: err];
         return;
     }
 
@@ -45,7 +46,7 @@
 		NSLog(@"WARNING: Alert sound not found.");
         NSError* err = [SCErr errorWithCode: 311];
         [SCSentry captureError: err];
-		[NSApp presentError: err];
+        [SCUIUtilities presentError: err];
 	} else {
 		[alertSound play];
 	}

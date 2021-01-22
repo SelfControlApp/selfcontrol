@@ -9,7 +9,6 @@
 #import "SCDaemonProtocol.h"
 #import "SCDaemonXPC.h"
 #import"SCDaemonBlockMethods.h"
-#import "HostFileBlocker.h"
 
 static NSString* serviceName = @"org.eyebeam.selfcontrold";
 float const INACTIVITY_LIMIT_SECS = 60 * 2; // 2 minutes
@@ -58,7 +57,7 @@ float const INACTIVITY_LIMIT_SECS = 60 * 2; // 2 minutes
     // we do NOT run checkup if there's no block, because it can result
     // in the daemon actually unloading itself before the app has a chance
     // to start the block
-    if ([SCBlockUtilities anyBlockIsRunning] || [HostFileBlocker blockFoundInHostsFile]) {
+    if ([SCBlockUtilities anyBlockIsRunning] || [SCBlockUtilities blockRulesFoundOnSystem]) {
         [self startCheckupTimer];
     }
     
@@ -104,7 +103,7 @@ float const INACTIVITY_LIMIT_SECS = 60 * 2; // 2 minutes
         if ([[NSDate date] timeIntervalSinceDate: self.lastActivityDate] > INACTIVITY_LIMIT_SECS) {
             // if we're inactive but also there's a block running, that's a bad thing
             // start the checkups going again - unclear why they would've stopped
-            if ([SCBlockUtilities anyBlockIsRunning] || [HostFileBlocker blockFoundInHostsFile]) {
+            if ([SCBlockUtilities anyBlockIsRunning] || [SCBlockUtilities blockRulesFoundOnSystem]) {
                 [self startCheckupTimer];
                 [SCDaemonBlockMethods checkupBlock];
                 return;

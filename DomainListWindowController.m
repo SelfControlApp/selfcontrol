@@ -66,7 +66,7 @@
 	NSIndexSet* rowIndex = [NSIndexSet indexSetWithIndex: [domainList_ count] - 1];
 	[domainListTableView_ selectRowIndexes: rowIndex
 					  byExtendingSelection: NO];
-	[domainListTableView_ editColumn: 0 row:([domainList_ count] - 1)
+	[domainListTableView_ editColumn: 0 row:((NSInteger)[domainList_ count] - 1)
 						   withEvent:nil
 							  select:YES];
 }
@@ -80,7 +80,7 @@
 	// than other methods and the domain blocklist will probably never be large
 	// enough for it to be an issue.
 	NSUInteger index = [selected firstIndex];
-	int shift = 0;
+	NSUInteger shift = 0;
 	while (index != NSNotFound) {
 		if ((index - shift) >= [domainList_ count])
 			break;
@@ -100,9 +100,13 @@
 	return [domainList_ count];
 }
 
-- (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex {
-	if (rowIndex < 0 || rowIndex + 1 > [domainList_ count]) return nil;
-	return domainList_[rowIndex];
+- (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex {
+	if (rowIndex < 0 || (NSUInteger)rowIndex + 1 > [domainList_ count]) return nil;
+	return domainList_[(NSUInteger)rowIndex];
+}
+
+- (BOOL)tableView:(NSTableView *)tableView shouldEditTableColumn:(nullable NSTableColumn *)tableColumn row:(NSInteger)row {
+    return !self.readOnly;
 }
 
 - (void)controlTextDidEndEditing:(NSNotification *)note {
@@ -110,11 +114,11 @@
 	NSString* editedString = [[[[note userInfo] objectForKey: @"NSFieldEditor"] textStorage] string];
 	editedString = [editedString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
-	if (![editedString length]) {
-		NSIndexSet* indexSet = [NSIndexSet indexSetWithIndex: editedRow];
+	if (editedRow >= 0 && ![editedString length]) {
+		NSIndexSet* indexSet = [NSIndexSet indexSetWithIndex: (NSUInteger)editedRow];
 		[domainListTableView_ beginUpdates];
 		[domainListTableView_ removeRowsAtIndexes: indexSet withAnimation: NSTableViewAnimationSlideUp];
-		[domainList_ removeObjectAtIndex: editedRow];
+		[domainList_ removeObjectAtIndex: (NSUInteger)editedRow];
 		[domainListTableView_ reloadData];
 		[domainListTableView_ endUpdates];
 		return;
@@ -124,19 +128,19 @@
 - (void)tableView:(NSTableView *)aTableView
    setObjectValue:(NSString*)newString
    forTableColumn:(NSTableColumn *)aTableColumn
-			  row:(int)rowIndex {
-	if (rowIndex < 0 || rowIndex + 1 > [domainList_ count]) {
+			  row:(NSInteger)rowIndex {
+	if (rowIndex < 0 || (NSUInteger)rowIndex + 1 > [domainList_ count]) {
 		return;
 	}
     
     NSArray<NSString*>* cleanedEntries = [SCMiscUtilities cleanBlocklistEntry: newString];
     
-    for (int i = 0; i < cleanedEntries.count; i++) {
+    for (NSUInteger i = 0; i < cleanedEntries.count; i++) {
         NSString* entry = cleanedEntries[i];
         if (i == 0) {
-            domainList_[rowIndex] = entry;
+            domainList_[(NSUInteger)rowIndex] = entry;
         } else {
-            [domainList_ insertObject: entry atIndex: rowIndex + i];
+            [domainList_ insertObject: entry atIndex: (NSUInteger)rowIndex + i];
         }
     }
     
@@ -240,6 +244,9 @@
             break;
     }
     
+    [[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
+                                                        object: self];
+    
     // update UI to reflect appropriate list type
     AppController* controller = (AppController *)[NSApp delegate];
     [controller refreshUserInterface];
@@ -268,7 +275,7 @@
 }
 
 - (void)addHostArray:(NSArray*)arr {
-	for(int i = 0; i < [arr count]; i++) {
+	for(NSUInteger i = 0; i < [arr count]; i++) {
 		// Check for dupes
 		if(![domainList_ containsObject: arr[i]])
 			[domainList_ addObject: arr[i]];

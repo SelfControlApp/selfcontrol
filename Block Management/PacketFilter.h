@@ -15,10 +15,12 @@
 	BOOL isAllowlist;
 }
 
++ (BOOL)blockFoundInPF;
+
 - (PacketFilter*)initAsAllowlist: (BOOL)allowlist;
 - (void)addBlockHeader:(NSMutableString*)configText;
 - (void)addAllowlistFooter:(NSMutableString*)configText;
-- (void)addRuleWithIP:(NSString*)ip port:(int)port maskLen:(int)maskLen;
+- (void)addRuleWithIP:(NSString*)ip port:(NSInteger)port maskLen:(NSInteger)maskLen;
 - (void)writeConfiguration;
 - (int)startBlock;
 - (int)stopBlock:(BOOL)force;

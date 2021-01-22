@@ -37,6 +37,8 @@
 	NSUserDefaults* defaults_;
 }
 
+@property (getter=isReadOnly) BOOL readOnly;
+
 // Called when the add button is clicked.  Adds a new empty string to the domain
 // list, reloads the table view, and highlights and opens that cell for editing.
 - (IBAction)addDomain:(id)sender;
@@ -54,7 +56,7 @@
 // Called by the table view on it's data source object (this) to determine what
 // value should be displayed for a given row index.  Returns the corresponding
 // value from the domain list array.
-- (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex;
+- (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex;
 
 // Called by the table view on it's data source object (this) to set the value
 // of the cell at a given row index.  Sets the value of the corresponding object
@@ -63,7 +65,7 @@
 - (void)tableView:(NSTableView *)aTableView
    setObjectValue:(id)theObject
    forTableColumn:(NSTableColumn *)aTableColumn
-			  row:(int)rowIndex;
+			  row:(NSInteger)rowIndex;
 
 // Called by the table view on it's data source object (this) when a given cell
 // is about to be displayed.  Used to implement invalid domain highlighting if

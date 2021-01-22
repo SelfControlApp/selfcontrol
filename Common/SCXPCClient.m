@@ -114,7 +114,9 @@
         // our interruption handler is just our invalidation handler, except we retry afterward
         connection.interruptionHandler = ^{
             NSLog(@"Helper tool connection interrupted");
-            connection.invalidationHandler();
+            if (connection.invalidationHandler != nil) {
+                connection.invalidationHandler();
+            }
 
             // interruptions may have happened because the daemon crashed
             // so wait a second and try to reconnect
@@ -220,8 +222,13 @@
     void (^standardInvalidationHandler)(void) = self.daemonConnection.invalidationHandler;
     
     // wait until the invalidation handler runs, then run our callback
+    __weak typeof(self) weakSelf = self;
     self.daemonConnection.invalidationHandler = ^{
-        standardInvalidationHandler();
+        __strong typeof(self) strongSelf = weakSelf;
+        if (standardInvalidationHandler != nil) {
+            standardInvalidationHandler();
+        }
+        strongSelf.daemonConnection = nil;
         callback();
     };
     
