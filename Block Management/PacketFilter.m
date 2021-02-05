@@ -22,7 +22,7 @@ NSFileHandle* appendFileHandle;
     if(pfConfContents != nil && [pfConfContents rangeOfString: kPFAnchorCommand].location != NSNotFound) {
         return YES;
     }
-    
+
     return NO;
 }
 
@@ -59,6 +59,8 @@ NSFileHandle* appendFileHandle;
 	[configText appendString: @"pass out proto tcp from any to any port 67\n"];
 	[configText appendString: @"pass out proto udp from any to any port 68\n"];
 	[configText appendString: @"pass out proto tcp from any to any port 68\n"];
+	[configText appendString: @"pass out proto udp from any to any port 5353\n"];
+	[configText appendString: @"pass out proto tcp from any to any port 5353\n"];
 }
 
 - (NSArray<NSString*>*)ruleStringsForIP:(NSString*)ip port:(NSInteger)port maskLen:(NSInteger)maskLen {
@@ -121,7 +123,7 @@ NSFileHandle* appendFileHandle;
         NSLog(@"WARNING: Can't append rules to allowlist blocks - ignoring");
         return;
     }
-    
+
     // open the file and prepare to write to the very bottom (no footer since it's not an allowlist)
     appendFileHandle = [NSFileHandle fileHandleForWritingAtPath: @"/etc/pf.anchors/org.eyebeam"];
     if (!appendFileHandle) {
@@ -142,7 +144,7 @@ NSFileHandle* appendFileHandle;
         NSLog(@"WARNING: Can't append rules to allowlist blocks - ignoring");
         return;
     }
-    
+
     // open the file and prepare to write to the very bottom (no footer since it's not an allowlist)
     // NOTE FOR FUTURE: NSFileHandle can't append lines to the middle of the file anyway,
     // would need to read in the whole thing + write out again
