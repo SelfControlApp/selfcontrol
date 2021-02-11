@@ -24,5 +24,5 @@ Users should always download the latest version of SelfControl from [our website
 2. Make sure you have a recent version of Xcode and the Xcode command-line tools installed.
 3. Install [CocoaPods](https://cocoapods.org/): `sudo gem install cocoapods`
 4. Install the SelfControl dependencies using CocoaPods: `pod install`
-5. Open the `selfcontrol.xcworkspace` file (NOT `selfcontrol.xcodeproj)
+5. Open the `selfcontrol.xcworkspace` file (NOT `selfcontrol.xcodeproj`)
 6. Build and run (you may need to update/remove code signing settings to make it build properly)
