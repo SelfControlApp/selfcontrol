@@ -58,7 +58,9 @@ OSStatus const AUTH_CANCELLED_STATUS = -60006;
             @"BlockSound": @5,
             @"ClearCaches": @YES,
             @"AllowLocalNetworks": @YES,
-            @"EnableErrorReporting": @NO,
+            // if the user has checked the box to "send crash reports to third-party developers", we'll default Sentry on
+            // otherwise it defaults off, but we'll still prompt to ask them if we can send data
+            @"EnableErrorReporting": @([SCMiscUtilities systemThirdPartyCrashReportingEnabled]),
             @"ErrorReportingPromptDismissed": @NO,
             
             @"V4MigrationComplete": @NO

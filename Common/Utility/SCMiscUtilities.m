@@ -61,6 +61,13 @@
     return output;
 }
 
++ (BOOL)systemThirdPartyCrashReportingEnabled {
+    NSUserDefaults* appleCrashReporter = [NSUserDefaults standardUserDefaults];
+    [appleCrashReporter addSuiteNamed: @"/Library/Application Support/CrashReporter/DiagnosticMessagesHistory.plist"];
+
+    return [appleCrashReporter boolForKey: @"ThirdPartyDataSubmit"];
+}
+
 // Standardize and clean up the input value so it'll block properly (and look good doing it)
 // note that if the user entered line breaks, we'll split it into many entries, so this can return multiple
 // cleaned entries in the NSArray it returns

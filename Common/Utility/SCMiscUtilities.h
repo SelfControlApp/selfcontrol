@@ -18,6 +18,8 @@
 + (NSString *)getSerialNumber;
 + (NSString *)sha1:(NSString*)stringToHash;
 
++ (BOOL)systemThirdPartyCrashReportingEnabled;
+
 + (NSArray<NSString*>*) cleanBlocklistEntry:(NSString*)rawEntry;
 
 + (NSDictionary*) defaultsDictForUser:(uid_t)controllingUID;
