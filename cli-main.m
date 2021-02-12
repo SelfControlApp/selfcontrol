@@ -109,7 +109,6 @@ int main(int argc, char* argv[]) {
             
             // if we got valid block arguments from the command-line, read in that file
             if (pathToBlocklistFile != nil && blockEndDateArg != nil && [blockEndDateArg timeIntervalSinceNow] >= 1) {
-                NSLog(@"no path to blocklist file, and block end date is good");
                 blockEndDate = blockEndDateArg;
                 NSDictionary* readProperties = [SCBlockFileReaderWriter readBlocklistFromFile: [NSURL fileURLWithPath: pathToBlocklistFile]];
                 
@@ -120,9 +119,7 @@ int main(int argc, char* argv[]) {
                 
                 blocklist = readProperties[@"Blocklist"];
                 blockAsWhitelist = [readProperties[@"BlockAsWhitelist"] boolValue];
-                NSLog(@"READ BLOCKLIST %@ from %@", blocklist, pathToBlocklistFile);
             } else {
-                NSLog(@"pulling from defaults because path is %@ and block end date arg is %@", pathToBlocklistFile, blockEndDateArg);
                 // if the command-line had nothing from us, we'll try to pull them from defaults
                 blocklist = defaultsDict[@"Blocklist"];
                 blockAsWhitelist = [defaultsDict[@"BlockAsWhitelist"] boolValue];
@@ -201,8 +198,7 @@ int main(int argc, char* argv[]) {
                     [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate: [NSDate date]];
                 }
             }
-        }
-		if([arguments booleanValueForSignature: removeSig]) {
+        } else if([arguments booleanValueForSignature: removeSig]) {
             [SCSentry addBreadcrumb: @"CLI method --remove called" category: @"cli"];
 			// So you think you can rid yourself of SelfControl just like that?
 			NSLog(@"INFO: Nice try.");
@@ -218,6 +214,21 @@ int main(int argc, char* argv[]) {
         } else if ([arguments booleanValueForSignature: versionSig]) {
             [SCSentry addBreadcrumb: @"CLI method --version called" category: @"cli"];
             NSLog(SELFCONTROL_VERSION_STRING);
+        } else {
+            // help / usage message
+            printf("SelfControl CLI Tool v%s\n", [SELFCONTROL_VERSION_STRING UTF8String]);
+            printf("Usage: selfcontrol-cli [--uid <controlling user ID>] <command> [<args>]\n\n");
+            printf("Valid commands:\n");
+            printf("\n    start --> starts a SelfControl block\n");
+            printf("        --blocklist <path to saved blocklist file>\n");
+            printf("        --enddate <specified end date for block in ISO8601 format>\n");
+            printf("        --settings <other block settings in JSON format>\n");
+            printf("\n    is-running --> prints YES if a SelfControl block is currently running, or NO otherwise\n");
+            printf("\n    print-settings --> prints the SelfControl settings being used for the active block (for debug purposes)\n");
+            printf("\n    version --> prints the version of the SelfControl CLI tool\n");
+            printf("\n");
+            printf("--uid argument MUST be specified and set to the controlling user ID if selfcontrol-cli is being run as root. Otherwise, it does not need to be set.\n\n");
+            printf("Example start command: selfcontrol-cli start --blocklist /path/to/blocklist.selfcontrol --enddate 2021-02-12T06:53:00Z\n");
         }
 
         // final sync before we exit
