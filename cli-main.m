@@ -26,6 +26,7 @@
 #import "SCXPCClient.h"
 #import "SCBlockFileReaderWriter.h"
 #import <sysexits.h>
+#import "XPMArguments.h"
 
 // The main method which deals which most of the logic flow and execution of
 // the CLI tool.
@@ -33,18 +34,36 @@ int main(int argc, char* argv[]) {
     [SCSentry startSentry: @"org.eyebeam.selfcontrol-cli"];
 
     @autoreleasepool {
-		if(argc < 3 || argv[1] == NULL || argv[2] == NULL) {
-			NSLog(@"ERROR: Not enough arguments");
-			exit(EX_USAGE);
-		}
-
-		NSString* modeString = @(argv[2]);
-		// We'll need the controlling UID to know what settings to read
-		uid_t controllingUID = (uid_t)[@(argv[1]) intValue];
+        XPMArgumentSignature
+          * controllingUIDSig = [XPMArgumentSignature argumentSignatureWithFormat:@"[--uid]="],
+          * startSig = [XPMArgumentSignature argumentSignatureWithFormat:@"[start --start --install]"],
+          * blocklistSig = [XPMArgumentSignature argumentSignatureWithFormat:@"[--blocklist -b]="],
+          * blockEndDateSig = [XPMArgumentSignature argumentSignatureWithFormat:@"[--enddate -d]="],
+          * blockSettingsSig = [XPMArgumentSignature argumentSignatureWithFormat:@"[--settings -s]="],
+          * removeSig = [XPMArgumentSignature argumentSignatureWithFormat:@"[remove --remove]"],
+          * printSettingsSig = [XPMArgumentSignature argumentSignatureWithFormat:@"[print-settings --printsettings -p]"],
+          * isRunningSig = [XPMArgumentSignature argumentSignatureWithFormat:@"[is-running --isrunning -r]"],
+          * versionSig = [XPMArgumentSignature argumentSignatureWithFormat:@"[version --version -v]"];
+        NSArray * signatures = @[controllingUIDSig, startSig, blocklistSig, blockEndDateSig, blockSettingsSig, removeSig, printSettingsSig, isRunningSig, versionSig];
+        XPMArgumentPackage * arguments = [[NSProcessInfo processInfo] xpmargs_parseArgumentsWithSignatures:signatures];
+        
+        // We'll need the controlling UID to know what settings to read
+        // try reading it from the command-line, otherwise if we're not root we use the current uid
+        uid_t controllingUID = (uid_t)[[arguments firstObjectForSignature: controllingUIDSig] intValue];
+        if (controllingUID <= 0) {
+            // for legacy reasons, we'll also take an unlabeled argument that looks like an UID
+            // (this makes us backwards-compatible with SC versions pre-4.0)
+            for (NSString* uncapturedArg in arguments.uncapturedValues) {
+                NSRange range = [uncapturedArg rangeOfString: @"^[0-9]{3}$" options: NSRegularExpressionSearch];
+                if (range.location != NSNotFound) {
+                    controllingUID = (uid_t)[uncapturedArg intValue];
+                }
+            }
+        }
         if (controllingUID <= 0) {
             controllingUID = getuid();
         }
-        
+
         SCSettings* settings = [SCSettings sharedSettings];
         
         NSDictionary* defaultsDict;
@@ -58,7 +77,7 @@ int main(int argc, char* argv[]) {
             defaultsDict = defaults.dictionaryRepresentation;
         }
         
-		if([modeString isEqual: @"--install"]) {
+		if([arguments booleanValueForSignature: startSig]) {
             [SCSentry addBreadcrumb: @"CLI method --install called" category: @"cli"];
 
             if ([SCBlockUtilities anyBlockIsRunning]) {
@@ -73,31 +92,38 @@ int main(int argc, char* argv[]) {
             
             // there are two ways we can read in the core block parameters (Blocklist, BlockEndDate, BlockAsWhitelist):
             // 1) we can receive them as command-line arguments, including a path to a blocklist file
-            // 2) we can read them from user defaults (for legacy support, don't encouarge this)
-            NSString* pathToBlocklistFile;
-            NSDate* blockEndDateArg;
-            if (argv[3] != NULL && argv[4] != NULL) {
+            // 2) we can read them from user defaults (for legacy support, don't encourage this)
+            NSString* pathToBlocklistFile = [arguments firstObjectForSignature: blocklistSig];
+            NSDate* blockEndDateArg = [[NSISO8601DateFormatter new] dateFromString: [arguments firstObjectForSignature: blockEndDateSig]];
+
+            // if we didn't get a valid block end date in the future, try our next approach: legacy unlabeled arguments
+            // this is for backwards compatibility. In SC pre-4.0, this used to be called as --install {uid} {pathToBlocklistFile} {blockEndDate}
+            // we'll sidestep XPMArgumentParser here because the legacy stuff was dumber and just dealt with args by index
+            if ((pathToBlocklistFile == nil || blockEndDateArg == nil || [blockEndDateArg timeIntervalSinceNow] < 1)
+                && (argv[3] != NULL && argv[4] != NULL)) {
+                
                 pathToBlocklistFile = @(argv[3]);
                 blockEndDateArg = [[NSISO8601DateFormatter new] dateFromString: @(argv[4])];
-                                
-                // if we didn't get a valid block end date in the future, ignore the other args
-                if (blockEndDateArg == nil || [blockEndDateArg timeIntervalSinceNow] < 1) {
-                    pathToBlocklistFile = nil;
-                    NSLog(@"Error: Block end date argument %@ is invalid", @(argv[4]));
+                NSLog(@"created legacy block end date %@ from %@", blockEndDateArg, @(argv[4]));
+            }
+            
+            // if we got valid block arguments from the command-line, read in that file
+            if (pathToBlocklistFile != nil && blockEndDateArg != nil && [blockEndDateArg timeIntervalSinceNow] >= 1) {
+                NSLog(@"no path to blocklist file, and block end date is good");
+                blockEndDate = blockEndDateArg;
+                NSDictionary* readProperties = [SCBlockFileReaderWriter readBlocklistFromFile: [NSURL fileURLWithPath: pathToBlocklistFile]];
+                
+                if (readProperties == nil) {
+                    NSLog(@"ERROR: Block could not be read from file %@", pathToBlocklistFile);
                     exit(EX_IOERR);
-                } else {
-                    blockEndDate = blockEndDateArg;
-                    NSDictionary* readProperties = [SCBlockFileReaderWriter readBlocklistFromFile: [NSURL fileURLWithPath: pathToBlocklistFile]];
-                    
-                    if (readProperties == nil) {
-                        NSLog(@"ERROR: Block could not be read from file %@", pathToBlocklistFile);
-                        exit(EX_IOERR);
-                    }
-                    
-                    blocklist = readProperties[@"Blocklist"];
-                    blockAsWhitelist = [readProperties[@"BlockAsWhitelist"] boolValue];
                 }
+                
+                blocklist = readProperties[@"Blocklist"];
+                blockAsWhitelist = [readProperties[@"BlockAsWhitelist"] boolValue];
+                NSLog(@"READ BLOCKLIST %@ from %@", blocklist, pathToBlocklistFile);
             } else {
+                NSLog(@"pulling from defaults because path is %@ and block end date arg is %@", pathToBlocklistFile, blockEndDateArg);
+                // if the command-line had nothing from us, we'll try to pull them from defaults
                 blocklist = defaultsDict[@"Blocklist"];
                 blockAsWhitelist = [defaultsDict[@"BlockAsWhitelist"] boolValue];
                 
@@ -120,7 +146,7 @@ int main(int argc, char* argv[]) {
             if([blocklist count] == 0 || [blockEndDate timeIntervalSinceNow] < 1) {
                 // ya can't start a block without a blocklist, and it can't run for less than a second
                 // because that's silly
-                NSLog(@"ERROR: Blocklist is empty, or block does not end in the future.");
+                NSLog(@"ERROR: Blocklist is empty, or block does not end in the future (%@, %@).", blocklist, blockEndDate);
                 exit(EX_CONFIG);
             }
 
@@ -137,8 +163,7 @@ int main(int argc, char* argv[]) {
             // use a semaphore to make sure the command-line tool doesn't exit
             // while our blocks are still running
             dispatch_semaphore_t installingBlockSema = dispatch_semaphore_create(0);
-            
-            NSLog(@"About to install helper tool");
+
             [xpc installDaemon:^(NSError * _Nonnull error) {
                 if (error != nil) {
                     NSLog(@"ERROR: Failed to install daemon with error %@", error);
@@ -177,20 +202,20 @@ int main(int argc, char* argv[]) {
                 }
             }
         }
-		if([modeString isEqual: @"--remove"]) {
+		if([arguments booleanValueForSignature: removeSig]) {
             [SCSentry addBreadcrumb: @"CLI method --remove called" category: @"cli"];
 			// So you think you can rid yourself of SelfControl just like that?
 			NSLog(@"INFO: Nice try.");
             exit(EX_UNAVAILABLE);
-        } else if ([modeString isEqualToString: @"--print-settings"]) {
+        } else if ([arguments booleanValueForSignature: printSettingsSig]) {
             [SCSentry addBreadcrumb: @"CLI method --print-settings called" category: @"cli"];
             NSLog(@" - Printing SelfControl secured settings for debug: - ");
             NSLog(@"%@", [settings dictionaryRepresentation]);
-        } else if ([modeString isEqualToString: @"--is-running"]) {
+        } else if ([arguments booleanValueForSignature: isRunningSig]) {
             [SCSentry addBreadcrumb: @"CLI method --is-running called" category: @"cli"];
             BOOL blockIsRunning = [SCBlockUtilities anyBlockIsRunning];
             NSLog(@"%@", blockIsRunning ? @"YES" : @"NO");
-        } else if ([modeString isEqualToString: @"--version"]) {
+        } else if ([arguments booleanValueForSignature: versionSig]) {
             [SCSentry addBreadcrumb: @"CLI method --version called" category: @"cli"];
             NSLog(SELFCONTROL_VERSION_STRING);
         }

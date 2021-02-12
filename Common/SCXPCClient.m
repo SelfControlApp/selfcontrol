@@ -138,6 +138,9 @@
 }
 
 - (void)installDaemon:(void(^)(NSError*))callback {
+    // make sure authorization is set up (if we haven't connected yet)
+    [self setupAuthorization];
+    
     AuthorizationItem blessRight = {
         kSMRightBlessPrivilegedHelper, 0, NULL, 0
     };
@@ -164,6 +167,7 @@
                                        );
 
     if(status) {
+        NSLog(@"copied rights with status %d", status);
         // if it's just the user cancelling, make that obvious
         // to any listeners so they can ignore it appropriately
         if (status == AUTH_CANCELLED_STATUS) {
