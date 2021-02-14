@@ -606,7 +606,7 @@
 		CB9E90190F397FF6006DE6E4 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		CB9E901D0F397FFA006DE6E4 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		CBA2AFD20F39EC12005AFEBE /* selfcontrol-cli */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "selfcontrol-cli"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CBA2AFD80F39EC46005AFEBE /* cli-main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "cli-main.m"; sourceTree = "<group>"; };
+		CBA2AFD80F39EC46005AFEBE /* cli-main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "cli-main.m"; sourceTree = "<group>"; tabWidth = 5; };
 		CBADC27C25B22BC7000EE5BB /* SCSentry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCSentry.h; sourceTree = "<group>"; };
 		CBADC27D25B22BC7000EE5BB /* SCSentry.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCSentry.m; sourceTree = "<group>"; };
 		CBB0AE280FA74566006229B3 /* HostFileBlocker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostFileBlocker.h; sourceTree = "<group>"; };

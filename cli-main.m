@@ -88,8 +88,8 @@ int main(int argc, char* argv[]) {
             NSArray* blocklist;
             NSDate* blockEndDate;
             BOOL blockAsWhitelist = NO;
-            NSDictionary* blockSettings;
-            
+            NSMutableDictionary* blockSettings;
+
             // there are two ways we can read in the core block parameters (Blocklist, BlockEndDate, BlockAsWhitelist):
             // 1) we can receive them as command-line arguments, including a path to a blocklist file
             // 2) we can read them from user defaults (for legacy support, don't encourage this)
@@ -128,9 +128,8 @@ int main(int argc, char* argv[]) {
                 blockEndDate = [NSDate dateWithTimeIntervalSinceNow: blockDurationSecs];
             }
             
-            // read in the other block settings, for now only accepted via defaults
-            // TODO: accept these via arguments also
-            blockSettings = @{
+            // read in the other block settings, starting with defaults
+            NSDictionary* blockSettingsFromDefaults = @{
                 @"ClearCaches": defaultsDict[@"ClearCaches"],
                 @"AllowLocalNetworks": defaultsDict[@"AllowLocalNetworks"],
                 @"EvaluateCommonSubdomains": defaultsDict[@"EvaluateCommonSubdomains"],
@@ -139,6 +138,26 @@ int main(int argc, char* argv[]) {
                 @"BlockSound": defaultsDict[@"BlockSound"],
                 @"EnableErrorReporting": defaultsDict[@"EnableErrorReporting"]
             };
+            blockSettings = [blockSettingsFromDefaults mutableCopy];
+
+            // but if settings were passed in command line args, those take top priority
+            NSString* argSettingsString = [arguments firstObjectForSignature: blockSettingsSig];
+            if (argSettingsString != nil) {
+                NSError* jsonParseErr = nil;
+                NSDictionary* jsonSettings = [NSJSONSerialization JSONObjectWithData: [argSettingsString dataUsingEncoding: NSUTF8StringEncoding]
+                                                                         options: 0
+                                                                           error: &jsonParseErr];
+                if (jsonSettings == nil) {
+                    NSLog(@"ERROR: Failed to parse JSON settings string with error %@", jsonParseErr.localizedDescription);
+                    exit(EX_USAGE);
+                }
+                
+                for (NSString* key in blockSettingsFromDefaults) {
+                    if (jsonSettings[key] != nil) {
+                        blockSettings[key] = jsonSettings[key];
+                    }
+                }
+            }
 
             if([blocklist count] == 0 || [blockEndDate timeIntervalSinceNow] < 1) {
                 // ya can't start a block without a blocklist, and it can't run for less than a second
