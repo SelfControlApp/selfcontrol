@@ -90,11 +90,11 @@
         [SCUIUtilities presentError: err];
 		return;
 	}
-	if([[defaults_ arrayForKey: @"Blocklist"] count] == 0) {
-		// Since the Start button should be disabled when the blocklist has no entries,
+	if (([[defaults_ arrayForKey: @"Blocklist"] count] == 0) && ![defaults_ boolForKey: @"BlockAsWhitelist"]) {
+		// Since the Start button should be disabled when the blocklist has no entries (and it's not an allowlist)
 		// this should definitely not be happening.  Exit.
 
-        NSError* err = [SCErr errorWithCode: 101];
+        NSError* err = [SCErr errorWithCode: 100];
         [SCSentry captureError: err];
         [SCUIUtilities presentError: err];
 
@@ -169,7 +169,9 @@
 
 		[self updateTimeSliderDisplay: blockDurationSlider_];
 
-		if([defaults_ integerForKey: @"BlockDuration"] != 0 && [[defaults_ arrayForKey: @"Blocklist"] count] != 0 && !self.addingBlock) {
+		if([defaults_ integerForKey: @"BlockDuration"] != 0 &&
+           ([[defaults_ arrayForKey: @"Blocklist"] count] != 0 || [defaults_ boolForKey: @"BlockAsWhitelist"]) &&
+           !self.addingBlock) {
 			[submitButton_ setEnabled: YES];
 		} else {
 			[submitButton_ setEnabled: NO];

@@ -58,7 +58,7 @@
 	<key>SMPrivilegedExecutables</key>
 	<dict>
 		<key>org.eyebeam.selfcontrold</key>
-		<string>anchor apple generic and identifier "org.eyebeam.selfcontrold" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = L6W5L88KN7)</string>
+		<string>anchor apple generic and identifier &quot;org.eyebeam.selfcontrold&quot; and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = L6W5L88KN7)</string>
 	</dict>
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
@@ -68,5 +68,9 @@
 	<string>https://selfcontrolapp.com/SelfControlAppcast.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
+	<key>SUEnableSystemProfiling</key>
+	<true/>
+	<key>SUSendProfileInfo</key>
+	<true/>
 </dict>
 </plist>

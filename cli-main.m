@@ -159,7 +159,7 @@ int main(int argc, char* argv[]) {
                 }
             }
 
-            if([blocklist count] == 0 || [blockEndDate timeIntervalSinceNow] < 1) {
+            if(([blocklist count] == 0 && !blockAsWhitelist) || [blockEndDate timeIntervalSinceNow] < 1) {
                 // ya can't start a block without a blocklist, and it can't run for less than a second
                 // because that's silly
                 NSLog(@"ERROR: Blocklist is empty, or block does not end in the future (%@, %@).", blocklist, blockEndDate);
