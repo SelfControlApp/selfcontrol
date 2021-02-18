@@ -65,7 +65,7 @@
 	<key>SUEnableJavaScript</key>
 	<true/>
 	<key>SUFeedURL</key>
-	<string>https://selfcontrolapp.com/SelfControlAppcast.xml</string>
+	<string>https://selfcontrolapp.com/appcast.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
 	<key>SUEnableSystemProfiling</key>
