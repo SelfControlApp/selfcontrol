@@ -51,7 +51,7 @@
 - (void)showWindow:(id)sender {
 	[[self window] makeKeyAndOrderFront: self];
 
-	if ([domainList_ count] == 0) {
+	if ([domainList_ count] == 0 && !self.readOnly) {
 		[self addDomain: self];
 	}
 
@@ -119,8 +119,11 @@
 		[domainListTableView_ beginUpdates];
 		[domainListTableView_ removeRowsAtIndexes: indexSet withAnimation: NSTableViewAnimationSlideUp];
 		[domainList_ removeObjectAtIndex: (NSUInteger)editedRow];
+        [defaults_ setValue: domainList_ forKey: @"Blocklist"];
 		[domainListTableView_ reloadData];
 		[domainListTableView_ endUpdates];
+        [[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification"
+        object: self];
 		return;
 	}
 }
@@ -132,7 +135,6 @@
 	if (rowIndex < 0 || (NSUInteger)rowIndex + 1 > [domainList_ count]) {
 		return;
 	}
-    
     NSArray<NSString*>* cleanedEntries = [SCMiscUtilities cleanBlocklistEntry: newString];
     
     for (NSUInteger i = 0; i < cleanedEntries.count; i++) {
