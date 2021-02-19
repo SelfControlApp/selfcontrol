@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 // was just changed a few seconds ago.
 + (BOOL)networkConnectionIsAvailable;
 
++ (BOOL)promptBrowserRestartIfNecessary;
+
 + (NSString *)timeSliderDisplayStringFromTimeInterval:(NSTimeInterval)numberOfSeconds;
 + (NSString *)timeSliderDisplayStringFromNumberOfMinutes:(NSInteger)numberOfMinutes;
 

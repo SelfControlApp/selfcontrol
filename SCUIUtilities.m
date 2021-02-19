@@ -128,6 +128,41 @@
     return reachable && (flags & kSCNetworkFlagsReachable) && !(flags & kSCNetworkFlagsConnectionRequired);
 }
 
++ (BOOL)promptBrowserRestartIfNecessary {
+    NSString* ffBundleId = @"org.mozilla.firefox";
+    NSArray<NSRunningApplication*>* runningFF = [NSRunningApplication runningApplicationsWithBundleIdentifier: ffBundleId];
+    if (runningFF.count < 1) {
+        // Firefox isn't running, no stress!
+        return NO;
+    }
+
+    // all UI stuff MUST be done on the main thread
+    if (![NSThread isMainThread]) {
+        __block BOOL retVal = NO;
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            retVal = [SCUIUtilities promptBrowserRestartIfNecessary];
+        });
+        return retVal;
+    }
+    
+    NSAlert* alert = [[NSAlert alloc] init];
+    [alert setMessageText: NSLocalizedString(@"Restart Firefox", "FireFox browser restart prompt")];
+    [alert setInformativeText:NSLocalizedString(@"SelfControl's block may not work properly in Firefox until you restart the browser. Do you want to quit Firefox now?", @"Message explaining Firefox restart requirement")];
+    [alert addButtonWithTitle: NSLocalizedString(@"Quit Firefox", @"Button to quit Firefox")];
+    [alert addButtonWithTitle: NSLocalizedString(@"Continue Without Restart", "Button to decline restarting Firefox")];
+    
+    NSModalResponse modalResponse = [alert runModal];
+    if (modalResponse == NSAlertFirstButtonReturn) {
+        for (NSRunningApplication* ff in runningFF) {
+            [ff terminate];
+        }
+        
+        return YES;
+    }
+    
+    return NO;
+}
+
 + (BOOL)blockIsRunning {
     // we'll say a block is running if we find the block info, but
     // also, importantly, if we find a block still going in the hosts file

@@ -104,13 +104,15 @@
 	//Scheduling the timer from the main thread seems to work.
 	[self performSelectorOnMainThread: @selector(hackAroundMainThreadtimer:) withObject: timerUpdater_ waitUntilDone: YES];
     
+    [NSTimer scheduledTimerWithTimeInterval: 1.0 repeats: NO block:^(NSTimer * _Nonnull timer) {
+        [SCUIUtilities promptBrowserRestartIfNecessary];
+    }];
+    
     // the timer is a good time to prompt them to enable error reporting! nothing else is happening
     [NSTimer scheduledTimerWithTimeInterval: 3.0 repeats: NO block:^(NSTimer * _Nonnull timer) {
         [SCSentry showErrorReportingPromptIfNeeded];
     }];
 }
-
-
 
 - (void)blockEnded {
     [timerUpdater_ invalidate];
