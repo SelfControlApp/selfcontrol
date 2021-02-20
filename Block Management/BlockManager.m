@@ -23,6 +23,8 @@
 #import "BlockManager.h"
 #import "AllowlistScraper.h"
 #import "SCBlockEntry.h"
+#include <sys/socket.h>
+#include <netdb.h>
 
 @implementation BlockManager
 
@@ -318,6 +320,16 @@ BOOL appendMode = NO;
 	return [newHosts allObjects];
 }
 
+// by Jakob Egger, taken from: https://eggerapps.at/blog/2014/hostname-lookups.html
++ (NSString*)stringForAddress:(NSData*)addressData error:(NSError**)outError {
+    char hbuf[NI_MAXHOST];
+    int gai_error = getnameinfo(addressData.bytes, (socklen_t)addressData.length, hbuf, NI_MAXHOST, NULL, 0, NI_NUMERICHOST);
+    if (gai_error) {
+        if (outError) *outError = [NSError errorWithDomain:@"MyDomain" code:gai_error userInfo:@{NSLocalizedDescriptionKey:@(gai_strerror(gai_error))}];
+        return nil;
+    }
+    return [NSString stringWithUTF8String:hbuf];
+}
 - (NSArray*)ipAddressesForDomainName:(NSString*)domainName {
 	NSHost* host = [NSHost hostWithName: domainName];
 
@@ -329,17 +341,33 @@ BOOL appendMode = NO;
     // TODO: is this whole API not threadsafe???? https://mikeash.com/pyblog/friday-qa-2009-11-13-dangerous-cocoa-calls.html
     // see: https://www.cocoawithlove.com/2009/11/drop-in-fix-for-problems-with-nshost.html
     // could move to CFHost...
-	NSArray* addresses = [host addresses];
-//    CFHostRef cfHost = CFHostCreateWithName(NULL, (__bridge CFStringRef)domainName);
-//    CFStreamError err;
-//    // TODO: call CFHostsScheduleWithRunLoop to put this on a background thread
-//    CFHostStartInfoResolution(cfHost, kCFHostAddresses, &err);
-//    NSArray<NSData*>* addresses = (__bridge NSArray*)CFHostGetAddressing(cfHost, NULL);
-//
-//    NSMutableArray* stringAddresses = [NSMutableArray arrayWithCapacity: addresses.count];
-//    for (NSData* addrData in addresses) {
-//
-//    }
+    //	NSArray* addresses = [host addresses];
+    CFHostRef cfHost = CFHostCreateWithName(kCFAllocatorDefault, (__bridge CFStringRef)domainName);
+    CFStreamError streamErr;
+    // TODO: call CFHostsScheduleWithRunLoop to put this on a background thread, so we can cancel/timeout early
+    CFHostStartInfoResolution(cfHost, kCFHostAddresses, &streamErr);
+    if (streamErr.error) {
+        NSLog(@"BlockManager: Warning: failed to resolve addresses for %@ with stream error", domainName);
+        CFRelease(cfHost);
+        return @[];
+    }
+    
+    NSArray<NSData*>* addresses = (__bridge NSArray*)CFHostGetAddressing(cfHost, NULL);
+
+    NSMutableArray* stringAddresses = [NSMutableArray array];
+    if (addresses != NULL) {
+        for (NSData* addrData in addresses) {
+            NSError* parseErr;
+            NSString* ipStr = [BlockManager stringForAddress: addrData error: &parseErr];
+            if (ipStr) {
+                [stringAddresses addObject: ipStr];
+            } else {
+                NSLog(@"BlockManager: Warning: Failed to parse IP struct for domain %@ with error %@", domainName, parseErr);
+            }
+        }
+    } else {
+        NSLog(@"BlockManager: Warning: failed to resolve addresses for %@", domainName);
+    }
 
 	// log slow resolutions
 	// TODO: present this back to the user somehow, even help them remove slow-resolving hosts?
@@ -349,9 +377,9 @@ BOOL appendMode = NO;
 		NSLog(@"BlockManager: Warning: took %f seconds to resolve %@ aka %@", resolutionTime, host.name, domainName);
 	}
     
-//    CFRelease(cfHost);
+    CFRelease(cfHost);
 
-	return addresses;
+	return stringAddresses;
 }
 
 - (BOOL)domainIsGoogle:(NSString*)domainName {
