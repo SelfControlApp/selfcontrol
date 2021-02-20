@@ -56,7 +56,7 @@
 - (BOOL)blockIsActive;
 
 - (NSArray*)commonSubdomainsForHostName:(NSString*)hostName;
-- (NSArray*)ipAddressesForDomainName:(NSString*)domainName;
++ (NSArray*)ipAddressesForDomainName:(NSString*)domainName;
 - (BOOL)domainIsGoogle:(NSString*)domainName;
 
 @end

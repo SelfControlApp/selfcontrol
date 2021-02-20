@@ -30,7 +30,6 @@
 		return nil;
 	}
 
-    NSDate* startedScraping  = [NSDate date];
 	NSDataDetector* dataDetector = [[NSDataDetector alloc] initWithTypes: NSTextCheckingTypeLink error: nil];
 	NSCountedSet<SCBlockEntry*>* relatedEntries = [NSCountedSet set];
 	[dataDetector enumerateMatchesInString: html
@@ -43,11 +42,6 @@
                                         [relatedEntries addObject: [SCBlockEntry entryWithHostname: result.URL.host]];
                                     }
 								}];
-    NSDate* finishedScraping  = [NSDate date];
-    NSTimeInterval resolutionTime = [finishedScraping timeIntervalSinceDate: startedScraping];
-    if (resolutionTime > 5.0) {
-        NSLog(@"BlockManager: Warning: related block entries took %f seconds to enumerate %d entries for %@", resolutionTime, relatedEntries.count, domain);
-    }
 
 	return relatedEntries;
 }

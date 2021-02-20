@@ -48,7 +48,7 @@ BOOL appendMode = NO;
 - (BlockManager*)initAsAllowlist:(BOOL)allowlist allowLocal:(BOOL)local includeCommonSubdomains:(BOOL)blockCommon includeLinkedDomains:(BOOL)includeLinked {
 	if(self = [super init]) {
 		opQueue = [[NSOperationQueue alloc] init];
-		[opQueue setMaxConcurrentOperationCount: 20];
+		[opQueue setMaxConcurrentOperationCount: 35];
 
 		pf = [[PacketFilter alloc] initAsAllowlist: allowlist];
 		hostsBlocker = [[HostFileBlocker alloc] init];
@@ -94,8 +94,11 @@ BOOL appendMode = NO;
 }
 - (void)finishAppending {
     NSLog(@"BlockManager: About to run operation queue for appending...");
+    NSDate* startedRunning  = [NSDate date];
     [opQueue waitUntilAllOperationsAreFinished];
-    NSLog(@"BlockManager: Operation queue ran!");
+    NSDate* finishedRunning  = [NSDate date];
+    NSTimeInterval runTime = [finishedRunning timeIntervalSinceDate: startedRunning];
+    NSLog(@"BlockManager: Operation queue ran in %f seconds!", runTime);
 
     [hostsBlocker writeNewFileContents];
     [pf finishAppending];
@@ -105,8 +108,11 @@ BOOL appendMode = NO;
 
 - (void)finalizeBlock {
     NSLog(@"BlockManager: About to run operation queue...");
+    NSDate* startedRunning  = [NSDate date];
 	[opQueue waitUntilAllOperationsAreFinished];
-    NSLog(@"BlockManager: Operation queue ran!");
+    NSDate* finishedRunning  = [NSDate date];
+    NSTimeInterval runTime = [finishedRunning timeIntervalSinceDate: startedRunning];
+    NSLog(@"BlockManager: Operation queue ran in %f seconds!", runTime);
 
 	if(hostsBlockingEnabled) {
 		[hostsBlocker addSelfControlBlockFooter];
@@ -117,7 +123,6 @@ BOOL appendMode = NO;
 }
 
 - (void)enqueueBlockEntry:(SCBlockEntry*)entry {
-    NSLog(@"enqueue entry %@", entry);
 	NSBlockOperation* op = [NSBlockOperation blockOperationWithBlock:^{
         [self addBlockEntry: entry];
 	}];
@@ -130,8 +135,8 @@ BOOL appendMode = NO;
     
     // NSMutableSet is NOT thread-safe
     @synchronized (addedBlockEntries) {
+        // don't try to block the same thing twice
         if ([addedBlockEntries containsObject: entry]) {
-            NSLog(@"BlockManager: Dropping duplicate block entry %@", entry);
             return;
         }
         [addedBlockEntries addObject: entry];
@@ -147,7 +152,7 @@ BOOL appendMode = NO;
 	} else if(!isIP && (![self domainIsGoogle: entry.hostname] || isAllowlist)) { // domain name
 		// on blocklist blocks where the domain is Google, we don't use ipfw to block
 		// because we'd end up blocking more than the user wants (i.e. Search/Reader)
-		NSArray* addresses = [self ipAddressesForDomainName: entry.hostname];
+		NSArray* addresses = [BlockManager ipAddressesForDomainName: entry.hostname];
 
 		for(NSUInteger i = 0; i < [addresses count]; i++) {
 			NSString* ip = addresses[i];
@@ -330,18 +335,10 @@ BOOL appendMode = NO;
     }
     return [NSString stringWithUTF8String:hbuf];
 }
-- (NSArray*)ipAddressesForDomainName:(NSString*)domainName {
-	NSHost* host = [NSHost hostWithName: domainName];
-
-	if(!host) {
-		return @[];
-	}
++ (NSArray*)ipAddressesForDomainName:(NSString*)domainName {
+    if(domainName == nil) return @[];
 
 	NSDate* startedResolving = [NSDate date];
-    // TODO: is this whole API not threadsafe???? https://mikeash.com/pyblog/friday-qa-2009-11-13-dangerous-cocoa-calls.html
-    // see: https://www.cocoawithlove.com/2009/11/drop-in-fix-for-problems-with-nshost.html
-    // could move to CFHost...
-    //	NSArray* addresses = [host addresses];
     CFHostRef cfHost = CFHostCreateWithName(kCFAllocatorDefault, (__bridge CFStringRef)domainName);
     CFStreamError streamErr;
     // TODO: call CFHostsScheduleWithRunLoop to put this on a background thread, so we can cancel/timeout early
@@ -370,11 +367,10 @@ BOOL appendMode = NO;
     }
 
 	// log slow resolutions
-	// TODO: present this back to the user somehow, even help them remove slow-resolving hosts?
 	NSDate* finishedResolving  = [NSDate date];
 	NSTimeInterval resolutionTime = [finishedResolving timeIntervalSinceDate: startedResolving];
 	if (resolutionTime > 2.5) {
-		NSLog(@"BlockManager: Warning: took %f seconds to resolve %@ aka %@", resolutionTime, host.name, domainName);
+		NSLog(@"BlockManager: Warning: took %f seconds to resolve %@", resolutionTime, domainName);
 	}
     
     CFRelease(cfHost);
@@ -382,14 +378,22 @@ BOOL appendMode = NO;
 	return stringAddresses;
 }
 
++ (NSPredicate*)googleTesterPredicate {
+    static NSPredicate* pred = nil;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSString* googleRegex = @"^([a-z0-9]+\\.)*(google|youtube|picasa|sketchup|blogger|blogspot)\\.([a-z]{1,3})(\\.[a-z]{1,3})?$";
+        pred = [NSPredicate
+                 predicateWithFormat: @"SELF MATCHES %@",
+                 googleRegex
+                 ];
+    });
+    
+    return pred;
+}
 - (BOOL)domainIsGoogle:(NSString*)domainName {
-	// todo: make this regex not suck
-	NSString* googleRegex = @"^([a-z0-9]+\\.)*(google|youtube|picasa|sketchup|blogger|blogspot)\\.([a-z]{1,3})(\\.[a-z]{1,3})?$";
-	NSPredicate* googleTester = [NSPredicate
-								 predicateWithFormat: @"SELF MATCHES %@",
-								 googleRegex
-								 ];
-	return [googleTester evaluateWithObject: domainName];
+	return [[BlockManager googleTesterPredicate] evaluateWithObject: domainName];
 }
 
 - (NSArray<SCBlockEntry*>*)relatedBlockEntriesForEntry:(SCBlockEntry*)entry {
