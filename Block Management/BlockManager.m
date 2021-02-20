@@ -56,6 +56,7 @@ BOOL appendMode = NO;
 		allowLocal = local;
 		includeCommonSubdomains = blockCommon;
 		includeLinkedDomains = includeLinked;
+        addedBlockEntries = [NSMutableSet set];
 	}
 
 	return self;
@@ -90,9 +91,9 @@ BOOL appendMode = NO;
     [pf enterAppendMode];
 }
 - (void)finishAppending {
-    NSLog(@"About to run operation queue for appending...");
+    NSLog(@"BlockManager: About to run operation queue for appending...");
     [opQueue waitUntilAllOperationsAreFinished];
-    NSLog(@"Operation queue ran!");
+    NSLog(@"BlockManager: Operation queue ran!");
 
     [hostsBlocker writeNewFileContents];
     [pf finishAppending];
@@ -101,9 +102,9 @@ BOOL appendMode = NO;
 }
 
 - (void)finalizeBlock {
-    NSLog(@"About to run operation queue...");
+    NSLog(@"BlockManager: About to run operation queue...");
 	[opQueue waitUntilAllOperationsAreFinished];
-    NSLog(@"Operation queue ran!");
+    NSLog(@"BlockManager: Operation queue ran!");
 
 	if(hostsBlockingEnabled) {
 		[hostsBlocker addSelfControlBlockFooter];
@@ -124,6 +125,15 @@ BOOL appendMode = NO;
 - (void)addBlockEntry:(SCBlockEntry*)entry {
     // nil entries = something didn't parse right
     if (entry == nil) return;
+    
+    // NSMutableSet is NOT thread-safe
+    @synchronized (addedBlockEntries) {
+        if ([addedBlockEntries containsObject: entry]) {
+            NSLog(@"BlockManager: Dropping duplicate block entry %@", entry);
+            return;
+        }
+        [addedBlockEntries addObject: entry];
+    }
 
 	BOOL isIP = [entry.hostname isValidIPAddress];
 	BOOL isIPv4 = [entry.hostname isValidIPv4Address];
@@ -316,15 +326,30 @@ BOOL appendMode = NO;
 	}
 
 	NSDate* startedResolving = [NSDate date];
+    // TODO: is this whole API not threadsafe???? https://mikeash.com/pyblog/friday-qa-2009-11-13-dangerous-cocoa-calls.html
+    // see: https://www.cocoawithlove.com/2009/11/drop-in-fix-for-problems-with-nshost.html
+    // could move to CFHost...
 	NSArray* addresses = [host addresses];
+//    CFHostRef cfHost = CFHostCreateWithName(NULL, (__bridge CFStringRef)domainName);
+//    CFStreamError err;
+//    // TODO: call CFHostsScheduleWithRunLoop to put this on a background thread
+//    CFHostStartInfoResolution(cfHost, kCFHostAddresses, &err);
+//    NSArray<NSData*>* addresses = (__bridge NSArray*)CFHostGetAddressing(cfHost, NULL);
+//
+//    NSMutableArray* stringAddresses = [NSMutableArray arrayWithCapacity: addresses.count];
+//    for (NSData* addrData in addresses) {
+//
+//    }
 
 	// log slow resolutions
 	// TODO: present this back to the user somehow, even help them remove slow-resolving hosts?
 	NSDate* finishedResolving  = [NSDate date];
 	NSTimeInterval resolutionTime = [finishedResolving timeIntervalSinceDate: startedResolving];
 	if (resolutionTime > 2.5) {
-		NSLog(@"Warning: took %f seconds to resolve %@", resolutionTime, host.name);
+		NSLog(@"BlockManager: Warning: took %f seconds to resolve %@ aka %@", resolutionTime, host.name, domainName);
 	}
+    
+//    CFRelease(cfHost);
 
 	return addresses;
 }
@@ -346,7 +371,13 @@ BOOL appendMode = NO;
     NSMutableArray<SCBlockEntry*>* relatedEntries = [NSMutableArray array];
 
     if (isAllowlist && includeLinkedDomains && ![entry.hostname isValidIPAddress]) {
+        NSDate* startedScraping  = [NSDate date];
         NSArray<SCBlockEntry*>* scrapedEntries = [[AllowlistScraper relatedBlockEntries: entry.hostname] allObjects];
+        NSDate* finishedScraping  = [NSDate date];
+        NSTimeInterval resolutionTime = [finishedScraping timeIntervalSinceDate: startedScraping];
+        if (resolutionTime > 5.0) {
+            NSLog(@"BlockManager: Warning: allowlist scraper took %f seconds on %@", resolutionTime, entry.hostname);
+        }
         [relatedEntries addObjectsFromArray: scrapedEntries];
     }
 

@@ -36,6 +36,7 @@
 	BOOL allowLocal;
 	BOOL includeCommonSubdomains;
 	BOOL includeLinkedDomains;
+    NSMutableSet* addedBlockEntries;
 }
 
 - (BlockManager*)initAsAllowlist:(BOOL)allowlist;
