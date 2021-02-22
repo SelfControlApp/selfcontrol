@@ -315,6 +315,12 @@ BOOL appendMode = NO;
 		[newHosts addObject: @"api.twitter.com"];
 	}
 
+    if ([hostName hasSuffix: @"netflix.com"]) {
+        [newHosts addObject: @"assets.nflxext.com"];
+        [newHosts addObject: @"codex.nflxext.com"];
+        [newHosts addObject: @"nflxext.com"];
+    }
+
 	// Block the domain with no subdomains, if www.domain is blocked
 	if([hostName rangeOfString: @"www."].location == 0) {
 		[newHosts addObject: [hostName substringFromIndex: 4]];
