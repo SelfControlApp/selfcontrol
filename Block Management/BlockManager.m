@@ -25,6 +25,7 @@
 #import "SCBlockEntry.h"
 #include <sys/socket.h>
 #include <netdb.h>
+#import "HostFileBlockerSet.h"
 
 @implementation BlockManager
 
@@ -51,7 +52,7 @@ BOOL appendMode = NO;
 		[opQueue setMaxConcurrentOperationCount: 35];
 
 		pf = [[PacketFilter alloc] initAsAllowlist: allowlist];
-		hostsBlocker = [[HostFileBlocker alloc] init];
+		hostBlockerSet = [[HostFileBlockerSet alloc] init];
 		hostsBlockingEnabled = NO;
 
 		isAllowlist = allowlist;
@@ -65,13 +66,16 @@ BOOL appendMode = NO;
 }
 
 - (void)prepareToAddBlock {
-	if([hostsBlocker containsSelfControlBlock]) {
-		[hostsBlocker removeSelfControlBlock];
-		[hostsBlocker writeNewFileContents];
-	}
+    for (HostFileBlocker* blocker in hostBlockerSet.blockers) {
+        if([blocker containsSelfControlBlock]) {
+            [blocker removeSelfControlBlock];
+            [blocker writeNewFileContents];
+        }
+    }
 
-	if(!isAllowlist && ![hostsBlocker containsSelfControlBlock] && [hostsBlocker createBackupHostsFile]) {
-		[hostsBlocker addSelfControlBlockHeader];
+	if(!isAllowlist && ![hostBlockerSet.defaultBlocker containsSelfControlBlock]) {
+        [hostBlockerSet createBackupHostsFile];
+		[hostBlockerSet addSelfControlBlockHeader];
 		hostsBlockingEnabled = YES;
 	} else {
 		hostsBlockingEnabled = NO;
@@ -83,7 +87,7 @@ BOOL appendMode = NO;
         NSLog(@"ERROR: can't append to allowlist block");
         return;
     }
-    if(![hostsBlocker containsSelfControlBlock]) {
+    if(![hostBlockerSet.defaultBlocker containsSelfControlBlock]) {
         NSLog(@"ERROR: can't append to hosts block that doesn't yet exist");
         return;
     }
@@ -100,7 +104,7 @@ BOOL appendMode = NO;
     NSTimeInterval runTime = [finishedRunning timeIntervalSinceDate: startedRunning];
     NSLog(@"BlockManager: Operation queue ran in %f seconds!", runTime);
 
-    [hostsBlocker writeNewFileContents];
+    [hostBlockerSet writeNewFileContents];
     [pf finishAppending];
     [pf refreshPFRules];
     appendMode = NO;
@@ -115,8 +119,8 @@ BOOL appendMode = NO;
     NSLog(@"BlockManager: Operation queue ran in %f seconds!", runTime);
 
 	if(hostsBlockingEnabled) {
-		[hostsBlocker addSelfControlBlockFooter];
-		[hostsBlocker writeNewFileContents];
+		[hostBlockerSet addSelfControlBlockFooter];
+		[hostBlockerSet writeNewFileContents];
 	}
 
 	[pf startBlock];
@@ -163,9 +167,9 @@ BOOL appendMode = NO;
 
 	if(hostsBlockingEnabled && ![entry.hostname isEqualToString: @"*"] && !entry.port && !isIP) {
         if (appendMode) {
-            [hostsBlocker appendExistingBlockWithRuleForDomain: entry.hostname];
+            [hostBlockerSet appendExistingBlockWithRuleForDomain: entry.hostname];
         } else {
-            [hostsBlocker addRuleBlockingDomain: entry.hostname];
+            [hostBlockerSet addRuleBlockingDomain: entry.hostname];
         }
 	}
 }
@@ -199,12 +203,12 @@ BOOL appendMode = NO;
 	[pf stopBlock: false];
 	BOOL pfSuccess = ![pf containsSelfControlBlock];
 
-	[hostsBlocker removeSelfControlBlock];
-	BOOL hostSuccess = [hostsBlocker writeNewFileContents];
+	[hostBlockerSet removeSelfControlBlock];
+	BOOL hostSuccess = [hostBlockerSet writeNewFileContents];
 	// Revert the host file blocker's file contents to disk so we can check
 	// whether or not it still contains the block (aka we messed up).
-	[hostsBlocker revertFileContentsToDisk];
-	hostSuccess = hostSuccess && ![hostsBlocker containsSelfControlBlock];
+	[hostBlockerSet revertFileContentsToDisk];
+	hostSuccess = hostSuccess && ![hostBlockerSet containsSelfControlBlock];
 
 	BOOL clearedSuccessfully = hostSuccess && pfSuccess;
 
@@ -217,12 +221,12 @@ BOOL appendMode = NO;
 		}
 		if (!hostSuccess) {
 			NSLog(@"WARNING: Error removing hostfile block.  Attempting to restore host file backup.");
-			[hostsBlocker restoreBackupHostsFile];
+			[hostBlockerSet restoreBackupHostsFile];
 		}
 
 		clearedSuccessfully = ![self blockIsActive];
 
-		if ([hostsBlocker containsSelfControlBlock]) {
+		if ([hostBlockerSet.defaultBlocker containsSelfControlBlock]) {
 			NSLog(@"ERROR: Host file backup could not be restored.  This may result in a permanent block.");
 		}
 		if ([pf containsSelfControlBlock]) {
@@ -233,7 +237,7 @@ BOOL appendMode = NO;
 		}
 	}
 
-	[hostsBlocker deleteBackupHostsFile];
+	[hostBlockerSet deleteBackupHostsFile];
 
 	return clearedSuccessfully;
 }
@@ -242,12 +246,12 @@ BOOL appendMode = NO;
 	[pf stopBlock: YES];
 	BOOL pfSuccess = ![pf containsSelfControlBlock];
 
-	[hostsBlocker removeSelfControlBlock];
-	BOOL hostSuccess = [hostsBlocker writeNewFileContents];
+	[hostBlockerSet removeSelfControlBlock];
+	BOOL hostSuccess = [hostBlockerSet writeNewFileContents];
 	// Revert the host file blocker's file contents to disk so we can check
 	// whether or not it still contains the block (aka we messed up).
-	[hostsBlocker revertFileContentsToDisk];
-	hostSuccess = hostSuccess && ![hostsBlocker containsSelfControlBlock];
+	[hostBlockerSet revertFileContentsToDisk];
+	hostSuccess = hostSuccess && ![hostBlockerSet containsSelfControlBlock];
 
 	BOOL clearedSuccessfully = hostSuccess && pfSuccess;
 
@@ -259,12 +263,12 @@ BOOL appendMode = NO;
 		}
 		if (!hostSuccess) {
 			NSLog(@"WARNING: Error removing hostfile block.  Attempting to restore host file backup.");
-			[hostsBlocker restoreBackupHostsFile];
+			[hostBlockerSet restoreBackupHostsFile];
 		}
 
 		clearedSuccessfully = ![self blockIsActive];
 
-		if ([hostsBlocker containsSelfControlBlock]) {
+		if ([hostBlockerSet.defaultBlocker containsSelfControlBlock]) {
 			NSLog(@"ERROR: Host file backup could not be restored.  This may result in a permanent block.");
 		}
 		if (clearedSuccessfully) {
@@ -276,7 +280,7 @@ BOOL appendMode = NO;
 }
 
 - (BOOL)blockIsActive {
-	return [hostsBlocker containsSelfControlBlock] || [pf containsSelfControlBlock];
+	return [hostBlockerSet.defaultBlocker containsSelfControlBlock] || [pf containsSelfControlBlock];
 }
 
 - (NSArray*)commonSubdomainsForHostName:(NSString*)hostName {

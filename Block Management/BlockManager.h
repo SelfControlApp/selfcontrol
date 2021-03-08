@@ -22,15 +22,15 @@
 
 #import <Foundation/Foundation.h>
 #import "PacketFilter.h"
-#import "HostFileBlocker.h"
 #import "NSString+IPAddress.h"
 
 @class SCBlockEntry;
+@class HostFileBlockerSet;
 
 @interface BlockManager : NSObject {
 	NSOperationQueue* opQueue;
 	PacketFilter* pf;
-	HostFileBlocker* hostsBlocker;
+	HostFileBlockerSet* hostBlockerSet;
 	BOOL hostsBlockingEnabled;
 	BOOL isAllowlist;
 	BOOL allowLocal;

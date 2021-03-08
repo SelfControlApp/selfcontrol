@@ -29,7 +29,6 @@
 #import "SCSettings.h"
 #import <ServiceManagement/ServiceManagement.h>
 #import "SCXPCClient.h"
-#import "HostFileBlocker.h"
 #import "SCBlockFileReaderWriter.h"
 #import "SCUIUtilities.h"
 #import <TransformerKit/NSValueTransformer+TransformerKit.h>

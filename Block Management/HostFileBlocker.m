@@ -38,11 +38,15 @@ NSString* const kDefaultHostsFileContents = @"##\n"
 
 @implementation HostFileBlocker
 
-- (HostFileBlocker*)init {
+- (instancetype)init {
+    return [self initWithPath: kHostFileBlockerPath];
+}
+- (instancetype)initWithPath:(NSString*)path {
 	if(self = [super init]) {
+        hostFilePath = path;
 		fileMan = [[NSFileManager alloc] init];
 		strLock = [[NSLock alloc] init];
-		newFileContents = [NSMutableString stringWithContentsOfFile: kHostFileBlockerPath usedEncoding: &stringEnc error: NULL];
+		newFileContents = [NSMutableString stringWithContentsOfFile: hostFilePath usedEncoding: &stringEnc error: NULL];
 		if(!newFileContents) {
 			// if we lost our hosts file, replace it with the OS X default
 			newFileContents = [NSMutableString stringWithString: kDefaultHostsFileContents];
@@ -65,7 +69,7 @@ NSString* const kDefaultHostsFileContents = @"##\n"
 - (void)revertFileContentsToDisk {
 	[strLock lock];
 
-	newFileContents = [NSMutableString stringWithContentsOfFile: kHostFileBlockerPath usedEncoding: &stringEnc error: NULL];
+	newFileContents = [NSMutableString stringWithContentsOfFile: hostFilePath usedEncoding: &stringEnc error: NULL];
 	if(!newFileContents) {
 		newFileContents = [NSMutableString stringWithString: kDefaultHostsFileContents];
 	}
@@ -76,37 +80,43 @@ NSString* const kDefaultHostsFileContents = @"##\n"
 - (BOOL)writeNewFileContents {
 	[strLock lock];
 
-	BOOL ret = [newFileContents writeToFile: kHostFileBlockerPath atomically: YES encoding: stringEnc error: NULL];
+	BOOL ret = [newFileContents writeToFile: hostFilePath atomically: YES encoding: stringEnc error: NULL];
 
 	[strLock unlock];
 	return ret;
 }
 
+- (NSString*)backupHostFilePath {
+    return [hostFilePath stringByAppendingPathExtension: @"bak"];
+}
+
 - (BOOL)createBackupHostsFile {
 	[self deleteBackupHostsFile];
 
-	if (![fileMan fileExistsAtPath: @"/etc/hosts"]) {
-		[kDefaultHostsFileContents writeToFile: @"/etc/hosts" atomically:true encoding: NSUTF8StringEncoding error: NULL];
+	if (![fileMan fileExistsAtPath: hostFilePath]) {
+		[kDefaultHostsFileContents writeToFile: hostFilePath atomically:true encoding: NSUTF8StringEncoding error: NULL];
 	}
 
-	if(![fileMan isReadableFileAtPath: @"/etc/hosts"] || [fileMan fileExistsAtPath: @"/etc/hosts.bak"]) {
+	if(![fileMan isReadableFileAtPath: hostFilePath] || [fileMan fileExistsAtPath: [self backupHostFilePath]]) {
 		return NO;
 	}
 
-	return [fileMan copyItemAtPath: @"/etc/hosts" toPath: @"/etc/hosts.bak" error: nil];
+	return [fileMan copyItemAtPath: hostFilePath toPath: [self backupHostFilePath] error: nil];
 }
 
 - (BOOL)deleteBackupHostsFile {
-	if(![fileMan isDeletableFileAtPath: @"/etc/hosts.bak"])
+	if(![fileMan isDeletableFileAtPath: [self backupHostFilePath]])
 		return NO;
 
-	return [fileMan removeItemAtPath: @"/etc/hosts.bak" error: nil];
+	return [fileMan removeItemAtPath: [self backupHostFilePath] error: nil];
 }
 
 - (BOOL)restoreBackupHostsFile {
-	if(![fileMan removeItemAtPath: @"/etc/hosts" error: nil])
+    NSString* backupPath = [self backupHostFilePath];
+    
+	if(![fileMan removeItemAtPath: hostFilePath error: nil])
 		return NO;
-	if(![fileMan isReadableFileAtPath: @"/etc/hosts.bak"] || ![fileMan moveItemAtPath: @"/etc/hosts.bak" toPath: @"/etc/hosts" error: nil])
+	if(![fileMan isReadableFileAtPath: backupPath] || ![fileMan moveItemAtPath: backupPath toPath: hostFilePath error: nil])
 		return NO;
 
 	return YES;

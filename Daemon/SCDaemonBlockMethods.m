@@ -12,6 +12,7 @@
 #import "BlockManager.h"
 #import "SCDaemon.h"
 #import "LaunchctlHelper.h"
+#import "HostFileBlockerSet.h"
 
 NSTimeInterval METHOD_LOCK_TIMEOUT = 5.0;
 NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for checkups, because we'd prefer not to have tons pile up
@@ -326,30 +327,30 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         // check if anybody removed our rules, and if so
         // re-add them.
         PacketFilter* pf = [[PacketFilter alloc] init];
-        HostFileBlocker* hostFileBlocker = [[HostFileBlocker alloc] init];
-        if(![pf containsSelfControlBlock] || (![settings boolForKey: @"ActiveBlockAsWhitelist"] && ![hostFileBlocker containsSelfControlBlock])) {
+        HostFileBlockerSet* hostFileBlockerSet = [[HostFileBlockerSet alloc] init];
+        if(![pf containsSelfControlBlock] || (![settings boolForKey: @"ActiveBlockAsWhitelist"] && ![hostFileBlockerSet.defaultBlocker containsSelfControlBlock])) {
             NSLog(@"INFO: Block is missing in PF or hosts, re-adding...");
             // The firewall is missing at least the block header.  Let's clear everything
             // before we re-add to make sure everything goes smoothly.
 
             [pf stopBlock: false];
 
-            [hostFileBlocker removeSelfControlBlock];
-            BOOL success = [hostFileBlocker writeNewFileContents];
+            [hostFileBlockerSet removeSelfControlBlock];
+            BOOL success = [hostFileBlockerSet writeNewFileContents];
             // Revert the host file blocker's file contents to disk so we can check
             // whether or not it still contains the block after our write (aka we messed up).
-            [hostFileBlocker revertFileContentsToDisk];
-            if(!success || [hostFileBlocker containsSelfControlBlock]) {
+            [hostFileBlockerSet revertFileContentsToDisk];
+            if(!success || [hostFileBlockerSet.defaultBlocker containsSelfControlBlock]) {
                 NSLog(@"WARNING: Error removing host file block.  Attempting to restore backup.");
 
-                if([hostFileBlocker restoreBackupHostsFile])
+                if([hostFileBlockerSet restoreBackupHostsFile])
                     NSLog(@"INFO: Host file backup restored.");
                 else
                     NSLog(@"ERROR: Host file backup could not be restored.  This may result in a permanent block.");
             }
 
             // Get rid of the backup file since we're about to make a new one.
-            [hostFileBlocker deleteBackupHostsFile];
+            [hostFileBlockerSet deleteBackupHostsFile];
 
             // Perform the re-add of the rules
             [SCHelperToolUtilities installBlockRulesFromSettings];

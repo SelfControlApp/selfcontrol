@@ -50,6 +50,11 @@
 		CB529BBF0F32B7ED00564FB8 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB529BBE0F32B7ED00564FB8 /* AppController.m */; };
 		CB54D44C0F93E33300AA22E9 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9E901D0F397FFA006DE6E4 /* Security.framework */; };
 		CB587E500F50FE8800C66A09 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB587E4F0F50FE8800C66A09 /* SystemConfiguration.framework */; };
+		CB5888DC25F60DC300B5C64D /* HostFileBlockerSet.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5888B225F6056400B5C64D /* HostFileBlockerSet.m */; };
+		CB5888E225F60DC300B5C64D /* HostFileBlockerSet.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5888B225F6056400B5C64D /* HostFileBlockerSet.m */; };
+		CB5888E325F60DC400B5C64D /* HostFileBlockerSet.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5888B225F6056400B5C64D /* HostFileBlockerSet.m */; };
+		CB5888E425F60DC500B5C64D /* HostFileBlockerSet.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5888B225F6056400B5C64D /* HostFileBlockerSet.m */; };
+		CB5888EA25F60DC500B5C64D /* HostFileBlockerSet.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5888B225F6056400B5C64D /* HostFileBlockerSet.m */; };
 		CB58948025B3FC6D00E9A5C0 /* HostFileBlocker.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB0AE290FA74566006229B3 /* HostFileBlocker.m */; };
 		CB58948725B3FC6F00E9A5C0 /* HostFileBlocker.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB0AE290FA74566006229B3 /* HostFileBlocker.m */; };
 		CB5DFCB72251DD1F0084CEC2 /* SCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */; };
@@ -549,6 +554,8 @@
 		CB529BBD0F32B7ED00564FB8 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		CB529BBE0F32B7ED00564FB8 /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
 		CB587E4F0F50FE8800C66A09 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = /System/Library/Frameworks/SystemConfiguration.framework; sourceTree = "<absolute>"; };
+		CB5888B125F6056400B5C64D /* HostFileBlockerSet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HostFileBlockerSet.h; sourceTree = "<group>"; };
+		CB5888B225F6056400B5C64D /* HostFileBlockerSet.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HostFileBlockerSet.m; sourceTree = "<group>"; };
 		CB5DFCB52251DD1F0084CEC2 /* SCConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCConstants.h; sourceTree = "<group>"; };
 		CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCConstants.m; sourceTree = "<group>"; };
 		CB62FC2F24B11A4F00ADBC40 /* selfcontrold-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "selfcontrold-Info.plist"; sourceTree = "<group>"; };
@@ -1732,6 +1739,8 @@
 				CB81AB8925B8E6BE006956F7 /* SCBlockEntry.m */,
 				CBB0AE280FA74566006229B3 /* HostFileBlocker.h */,
 				CBB0AE290FA74566006229B3 /* HostFileBlocker.m */,
+				CB5888B125F6056400B5C64D /* HostFileBlockerSet.h */,
+				CB5888B225F6056400B5C64D /* HostFileBlockerSet.m */,
 				CBCA91101960D87300AFD20C /* PacketFilter.h */,
 				CBCA91111960D87300AFD20C /* PacketFilter.m */,
 				CB25806016C1FDBE0059C99A /* BlockManager.h */,
@@ -3611,6 +3620,7 @@
 				CB529BBF0F32B7ED00564FB8 /* AppController.m in Sources */,
 				CB81A94925B7B5B5006956F7 /* SCMigrationUtilities.m in Sources */,
 				CB81A9F325B7C5F7006956F7 /* SCBlockFileReaderWriter.m in Sources */,
+				CB5888DC25F60DC300B5C64D /* HostFileBlockerSet.m in Sources */,
 				CB1465B825B027E700130D2E /* SCErr.m in Sources */,
 				CBB1731920F05C07007FCAE9 /* SCMiscUtilities.m in Sources */,
 				CB58948025B3FC6D00E9A5C0 /* HostFileBlocker.m in Sources */,
@@ -3660,6 +3670,7 @@
 				CB74D1202480E566002B2079 /* SCDaemon.m in Sources */,
 				CBADC28225B22BC7000EE5BB /* SCSentry.m in Sources */,
 				CB62FC4024B1327D00ADBC40 /* SCSettings.m in Sources */,
+				CB5888EA25F60DC500B5C64D /* HostFileBlockerSet.m in Sources */,
 				CB62FC3F24B1327A00ADBC40 /* SCMiscUtilities.m in Sources */,
 				CB1465BC25B027E700130D2E /* SCErr.m in Sources */,
 				CB81AA4025B7D152006956F7 /* SCHelperToolUtilities.m in Sources */,
@@ -3686,6 +3697,7 @@
 				CB9C80FF19CFB79700CDCAE1 /* AppDelegate.m in Sources */,
 				CB9C80FC19CFB79700CDCAE1 /* main.m in Sources */,
 				CB5DFCBA2251DD1F0084CEC2 /* SCConstants.m in Sources */,
+				CB5888E325F60DC400B5C64D /* HostFileBlockerSet.m in Sources */,
 				CB81AC2B25B909E1006956F7 /* SCUIUtilities.m in Sources */,
 				CB32D2AC21902CF800B8CD68 /* SCSettings.m in Sources */,
 				CB81A9F525B7C5F7006956F7 /* SCBlockFileReaderWriter.m in Sources */,
@@ -3722,6 +3734,7 @@
 				CB1465BB25B027E700130D2E /* SCErr.m in Sources */,
 				CBB1731B20F05C09007FCAE9 /* SCMiscUtilities.m in Sources */,
 				CB81A9F625B7C5F7006956F7 /* SCBlockFileReaderWriter.m in Sources */,
+				CB5888E425F60DC500B5C64D /* HostFileBlockerSet.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3738,6 +3751,7 @@
 				CB1CA64E25ABA5BB0084A551 /* SCXPCAuthorization.m in Sources */,
 				CB81A9D125B7C269006956F7 /* SCBlockUtilities.m in Sources */,
 				CBB67D5C25D6165B006E4BC9 /* NSArray+XPMArgumentsNormalizer.m in Sources */,
+				CB5888E225F60DC300B5C64D /* HostFileBlockerSet.m in Sources */,
 				CBB67D5D25D6165B006E4BC9 /* NSDictionary+RubyDescription.m in Sources */,
 				CBB67D5425D6165B006E4BC9 /* XPMArgsKonstants.m in Sources */,
 				CBB67D5325D6165B006E4BC9 /* XPMMutableAttributedArray.m in Sources */,

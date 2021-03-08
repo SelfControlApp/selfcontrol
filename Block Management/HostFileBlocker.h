@@ -22,15 +22,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-
-@interface HostFileBlocker : NSObject {
-	NSLock* strLock;
-	NSMutableString* newFileContents;
-	NSStringEncoding stringEnc;
-	NSFileManager* fileMan;
-}
-
-+ (BOOL)blockFoundInHostsFile;
+@protocol HostFileBlocker
 
 - (BOOL)deleteBackupHostsFile;
 
@@ -52,5 +44,21 @@
 - (BOOL)containsSelfControlBlock;
 
 - (void)removeSelfControlBlock;
+
+@end
+
+
+@interface HostFileBlocker : NSObject <HostFileBlocker> {
+    NSString* hostFilePath;
+    
+    NSLock* strLock;
+    NSMutableString* newFileContents;
+    NSStringEncoding stringEnc;
+    NSFileManager* fileMan;
+}
+
+- (instancetype)initWithPath:(NSString*)path;
+
++ (BOOL)blockFoundInHostsFile;
 
 @end
