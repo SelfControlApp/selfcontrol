@@ -9,6 +9,7 @@
 #import "SCDaemonProtocol.h"
 #import "SCDaemonXPC.h"
 #import"SCDaemonBlockMethods.h"
+#import "SCFileWatcher.h"
 
 static NSString* serviceName = @"org.eyebeam.selfcontrold";
 float const INACTIVITY_LIMIT_SECS = 60 * 2; // 2 minutes
@@ -26,6 +27,8 @@ float const INACTIVITY_LIMIT_SECS = 60 * 2; // 2 minutes
 @property (strong, readwrite) NSTimer* checkupTimer;
 @property (strong, readwrite) NSTimer* inactivityTimer;
 @property (nonatomic, strong, readwrite) NSDate* lastActivityDate;
+
+@property (nonatomic, strong) SCFileWatcher* hostsFileWatcher;
 
 @end
 
@@ -63,6 +66,13 @@ float const INACTIVITY_LIMIT_SECS = 60 * 2; // 2 minutes
     
     [self startInactivityTimer];
     [self resetInactivityTimer];
+    
+    self.hostsFileWatcher = [SCFileWatcher watcherWithFile: @"/etc/hosts" block:^(NSError * _Nonnull error) {
+        if ([SCBlockUtilities anyBlockIsRunning]) {
+            NSLog(@"INFO: hosts file changed, checking block integrity");
+            [SCDaemonBlockMethods checkBlockIntegrity];
+        }
+    }];
 }
 
 - (void)startCheckupTimer {
@@ -126,6 +136,10 @@ float const INACTIVITY_LIMIT_SECS = 60 * 2; // 2 minutes
     if (self.inactivityTimer) {
         [self.inactivityTimer invalidate];
         self.inactivityTimer = nil;
+    }
+    if (self.hostsFileWatcher) {
+        [self.hostsFileWatcher stopWatching];
+        self.hostsFileWatcher = nil;
     }
 }
 

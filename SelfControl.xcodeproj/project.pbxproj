@@ -172,6 +172,13 @@
 		CBBF4E8B1582F8BD00E364D9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CBBF4E891582F8BD00E364D9 /* InfoPlist.strings */; };
 		CBBF4E8E1582F8E000E364D9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CBBF4E8C1582F8E000E364D9 /* Localizable.strings */; };
 		CBBF4EE515830D7300E364D9 /* TimerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBBF4EE715830D7300E364D9 /* TimerWindow.xib */; };
+		CBC1F4B426070358008E3FA8 /* SCFileWatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = CBC1F4B226070358008E3FA8 /* SCFileWatcher.h */; };
+		CBC1F4B526070358008E3FA8 /* SCFileWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC1F4B326070358008E3FA8 /* SCFileWatcher.m */; };
+		CBC1F4B626070358008E3FA8 /* SCFileWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC1F4B326070358008E3FA8 /* SCFileWatcher.m */; };
+		CBC1F4B726070358008E3FA8 /* SCFileWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC1F4B326070358008E3FA8 /* SCFileWatcher.m */; };
+		CBC1F4B826070358008E3FA8 /* SCFileWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC1F4B326070358008E3FA8 /* SCFileWatcher.m */; };
+		CBC1F4B926070358008E3FA8 /* SCFileWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC1F4B326070358008E3FA8 /* SCFileWatcher.m */; };
+		CBC1F4BA26070358008E3FA8 /* SCFileWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC1F4B326070358008E3FA8 /* SCFileWatcher.m */; };
 		CBC2F8580F4672FE00CF2A42 /* LaunchctlHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */; };
 		CBCA91121960D87300AFD20C /* PacketFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = CBCA91111960D87300AFD20C /* PacketFilter.m */; };
 		CBD2677011ED92DE00042CD8 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9E90190F397FF6006DE6E4 /* CoreFoundation.framework */; };
@@ -1351,6 +1358,8 @@
 		CBBF4E941582F8FC00E364D9 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CBBF4E951582F8FC00E364D9 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CBBF4E961582F8FC00E364D9 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CBC1F4B226070358008E3FA8 /* SCFileWatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCFileWatcher.h; sourceTree = "<group>"; };
+		CBC1F4B326070358008E3FA8 /* SCFileWatcher.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCFileWatcher.m; sourceTree = "<group>"; };
 		CBC25B1319F6CBDE0013E190 /* pt-BR */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		CBC25B1919F6CC030013E190 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchctlHelper.m; sourceTree = "<group>"; };
@@ -1642,6 +1651,8 @@
 				CB81A9E325B7C2B9006956F7 /* Utility */,
 				CBADC27C25B22BC7000EE5BB /* SCSentry.h */,
 				CBADC27D25B22BC7000EE5BB /* SCSentry.m */,
+				CBC1F4B226070358008E3FA8 /* SCFileWatcher.h */,
+				CBC1F4B326070358008E3FA8 /* SCFileWatcher.m */,
 				CB81A9F025B7C5F7006956F7 /* SCBlockFileReaderWriter.h */,
 				CB81A9F125B7C5F7006956F7 /* SCBlockFileReaderWriter.m */,
 				CB1465B625B027E700130D2E /* SCErr.h */,
@@ -2859,6 +2870,7 @@
 				CB81A94825B7B5B5006956F7 /* SCMigrationUtilities.h in Headers */,
 				CB81AA3A25B7D152006956F7 /* SCHelperToolUtilities.h in Headers */,
 				CB81AAB725B7E6C7006956F7 /* DeprecationSilencers.h in Headers */,
+				CBC1F4B426070358008E3FA8 /* SCFileWatcher.h in Headers */,
 				CB81A9CF25B7C269006956F7 /* SCBlockUtilities.h in Headers */,
 				CB81A9F225B7C5F7006956F7 /* SCBlockFileReaderWriter.h in Headers */,
 			);
@@ -3613,6 +3625,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBC1F4B526070358008E3FA8 /* SCFileWatcher.m in Sources */,
 				CBADC27E25B22BC7000EE5BB /* SCSentry.m in Sources */,
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				CB81AC2A25B909E1006956F7 /* SCUIUtilities.m in Sources */,
@@ -3646,6 +3659,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBC1F4B926070358008E3FA8 /* SCFileWatcher.m in Sources */,
 				CBDF919A225C5A9700358B95 /* SCMiscUtilities.m in Sources */,
 				CB5DFCBC2251DD1F0084CEC2 /* SCConstants.m in Sources */,
 				CB81AA3F25B7D152006956F7 /* SCHelperToolUtilities.m in Sources */,
@@ -3671,6 +3685,7 @@
 				CBADC28225B22BC7000EE5BB /* SCSentry.m in Sources */,
 				CB62FC4024B1327D00ADBC40 /* SCSettings.m in Sources */,
 				CB5888EA25F60DC500B5C64D /* HostFileBlockerSet.m in Sources */,
+				CBC1F4BA26070358008E3FA8 /* SCFileWatcher.m in Sources */,
 				CB62FC3F24B1327A00ADBC40 /* SCMiscUtilities.m in Sources */,
 				CB1465BC25B027E700130D2E /* SCErr.m in Sources */,
 				CB81AA4025B7D152006956F7 /* SCHelperToolUtilities.m in Sources */,
@@ -3707,6 +3722,7 @@
 				CB81AB8C25B8E6BE006956F7 /* SCBlockEntry.m in Sources */,
 				CBB1731C20F05C0A007FCAE9 /* SCMiscUtilities.m in Sources */,
 				CBADC28025B22BC7000EE5BB /* SCSentry.m in Sources */,
+				CBC1F4B726070358008E3FA8 /* SCFileWatcher.m in Sources */,
 				CB81A94B25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3730,6 +3746,7 @@
 				CB81A9D325B7C269006956F7 /* SCBlockUtilities.m in Sources */,
 				CB9C812319CFBB4400CDCAE1 /* LaunchctlHelper.m in Sources */,
 				CB1CA64D25ABA5BB0084A551 /* SCXPCAuthorization.m in Sources */,
+				CBC1F4B826070358008E3FA8 /* SCFileWatcher.m in Sources */,
 				CB9C812219CFBB3800CDCAE1 /* PacketFilter.m in Sources */,
 				CB1465BB25B027E700130D2E /* SCErr.m in Sources */,
 				CBB1731B20F05C09007FCAE9 /* SCMiscUtilities.m in Sources */,
@@ -3771,6 +3788,7 @@
 				CBB0AE2A0FA74566006229B3 /* HostFileBlocker.m in Sources */,
 				CB81A94A25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */,
 				CB32D2A921902CB300B8CD68 /* SCSettings.m in Sources */,
+				CBC1F4B626070358008E3FA8 /* SCFileWatcher.m in Sources */,
 				CB1CA65025ABA5BB0084A551 /* SCXPCClient.m in Sources */,
 				CB25806216C1FDBE0059C99A /* BlockManager.m in Sources */,
 				CB25806716C237F10059C99A /* NSString+IPAddress.m in Sources */,

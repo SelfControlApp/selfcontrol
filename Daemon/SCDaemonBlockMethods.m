@@ -280,12 +280,13 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     [SCSentry addBreadcrumb: @"Daemon method checkupBlock called" category: @"daemon"];
 
     SCSettings* settings = [SCSettings sharedSettings];
-    NSTimeInterval integrityCheckIntervalSecs = 10.0;
+    NSTimeInterval integrityCheckIntervalSecs = 15.0;
     static NSDate* lastBlockIntegrityCheck;
     if (lastBlockIntegrityCheck == nil) {
         lastBlockIntegrityCheck = [NSDate distantPast];
     }
 
+    BOOL shouldRunIntegrityCheck = NO;
     if(![SCBlockUtilities anyBlockIsRunning]) {
         // No block appears to be running at all in our settings.
         // Most likely, the user removed it trying to get around the block. Boo!
@@ -326,43 +327,62 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         // The block is still on.  Every once in a while, we should
         // check if anybody removed our rules, and if so
         // re-add them.
-        PacketFilter* pf = [[PacketFilter alloc] init];
-        HostFileBlockerSet* hostFileBlockerSet = [[HostFileBlockerSet alloc] init];
-        if(![pf containsSelfControlBlock] || (![settings boolForKey: @"ActiveBlockAsWhitelist"] && ![hostFileBlockerSet.defaultBlocker containsSelfControlBlock])) {
-            NSLog(@"INFO: Block is missing in PF or hosts, re-adding...");
-            // The firewall is missing at least the block header.  Let's clear everything
-            // before we re-add to make sure everything goes smoothly.
-
-            [pf stopBlock: false];
-
-            [hostFileBlockerSet removeSelfControlBlock];
-            BOOL success = [hostFileBlockerSet writeNewFileContents];
-            // Revert the host file blocker's file contents to disk so we can check
-            // whether or not it still contains the block after our write (aka we messed up).
-            [hostFileBlockerSet revertFileContentsToDisk];
-            if(!success || [hostFileBlockerSet.defaultBlocker containsSelfControlBlock]) {
-                NSLog(@"WARNING: Error removing host file block.  Attempting to restore backup.");
-
-                if([hostFileBlockerSet restoreBackupHostsFile])
-                    NSLog(@"INFO: Host file backup restored.");
-                else
-                    NSLog(@"ERROR: Host file backup could not be restored.  This may result in a permanent block.");
-            }
-
-            // Get rid of the backup file since we're about to make a new one.
-            [hostFileBlockerSet deleteBackupHostsFile];
-
-            // Perform the re-add of the rules
-            [SCHelperToolUtilities installBlockRulesFromSettings];
-            
-            [SCHelperToolUtilities clearCachesIfRequested];
-
-            [SCSentry addBreadcrumb: @"Daemon found compromised block integrity and re-added rules" category: @"daemon"];
-            NSLog(@"INFO: Checkup ran, readded block rules.");
-        } else NSLog(@"INFO: Checkup ran with integrity check, no action needed.");
+        shouldRunIntegrityCheck = YES;
     }
     
     [[SCDaemon sharedDaemon] resetInactivityTimer];
+    [self.daemonMethodLock unlock];
+    
+    // if we need to run an integrity check, we need to do it at the very end after we give up our lock
+    // because checkBlockIntegrity requests its own lock, and we don't want it to deadlock
+    if (shouldRunIntegrityCheck) {
+        [SCDaemonBlockMethods checkBlockIntegrity];
+    }
+}
+
++ (void)checkBlockIntegrity {
+    if (![SCDaemonBlockMethods lockOrTimeout: nil timeout: CHECKUP_LOCK_TIMEOUT]) {
+        return;
+    }
+    
+    [SCSentry addBreadcrumb: @"Daemon method checkBlockIntegrity called" category: @"daemon"];
+
+    SCSettings* settings = [SCSettings sharedSettings];
+    PacketFilter* pf = [[PacketFilter alloc] init];
+    HostFileBlockerSet* hostFileBlockerSet = [[HostFileBlockerSet alloc] init];
+    if(![pf containsSelfControlBlock] || (![settings boolForKey: @"ActiveBlockAsWhitelist"] && ![hostFileBlockerSet.defaultBlocker containsSelfControlBlock])) {
+        NSLog(@"INFO: Block is missing in PF or hosts, re-adding...");
+        // The firewall is missing at least the block header.  Let's clear everything
+        // before we re-add to make sure everything goes smoothly.
+
+        [pf stopBlock: false];
+
+        [hostFileBlockerSet removeSelfControlBlock];
+        BOOL success = [hostFileBlockerSet writeNewFileContents];
+        // Revert the host file blocker's file contents to disk so we can check
+        // whether or not it still contains the block after our write (aka we messed up).
+        [hostFileBlockerSet revertFileContentsToDisk];
+        if(!success || [hostFileBlockerSet.defaultBlocker containsSelfControlBlock]) {
+            NSLog(@"WARNING: Error removing host file block.  Attempting to restore backup.");
+
+            if([hostFileBlockerSet restoreBackupHostsFile])
+                NSLog(@"INFO: Host file backup restored.");
+            else
+                NSLog(@"ERROR: Host file backup could not be restored.  This may result in a permanent block.");
+        }
+
+        // Get rid of the backup file since we're about to make a new one.
+        [hostFileBlockerSet deleteBackupHostsFile];
+
+        // Perform the re-add of the rules
+        [SCHelperToolUtilities installBlockRulesFromSettings];
+        
+        [SCHelperToolUtilities clearCachesIfRequested];
+
+        [SCSentry addBreadcrumb: @"Daemon found compromised block integrity and re-added rules" category: @"daemon"];
+        NSLog(@"INFO: Integrity check ran; readded block rules.");
+    } else NSLog(@"INFO: Integrity check ran; no action needed.");
+    
     [self.daemonMethodLock unlock];
 }
 

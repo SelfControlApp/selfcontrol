@@ -29,6 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 // (i.e. extends the block)
 + (void)updateBlockEndDate:(NSDate*)newEndDate authorization:(NSData *)authData reply:(void(^)(NSError* error))reply;
 
++ (void)checkBlockIntegrity;
+
 @end
 
 NS_ASSUME_NONNULL_END
