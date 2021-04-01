@@ -42,7 +42,7 @@
 			 @"vine.co",
 			 @"pinterest.com",
 			 @"stumbleupon.com",
-       @"instagram.com",
+             @"instagram.com",
 			 ];
 }
 + (NSArray*)newsAndPublications {
