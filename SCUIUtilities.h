@@ -22,9 +22,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (BOOL)promptBrowserRestartIfNecessary;
 
-+ (NSString *)timeSliderDisplayStringFromTimeInterval:(NSTimeInterval)numberOfSeconds;
-+ (NSString *)timeSliderDisplayStringFromNumberOfMinutes:(NSInteger)numberOfMinutes;
-
 + (NSString*)blockTeaserStringWithMaxLength:(NSInteger)maxStringLen;
 
 // presents an error via a popup in the app

@@ -239,7 +239,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="620" height="154"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
-                    <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="465">
+                    <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="465" customClass="SCDurationSlider">
                         <rect key="frame" x="18" y="40" width="584" height="30"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="22" id="aHf-Ya-8uh"/>

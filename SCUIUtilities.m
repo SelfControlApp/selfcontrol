@@ -7,7 +7,6 @@
 
 #import "SCUIUtilities.h"
 #import <SystemConfiguration/SystemConfiguration.h>
-#import "SCTimeIntervalFormatter.h"
 
 @implementation SCUIUtilities
 
@@ -85,36 +84,6 @@
     }
 
     return [startStr stringByAppendingString: siteStr];
-}
-
-+ (NSString *)timeSliderDisplayStringFromTimeInterval:(NSTimeInterval)numberOfSeconds {
-    static SCTimeIntervalFormatter* formatter = nil;
-    if (formatter == nil) {
-        formatter = [[SCTimeIntervalFormatter alloc] init];
-    }
-
-    NSString* formatted = [formatter stringForObjectValue:@(numberOfSeconds)];
-    return formatted;
-}
-
-+ (NSString *)timeSliderDisplayStringFromNumberOfMinutes:(NSInteger)numberOfMinutes {
-    if (numberOfMinutes < 0) return @"Invalid duration";
-
-    static NSCalendar* gregorian = nil;
-    if (gregorian == nil) {
-        gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-    }
-
-    NSRange secondsRangePerMinute = [gregorian
-                                     rangeOfUnit:NSCalendarUnitSecond
-                                     inUnit:NSCalendarUnitMinute
-                                     forDate:[NSDate date]];
-    NSInteger numberOfSecondsPerMinute = (NSInteger)NSMaxRange(secondsRangePerMinute);
-
-    NSTimeInterval numberOfSecondsSelected = (NSTimeInterval)(numberOfSecondsPerMinute * numberOfMinutes);
-
-    NSString* displayString = [SCUIUtilities timeSliderDisplayStringFromTimeInterval:numberOfSecondsSelected];
-    return displayString;
 }
 
 + (BOOL)networkConnectionIsAvailable {

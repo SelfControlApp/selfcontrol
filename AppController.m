@@ -68,16 +68,13 @@
     // if the duration is larger than we can display on our slider
     // chop it down to our max display value so the user doesn't
     // accidentally start a much longer block than intended
-    if (numMinutes > blockDurationSlider_.maxValue) {
-        [self setDefaultsBlockDurationOnMainThread: @(floor(blockDurationSlider_.maxValue))];
+    if (numMinutes > blockDurationSlider_.maxDuration) {
+        [self setDefaultsBlockDurationOnMainThread: @(floor(blockDurationSlider_.maxDuration))];
         numMinutes = [defaults_ integerForKey: @"BlockDuration"];
     }
 
-	// Time-display code cleaned up thanks to the contributions of many users
+    blockSliderTimeDisplayLabel_.stringValue = blockDurationSlider_.durationDescription;
 
-	NSString* timeString = [SCUIUtilities timeSliderDisplayStringFromNumberOfMinutes:numMinutes];
-
-	[blockSliderTimeDisplayLabel_ setStringValue:timeString];
 	[submitButton_ setEnabled: (numMinutes > 0) && ([[defaults_ arrayForKey: @"Blocklist"] count] > 0)];
 }
 
@@ -353,32 +350,10 @@
 	blockIsOn = ![SCUIUtilities blockIsRunning];
 
 	// Change block duration slider for hidden user defaults settings
-	long numTickMarks = ([defaults_ integerForKey: @"MaxBlockLength"] / [defaults_ integerForKey: @"BlockLengthInterval"]) + 1;
-	[blockDurationSlider_ setMaxValue: [defaults_ integerForKey: @"MaxBlockLength"]];
-	[blockDurationSlider_ setNumberOfTickMarks: numTickMarks];
-
-    [NSValueTransformer registerValueTransformerWithName: @"BlockDurationSliderTransformer"
-                                   transformedValueClass: [NSNumber class]
-                      returningTransformedValueWithBlock:^id _Nonnull(id  _Nonnull value) {
-        // if it's not a number or convertable to one, IDK man
-        if (![value respondsToSelector: @selector(intValue)]) return @0;
-        
-        // instead of having 0 as the first option (who would ever want to start a 0-minute block?)
-        // we make it 1 minute, which is super handy for testing blocklists
-        // (of course, if the next tick mark is 1 minute anyway, we can skip that)
-        if ([value intValue] == 0 && [self->defaults_ integerForKey: @"BlockLengthInterval"] != 1) {
-            return @1;
-        }
-        
-        return value;
-    }];
-	[blockDurationSlider_ bind: @"value"
-					  toObject: [NSUserDefaultsController sharedUserDefaultsController]
-				   withKeyPath: @"values.BlockDuration"
-					   options: @{
-								  NSContinuouslyUpdatesValueBindingOption: @YES,
-                                  NSValueTransformerNameBindingOption: @"BlockDurationSliderTransformer"
-								  }];
+    blockDurationSlider_.maxDuration = [defaults_ integerForKey: @"MaxBlockLength"];
+    blockDurationSlider_.durationTickInterval = [defaults_ integerForKey: @"BlockLengthInterval"];
+    [blockDurationSlider_ bindDurationToObject: [NSUserDefaultsController sharedUserDefaultsController]
+                                       keyPath: @"values.BlockDuration"];
     
     blocklistTeaserLabel_.stringValue = [SCUIUtilities blockTeaserStringWithMaxLength: 60];
 

@@ -125,6 +125,7 @@
 		CB9365620F8581B000EF284E /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = CB9365610F8581B000EF284E /* dsa_pub.pem */; };
 		CB9366E80F85BEF100EF284E /* NSRemoveTemplate.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB9366E60F85BEF100EF284E /* NSRemoveTemplate.jpg */; };
 		CB9366E90F85BEF100EF284E /* NSAddTemplate.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB9366E70F85BEF100EF284E /* NSAddTemplate.jpg */; };
+		CB953114262BC64F000C8309 /* SCDurationSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = CB953113262BC64F000C8309 /* SCDurationSlider.m */; };
 		CB9C80FC19CFB79700CDCAE1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9C80FB19CFB79700CDCAE1 /* main.m */; };
 		CB9C80FF19CFB79700CDCAE1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9C80FE19CFB79700CDCAE1 /* AppDelegate.m */; };
 		CB9C810419CFB79700CDCAE1 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB9C810219CFB79700CDCAE1 /* MainMenu.xib */; };
@@ -606,6 +607,8 @@
 		CB9365610F8581B000EF284E /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		CB9366E60F85BEF100EF284E /* NSRemoveTemplate.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = NSRemoveTemplate.jpg; sourceTree = "<group>"; };
 		CB9366E70F85BEF100EF284E /* NSAddTemplate.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = NSAddTemplate.jpg; sourceTree = "<group>"; };
+		CB953112262BC64F000C8309 /* SCDurationSlider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCDurationSlider.h; sourceTree = "<group>"; };
+		CB953113262BC64F000C8309 /* SCDurationSlider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCDurationSlider.m; sourceTree = "<group>"; };
 		CB9C80F119CFAAC600CDCAE1 /* ko */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CB9C80F219CFAACC00CDCAE1 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CB9C80F719CFB79700CDCAE1 /* SelfControl Killer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SelfControl Killer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1679,6 +1682,8 @@
 				CBE5C40A0F4D4531003DB900 /* ButtonWithPopupMenu.m */,
 				CB529BBD0F32B7ED00564FB8 /* AppController.h */,
 				CB529BBE0F32B7ED00564FB8 /* AppController.m */,
+				CB953112262BC64F000C8309 /* SCDurationSlider.h */,
+				CB953113262BC64F000C8309 /* SCDurationSlider.m */,
 				CBD4848719D764440020F949 /* PreferencesGeneralViewController.h */,
 				CBD4848819D764440020F949 /* PreferencesGeneralViewController.m */,
 				CBD4848C19D768C90020F949 /* PreferencesAdvancedViewController.h */,
@@ -3650,6 +3655,7 @@
 				CBD4848F19D768C90020F949 /* PreferencesAdvancedViewController.m in Sources */,
 				CB81A9D025B7C269006956F7 /* SCBlockUtilities.m in Sources */,
 				CBB7DEEA0F53313F00ABF3EA /* DomainListWindowController.m in Sources */,
+				CB953114262BC64F000C8309 /* SCDurationSlider.m in Sources */,
 				CBF3B574217BADD7006D5F52 /* SCSettings.m in Sources */,
 				CB25806616C237F10059C99A /* NSString+IPAddress.m in Sources */,
 			);
