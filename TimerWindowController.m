@@ -78,7 +78,6 @@
 
     // set up extend block dialog
     extendDurationSlider_.maxDuration = [defaults integerForKey: @"MaxBlockLength"];
-    extendDurationSlider_.durationTickInterval = [defaults integerForKey: @"BlockLengthInterval"];
 
     if ([SCBlockUtilities modernBlockIsRunning]) {
         blockEndingDate_ = [settings_ valueForKey: @"BlockEndDate"];

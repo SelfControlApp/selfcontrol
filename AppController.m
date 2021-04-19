@@ -351,7 +351,6 @@
 
 	// Change block duration slider for hidden user defaults settings
     blockDurationSlider_.maxDuration = [defaults_ integerForKey: @"MaxBlockLength"];
-    blockDurationSlider_.durationTickInterval = [defaults_ integerForKey: @"BlockLengthInterval"];
     [blockDurationSlider_ bindDurationToObject: [NSUserDefaultsController sharedUserDefaultsController]
                                        keyPath: @"values.BlockDuration"];
     

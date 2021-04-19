@@ -244,7 +244,7 @@
                         <constraints>
                             <constraint firstAttribute="height" constant="22" id="aHf-Ya-8uh"/>
                         </constraints>
-                        <sliderCell key="cell" continuous="YES" alignment="left" maxValue="1440" doubleValue="30" tickMarkPosition="below" numberOfTickMarks="97" allowsTickMarkValuesOnly="YES" sliderType="linear" id="466">
+                        <sliderCell key="cell" continuous="YES" alignment="left" maxValue="1440" doubleValue="1" tickMarkPosition="below" sliderType="linear" id="466">
                             <font key="font" usesAppearanceFont="YES"/>
                         </sliderCell>
                         <connections>
@@ -290,7 +290,7 @@ DQ
                     </textField>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="478">
                         <rect key="frame" x="17" y="78" width="585" height="16"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="30 minutes" id="479">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="1 minute" id="479">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>

@@ -187,12 +187,12 @@ DQ
             <windowPositionMask key="initialPositionMask" leftStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="418" width="338" height="170"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2048" height="1255"/>
-            <view key="contentView" id="mZd-qZ-baN">
-                <rect key="frame" x="0.0" y="0.0" width="351" height="170"/>
+            <view key="contentView" misplaced="YES" id="mZd-qZ-baN">
+                <rect key="frame" x="0.0" y="0.0" width="338" height="170"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TdS-ng-2ja">
-                        <rect key="frame" x="13" y="134" width="326" height="16"/>
+                        <rect key="frame" x="23" y="134" width="293" height="16"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="By how much time do you want to extend your block?" id="IaH-kg-kxd">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -210,7 +210,7 @@ DQ
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="V5b-TT-ZSv">
-                        <rect key="frame" x="274" y="18" width="58" height="23"/>
+                        <rect key="frame" x="262" y="18" width="58" height="23"/>
                         <buttonCell key="cell" type="roundTextured" title="Extend" bezelStyle="texturedRounded" alignment="center" borderStyle="border" inset="2" id="HNV-5F-fhQ">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -220,11 +220,11 @@ DQ
                         </connections>
                     </button>
                     <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Rd1-Af-eXQ" customClass="SCDurationSlider">
-                        <rect key="frame" x="18" y="76" width="315" height="30"/>
+                        <rect key="frame" x="18" y="76" width="303" height="30"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="22" id="xty-Ul-pJS"/>
                         </constraints>
-                        <sliderCell key="cell" continuous="YES" alignment="left" maxValue="1440" doubleValue="30" tickMarkPosition="below" numberOfTickMarks="97" allowsTickMarkValuesOnly="YES" sliderType="linear" id="vo6-ED-pch">
+                        <sliderCell key="cell" continuous="YES" alignment="left" maxValue="1440" tickMarkPosition="below" sliderType="linear" id="vo6-ED-pch">
                             <font key="font" usesAppearanceFont="YES"/>
                         </sliderCell>
                         <connections>
@@ -232,9 +232,9 @@ DQ
                         </connections>
                     </slider>
                     <textField verticalHuggingPriority="750" id="ljO-W1-kqG">
-                        <rect key="frame" x="135" y="64" width="81" height="16"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="30 minutes" id="ikq-N5-jYi">
+                        <rect key="frame" x="110" y="64" width="119" height="16"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="center" title="1 minute" id="ikq-N5-jYi">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -242,6 +242,7 @@ DQ
                     </textField>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="trailing" secondItem="TdS-ng-2ja" secondAttribute="trailing" constant="25" id="4K1-f5-Lps"/>
                     <constraint firstAttribute="trailing" secondItem="V5b-TT-ZSv" secondAttribute="trailing" constant="20" id="58e-7b-iPS"/>
                     <constraint firstItem="TdS-ng-2ja" firstAttribute="top" secondItem="mZd-qZ-baN" secondAttribute="top" constant="20" id="9Qf-f4-gHT"/>
                     <constraint firstAttribute="bottom" secondItem="V5b-TT-ZSv" secondAttribute="bottom" constant="20" id="MU5-hQ-BnZ"/>
@@ -257,7 +258,7 @@ DQ
                     <constraint firstItem="Rd1-Af-eXQ" firstAttribute="centerX" secondItem="mZd-qZ-baN" secondAttribute="centerX" id="t6B-kI-SDe"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="285" y="-327"/>
+            <point key="canvasLocation" x="284.5" y="-327"/>
         </window>
         <button verticalHuggingPriority="750" id="UxT-HK-h1Q">
             <rect key="frame" x="0.0" y="0.0" width="116" height="17"/>

@@ -33,9 +33,8 @@
 }
 
 - (void)initializeDurationProperties {
-    // default: 1 day max with ticks every 15 minutes
+    // default: 1 day max
     _maxDuration = 1440;
-    _durationTickInterval = 15;
 
     // register an NSValueTransformer
     [self registerMinutesValueTransformer];
@@ -45,20 +44,43 @@
     _maxDuration = maxDuration;
     [self recalculateSliderIntervals];
 }
-- (void)setDurationTickInterval:(NSInteger)durationTickInterval {
-    _durationTickInterval = durationTickInterval;
-    [self recalculateSliderIntervals];
-}
 
 - (void)recalculateSliderIntervals {
-    // no dividing by 0 for us!
-    if (self.durationTickInterval == 0) {
-        _durationTickInterval = 1;
-    }
-
-    long numTickMarks = (self.maxDuration / self.durationTickInterval) + 1;
+    [self setMinValue: 1]; // never start a block shorter than 1 minute
     [self setMaxValue: self.maxDuration];
-    [self setNumberOfTickMarks: numTickMarks];
+    
+    // how many tick marks should we have? it's based on the max block duration
+    // TODO: can we make this work better with the start at 1-minute (vs 0)? if not, should we just eliminate ticks?
+    long tickInterval = 1;
+    if (self.maxDuration >= 5256000) {
+        // if max block duration is at least 10 years, tick marks are per-year
+        tickInterval = 525600;
+    } else if (self.maxDuration >= 525600) {
+        // if max block duration is at least 1 year, tick marks are per-month
+        tickInterval = 43800;
+    } else if (self.maxDuration >= 131400) {
+        // if max block duration is at least 3 months, tick marks are per-week
+        tickInterval = 10080;
+    } else if (self.maxDuration >= 10080) {
+        // if max block duration is at least 1 week, tick marks are per-day
+        tickInterval = 1440;
+    } else if (self.maxDuration >= 5760) {
+        // if max block duration is at least 4 days, tick marks are per 6 hours
+        tickInterval = 360;
+    } else if (self.maxDuration >= 1440) {
+        // if max block duration is at least 1 day, tick marks are per hour
+        tickInterval = 60;
+    } else if (self.maxDuration >= 720) {
+        // if max block duration is at least 12 hours, tick marks are per 30 minutes
+        tickInterval = 30;
+    } else if (self.maxDuration >= 60) {
+        // if max block duration is at least 1 hour, tick marks are per minute
+        tickInterval = 1;
+    }
+    
+    // no more than 72 ticks max
+    long numTicks = MIN(self.maxDuration / tickInterval, 72) + 1;
+    [self setNumberOfTickMarks: numTicks];
 }
 
 - (void)registerMinutesValueTransformer {
@@ -66,25 +88,15 @@
                                    transformedValueClass: [NSNumber class]
                       returningTransformedValueWithBlock:^id _Nonnull(id  _Nonnull value) {
         // if it's not a number or convertable to one, IDK man
-        if (![value respondsToSelector: @selector(intValue)]) return @0;
+        if (![value respondsToSelector: @selector(floatValue)]) return @0;
         
-        NSInteger minutesValue = [self sliderValueToMinutes: [value intValue]];
+        long minutesValue = lroundf([value floatValue]);
         return @(minutesValue);
     }];
 }
 
-- (NSInteger)sliderValueToMinutes:(NSInteger)value {
-    // instead of having 0 as the first option (who would ever want to start a 0-minute block?)
-    // we make it 1 minute, which is super handy for testing blocklists
-    // (of course, if the next tick mark is 1 minute anyway, we can skip that)
-    if (value == 0 && self.durationTickInterval != 1) {
-        return 1;
-    }
-    
-    return value;
-}
 - (NSInteger)durationValueMinutes {
-    return [self sliderValueToMinutes: self.intValue];
+    return lroundf(self.floatValue);
 }
 
 - (void)bindDurationToObject:(id)obj keyPath:(NSString*)keyPath {
