@@ -279,7 +279,6 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     
     [SCSentry addBreadcrumb: @"Daemon method checkupBlock called" category: @"daemon"];
 
-    SCSettings* settings = [SCSettings sharedSettings];
     NSTimeInterval integrityCheckIntervalSecs = 15.0;
     static NSDate* lastBlockIntegrityCheck;
     if (lastBlockIntegrityCheck == nil) {

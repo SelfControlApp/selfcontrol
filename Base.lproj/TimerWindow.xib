@@ -108,9 +108,9 @@
                 <outlet property="addToBlockTextField_" destination="68" id="86"/>
                 <outlet property="blocklistTeaserLabel_" destination="6xp-dj-Vtd" id="onH-A7-rGO"/>
                 <outlet property="extendBlockButton_" destination="6wT-hW-OYG" id="EZ1-Vm-QAV"/>
-                <outlet property="extendBlockHoursField_" destination="qpq-0E-99C" id="x3V-Ls-1xK"/>
-                <outlet property="extendBlockMinutesField_" destination="MoI-WT-GlV" id="1Gh-kT-JkU"/>
                 <outlet property="extendBlockTimeSheet_" destination="N5B-KG-X2q" id="OlO-C8-VZ5"/>
+                <outlet property="extendDurationLabel_" destination="ljO-W1-kqG" id="rIK-W9-GGf"/>
+                <outlet property="extendDurationSlider_" destination="Rd1-Af-eXQ" id="Ojq-Qb-DxI"/>
                 <outlet property="killBlockButton_" destination="100" id="105"/>
                 <outlet property="timerLabel_" destination="33" id="91"/>
                 <outlet property="window" destination="31" id="89"/>
@@ -121,8 +121,8 @@
             <windowPositionMask key="initialPositionMask" leftStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="418" width="334" height="92"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2048" height="1255"/>
-            <view key="contentView" id="64">
-                <rect key="frame" x="0.0" y="0.0" width="334" height="89"/>
+            <view key="contentView" misplaced="YES" id="64">
+                <rect key="frame" x="0.0" y="0.0" width="334" height="92"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="65">
@@ -185,78 +185,17 @@ DQ
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" visibleAtLaunch="NO" animationBehavior="default" id="N5B-KG-X2q" userLabel="Extend Block Sheet" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="418" width="338" height="141"/>
+            <rect key="contentRect" x="196" y="418" width="338" height="170"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2048" height="1255"/>
             <view key="contentView" id="mZd-qZ-baN">
-                <rect key="frame" x="0.0" y="0.0" width="338" height="141"/>
+                <rect key="frame" x="0.0" y="0.0" width="351" height="170"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TdS-ng-2ja">
-                        <rect key="frame" x="6" y="105" width="326" height="16"/>
+                        <rect key="frame" x="13" y="134" width="326" height="16"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="By how much time do you want to extend your block?" id="IaH-kg-kxd">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xjb-Wc-o7M">
-                        <rect key="frame" x="96" y="65" width="19" height="28"/>
-                        <stepperCell key="cell" continuous="YES" alignment="left" maxValue="23" id="vWh-VW-JuK"/>
-                        <connections>
-                            <outlet property="formatter" destination="dV2-DT-GYi" id="fYi-2E-Vgt"/>
-                        </connections>
-                    </stepper>
-                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qpq-0E-99C">
-                        <rect key="frame" x="59" y="67" width="36" height="21"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="36" id="vDK-9U-kHM"/>
-                        </constraints>
-                        <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="0" drawsBackground="YES" usesSingleLineMode="YES" id="LEt-m5-bgN">
-                            <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2" id="dV2-DT-GYi">
-                                <real key="minimum" value="0.0"/>
-                                <real key="maximum" value="23"/>
-                            </numberFormatter>
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="C9X-8N-a3B">
-                        <rect key="frame" x="210" y="65" width="19" height="28"/>
-                        <stepperCell key="cell" continuous="YES" alignment="left" maxValue="59" id="ie6-7s-fbR"/>
-                        <connections>
-                            <outlet property="formatter" destination="hbP-5E-esv" id="UdW-nc-GEW"/>
-                        </connections>
-                    </stepper>
-                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MoI-WT-GlV">
-                        <rect key="frame" x="184" y="68" width="25" height="21"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="25" id="cc0-0m-eBp"/>
-                        </constraints>
-                        <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="15" drawsBackground="YES" usesSingleLineMode="YES" id="VkM-wZ-tEW">
-                            <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2" id="hbP-5E-esv">
-                                <integer key="roundingIncrement" value="1"/>
-                                <real key="minimum" value="0.0"/>
-                                <real key="maximum" value="59"/>
-                            </numberFormatter>
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pGt-f1-SoV">
-                        <rect key="frame" x="228" y="70" width="53" height="16"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="minutes" id="onH-n3-9se">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mjr-qS-HlE">
-                        <rect key="frame" x="115" y="71" width="65" height="16"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="hours and" id="fvq-gh-nZd">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
@@ -271,7 +210,7 @@ DQ
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="V5b-TT-ZSv">
-                        <rect key="frame" x="261" y="18" width="58" height="23"/>
+                        <rect key="frame" x="274" y="18" width="58" height="23"/>
                         <buttonCell key="cell" type="roundTextured" title="Extend" bezelStyle="texturedRounded" alignment="center" borderStyle="border" inset="2" id="HNV-5F-fhQ">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -280,31 +219,45 @@ DQ
                             <action selector="performExtendBlock:" target="7" id="WIj-WL-57A"/>
                         </connections>
                     </button>
+                    <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Rd1-Af-eXQ" customClass="SCDurationSlider">
+                        <rect key="frame" x="18" y="76" width="315" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="22" id="xty-Ul-pJS"/>
+                        </constraints>
+                        <sliderCell key="cell" continuous="YES" alignment="left" maxValue="1440" doubleValue="30" tickMarkPosition="below" numberOfTickMarks="97" allowsTickMarkValuesOnly="YES" sliderType="linear" id="vo6-ED-pch">
+                            <font key="font" usesAppearanceFont="YES"/>
+                        </sliderCell>
+                        <connections>
+                            <action selector="updateExtendSliderDisplay:" target="7" id="Gjy-Uh-BxS"/>
+                        </connections>
+                    </slider>
+                    <textField verticalHuggingPriority="750" id="ljO-W1-kqG">
+                        <rect key="frame" x="135" y="64" width="81" height="16"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="30 minutes" id="ikq-N5-jYi">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="C9X-8N-a3B" firstAttribute="top" secondItem="TdS-ng-2ja" secondAttribute="bottom" constant="16" id="35Q-6k-U6L"/>
                     <constraint firstAttribute="trailing" secondItem="V5b-TT-ZSv" secondAttribute="trailing" constant="20" id="58e-7b-iPS"/>
-                    <constraint firstItem="qpq-0E-99C" firstAttribute="leading" secondItem="mZd-qZ-baN" secondAttribute="leading" constant="59" id="5V7-5Z-ju0"/>
-                    <constraint firstItem="pGt-f1-SoV" firstAttribute="top" secondItem="TdS-ng-2ja" secondAttribute="bottom" constant="19" id="9IY-eU-ObR"/>
                     <constraint firstItem="TdS-ng-2ja" firstAttribute="top" secondItem="mZd-qZ-baN" secondAttribute="top" constant="20" id="9Qf-f4-gHT"/>
-                    <constraint firstAttribute="trailing" secondItem="pGt-f1-SoV" secondAttribute="trailing" constant="59" id="F6b-y2-TRl"/>
-                    <constraint firstItem="C9X-8N-a3B" firstAttribute="leading" secondItem="MoI-WT-GlV" secondAttribute="trailing" constant="4" id="KGm-Sd-PRZ"/>
                     <constraint firstAttribute="bottom" secondItem="V5b-TT-ZSv" secondAttribute="bottom" constant="20" id="MU5-hQ-BnZ"/>
-                    <constraint firstItem="MoI-WT-GlV" firstAttribute="leading" secondItem="mjr-qS-HlE" secondAttribute="trailing" constant="6" id="PmZ-tZ-1rU"/>
                     <constraint firstItem="gw2-E1-AZE" firstAttribute="leading" secondItem="mZd-qZ-baN" secondAttribute="leading" constant="20" id="Rh7-kZ-b6T"/>
-                    <constraint firstItem="pGt-f1-SoV" firstAttribute="leading" secondItem="C9X-8N-a3B" secondAttribute="trailing" constant="4" id="SU5-sh-OYK"/>
-                    <constraint firstItem="xjb-Wc-o7M" firstAttribute="top" secondItem="TdS-ng-2ja" secondAttribute="bottom" constant="16" id="SXR-oR-Ek3"/>
-                    <constraint firstItem="mjr-qS-HlE" firstAttribute="leading" secondItem="xjb-Wc-o7M" secondAttribute="trailing" constant="5" id="bq4-bJ-yyH"/>
-                    <constraint firstItem="qpq-0E-99C" firstAttribute="top" secondItem="TdS-ng-2ja" secondAttribute="bottom" constant="17" id="gTs-uv-Jb3"/>
+                    <constraint firstItem="ljO-W1-kqG" firstAttribute="centerX" secondItem="Rd1-Af-eXQ" secondAttribute="centerX" id="bFm-Sh-ZzQ"/>
+                    <constraint firstItem="V5b-TT-ZSv" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ljO-W1-kqG" secondAttribute="bottom" constant="8" id="dZ8-NE-55r"/>
+                    <constraint firstItem="ljO-W1-kqG" firstAttribute="top" secondItem="Rd1-Af-eXQ" secondAttribute="bottom" constant="2" id="hLa-Hh-SlW"/>
                     <constraint firstAttribute="bottom" secondItem="gw2-E1-AZE" secondAttribute="bottom" constant="20" id="hQJ-33-lXW"/>
-                    <constraint firstItem="xjb-Wc-o7M" firstAttribute="leading" secondItem="qpq-0E-99C" secondAttribute="trailing" constant="4" id="hkw-vd-4mf"/>
+                    <constraint firstAttribute="trailing" secondItem="Rd1-Af-eXQ" secondAttribute="trailing" constant="20" id="hls-JV-7ex"/>
                     <constraint firstItem="TdS-ng-2ja" firstAttribute="centerX" secondItem="mZd-qZ-baN" secondAttribute="centerX" id="krz-qf-GYB"/>
-                    <constraint firstItem="MoI-WT-GlV" firstAttribute="top" secondItem="TdS-ng-2ja" secondAttribute="bottom" constant="16" id="lud-lX-k4A"/>
-                    <constraint firstItem="mjr-qS-HlE" firstAttribute="top" secondItem="TdS-ng-2ja" secondAttribute="bottom" constant="18" id="p3f-Dr-pyv"/>
+                    <constraint firstItem="Rd1-Af-eXQ" firstAttribute="top" secondItem="TdS-ng-2ja" secondAttribute="bottom" constant="30" id="pjv-f9-M04"/>
                     <constraint firstItem="V5b-TT-ZSv" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="gw2-E1-AZE" secondAttribute="trailing" constant="50" id="rap-cf-V31"/>
+                    <constraint firstItem="Rd1-Af-eXQ" firstAttribute="centerX" secondItem="mZd-qZ-baN" secondAttribute="centerX" id="t6B-kI-SDe"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="286" y="-346.5"/>
+            <point key="canvasLocation" x="285" y="-327"/>
         </window>
         <button verticalHuggingPriority="750" id="UxT-HK-h1Q">
             <rect key="frame" x="0.0" y="0.0" width="116" height="17"/>

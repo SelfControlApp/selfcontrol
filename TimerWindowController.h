@@ -22,6 +22,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "AppController.h"
+#import "SCDurationSlider.h"
 
 // A subclass of NSWindowController created to manage the floating timer window
 // which tells the user how much time remains in the block.
@@ -41,9 +42,8 @@
 	IBOutlet NSTextField* addToBlockTextField_;
     
     IBOutlet NSPanel* extendBlockTimeSheet_;
-
-    IBOutlet NSTextField* extendBlockHoursField_;
-    IBOutlet NSTextField* extendBlockMinutesField_;
+    IBOutlet SCDurationSlider* extendDurationSlider_;
+    IBOutlet NSTextField* extendDurationLabel_;
 }
 
 
@@ -57,6 +57,9 @@
 
 // Closes the "Extend Block Time" sheet.
 - (IBAction) closeExtendSheet:(id)sender;
+
+// updates the preview label showing the extension duration
+- (IBAction)updateExtendSliderDisplay:(id)sender;
 
 // Called when the "Add to Block" button is clicked, instantiates and runs a sheet
 // to take input for the host to block.

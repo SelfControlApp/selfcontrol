@@ -76,6 +76,10 @@
 	addToBlockButton_.hidden = NO;
     extendBlockButton_.hidden = NO;
 
+    // set up extend block dialog
+    extendDurationSlider_.maxDuration = [defaults integerForKey: @"MaxBlockLength"];
+    extendDurationSlider_.durationTickInterval = [defaults integerForKey: @"BlockLengthInterval"];
+
     if ([SCBlockUtilities modernBlockIsRunning]) {
         blockEndingDate_ = [settings_ valueForKey: @"BlockEndDate"];
     } else {
@@ -258,6 +262,16 @@
     
     [modifyBlockLock unlock];
 }
+- (IBAction)updateExtendSliderDisplay:(id)sender {
+    // if the duration is larger than we can display on our slider
+    // chop it down to our max display value so the user doesn't
+    // accidentally extend the block much longer than intended
+    if (extendDurationSlider_.durationValueMinutes > extendDurationSlider_.maxDuration) {
+        extendDurationSlider_.integerValue = extendDurationSlider_.maxDuration;
+    }
+
+    extendDurationLabel_.stringValue = extendDurationSlider_.durationDescription;
+}
 
 - (IBAction) closeAddSheet:(id)sender {
 	[NSApp endSheet: addSheet_];
@@ -273,7 +287,7 @@
 }
 
 - (IBAction) performExtendBlock:(id)sender {
-    NSInteger extendBlockMinutes = (extendBlockHoursField_.intValue * 60) + extendBlockMinutesField_.intValue;
+    NSInteger extendBlockMinutes = extendDurationSlider_.durationValueMinutes;
         
     [self.appController extendBlockTime: extendBlockMinutes lock: modifyBlockLock];
     [NSApp endSheet: extendBlockTimeSheet_];

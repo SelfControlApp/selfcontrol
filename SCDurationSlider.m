@@ -68,8 +68,7 @@
         // if it's not a number or convertable to one, IDK man
         if (![value respondsToSelector: @selector(intValue)]) return @0;
         
-        NSInteger minutesValue= [self sliderValueToMinutes: [value intValue]];
-        
+        NSInteger minutesValue = [self sliderValueToMinutes: [value intValue]];
         return @(minutesValue);
     }];
 }
