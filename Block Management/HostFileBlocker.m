@@ -192,15 +192,36 @@ NSString* const kDefaultHostsFileContents = @"##\n"
 	NSRange endRange = [newFileContents rangeOfString: kHostFileBlockerSelfControlFooter];
 
     // generate a delete range that properly removes the block from the hosts file
-    // the -1 and +1 are to remove the newlines before/after the header/footer
-    // the MAX/MIN prevent us from trying to delete beyond the file boundaries
-    NSUInteger deleteRangeStart = MAX(0, startRange.location - 1);
+    NSUInteger deleteRangeStart = startRange.location;
     NSUInteger deleteRangeLength;
+
+    // there are usually newlines placed before/after the header/footer
+    // we should remove them if possible to keep the hosts file looking tidy
+    // only remove the previous character if we aren't at the start of the file (or we'll crash)
+    if (deleteRangeStart > 0) {
+        unichar prevChar = [newFileContents characterAtIndex: deleteRangeStart - 1];
+        // if the previous character isn't a newline, don't delete it
+        if ([[NSCharacterSet newlineCharacterSet] characterIsMember: prevChar]) {
+            deleteRangeStart--;
+        }
+    }
+        
+    NSUInteger maxDeleteLength = [newFileContents length] - deleteRangeStart;
     // if we lost the block footer somehow... well, crap, just delete everything below the header
+    // this isn't ideal and we might bork other stuff, but it's better than leaving the block on
     if (endRange.location == NSNotFound) {
-        deleteRangeLength = [newFileContents length] - deleteRangeStart;
+        deleteRangeLength = maxDeleteLength;
     } else {
-        deleteRangeLength = MIN([newFileContents length] - deleteRangeStart, (endRange.location + endRange.length) - deleteRangeStart + 1);
+        deleteRangeLength = MIN(maxDeleteLength, (endRange.location + endRange.length) - deleteRangeStart);
+        
+        // as above, look at removing the excess newline if possible
+        if (deleteRangeLength < maxDeleteLength) {
+            unichar nextChar = [newFileContents characterAtIndex: deleteRangeStart + deleteRangeLength];
+            // if the next character isn't a newline, don't delete it
+            if ([[NSCharacterSet newlineCharacterSet] characterIsMember: nextChar]) {
+                deleteRangeLength++;
+            }
+        }
     }
 
 	NSRange deleteRange = NSMakeRange(deleteRangeStart, deleteRangeLength);
