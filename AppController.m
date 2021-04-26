@@ -227,6 +227,7 @@
     // let the domain list know!
     if (domainListWindowController_ != nil) {
         domainListWindowController_.readOnly = [SCUIUtilities blockIsRunning];
+        [domainListWindowController_ refreshDomainList];
     }
     
     // let the timer window know!
@@ -431,8 +432,11 @@
     if (cleanedEntries.count == 0) return;
     
     for (NSUInteger i = 0; i < cleanedEntries.count; i++) {
-       NSString* entry = cleanedEntries[i];
-       [list addObject: entry];
+        NSString* entry = cleanedEntries[i];
+        // don't add duplicate entries
+        if (![list containsObject: entry]) {
+            [list addObject: entry];
+        }
     }
        
 	[defaults_ setValue: list forKey: @"Blocklist"];

@@ -282,6 +282,7 @@
 - (IBAction) performAddSite:(id)sender {
 	NSString* addToBlockTextFieldContents = [addToBlockTextField_ stringValue];
 	[self.appController addToBlockList: addToBlockTextFieldContents lock: modifyBlockLock];
+    addToBlockTextField_.stringValue = @""; // clear text field for next time
 	[NSApp endSheet: addSheet_];
 }
 

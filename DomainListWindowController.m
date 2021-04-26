@@ -48,6 +48,11 @@
     [self updateWindowTitle];
 }
 
+- (void)refreshDomainList {
+    domainList_ = [[defaults_ arrayForKey: @"Blocklist"] mutableCopy];
+    [domainListTableView_ reloadData];
+}
+
 - (void)showWindow:(id)sender {
 	[[self window] makeKeyAndOrderFront: self];
 

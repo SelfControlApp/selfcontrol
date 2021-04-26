@@ -39,6 +39,8 @@
 
 @property (getter=isReadOnly) BOOL readOnly;
 
+- (void)refreshDomainList;
+
 // Called when the add button is clicked.  Adds a new empty string to the domain
 // list, reloads the table view, and highlights and opens that cell for editing.
 - (IBAction)addDomain:(id)sender;
