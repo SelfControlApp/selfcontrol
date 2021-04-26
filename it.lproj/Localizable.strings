@@ -30,7 +30,7 @@
 "hours" = "ore";
 
 /* Text on Start button when loading */
-"Loading" = "In caricamento";
+"Starting Block" = "In caricamento";
 
 /* Single minute in time strings */
 "minute" = "minuto";
@@ -47,8 +47,8 @@
 /* OK button */
 "OK" = "OK";
 
-/* Start button */
-"Start" = "Inizia";
+/* Start Block button */
+"Start Block" = "Inizia";
 
 /* Block in progress error text */
 "The blocklist cannot be edited while a block is in progress." = "La lista dei blocchi non può essere modificata mentre un blocco è attivo.";

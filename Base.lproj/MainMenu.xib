@@ -231,7 +231,7 @@
             <point key="canvasLocation" x="140" y="137"/>
         </menu>
         <window title="SelfControl" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="371">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" texturedBackground="YES"/>
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="451" y="331" width="620" height="154"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2048" height="1255"/>
@@ -252,11 +252,11 @@
                         </connections>
                     </slider>
                     <button horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="543" userLabel="Edit Blocklist Button">
-                        <rect key="frame" x="479" y="9" width="122" height="23"/>
+                        <rect key="frame" x="473" y="4" width="134" height="32"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="hTb-jo-56c"/>
                         </constraints>
-                        <buttonCell key="cell" type="roundTextured" title="Edit Blocklist" bezelStyle="texturedRounded" alignment="center" borderStyle="border" allowsMixedState="YES" inset="2" id="544">
+                        <buttonCell key="cell" type="push" title="Edit Blocklist" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="544">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
@@ -265,13 +265,13 @@
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="541">
-                        <rect key="frame" x="262" y="119" width="97" height="19"/>
+                        <rect key="frame" x="248" y="97" width="124" height="32"/>
                         <constraints>
-                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="97" id="Wgy-0n-fJ9"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="110" id="Wgy-0n-fJ9"/>
                         </constraints>
-                        <buttonCell key="cell" type="roundRect" title="Start" bezelStyle="roundedRect" alignment="center" controlSize="large" state="on" borderStyle="border" inset="2" id="542">
+                        <buttonCell key="cell" type="push" title="Start Block" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="542">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system" size="15"/>
+                            <font key="font" metaFont="system"/>
                             <string key="keyEquivalent" base64-UTF8="YES">
 DQ
 </string>
@@ -307,18 +307,17 @@ DQ
                     <constraint firstItem="478" firstAttribute="leading" secondItem="372" secondAttribute="leading" constant="19" id="WdA-X8-Sm5"/>
                     <constraint firstItem="465" firstAttribute="centerX" secondItem="541" secondAttribute="centerX" id="fF7-jW-hAj"/>
                     <constraint firstItem="543" firstAttribute="top" secondItem="465" secondAttribute="bottom" constant="15" id="gCe-4n-0nP"/>
-                    <constraint firstItem="541" firstAttribute="top" secondItem="372" secondAttribute="top" constant="16" id="jXt-Fy-vdp"/>
+                    <constraint firstItem="541" firstAttribute="top" secondItem="372" secondAttribute="top" constant="30" id="jXt-Fy-vdp"/>
                     <constraint firstItem="478" firstAttribute="trailing" secondItem="543" secondAttribute="trailing" id="jmb-Wp-H3Y"/>
                     <constraint firstItem="543" firstAttribute="leading" secondItem="JfI-b0-nf0" secondAttribute="trailing" constant="23" id="mPT-an-Lpy"/>
                     <constraint firstItem="543" firstAttribute="leading" relation="lessThanOrEqual" secondItem="478" secondAttribute="trailing" constant="-10" id="o6E-qg-6q9"/>
                     <constraint firstItem="478" firstAttribute="bottom" secondItem="465" secondAttribute="top" constant="-10" id="spp-LO-oaf"/>
                 </constraints>
             </view>
-            <contentBorderThickness minY="0.0" maxY="90"/>
             <connections>
                 <outlet property="delegate" destination="469" id="905"/>
             </connections>
-            <point key="canvasLocation" x="-106" y="525"/>
+            <point key="canvasLocation" x="-101" y="525"/>
         </window>
         <customObject id="469" customClass="AppController">
             <connections>

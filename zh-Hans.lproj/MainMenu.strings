@@ -68,8 +68,8 @@
 /* Class = "NSMenuItem"; title = "Item 3"; ObjectID = "511"; */
 "511.title" = "Item 3";
 
-/* Class = "NSButtonCell"; title = "Start"; ObjectID = "542"; */
-"542.title" = "Start";
+/* Class = "NSButtonCell"; title = "Start Block"; ObjectID = "542"; */
+"542.title" = "Start Block";
 
 /* Class = "NSButtonCell"; title = "编辑黑名单"; ObjectID = "544"; */
 "544.title" = "编辑黑名单";

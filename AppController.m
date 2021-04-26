@@ -177,11 +177,11 @@
         if(!self.addingBlock) {
 			[blockDurationSlider_ setEnabled: YES];
 			[editBlocklistButton_ setEnabled: YES];
-			[submitButton_ setTitle: NSLocalizedString(@"Start", @"Start button")];
+			[submitButton_ setTitle: NSLocalizedString(@"Start Block", @"Start button")];
 		} else {
 			[blockDurationSlider_ setEnabled: NO];
 			[editBlocklistButton_ setEnabled: NO];
-			[submitButton_ setTitle: NSLocalizedString(@"Loading", @"Loading button")];
+			[submitButton_ setTitle: NSLocalizedString(@"Starting Block", @"Starting Block button")];
 		}
 
 		// if block's off, and we haven't shown it yet, show the first-time modal
