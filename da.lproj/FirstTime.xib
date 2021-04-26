@@ -894,9 +894,12 @@ Cg
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nI7-We-rak">
-                        <rect key="frame" x="161" y="44" width="148" height="39"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nI7-We-rak">
+                        <rect key="frame" x="162" y="44" width="148" height="39"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="148" id="Hw7-HW-beN"/>
+                            <constraint firstAttribute="width" secondItem="nI7-We-rak" secondAttribute="height" multiplier="4:1" id="rXh-3E-T3Z"/>
+                        </constraints>
                         <buttonCell key="cell" type="smallSquare" title="Fortsæt" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="DFD-23-in8">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system" size="18"/>
@@ -910,6 +913,10 @@ Cg
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </box>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="nI7-We-rak" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="LEs-fj-hBS"/>
+                    <constraint firstAttribute="bottom" secondItem="nI7-We-rak" secondAttribute="bottom" constant="45" id="ney-AF-IaS"/>
+                </constraints>
             </view>
             <point key="canvasLocation" x="156.5" y="213.5"/>
         </window>
