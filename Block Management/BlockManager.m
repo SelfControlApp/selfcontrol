@@ -175,7 +175,6 @@ BOOL appendMode = NO;
 }
 
 - (void)addBlockEntryFromString:(NSString*)entryString {
-    NSLog(@"adding block entry from string: %@", entryString);
     SCBlockEntry* entry = [SCBlockEntry entryFromString: entryString];
 
     // nil means that we don't have anything valid to block in this entry
@@ -184,7 +183,6 @@ BOOL appendMode = NO;
     [self addBlockEntry: entry];
     
     NSArray<SCBlockEntry*>* relatedEntries = [self relatedBlockEntriesForEntry: entry];
-    NSLog(@"Enqueuing related entries to %@: %@", entry, relatedEntries);
     for (SCBlockEntry* relatedEntry in relatedEntries) {
         [self enqueueBlockEntry: relatedEntry];
     }
