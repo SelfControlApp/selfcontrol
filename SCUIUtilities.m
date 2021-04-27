@@ -13,7 +13,11 @@
 + (NSString*)blockTeaserStringWithMaxLength:(NSInteger)maxStringLen {
     NSArray<NSString*>* blocklist;
     BOOL isAllowlist;
-    if ([SCUIUtilities blockIsRunning]) {
+    
+    // if we've got a block running (and it's from the modern system),
+    // the real source of truth is secured settings.
+    // if no block is running (or it's an old-school one), the best we've got is what's in defaults
+    if ([SCBlockUtilities modernBlockIsRunning]) {
         SCSettings* settings = [SCSettings sharedSettings];
         blocklist = [settings valueForKey: @"ActiveBlocklist"];
         isAllowlist = [settings boolForKey: @"ActiveBlockAsWhitelist"];
