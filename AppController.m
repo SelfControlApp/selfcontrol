@@ -720,14 +720,8 @@
         return NO;
     }
 
-    // close the domain list (and reopen again if need be to refresh)
-    BOOL domainListIsOpen = [[domainListWindowController_ window] isVisible];
-    NSRect frame = [[domainListWindowController_ window] frame];
-    [self closeDomainList];
-    if(domainListIsOpen) {
-        [self showDomainList: self];
-        [[domainListWindowController_ window] setFrame: frame display: YES];
-    }
+    // send a notification so the domain list (etc) updates
+    [[NSNotificationCenter defaultCenter] postNotificationName: @"SCConfigurationChangedNotification" object: self];
     
     [self refreshUserInterface];
     return YES;
