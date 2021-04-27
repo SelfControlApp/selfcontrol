@@ -197,7 +197,7 @@ DQ
             <windowPositionMask key="initialPositionMask" leftStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="418" width="338" height="170"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2048" height="1255"/>
-            <view key="contentView" misplaced="YES" id="mZd-qZ-baN">
+            <view key="contentView" id="mZd-qZ-baN">
                 <rect key="frame" x="0.0" y="0.0" width="359" height="170"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
@@ -220,7 +220,7 @@ DQ
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="V5b-TT-ZSv">
-                        <rect key="frame" x="271" y="13" width="76" height="32"/>
+                        <rect key="frame" x="270" y="13" width="76" height="32"/>
                         <buttonCell key="cell" type="push" title="Extend" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="HNV-5F-fhQ">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -233,7 +233,7 @@ DQ
                         </connections>
                     </button>
                     <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Rd1-Af-eXQ" customClass="SCDurationSlider">
-                        <rect key="frame" x="18" y="74" width="324" height="30"/>
+                        <rect key="frame" x="18" y="74" width="323" height="30"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="22" id="xty-Ul-pJS"/>
                         </constraints>
@@ -245,7 +245,7 @@ DQ
                         </connections>
                     </slider>
                     <textField verticalHuggingPriority="750" id="ljO-W1-kqG">
-                        <rect key="frame" x="110" y="61" width="140" height="17"/>
+                        <rect key="frame" x="-2" y="61" width="363" height="17"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="center" title="1 minute" id="ikq-N5-jYi">
                             <font key="font" metaFont="system"/>
