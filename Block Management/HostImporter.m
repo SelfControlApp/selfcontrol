@@ -22,6 +22,7 @@
 
 
 #import "HostImporter.h"
+#import "Mail.h"
 
 @implementation HostImporter
 
@@ -86,6 +87,25 @@
 }
 
 + (NSArray*)incomingMailHostnamesFromMail {
+    
+        MailApplication *mail = [SBApplication applicationWithBundleIdentifier: @"com.apple.Mail"];
+        NSLog(@"MAIL IS %@", mail);
+        /* set ourself as the delegate to receive any errors */
+//        mail.delegate = self;
+    NSLog(@"mail.accounts is %@ (len %d), smtp servers is %@ (len %d), mailboxes is %@ (len %d)", mail.accounts, [mail.accounts count], mail.smtpServers, [mail.smtpServers count], mail.mailboxes, [mail.mailboxes count]);
+        for (MailAccount* account in mail.accounts)
+        {
+           NSLog(@"MAIL ACCOUNT %@ (%@) SERVER IS: %@ on port %d", account.name, account.accountType, account.serverName, account.port);
+        }
+    
+        SBElementArray *smtpServers = mail.smtpServers;
+        for (MailSmtpServer *server in smtpServers)
+        {
+           NSLog(@"SMTP SERVERS ARE: %@ %@ %@ %@ %d", server.name, server.password, server.userName, server.serverName, server.port);
+        }
+    return @[];
+
+    
 	NSMutableArray* hostnames = [NSMutableArray arrayWithCapacity: 10];
 	NSString* sandboxedPreferences = [@"~/Library/Containers/com.apple.mail/Data/Library/Preferences/com.apple.mail" stringByExpandingTildeInPath];
 	NSDictionary* defaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName: sandboxedPreferences];

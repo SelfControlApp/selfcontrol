@@ -70,7 +70,6 @@
 		CB62FC4324B1329500ADBC40 /* PacketFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = CBCA91111960D87300AFD20C /* PacketFilter.m */; };
 		CB62FC4424B1329800ADBC40 /* HostFileBlocker.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB0AE290FA74566006229B3 /* HostFileBlocker.m */; };
 		CB62FC4524B1329F00ADBC40 /* ThunderbirdPreferenceParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE4401A0F4BE0670062A1FE /* ThunderbirdPreferenceParser.m */; };
-		CB62FC4624B132A300ADBC40 /* HostImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB90BF820F49F430006D202D /* HostImporter.m */; };
 		CB62FC4724B132A600ADBC40 /* AllowlistScraper.m in Sources */ = {isa = PBXBuildFile; fileRef = CB73615F19E4FDA000E0924F /* AllowlistScraper.m */; };
 		CB62FC4824B132B300ADBC40 /* SCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5DFCB62251DD1F0084CEC2 /* SCConstants.m */; };
 		CB62FC4924B1330700ADBC40 /* LaunchctlHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC2F8570F4672FE00CF2A42 /* LaunchctlHelper.m */; };
@@ -198,10 +197,28 @@
 		CBED7D9925ABB911003080D6 /* selfcontrol-cli in Copy Executable Helper Tools */ = {isa = PBXBuildFile; fileRef = CBA2AFD20F39EC12005AFEBE /* selfcontrol-cli */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		CBEE50C10F48C21F00F5DF1C /* TimerWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */; };
 		CBF3B574217BADD7006D5F52 /* SCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF3B573217BADD7006D5F52 /* SCSettings.m */; };
+		CBFC265A2637DD770011B7F9 /* Mail.app in Resources */ = {isa = PBXBuildFile; fileRef = CBFC26592637DD770011B7F9 /* Mail.app */; };
+		CBFC26672637DDBC0011B7F9 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBFC26662637DDBC0011B7F9 /* ScriptingBridge.framework */; };
 		D2C22E71F82365403602D7B8 /* libPods-SCKillerHelper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6849B132CC615D050806CDA7 /* libPods-SCKillerHelper.a */; };
 		ED0A588EF1802EAF639D2925 /* Pods_SelfControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76753023D2020A5974B2D62C /* Pods_SelfControl.framework */; };
 		F5B8CBEE19EE21C30026F3A5 /* SCTimeIntervalFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F5B8CBED19EE21C30026F3A5 /* SCTimeIntervalFormatter.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		CBFC266D2637DFF60011B7F9 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.app";
+			fileType = pattern.proxy;
+			inputFiles = (
+			);
+			isEditable = 1;
+			outputFiles = (
+				"$(DERIVED_FILES_DIR)/$(INPUT_FILE_BASE).h",
+			);
+			script = "# Type a script or drag a script file from your workspace to insert its path.\nsdef \"$INPUT_FILE_PATH\" | sdp -fh -o \"$DERIVED_FILES_DIR\" --basename \"$INPUT_FILE_BASE\" --bundleid `defaults read \"$INPUT_FILE_PATH/Contents/Info\" CFBundleIdentifier`\n";
+		};
+/* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
 		CB0EEF6220FD8CE00024D27B /* PBXContainerItemProxy */ = {
@@ -1453,6 +1470,8 @@
 		CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerWindowController.m; sourceTree = "<group>"; };
 		CBF3B572217BADD7006D5F52 /* SCSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCSettings.h; sourceTree = "<group>"; };
 		CBF3B573217BADD7006D5F52 /* SCSettings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCSettings.m; sourceTree = "<group>"; };
+		CBFC26592637DD770011B7F9 /* Mail.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = Mail.app; path = ../../../../System/Applications/Mail.app; sourceTree = "<group>"; };
+		CBFC26662637DDBC0011B7F9 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 		DBA01017E61D6B843CA3758D /* Pods-SelfControl.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SelfControl.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SelfControl/Pods-SelfControl.debug.xcconfig"; sourceTree = "<group>"; };
 		EA6CDF7FADBBC7B9A7694C8B /* Pods-selfcontrol-cli.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-selfcontrol-cli.debug.xcconfig"; path = "Pods/Target Support Files/Pods-selfcontrol-cli/Pods-selfcontrol-cli.debug.xcconfig"; sourceTree = "<group>"; };
 		F2797D75520FA7BABC7C2B07 /* Pods-selfcontrol-cli.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-selfcontrol-cli.release.xcconfig"; path = "Pods/Target Support Files/Pods-selfcontrol-cli/Pods-selfcontrol-cli.release.xcconfig"; sourceTree = "<group>"; };
@@ -1466,6 +1485,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBFC26672637DDBC0011B7F9 /* ScriptingBridge.framework in Frameworks */,
 				CB32D2AE21902D9D00B8CD68 /* IOKit.framework in Frameworks */,
 				CB81AB2525B7EFA4006956F7 /* Sparkle.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
@@ -1597,6 +1617,7 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				CBFC26592637DD770011B7F9 /* Mail.app */,
 				32CA4F630368D1EE00C91783 /* SelfControl_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
@@ -1624,6 +1645,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CBFC26662637DDBC0011B7F9 /* ScriptingBridge.framework */,
 				CBB6723925D6142D006E4BC9 /* ArgumentParser */,
 				CB32D2AD21902D9D00B8CD68 /* IOKit.framework */,
 				CB9C812B19CFBB8400CDCAE1 /* Cocoa.framework */,
@@ -2900,6 +2922,7 @@
 				CB81AB2725B7EFA4006956F7 /* Embed Frameworks */,
 			);
 			buildRules = (
+				CBFC266D2637DFF60011B7F9 /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -3385,6 +3408,7 @@
 				CBBF4E8E1582F8E000E364D9 /* Localizable.strings in Resources */,
 				CB0385E119D77051004614B6 /* PreferencesAdvancedViewController.xib in Resources */,
 				CB1B44BE23B7F1ED00EBA087 /* cheater-background.png in Resources */,
+				CBFC265A2637DD770011B7F9 /* Mail.app in Resources */,
 				CB1465C425B0285300130D2E /* SCError.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3683,7 +3707,6 @@
 			files = (
 				CB74D11F2480E55D002B2079 /* DaemonMain.m in Sources */,
 				CB850F3925130F5300EE2E2D /* NSString+IPAddress.m in Sources */,
-				CB62FC4624B132A300ADBC40 /* HostImporter.m in Sources */,
 				CB62FC4724B132A600ADBC40 /* AllowlistScraper.m in Sources */,
 				CB62FC4524B1329F00ADBC40 /* ThunderbirdPreferenceParser.m in Sources */,
 				CB81A9F825B7C5F7006956F7 /* SCBlockFileReaderWriter.m in Sources */,

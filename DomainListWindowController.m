@@ -311,11 +311,5 @@
 - (IBAction)importOutgoingMailServersFromMail:(id)sender {
 	[self addHostArray: [HostImporter outgoingMailHostnamesFromMail]];
 }
-- (IBAction)importIncomingMailServersFromMailMate:(id)sender {
-	[self addHostArray: [HostImporter incomingMailHostnamesFromMailMate]];
-}
-- (IBAction)importOutgoingMailServersFromMailMate:(id)sender {
-	[self addHostArray: [HostImporter outgoingMailHostnamesFromMailMate]];
-}
 
 @end

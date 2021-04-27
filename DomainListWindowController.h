@@ -84,18 +84,6 @@
 - (IBAction)importNewsAndPublications:(id)sender;
 
 // Called when the button-menu item is clicked to import all incoming mail
-// servers from Thunderbird.  Adds to the domain list array all incoming mail
-// servers from the Thunderbird default profile that haven't already been added,
-// and reloads the table view.  Sends a SCConfigurationChangedNotification.
-- (IBAction)importIncomingMailServersFromThunderbird:(id)sender;
-
-// Called when the button-menu item is clicked to import all outgoing mail
-// servers from Thunderbird.  Adds to the domain list array all outgoing mail
-// servers from the Thunderbird default profile that haven't already been added,
-// and reloads the table view.  Sends a SCConfigurationChangedNotification.
-- (IBAction)importOutgoingMailServersFromThunderbird:(id)sender;
-
-// Called when the button-menu item is clicked to import all incoming mail
 // servers from Mail.app.  Adds to the domain list array all incoming mail
 // servers Mail.app that haven't already been added, and reloads the table view.
 // Sends a SCConfigurationChangedNotification.
@@ -106,8 +94,5 @@
 // servers Mail.app that haven't already been added, and reloads the table view.
 // Sends a SCConfigurationChangedNotification.
 - (IBAction)importOutgoingMailServersFromMail:(id)sender;
-
-- (IBAction)importIncomingMailServersFromMailMate:(id)sender;
-- (IBAction)importOutgoingMailServersFromMailMate:(id)sender;
 
 @end
