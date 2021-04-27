@@ -160,6 +160,15 @@
             // make sure the dock badge is cleared
             [[NSApp dockTile] setBadgeLabel: nil];
 
+            // send a notification letting the user know the block ended
+            // TODO: make this sent from a background process so it shows if app is closed
+            // (but we can't send it from the selfcontrold process, because it's running as root)
+            NSUserNotificationCenter* userNoteCenter = [NSUserNotificationCenter defaultUserNotificationCenter];
+            NSUserNotification* endedNote = [NSUserNotification new];
+            endedNote.title = @"Your SelfControl block has ended!";
+            endedNote.informativeText = @"All sites are now accessible.";
+            [userNoteCenter deliverNotification: endedNote];
+
 			[self closeTimerWindow];
 		}
 
@@ -359,7 +368,7 @@
 
 	[self refreshUserInterface];
     
-    NSOperatingSystemVersion minRequiredVersion = (NSOperatingSystemVersion){10,10,0}; // Mountain Lion
+    NSOperatingSystemVersion minRequiredVersion = (NSOperatingSystemVersion){10,10,0}; // Yosemite
     NSString* minRequiredVersionString = @"10.10 (Yosemite)";
 	if (![[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion: minRequiredVersion]) {
 		NSLog(@"ERROR: Unsupported version for SelfControl");
