@@ -155,15 +155,15 @@
 	if(numSeconds < 0 && [timerLabel_.stringValue isEqualToString: finishingString]) {
 		[[NSApp dockTile] setBadgeLabel: nil];
 
-		// This increments the strike counter.  After ten strikes of the timer being
+		// This increments the strike counter.  After four strikes of the timer being
 		// at or less than 0 seconds, SelfControl will assume something's wrong and enable
 		// manual block removal
 		numStrikes++;
 
-		if(numStrikes > 10) {
+		if(numStrikes >= 4) {
 			// OK, this is taking longer than it should. Enable manual block removal.
-            if (numStrikes == 10) {
-                NSLog(@"WARNING: Block should have ended a minute ago! Probable failure to remove.");
+            if (numStrikes == 4) {
+                NSLog(@"WARNING: Block should have ended! Probable failure to remove.");
                 NSError* err = [SCErr errorWithCode: 105];
                 [SCSentry captureError: err];
             }
