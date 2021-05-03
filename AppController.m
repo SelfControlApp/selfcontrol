@@ -114,10 +114,61 @@
 		return;
 	}
 
+    // cancel if we pop up a warning about the super long block, and the user decides to cancel
+    if (![self showLongBlockWarningsIfNecessary]) {
+        return;
+    }
+
 	[timerWindowController_ resetStrikes];
 
 	[NSThread detachNewThreadSelector: @selector(installBlock) toTarget: self withObject: nil];
 }
+
+// returns YES if we should continue with the block, NO if we should cancel it
+- (BOOL)showLongBlockWarningsIfNecessary {
+    // all UI stuff MUST be done on the main thread
+    if (![NSThread isMainThread]) {
+        __block BOOL retVal = NO;
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            retVal = [self showLongBlockWarningsIfNecessary];
+        });
+        return retVal;
+    }
+    
+    NSString* LONG_BLOCK_SUPPRESSION_KEY = @"LONG_BLOCK_SUPPRESSION_KEY";
+    int LONG_BLOCK_THRESHOLD_MINS = 2880; // 2 days
+    int FIRST_TIME_LONG_BLOCK_THRESHOLD_MINS = 480; // 8 hours
+
+    BOOL isFirstBlock = ![defaults_ boolForKey: @"FirstBlockStarted"];
+    int blockDuration = [[self->defaults_ valueForKey: @"BlockDuration"] intValue];
+
+    BOOL showLongBlockWarning = blockDuration >= LONG_BLOCK_THRESHOLD_MINS || (isFirstBlock && blockDuration >= FIRST_TIME_LONG_BLOCK_THRESHOLD_MINS);
+    if (!showLongBlockWarning) return YES;
+
+    // if they don't want warnings, they don't get warnings. their funeral 💀
+    if ([self->defaults_ boolForKey: LONG_BLOCK_SUPPRESSION_KEY]) {
+        return YES;
+    }
+
+    NSAlert* alert = [[NSAlert alloc] init];
+    alert.messageText = NSLocalizedString(@"That's a long block!", "Long block warning title");
+    alert.informativeText = [NSString stringWithFormat: NSLocalizedString(@"Remember that once you start the block, you can't turn it back off until the timer expires in %@ - even if you accidentally blocked a site you need. Consider starting a shorter block first, to test your list and make sure everything's working properly.", @"Long block warning message"), [SCDurationSlider timeSliderDisplayStringFromNumberOfMinutes: blockDuration]];
+    [alert addButtonWithTitle: NSLocalizedString(@"Cancel", @"Button to cancel a long block")];
+    [alert addButtonWithTitle: NSLocalizedString(@"Start Block Anyway", "Button to start a long block despite warnings")];
+    alert.showsSuppressionButton = YES;
+
+    NSModalResponse modalResponse = [alert runModal];
+    if (alert.suppressionButton.state == NSControlStateValueOn) {
+        // no more warnings, they say
+        [self->defaults_ setBool: YES forKey: LONG_BLOCK_SUPPRESSION_KEY];
+    }
+    if (modalResponse == NSAlertFirstButtonReturn) {
+        return NO;
+    }
+    
+    return YES;
+}
+
 
 - (void)refreshUserInterface {
     // UI updates are for the main thread only!
@@ -142,6 +193,9 @@
 			[self showTimerWindow];
 			[initialWindow_ close];
 			[self closeDomainList];
+            
+            // apparently, a block is running, so make sure FirstBlockStarted is true
+            [defaults_ setBool: YES forKey: @"FirstBlockStarted"];
 		}
     } else { // block is off
 		if(blockWasOn) { // if we just switched states to off...

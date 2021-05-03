@@ -61,6 +61,8 @@ OSStatus const AUTH_CANCELLED_STATUS = -60006;
             // otherwise it defaults off, but we'll still prompt to ask them if we can send data
             @"EnableErrorReporting": @([SCMiscUtilities systemThirdPartyCrashReportingEnabled]),
             @"ErrorReportingPromptDismissed": @NO,
+            @"SuppressLongBlockWarning": @NO,
+            @"FirstBlockStarted": @NO,
             
             @"V4MigrationComplete": @NO
         };

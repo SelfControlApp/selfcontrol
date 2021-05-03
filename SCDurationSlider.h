@@ -19,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)bindDurationToObject:(id)obj keyPath:(NSString*)keyPath;
 - (NSString*)durationDescription;
 
++ (NSString *)timeSliderDisplayStringFromTimeInterval:(NSTimeInterval)numberOfSeconds;
++ (NSString *)timeSliderDisplayStringFromNumberOfMinutes:(NSInteger)numberOfMinutes;
+
 @end
 
 NS_ASSUME_NONNULL_END
