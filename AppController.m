@@ -101,16 +101,8 @@
 		NSAlert* networkUnavailableAlert = [[NSAlert alloc] init];
 		[networkUnavailableAlert setMessageText: NSLocalizedString(@"No network connection detected", "No network connection detected message")];
 		[networkUnavailableAlert setInformativeText:NSLocalizedString(@"A block cannot be started without a working network connection.  You can override this setting in Preferences.", @"Message when network connection is unavailable")];
-		[networkUnavailableAlert addButtonWithTitle: NSLocalizedString(@"Cancel", "Cancel button")];
-		[networkUnavailableAlert addButtonWithTitle: NSLocalizedString(@"Network Diagnostics...", @"Network Diagnostics button")];
-		if([networkUnavailableAlert runModal] == NSAlertFirstButtonReturn)
-			return;
-
-		// If the user selected Network Diagnostics launch an assisant to help them.
-		// apple.com is an arbitrary host chosen to pass to Network Diagnostics.
-		CFURLRef url = CFURLCreateWithString(NULL, CFSTR("http://apple.com"), NULL);
-		CFNetDiagnosticRef diagRef = CFNetDiagnosticCreateWithURL(kCFAllocatorDefault, url);
-		CFNetDiagnosticDiagnoseProblemInteractively(diagRef);
+		[networkUnavailableAlert addButtonWithTitle: NSLocalizedString(@"OK", "OK button")];
+        [networkUnavailableAlert runModal];
 		return;
 	}
 
@@ -522,19 +514,8 @@
 		NSAlert* networkUnavailableAlert = [[NSAlert alloc] init];
 		[networkUnavailableAlert setMessageText: NSLocalizedString(@"No network connection detected", "No network connection detected message")];
 		[networkUnavailableAlert setInformativeText:NSLocalizedString(@"A block cannot be started without a working network connection.  You can override this setting in Preferences.", @"Message when network connection is unavailable")];
-		[networkUnavailableAlert addButtonWithTitle: NSLocalizedString(@"Cancel", "Cancel button")];
-		[networkUnavailableAlert addButtonWithTitle: NSLocalizedString(@"Network Diagnostics...", @"Network Diagnostics button")];
-		if([networkUnavailableAlert runModal] == NSAlertFirstButtonReturn) {
-			// User clicked cancel
-			return;
-		}
-
-		// If the user selected Network Diagnostics, launch an assisant to help them.
-		// apple.com is an arbitrary host chosen to pass to Network Diagnostics.
-		CFURLRef url = CFURLCreateWithString(NULL, CFSTR("http://apple.com"), NULL);
-		CFNetDiagnosticRef diagRef = CFNetDiagnosticCreateWithURL(kCFAllocatorDefault, url);
-		CFNetDiagnosticDiagnoseProblemInteractively(diagRef);
-
+		[networkUnavailableAlert addButtonWithTitle: NSLocalizedString(@"OK", "OK button")];
+        [networkUnavailableAlert runModal];
 		return;
 	}
 
