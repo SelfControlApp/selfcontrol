@@ -3,7 +3,7 @@ name: "\U0001FAB2 Bug Report"
 about: Report a reproducible bug in SelfControl
 title: ''
 labels: bug
-assignees: cstigler
+assignees: ''
 
 ---
 
