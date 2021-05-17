@@ -1,6 +1,6 @@
 ---
 name: "\U0001FAB2 Bug Report"
-about: Describe this issue template's purpose here.
+about: Report a reproducible bug in SelfControl
 title: ''
 labels: bug
 assignees: cstigler
@@ -9,7 +9,7 @@ assignees: cstigler
 
 # Summary
 
-_In a sentence or two, what happened?_
+In a sentence or two, what happened?
 
 # Background Info
 
@@ -21,12 +21,12 @@ Any other special system setup we should know about?
 
 # How Do We Reproduce This Issue?
 
-_Describe detailed steps that reliably make this issue show up. For example, "start a block containing 5 websites, click button X, then button Y"_
+Describe detailed steps that reliably make this issue show up. For example, "start a block containing 5 websites, click button X, then button Y"
 
 # What _Should_ Have Happened?
 
-_What would this have looked like if it had worked? What did you expect to happen?_
+What would this have looked like if it had worked? What did you expect to happen?
 
 # What Actually Happened Instead?
 
-_What did you actually see? e.g. what error messages popped up, what window is showing what text, etc._
+What did you actually see? e.g. what error messages popped up, what window is showing what text, etc.
