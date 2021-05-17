@@ -19,7 +19,6 @@
 #ifndef TESTING
     [SentrySDK startWithConfigureOptions:^(SentryOptions *options) {
         options.dsn = @"https://58fbe7145368418998067f88896007b2@o504820.ingest.sentry.io/5592195";
-        options.debug = YES; // Enabled debug when first installing is always helpful
         options.releaseName = [NSString stringWithFormat: @"%@%@", componentId, SELFCONTROL_VERSION_STRING];
         options.enableAutoSessionTracking = NO;
         options.environment = @"dev";
@@ -104,13 +103,14 @@
     NSMutableDictionary* defaultsDict = [[[NSUserDefaults standardUserDefaults] persistentDomainForName: @"org.eyebeam.SelfControl"] mutableCopy];
 
     // delete blocklist (because PII) and update check time
-    // (because unnecessary, and Sentry doesn't like dates)
+    // (because unnecessary, and Sentry dies if you feed it dates)
     // but store the blocklist length as a useful piece of debug info
     id blocklist = defaultsDict[@"Blocklist"];
     NSUInteger blocklistLength = (blocklist == nil) ? 0 : ((NSArray*)blocklist).count;
     [defaultsDict setObject: @(blocklistLength) forKey: @"BlocklistLength"];
     [defaultsDict removeObjectForKey: @"Blocklist"];
     [defaultsDict removeObjectForKey: @"SULastCheckTime"];
+    [defaultsDict removeObjectForKey: @"SULastProfileSubmissionDate"];
 
 #ifndef TESTING
     [SentrySDK configureScope:^(SentryScope * _Nonnull scope) {

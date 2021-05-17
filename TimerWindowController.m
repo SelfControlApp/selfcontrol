@@ -391,6 +391,7 @@
                                       waitUntilDone:YES];
     
     // send some debug info to Sentry to help us track this issue
+    // disabled for now because the best current method might collect user PII we don't want
     [SCSentry captureMessage: @"User manually cleared SelfControl block from the timer window"];
 //    [SCSentry captureMessage: @"User manually cleared SelfControl block from the timer window" withScopeBlock:^(SentryScope * _Nonnull scope) {
 //        SentryAttachment* fileAttachment = [[SentryAttachment alloc] initWithPath: [@"~/Documents/SelfControl-Killer.log" stringByExpandingTildeInPath]];
