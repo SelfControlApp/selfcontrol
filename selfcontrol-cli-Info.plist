@@ -38,9 +38,9 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>4.0 alpha 3</string>
+	<string>4.0 beta 1</string>
 	<key>CFBundleVersion</key>
-	<string>404</string>
+	<string>405</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
 	<key>NSAppTransportSecurity</key>

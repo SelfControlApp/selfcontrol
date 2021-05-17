@@ -1580,7 +1580,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* SelfControl */ = {
 			isa = PBXGroup;
 			children = (
 				CBDFFF4B24A07DB300622CEE /* SelfControl.entitlements */,
@@ -3083,7 +3083,7 @@
 				Base,
 				da,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* SelfControl */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectReferences = (
@@ -4059,7 +4059,7 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 404;
+				CURRENT_PROJECT_VERSION = 405;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = L6W5L88KN7;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -4074,7 +4074,6 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MARKETING_VERSION = 3.9.9;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.eyebeam.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = SelfControl;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -4092,7 +4091,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 404;
+				CURRENT_PROJECT_VERSION = 405;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = L6W5L88KN7;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -4106,7 +4105,6 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MARKETING_VERSION = 3.9.9;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.eyebeam.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = SelfControl;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -4157,6 +4155,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MARKETING_VERSION = 3.9.10;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CODE_SIGN_FLAGS = "-o library,hard,kill,runtime";
 				SDKROOT = macosx;
@@ -4204,6 +4203,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MARKETING_VERSION = 3.9.10;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CODE_SIGN_FLAGS = "-o library,hard,kill,runtime";
 				SDKROOT = macosx;
@@ -4286,7 +4286,7 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 404;
+				CURRENT_PROJECT_VERSION = 405;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = L6W5L88KN7;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -4298,7 +4298,6 @@
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "Daemon/selfcontrold-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MARKETING_VERSION = 3.9.9;
 				OTHER_LDFLAGS = (
 					"-sectcreate",
 					__TEXT,
@@ -4330,7 +4329,7 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 404;
+				CURRENT_PROJECT_VERSION = 405;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = L6W5L88KN7;
 				GCC_MODEL_TUNING = G5;
@@ -4340,7 +4339,6 @@
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "Daemon/selfcontrold-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MARKETING_VERSION = 3.9.9;
 				OTHER_LDFLAGS = (
 					"-sectcreate",
 					__TEXT,
@@ -4383,7 +4381,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 404;
+				CURRENT_PROJECT_VERSION = 405;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -4402,7 +4400,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = "SelfControl Killer/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MARKETING_VERSION = "4.0 alpha";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.selfcontrolapp.SelfControl-Killer";
@@ -4430,7 +4427,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 404;
+				CURRENT_PROJECT_VERSION = 405;
 				DEVELOPMENT_TEAM = L6W5L88KN7;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -4443,7 +4440,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = "SelfControl Killer/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MARKETING_VERSION = "4.0 alpha";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.selfcontrolapp.SelfControl-Killer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4541,10 +4537,12 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COPY_PHASE_STRIP = NO;
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
-				CURRENT_PROJECT_VERSION = 404;
+				CURRENT_PROJECT_VERSION = 405;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = L6W5L88KN7;
-				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks\n\n$(PLATFORM_DIR)/Developer/Library/Frameworks\n\n";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks\n\n$(PLATFORM_DIR)/Developer/Library/Frameworks\n\n",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_NO_COMMON_BLOCKS = NO;
@@ -4555,7 +4553,6 @@
 				INFOPLIST_FILE = "selfcontrol-cli-Info.plist";
 				INFOPLIST_PREPROCESS = YES;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MARKETING_VERSION = 3.9.9;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.eyebeam.selfcontrol-cli";
 				PRODUCT_NAME = "selfcontrol-cli";
 				PROVISIONING_PROFILE = "";
@@ -4575,10 +4572,12 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
-				CURRENT_PROJECT_VERSION = 404;
+				CURRENT_PROJECT_VERSION = 405;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = L6W5L88KN7;
-				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks\n\n$(PLATFORM_DIR)/Developer/Library/Frameworks\n\n";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks\n\n$(PLATFORM_DIR)/Developer/Library/Frameworks\n\n",
+				);
 				GCC_MODEL_TUNING = G5;
 				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -4587,7 +4586,6 @@
 				INFOPLIST_FILE = "selfcontrol-cli-Info.plist";
 				INFOPLIST_PREPROCESS = YES;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MARKETING_VERSION = 3.9.9;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.eyebeam.selfcontrol-cli";
 				PRODUCT_NAME = "selfcontrol-cli";
 				PROVISIONING_PROFILE = "";
