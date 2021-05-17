@@ -15,6 +15,11 @@ target "SelfControl" do
     pod 'FormatterKit/TimeIntervalFormatter', '~> 1.8.0'
     pod 'LetsMove', '~> 1.24'
     pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.0.3'
+    
+    # Add test target
+    target 'SelfControlTests' do
+        inherit! :complete
+    end
 end
 
 target "SelfControl Killer" do
