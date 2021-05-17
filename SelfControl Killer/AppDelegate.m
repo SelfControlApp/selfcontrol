@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 #import "SCSettings.h"
+#import "SCMiscUtilities.h"
+#import "SCUIUtilities.h"
 
 @interface AppDelegate ()
 
@@ -19,6 +21,8 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	[NSApplication sharedApplication].delegate = self;
 
+    [SCSentry startSentry: @"com.selfcontrolapp.SelfControl-Killer"];
+    
 	[self updateUserInterface];
 }
 
@@ -60,14 +64,19 @@
 
 	char uidString[10];
 	snprintf(uidString, sizeof(uidString), "%d", getuid());
+    
+    NSDate* keyDate = [NSDate date];
+    NSString* killerKey = [SCMiscUtilities killerKeyForDate: keyDate];
+    NSString* keyDateString = [[NSISO8601DateFormatter new] stringFromDate: keyDate];
+    
+    char* args[] = { (char*)[killerKey UTF8String], (char*)[keyDateString UTF8String], uidString, NULL };
 
-	char* args[] = { uidString, NULL };
-
+    FILE* pipe = NULL;
 	status = AuthorizationExecuteWithPrivileges(authorizationRef,
 												helperToolPath,
 												kAuthorizationFlagDefaults,
 												args,
-												NULL);
+												&pipe);
 	if(status) {
 		NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", status);
 
@@ -79,13 +88,33 @@
         }
 
 		return;
-	} else {
-		NSAlert* alert = [[NSAlert alloc] init];
-		[alert setMessageText: @"Success!"];
-		[alert setInformativeText:@"The block was cleared successfully.  You can find the log file, named SelfControl-Killer.log, in your Documents folder."];
-		[alert addButtonWithTitle: @"OK"];
-		[alert runModal];
 	}
+    
+    // read until the pipe finishes so we wait for execution to end before we
+    // show the modal (so we can check if the block is cleared properly or not)
+    for (;;) {
+        ssize_t bytesRead = read(fileno(pipe), NULL, 256);
+        if (bytesRead < 1) break;
+    }
+        
+    // reload settings since they've probably just been messed with
+    [[SCSettings sharedSettings] reloadSettings];
+
+    // send some debug info to Sentry to help us track this issue
+    [SCSentry captureMessage: @"User manually cleared SelfControl block from the SelfControl Killer app"];
+    
+    if ([SCBlockUtilities anyBlockIsRunning]) {
+        // ruh roh! the block wasn't cleared successfully, since it's still running
+        NSError* err = [SCErr errorWithCode: 401];
+        [SCSentry captureError: err];
+        [SCUIUtilities presentError: err];
+    } else {
+        NSAlert* alert = [[NSAlert alloc] init];
+        [alert setMessageText: @"Success!"];
+        [alert setInformativeText:@"The block was cleared successfully.  You can find the log file, named SelfControl-Killer.log, in your Documents folder. If you're still having issues, please check out the SelfControl FAQ on GitHub."];
+        [alert addButtonWithTitle: @"OK"];
+        [alert runModal];
+    }
 
 	[self.viewButton setEnabled: YES];
 }

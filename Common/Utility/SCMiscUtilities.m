@@ -227,4 +227,8 @@
     return homeDirectoryURLs;
 }
 
++ (NSString*)killerKeyForDate:(NSDate*)date {
+    return [SCMiscUtilities sha1: [NSString stringWithFormat: @"SelfControlKillerKey%@%@", [SCMiscUtilities getSerialNumber], [date descriptionWithLocale: nil]]];
+}
+
 @end

@@ -36,6 +36,10 @@
 
 // 400-499 = errors generated in the killer
 "400" = "SelfControl couldn't manually clear the block, because there was an error running the helper tool.";
+"401" = "Something went wrong, and SelfControl couldn't manually clear the block. Try again in a minute. If that doesn't work, go to www.selfcontrolapp.com/support to get help.";
+"402" = "The killer helper tool couldn't launch because it had insufficient privileges.";
+"403" = "The killer helper tool couldn't launch because it was provided the incorrect key.";
+"404" = "The killer helper tool couldn't launch because it was provided an invalid key date.";
 
 // 500-599 = errors generated in the XPC client
 "500" = "There was an error trying to install SelfControl's helper tool: %@";

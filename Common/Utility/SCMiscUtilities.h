@@ -28,5 +28,6 @@
 
 + (BOOL)errorIsAuthCanceled:(NSError*)err;
 
++ (NSString*)killerKeyForDate:(NSDate*)date;
 
 @end

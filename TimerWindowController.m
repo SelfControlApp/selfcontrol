@@ -353,8 +353,11 @@
 	char uidString[10];
 	snprintf(uidString, sizeof(uidString), "%d", getuid());
 
-	char* args[] = { uidString, NULL };
+    NSDate* keyDate = [NSDate date];
+    NSString* killerKey = [SCMiscUtilities killerKeyForDate: keyDate];
+    NSString* keyDateString = [[NSISO8601DateFormatter new] stringFromDate: keyDate];
     
+	char* args[] = { (char*)[killerKey UTF8String], (char*)[keyDateString UTF8String], uidString, NULL };
     
     FILE* pipe = NULL;
 	status = AuthorizationExecuteWithPrivileges(authorizationRef,
@@ -366,13 +369,16 @@
 	if(status) {
 		NSLog(@"WARNING: Authorized execution of helper tool returned failure status code %d", status);
 
-        NSError* err = [SCErr errorWithCode: 400];
-        [SCSentry captureError: err];
-        [SCUIUtilities presentError: err];
+        /// AUTH_CANCELLED_STATUS just means auth is cancelled, not really an "error" per se
+        if (status != AUTH_CANCELLED_STATUS) {
+            NSError* err = [SCErr errorWithCode: 400];
+            [SCSentry captureError: err];
+            [SCUIUtilities presentError: err];
+        }
 
 		return;
 	}
-    
+
     // read until the pipe finishes so we wait for execution to end before we
     // show the modal (this also helps make the focus ordering better)
     for (;;) {
@@ -391,18 +397,25 @@
                                       waitUntilDone:YES];
     
     // send some debug info to Sentry to help us track this issue
-    // disabled for now because the best current method might collect user PII we don't want
+    // detailed logs disabled for now because the best current method might collect user PII we don't want
     [SCSentry captureMessage: @"User manually cleared SelfControl block from the timer window"];
-//    [SCSentry captureMessage: @"User manually cleared SelfControl block from the timer window" withScopeBlock:^(SentryScope * _Nonnull scope) {
-//        SentryAttachment* fileAttachment = [[SentryAttachment alloc] initWithPath: [@"~/Documents/SelfControl-Killer.log" stringByExpandingTildeInPath]];
-//        [scope addAttachment: fileAttachment];
-//    }];
+    //    [SCSentry captureMessage: @"User manually cleared SelfControl block from the timer window" withScopeBlock:^(SentryScope * _Nonnull scope) {
+    //        SentryAttachment* fileAttachment = [[SentryAttachment alloc] initWithPath: [@"~/Documents/SelfControl-Killer.log" stringByExpandingTildeInPath]];
+    //        [scope addAttachment: fileAttachment];
+    //    }];
     
-    NSAlert* alert = [[NSAlert alloc] init];
-    [alert setMessageText: @"Success!"];
-    [alert setInformativeText:@"The block was cleared successfully.  You can find the log file, named SelfControl-Killer.log, in your Documents folder. If you're still having issues, please check out the SelfControl FAQ on GitHub."];
-    [alert addButtonWithTitle: @"OK"];
-    [alert runModal];
+    if ([SCBlockUtilities anyBlockIsRunning]) {
+        // ruh roh! the block wasn't cleared successfully, since it's still running
+        NSError* err = [SCErr errorWithCode: 401];
+        [SCSentry captureError: err];
+        [SCUIUtilities presentError: err];
+    } else {
+        NSAlert* alert = [[NSAlert alloc] init];
+        [alert setMessageText: @"Success!"];
+        [alert setInformativeText:@"The block was cleared successfully.  You can find the log file, named SelfControl-Killer.log, in your Documents folder. If you're still having issues, please check out the SelfControl FAQ on GitHub."];
+        [alert addButtonWithTitle: @"OK"];
+        [alert runModal];
+    }
 }
 
 - (NSString*)selfControlKillerHelperToolPath {

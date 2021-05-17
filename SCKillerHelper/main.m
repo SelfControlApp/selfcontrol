@@ -12,33 +12,57 @@
 #import "BlockManager.h"
 #import "SCSettings.h"
 #import "SCHelperToolUtilities.h"
+#import "SCMiscUtilities.h"
 #import <ServiceManagement/ServiceManagement.h>
 #import "SCMigrationUtilities.h"
 #import <sysexits.h>
+#import "SCSentry.h"
 
 #define LOG_FILE @"~/Documents/SelfControl-Killer.log"
 
 int main(int argc, char* argv[]) {
 	@autoreleasepool {
+        [SCSentry startSentry: @"com.selfcontrolapp.SCKillerHelper"];
+        
         // make sure to expand the tilde before we setuid to 0, otherwise this won't work
         NSString* logFilePath = [LOG_FILE stringByExpandingTildeInPath];
         NSMutableString* log = [NSMutableString stringWithString: @"===SelfControl-Killer Log File===\n\n"];
 
 		if(geteuid()) {
 			NSLog(@"ERROR: Helper tool must be run as root.");
+            [SCSentry captureError: [SCErr errorWithCode: 402]];
 			exit(EXIT_FAILURE);
 		}
 
-		if(argv[1] == NULL) {
+		if(argv[1] == NULL || argv[2] == NULL) {
 			NSLog(@"ERROR: Not enough arguments");
 			exit(EXIT_FAILURE);
 		}
+        
+        NSString* killerKey = @(argv[1]);
+        NSDate* keyDate = [[NSISO8601DateFormatter new] dateFromString: @(argv[2])];
+        NSTimeInterval keyDateToNow = [[NSDate date] timeIntervalSinceDate: keyDate];
+    
+        // key date must exist, not be in the future, and be in the past 10 seconds
+        if (keyDate == nil || keyDateToNow < 0 || keyDateToNow > 10) {
+            NSLog(@"ERROR: Key date invalid");
+            [SCSentry captureError: [SCErr errorWithCode: 404]];
+            exit(EX_USAGE);
+        }
+        
+        // keys must match
+        NSString* correctKey = [SCMiscUtilities killerKeyForDate: keyDate];
+        if (![correctKey isEqualToString: killerKey]) {
+            NSLog(@"ERROR: Incorrect key");
+            [SCSentry captureError: [SCErr errorWithCode: 403]];
+            exit(EX_USAGE);
+        }
 
-		uid_t controllingUID = (uid_t)[@(argv[1]) intValue];
+		uid_t controllingUID = (uid_t)[@(argv[3]) intValue];
         if (controllingUID <= 0) {
             controllingUID = getuid();
         }
-        
+
         // we need to setuid to root, otherwise launchctl won't find system launch daemons
         // depite the EUID being 0 as expected - not sure why that is
         setuid(0);
