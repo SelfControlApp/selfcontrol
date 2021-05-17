@@ -89,8 +89,8 @@
         // since it's too difficult to get these working across versions.
         // the user will just have to wait until their next block to do these things!
         if ([SCBlockUtilities legacyBlockIsRunning]) {
-            addToBlockButton_.enabled = YES;
-            extendBlockButton_.enabled = YES;
+            addToBlockButton_.enabled = NO;
+            extendBlockButton_.enabled = NO;
         }
     }
 
