@@ -90,7 +90,7 @@ float const INACTIVITY_LIMIT_SECS = 60 * 2; // 2 minutes
     }
     
     self.checkupTimer = [NSTimer scheduledTimerWithTimeInterval: 1 repeats: YES block:^(NSTimer * _Nonnull timer) {
-        [SCDaemonBlockMethods checkupBlock];
+       [SCDaemonBlockMethods checkupBlock];
     }];
 
     // run the first checkup immediately!

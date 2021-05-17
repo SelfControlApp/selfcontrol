@@ -167,7 +167,6 @@
                                        );
 
     if(status) {
-        NSLog(@"copied rights with status %d", status);
         // if it's just the user cancelling, make that obvious
         // to any listeners so they can ignore it appropriately
         if (status == AUTH_CANCELLED_STATUS) {
@@ -183,8 +182,21 @@
 
         return;
     }
-
+    
     CFErrorRef cfError;
+
+    // in some cases, SMJobBless will fail if we don't first remove the currently running daemon
+    // it's not clear why exactly or what the exact cause is, but I can reproduce consistently
+    // by running a 100-site whitelist block, then immediately trying to start another block
+    // I consistently get the error (CFErrorDomainLaunchd error 2)
+    SILENCE_OSX10_10_DEPRECATION(
+    SMJobRemove(kSMDomainSystemLaunchd, CFSTR("org.eyebeam.selfcontrold"), self->_authRef, YES, &cfError);
+                                 );
+    if (cfError) {
+        NSLog(@"WARNING: Failed to remove existing selfcontrold daemon with error %@", cfError);
+        cfError = NULL;
+    }
+
     BOOL result = (BOOL)SMJobBless(
                                    kSMDomainSystemLaunchd,
                                    CFSTR("org.eyebeam.selfcontrold"),

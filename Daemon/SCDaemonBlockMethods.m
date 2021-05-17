@@ -314,7 +314,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         NSLog(@"INFO: Checkup ran, block expired, removing block.");
         
         [SCHelperToolUtilities removeBlock];
-        
+
         [SCHelperToolUtilities sendConfigurationChangedNotification];
 
         [SCSentry addBreadcrumb: @"Daemon found and cleared expired block" category: @"daemon"];
