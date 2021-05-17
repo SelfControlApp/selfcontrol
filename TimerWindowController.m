@@ -222,7 +222,7 @@
     // make sure add to list is disabled if it's an allowlist block
     // don't worry about it for a legacy block! the buttons are disabled anyway so it doesn't matter
     if ([SCBlockUtilities modernBlockIsRunning]) {
-        addToBlockButton_.hidden = [settings_ boolForKey: @"ActiveBlockAsWhitelist"];
+        addToBlockButton_.enabled = ![settings_ boolForKey: @"ActiveBlockAsWhitelist"];
     }
 }
 
