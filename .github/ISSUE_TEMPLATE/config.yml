@@ -3,3 +3,6 @@ contact_links:
   - name: ⛔️ SelfControl Is Still Blocking Sites After The Timer Expired
     url: https://github.com/SelfControlApp/selfcontrol/wiki/Help!-SelfControl-is-still-blocking-sites-even-after-the-block-should-have-ended!
     about: Follow these directions to remove your block and restore access to blocked websites.
+  - name: 🙋‍♀️ General Comment, Question, or Concern
+    url: https://github.com/SelfControlApp/selfcontrol/discussions
+    about: Use our discussion board to share tips and tricks, ask questions, or kvetch when SelfControl doesn't owrk
