@@ -62,6 +62,7 @@ OSStatus const AUTH_CANCELLED_STATUS = -60006;
             @"EnableErrorReporting": @([SCMiscUtilities systemThirdPartyCrashReportingEnabled]),
             @"ErrorReportingPromptDismissed": @NO,
             @"SuppressLongBlockWarning": @NO,
+            @"SuppressRestartFirefoxWarning": @NO,
             @"FirstBlockStarted": @NO,
             
             @"V4MigrationComplete": @NO

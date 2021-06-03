@@ -117,14 +117,27 @@
         });
         return retVal;
     }
-    
+
+    NSString* RESTART_FF_SUPPRESSION_KEY = @"SuppressRestartFirefoxWarning";
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+
+    // if they don't want the warnings, they don't get the warnings
+    if ([defaults boolForKey: RESTART_FF_SUPPRESSION_KEY]) {
+        return NO;
+    }
+
     NSAlert* alert = [[NSAlert alloc] init];
     [alert setMessageText: NSLocalizedString(@"Restart Firefox", "FireFox browser restart prompt")];
     [alert setInformativeText:NSLocalizedString(@"SelfControl's block may not work properly in Firefox until you restart the browser. Do you want to quit Firefox now?", @"Message explaining Firefox restart requirement")];
     [alert addButtonWithTitle: NSLocalizedString(@"Quit Firefox", @"Button to quit Firefox")];
     [alert addButtonWithTitle: NSLocalizedString(@"Continue Without Restart", "Button to decline restarting Firefox")];
-    
+    alert.showsSuppressionButton = YES;
+
     NSModalResponse modalResponse = [alert runModal];
+    if (alert.suppressionButton.state == NSControlStateValueOn) {
+        // no more warnings, they say
+        [defaults setBool: YES forKey: RESTART_FF_SUPPRESSION_KEY];
+    }
     if (modalResponse == NSAlertFirstButtonReturn) {
         for (NSRunningApplication* ff in runningFF) {
             [ff terminate];

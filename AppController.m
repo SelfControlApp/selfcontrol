@@ -127,7 +127,7 @@
         return retVal;
     }
     
-    NSString* LONG_BLOCK_SUPPRESSION_KEY = @"SuppressLongBlockWarnings";
+    NSString* LONG_BLOCK_SUPPRESSION_KEY = @"SuppressLongBlockWarning";
     int LONG_BLOCK_THRESHOLD_MINS = 2880; // 2 days
     int FIRST_TIME_LONG_BLOCK_THRESHOLD_MINS = 480; // 8 hours
 
