@@ -276,6 +276,11 @@
     // if our configuration changed, we should assume the settings may have changed
     [[SCSettings sharedSettings] reloadSettings];
     
+    // clean out empty strings from the defaults blocklist (they can end up there occasionally due to UI glitches etc)
+    // note we don't screw with the actively running blocklist - that should've been cleaned before it started anyway
+    NSArray<NSString*>* cleanedBlocklist = [SCMiscUtilities cleanBlocklist: [defaults_ arrayForKey: @"Blocklist"]];
+    [defaults_ setObject: cleanedBlocklist forKey: @"Blocklist"];
+
     // update our blocklist teaser string
     blocklistTeaserLabel_.stringValue = [SCUIUtilities blockTeaserStringWithMaxLength: 60];
     

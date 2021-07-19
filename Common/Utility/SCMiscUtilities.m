@@ -170,6 +170,22 @@
     return @[[NSString stringWithFormat: @"%@%@%@", str, maskString, portString]];
 }
 
++ (NSArray<NSString*>*)cleanBlocklist:(NSArray<NSString*>*)blocklist {
+    NSMutableArray<NSString*>* cleanedList = [NSMutableArray arrayWithCapacity: blocklist.count];
+
+    // for now, we just remove whitespace and then remove empty entries
+    // in the future, this method could do more thorough cleaning
+    for (NSString* blockString in blocklist) {
+        NSString* cleanedString = [blockString stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+        if (cleanedString.length > 0) {
+            [cleanedList addObject: cleanedString];
+        }
+    }
+
+    return cleanedList;
+}
+
 + (NSDictionary*) defaultsDictForUser:(uid_t) controllingUID {
     if (geteuid() != 0) {
         // if we're not root, we can't just get defaults for some arbitrary user

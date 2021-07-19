@@ -20,7 +20,9 @@
 
 + (BOOL)systemThirdPartyCrashReportingEnabled;
 
-+ (NSArray<NSString*>*) cleanBlocklistEntry:(NSString*)rawEntry;
++ (NSArray<NSString*>*)cleanBlocklistEntry:(NSString*)rawEntry;
+
++ (NSArray<NSString*>*)cleanBlocklist:(NSArray<NSString*>*)blocklist;
 
 + (NSDictionary*) defaultsDictForUser:(uid_t)controllingUID;
 
