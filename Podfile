@@ -1,4 +1,4 @@
-source 'https://github.com/CocoaPods/Specs.git'
+source 'https://cdn.cocoapods.org/'
 
 minVersion = '10.10'
 
@@ -15,7 +15,7 @@ target "SelfControl" do
     pod 'FormatterKit/TimeIntervalFormatter', '~> 1.8.0'
     pod 'LetsMove', '~> 1.24'
     pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.0.3'
-    
+
     # Add test target
     target 'SelfControlTests' do
         inherit! :complete

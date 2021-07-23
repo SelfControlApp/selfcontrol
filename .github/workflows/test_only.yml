@@ -1,0 +1,53 @@
+name: Test Only
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: macOS-latest
+
+    steps:
+      - uses: actions/checkout@master
+
+      # - uses: actions/cache@v1
+      #   with:
+      #     path: vendor/bundle
+      #     key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-gem-
+
+      # - uses: actions/cache@v1
+      #   with:
+      #     path: Pods
+      #     key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-pods-
+
+      - name: Install gems
+        run: |
+          bundle config path vendor/bundle
+          # bundle config set without 'default doc job cable storage ujs test db'
+          bundle install --jobs 4 --retry 3
+
+      - name: Install Dependences
+        run: |
+          bundle exec pod update --verbose
+          bundle exec pod install --verbose
+
+      # - name: Build
+      #   uses: sersoft-gmbh/xcodebuild-action@v1.4
+      #   with:
+      #     project: SelfControl.xcodeproj
+      #     scheme: SelfControl
+      #     destination: platform=macOS
+      #     action: build
+
+      # https://github.com/mxcl/xcodebuild
+      - name: Build
+        uses: mxcl/xcodebuild@v1
+        with:
+          xcode: ^12
+          platform: macOS
+          action: build
+          code-coverage: false
+          configuration: release
