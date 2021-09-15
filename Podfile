@@ -10,10 +10,10 @@ plugin 'cocoapods-prune-localizations', { :localizations => supported_locales }
 
 target "SelfControl" do
     use_frameworks! :linkage => :static
-    pod 'MASPreferences', '~> 1.1.4'
-    pod 'TransformerKit', '~> 1.1.1'
-    pod 'FormatterKit/TimeIntervalFormatter', '~> 1.8.0'
-    pod 'LetsMove', '~> 1.24'
+    pod 'MASPreferences'
+    pod 'TransformerKit'
+    pod 'FormatterKit/TimeIntervalFormatter'
+    pod 'LetsMove'
     pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.3.0'
 
     # Add test target
