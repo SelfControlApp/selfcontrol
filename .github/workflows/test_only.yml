@@ -38,7 +38,7 @@ jobs:
 
       - name: Clean and Build
         run: |
-          bundle exec xcodebuild \
+          xcodebuild \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             -workspace SelfControl.xcworkspace \
