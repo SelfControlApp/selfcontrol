@@ -33,7 +33,6 @@ jobs:
 
       - name: Install Dependences
         run: |
-          bundle exec pod setup
           bundle exec pod update
           bundle exec pod install
 
