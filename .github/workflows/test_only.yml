@@ -25,33 +25,45 @@ jobs:
       #     restore-keys: |
       #       ${{ runner.os }}-pods-
 
-      # - name: Install gems
-      #   run: |
-      #     bundle config path vendor/bundle
-      #     # bundle config set without 'default doc job cable storage ujs test db'
-      #     bundle install --jobs 4 --retry 3
-
-      # - name: Install Dependences
-      #   run: |
-      #     bundle exec pod update
-      #     bundle exec pod install
+      - name: Install gems
+        run: |
+          bundle config path vendor/bundle
+          bundle config set without 'default doc job cable storage ujs test db'
+          bundle install --jobs 4 --retry 3
 
       - name: Install Dependences
         run: |
-          sudo gem install cocoapods cocoapods-prune-localizations
-          pod setup
-          pod update
-          pod install
+          bundle exec pod setup
+          bundle exec pod update
+          bundle exec pod install
 
       - name: Clean and Build
         run: |
-          xcodebuild \
+          bundle exec xcodebuild \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             -workspace SelfControl.xcworkspace \
             -scheme "SelfControl" \
             -configuration Release \
             clean build
+
+      # v2
+      # - name: Install Dependences
+      #   run: |
+      #     sudo gem install cocoapods cocoapods-prune-localizations
+      #     pod setup
+      #     pod update
+      #     pod install
+
+      # - name: Clean and Build
+      #   run: |
+      #     xcodebuild \
+      #       CODE_SIGN_IDENTITY="" \
+      #       CODE_SIGNING_REQUIRED=NO \
+      #       -workspace SelfControl.xcworkspace \
+      #       -scheme "SelfControl" \
+      #       -configuration Release \
+      #       clean build
 
       # - name: Build
       #   uses: sersoft-gmbh/xcodebuild-action@v1.4
