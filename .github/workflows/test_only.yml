@@ -39,6 +39,8 @@ jobs:
       - name: Install Dependences
         run: |
           sudo gem install cocoapods cocoapods-prune-localizations
+          pod setup
+          pod update
           pod install
 
       - name: Clean and Build
