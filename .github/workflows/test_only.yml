@@ -50,7 +50,6 @@ jobs:
             CODE_SIGNING_REQUIRED=NO \
             -workspace SelfControl.xcworkspace \
             -scheme "SelfControl" \
-            -target "SelfControl" \
             -configuration Release \
             clean build
 
