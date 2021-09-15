@@ -7,7 +7,9 @@ jobs:
     runs-on: macOS-latest
 
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
 
       # - uses: actions/cache@v1
       #   with:
@@ -23,16 +25,24 @@ jobs:
       #     restore-keys: |
       #       ${{ runner.os }}-pods-
 
-      - name: Install gems
-        run: |
-          bundle config path vendor/bundle
-          # bundle config set without 'default doc job cable storage ujs test db'
-          bundle install --jobs 4 --retry 3
+      # - name: Install gems
+      #   run: |
+      #     bundle config path vendor/bundle
+      #     # bundle config set without 'default doc job cable storage ujs test db'
+      #     bundle install --jobs 4 --retry 3
+
+      # - name: Install Dependences
+      #   run: |
+      #     bundle exec pod update
+      #     bundle exec pod install
 
       - name: Install Dependences
         run: |
-          bundle exec pod update --verbose
-          bundle exec pod install --verbose
+          sudo gem install cocoapods
+          pod install
+
+      - name: Clean and Build
+        run: xcodebuild CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO -scheme "SelfControl" -target "SelfControl" -configuration Release clean build
 
       # - name: Build
       #   uses: sersoft-gmbh/xcodebuild-action@v1.4
@@ -42,12 +52,12 @@ jobs:
       #     destination: platform=macOS
       #     action: build
 
-      # https://github.com/mxcl/xcodebuild
-      - name: Build
-        uses: mxcl/xcodebuild@v1
-        with:
-          xcode: ^12
-          platform: macOS
-          action: build
-          code-coverage: false
-          configuration: release
+      # # https://github.com/mxcl/xcodebuild
+      # - name: Build
+      #   uses: mxcl/xcodebuild@v1
+      #   with:
+      #     xcode: ^12
+      #     platform: macOS
+      #     action: build
+      #     code-coverage: false
+      #     configuration: release
