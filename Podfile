@@ -1,4 +1,4 @@
-source 'https://github.com/CocoaPods/Specs.git'
+source 'https://cdn.cocoapods.org/'
 
 minVersion = '10.10'
 
@@ -10,12 +10,12 @@ plugin 'cocoapods-prune-localizations', { :localizations => supported_locales }
 
 target "SelfControl" do
     use_frameworks! :linkage => :static
-    pod 'MASPreferences', '~> 1.1.4'
-    pod 'TransformerKit', '~> 1.1.1'
-    pod 'FormatterKit/TimeIntervalFormatter', '~> 1.8.0'
-    pod 'LetsMove', '~> 1.24'
-    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.0.3'
-    
+    pod 'MASPreferences'
+    pod 'TransformerKit'
+    pod 'FormatterKit/TimeIntervalFormatter'
+    pod 'LetsMove'
+    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.3.0'
+
     # Add test target
     target 'SelfControlTests' do
         inherit! :complete
@@ -24,19 +24,19 @@ end
 
 target "SelfControl Killer" do
     use_frameworks! :linkage => :static
-    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.0.3'
+    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.3.0'
 end
 
 # we can't use_frameworks on these because they're command-line tools
 # Sentry says we need use_frameworks, but they seem to work OK anyway?
 target "SCKillerHelper" do
-    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.0.3'
+    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.3.0'
 end
 target "selfcontrol-cli" do
-    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.0.3'
+    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.3.0'
 end
 target "org.eyebeam.selfcontrold" do
-    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.0.3'
+    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.3.0'
 end
 
 post_install do |pi|
