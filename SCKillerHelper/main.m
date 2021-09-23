@@ -201,7 +201,7 @@ int main(int argc, char* argv[]) {
         
         if ([SCMigrationUtilities legacySettingsFoundForUser: controllingUID]) {
             [SCMigrationUtilities copyLegacySettingsToDefaults: controllingUID];
-            [SCMigrationUtilities clearLegacySettingsForUser: controllingUID];
+            [SCMigrationUtilities clearLegacySettingsForUser: controllingUID ignoreRunningBlock: YES];
             [log appendFormat: @"Found, copied, and cleared legacy settings (v3.0-3.0.3)!\n"];
         } else {
             [log appendFormat: @"No legacy settings (v3.0-3.0.3) found.\n"];

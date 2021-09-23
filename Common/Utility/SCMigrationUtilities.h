@@ -28,6 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)copyLegacySettingsToDefaults;
 
 + (NSError*)clearLegacySettingsForUser:(uid_t)controllingUID;
++ (NSError*)clearLegacySettingsForUser:(uid_t)controllingUID ignoreRunningBlock:(BOOL)ignoreRunningBlock;
 
 @end
 

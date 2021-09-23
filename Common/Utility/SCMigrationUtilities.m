@@ -210,7 +210,7 @@
 //  - the defaults system
 //  - a v3.x per-user secured settings file
 // we should check for block settings in all of these places and get rid of them
-+ (NSError*)clearLegacySettingsForUser:(uid_t)controllingUID {
++ (NSError*)clearLegacySettingsForUser:(uid_t)controllingUID ignoreRunningBlock:(BOOL)ignoreRunningBlock {
     NSLog(@"Clearing legacy settings!");
     
     BOOL runningAsRoot = (geteuid() == 0);
@@ -224,7 +224,7 @@
     }
     
     // if we're gonna clear settings, there can't be a block running anywhere. otherwise, we should wait!
-    if ([SCBlockUtilities legacyBlockIsRunning]) {
+    if ([SCBlockUtilities legacyBlockIsRunning] && !ignoreRunningBlock) {
         NSLog(@"ERROR: Can't clear legacy settings because a block is ongoing!");
         NSError* err = [SCErr errorWithCode: 702];
         [SCSentry captureError: err];
@@ -289,6 +289,11 @@
     
     return retErr;
 }
+
++ (NSError*)clearLegacySettingsForUser:(uid_t)controllingUID {
+    return [SCMigrationUtilities clearLegacySettingsForUser: controllingUID ignoreRunningBlock: NO];
+}
+
 
 
 @end
