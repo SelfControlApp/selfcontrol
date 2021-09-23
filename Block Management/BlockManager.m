@@ -153,16 +153,27 @@ BOOL appendMode = NO;
 		[pf addRuleWithIP: nil port: entry.port maskLen: 0];
 	} else if(isIPv4) { // current we do NOT do ipfw blocking for IPv6
 		[pf addRuleWithIP: entry.hostname port: entry.port maskLen: entry.maskLen];
-	} else if(!isIP && (![self domainIsGoogle: entry.hostname] || isAllowlist)) { // domain name
-		// on blocklist blocks where the domain is Google, we don't use ipfw to block
-		// because we'd end up blocking more than the user wants (i.e. Search/Reader)
-		NSArray* addresses = [BlockManager ipAddressesForDomainName: entry.hostname];
+	} else if(!isIP) { // domain name
+        // Google requires special handling
+        if ([self domainIsGoogle: entry.hostname]) {
+            if (isAllowlist) {
+                // just add the whole Google IP range, it's way too error-prone to do an allowlist block of Google any other way
+                // last updated: 9/23/21 from https://www.gstatic.com/ipranges/goog.json
+                [self addGoogleIPsToPF];
+            }
+            // for blocklist blocks, just skip blocking Google by IP
+            // because we'd end up blocking more than the user wants (i.e. Search/Mail)
+            // rely on the domain-level blocking instead
+        } else {
+            // non-Google domains just get looked up and blocked by IP
+            NSArray* addresses = [BlockManager ipAddressesForDomainName: entry.hostname];
 
-		for(NSUInteger i = 0; i < [addresses count]; i++) {
-			NSString* ip = addresses[i];
+            for(NSUInteger i = 0; i < [addresses count]; i++) {
+                NSString* ip = addresses[i];
 
-			[pf addRuleWithIP: ip port: entry.port maskLen: entry.maskLen];
-		}
+                [pf addRuleWithIP: ip port: entry.port maskLen: entry.maskLen];
+            }
+        }
 	}
 
 	if(hostsBlockingEnabled && ![entry.hostname isEqualToString: @"*"] && !entry.port && !isIP) {
@@ -435,6 +446,85 @@ BOOL appendMode = NO;
     }
     
     return relatedEntries;
+}
+
+- (void)addGoogleIPsToPF {
+    [pf addRuleWithIP: @"8.8.4.0" port: 0 maskLen: 24];
+    [pf addRuleWithIP: @"8.34.208.0" port: 0 maskLen: 20];
+    [pf addRuleWithIP: @"8.35.192.0" port: 0 maskLen: 20];
+    [pf addRuleWithIP: @"23.236.48.0" port: 0 maskLen: 240];
+    [pf addRuleWithIP: @"23.251.128.0" port: 0 maskLen: 19];
+    [pf addRuleWithIP: @"34.64.0.0" port: 0 maskLen: 10];
+    [pf addRuleWithIP: @"8.8.4.0" port: 0 maskLen: 24];
+    [pf addRuleWithIP: @"8.8.4.0" port: 0 maskLen: 24];
+    [pf addRuleWithIP: @"8.8.4.0" port: 0 maskLen: 24];
+    [pf addRuleWithIP: @"8.8.4.0" port: 0 maskLen: 24];
+    [pf addRuleWithIP: @"8.8.4.0" port: 0 maskLen: 24];
+    [pf addRuleWithIP: @"34.128.0.0" port: 0 maskLen: 10];
+    [pf addRuleWithIP: @"35.184.0.0" port: 0 maskLen: 13];
+    [pf addRuleWithIP: @"35.192.0.0" port: 0 maskLen: 14];
+    [pf addRuleWithIP: @"35.196.0.0" port: 0 maskLen: 15];
+    [pf addRuleWithIP: @"35.198.0.0" port: 0 maskLen: 16];
+    [pf addRuleWithIP: @"35.199.0.0" port: 0 maskLen: 17];
+    [pf addRuleWithIP: @"35.199.128.0" port: 0 maskLen: 18];
+    [pf addRuleWithIP: @"35.200.0.0" port: 0 maskLen: 13];
+    [pf addRuleWithIP: @"35.208.0.0" port: 0 maskLen: 12];
+    [pf addRuleWithIP: @"35.224.0.0" port: 0 maskLen: 12];
+    [pf addRuleWithIP: @"35.240.0.0" port: 0 maskLen: 13];
+    [pf addRuleWithIP: @"64.15.112.0" port: 0 maskLen: 20];
+    [pf addRuleWithIP: @"64.233.160.0" port: 0 maskLen: 19];
+    [pf addRuleWithIP: @"66.102.0.0" port: 0 maskLen: 20];
+    [pf addRuleWithIP: @"66.249.64.0" port: 0 maskLen: 19];
+    [pf addRuleWithIP: @"70.32.128.0" port: 0 maskLen: 19];
+    [pf addRuleWithIP: @"72.14.192.0" port: 0 maskLen: 18];
+    [pf addRuleWithIP: @"74.114.24.0" port: 0 maskLen: 21];
+    [pf addRuleWithIP: @"74.125.0.0" port: 0 maskLen: 16];
+    [pf addRuleWithIP: @"104.154.0.0" port: 0 maskLen: 16];
+    [pf addRuleWithIP: @"104.196.0.0" port: 0 maskLen: 14];
+    [pf addRuleWithIP: @"104.237.160.0" port: 0 maskLen: 19];
+    [pf addRuleWithIP: @"107.167.160.0" port: 0 maskLen: 19];
+    [pf addRuleWithIP: @"107.178.192.0" port: 0 maskLen: 18];
+    [pf addRuleWithIP: @"108.59.80.0" port: 0 maskLen: 20];
+    [pf addRuleWithIP: @"108.170.192.0" port: 0 maskLen: 18];
+    [pf addRuleWithIP: @"108.177.0.0" port: 0 maskLen: 17];
+    [pf addRuleWithIP: @"130.211.0.0" port: 0 maskLen: 16];
+    [pf addRuleWithIP: @"136.112.0.0" port: 0 maskLen: 12];
+    [pf addRuleWithIP: @"142.250.0.0" port: 0 maskLen: 15];
+    [pf addRuleWithIP: @"146.148.0.0" port: 0 maskLen: 17];
+    [pf addRuleWithIP: @"162.216.148.0" port: 0 maskLen: 22];
+    [pf addRuleWithIP: @"162.222.176.0" port: 0 maskLen: 21];
+    [pf addRuleWithIP: @"172.110.32.0" port: 0 maskLen: 21];
+    [pf addRuleWithIP: @"172.217.0.0" port: 0 maskLen: 16];
+    [pf addRuleWithIP: @"172.253.0.0" port: 0 maskLen: 16];
+    [pf addRuleWithIP: @"173.194.0.0" port: 0 maskLen: 16];
+    [pf addRuleWithIP: @"173.255.112.0" port: 0 maskLen: 20];
+    [pf addRuleWithIP: @"192.158.28.0" port: 0 maskLen: 22];
+    [pf addRuleWithIP: @"192.178.0.0" port: 0 maskLen: 15];
+    [pf addRuleWithIP: @"193.186.4.0" port: 0 maskLen: 24];
+    [pf addRuleWithIP: @"199.36.154.0" port: 0 maskLen: 23];
+    [pf addRuleWithIP: @"199.36.156.0" port: 0 maskLen: 24];
+    [pf addRuleWithIP: @"199.192.112.0" port: 0 maskLen: 22];
+    [pf addRuleWithIP: @"199.223.232.0" port: 0 maskLen: 21];
+    [pf addRuleWithIP: @"207.223.160.0" port: 0 maskLen: 20];
+    [pf addRuleWithIP: @"208.65.152.0" port: 0 maskLen: 22];
+    [pf addRuleWithIP: @"208.68.108.0" port: 0 maskLen: 22];
+    [pf addRuleWithIP: @"208.81.188.0" port: 0 maskLen: 22];
+    [pf addRuleWithIP: @"208.117.224.0" port: 0 maskLen: 19];
+    [pf addRuleWithIP: @"209.85.128.0" port: 0 maskLen: 17];
+    [pf addRuleWithIP: @"216.58.192.0" port: 0 maskLen: 19];
+    [pf addRuleWithIP: @"216.73.80.0" port: 0 maskLen: 20];
+    [pf addRuleWithIP: @"216.239.32.0" port: 0 maskLen: 19];
+    [pf addRuleWithIP: @"2001:4860::" port: 0 maskLen: 32];
+    [pf addRuleWithIP: @"2404:6800::" port: 0 maskLen: 32];
+    [pf addRuleWithIP: @"2404:f340::" port: 0 maskLen: 32];
+    [pf addRuleWithIP: @"2600:1900::" port: 0 maskLen: 28];
+    [pf addRuleWithIP: @"2606:73c0::" port: 0 maskLen: 32];
+    [pf addRuleWithIP: @"2607:f8b0::" port: 0 maskLen: 32];
+    [pf addRuleWithIP: @"2620:11a:a000::" port: 0 maskLen: 40];
+    [pf addRuleWithIP: @"2620:120:e000::" port: 0 maskLen: 40];
+    [pf addRuleWithIP: @"2800:3f0::" port: 0 maskLen: 32];
+    [pf addRuleWithIP: @"2a00:1450::" port: 0 maskLen: 32];
+    [pf addRuleWithIP: @"2c0f:fb50::" port: 0 maskLen: 32];
 }
 
 @end
