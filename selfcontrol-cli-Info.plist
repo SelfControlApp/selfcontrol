@@ -40,7 +40,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>4.0</string>
 	<key>CFBundleVersion</key>
-	<string>406</string>
+	<string>407</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
 	<key>NSAppTransportSecurity</key>
@@ -53,7 +53,7 @@
 	<key>SMPrivilegedExecutables</key>
 	<dict>
 		<key>org.eyebeam.selfcontrold</key>
-		<string>anchor apple generic and identifier &quot;org.eyebeam.selfcontrold&quot; and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = L6W5L88KN7)</string>
+		<string>anchor apple generic and identifier &quot;org.eyebeam.selfcontrold&quot; and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = EG6ZYP3AQH)</string>
 	</dict>
 </dict>
 </plist>
