@@ -247,6 +247,21 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
                                                                                             error: &createDirectoryErr];
             if (!createDirectorySuccessful) {
                 NSLog(@"WARNING: Failed to create %@ folder to store SCSettings. Error was %@", SETTINGS_FILE_DIR, createDirectoryErr);
+                [SCSentry addBreadcrumb: [NSString stringWithFormat: @"Failed to create directory for SCSettings with error %@", createDirectoryErr] category:@"settings"];
+            }
+
+            NSError* chmodDirectoryErr;
+            BOOL chmodDirectorySuccessful = [[NSFileManager defaultManager]
+                                             setAttributes: @{
+                                                 NSFileOwnerAccountID: [NSNumber numberWithUnsignedLong: 0],
+                                                 NSFileGroupOwnerAccountID: [NSNumber numberWithUnsignedLong: 0],
+                                                 NSFilePosixPermissions: [NSNumber numberWithShort: 0755]
+                                             }
+                                             ofItemAtPath: SETTINGS_FILE_DIR
+                                             error: &chmodDirectoryErr];
+            if (!chmodDirectorySuccessful) {
+                NSLog(@"WARNING: Failed to set permissions on %@ folder to store SCSettings. Error was %@", SETTINGS_FILE_DIR, chmodDirectoryErr);
+                [SCSentry addBreadcrumb: [NSString stringWithFormat: @"Failed to set directory permissions for SCSettings with error %@", chmodDirectoryErr] category:@"settings"];
             }
 
             NSError* writeErr;
