@@ -743,7 +743,7 @@
                                    error: &err];
 
         if (err != nil) {
-            NSError* displayErr = [SCErr errorWithCode: 105 subDescription: err.localizedDescription];
+            NSError* displayErr = [SCErr errorWithCode: 101 subDescription: err.localizedDescription];
             [SCSentry captureError: displayErr];
             NSBeep();
             [SCUIUtilities presentError: displayErr];
