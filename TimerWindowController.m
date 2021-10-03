@@ -160,9 +160,9 @@
 		// manual block removal
 		numStrikes++;
 
-		if(numStrikes >= 4) {
+		if(numStrikes >= 7) {
 			// OK, this is taking longer than it should. Enable manual block removal.
-            if (numStrikes == 4) {
+            if (numStrikes == 7) {
                 NSLog(@"WARNING: Block should have ended! Probable failure to remove.");
                 NSError* err = [SCErr errorWithCode: 105];
                 [SCSentry captureError: err];
