@@ -62,7 +62,7 @@ class SelfControlRelease
     end
 
     def parse_project_settings
-        @version = `xcodebuild -project SelfControl.xcodeproj/ -showBuildSettings | grep "CURRENT_PROJECT_VERSION" | sed 's/[ ]*CURRENT_PROJECT_VERSION = //'`.chomp
+        @version = `xcodebuild -project SelfControl.xcodeproj/ -showBuildSettings | grep "MARKETING_VERSION" | sed 's/[ ]*MARKETING_VERSION = //'`.chomp
         log_message("version is #{@version} and version.chomp is #{@version.chomp}")
 
         # Xcodeproj throws an insane number of warnings when opening the project

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="19162" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19162"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -219,7 +219,13 @@
                                     <action selector="showGetStartedWindow:" target="469" id="910"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="SelfControl FAQ" keyEquivalent="?" id="901">
+                            <menuItem title="Support Hub" id="sDg-De-b0b">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="openSupportHub:" target="469" id="Rcb-IZ-Bhn"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="FAQ" keyEquivalent="?" id="901">
                                 <connections>
                                     <action selector="openFAQ:" target="469" id="903"/>
                                 </connections>
@@ -234,7 +240,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="451" y="331" width="620" height="154"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2048" height="1255"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1025"/>
             <view key="contentView" id="372">
                 <rect key="frame" x="0.0" y="0.0" width="620" height="154"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

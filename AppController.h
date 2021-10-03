@@ -128,4 +128,7 @@
 // opens the SelfControl FAQ in the default browser
 - (IBAction)openFAQ:(id)sender;
 
+// opens the SelfControl Support Hub in the default browser
+- (IBAction)openSupportHub:(id)sender;
+
 @end

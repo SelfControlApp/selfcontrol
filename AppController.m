@@ -796,4 +796,11 @@
 	[[NSWorkspace sharedWorkspace] openURL: url];
 }
 
+- (IBAction)openSupportHub:(id)sender {
+    [SCSentry addBreadcrumb: @"Opened SelfControl Support Hub" category:@"app"];
+    NSURL *url=[NSURL URLWithString: @"https://selfcontrolapp.com/support"];
+    [[NSWorkspace sharedWorkspace] openURL: url];
+}
+
+
 @end
