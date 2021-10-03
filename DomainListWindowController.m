@@ -49,6 +49,15 @@
 }
 
 - (void)refreshDomainList {
+    // end any current editing to trigger saving blocklist
+    if (![NSThread isMainThread]) {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self refreshDomainList];
+        });
+        return;
+    }
+    
+    [[self window] makeFirstResponder: self];
     domainList_ = [[defaults_ arrayForKey: @"Blocklist"] mutableCopy];
     [domainListTableView_ reloadData];
 }
@@ -118,8 +127,11 @@
 	NSInteger editedRow = [domainListTableView_ editedRow];
 	NSString* editedString = [[[[note userInfo] objectForKey: @"NSFieldEditor"] textStorage] string];
 	editedString = [editedString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-
-	if (editedRow >= 0 && ![editedString length]) {
+    
+    // sometimes we get an edited row index that's out-of-bounds for weird reasons,
+    // e.g. if we're editing an empty row and then start a block, the data will get reloaded
+    // and the row will not exist by the time this method gets called. We can ignore in that case
+	if (editedRow >= 0 && editedRow < domainListTableView_.numberOfRows && !editedString.length) {
 		NSIndexSet* indexSet = [NSIndexSet indexSetWithIndex: (NSUInteger)editedRow];
 		[domainListTableView_ beginUpdates];
 		[domainListTableView_ removeRowsAtIndexes: indexSet withAnimation: NSTableViewAnimationSlideUp];

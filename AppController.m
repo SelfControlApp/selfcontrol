@@ -584,7 +584,13 @@
     [SCSentry addBreadcrumb: @"App running installBlock method" category:@"app"];
 	@autoreleasepool {
 		self.addingBlock = true;
+
+        // if there are any ongoing edits in the domain list, make sure they make it in
+        if (domainListWindowController_ != nil) {
+            [domainListWindowController_ refreshDomainList];
+        }
 		[self refreshUserInterface];
+
         [self.xpc installDaemon:^(NSError * _Nonnull error) {
             if (error != nil) {
                 [SCUIUtilities presentError: error];
