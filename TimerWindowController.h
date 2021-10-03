@@ -37,6 +37,7 @@
 	IBOutlet NSButton* addToBlockButton_;
 	IBOutlet NSButton* killBlockButton_;
     IBOutlet NSButton* extendBlockButton_;
+    IBOutlet NSTextField* legacyBlockWarningLabel_;
 
 	IBOutlet NSPanel* addSheet_;
 	IBOutlet NSTextField* addToBlockTextField_;

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="19162" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19162"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,9 +17,9 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="428" width="346" height="214"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2048" height="1255"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1025"/>
             <view key="contentView" id="32">
-                <rect key="frame" x="0.0" y="0.0" width="432" height="214"/>
+                <rect key="frame" x="0.0" y="0.0" width="431" height="214"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JxB-rO-FdX">
@@ -31,7 +31,7 @@
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="SelfControlIcon" id="tP8-FX-23L"/>
                     </imageView>
                     <button horizontalHuggingPriority="500" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="G4j-rB-Cgr">
-                        <rect key="frame" x="323" y="0.0" width="102" height="27"/>
+                        <rect key="frame" x="323" y="0.0" width="101" height="27"/>
                         <buttonCell key="cell" type="push" title="View Blocklist" bezelStyle="rounded" alignment="center" controlSize="small" state="on" borderStyle="border" inset="2" id="B4i-6r-MIh">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="menu" size="11"/>
@@ -41,7 +41,7 @@
                         </connections>
                     </button>
                     <button hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="100">
-                        <rect key="frame" x="119" y="45" width="194" height="27"/>
+                        <rect key="frame" x="118" y="45" width="195" height="27"/>
                         <buttonCell key="cell" type="push" title="Stuck? Stop block manually" bezelStyle="rounded" alignment="center" controlSize="small" state="on" borderStyle="border" inset="2" id="101">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -59,7 +59,7 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="33">
-                        <rect key="frame" x="-2" y="86" width="436" height="50"/>
+                        <rect key="frame" x="-2" y="86" width="435" height="50"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="00:00:00" id="34">
                             <font key="font" metaFont="system" size="42"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -67,7 +67,7 @@
                         </textFieldCell>
                     </textField>
                     <button horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="49">
-                        <rect key="frame" x="96" y="45" width="112" height="27"/>
+                        <rect key="frame" x="96" y="45" width="111" height="27"/>
                         <buttonCell key="cell" type="push" title="Add to Blocklist" bezelStyle="rounded" alignment="center" controlSize="small" state="on" borderStyle="border" inset="2" id="50">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="menu" size="11"/>
@@ -77,7 +77,7 @@
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6wT-hW-OYG">
-                        <rect key="frame" x="206" y="45" width="130" height="27"/>
+                        <rect key="frame" x="205" y="45" width="130" height="27"/>
                         <buttonCell key="cell" type="push" title="Extend Block Timer" bezelStyle="rounded" alignment="center" controlSize="small" state="on" borderStyle="border" inset="2" id="i3S-hJ-1V7">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="menu" size="11"/>
@@ -86,6 +86,15 @@
                             <action selector="extendBlockTime:" target="7" id="6Xu-rQ-ikP"/>
                         </connections>
                     </button>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zgk-dw-f88">
+                        <rect key="frame" x="-1" y="38" width="434" height="39"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" selectable="YES" alignment="center" title="You can't add to the blocklist or extend the block timer, because this block was started on an older version of SelfControl." id="XVK-Sr-Ukx">
+                            <font key="font" usesAppearanceFont="YES"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
                 <constraints>
                     <constraint firstItem="49" firstAttribute="centerY" secondItem="100" secondAttribute="centerY" id="1fA-oF-2yT"/>
@@ -109,7 +118,7 @@
                 </constraints>
             </view>
             <contentBorderThickness minY="32"/>
-            <point key="canvasLocation" x="-33" y="7"/>
+            <point key="canvasLocation" x="-33.5" y="7"/>
         </window>
         <customObject id="7" customClass="TimerWindowController">
             <connections>
@@ -122,6 +131,7 @@
                 <outlet property="extendDurationLabel_" destination="ljO-W1-kqG" id="rIK-W9-GGf"/>
                 <outlet property="extendDurationSlider_" destination="Rd1-Af-eXQ" id="Ojq-Qb-DxI"/>
                 <outlet property="killBlockButton_" destination="100" id="105"/>
+                <outlet property="legacyBlockWarningLabel_" destination="zgk-dw-f88" id="PcD-VR-Fx9"/>
                 <outlet property="timerLabel_" destination="33" id="91"/>
                 <outlet property="window" destination="31" id="89"/>
             </connections>
@@ -130,7 +140,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="418" width="334" height="92"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2048" height="1255"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1025"/>
             <view key="contentView" id="64">
                 <rect key="frame" x="0.0" y="0.0" width="334" height="89"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -189,14 +199,14 @@ DQ
                     <constraint firstAttribute="bottom" secondItem="66" secondAttribute="bottom" constant="14" id="yqD-Ax-O82"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="191" y="91"/>
+            <point key="canvasLocation" x="449" y="85"/>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="77"/>
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" visibleAtLaunch="NO" animationBehavior="default" id="N5B-KG-X2q" userLabel="Extend Block Sheet" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="418" width="338" height="170"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2048" height="1255"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1025"/>
             <view key="contentView" id="mZd-qZ-baN">
                 <rect key="frame" x="0.0" y="0.0" width="359" height="170"/>
                 <autoresizingMask key="autoresizingMask"/>

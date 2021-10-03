@@ -75,6 +75,7 @@
 	killBlockButton_.hidden = YES;
 	addToBlockButton_.hidden = NO;
     extendBlockButton_.hidden = NO;
+    legacyBlockWarningLabel_.hidden = YES;
 
     // set up extend block dialog
     extendDurationSlider_.maxDuration = [defaults integerForKey: @"MaxBlockLength"];
@@ -89,8 +90,9 @@
         // since it's too difficult to get these working across versions.
         // the user will just have to wait until their next block to do these things!
         if ([SCBlockUtilities legacyBlockIsRunning]) {
-            addToBlockButton_.enabled = NO;
-            extendBlockButton_.enabled = NO;
+            addToBlockButton_.hidden = YES;
+            extendBlockButton_.hidden = YES;
+            legacyBlockWarningLabel_.hidden = NO;
         }
     }
 
@@ -170,6 +172,7 @@
 
 			addToBlockButton_.hidden = YES;
             extendBlockButton_.hidden = YES;
+            legacyBlockWarningLabel_.hidden = YES;
 			killBlockButton_.hidden = NO;
 		}
 
