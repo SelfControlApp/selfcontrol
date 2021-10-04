@@ -191,12 +191,13 @@ BOOL appendMode = NO;
     // nil means that we don't have anything valid to block in this entry
     if (entry == nil) return;
 
-    [self addBlockEntry: entry];
-    
+    // enqueue new entries _before_ running this one, so they can happen in parallel
     NSArray<SCBlockEntry*>* relatedEntries = [self relatedBlockEntriesForEntry: entry];
     for (SCBlockEntry* relatedEntry in relatedEntries) {
         [self enqueueBlockEntry: relatedEntry];
     }
+
+    [self addBlockEntry: entry];
 }
 
 - (void)addBlockEntriesFromStrings:(NSArray<NSString*>*)blockList {
