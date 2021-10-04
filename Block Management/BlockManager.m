@@ -186,17 +186,19 @@ BOOL appendMode = NO;
 }
 
 - (void)addBlockEntryFromString:(NSString*)entryString {
+    NSLog(@"Adding block entry from string: %@", entryString);
     SCBlockEntry* entry = [SCBlockEntry entryFromString: entryString];
 
     // nil means that we don't have anything valid to block in this entry
     if (entry == nil) return;
 
-    [self addBlockEntry: entry];
-    
+    // enqueue block entries _before_ running this one, so they can get started in parallel
     NSArray<SCBlockEntry*>* relatedEntries = [self relatedBlockEntriesForEntry: entry];
     for (SCBlockEntry* relatedEntry in relatedEntries) {
         [self enqueueBlockEntry: relatedEntry];
     }
+
+    [self addBlockEntry: entry];
 }
 
 - (void)addBlockEntriesFromStrings:(NSArray<NSString*>*)blockList {
@@ -356,42 +358,70 @@ BOOL appendMode = NO;
 }
 + (NSArray*)ipAddressesForDomainName:(NSString*)domainName {
     if(domainName == nil) return @[];
-
+    
 	NSDate* startedResolving = [NSDate date];
     CFHostRef cfHost = CFHostCreateWithName(kCFAllocatorDefault, (__bridge CFStringRef)domainName);
     CFStreamError streamErr;
-    // TODO: call CFHostsScheduleWithRunLoop to put this on a background thread, so we can cancel/timeout early
+
+    // calling CFHostsScheduleWithRunLoop and CFHostSetClient allow us to run the resolutions async
+    // which then lets us cancel it at our preferred timeout period, rather than the default 30 seconds
+    CFHostScheduleWithRunLoop(cfHost, CFRunLoopGetCurrent(), CFSTR("DNSResolverRunLoopMode"));
+    CFHostClientContext ctx = { .info = (__bridge void*)self };
+    CFHostSetClient(cfHost, NULL, &ctx);
     CFHostStartInfoResolution(cfHost, kCFHostAddresses, &streamErr);
-    if (streamErr.error) {
-        NSLog(@"BlockManager: Warning: failed to resolve addresses for %@ with stream error", domainName);
-        CFRelease(cfHost);
-        return @[];
-    }
     
-    NSArray<NSData*>* addresses = (__bridge NSArray*)CFHostGetAddressing(cfHost, NULL);
-
-    NSMutableArray* stringAddresses = [NSMutableArray array];
-    if (addresses != NULL) {
-        for (NSData* addrData in addresses) {
-            NSError* parseErr;
-            NSString* ipStr = [BlockManager stringForAddress: addrData error: &parseErr];
-            if (ipStr) {
-                [stringAddresses addObject: ipStr];
-            } else {
-                NSLog(@"BlockManager: Warning: Failed to parse IP struct for domain %@ with error %@", domainName, parseErr);
-            }
+    float LOOKUP_TIMEOUT = 5.0;
+    Boolean hasBeenResolved = NO;
+    NSArray<NSData*>* addresses;
+    while (!hasBeenResolved) {
+        NSTimeInterval elapsedTime = [[NSDate date] timeIntervalSinceDate: startedResolving];
+        if (elapsedTime >= LOOKUP_TIMEOUT) {
+            NSLog(@"WARNING: Cancelling lookup for %@ after %f seconds (timed out)", domainName, elapsedTime);
+            CFHostCancelInfoResolution(cfHost, kCFHostAddresses);
+            break;
         }
-    } else {
-        NSLog(@"BlockManager: Warning: failed to resolve addresses for %@", domainName);
+
+        NSLog(@" ---> about to loop lookup for %@ at %f seconds", domainName, elapsedTime);
+        CFRunLoopRunInMode(CFSTR("DNSResolverRunLoopMode"), 1.0, YES);
+        NSLog(@"   ---> just looped lookup for %@ at %f seconds", domainName, elapsedTime);
+
+        addresses = (__bridge NSArray*)CFHostGetAddressing(cfHost, &hasBeenResolved);
     }
 
-	// log slow resolutions
-	NSDate* finishedResolving  = [NSDate date];
-	NSTimeInterval resolutionTime = [finishedResolving timeIntervalSinceDate: startedResolving];
-	if (resolutionTime > 2.5) {
-		NSLog(@"BlockManager: Warning: took %f seconds to resolve %@", resolutionTime, domainName);
-	}
+    CFHostSetClient(cfHost, NULL, NULL);
+    CFHostUnscheduleFromRunLoop(cfHost, CFRunLoopGetCurrent(), CFSTR("DNSResolverRunLoopMode"));
     
+//    if (streamErr.error) {
+//        NSLog(@"BlockManager: Warning: failed to resolve addresses for %@ with stream error", domainName);
+//        CFRelease(cfHost);
+//        return @[];
+//    }
+    
+    NSMutableArray* stringAddresses = [NSMutableArray array];
+//    if (hasBeenResolved) {
+//        if (addresses != NULL) {
+//            for (NSData* addrData in addresses) {
+//                NSError* parseErr;
+//                NSString* ipStr = [BlockManager stringForAddress: addrData error: &parseErr];
+//                if (ipStr) {
+//                    [stringAddresses addObject: ipStr];
+//                } else {
+//                    NSLog(@"BlockManager: Warning: Failed to parse IP struct for domain %@ with error %@", domainName, parseErr);
+//                }
+//            }
+//        } else {
+//            NSLog(@"BlockManager: Warning: failed to resolve addresses for %@", domainName);
+//        }
+//
+//        // log slow resolutions
+//        NSDate* finishedResolving  = [NSDate date];
+//        NSTimeInterval resolutionTime = [finishedResolving timeIntervalSinceDate: startedResolving];
+//        NSLog(@"BlockManager: took %f seconds to resolve %@", resolutionTime, domainName);
+//        if (resolutionTime > 2.5) {
+//            NSLog(@"BlockManager: Warning: took %f seconds to resolve %@", resolutionTime, domainName);
+//        }
+//    }
+//
     CFRelease(cfHost);
 
 	return stringAddresses;
