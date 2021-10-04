@@ -382,7 +382,7 @@ BOOL appendMode = NO;
         }
 
         NSLog(@" ---> about to loop lookup for %@ at %f seconds", domainName, elapsedTime);
-        CFRunLoopRunInMode(CFSTR("DNSResolverRunLoopMode"), 1.0, YES);
+        CFRunLoopRunInMode(kCFRunLoopDefaultMode, 1.0, YES);
         NSLog(@"   ---> just looped lookup for %@ at %f seconds", domainName, elapsedTime);
 
         addresses = (__bridge NSArray*)CFHostGetAddressing(cfHost, &hasBeenResolved);
