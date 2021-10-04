@@ -30,6 +30,29 @@
 		return nil;
 	}
 
+    // these sites are often featured in "share links" on a wide variety of websites
+    // we really don't want to add them to the allowlist, since they're also
+    // super distracting. So explicitly flag them to skip in this process
+    NSArray* neverAddSites = @[
+        @"instagram.com",
+        @"www.instagram.com",
+        @"twitter.com",
+        @"www.twitter.com",
+        @"facebook.com",
+        @"www.facebook.com",
+        @"reddit.com",
+        @"www.reddit.com",
+        @"youtube.com",
+        @"www.youtube.com",
+        @"pinterest.com",
+        @"plus.google.com",
+        @"www.pinterest.com",
+        @"linkedin.com",
+        @"www.linkedin.com",
+        @"tumblr.com",
+        @"www.tumblr.com"
+    ];
+
 	NSDataDetector* dataDetector = [[NSDataDetector alloc] initWithTypes: NSTextCheckingTypeLink error: nil];
 	NSCountedSet<SCBlockEntry*>* relatedEntries = [NSCountedSet set];
 	[dataDetector enumerateMatchesInString: html
@@ -38,7 +61,8 @@
 								usingBlock:^(NSTextCheckingResult* result, NSMatchingFlags flags, BOOL* stop) {
 									if (([result.URL.scheme isEqualToString: @"http"] || [result.URL.scheme isEqualToString: @"https"])
 										&& [result.URL.host length]
-										&& ![result.URL.host isEqualToString: rootURL.host]) {
+										&& ![result.URL.host isEqualToString: rootURL.host]
+                                        && ![neverAddSites containsObject: result.URL.host]) {
                                         [relatedEntries addObject: [SCBlockEntry entryWithHostname: result.URL.host]];
                                     }
 								}];
