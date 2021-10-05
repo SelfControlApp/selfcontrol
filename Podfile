@@ -10,7 +10,7 @@ plugin 'cocoapods-prune-localizations', { :localizations => supported_locales }
 
 target "SelfControl" do
     use_frameworks! :linkage => :static
-    pod 'MASPreferences', '~> 1.1.4'
+    pod 'MASPreferences', :git => 'https://github.com/shpakovski/MASPreferences', :tag => '1.3'
     pod 'TransformerKit', '~> 1.1.1'
     pod 'FormatterKit/TimeIntervalFormatter', '~> 1.8.0'
     pod 'LetsMove', '~> 1.24'
