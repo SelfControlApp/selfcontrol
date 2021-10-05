@@ -43,12 +43,12 @@ jobs:
       - name: Clean and Build
         run: |
           xcodebuild \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
             -parallelizeTargets
             -workspace SelfControl.xcworkspace \
             -scheme "SelfControl" \
             -configuration "Release" \
-            CODE_SIGN_IDENTITY="" \
-            CODE_SIGNING_REQUIRED=NO \
             clean build
 
       # v2
