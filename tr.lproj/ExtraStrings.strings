@@ -1,0 +1,33 @@
+/* Localized versions of Info.plist keys */
+
+"day" = "gün";
+"days" = "gün";
+"hour" = "saat";
+"hours" = "saat";
+"minute" = "dakika";
+"minutes" = "dakika";
+"Block in progress" = "Engelleme aktif";
+"The blacklist cannot be edited while a block is in progress." = "Engelleme aktif iken blok listesi düzenlenemez.";
+"OK" = "Tamam";
+"Helper tool not launched as root." = "Yardımcı araç root olarak çalıştırılamaz.";
+"Helper tool launched with insufficient arguments." = "Yardımcı araç yetersiz argüman ile çalıştırıldı.";
+"Host blocklist not set" = "Blok listesi ayarlanmadı";
+"Could not write launchd plist file to LaunchDaemons folder." = "launchd plist dosyası LaunchDaemons klasörüne yazılamadı.";
+"Could not create PrivilegedHelperTools directory." = "PrivilegedHelperTools klasörü oluşturulamadı.";
+"Could not change permissions on PrivilegedHelperTools directory." = "PrivilegedHelperTools klasörünün izinleri değiştirilemedi.";
+"Could not delete old helper binary." = "Eski yardımcı uygulama silinemedi.";
+"Could not copy SelfControl's helper binary to PrivilegedHelperTools directory." = "SelfControl'ün yardımcı uygulaması PrivilegedHelperTools klasörüne kopyalanamadı.";
+"Could not change permissions on SelfControl's helper binary." = "SelfControl'ün yardımcı uygulamasının izinleri değiştirilemedi.";
+"Insufficient block information found." = "Blok bilgisi yetersiz bulundu.";
+"Launch daemon load returned a failure status code." = "Launch daemon load bir hata kodu oluşturdu.";
+"Remove option called." = "Called seçeneğini kaldır.";
+"Refreshing domain blacklist, but no block is currently ongoing." = "Blok listesi yenileniyor, fakat engelleme aktif değil.";
+"Checkup ran but no block found." = "Checkup çalıştırıldı, fakat engelleme bulunamadı.";
+"Could not write lock file." = "Lock file yazılamadı.";
+"Could not remove SelfControl lock file." = "SelfControl lock dosyası silinemedi.";
+"SelfControl lock file already exists. Please try your block again." = "SelfControl lock dosyası zaten mevcut. Lütfen engellemeyi tekrar deneyin.";
+"Helper tool failed with unknown error code: %d" = "Yardımcı araç bilinmeyen bir hata kodu verdi: %d";
+"Error %d received from the Security Server." = "Güvenlik Sunucusu %d hatasını verdi.";
+"Error -104: The helper tool crashed. This may cause unexpected errors." = "Hata -104: Yardımcı araç durdu. Bu bilinmeyen hatalara sebep olabilir.";
+"Are you sure you want a whitelist block?" = "İzin listesi engellemesi istediğinizden emin misiniz?";
+"A whitelist block means that everything on the internet BESIDES your specified list will be blocked.  This includes the web, email, SSH, and anything else your computer accesses via the internet.  If a web site requires resources such as images or scripts from a site that is not on your whitelist, the site may not work properly." = "İzin listesi engellemesi yazdığınız liste dışındaki HER ŞEYİN engellenmesi anlamına gelir. Buna bütün web, email, SSH gibi internet erişimi kullanan bütün uygulamalar dahildir. İzin listenizdeki bir sitenin başka bir sayfadan yüklediği resimler görüntülenemeyebilir, betikler çalışmayabilir.";
