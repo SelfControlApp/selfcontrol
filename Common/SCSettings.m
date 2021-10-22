@@ -253,8 +253,6 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
             NSError* chmodDirectoryErr;
             BOOL chmodDirectorySuccessful = [[NSFileManager defaultManager]
                                              setAttributes: @{
-                                                 NSFileOwnerAccountID: [NSNumber numberWithUnsignedLong: 0],
-                                                 NSFileGroupOwnerAccountID: [NSNumber numberWithUnsignedLong: 0],
                                                  NSFilePosixPermissions: [NSNumber numberWithShort: 0755]
                                              }
                                              ofItemAtPath: SETTINGS_FILE_DIR
