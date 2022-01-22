@@ -73,7 +73,8 @@
         numMinutes = [defaults_ integerForKey: @"BlockDuration"];
     }
 
-    blockSliderTimeDisplayLabel_.stringValue = blockDurationSlider_.durationDescription;
+    blockSliderTimeDurationDisplayLabel_.stringValue = blockDurationSlider_.timeDurationDescription;
+    blockSliderTimeEndDisplayLabel_.stringValue = blockDurationSlider_.timeEndDescription;
 
 	[submitButton_ setEnabled: (numMinutes > 0) && ([[defaults_ arrayForKey: @"Blocklist"] count] > 0)];
 }
@@ -144,7 +145,7 @@
 
     NSAlert* alert = [[NSAlert alloc] init];
     alert.messageText = NSLocalizedString(@"That's a long block!", "Long block warning title");
-    alert.informativeText = [NSString stringWithFormat: NSLocalizedString(@"Remember that once you start the block, you can't turn it back off until the timer expires in %@ - even if you accidentally blocked a site you need. Consider starting a shorter block first, to test your list and make sure everything's working properly.", @"Long block warning message"), [SCDurationSlider timeSliderDisplayStringFromNumberOfMinutes: blockDuration]];
+    alert.informativeText = [NSString stringWithFormat: NSLocalizedString(@"Remember that once you start the block, you can't turn it back off until the timer expires in %@ - even if you accidentally blocked a site you need. Consider starting a shorter block first, to test your list and make sure everything's working properly.", @"Long block warning message"), [SCDurationSlider timeSliderDurationDisplayStringFromNumberOfMinutes: blockDuration]];
     [alert addButtonWithTitle: NSLocalizedString(@"Cancel", @"Button to cancel a long block")];
     [alert addButtonWithTitle: NSLocalizedString(@"Start Block Anyway", "Button to start a long block despite warnings")];
     alert.showsSuppressionButton = YES;

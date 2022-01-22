@@ -272,7 +272,7 @@
         extendDurationSlider_.integerValue = extendDurationSlider_.maxDuration;
     }
 
-    extendDurationLabel_.stringValue = extendDurationSlider_.durationDescription;
+    extendDurationLabel_.stringValue = extendDurationSlider_.timeDurationDescription;
 }
 
 - (IBAction) closeAddSheet:(id)sender {

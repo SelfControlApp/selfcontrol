@@ -72,13 +72,17 @@
                   }];
 }
 
-- (NSString*)durationDescription {
-    return [SCDurationSlider timeSliderDisplayStringFromNumberOfMinutes: self.durationValueMinutes];
+- (NSString*)timeDurationDescription {
+    return [SCDurationSlider timeSliderDurationDisplayStringFromNumberOfMinutes: self.durationValueMinutes];
+}
+
+- (NSString*)timeEndDescription {
+    return [SCDurationSlider timeSliderEndDisplayStringFromNumberOfMinutes: self.durationValueMinutes];
 }
 
 // String conversion utility methods
 
-+ (NSString *)timeSliderDisplayStringFromTimeInterval:(NSTimeInterval)numberOfSeconds {
++ (NSString *)timeSliderDurationDisplayStringFromTimeInterval:(NSTimeInterval)numberOfSeconds {
     static SCTimeIntervalFormatter* formatter = nil;
     if (formatter == nil) {
         formatter = [[SCTimeIntervalFormatter alloc] init];
@@ -88,7 +92,25 @@
     return formatted;
 }
 
-+ (NSString *)timeSliderDisplayStringFromNumberOfMinutes:(NSInteger)numberOfMinutes {
++ (NSString *)timeSliderEndDisplayStringFromTimeInterval:(NSTimeInterval)numberOfSeconds {
+    static NSDateFormatter* formatter = nil;
+    if (formatter == nil) {
+        formatter = [[NSDateFormatter alloc] init];
+    }
+    formatter.timeStyle = NSDateFormatterNoStyle;
+    formatter.dateStyle = NSDateFormatterShortStyle;
+    NSString* todayDateStr = [formatter stringFromDate: [NSDate date]];
+    NSDate* targetDate = [NSDate dateWithTimeIntervalSinceNow:numberOfSeconds];
+    NSString* targetDateStr = [formatter stringFromDate: targetDate];
+    
+    formatter.timeStyle = NSDateFormatterShortStyle;
+    formatter.dateStyle = [targetDateStr isEqual:todayDateStr] ? NSDateFormatterNoStyle : NSDateFormatterShortStyle;
+    
+    NSString* formatted = [formatter stringForObjectValue:targetDate];
+    return formatted;
+}
+
++ (NSString *)timeSliderDurationDisplayStringFromNumberOfMinutes:(NSInteger)numberOfMinutes {
     if (numberOfMinutes < 0) return @"Invalid duration";
 
     static NSCalendar* gregorian = nil;
@@ -104,7 +126,27 @@
 
     NSTimeInterval numberOfSecondsSelected = (NSTimeInterval)(numberOfSecondsPerMinute * numberOfMinutes);
 
-    NSString* displayString = [SCDurationSlider timeSliderDisplayStringFromTimeInterval:numberOfSecondsSelected];
+    NSString* displayString = [SCDurationSlider timeSliderDurationDisplayStringFromTimeInterval:numberOfSecondsSelected];
+    return displayString;
+}
+
++ (NSString *)timeSliderEndDisplayStringFromNumberOfMinutes:(NSInteger)numberOfMinutes {
+    if (numberOfMinutes < 0) return @"Invalid duration";
+
+    static NSCalendar* gregorian = nil;
+    if (gregorian == nil) {
+        gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    }
+
+    NSRange secondsRangePerMinute = [gregorian
+                                     rangeOfUnit:NSCalendarUnitSecond
+                                     inUnit:NSCalendarUnitMinute
+                                     forDate:[NSDate date]];
+    NSInteger numberOfSecondsPerMinute = (NSInteger)NSMaxRange(secondsRangePerMinute);
+
+    NSTimeInterval numberOfSecondsSelected = (NSTimeInterval)(numberOfSecondsPerMinute * numberOfMinutes);
+
+    NSString* displayString = [SCDurationSlider timeSliderEndDisplayStringFromTimeInterval:numberOfSecondsSelected];
     return displayString;
 }
 
