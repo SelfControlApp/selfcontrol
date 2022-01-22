@@ -36,20 +36,21 @@
 // to handle command flow and acts as delegate for the initial window.
 @interface AppController : NSObject <NSApplicationDelegate> {
 	IBOutlet SCDurationSlider* blockDurationSlider_;
-	IBOutlet NSTextField* blockSliderTimeDisplayLabel_;
-    IBOutlet NSTextField* blocklistTeaserLabel_;
+	IBOutlet NSTextField* blockSliderTimeDurationDisplayLabel_;
+	IBOutlet NSTextField* blockSliderTimeEndDisplayLabel_;
+	IBOutlet NSTextField* blocklistTeaserLabel_;
 	IBOutlet NSButton* submitButton_;
 	IBOutlet NSWindow* initialWindow_;
 
 	IBOutlet NSMenuItem* domainListMenuItem_;
-    IBOutlet NSMenuItem* editBlocklistMenuItem_;
-    
+	IBOutlet NSMenuItem* editBlocklistMenuItem_;
+	
 	IBOutlet NSButton* editBlocklistButton_;
 	IBOutlet DomainListWindowController* domainListWindowController_;
 	IBOutlet TimerWindowController* timerWindowController_;
 	NSWindowController* preferencesWindowController_;
 	NSUserDefaults* defaults_;
-    SCSettings* settings_;
+	SCSettings* settings_;
 	NSLock* refreshUILock_;
 	BOOL blockIsOn;
 	BOOL addingBlock;
