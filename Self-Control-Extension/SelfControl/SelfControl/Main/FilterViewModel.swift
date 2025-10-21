@@ -16,7 +16,8 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
     @State private var domains = ProxyPreferences.getBlockedDomains()
     private let listner = PlistListner()
     @Published var delay: Double = 0.0
-
+    var blockedIPAddressed: [String] = []
+    
   // Date formatter used to log entries
   lazy var dateFormatter: DateFormatter = {
     let formatter = DateFormatter()
@@ -84,8 +85,23 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
   
     func setBlockedUrls(urls: [String]) {
         IPCConnection.shared.enableURLBlocking(urls)
+        Task {
+            let ips: Set<String> = await DNSResolverActor().resolve(hostURL: urls)
+            print("Resolved app:\(ips)")
+            setIPAddressesToBlock(addresses: Array(ips))
+        }
     }
 
+    func setIPAddressesToBlock(addresses: [String]) {
+        IPCConnection.shared.enableIPAddressesBlocking(addresses)
+    }
+    
+    private func refreshBlockedIPs() {
+        self.listner.blockeddomainFetcher = {
+            return ProxyPreferences.getBlockedDomains()
+        }
+    }
+    
   func updateStatus() {
     if NEFilterManager.shared().isEnabled {
       registerWithProvider()
@@ -215,7 +231,15 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
 //    }
       activateExtension()
   }
-  
+    
+    func checkUrlRequest(url: String) {
+        URLSession.shared.dataTask(with: URL(string: url)!) { (data, response, error) in
+            print("Response: \(String(describing: response))")
+            print("Data: \(String(describing: data))")
+            print("Error: \(String(describing: error))")
+        }.resume()
+    }
+    
   func stopFilter() {
     let filterManager = NEFilterManager.shared()
     status = .indeterminate
@@ -309,3 +333,4 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
         print("didSetUrls+++++")
     }
 }
+

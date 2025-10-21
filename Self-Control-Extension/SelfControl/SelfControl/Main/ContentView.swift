@@ -14,6 +14,7 @@ import Cocoa
 struct ContentView: View {
     @EnvironmentObject var viewModel: FilterViewModel
     @Environment(\.openWindow) private var openWindow
+    @State private var newDomain = ""
 
   var body: some View {
     VStack(spacing: 20) {
@@ -51,11 +52,18 @@ struct ContentView: View {
           }
         }
       }
+        HStack {
+            TextField("Enter Url to test block", text: $newDomain)
+            Button("Test Url Blocking") {
+                viewModel.checkUrlRequest(url: newDomain)
+            }
+        }
 //        Button {
 //            viewModel.setBlockedUrls(urls: ProxyPreferences.getBlockedDomains())
 //        } label: {
 //            Text("Enable Url Blocking")
 //        }
+        SafariExtensionView()
     }
     .padding()
     .frame(minWidth: 150, minHeight: 150)

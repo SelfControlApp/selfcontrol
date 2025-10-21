@@ -13,6 +13,7 @@ import Network
 @objc protocol ProviderCommunication {
     func register(_ completionHandler: @escaping (Bool) -> Void)
     func setBlockedURLs(_ urls: [String])
+    func setBlockedIPAddresses(_ ips: [String])
 }
 
 /// Provider --> App IPC
@@ -38,6 +39,8 @@ class IPCConnection: NSObject {
   static let shared = IPCConnection()
 //    var blockedUrls: [String] = ProxyPreferences.getBlockedDomains()
     var blockedUrls: [String] = [String]()
+    var blockedList = BlockOrAllowList(items: [])
+    var blockedIPAddresses: Set<String> = []
 
   // MARK: Methods
   
@@ -164,14 +167,32 @@ extension IPCConnection: NSXPCListenerDelegate {
         }
         providerProxy.setBlockedURLs(urls)
     }
+    
+    func enableIPAddressesBlocking(_ urls: [String]) {
+        os_log("[SC] 🔍] Enabling URL blocking")
+        guard let providerProxy = currentConnection?.remoteObjectProxyWithErrorHandler({ registerError in
+          os_log("[SC] 🔍] Failed to register with the provider: %@", registerError.localizedDescription)
+        }) as? ProviderCommunication else {
+          fatalError("Failed to create a remote object proxy for the provider")
+        }
+        providerProxy.setBlockedIPAddresses(urls)
+    }
 }
 
+
 extension IPCConnection: ProviderCommunication {
+    
+    func setBlockedIPAddresses(_ ips: [String]) {
+        blockedIPAddresses = Set(ips)
+        os_log("[SC] 🔍] setBlockedIPAddresses: %{public}@", blockedIPAddresses)
+    }
+    
     func setBlockedURLs(_ urls: [String]) {
         os_log("[SC] 🔍] Blocking: %{public}@",urls)
         blockedUrls = urls
 //        delegate?.didSetUrls()
-        
+        blockedList = BlockOrAllowList(items: blockedUrls)
+
           guard let connection = currentConnection else {
               print("[SC] 🔍] Cannot update blocked urls, app isn't registered")
               return

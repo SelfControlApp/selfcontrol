@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct PreferencesView: View {
     @State private var domains = ProxyPreferences.getBlockedDomains()
     @State private var newDomain = ""
@@ -50,8 +49,8 @@ struct PreferencesView: View {
 
     func addDomain() {
         guard !newDomain.isEmpty else { return }
-        guard let domainValue = newDomain.domainString else { return }
-        domains.append(domainValue)
+//        guard let domainValue = newDomain.domainString else { return }
+        domains.append(newDomain)
         newDomain = ""
         ProxyPreferences.setBlockedDomains(domains)
     }

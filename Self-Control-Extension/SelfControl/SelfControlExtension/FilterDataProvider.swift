@@ -87,47 +87,141 @@ class FilterDataProvider: NEFilterDataProvider {
       completionHandler()
     }
     
-    // MARK: - Flow Handling
+    // MARK: - Flow Handlings
     
+    
+    func reverseDNSLookup(ip: String) -> String? {
+        var hints = addrinfo(ai_flags: AI_NUMERICHOST, ai_family: AF_UNSPEC,
+                             ai_socktype: SOCK_STREAM, ai_protocol: IPPROTO_TCP,
+                             ai_addrlen: 0, ai_canonname: nil,
+                             ai_addr: nil, ai_next: nil)
+        var res: UnsafeMutablePointer<addrinfo>?
+
+        if getaddrinfo(ip, nil, &hints, &res) == 0, let addr = res?.pointee.ai_addr {
+            var hostBuffer = [CChar](repeating: 0, count: Int(NI_MAXHOST))
+            if getnameinfo(addr, socklen_t(addr.pointee.sa_len),
+                           &hostBuffer, socklen_t(hostBuffer.count),
+                           nil, 0, NI_NAMEREQD) == 0 {
+                return String(cString: hostBuffer)
+            }
+        }
+        return nil
+    }
+    
+
     // Called for each new flow.
     override func handleNewFlow(_ flow: NEFilterFlow) -> NEFilterNewFlowVerdict {
       os_log("[SC] 🔍] FilterDataProvider: handleNewFlow invoked", log: OSLog.default, type: .debug)
 //        if let appID = flow.sourceAppIdentifier {
 //              print("App making the request: \(appID)")
 //          }
+//        let appIdAndName = SourceAppAuditTokenBuilder.getAppInfo(from: flow)
+//        os_log("[SC] 🔍] FilterDataProvider: appIdAndName %@, %@", log: OSLog.default, type: .debug, appIdAndName.appName ?? "", appIdAndName.bundleID ?? "")
+        guard IPCConnection.shared.blockedUrls.count > 0 else { //No signinficant urls to block
+            return .allow()
+        }
+        
+        let process = processFromflow(flow: flow)
+//        os_log(" FilterDataProvider: appIdAndName %{public}@, %{public}@", log: OSLog.default, type: .debug, process?.name ?? "", process?.path ?? "")
+        os_log(" FilterDataProvider: app %{public}@", log: OSLog.default, type: .debug, process?.description ?? "")
+
+        if let process = process, AllowedProcess.isAllowedProcess(process) {
+            os_log("[SC] 🔍] FilterDataProvider: allowing as it is in allowed list.")
+            return .allow()
+        }
       guard let socketFlow = flow as? NEFilterSocketFlow else {
         os_log("[SC] 🔍] Not a socket flow. Allowing.", log: OSLog.default, type: .info)
         return .allow()
       }
-    
-      // Extract remote endpoint (if available).
-      guard let remoteEndpoint = socketFlow.remoteEndpoint as? NWHostEndpoint else {
-        os_log("[SC] 🔍] No valid remote endpoint. Allowing flow.", log: OSLog.default, type: .error)
-        return .allow()
-      }
-      os_log("[SC] 🔍] Flow from remote endpoint: %{public}@, URL: %{public}@", log: OSLog.default, type: .debug, remoteEndpoint.description, flow.url?.description ?? "nil")
-        if let urlString = flow.url?.absoluteString {
-            os_log("[SC] 🔍] Checking URL path: %{public}@", urlString)
-//            let blockedHosts = ["google.com/mail", "google.com/news", "facebook.com"]
-            let blockedHosts = IPCConnection.shared.blockedUrls
-            os_log("[SC] 🔍] BlockedList: %{public}@ checking:%{public}@",blockedHosts, urlString)
-            for host in blockedHosts {
-                if urlString.contains(host) {
-                    os_log("[SC] 🔍] Blocking flow to handleNewFlow %{public}@", urlString)
-                    return .drop()
-//                    return .allow()
-                }
+        if socketFlow.direction !=  .outbound {
+            os_log("[SC] 🔍] Not a inbound socket flow. Allowing.", log: OSLog.default, type: .info)
+            return .allow()
+        }
+        var remoteHost = ""
+        if let flowURL = flow.url {
+            remoteHost = flowURL.absoluteString
+            os_log("[SC] 🔍] flow.url: \(remoteHost)")
+        } else {
+            if let remoteEndpoint = socketFlow.remoteEndpoint as? NWHostEndpoint {
+                remoteHost = remoteEndpoint.hostname
+                let port = remoteEndpoint.port
+                os_log("[SC] 🔍] NWEndpoint to host: %{public}@, URL: %{public}@, url: %{public}@", log: OSLog.default, type: .debug, remoteHost, port, flow.url?.host() ?? "")
             }
         }
+
+        
+        //todo: check host name, work on reverse rule if domain match and if path is nil or blocked, drop connection.
+//
+//        if IPCConnection.shared.blockedList.isMatch(flow as! NEFilterSocketFlow) {
+//            os_log("[SC] 🔍] Dropped", log: OSLog.default, type: .info)
+//            return .drop()
+//        }
+//        os_log("[SC] 🔍] Allowed", log: OSLog.default, type: .info)
+//
+//        return .allow()
+    
+        os_log("[SC] 🔍] Flow from remote endpoint: %{public}@, URL: %{public}@", log: OSLog.default, type: .debug, socketFlow.remoteEndpoint.debugDescription, flow.url?.description ?? "nil")
+
+      // Extract remote endpoint (if available).
+//      guard let remoteEndpoint = socketFlow.remoteEndpoint as? NWHostEndpoint else {
+//        os_log("[SC] 🔍] No valid remote endpoint. Allowing flow.", log: OSLog.default, type: .error)
+//        return .allow()
+//      }
+
+        if remoteHost.isEmpty { //Unable to get host
+            return .allow()
+        }
+        if remoteHost.isValidIpAddress {
+            if IPCConnection.shared.blockedIPAddresses.contains(remoteHost) {
+                os_log("[SC] 🔍] Blocking flow IP match: %{public}@", remoteHost)
+                return .drop()
+            }
+            if let host = ReverseDomainMapper.reverseDNSUsingGetNameInfo(ipAddress: remoteHost) {
+                os_log("[SC] 🔍] Converted IP: %{public}@ to: %{public}@", remoteHost, host)
+                remoteHost = host
+            } else { //unable to convert, simple ignore
+                return .allow()
+            }
+        } else {
+            return .allow()
+        }
+        guard let hostDomain = TLDURLToDomain.getURLDomain(from: remoteHost) else {
+            return .allow()
+        }
+        for url in IPCConnection.shared.blockedUrls {
+            if url.contains(hostDomain) {
+                os_log("[SC] 🔍] Blocking flow Host match %{public}@, %{public}@", remoteHost, hostDomain)
+                return .drop()
+            }
+        }
+//        if var urlString = flow.url?.absoluteString {
+//            os_log("[SC] 🔍] Checking URL path: %{public}@", urlString)
+////            let blockedHosts = ["google.com/mail", "google.com/news", "facebook.com"]
+//            let blockedHosts = IPCConnection.shared.blockedUrls
+//            os_log("[SC] 🔍] BlockedList: %{public}@ checking:%{public}@",blockedHosts, urlString)
+//            if urlString.hasPrefix("www.") {
+//                let noWWW = String(urlString.dropFirst(4))
+//                urlString = noWWW
+//            }
+//
+//            for host in blockedHosts {
+//                if urlString.contains(host) {
+//                    os_log("[SC] 🔍] Blocking flow to handleNewFlow %{public}@", urlString)
+//                    return .drop()
+////                    return .allow()
+//                }
+////                flow.url?.host() == url
+//            }
+//        }
   //      if blockedHosts.contains(flow.url?.path() ?? "") {
   //                 os_log("Blocking flow to %@", remoteEndpoint.hostname)
   //                 return .drop()
   //             }
       // Only process outbound traffic.
-      if socketFlow.direction != .outbound {
-        os_log("[SC] 🔍] Non-outbound traffic. Allowing.", log: OSLog.default, type: .info)
-        return .allow()
-      }
+//      if socketFlow.direction != .outbound {
+//        os_log("[SC] 🔍] Non-outbound traffic. Allowing.", log: OSLog.default, type: .info)
+//        return .allow()
+//      }
         
         return .allow()
       
@@ -273,6 +367,18 @@ class FilterDataProvider: NEFilterDataProvider {
     /// In a complete implementation, this might trigger an IPC to your app for user intervention.
     private func alertUser(for flow: NEFilterSocketFlow) {
       os_log("[SC] 🔍] Alert: User decision needed for flow %@", log: OSLog.default, type: .info, flow.debugDescription)
+    }
+    
+    func processFromflow(flow: NEFilterFlow) -> Process? {
+        guard let auditTokenData = flow.sourceAppAuditToken else {
+            return nil
+        }
+        
+        // Convert NSData → audit_token_t
+        var auditToken = auditTokenData.withUnsafeBytes { ptr -> audit_token_t in
+            return ptr.load(as: audit_token_t.self)
+        }
+        return Process.init(&auditToken)
     }
   }
 //https://developer.chrome.com/docs/extensions/how-to/distribute/install-extensions

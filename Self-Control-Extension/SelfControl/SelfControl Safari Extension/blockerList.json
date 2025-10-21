@@ -1,0 +1,60 @@
+[
+    {
+        "action": {
+            "type": "block"
+        },
+        "trigger": {
+            "url-filter": "facebook.com/friends"
+        }
+    },
+    {
+        "action": {
+            "type": "block"
+        },
+        "trigger": {
+            "url-filter": "facebook.com/marketplace"
+        }
+    },
+    {
+        "action": {
+            "type": "block"
+        },
+        "trigger": {
+            "url-filter": "facebook.com/watch"
+        }
+    }
+]
+//[
+//  {
+//    "trigger" : {
+//      "url_filter" : "^https?:\/\/(www\\.)?facebook\\.com\/friends.*"
+//    },
+//    "action" : {
+//      "type" : "block"
+//    }
+//  },
+//  {
+//    "trigger" : {
+//      "url_filter" : "^https?:\/\/(www\\.)?linkedin\\.com\/mynetwork.*"
+//    },
+//    "action" : {
+//      "type" : "block"
+//    }
+//  },
+//  {
+//    "trigger" : {
+//      "url_filter" : "^https?:\/\/(www\\.)?linkedin\\.com\/jobs.*"
+//    },
+//    "action" : {
+//      "type" : "block"
+//    }
+//  },
+//  {
+//    "trigger" : {
+//      "url_filter" : "^https?:\/\/(www\\.)?facebook\\.com\/marketplace.*"
+//    },
+//    "action" : {
+//      "type" : "block"
+//    }
+//  }
+//]

@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		77BA53092D9D5E2A00863476 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77BA53082D9D5E2A00863476 /* NetworkExtension.framework */; };
 		9A441CE32E36024E00A521CC /* com.application.SelfControl.corebits.network.systemextension in Embed System Extensions */ = {isa = PBXBuildFile; fileRef = 77BA53062D9D5E2A00863476 /* com.application.SelfControl.corebits.network.systemextension */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		9A7FFB602E950837007D4A0D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A7FFA0B2E91950D007D4A0D /* Cocoa.framework */; };
+		9A7FFB692E950837007D4A0D /* SelfControl Safari Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 9A7FFB5F2E950837007D4A0D /* SelfControl Safari Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -19,9 +21,27 @@
 			remoteGlobalIDString = 77BA53052D9D5E2A00863476;
 			remoteInfo = SelfControlExtension;
 		};
+		9A7FFB672E950837007D4A0D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 77BA52CE2D9D5D7700863476 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9A7FFB5E2E950837007D4A0D;
+			remoteInfo = "SelfControl Safari Extension";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		9A7FFA162E91950D007D4A0D /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				9A7FFB692E950837007D4A0D /* SelfControl Safari Extension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9AFC129E2E355671003B5455 /* Embed System Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -39,6 +59,8 @@
 		77BA52D62D9D5D7700863476 /* SelfControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SelfControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		77BA53062D9D5E2A00863476 /* com.application.SelfControl.corebits.network.systemextension */ = {isa = PBXFileReference; explicitFileType = "wrapper.system-extension"; includeInIndex = 0; path = com.application.SelfControl.corebits.network.systemextension; sourceTree = BUILT_PRODUCTS_DIR; };
 		77BA53082D9D5E2A00863476 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
+		9A7FFA0B2E91950D007D4A0D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		9A7FFB5F2E950837007D4A0D /* SelfControl Safari Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "SelfControl Safari Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -61,11 +83,19 @@
 		9A6873762E2814B30054AD3F /* Exceptions for "SelfControlExtension" folder in "SelfControl" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				BlockOrAllowList.swift,
 				IPCConnection.swift,
 				PlistListner.swift,
 				"String+URL.swift",
 			);
 			target = 77BA52D52D9D5D7700863476 /* SelfControl */;
+		};
+		9A7FFB6D2E950837007D4A0D /* Exceptions for "SelfControl Safari Extension" folder in "SelfControl Safari Extension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 9A7FFB5E2E950837007D4A0D /* SelfControl Safari Extension */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -87,6 +117,14 @@
 			path = SelfControlExtension;
 			sourceTree = "<group>";
 		};
+		9A7FFB612E950837007D4A0D /* SelfControl Safari Extension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				9A7FFB6D2E950837007D4A0D /* Exceptions for "SelfControl Safari Extension" folder in "SelfControl Safari Extension" target */,
+			);
+			path = "SelfControl Safari Extension";
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +143,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9A7FFB5C2E950837007D4A0D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9A7FFB602E950837007D4A0D /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -113,6 +159,7 @@
 			children = (
 				77BA52D82D9D5D7700863476 /* SelfControl */,
 				77BA530A2D9D5E2A00863476 /* SelfControlExtension */,
+				9A7FFB612E950837007D4A0D /* SelfControl Safari Extension */,
 				77BA53072D9D5E2A00863476 /* Frameworks */,
 				77BA52D72D9D5D7700863476 /* Products */,
 			);
@@ -123,6 +170,7 @@
 			children = (
 				77BA52D62D9D5D7700863476 /* SelfControl.app */,
 				77BA53062D9D5E2A00863476 /* com.application.SelfControl.corebits.network.systemextension */,
+				9A7FFB5F2E950837007D4A0D /* SelfControl Safari Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -131,6 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				77BA53082D9D5E2A00863476 /* NetworkExtension.framework */,
+				9A7FFA0B2E91950D007D4A0D /* Cocoa.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -146,11 +195,13 @@
 				77BA52D32D9D5D7700863476 /* Frameworks */,
 				77BA52D42D9D5D7700863476 /* Resources */,
 				9AFC129E2E355671003B5455 /* Embed System Extensions */,
+				9A7FFA162E91950D007D4A0D /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				9A441CE22E36024300A521CC /* PBXTargetDependency */,
+				9A7FFB682E950837007D4A0D /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				77BA52D82D9D5D7700863476 /* SelfControl */,
@@ -184,6 +235,28 @@
 			productReference = 77BA53062D9D5E2A00863476 /* com.application.SelfControl.corebits.network.systemextension */;
 			productType = "com.apple.product-type.system-extension";
 		};
+		9A7FFB5E2E950837007D4A0D /* SelfControl Safari Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9A7FFB6A2E950837007D4A0D /* Build configuration list for PBXNativeTarget "SelfControl Safari Extension" */;
+			buildPhases = (
+				9A7FFB5B2E950837007D4A0D /* Sources */,
+				9A7FFB5C2E950837007D4A0D /* Frameworks */,
+				9A7FFB5D2E950837007D4A0D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				9A7FFB612E950837007D4A0D /* SelfControl Safari Extension */,
+			);
+			name = "SelfControl Safari Extension";
+			packageProductDependencies = (
+			);
+			productName = "SelfControl Safari Extension";
+			productReference = 9A7FFB5F2E950837007D4A0D /* SelfControl Safari Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -191,7 +264,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1620;
+				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
 					77BA52D52D9D5D7700863476 = {
@@ -199,6 +272,9 @@
 					};
 					77BA53052D9D5E2A00863476 = {
 						CreatedOnToolsVersion = 16.2;
+					};
+					9A7FFB5E2E950837007D4A0D = {
+						CreatedOnToolsVersion = 26.0;
 					};
 				};
 			};
@@ -218,6 +294,7 @@
 			targets = (
 				77BA52D52D9D5D7700863476 /* SelfControl */,
 				77BA53052D9D5E2A00863476 /* SelfControlExtension */,
+				9A7FFB5E2E950837007D4A0D /* SelfControl Safari Extension */,
 			);
 		};
 /* End PBXProject section */
@@ -231,6 +308,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		77BA53042D9D5E2A00863476 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A7FFB5D2E950837007D4A0D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -254,6 +338,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9A7FFB5B2E950837007D4A0D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -261,6 +352,11 @@
 			isa = PBXTargetDependency;
 			target = 77BA53052D9D5E2A00863476 /* SelfControlExtension */;
 			targetProxy = 9A441CE12E36024300A521CC /* PBXContainerItemProxy */;
+		};
+		9A7FFB682E950837007D4A0D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9A7FFB5E2E950837007D4A0D /* SelfControl Safari Extension */;
+			targetProxy = 9A7FFB672E950837007D4A0D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -394,8 +490,19 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SelfControl/Preview Content\"";
 				DEVELOPMENT_TEAM = X6FQ433AWK;
+				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
+				ENABLE_RESOURCE_ACCESS_USB = NO;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SelfControl/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -423,8 +530,19 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SelfControl/Preview Content\"";
 				DEVELOPMENT_TEAM = X6FQ433AWK;
+				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
+				ENABLE_RESOURCE_ACCESS_USB = NO;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SelfControl/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -462,6 +580,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.5;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "-lbsm";
 				PRODUCT_BUNDLE_IDENTIFIER = com.application.SelfControl.corebits.network;
 				PRODUCT_NAME = "$(inherited)";
 				SKIP_INSTALL = YES;
@@ -491,10 +610,77 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.5;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "-lbsm";
 				PRODUCT_BUNDLE_IDENTIFIER = com.application.SelfControl.corebits.network;
 				PRODUCT_NAME = "$(inherited)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		9A7FFB6B2E950837007D4A0D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "SelfControl Safari Extension/SelfControl Safari Extension.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = X6FQ433AWK;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "SelfControl Safari Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "SelfControl Safari Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.application.SelfControl.corebits.SelfControl-Safari-Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		9A7FFB6C2E950837007D4A0D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "SelfControl Safari Extension/SelfControl Safari Extension.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = X6FQ433AWK;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "SelfControl Safari Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "SelfControl Safari Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.application.SelfControl.corebits.SelfControl-Safari-Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -525,6 +711,15 @@
 			buildConfigurations = (
 				77BA53162D9D5E2A00863476 /* Debug */,
 				77BA53172D9D5E2A00863476 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9A7FFB6A2E950837007D4A0D /* Build configuration list for PBXNativeTarget "SelfControl Safari Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9A7FFB6B2E950837007D4A0D /* Debug */,
+				9A7FFB6C2E950837007D4A0D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
