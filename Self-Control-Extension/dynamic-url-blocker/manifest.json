@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Dynamic URL Blocker",
+  "version": "1.0.0",
+  "description": "Block websites by typing them into a popup. Uses dynamic Declarative Net Request rules.",
+  "permissions": [
+    "declarativeNetRequest",
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "http://localhost/*",
+    "http://127.0.0.1/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+        "type": "module"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Dynamic URL Blocker"
+  }
+}
