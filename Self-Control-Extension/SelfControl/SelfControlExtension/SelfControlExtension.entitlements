@@ -4,15 +4,11 @@
 <dict>
 	<key>com.apple.developer.networking.networkextension</key>
 	<array>
-		<string>content-filter-provider</string>
+		<string>content-filter-provider-systemextension</string>
 	</array>
-	<key>com.apple.security.app-sandbox</key>
-	<true/>
 	<key>com.apple.security.application-groups</key>
 	<array>
 		<string>$(TeamIdentifierPrefix)com.application.SelfControl.corebits</string>
 	</array>
-	<key>com.apple.security.network.server</key>
-	<true/>
 </dict>
 </plist>
