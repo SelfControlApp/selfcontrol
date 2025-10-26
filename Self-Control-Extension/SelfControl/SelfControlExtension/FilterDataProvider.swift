@@ -108,9 +108,155 @@ class FilterDataProvider: NEFilterDataProvider {
         return nil
     }
     
+    func extractHost(from request: String) -> String? {
+        for line in request.split(separator: "\r\n") {
+            if line.lowercased().hasPrefix("host:") {
+                return line.replacingOccurrences(of: "Host:", with: "", options: .caseInsensitive)
+                           .trimmingCharacters(in: .whitespaces)
+            }
+        }
+        return nil
+    }
+
+    func extractPath(from request: String) -> String? {
+        guard let firstLine = request.split(separator: "\r\n").first else { return nil }
+        let comps = firstLine.split(separator: " ")
+        return comps.count > 1 ? String(comps[1]) : nil
+    }
+    
+    func extractSNI(fromTLSData data: Data) -> String? {
+        // TLS record starts with 0x16 (Handshake), version bytes, then length
+        guard data.count > 5, data[0] == 0x16 else { return nil }
+
+        var offset = 5 // Skip record header
+
+        // Verify handshake type = ClientHello (0x01)
+        guard data.count > offset, data[offset] == 0x01 else { return nil }
+        offset += 4 // Skip type + length (3 bytes)
+
+        // Skip protocol version (2), random (32), session id length + session id
+        guard data.count > offset + 34 else { return nil }
+        offset += 34
+        guard data.count > offset else { return nil }
+
+        // Skip session ID
+        if offset < data.count {
+            let sessionIDLength = Int(data[offset])
+            offset += 1 + sessionIDLength
+        }
+
+        // Skip cipher suites
+        guard offset + 2 <= data.count else { return nil }
+        let cipherSuiteLength = Int(data[offset]) << 8 | Int(data[offset + 1])
+        offset += 2 + cipherSuiteLength
+
+        // Skip compression methods
+        guard offset < data.count else { return nil }
+        let compressionLength = Int(data[offset])
+        offset += 1 + compressionLength
+
+        // Skip extensions length
+        guard offset + 2 <= data.count else { return nil }
+        let extensionsLength = Int(data[offset]) << 8 | Int(data[offset + 1])
+        offset += 2
+        guard offset + extensionsLength <= data.count else { return nil }
+
+        var extOffset = offset
+        while extOffset + 4 <= offset + extensionsLength {
+            let extType = Int(data[extOffset]) << 8 | Int(data[extOffset + 1])
+            let extLen  = Int(data[extOffset + 2]) << 8 | Int(data[extOffset + 3])
+            extOffset += 4
+
+            // Extension type 0 = Server Name
+            if extType == 0 {
+                // Parse Server Name extension
+                var nameOffset = extOffset + 2 // skip list length
+                while nameOffset + 3 < extOffset + extLen {
+                    let nameType = data[nameOffset]
+                    let nameLen = Int(data[nameOffset + 1]) << 8 | Int(data[nameOffset + 2])
+                    nameOffset += 3
+                    if nameType == 0, nameOffset + nameLen <= data.count {
+                        let nameData = data.subdata(in: nameOffset ..< nameOffset + nameLen)
+                        return String(data: nameData, encoding: .utf8)
+                    }
+                    nameOffset += nameLen
+                }
+            }
+
+            extOffset += extLen
+        }
+
+        return nil
+    }
+
+    override func handleOutboundData(
+          from flow: NEFilterFlow,
+          readBytesStartOffset offset: Int,
+          readBytes data: Data
+      ) -> NEFilterDataVerdict {
+          
+          
+          let process = processFromflow(flow: flow)
+  //        os_log(" FilterDataProvider: appIdAndName %{public}@, %{public}@", log: OSLog.default, type: .debug, process?.name ?? "", process?.path ?? "")
+          os_log(" FilterDataProvider: app %{public}@", log: OSLog.default, type: .debug, process?.description ?? "")
+
+          if let process = process, AllowedProcess.isAllowedProcess(process) {
+              os_log("[SC] 🔍] FilterDataProvider: allowing as it is in allowed list.")
+              return .allow()
+          }
+        guard let socketFlow = flow as? NEFilterSocketFlow else {
+          os_log("[SC] 🔍] Not a socket flow. Allowing.", log: OSLog.default, type: .info)
+          return .allow()
+        }
+          if socketFlow.direction !=  .outbound {
+              os_log("[SC] 🔍] Not a inbound socket flow. Allowing.", log: OSLog.default, type: .info)
+              return .allow()
+          }
+          
+//          guard let socketFlow = flow as? NEFilterSocketFlow else {
+//              return .allow()
+//          }
+        let requestString = String(data: data, encoding: .utf8)
+          if let requestString {
+              os_log("[SC] 🔍] data HTTP Request: %{public}@", requestString)
+          }
+
+          // Try HTTP detection
+          if let requestString = requestString,
+             requestString.hasPrefix("GET ") || requestString.hasPrefix("POST ") {
+              
+              if let host = extractHost(from: requestString),
+                 let path = extractPath(from: requestString) {
+                  let urlString = "http://\(host)\(path)"
+                  os_log("[SC] 🔍] data HTTP Request: %{public}@", urlString)
+              }
+
+          } else if let sni = extractSNI(fromTLSData: data) {
+              os_log("[SC] 🔍] data TLS SNI Host: %{public}@", sni)
+              guard let hostDomain = TLDURLToDomain.getURLDomain(from: sni) else {
+                  return .allow()
+              }
+              os_log("[SC] 🔍] data hostDomain: %{public}@", hostDomain)
+
+              for url in IPCConnection.shared.blockedUrls {
+                  if url.contains(hostDomain) {
+                      os_log("[SC] 🔍] data  Blocking flow Host match SNI:%{public}@,  host:%{public}@", sni, hostDomain)
+                      return .drop()
+                  }
+              }
+          }
+
+          return .allow()
+      }
 
     // Called for each new flow.
     override func handleNewFlow(_ flow: NEFilterFlow) -> NEFilterNewFlowVerdict {
+        // Provide peek sizes required by this overload
+        return .filterDataVerdict(withFilterInbound: false,
+                                  peekInboundBytes: 0,
+                                  filterOutbound: true,
+                                  peekOutboundBytes: Int.max)
+
       os_log("[SC] 🔍] FilterDataProvider: handleNewFlow invoked", log: OSLog.default, type: .debug)
 //        if let appID = flow.sourceAppIdentifier {
 //              print("App making the request: \(appID)")
@@ -269,24 +415,24 @@ class FilterDataProvider: NEFilterDataProvider {
         return completionHandler(true)
     }
     
-    override func handleOutboundData(from flow: NEFilterFlow, readBytesStartOffset offset: Int, readBytes: Data) -> NEFilterDataVerdict {
-        if let urlString = flow.url?.absoluteString {
-            os_log("[SC] 🔍] handleOutboundData URL: %{public}@", urlString)
-            if urlString.contains("facebook.com/friends") {
-                return .drop()
-            }
-        }
-
-        if let requestString = String(data: readBytes, encoding: .utf8) {
-            print("Outbound data: \(requestString)")
-            os_log("[SC] 🔍] handleOutboundData: %{public}@", requestString)
-
-            if requestString.contains("facebook.com/friends") {
-                return .drop()
-            }
-        }
-        return .allow()
-    }
+//    override func handleOutboundData(from flow: NEFilterFlow, readBytesStartOffset offset: Int, readBytes: Data) -> NEFilterDataVerdict {
+//        if let urlString = flow.url?.absoluteString {
+//            os_log("[SC] 🔍] handleOutboundData URL: %{public}@", urlString)
+//            if urlString.contains("facebook.com/friends") {
+//                return .drop()
+//            }
+//        }
+//
+//        if let requestString = String(data: readBytes, encoding: .utf8) {
+//            print("Outbound data: \(requestString)")
+//            os_log("[SC] 🔍] handleOutboundData: %{public}@", requestString)
+//
+//            if requestString.contains("facebook.com/friends") {
+//                return .drop()
+//            }
+//        }
+//        return .allow()
+//    }
     
 //    override func handleOutboundData(from flow: NEFilterFlow,
 //                                      readBytesStartOffset offset: Int,
