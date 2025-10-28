@@ -7,6 +7,7 @@
 
 import Foundation
 import UniformTypeIdentifiers
+import os.log
 
 class ContentBlockerRequestHandler: NSObject, NSExtensionRequestHandling {
     // Must match the App Group used by the host app
@@ -48,6 +49,7 @@ class ContentBlockerRequestHandler: NSObject, NSExtensionRequestHandling {
         let fileManager = FileManager.default
         guard let containerURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: appGroup) else {
             NSLog("❌ App Group container not found for %@", appGroup)
+            os_log("[SC] 🔍] Safari ❌ App Group container not found for: %{public}@", appGroup)
             return nil
         }
         return containerURL.appendingPathComponent(sharedFileName)
@@ -60,7 +62,17 @@ class ContentBlockerRequestHandler: NSObject, NSExtensionRequestHandling {
             try data.write(to: url, options: .atomic)
         } catch {
             NSLog("❌ Failed to write temporary rules file: \(error.localizedDescription)")
+            os_log("[SC] 🔍] Safari ❌ Failed to write temporary rules file: %{public}@", error.localizedDescription)
+
         }
         return url
     }
+    
+    
+    func cancelRequest(withError error: any Error) {
+        
+        os_log("[SC] 🔍] Safari ❌ cancelRequeste: %{public}@", error.localizedDescription)
+
+    }
+
 }
