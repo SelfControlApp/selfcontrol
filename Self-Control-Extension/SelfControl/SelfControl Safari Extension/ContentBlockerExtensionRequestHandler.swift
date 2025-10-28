@@ -18,7 +18,7 @@ public enum ContentBlockerExtensionRequestHandler {
     ///   - context: The extension context that initiated the request.
     ///   - groupIdentifier: The app group identifier used to access the shared container.
     public static func handleRequest(with context: NSExtensionContext, groupIdentifier: String) {
-        os_log(.info, "Start loading the content blocker")
+        os_log(.info, "[SC] 🔍] Safari Start loading the content blocker, %{public}@", context.inputItems.description)
 
         // Get the shared container URL using the provided group identifier
         guard
@@ -38,7 +38,7 @@ public enum ContentBlockerExtensionRequestHandler {
         // Determine which blocker list file to use
         var blockerListFileURL = sharedFileURL
         if !FileManager.default.fileExists(atPath: sharedFileURL.path) {
-            os_log(.info, "No blocker list file found. Using the default one.")
+            os_log(.info, "[SC] 🔍] Safari No blocker list file found. Using the default one.")
 
             // Fall back to the default blocker list included in the bundle
             guard
@@ -47,7 +47,7 @@ public enum ContentBlockerExtensionRequestHandler {
                 context.cancelRequest(
                     withError: createError(
                         code: 1002,
-                        message: "Failed to find default blocker list."
+                        message: "[SC] 🔍] Safari Failed to find default blocker list."
                     )
                 )
                 return
@@ -66,11 +66,13 @@ public enum ContentBlockerExtensionRequestHandler {
         // Prepare and complete the extension request with the blocker list
         let item = NSExtensionItem()
         item.attachments = [attachment]
-
+//        item.attributedTitle = NSAttributedString(string: "Hellow world!")
+//        item.attributedContentText = NSAttributedString(string: "Hello Content of the world!")
+        
         context.completeRequest(
             returningItems: [item]
         ) { _ in
-            os_log(.info, "Finished loading the content blocker")
+            os_log(.info, "[SC] 🔍] Safari Finished loading the content blocker")
         }
     }
 
