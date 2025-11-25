@@ -80,7 +80,10 @@ static NSDictionary* kAuthorizationRuleAuthenticateAsAdmin2MinTimeout;
             @"group": @"admin",
             @"timeout": @(120), // 2 minutes
             @"shared": @(YES),
-            @"version": @1 // not entirely sure what this does TBH
+            @"version": @1, // not entirely sure what this does TBH
+            // Enable Touch ID and other biometric authentication on macOS 10.12.2+
+            // The authenticate mechanism supports Touch ID when available
+            @"mechanisms": @[@"builtin:authenticate"]
         };
     }
     
