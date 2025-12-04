@@ -295,8 +295,16 @@ DQ
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="478">
-                        <rect key="frame" x="17" y="78" width="585" height="16"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="1 minute" id="479">
+                        <rect key="frame" x="17" y="78" width="290" height="16"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="1 minute" id="479">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rFZ-Tu-gCC">
+                        <rect key="frame" x="313" y="78" width="290" height="16"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="1 minute" id="Jkx-oB-TPU">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -305,19 +313,21 @@ DQ
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="543" secondAttribute="trailing" constant="20" id="0Wn-BM-hpf"/>
+                    <constraint firstItem="rFZ-Tu-gCC" firstAttribute="leading" secondItem="478" secondAttribute="trailing" constant="10" id="BtI-Lb-5g2"/>
                     <constraint firstItem="465" firstAttribute="trailing" secondItem="543" secondAttribute="trailing" id="Eqk-xh-OIc"/>
+                    <constraint firstAttribute="trailing" secondItem="rFZ-Tu-gCC" secondAttribute="trailing" constant="19" id="Gus-Sa-aUF"/>
                     <constraint firstItem="541" firstAttribute="centerX" secondItem="372" secondAttribute="centerX" id="KyZ-Mc-sxV"/>
                     <constraint firstAttribute="bottom" secondItem="543" secondAttribute="bottom" constant="11" id="MQd-6b-WA4"/>
                     <constraint firstItem="JfI-b0-nf0" firstAttribute="centerY" secondItem="543" secondAttribute="centerY" id="NDo-M0-Sne"/>
                     <constraint firstItem="JfI-b0-nf0" firstAttribute="leading" secondItem="478" secondAttribute="leading" id="UNP-ql-5cB"/>
                     <constraint firstItem="478" firstAttribute="leading" secondItem="372" secondAttribute="leading" constant="19" id="WdA-X8-Sm5"/>
+                    <constraint firstItem="rFZ-Tu-gCC" firstAttribute="width" secondItem="478" secondAttribute="width" id="Xck-dp-1pl"/>
                     <constraint firstItem="465" firstAttribute="centerX" secondItem="541" secondAttribute="centerX" id="fF7-jW-hAj"/>
                     <constraint firstItem="543" firstAttribute="top" secondItem="465" secondAttribute="bottom" constant="15" id="gCe-4n-0nP"/>
+                    <constraint firstItem="465" firstAttribute="top" secondItem="478" secondAttribute="bottom" constant="10" id="hYl-Vr-Chb"/>
                     <constraint firstItem="541" firstAttribute="top" secondItem="372" secondAttribute="top" constant="30" id="jXt-Fy-vdp"/>
-                    <constraint firstItem="478" firstAttribute="trailing" secondItem="543" secondAttribute="trailing" id="jmb-Wp-H3Y"/>
                     <constraint firstItem="543" firstAttribute="leading" secondItem="JfI-b0-nf0" secondAttribute="trailing" constant="23" id="mPT-an-Lpy"/>
-                    <constraint firstItem="543" firstAttribute="leading" relation="lessThanOrEqual" secondItem="478" secondAttribute="trailing" constant="-10" id="o6E-qg-6q9"/>
-                    <constraint firstItem="478" firstAttribute="bottom" secondItem="465" secondAttribute="top" constant="-10" id="spp-LO-oaf"/>
+                    <constraint firstItem="465" firstAttribute="top" secondItem="rFZ-Tu-gCC" secondAttribute="bottom" constant="10" id="spZ-i2-pbD"/>
                 </constraints>
             </view>
             <connections>
@@ -328,7 +338,8 @@ DQ
         <customObject id="469" customClass="AppController">
             <connections>
                 <outlet property="blockDurationSlider_" destination="465" id="669"/>
-                <outlet property="blockSliderTimeDisplayLabel_" destination="478" id="670"/>
+                <outlet property="blockSliderTimeDurationDisplayLabel_" destination="478" id="hu8-kp-Pfa"/>
+                <outlet property="blockSliderTimeEndDisplayLabel_" destination="rFZ-Tu-gCC" id="g3q-F2-hcD"/>
                 <outlet property="blocklistTeaserLabel_" destination="JfI-b0-nf0" id="PED-q3-MAF"/>
                 <outlet property="domainListMenuItem_" destination="503" id="673"/>
                 <outlet property="editBlocklistButton_" destination="543" id="6tH-Bv-ZNK"/>
