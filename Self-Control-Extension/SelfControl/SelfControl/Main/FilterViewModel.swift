@@ -21,6 +21,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
     var blockedIPAddressed: [String] = []
     private var cancellables = Set<AnyCancellable>()
     @Published var isActiveBlocking: Bool = false
+    lazy var selfControlDaemon = SSCDaemonHelper()
 
     // Safari extension identifier used to query state
     private let safariExtensionIdentifier = "com.application.SelfControl.corebits.SelfControl-Safari-Extension"
@@ -95,7 +96,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
   
   func onInit() {
     // On initialization load the filter configuration and register for changes.
-    loadFilterConfiguration { success in
+      Self.loadFilterConfiguration { success in
       guard success else {
         self.status = .stopped
         self.refreshExtensionState()
@@ -129,11 +130,17 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
   // MARK: - UI and Filter Management
   
     func setBlockedUrls(urls: [String]) {
+        
         IPCConnection.shared.enableURLBlocking(urls)
         Task {
             let ips: Set<String> = await DNSResolverActor().resolve(hostURL: urls)
             print("Resolved app:\(ips)")
             setIPAddressesToBlock(addresses: Array(ips))
+        }
+        if status == .stopped { //If legacy blocking
+            if isActiveBlocking { //if is active blocking
+                updateLegacyBlockedList(newBlockedDomains: urls)
+            }
         }
         // State might change due to Safari integration
     }
@@ -168,7 +175,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
     os_log("[SC] 🔍] %@", message)
   }
   
-  func loadFilterConfiguration(completionHandler: @escaping (Bool) -> Void) {
+  static func loadFilterConfiguration(completionHandler: @escaping (Bool) -> Void) {
     NEFilterManager.shared().loadFromPreferences { loadError in
       DispatchQueue.main.async {
         var success = true
@@ -187,7 +194,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
       registerWithProvider()
       return
     }
-    loadFilterConfiguration { success in
+      Self.loadFilterConfiguration { success in
       guard success else {
         self.status = .stopped
         self.refreshExtensionState()
@@ -211,7 +218,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
             self.refreshExtensionState()
             return
           } else {
-              self.enableDNSProxy()
+//              self.enableDNSProxy()
           }
           self.registerWithProvider()
         }
@@ -300,7 +307,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
       refreshExtensionState()
       return
     }
-    loadFilterConfiguration { success in
+      Self.loadFilterConfiguration { success in
       guard success else {
         self.status = .running
         self.refreshExtensionState()
@@ -436,6 +443,14 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
         blockTimer = nil
         timerFireDate = nil
         self.isActiveBlocking = false
+    }
+    
+    func installLegacyLaunched(futureDuration: Date) {
+        selfControlDaemon.install(blockedDomains: ProxyPreferences.getBlockedDomains(), time: futureDuration)
+    }
+    
+    func updateLegacyBlockedList(newBlockedDomains: [String]) {
+        selfControlDaemon.updateBlocklist(newBlockedDomains)
     }
 }
 
