@@ -607,7 +607,15 @@
                 // we're about to launch a helper tool which will read settings, so make sure the ones on disk are valid
                 [self->settings_ synchronizeSettings];
                 [self->defaults_ synchronize];
-
+                NSDictionary *blockSettings = @{
+                    @"ClearCaches": [self->defaults_ valueForKey: @"ClearCaches"],
+                    @"AllowLocalNetworks": [self->defaults_ valueForKey: @"AllowLocalNetworks"],
+                    @"EvaluateCommonSubdomains": [self->defaults_ valueForKey: @"EvaluateCommonSubdomains"],
+                    @"IncludeLinkedDomains": [self->defaults_ valueForKey: @"IncludeLinkedDomains"],
+                    @"BlockSoundShouldPlay": [self->defaults_ valueForKey: @"BlockSoundShouldPlay"],
+                    @"BlockSound": [self->defaults_ valueForKey: @"BlockSound"],
+                    @"EnableErrorReporting": [self->defaults_ valueForKey: @"EnableErrorReporting"]
+                };
                 // ok, the new helper tool is installed! refresh the connection, then it's time to start the block
                 [self.xpc refreshConnectionAndRun:^{
                     NSLog(@"Refreshed connection and ready to start block!");
@@ -615,15 +623,7 @@
                                                  blocklist: [self->defaults_ arrayForKey: @"Blocklist"]
                                                isAllowlist: [self->defaults_ boolForKey: @"BlockAsWhitelist"]
                                                    endDate: newBlockEndDate
-                                             blockSettings: @{
-                                                                @"ClearCaches": [self->defaults_ valueForKey: @"ClearCaches"],
-                                                                @"AllowLocalNetworks": [self->defaults_ valueForKey: @"AllowLocalNetworks"],
-                                                                @"EvaluateCommonSubdomains": [self->defaults_ valueForKey: @"EvaluateCommonSubdomains"],
-                                                                @"IncludeLinkedDomains": [self->defaults_ valueForKey: @"IncludeLinkedDomains"],
-                                                                @"BlockSoundShouldPlay": [self->defaults_ valueForKey: @"BlockSoundShouldPlay"],
-                                                                @"BlockSound": [self->defaults_ valueForKey: @"BlockSound"],
-                                                                @"EnableErrorReporting": [self->defaults_ valueForKey: @"EnableErrorReporting"]
-                                                            }
+                                             blockSettings: blockSettings
                                                      reply:^(NSError * _Nonnull error) {
                         if (error != nil) {
                             [SCUIUtilities presentError: error];
