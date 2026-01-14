@@ -24,14 +24,15 @@ struct ContentView: View {
             Button {
                 viewModel.activateExtension()
             } label: {
-                Text("Install and Start Block")
+                Text("Install and Start Network Extension")
             }
             // Start/Stop buttons.
             HStack {
               if viewModel.status == .stopped {
-                Button("Start") {
-                  viewModel.startFilter()
-                }
+                  Button("Start") {
+        //            viewModel.startFilter()
+                      viewModel.installLegacyLaunched(futureDuration: Date.now.addingTimeInterval(viewModel.delay*60))
+                  }
               }
               if viewModel.status == .running {
                 Button("Stop") {
@@ -53,10 +54,14 @@ struct ContentView: View {
                 viewModel.deactivateNetworkBlocking()
                 viewModel.cancelTimer()
             } else {
-                if viewModel.startTimerWithSelectedDelay() == false {
-                    return
+                if viewModel.status == .stopped {
+                    viewModel.installLegacyLaunched(futureDuration: Date.now.addingTimeInterval(viewModel.delay*60))
+                } else {
+                    if viewModel.startTimerWithSelectedDelay() == false {
+                        return
+                    }
+                    viewModel.activateNetworkBlocking()
                 }
-                viewModel.activateNetworkBlocking()
             }
         } label: {
             Text(viewModel.isActiveBlocking ? "Deactivate Block" : "Activate Block")
