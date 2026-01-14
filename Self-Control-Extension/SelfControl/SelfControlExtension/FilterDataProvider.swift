@@ -193,26 +193,27 @@ class FilterDataProvider: NEFilterDataProvider {
           readBytesStartOffset offset: Int,
           readBytes data: Data
     ) -> NEFilterDataVerdict {
-
+        var result: NEFilterDataVerdict = .allow()
+        
         guard IPCConnection.shared.isServiceActive else { //Service is inactive
-            return .allow()
+            return result
         }
         
         guard IPCConnection.shared.blockedUrls.count > 0 else { //No signinficant urls to block
-            return .allow()
+            return result
         }
 
         if RequestSourceAppValidator.isAllowedHost(flow: flow) {
-            return .allow()
+            return result
         }
         
         guard let socketFlow = flow as? NEFilterSocketFlow else {
             os_log("[SC] 🔍] <handleOutboundData> Not a socket flow. Allowing.", log: OSLog.default, type: .info)
-            return .allow()
+            return result
         }
         if socketFlow.direction !=  .outbound {
             os_log("[SC] 🔍] <handleOutboundData> Not a inbound socket flow. Allowing.", log: OSLog.default, type: .info)
-            return .allow()
+            return result
         }
         
         //          guard let socketFlow = flow as? NEFilterSocketFlow else {
@@ -236,19 +237,20 @@ class FilterDataProvider: NEFilterDataProvider {
         } else if let sni = extractSNI(fromTLSData: data) {
             os_log("[SC] 🔍] <handleOutboundData> data TLS SNI Host: %{public}@", sni)
             guard let hostDomain = TLDURLToDomain.getURLDomain(from: sni) else {
-                return .allow()
+                return result
             }
             os_log("[SC] 🔍] <handleOutboundData> data hostDomain: %{public}@", hostDomain)
             
             for url in IPCConnection.shared.blockedUrls {
                 if url.contains(hostDomain) {
                     os_log("[SC] 🔍] <handleOutboundData> data  Blocking flow Host match SNI:%{public}@,  host:%{public}@", sni, hostDomain)
-                    return .drop()
+                    result = .drop()
+                    break
                 }
             }
         }
         
-        return .allow()
+        return result
     }
 
     // Called for each new flow.
@@ -295,10 +297,10 @@ class FilterDataProvider: NEFilterDataProvider {
                                       filterOutbound: true,
                                       peekOutboundBytes: Int.max)
         }
-
+        os_log("[SC] 🔍] <handleNewFlow> Host SNI domain:%{public}@", hostDomain)
         for url in IPCConnection.shared.blockedUrls {
             if url.contains(hostDomain) {
-                os_log("[SC] 🔍] <handleNewFlow> data  Blocking flow Host:%{public}@", hostDomain)
+                os_log("[SC] 🔍] <handleNewFlow> Blocking flow Host:%{public}@", hostDomain)
                 return .drop()
             }
         }
@@ -398,7 +400,7 @@ class FilterDataProvider: NEFilterDataProvider {
     
     override func handleInboundData(from flow: NEFilterFlow, readBytesStartOffset offset: Int, readBytes: Data) -> NEFilterDataVerdict {
         if let requestString = String(data: readBytes, encoding: .utf8) {
-            print("Outbound data: \(requestString)")
+            print("Inbound data: \(requestString)")
             os_log("[SC] 🔍] handleInboundData: %{public}@", requestString)
 
             if requestString.contains("facebook.com/friends") {
