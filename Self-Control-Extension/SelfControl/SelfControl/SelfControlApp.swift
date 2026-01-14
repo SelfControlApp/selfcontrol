@@ -10,29 +10,18 @@ import SwiftUI
 @main
 struct SelfControlApp: App {
     @StateObject var viewModel = FilterViewModel()
+    @NSApplicationDelegateAdaptor(AppDelegate.self)
+    var appDelegate
+
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(viewModel) // Inject the object into the environment
-            
-            Button("Test", action: {
-                let iPAddress = resolveIPToHostname(ipAddress: "8.8.8.8")
-                print("IP: \(iPAddress ?? "Unknown")")
-                // Example:
-                if let host = reverseDNS(ipAddress: "8.8.8.8") {
-                    print("Hostname: \(host)")
-                } else {
-                    print("Could not resolve.")
-                }
-                // Example
-                if let domain = reverseDNSUsingGetNameInfo(ipAddress: "163.70.145.35") {
-                    print("Domain: \(domain)")
-                } else {
-                    print("Reverse DNS lookup failed.")
-                }
-
-            })
-
+                .onAppear(perform: {
+                    appDelegate.onAppClose = {
+                        viewModel.stopFilter()
+                    }
+                })
         }
         Window("Preferences View", id: "preferences") {
             PreferencesView() // Your view to be presented in the new window
