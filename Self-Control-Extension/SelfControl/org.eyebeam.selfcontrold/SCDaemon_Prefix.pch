@@ -1,0 +1,21 @@
+//
+// Prefix header for all source files of the 'SelfControl' target in the 'SelfControl' project
+//
+
+#ifdef __OBJC__
+
+#define SELFCONTROL_VERSION_STRING @"4.0.2"
+
+#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
+
+#import "DeprecationSilencers.h"
+//#import "SCUtility.h"
+#import "SCErr.h"
+#import "SCConstants.h"
+//#import "SCSentry.h"
+#import "SCSettings.h"
+#import "SCMiscUtilities.h"
+#import "SCHelperToolUtilities.h"
+
+#endif
