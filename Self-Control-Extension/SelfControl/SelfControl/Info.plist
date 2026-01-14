@@ -34,5 +34,10 @@
 	<true/>
 	<key>NSSupportsSuddenTermination</key>
 	<true/>
+	<key>SMPrivilegedExecutables</key>
+	<dict>
+		<key>org.eyebeam.selfcontrold</key>
+		<string>anchor apple generic and identifier "org.eyebeam.selfcontrold"</string>
+	</dict>
 </dict>
 </plist>
