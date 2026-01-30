@@ -15,19 +15,89 @@ struct SelfControlApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(viewModel) // Inject the object into the environment
-                .onAppear(perform: {
-                    appDelegate.onAppClose = {
-                        viewModel.stopFilter()
+            if viewModel.status == .running {
+               newView
+            } else {
+                oldView
+            }
+        }
+        .commands {
+            CommandGroup(replacing: .newItem) { }
+            CommandGroup(replacing: .appInfo) {
+                Button(Strings.AppMenu.aboutSelfControl) {
+                    NotificationCenter.default.post(name: NSNotification.Name("ShowAboutScreen"), object: nil)
+                }
+
+                Divider()
+
+                Button(Strings.AppMenu.editSiteList) {
+                    NotificationCenter.default.post(name: NSNotification.Name("ShowEditListScreen"), object: nil)
+                }
+                .keyboardShortcut("e", modifiers: .command)
+
+                  Button(Strings.AppMenu.editBlockSchedule) {
+                    NotificationCenter.default.post(name: NSNotification.Name("ShowBlockScheduleScreen"), object: nil)
+                }
+                .keyboardShortcut("b", modifiers: .command)
+
+                Button(Strings.AppMenu.moreSettings) {
+                    NotificationCenter.default.post(name: NSNotification.Name("ShowAdvancedSettingsScreen"), object: nil)
+                }
+                .keyboardShortcut(",", modifiers: .command)
+
+
+
+                Divider()
+
+                Button(Strings.AppMenu.donate) {
+                    if let url = URL(string: Strings.AppMenu.URLs.donate) {
+                        NSWorkspace.shared.open(url)
                     }
-                })
+                }
+            }
+            CommandGroup(replacing: .help) {
+                Button(Strings.AppMenu.gettingStartedTips) {
+                    NotificationCenter.default.post(name: NSNotification.Name("ShowTipsScreen"), object: nil)
+                }
+                .keyboardShortcut("t", modifiers: .command)
+
+                Divider()
+
+                Button(Strings.AppMenu.selfControlHelp) {
+                    if let url = URL(string: Strings.AppMenu.URLs.help) {
+                        NSWorkspace.shared.open(url)
+                    }
+                }
+                .keyboardShortcut("?", modifiers: .command)
+
+                Button(Strings.AppMenu.faq) {
+                    if let url = URL(string: Strings.AppMenu.URLs.faq) {
+                        NSWorkspace.shared.open(url)
+                    }
+                }
+            }
         }
         Window("Preferences View", id: "preferences") {
             PreferencesView() // Your view to be presented in the new window
                 .environmentObject(viewModel) // Inject the object into the environment
         }
         .windowStyle(.automatic)
+    }
+    
+    private var oldView: some View {
+        ContentView()
+            .environmentObject(viewModel) // Inject the object into the environment
+            .onAppear(perform: {
+                appDelegate.onAppClose = {
+                    viewModel.stopFilter()
+                }
+            })
+    }
+    
+    private var newView: some View {
+        NewContentView()
+            .environmentObject(viewModel) // Inject the object into the environment
+            .background(WindowTitleBarHider())
     }
 
     func resolveIPToHostname(ipAddress: String) -> String? {

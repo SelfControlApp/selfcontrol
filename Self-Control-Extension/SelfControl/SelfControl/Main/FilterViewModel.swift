@@ -17,6 +17,8 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
     @Published var status: Status = .stopped
     @State private var domains = ProxyPreferences.getBlockedDomains()
     private let chromeService = ChromeExtensionRequestListner()
+    @State var blockedURLs: [BlockedURL] = []
+    var blockerStorage: BlockedURLStore?
     @Published var delay: Double = 5.0
     var blockedIPAddressed: [String] = []
     private var cancellables = Set<AnyCancellable>()
@@ -29,8 +31,8 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
     // Timer to manage delayed actions based on `delay` (in minutes)
     private var blockTimer: Timer?
     private var timerFireDate: Date?
-    
-  // Date formatter used to log entries
+        
+    // Date formatter used to log entries
   lazy var dateFormatter: DateFormatter = {
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -84,6 +86,9 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
                 self.refreshExtensionState()
             }
             .store(in: &cancellables)
+        Task { @MainActor in
+            self.blockerStorage = BlockedURLStore()
+        }
     }
   
   deinit {
@@ -132,11 +137,11 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
     func setBlockedUrls(urls: [String]) {
         
         IPCConnection.shared.enableURLBlocking(urls)
-        Task {
-            let ips: Set<String> = await DNSResolverActor().resolve(hostURL: urls)
-            print("Resolved app:\(ips)")
-            setIPAddressesToBlock(addresses: Array(ips))
-        }
+//        Task {
+//            let ips: Set<String> = await DNSResolverActor().resolve(hostURL: urls)
+//            print("Resolved app:\(ips)")
+//            setIPAddressesToBlock(addresses: Array(ips))
+//        }
         if status == .stopped { //If legacy blocking
             if isActiveBlocking { //if is active blocking
                 updateLegacyBlockedList(newBlockedDomains: urls)
@@ -452,5 +457,18 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
     func updateLegacyBlockedList(newBlockedDomains: [String]) {
         selfControlDaemon.updateBlocklist(newBlockedDomains)
     }
+    
+    func updateBlockList(newBlockedDomains: [BlockedURL], time: Double ) {
+        
+        let urls = newBlockedDomains.compactMap(\.urls)
+        let flattened: [String] = urls.flatMap { $0 }
+        
+        ProxyPreferences.setBlockedDomains(flattened)
+        setBlockedUrls(urls: flattened)
+        self.delay = time
+        if startTimerWithSelectedDelay() == false {
+            return
+        }
+        activateNetworkBlocking()
+    }
 }
-

@@ -64,7 +64,7 @@ enum BlockListManager {
             // Ensure folder exists before writing
             try fileManager.createDirectory(at: containerURL, withIntermediateDirectories: true, attributes: nil)
 
-            let fileURL = containerURL.appendingPathComponent(SafariConst.SAFARI_BLOCKER_FILE_NAME)
+            let fileURL = containerURL.appendingPathComponent(Constants.SAFARI_BLOCKER_FILE_NAME)
             try data.write(to: fileURL, options: .atomic)
 
             print("✅ Wrote blockerList.json to: \(fileURL.path)")
@@ -73,7 +73,7 @@ enum BlockListManager {
             SFSafariExtensionManager.getStateOfSafariExtension(withIdentifier: SafariConst.identifier) { state, error in
                     os_log("[SC] 🔍 Safari Extension State Error: %{public}@", error?.localizedDescription ?? "")
                     os_log("[SC] 🔍 Safari Extension State: %{public}d", state?.isEnabled ?? false)
-                    print("Safari Extension State Error :\(error, default: "nil")")
+                    print("Safari Extension State Error :\(String(describing: error))")
                     print("Safari Extension State :\(state?.isEnabled ?? false)")
                     Task { @MainActor in
                         if NetworkExtensionState.shared.isEnabled == true {
