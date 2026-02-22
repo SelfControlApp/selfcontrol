@@ -591,7 +591,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 26210;
 				DEVELOPMENT_ASSET_PATHS = "\"SelfControl/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = X6FQ433AWK;
@@ -627,7 +627,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 26210;
 				DEVELOPMENT_ASSET_PATHS = "\"SelfControl/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = X6FQ433AWK;
@@ -660,7 +660,7 @@
 				CODE_SIGN_ENTITLEMENTS = SelfControlExtension/SelfControlExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 26210;
 				DEVELOPMENT_TEAM = X6FQ433AWK;
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = X6FQ433AWK;
 				ENABLE_APP_SANDBOX = NO;
@@ -694,7 +694,7 @@
 				CODE_SIGN_ENTITLEMENTS = SelfControlExtension/SelfControlExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 26210;
 				DEVELOPMENT_TEAM = X6FQ433AWK;
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = X6FQ433AWK;
 				ENABLE_APP_SANDBOX = NO;
@@ -784,7 +784,7 @@
 				CODE_SIGN_ENTITLEMENTS = "SelfControl Rules Extension/SelfControl Rules Extension.entitlements";
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 26210;
 				DEVELOPMENT_TEAM = X6FQ433AWK;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -833,7 +833,7 @@
 				CODE_SIGN_ENTITLEMENTS = "SelfControl Rules Extension/SelfControl Rules Extension.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 26210;
 				DEVELOPMENT_TEAM = X6FQ433AWK;
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = X6FQ433AWK;
 				ENABLE_APP_SANDBOX = YES;

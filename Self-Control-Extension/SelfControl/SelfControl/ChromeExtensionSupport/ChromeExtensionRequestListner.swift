@@ -19,7 +19,8 @@ final class ChromeExtensionRequestListner: NSObject, ObservableObject {
     var listener: NWListener?
     var blockeddomainFetcher: (() -> [String])?
     var isBlockingEnabled: Bool = false
-    
+    var onExtensionStateChange: (() -> Void)?
+
     func startListening() {
         os_log("[SC] 🔍] PlistListner startListening")
 
@@ -123,6 +124,10 @@ final class ChromeExtensionRequestListner: NSObject, ObservableObject {
             if NetworkExtensionState.shared.isEnabled == true && NetworkExtensionState.shared.isChromeExtensionEnabled == false {
                 NetworkExtensionState.shared.isChromeExtensionEnabled  = IPCConnection.shared.sendMessageToSetActiveBrowserExtension(ActiveBrowserExtensios.chrome.rawValue, state: true)
                 NetworkExtensionState.shared.printAll()
+            }
+            if isChromeStatusSetInExtension == false {
+                isChromeStatusSetInExtension = true
+                self.onExtensionStateChange?()
             }
         }
     }
