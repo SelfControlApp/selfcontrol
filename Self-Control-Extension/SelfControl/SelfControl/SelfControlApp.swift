@@ -15,10 +15,29 @@ struct SelfControlApp: App {
 
     var body: some Scene {
         WindowGroup {
-            if viewModel.status == .running {
-               newView
-            } else {
-                oldView
+            switch viewModel.viewState {
+            case .filter:
+                NewContentView()
+                    .environmentObject(viewModel) // Inject the object into the environment
+                    .background(WindowTitleBarHider())
+            case .installNetworkExtension:
+                OnBoardingInstallNetworkExt()
+                    .environmentObject(viewModel) // Inject the object into the environment
+                    .frame(width: 520, height: 420)
+                
+            case .installSafariExtension:
+                OnBoardingInstallSafariExt()
+                    .environmentObject(viewModel) // Inject the object into the environment
+                    .frame(width: 520, height: 420)
+                
+            case .installChromeExtension:
+                OnBoardingInstallChromeExt()
+                    .environmentObject(viewModel) // Inject the object into the environment
+                    .frame(width: 520, height: 420)
+                
+                
+            default:
+                EmptyView()
             }
         }
         .commands {
@@ -92,14 +111,8 @@ struct SelfControlApp: App {
                     viewModel.stopFilter()
                 }
             })
-    }
+    }    
     
-    private var newView: some View {
-        NewContentView()
-            .environmentObject(viewModel) // Inject the object into the environment
-            .background(WindowTitleBarHider())
-    }
-
     func resolveIPToHostname(ipAddress: String) -> String? {
         let hostRef = CFHostCreateWithName(nil, ipAddress as CFString).takeRetainedValue()
         
@@ -154,5 +167,17 @@ struct SelfControlApp: App {
         guard result == 0 else { return nil }
         return String(cString: hostname)
     }
+}
 
+extension AppOnboardingViewState {
+    init(state: SelfControlViewState) {
+        switch state {
+        case .installChromeExtension:
+            self = .installChromeExtension
+        case .installSafariExtension:
+            self = .installSafariExtension
+        default :
+            self = .installNetworkExtension
+        }
+    }
 }
