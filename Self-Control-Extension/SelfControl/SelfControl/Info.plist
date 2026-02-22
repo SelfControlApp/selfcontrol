@@ -39,5 +39,21 @@
 		<key>org.eyebeam.selfcontrold</key>
 		<string>anchor apple generic and identifier "org.eyebeam.selfcontrold"</string>
 	</dict>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeIcons</key>
+			<dict/>
+			<key>UTTypeIdentifier</key>
+			<string>scbulist</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>scbulist</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
 </dict>
 </plist>
