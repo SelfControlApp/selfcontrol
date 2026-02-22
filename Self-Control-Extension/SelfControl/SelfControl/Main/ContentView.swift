@@ -83,8 +83,8 @@ struct ContentView: View {
             }
             Spacer()
         }
-        SafariExtensionWebView()
-            .frame(minHeight: 100)
+//        SafariExtensionWebView()
+//            .frame(minHeight: 100)
         
           HStack {
               TextField("Enter Url to test block", text: $newDomain)
@@ -93,6 +93,7 @@ struct ContentView: View {
               }
           }
         Spacer()
+        AppOnboardingView()
     }
     .padding()
     .frame(minWidth: 150, minHeight: 150)
