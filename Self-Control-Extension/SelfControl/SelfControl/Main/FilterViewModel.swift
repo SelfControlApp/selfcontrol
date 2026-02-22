@@ -13,8 +13,41 @@ import Cocoa
 import Combine
 import SafariServices
 
+enum SelfControlViewState: Equatable {
+    
+    static func == (lhs: SelfControlViewState, rhs: SelfControlViewState) -> Bool {
+        switch (lhs, rhs) {
+        case (.installNetworkExtension, .installNetworkExtension),
+             (.installSafariExtension, .installSafariExtension),
+             (.installChromeExtension, .installChromeExtension),
+             (.error, .error),
+             (.filter, .filter):
+            return true
+        default:
+            return false
+        }
+    }
+    
+    
+    case installNetworkExtension
+    case installSafariExtension
+    case installChromeExtension
+    case error(Error)
+    case filter
+}
+
 final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionRequestDelegate, ExtensionToApp {
     @Published var status: Status = .stopped
+    @Published var viewState: SelfControlViewState = .installNetworkExtension
+    @Published var isNetworkExtensionSkipped: Bool = false {
+        didSet {
+            self.viewState = .filter
+        }
+    }
+
+    private var isSafariExtensionInstalled: Bool = ProxyPreferences.isSafariExtensionInstalled
+    private var isChromeExtensionInstalled: Bool = ProxyPreferences.isChromeExtensionInstalled
+
     @State private var domains = ProxyPreferences.getBlockedDomains()
     private let chromeService = ChromeExtensionRequestListner()
     @State var blockedURLs: [BlockedURL] = []
@@ -24,9 +57,6 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
     private var cancellables = Set<AnyCancellable>()
     @Published var isActiveBlocking: Bool = false
     lazy var selfControlDaemon = SSCDaemonHelper()
-
-    // Safari extension identifier used to query state
-    private let safariExtensionIdentifier = "com.application.SelfControl.corebits.SelfControl-Safari-Extension"
     
     // Timer to manage delayed actions based on `delay` (in minutes)
     private var blockTimer: Timer?
@@ -65,15 +95,30 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
   
     override init() {
         super.init()
+        ProxyPreferences.reset() //TODO: remove
         onInit()
-        SafariExtensionManager.shared.onChange = {
+        SafariExtensionManager.shared.onExtensionStateChange = {
             print("SafariExtensionManager.shared.onChange++")
+            self.isSafariExtensionInstalled = true
+            ProxyPreferences.setSafariExtensionInstalled()
+            Task { @MainActor in
+                self.updateSafariExtensionViewStatus()
+            }
+        }
+        self.chromeService.onExtensionStateChange = {
+            print("Chrome.shared.onChange++")
+            self.isChromeExtensionInstalled = true
+            ProxyPreferences.setChromeExtensionInstalled()
+            Task { @MainActor in
+                self.updateChromeExtensionViewStatus()
+            }
         }
         SafariExtensionManager.shared.resetExtensionState()
         self.extensionIdentifier = extensionBundle.bundleIdentifier
         self.chromeService.blockeddomainFetcher = {
             return ProxyPreferences.getBlockedDomains()
         }
+
         self.chromeService.startListening()
         
         // Print status whenever it changes
@@ -104,6 +149,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
       Self.loadFilterConfiguration { success in
       guard success else {
         self.status = .stopped
+        self.viewState = .installNetworkExtension
         self.refreshExtensionState()
         return
       }
@@ -128,10 +174,58 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
           if isNEEnabled == true { //Reset
               NetworkExtensionState.shared.isSafariExtensionEnabled = false
               NetworkExtensionState.shared.isChromeExtensionEnabled = false
+              updateNetworkExtensionViewStatus()
           }
       }       // We’ll query Safari extension state asynchronously for accuracy.
   }
   
+    @MainActor func updateNetworkExtensionViewStatus() {
+        if NetworkExtensionState.shared.isEnabled == true {
+            withAnimation(.easeInOut(duration: 3)) {
+                self.viewState = .installChromeExtension
+                updateChromeExtensionViewStatus()
+            }
+        }
+    }
+    
+    @MainActor func updateSafariExtensionViewStatus() {
+        if .installNetworkExtension == viewState {
+            print(".installNetworkExtension == viewState in updateSafariExtensionViewStatus")
+            return
+        }
+        
+        if isSafariExtensionInstalled == true {
+            withAnimation(.easeInOut(duration: 3)) {
+                print(" isSafariExtensionInstalled == true true in Safari")
+                self.viewState = .filter
+            }
+
+        } else {
+            withAnimation(.easeInOut(duration: 3)) {
+                print("viewState = .installChromeExtension true in Safari")
+                self.viewState = .installSafariExtension
+            }
+        }
+    }
+
+    @MainActor func updateChromeExtensionViewStatus() {
+        if .installNetworkExtension == viewState {
+            print(".installNetworkExtension == viewState in Chrome")
+            return
+        }
+
+        if isChromeExtensionInstalled == true {
+            print("if isChromeExtensionInstalled == true in Chrome")
+
+            updateSafariExtensionViewStatus()
+        } else {
+            withAnimation(.easeInOut(duration: 3)) {
+                print("viewState = .installChromeExtension true in Chrome")
+                self.viewState = .installChromeExtension
+            }
+        }
+    }
+
   // MARK: - UI and Filter Management
   
     func setBlockedUrls(urls: [String]) {
@@ -153,13 +247,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
     func setIPAddressesToBlock(addresses: [String]) {
         IPCConnection.shared.enableIPAddressesBlocking(addresses)
     }
-    
-    private func refreshBlockedIPs() {
-        self.chromeService.blockeddomainFetcher = {
-            return ProxyPreferences.getBlockedDomains()
-        }
-    }
-    
+        
   func updateStatus() {
     if NEFilterManager.shared().isEnabled {
       registerWithProvider()
@@ -209,6 +297,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
         let providerConfiguration = NEFilterProviderConfiguration()
         providerConfiguration.filterSockets = true
         providerConfiguration.filterPackets = false
+//        providerConfiguration.filterBrowsers = true
         filterManager.providerConfiguration = providerConfiguration
         if let appName = Bundle.main.infoDictionary?["CFBundleName"] as? String {
           filterManager.localizedDescription = appName
@@ -222,38 +311,12 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
             self.status = .stopped
             self.refreshExtensionState()
             return
-          } else {
-//              self.enableDNSProxy()
           }
           self.registerWithProvider()
         }
       }
     }
   }
-    
-    func enableDNSProxy() {
-        let manager = NEDNSProxyManager.shared()
-
-        manager.loadFromPreferences { error in
-            guard error == nil else { return }
-
-            let proto = NEDNSProxyProviderProtocol()
-            proto.providerBundleIdentifier = "com.application.SelfControl.corebits.network"
-            proto.serverAddress = "127.0.0.1" // placeholder
-//            proto.filterSockets = true
-            manager.localizedDescription = "DNS Logger"
-            manager.providerProtocol = proto
-            manager.isEnabled = true
-
-            manager.saveToPreferences { saveError in
-                if let saveError = saveError {
-                    print("Failed to save: \(saveError)")
-                } else {
-                    print("DNS proxy saved.")
-                }
-            }
-        }
-    }
     
   func registerWithProvider() {
     // Assuming an IPCConnection singleton similar to the AppKit sample
@@ -440,6 +503,15 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
         return true
     }
     
+    func extendBlockTimer(by minutes: Int) {
+        guard minutes != 0, let timer = blockTimer else { return }
+        let delta = TimeInterval(minutes * 60)
+        timer.fireDate = timer.fireDate.addingTimeInterval(delta)
+        // Optionally also track a blockEndDate if you show a countdown
+        timerFireDate = timer.fireDate
+        os_log("[SC] 🔍] Timer fire date updated to %{public}@", timerFireDate?.description ?? "Empty time")
+    }
+    
     func cancelTimer() {
         if let fireDate = timerFireDate {
             os_log("[SC] 🔍] Cancelling timer scheduled for %{public}@", fireDate as NSDate)
@@ -459,16 +531,21 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
     }
     
     func updateBlockList(newBlockedDomains: [BlockedURL], time: Double ) {
-        
+        self.delay = time
         let urls = newBlockedDomains.compactMap(\.urls)
         let flattened: [String] = urls.flatMap { $0 }
-        
         ProxyPreferences.setBlockedDomains(flattened)
-        setBlockedUrls(urls: flattened)
-        self.delay = time
-        if startTimerWithSelectedDelay() == false {
-            return
+
+        if status == .stopped {
+            installLegacyLaunched(futureDuration: Date.now.addingTimeInterval(delay*60))
+        } else {
+            if startTimerWithSelectedDelay() == false {
+                return
+            }
+
+            setBlockedUrls(urls: flattened)
+            if startTimerWithSelectedDelay() == false { return }
+            activateNetworkBlocking()
         }
-        activateNetworkBlocking()
     }
 }
