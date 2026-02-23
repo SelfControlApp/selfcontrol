@@ -10,10 +10,14 @@ import os.log
 
 final class SafariExtensionManager: ObservableObject {
     static let shared = SafariExtensionManager()
-    var onChange: (() -> Void)?
+    var onExtensionStateChange: (() -> Void)?
     private var isReady: Bool = false
     private var isEnabled = false
-    var lastUpdateReceivedTime: Date = .distantPast
+    var lastUpdateReceivedTime: Date? {
+        didSet {
+            onExtensionStateChange?()
+        }
+    }
     
     private init() {
         NotificationCenter.default.addObserver(
@@ -24,10 +28,12 @@ final class SafariExtensionManager: ObservableObject {
             let shared = UserDefaults(suiteName: SafariConst.appGroup)
             print("Received from extension:", shared?.string(forKey: "ready") ?? "")
             if let value = shared?.bool(forKey: "ready") {
-                print("Ready now:")
-                if self.isReady == false {
-                    self.onChange?()
-                    self.isReady = true
+                if value == true {
+                    print("Ready now:")
+                    if self.isReady == false {
+                        self.onExtensionStateChange?()
+                        self.isReady = true
+                    }
                 }
             }
         }
@@ -35,6 +41,7 @@ final class SafariExtensionManager: ObservableObject {
     }
     
     var isExtensionReady: Bool {
+        guard let lastUpdateReceivedTime = lastUpdateReceivedTime else { return false }
         // Consider the extension "ready" if we received an update within the last 35 seconds
         return Date().timeIntervalSince(lastUpdateReceivedTime) <= 35
 //        return UserDefaults(suiteName: appGroup)?.bool(forKey: "ready") == true
