@@ -138,7 +138,7 @@ struct BlocklistEditorView: View {
             
             // Import button
             Button(action: {
-                // TODO: Import functionality
+                importurls()
             }) {
                 HStack(spacing: 4) {
                     Image(systemName: "square.and.arrow.down")
@@ -165,7 +165,7 @@ struct BlocklistEditorView: View {
             
             // Export button
             Button(action: {
-                // TODO: Export functionality
+                exporturls()
             }) {
                 HStack(spacing: 4) {
                     Image(systemName: "square.and.arrow.up")
@@ -1350,3 +1350,37 @@ struct BlocklistEditorView: View {
     }
 }
 
+extension BlocklistEditorView {
+        
+    func importurls() {
+        
+        if let window = NSApplication.shared.keyWindow {
+            Task { @MainActor in
+                do {
+                    let imported = try await ImportExportManager.importBlockedUrls(presentingWindow: window)
+                    self.blockedURLs = imported
+                    // Merge or replace your in-memory list here
+                } catch {
+                    // Handle cancel or decoding errors
+                    NSLog("Import failed: \(error.localizedDescription)")
+                }
+            }
+        } else {
+            // Modal (no sheet)
+            Task { @MainActor in
+                do {
+                    let imported = try await ImportExportManager.importBlockedUrls()
+                    // Merge or replace your in-memory list here
+                    self.blockedURLs = imported
+                } catch {
+                    // Handle cancel or decoding errors
+                    NSLog("Import failed: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+    
+    func exporturls() {
+        ImportExportManager.exportBlockedUrls(blockedURLs: self.blockedURLs)
+    }
+}
