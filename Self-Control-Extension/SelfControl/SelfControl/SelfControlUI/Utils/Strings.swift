@@ -302,7 +302,7 @@ struct Strings {
     // MARK: - App Menu
     struct AppMenu {
         static let aboutSelfControl = "About SelfControl"
-        static let editSiteList = "Edit Site List"
+        static let editSiteList = "Edit Block List"
         static let editBlockSchedule = "Edit Block Schedule"
         static let moreSettings = "More Settings"
         static let donate = "Donate"
