@@ -13,6 +13,9 @@ struct ProxyPreferences {
     private static let blockedDomainsKey = "BlockedDomains"
     private static let isSafariExtensionKey: String = "isSafariExtensionKey"
     private static let isChromeExtensionKey: String = "isChromeExtensionKey"
+    private static let isSafariExtInstallKey: String = "isSafariExtInstallKey"
+    private static let isChromeExtInstallKey: String = "isChromeExtInstallKey"
+
     private static let defaults = UserDefaults.standard
     static func getBlockedDomains() -> [String] {
         return defaults.stringArray(forKey: blockedDomainsKey) ?? []
@@ -38,5 +41,28 @@ struct ProxyPreferences {
     
     static func chromeExtensionState() {
         defaults.value(forKey: isChromeExtensionKey)
+    }
+    
+    static var isSafariExtensionInstalled: Bool {
+        return UserDefaults.standard.bool(forKey: isSafariExtInstallKey)
+    }
+
+    static func setSafariExtensionInstalled() {
+        UserDefaults.standard.set(true, forKey: isSafariExtInstallKey)
+    }
+    
+    static var isChromeExtensionInstalled: Bool {
+        return UserDefaults.standard.bool(forKey: isChromeExtInstallKey)
+    }
+    
+    static func setChromeExtensionInstalled() {
+        UserDefaults.standard.set(true, forKey: isChromeExtInstallKey)
+    }
+    
+    static func reset() {
+        UserDefaults.standard.removeObject(forKey: isChromeExtInstallKey)
+        UserDefaults.standard.removeObject(forKey: isSafariExtInstallKey)
+        UserDefaults.standard.removeObject(forKey: isSafariExtensionKey)
+        UserDefaults.standard.removeObject(forKey: isChromeExtensionKey)
     }
 }
