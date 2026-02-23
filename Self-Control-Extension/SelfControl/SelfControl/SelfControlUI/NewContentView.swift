@@ -176,6 +176,7 @@ struct NewContentView: View {
                             extensionMinutes: $extensionMinutes,
                             onConfirm: { minutes in
                                 extendTimer(by: minutes)
+                                viewModel.extendBlockTimer(by: Int(minutes))
                                 withAnimation(DesignSystem.animationNormal) {
                                     showingExtendTimer = false
                                 }
@@ -256,7 +257,7 @@ struct NewContentView: View {
                     Spacer()
                     
                     // Logo
-                    if let nsImage = NSImage(named: "AppIcon") {
+                    if let nsImage = NSImage(named: "icon") {
                         Image(nsImage: nsImage)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
@@ -300,6 +301,9 @@ struct NewContentView: View {
                                 Text("\(Strings.MainScreen.blocking) \(blockingCountMessage)")
                                     .font(DesignSystem.font(size: DesignSystem.fontSizeLarge, weight: DesignSystem.fontWeightSemibold))
                                     .foregroundColor(DesignSystem.textSecondary)
+                                    .onTapGesture {
+                                        currentScreen = .editList
+                                    }
                             }
                         } else {
                             if activeBlockedCount == 0 {
