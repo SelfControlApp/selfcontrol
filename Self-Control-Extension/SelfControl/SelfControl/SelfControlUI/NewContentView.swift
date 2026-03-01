@@ -1328,6 +1328,13 @@ struct NewContentView: View {
             }
         }
         .onAppear {
+            print("onAppear viewModel.eventRunnerHandler")
+            viewModel.eventRunnerHandler? = { eventreq in
+                print("New Event schedule started: \(eventreq.startTime) - \(eventreq.endTime)")
+                let minutes = Double(eventreq.endTime.minutes(from: eventreq.startTime, wrapAroundMidnight: true))
+                await startBlocking(minutes: minutes)
+            }
+
             // Don't focus slider on startup - let tips modal show first if needed
             // Focus will be set after tips are dismissed
         }
@@ -1342,6 +1349,10 @@ struct NewContentView: View {
     }
     
     private func startBlocking() {
+      startBlocking(minutes: minutes)
+    }
+    
+    private func startBlocking(minutes: Double) {
         withAnimation(DesignSystem.animationNormal) {
             isBlocking = true
             viewModel.updateBlockList(newBlockedDomains: blockedURLs, time: minutes)
@@ -1358,7 +1369,7 @@ struct NewContentView: View {
             }
         }
     }
-    
+
     private func stopBlocking() {
         withAnimation(DesignSystem.animationNormal) {
             isBlocking = false

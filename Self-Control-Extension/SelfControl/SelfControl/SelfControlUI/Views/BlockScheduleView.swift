@@ -13,7 +13,8 @@ struct BlockScheduleView: View {
     @Binding var currentScreen: AppScreen
     @Binding var blockingMode: BlockingMode
     @Binding var isScheduleActive: Bool
-    
+    @EnvironmentObject var viewModel: FilterViewModel
+
     @State private var schedules: [Schedule] = []
     
     // Helper to check if any schedule is active
@@ -25,22 +26,12 @@ struct BlockScheduleView: View {
         }
     }
     
-    // Load schedules from UserDefaults
     private func loadSchedules() {
-        if let data = UserDefaults.standard.data(forKey: "schedules"),
-           let decoded = try? JSONDecoder().decode([Schedule].self, from: data) {
-            schedules = decoded
-        } else {
-            // Initialize with one empty schedule if no saved data
-            schedules = [Schedule(timeSlots: [], enabledDays: [])]
-        }
+        schedules = EventSchedulerStore.loadSchedules()
     }
     
-    // Save schedules to UserDefaults
     private func saveSchedules() {
-        if let encoded = try? JSONEncoder().encode(schedules) {
-            UserDefaults.standard.set(encoded, forKey: "schedules")
-        }
+        EventSchedulerStore.saveSchedules(schedules: schedules)
     }
     
     var body: some View {
@@ -137,6 +128,10 @@ struct BlockScheduleView: View {
             loadSchedules()
             updateScheduleStatus()
         }
+        .onDisappear {
+            print("Schedule off-screen")
+            viewModel.updateScheduledEvents()
+        }
     }
 }
 
@@ -175,7 +170,7 @@ struct ScheduleRow: View {
                     
                     // Weekday circles
                     HStack(spacing: 6) {
-                        ForEach(Weekday.allCases, id: \.self) { weekday in
+                        ForEach(SCWeekday.allCases, id: \.self) { weekday in
                             WeekdayCircle(
                                 weekday: weekday,
                                 isEnabled: schedule.enabledDays.contains(weekday),
@@ -307,7 +302,7 @@ struct ScheduleRow: View {
 
 // MARK: - Weekday Circle
 struct WeekdayCircle: View {
-    let weekday: Weekday
+    let weekday: SCWeekday
     let isEnabled: Bool
     let blockingMode: BlockingMode
     let onToggle: () -> Void

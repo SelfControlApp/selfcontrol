@@ -37,7 +37,13 @@ enum SelfControlViewState: Equatable {
 }
 
 final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionRequestDelegate, ExtensionToApp {
-    @Published var status: Status = .stopped
+    @Published var status: Status = .stopped {
+        didSet {
+            if self.status == .running {
+               updateScheduledEvents()
+            }
+        }
+    }
     @Published var viewState: SelfControlViewState = .installNetworkExtension
     @Published var isNetworkExtensionSkipped: Bool = false {
         didSet {
@@ -47,7 +53,8 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
 
     private var isSafariExtensionInstalled: Bool = ProxyPreferences.isSafariExtensionInstalled
     private var isChromeExtensionInstalled: Bool = ProxyPreferences.isChromeExtensionInstalled
-
+    var eventRunner: EventSchedulerRunner? = nil
+    var eventRunnerHandler: EventSchedulerRunner.EventHandler?
     @State private var domains = ProxyPreferences.getBlockedDomains()
     private let chromeService = ChromeExtensionRequestListner()
     @State var blockedURLs: [BlockedURL] = []
@@ -133,6 +140,9 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
             .store(in: &cancellables)
         Task { @MainActor in
             self.blockerStorage = BlockedURLStore()
+        }
+        self.eventRunnerHandler = { event in
+            
         }
     }
   
@@ -547,5 +557,9 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
             if startTimerWithSelectedDelay() == false { return }
             activateNetworkBlocking()
         }
+    }
+    
+    func updateScheduledEvents() {
+        startEventScheduler()
     }
 }
