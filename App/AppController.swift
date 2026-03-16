@@ -102,6 +102,8 @@ final class AppController: NSObject {
         }
         mainWindowController?.window?.center()
         mainWindowController?.showWindow(nil)
+        mainWindowController?.window?.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
     }
 
     private func showTimerWindow() {
