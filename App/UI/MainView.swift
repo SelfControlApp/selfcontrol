@@ -4,11 +4,10 @@ struct MainView: View {
     @AppStorage("BlockDuration") private var blockDuration = 60
     @AppStorage("MaxBlockLength") private var maxBlockLength = 1440
     @AppStorage("BlockAsWhitelist") private var blockAsWhitelist = false
-    @AppStorage("Blocklist") private var blocklistData = Data()
 
-    private var blocklist: [String] {
-        (try? JSONDecoder().decode([String].self, from: blocklistData)) ?? []
-    }
+    @State private var showingBlocklist = false
+    @State private var showingSchedules = false
+    @State private var blocklist: [String] = []
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -19,7 +18,7 @@ struct MainView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(formattedDuration)
                     .font(.headline)
-                Slider(value: durationBinding, in: 1...Double(maxBlockLength), step: 1)
+                Slider(value: durationBinding, in: 1...Double(max(maxBlockLength, 1)), step: 1)
             }
 
             Picker("Mode", selection: $blockAsWhitelist) {
@@ -41,16 +40,25 @@ struct MainView: View {
                 .disabled(blocklist.isEmpty && !blockAsWhitelist)
 
                 Button("Edit \(blockAsWhitelist ? "Allowlist" : "Blocklist")...") {
-                    // TODO: Open domain list
+                    showingBlocklist = true
                 }
 
                 Button("Schedules...") {
-                    // TODO: Open schedules
+                    showingSchedules = true
                 }
             }
         }
         .padding(20)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .onAppear { loadBlocklist() }
+        .sheet(isPresented: $showingBlocklist) {
+            BlocklistEditorView(blocklist: $blocklist, isAllowlist: blockAsWhitelist) {
+                saveBlocklist()
+            }
+        }
+        .sheet(isPresented: $showingSchedules) {
+            ScheduleEditorView()
+        }
     }
 
     private var durationBinding: Binding<Double> {
@@ -66,5 +74,13 @@ struct MainView: View {
         if h > 0 && m > 0 { return "\(h)h \(m)m" }
         if h > 0 { return "\(h)h" }
         return "\(m)m"
+    }
+
+    private func loadBlocklist() {
+        blocklist = UserDefaults.standard.stringArray(forKey: "Blocklist") ?? []
+    }
+
+    private func saveBlocklist() {
+        UserDefaults.standard.set(blocklist, forKey: "Blocklist")
     }
 }
