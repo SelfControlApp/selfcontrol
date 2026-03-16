@@ -119,12 +119,11 @@ final class MainWindowController: NSWindowController {
     }
 
     @objc private func editBlocklistClicked(_ sender: NSButton) {
-        // Post notification to open domain list — AppController or other code can observe this
-        NotificationCenter.default.post(name: NSNotification.Name("StoneOpenDomainList"), object: nil)
+        appController?.showDomainList()
     }
 
     @objc private func schedulesClicked(_ sender: NSButton) {
-        NotificationCenter.default.post(name: NSNotification.Name("StoneOpenScheduleList"), object: nil)
+        appController?.showSchedules()
     }
 
     // MARK: - Update Display

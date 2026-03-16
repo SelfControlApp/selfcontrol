@@ -117,6 +117,36 @@ final class AppController: NSObject {
         timerWindowController = nil
     }
 
+    // MARK: - Secondary Windows
+
+    private var domainListWindowController: DomainListWindowController?
+    private var scheduleListWindowController: ScheduleListWindowController?
+    private var preferencesWindowController: PreferencesWindowController?
+
+    func showDomainList() {
+        if domainListWindowController == nil {
+            domainListWindowController = DomainListWindowController()
+        }
+        domainListWindowController?.window?.center()
+        domainListWindowController?.showWindow(nil)
+    }
+
+    func showSchedules() {
+        if scheduleListWindowController == nil {
+            scheduleListWindowController = ScheduleListWindowController()
+        }
+        scheduleListWindowController?.window?.center()
+        scheduleListWindowController?.showWindow(nil)
+    }
+
+    func showPreferences() {
+        if preferencesWindowController == nil {
+            preferencesWindowController = PreferencesWindowController()
+        }
+        preferencesWindowController?.window?.center()
+        preferencesWindowController?.showWindow(nil)
+    }
+
     // MARK: - Start Block
 
     func startBlock() {
