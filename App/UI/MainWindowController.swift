@@ -23,7 +23,7 @@ final class MainWindowController: NSWindowController {
             defer: false
         )
         window.title = "Stone"
-        window.center()
+        window.isReleasedWhenClosed = false
 
         super.init(window: window)
         buildUI()

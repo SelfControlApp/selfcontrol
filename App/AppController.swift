@@ -17,12 +17,8 @@ final class AppController: NSObject {
 
     func start() {
         defaults.register(defaults: StoneConstants.defaultUserDefaults)
-
-        // Force initial state mismatch so refreshUserInterface applies the correct state
-        blockIsOn = !SCBlockUtilities.anyBlockIsRunning()
-
+        blockIsOn = SCBlockUtilities.anyBlockIsRunning()
         observeNotifications()
-        refreshUserInterface()
     }
 
     private func observeNotifications() {
@@ -100,9 +96,12 @@ final class AppController: NSObject {
         if mainWindowController == nil {
             mainWindowController = MainWindowController(appController: self)
         }
-        mainWindowController?.window?.center()
-        mainWindowController?.showWindow(nil)
-        mainWindowController?.window?.makeKeyAndOrderFront(nil)
+        guard let window = mainWindowController?.window else {
+            NSLog("AppController: Failed to create main window")
+            return
+        }
+        window.center()
+        window.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
     }
 

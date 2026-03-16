@@ -6,20 +6,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         setupMainMenu()
-
         appController.start()
-        appController.showMainWindow()
+
+        // Show the appropriate window based on whether a block is running
+        if SCBlockUtilities.anyBlockIsRunning() {
+            appController.refreshUserInterface()
+        } else {
+            appController.showMainWindow()
+        }
 
         SCScheduleManager.shared.syncAllLaunchdAgents()
-
-        NSApp.activate(ignoringOtherApps: true)
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
-        if let timerWindow = appController.timerWindowController?.window, timerWindow.isVisible {
-            return false
-        }
-        return true
+        return false
     }
 
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
