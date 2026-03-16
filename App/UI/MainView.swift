@@ -10,46 +10,76 @@ struct MainView: View {
     @State private var blocklist: [String] = []
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text("Stone")
-                .font(.title)
-                .fontWeight(.bold)
+        VStack(spacing: 0) {
+            Spacer()
 
-            VStack(alignment: .leading, spacing: 4) {
+            // Duration — the hero
+            VStack(spacing: 2) {
                 Text(formattedDuration)
-                    .font(.headline)
-                Slider(value: durationBinding, in: 1...Double(max(maxBlockLength, 1)), step: 1)
+                    .font(.system(size: 48, weight: .bold, design: .rounded))
+                    .monospacedDigit()
+
+                Text("block duration")
+                    .font(.system(size: 11, weight: .medium))
+                    .foregroundStyle(.tertiary)
+                    .textCase(.uppercase)
             }
 
-            Picker("Mode", selection: $blockAsWhitelist) {
-                Text("Blocklist").tag(false)
-                Text("Allowlist").tag(true)
+            Spacer().frame(height: 24)
+
+            // Slider
+            Slider(value: durationBinding, in: 1...Double(max(maxBlockLength, 1)), step: 1)
+                .frame(maxWidth: 280)
+
+            Spacer().frame(height: 32)
+
+            // Mode + count
+            HStack(spacing: 16) {
+                Picker("", selection: $blockAsWhitelist) {
+                    Text("Block").tag(false)
+                    Text("Allow").tag(true)
+                }
+                .pickerStyle(.segmented)
+                .frame(width: 140)
+
+                Text("\(blocklist.count) sites")
+                    .font(.system(size: 12, design: .monospaced))
+                    .foregroundStyle(.secondary)
             }
-            .pickerStyle(.segmented)
-            .frame(width: 200)
 
-            Text("\(blocklist.count) entries in \(blockAsWhitelist ? "allowlist" : "blocklist")")
-                .font(.caption)
-                .foregroundStyle(.secondary)
+            Spacer().frame(height: 24)
 
-            HStack(spacing: 12) {
-                Button("Start Block") {
-                    // TODO: Wire to AppController.startBlock()
-                }
-                .keyboardShortcut(.defaultAction)
-                .disabled(blocklist.isEmpty && !blockAsWhitelist)
-
-                Button("Edit \(blockAsWhitelist ? "Allowlist" : "Blocklist")...") {
-                    showingBlocklist = true
+            // Actions
+            HStack(spacing: 10) {
+                Button(action: { showingBlocklist = true }) {
+                    Label("Sites", systemImage: "list.bullet")
+                        .font(.system(size: 12))
                 }
 
-                Button("Schedules...") {
-                    showingSchedules = true
+                Button(action: { showingSchedules = true }) {
+                    Label("Schedules", systemImage: "clock")
+                        .font(.system(size: 12))
                 }
             }
+
+            Spacer().frame(height: 20)
+
+            // Start
+            Button(action: {
+                // TODO: Wire to AppController.startBlock()
+            }) {
+                Text("Start Block")
+                    .font(.system(size: 13, weight: .semibold))
+                    .frame(maxWidth: 200)
+                    .padding(.vertical, 8)
+            }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.large)
+            .disabled(blocklist.isEmpty && !blockAsWhitelist)
+
+            Spacer()
         }
-        .padding(20)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear { loadBlocklist() }
         .sheet(isPresented: $showingBlocklist) {
             BlocklistEditorView(blocklist: $blocklist, isAllowlist: blockAsWhitelist) {

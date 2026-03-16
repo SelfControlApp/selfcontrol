@@ -6,14 +6,20 @@ struct BlocklistEditorView: View {
     let onSave: () -> Void
 
     @State private var newEntry = ""
+    @FocusState private var fieldFocused: Bool
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         VStack(spacing: 0) {
             // Header
-            HStack {
-                Text(isAllowlist ? "Allowlist" : "Blocklist")
-                    .font(.headline)
+            HStack(alignment: .firstTextBaseline) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(isAllowlist ? "Allowlist" : "Blocklist")
+                        .font(.system(size: 15, weight: .semibold))
+                    Text("\(blocklist.count) sites")
+                        .font(.system(size: 11, design: .monospaced))
+                        .foregroundStyle(.tertiary)
+                }
                 Spacer()
                 Button("Done") {
                     onSave()
@@ -21,49 +27,71 @@ struct BlocklistEditorView: View {
                 }
                 .keyboardShortcut(.defaultAction)
             }
-            .padding()
+            .padding(.horizontal, 20)
+            .padding(.vertical, 16)
 
             Divider()
 
-            // Add entry field
-            HStack {
-                TextField("Add domain (e.g. facebook.com)", text: $newEntry)
-                    .textFieldStyle(.roundedBorder)
+            // Add field
+            HStack(spacing: 8) {
+                Image(systemName: "plus.circle.fill")
+                    .foregroundStyle(.secondary)
+                    .font(.system(size: 14))
+
+                TextField("facebook.com", text: $newEntry)
+                    .textFieldStyle(.plain)
+                    .font(.system(size: 13, design: .monospaced))
+                    .focused($fieldFocused)
                     .onSubmit { addEntry() }
-
-                Button("Add") { addEntry() }
-                    .disabled(newEntry.trimmingCharacters(in: .whitespaces).isEmpty)
             }
-            .padding(.horizontal)
-            .padding(.vertical, 8)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 10)
+            .background(Color(nsColor: .controlBackgroundColor))
 
-            // Domain list
-            List {
-                ForEach(blocklist, id: \.self) { entry in
-                    Text(entry)
-                        .font(.system(.body, design: .monospaced))
+            Divider()
+
+            // List
+            if blocklist.isEmpty {
+                VStack(spacing: 6) {
+                    Text("No sites yet")
+                        .foregroundStyle(.secondary)
+                    Text("Type a domain above and press Return")
+                        .font(.caption)
+                        .foregroundStyle(.tertiary)
                 }
-                .onDelete { indices in
-                    blocklist.remove(atOffsets: indices)
-                    onSave()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                List {
+                    ForEach(blocklist, id: \.self) { entry in
+                        Text(entry)
+                            .font(.system(size: 13, design: .monospaced))
+                        }
+                    .onDelete { indices in
+                        blocklist.remove(atOffsets: indices)
+                        onSave()
+                    }
                 }
             }
 
             // Footer
-            HStack {
-                Text("\(blocklist.count) entries")
-                    .font(.caption)
+            if !blocklist.isEmpty {
+                Divider()
+                HStack {
+                    Spacer()
+                    Button("Remove All") {
+                        blocklist.removeAll()
+                        onSave()
+                    }
+                    .font(.system(size: 11))
                     .foregroundStyle(.secondary)
-                Spacer()
-                Button("Remove All") {
-                    blocklist.removeAll()
-                    onSave()
+                    .buttonStyle(.plain)
                 }
-                .disabled(blocklist.isEmpty)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 10)
             }
-            .padding()
         }
-        .frame(width: 450, height: 400)
+        .frame(width: 400, height: 380)
+        .onAppear { fieldFocused = true }
     }
 
     private func addEntry() {
