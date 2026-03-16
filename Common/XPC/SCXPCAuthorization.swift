@@ -54,7 +54,9 @@ enum SCXPCAuthorization {
 
         var item = AuthorizationItem(name: rightName, valueLength: 0, value: nil, flags: 0)
         var rights = AuthorizationRights(count: 1, items: &item)
-        let flags: AuthorizationFlags = [.interactionAllowed, .extendRights]
+        // [Fix #9] Don't use .interactionAllowed — the daemon has no GUI session.
+        // The token was pre-authorized on the app side; just verify it here.
+        let flags: AuthorizationFlags = [.extendRights]
 
         let result = AuthorizationCopyRights(auth, &rights, nil, flags, nil)
         guard result == errAuthorizationSuccess else {
@@ -90,12 +92,15 @@ enum SCXPCAuthorization {
         return Data(bytes: &extForm, count: MemoryLayout<AuthorizationExternalForm>.size)
     }
 
+    // [Fix #10] No default fallthrough — unknown commands fail authorization
     private static func rightName(for commandName: String) -> String {
         switch commandName {
         case "startBlock": return rightStartBlock
         case "updateBlocklist": return rightUpdateBlocklist
         case "updateBlockEndDate": return rightUpdateEndDate
-        default: return rightStartBlock
+        default:
+            NSLog("SCXPCAuthorization: Unknown command '%@' — denying", commandName)
+            return "com.max4c.stone.INVALID"
         }
     }
 }

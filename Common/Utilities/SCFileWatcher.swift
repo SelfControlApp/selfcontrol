@@ -15,8 +15,14 @@ class SCFileWatcher {
     func start() {
         let pathsToWatch = [path] as CFArray
 
+        // [Fix #6] Use passRetained to prevent use-after-free if watcher is
+        // deallocated before the stream is invalidated.
         var context = FSEventStreamContext()
-        context.info = Unmanaged.passUnretained(self).toOpaque()
+        context.info = Unmanaged.passRetained(self).toOpaque()
+        context.release = { info in
+            guard let info = info else { return }
+            Unmanaged<SCFileWatcher>.fromOpaque(info).release()
+        }
 
         let flags: FSEventStreamCreateFlags = UInt32(
             kFSEventStreamCreateFlagFileEvents | kFSEventStreamCreateFlagUseCFTypes

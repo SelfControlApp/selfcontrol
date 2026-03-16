@@ -61,6 +61,11 @@ final class SCDaemonBlockMethods {
     // MARK: - Checkup (called every second by the daemon timer)
 
     func checkupBlock() {
+        // [Fix #3] Take the lock during checkup to prevent racing with startBlock.
+        // Use tryLock to avoid blocking the timer if startBlock holds the lock.
+        guard lock.try() else { return }
+        defer { lock.unlock() }
+
         checkupCount += 1
         let settings = SCSettings.shared
 

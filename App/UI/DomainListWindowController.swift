@@ -83,7 +83,11 @@ final class DomainListWindowController: NSWindowController, NSTableViewDataSourc
 
     private func saveDomainList() {
         defaults.set(domainList, forKey: "Blocklist")
-        NotificationCenter.default.post(name: NSNotification.Name("SCConfigurationChangedNotification"), object: self)
+        // [Fix #8] Use DistributedNotificationCenter with the correct name
+        DistributedNotificationCenter.default().postNotificationName(
+            NSNotification.Name(StoneConstants.configurationChangedNotification),
+            object: nil
+        )
     }
 
     func updateWindowTitle() {

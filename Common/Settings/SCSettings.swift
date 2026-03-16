@@ -118,6 +118,7 @@ final class SCSettings {
     // MARK: - Cross-Process Sync
 
     private func startObservingNotifications() {
+        // [Fix #7] Observe on the main run loop so it fires in the daemon too
         DistributedNotificationCenter.default().addObserver(
             self,
             selector: #selector(handleRemoteChange),
@@ -131,8 +132,11 @@ final class SCSettings {
     }
 
     private func startSyncTimer() {
-        syncTimer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { [weak self] _ in
-            self?.synchronize()
+        // [Fix #7] Schedule on main run loop so it fires in the daemon
+        DispatchQueue.main.async { [weak self] in
+            self?.syncTimer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { [weak self] _ in
+                self?.synchronize()
+            }
         }
     }
 

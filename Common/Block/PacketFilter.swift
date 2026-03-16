@@ -162,7 +162,8 @@ final class PacketFilter {
             return
         }
 
-        if !pfConf.contains(store.pfAnchorPath) {
+        // [Fix #5] Check for the anchor name, not the path, to match containsStoneBlock()
+        if !pfConf.contains("anchor \"\(StoneConstants.pfAnchorName)\"") {
             pfConf += "\n"
             pfConf += "anchor \"\(StoneConstants.pfAnchorName)\"\n"
             pfConf += "load anchor \"\(StoneConstants.pfAnchorName)\" from \"\(store.pfAnchorPath)\"\n"

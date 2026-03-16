@@ -10,7 +10,6 @@ final class SCXPCClient {
 
     /// Install the privileged helper daemon via SMJobBless.
     func installDaemon(reply: @escaping (Error?) -> Void) {
-        // Create authorization for the bless operation
         var authRef: AuthorizationRef?
         var authItem = AuthorizationItem(name: kSMRightBlessPrivilegedHelper, valueLength: 0, value: nil, flags: 0)
         var authRights = AuthorizationRights(count: 1, items: &authItem)
@@ -28,36 +27,40 @@ final class SCXPCClient {
         if success {
             NSLog("SCXPCClient: Daemon installed successfully")
 
-            // Set up authorization rights in the policy database
             if let auth = authRef {
                 SCXPCAuthorization.setupAuthorizationRights(auth)
             }
-
-            // Store auth data for future XPC calls
-            if let auth = authRef {
-                var extForm = AuthorizationExternalForm()
-                AuthorizationMakeExternalForm(auth, &extForm)
-                authData = Data(bytes: &extForm, count: MemoryLayout<AuthorizationExternalForm>.size)
-            }
-
-            reply(nil)
         } else {
             let error = blessError?.takeRetainedValue()
             NSLog("SCXPCClient: Failed to install daemon: %@", error.map { String(describing: $0) } ?? "unknown")
             reply(SCError.daemonInstallFailed)
+            return
         }
+
+        // [Fix #1] Always create fresh auth data with pre-authorized rights,
+        // regardless of whether the daemon was just installed or already existed.
+        do {
+            authData = try SCXPCAuthorization.createAuthorizationData()
+        } catch {
+            NSLog("SCXPCClient: Failed to create authorization data: %@", error.localizedDescription)
+            reply(SCError.authorizationFailed)
+            return
+        }
+
+        reply(nil)
     }
 
     // MARK: - Connection Management
 
-    /// Invalidate existing connection and create a fresh one.
+    /// [Fix #2] Invalidate existing connection, create a new one, then run block.
     func refreshConnectionAndRun(_ block: @escaping () -> Void) {
         if let oldConnection = connection {
-            oldConnection.invalidationHandler = {
+            connection = nil
+            oldConnection.invalidationHandler = { [weak self] in
+                self?.connectToHelperTool()
                 DispatchQueue.main.async { block() }
             }
             oldConnection.invalidate()
-            connection = nil
         } else {
             connectToHelperTool()
             block()

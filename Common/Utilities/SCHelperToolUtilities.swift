@@ -48,7 +48,18 @@ enum SCHelperToolUtilities {
     /// Clear browser caches (Safari, Chrome, Firefox).
     static func clearBrowserCaches() {
         let fm = FileManager.default
-        let home = NSHomeDirectory()
+
+        // [Fix #11] In the daemon (root), NSHomeDirectory() returns /var/root.
+        // Use the controlling UID from settings to find the actual user's home.
+        let home: String
+        if geteuid() == 0,
+           let uid = SCSettings.shared.value(for: "ControllingUID") as? UInt32,
+           uid > 0,
+           let pw = getpwuid(uid) {
+            home = String(cString: pw.pointee.pw_dir)
+        } else {
+            home = NSHomeDirectory()
+        }
 
         let cachePaths = [
             "\(home)/Library/Caches/com.apple.Safari",
