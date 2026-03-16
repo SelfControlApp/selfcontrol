@@ -5,16 +5,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let appController = AppController()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        NSApp.setActivationPolicy(.regular)
         setupMainMenu()
         appController.start()
-
-        // Show the appropriate window based on whether a block is running
-        if SCBlockUtilities.anyBlockIsRunning() {
-            appController.refreshUserInterface()
-        } else {
-            appController.showMainWindow()
-        }
-
+        appController.showInitialWindow()
         SCScheduleManager.shared.syncAllLaunchdAgents()
     }
 
@@ -24,11 +18,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
         if !flag {
-            if SCBlockUtilities.anyBlockIsRunning() {
-                appController.refreshUserInterface()
-            } else {
-                appController.showMainWindow()
-            }
+            appController.showInitialWindow()
         }
         return true
     }

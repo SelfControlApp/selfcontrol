@@ -92,6 +92,15 @@ final class AppController: NSObject {
 
     // MARK: - Window Management
 
+    func showInitialWindow() {
+        if SCBlockUtilities.anyBlockIsRunning() {
+            showTimerWindow()
+            NSApp.activate(ignoringOtherApps: true)
+        } else {
+            showMainWindow()
+        }
+    }
+
     func showMainWindow() {
         if mainWindowController == nil {
             mainWindowController = MainWindowController(appController: self)
@@ -101,6 +110,7 @@ final class AppController: NSObject {
             return
         }
         window.center()
+        mainWindowController?.showWindow(nil)
         window.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
     }
@@ -111,6 +121,7 @@ final class AppController: NSObject {
         }
         timerWindowController?.window?.center()
         timerWindowController?.showWindow(nil)
+        timerWindowController?.window?.makeKeyAndOrderFront(nil)
     }
 
     private func closeTimerWindow() {
