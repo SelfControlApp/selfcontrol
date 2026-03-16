@@ -27,6 +27,7 @@ targets:
         excludes:
           - "**/*.m"
           - "**/*.h"
+      - path: ScheduleManager
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.max4c.stone

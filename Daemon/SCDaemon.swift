@@ -65,13 +65,11 @@ final class SCDaemon: NSObject, NSXPCListenerDelegate {
     // MARK: - Block Checkup
 
     private func checkupBlock() {
-        // TODO: Delegate to SCDaemonBlockMethods
-        // Check if block is running, expired, or tampered with
+        SCDaemonBlockMethods.shared.checkupBlock()
     }
 
     private func checkBlockIntegrity() {
-        // TODO: Delegate to SCDaemonBlockMethods
-        // Re-apply pf/hosts rules if they've been removed
+        SCDaemonBlockMethods.shared.checkBlockIntegrity()
     }
 
     // MARK: - Inactivity

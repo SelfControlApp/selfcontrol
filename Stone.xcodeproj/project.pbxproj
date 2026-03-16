@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		040A88FF896E666909FC8C44 /* SCHelperToolUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F284281E701208ECD7EBCE7 /* SCHelperToolUtilities.swift */; };
 		0ED3392D9A12A2E8880ED2BA /* SCSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED1399C417B39686EB99AD4 /* SCSchedule.swift */; };
 		106FFBC6D17CCC244FF24FEF /* SCMiscUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFACB0A8550E6FD043C2C3E1 /* SCMiscUtilities.swift */; };
 		117A8C434516A4012844B26B /* CLIMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A146DC953141CDB91A35B6F8 /* CLIMain.swift */; };
@@ -19,27 +20,50 @@
 		278E6A08181EE2EBBE3A8F9F /* BlockEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7698B13644DCEE090D8536 /* BlockEntry.swift */; };
 		294E88BFA0F896F86DD69EFC /* SCFileWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDBB035AB421516579E60CC0 /* SCFileWatcher.swift */; };
 		2B8D76B0A3B122EB01865DA7 /* SCError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED6F8E16436AAE80A0B23FE /* SCError.swift */; };
+		31E737CB6266E78638D66D5A /* SCXPCClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAB6759F20C23316048431E /* SCXPCClient.swift */; };
+		34427832FD6532C71DE07B58 /* PacketFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D532AA35A5730F1E4EDF5D /* PacketFilter.swift */; };
+		3475125047C6FD631B8D91D1 /* SCXPCClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAB6759F20C23316048431E /* SCXPCClient.swift */; };
+		34E13B558FA50E3047BDB490 /* BlockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B32D03470CDDAACDE0FC7C0 /* BlockManager.swift */; };
 		37BB975D12BD86E29BD3D6B1 /* SCFileWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDBB035AB421516579E60CC0 /* SCFileWatcher.swift */; };
+		3A8975C5BE707AB29E13AAE1 /* SCDaemonBlockMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74D771F3252AE3956D9C3D5 /* SCDaemonBlockMethods.swift */; };
+		419CA4823F8E6980DD937027 /* SCXPCAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DFB0AFE764F88E0B7FBD806 /* SCXPCAuthorization.swift */; };
+		477E9916ADEF6848646C3320 /* SCXPCClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAB6759F20C23316048431E /* SCXPCClient.swift */; };
 		4E88ED763599BC497531CEC7 /* SCDaemonXPC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057C5BBC3302FF8EE61617EA /* SCDaemonXPC.swift */; };
 		5055D3900FC720534831662B /* SCSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A044613CE99FFAB614D20EA0 /* SCSettings.swift */; };
+		51F333ADA960DD1768FF5029 /* BlockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B32D03470CDDAACDE0FC7C0 /* BlockManager.swift */; };
 		546A1A30070BB988713DFC5C /* SCSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED1399C417B39686EB99AD4 /* SCSchedule.swift */; };
+		589BA90E5B9027B8A8390D42 /* SCHelperToolUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F284281E701208ECD7EBCE7 /* SCHelperToolUtilities.swift */; };
 		5B5D2ED27324A66270D42416 /* SCBlockUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569551479489BC531A33BEB7 /* SCBlockUtilities.swift */; };
+		64EA6D95887D3AFFB78E6A88 /* SCXPCAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DFB0AFE764F88E0B7FBD806 /* SCXPCAuthorization.swift */; };
 		69876C7DBD71CC1FD4F421DE /* selfcontrold-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B278D52251F163FB6F6C5024 /* selfcontrold-Info.plist */; };
 		69887871491A8F0543A1A2FF /* SCError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED6F8E16436AAE80A0B23FE /* SCError.swift */; };
 		6FCC3875421881F9E624F060 /* SCDaemon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30EEF5DB4977AE0BE8C349C /* SCDaemon.swift */; };
 		748D71676E7172BB5D6500BF /* DaemonMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 261228596B561E606AF0AE61 /* DaemonMain.swift */; };
+		7B28026A528D1215E5BDF787 /* HostFileBlockerSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACCE1D3A846400EF79C0DD98 /* HostFileBlockerSet.swift */; };
 		7BC4288DD6EA269A4754C549 /* SCSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A044613CE99FFAB614D20EA0 /* SCSettings.swift */; };
+		7CB93BD6B5C774E87D3F571B /* HostFileBlockerSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACCE1D3A846400EF79C0DD98 /* HostFileBlockerSet.swift */; };
+		7D95A03028567BA5EFA15968 /* BlockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B32D03470CDDAACDE0FC7C0 /* BlockManager.swift */; };
 		84815EB64C09FEFDD9C77291 /* SCDaemonProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AB71FFC84568F369668307 /* SCDaemonProtocol.swift */; };
 		86ED6D4184D72512453B6EF9 /* SCBlockFileReaderWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5970812CE66F46499078AE02 /* SCBlockFileReaderWriter.swift */; };
 		88E470BEA357FAAA338045DB /* AuditTokenBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = F7F20A1F0BC042C079D0BFC8 /* AuditTokenBridge.m */; };
+		8AD91468D12501578312CE2C /* HostFileBlocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 851832B4CC5063A4D705791C /* HostFileBlocker.swift */; };
+		8D126F42CC966C40EB4C9A92 /* PacketFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D532AA35A5730F1E4EDF5D /* PacketFilter.swift */; };
 		8DE027BC2F7ECD35803A7E0F /* SCMiscUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFACB0A8550E6FD043C2C3E1 /* SCMiscUtilities.swift */; };
 		8E22A23323934A5D7EE4D1AB /* SCMiscUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFACB0A8550E6FD043C2C3E1 /* SCMiscUtilities.swift */; };
+		907E89F80D2B863C6D5AB7AC /* SCScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168C56121028944D384946B1 /* SCScheduleManager.swift */; };
+		AD8B4D075BABBC6C4DC98D6C /* HostFileBlocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 851832B4CC5063A4D705791C /* HostFileBlocker.swift */; };
 		ADD609E33123F092B55D4BB4 /* SCBlockUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569551479489BC531A33BEB7 /* SCBlockUtilities.swift */; };
 		AF1F6D9FE0D5D6511D15A6D9 /* SCDaemonProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AB71FFC84568F369668307 /* SCDaemonProtocol.swift */; };
 		B2DA1464C5D58E5FD8298319 /* SCError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED6F8E16436AAE80A0B23FE /* SCError.swift */; };
 		C02EEB8F35329B0BEEEC136B /* SCSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED1399C417B39686EB99AD4 /* SCSchedule.swift */; };
+		CAA072446AE9BF20D8D1CE1B /* SCXPCAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DFB0AFE764F88E0B7FBD806 /* SCXPCAuthorization.swift */; };
+		CC6B70DE885B0FA34D079580 /* HostFileBlocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 851832B4CC5063A4D705791C /* HostFileBlocker.swift */; };
+		CD87D586EF3F7FB3884641AF /* PacketFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D532AA35A5730F1E4EDF5D /* PacketFilter.swift */; };
+		D0161A5A3C18119313DF2A48 /* HostFileBlockerSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACCE1D3A846400EF79C0DD98 /* HostFileBlockerSet.swift */; };
 		D25ACC5540E5D1B753327502 /* SCDaemonProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AB71FFC84568F369668307 /* SCDaemonProtocol.swift */; };
 		D987C89596EFF402461E788F /* BlockEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7698B13644DCEE090D8536 /* BlockEntry.swift */; };
+		DFE5B44375F387C025FED2B9 /* LaunchAgentWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E68C4A9C57642218C792495 /* LaunchAgentWriter.swift */; };
+		E5170D0B68AD145E1886A147 /* SCHelperToolUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F284281E701208ECD7EBCE7 /* SCHelperToolUtilities.swift */; };
 		E75714E8838B21BD022D0EBB /* StoneConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC10F58DCCA388EAE65D588 /* StoneConstants.swift */; };
 		E7B86B6C4C85D6494183CDE7 /* SCBlockFileReaderWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5970812CE66F46499078AE02 /* SCBlockFileReaderWriter.swift */; };
 		F087391F7573F522F2114ACF /* SCFileWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDBB035AB421516579E60CC0 /* SCFileWatcher.swift */; };
@@ -69,6 +93,7 @@
 		057C5BBC3302FF8EE61617EA /* SCDaemonXPC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCDaemonXPC.swift; sourceTree = "<group>"; };
 		0C6D45C45DE02C5347B040F4 /* stonectld-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "stonectld-Info.plist"; sourceTree = "<group>"; };
 		123DE962F50955B8D07A576F /* Stone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stone.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		168C56121028944D384946B1 /* SCScheduleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCScheduleManager.swift; sourceTree = "<group>"; };
 		1BEDC951BC669725F0BD9476 /* SCXPCClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCXPCClient.m; sourceTree = "<group>"; };
 		1EC10F58DCCA388EAE65D588 /* StoneConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoneConstants.swift; sourceTree = "<group>"; };
 		232FB9DA4ED5132949F91C14 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -78,6 +103,7 @@
 		26B4B82DA0F5D5595F6293CE /* SCSentry.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCSentry.m; sourceTree = "<group>"; };
 		2B7698B13644DCEE090D8536 /* BlockEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockEntry.swift; sourceTree = "<group>"; };
 		2CCF370D9DBC8842BCDEB00F /* SCMiscUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCMiscUtilities.h; sourceTree = "<group>"; };
+		2DFB0AFE764F88E0B7FBD806 /* SCXPCAuthorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCXPCAuthorization.swift; sourceTree = "<group>"; };
 		2ED6F8E16436AAE80A0B23FE /* SCError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCError.swift; sourceTree = "<group>"; };
 		363AEBEB1B7EE3D1181B51A8 /* SCMiscUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCMiscUtilities.m; sourceTree = "<group>"; };
 		374DE5F3841F565820706831 /* SCXPCAuthorization.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCXPCAuthorization.h; sourceTree = "<group>"; };
@@ -88,23 +114,31 @@
 		5652B8E9E1631B55F7672F1D /* SCErr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCErr.h; sourceTree = "<group>"; };
 		569551479489BC531A33BEB7 /* SCBlockUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCBlockUtilities.swift; sourceTree = "<group>"; };
 		5970812CE66F46499078AE02 /* SCBlockFileReaderWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCBlockFileReaderWriter.swift; sourceTree = "<group>"; };
+		5DAB6759F20C23316048431E /* SCXPCClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCXPCClient.swift; sourceTree = "<group>"; };
+		5F284281E701208ECD7EBCE7 /* SCHelperToolUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCHelperToolUtilities.swift; sourceTree = "<group>"; };
+		6E68C4A9C57642218C792495 /* LaunchAgentWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAgentWriter.swift; sourceTree = "<group>"; };
 		74F3B97CCDEF17E04640F7D2 /* SCFileWatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCFileWatcher.h; sourceTree = "<group>"; };
 		7964AA928B13A6124B9E9F22 /* SCHelperToolUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCHelperToolUtilities.h; sourceTree = "<group>"; };
 		81B85B7204FBAA041AA22026 /* SCHelperToolUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCHelperToolUtilities.m; sourceTree = "<group>"; };
 		842940A25301847E3B4E0745 /* SCSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCSettings.h; sourceTree = "<group>"; };
+		851832B4CC5063A4D705791C /* HostFileBlocker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostFileBlocker.swift; sourceTree = "<group>"; };
 		8AD3C1F151F282715803D81A /* SCMigrationUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCMigrationUtilities.m; sourceTree = "<group>"; };
 		9A682B3340DC84919B08145A /* stone-cli-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "stone-cli-Info.plist"; sourceTree = "<group>"; };
 		9AB7136E59B2FA338645AE81 /* SCBlockUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCBlockUtilities.m; sourceTree = "<group>"; };
+		9B32D03470CDDAACDE0FC7C0 /* BlockManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockManager.swift; sourceTree = "<group>"; };
 		A044613CE99FFAB614D20EA0 /* SCSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCSettings.swift; sourceTree = "<group>"; };
 		A146DC953141CDB91A35B6F8 /* CLIMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLIMain.swift; sourceTree = "<group>"; };
 		A4AB71FFC84568F369668307 /* SCDaemonProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCDaemonProtocol.swift; sourceTree = "<group>"; };
 		A4FAE9DA8608684E15D4DFF5 /* SCSettings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCSettings.m; sourceTree = "<group>"; };
+		A74D771F3252AE3956D9C3D5 /* SCDaemonBlockMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCDaemonBlockMethods.swift; sourceTree = "<group>"; };
+		ACCE1D3A846400EF79C0DD98 /* HostFileBlockerSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostFileBlockerSet.swift; sourceTree = "<group>"; };
 		B278D52251F163FB6F6C5024 /* selfcontrold-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "selfcontrold-Info.plist"; sourceTree = "<group>"; };
 		B3CD9D15E10F73F816C31880 /* DeprecationSilencers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeprecationSilencers.h; sourceTree = "<group>"; };
 		B83D9D55954B90E64DE6C9B9 /* Stone-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Stone-Info.plist"; sourceTree = "<group>"; };
 		B90BC2D6A4F71CC656A0483F /* SCSentry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCSentry.h; sourceTree = "<group>"; };
 		BDB7743052430508FE2ED85B /* SCUtility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCUtility.h; sourceTree = "<group>"; };
 		C008F9968CD2891A1403669B /* SCBlockFileReaderWriter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCBlockFileReaderWriter.m; sourceTree = "<group>"; };
+		C3D532AA35A5730F1E4EDF5D /* PacketFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacketFilter.swift; sourceTree = "<group>"; };
 		DED1399C417B39686EB99AD4 /* SCSchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCSchedule.swift; sourceTree = "<group>"; };
 		E0221CFF6929F228A523C497 /* Stone.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Stone.entitlements; sourceTree = "<group>"; };
 		EA02F9A6D41568ED2F6BA7E3 /* stone-cli */ = {isa = PBXFileReference; includeInIndex = 0; path = "stone-cli"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -124,6 +158,7 @@
 				68D2A09ECFA733093863D5CD /* CLI */,
 				F54276623912CE4E80222E1E /* Common */,
 				469A196B1F7B4C5BB39BB5E4 /* Daemon */,
+				BD48DC24DA0B4613418334A5 /* ScheduleManager */,
 				542797B83A462E80C83FBEF0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -139,6 +174,10 @@
 		2EEF7B848C93C7443C587D4F /* Block */ = {
 			isa = PBXGroup;
 			children = (
+				9B32D03470CDDAACDE0FC7C0 /* BlockManager.swift */,
+				851832B4CC5063A4D705791C /* HostFileBlocker.swift */,
+				ACCE1D3A846400EF79C0DD98 /* HostFileBlockerSet.swift */,
+				C3D532AA35A5730F1E4EDF5D /* PacketFilter.swift */,
 			);
 			path = Block;
 			sourceTree = "<group>";
@@ -158,6 +197,7 @@
 				0508BAB39CA3480AFD649FA8 /* Daemon-Bridging-Header.h */,
 				261228596B561E606AF0AE61 /* DaemonMain.swift */,
 				F30EEF5DB4977AE0BE8C349C /* SCDaemon.swift */,
+				A74D771F3252AE3956D9C3D5 /* SCDaemonBlockMethods.swift */,
 				057C5BBC3302FF8EE61617EA /* SCDaemonXPC.swift */,
 				B278D52251F163FB6F6C5024 /* selfcontrold-Info.plist */,
 				0C6D45C45DE02C5347B040F4 /* stonectld-Info.plist */,
@@ -171,6 +211,7 @@
 				5970812CE66F46499078AE02 /* SCBlockFileReaderWriter.swift */,
 				569551479489BC531A33BEB7 /* SCBlockUtilities.swift */,
 				FDBB035AB421516579E60CC0 /* SCFileWatcher.swift */,
+				5F284281E701208ECD7EBCE7 /* SCHelperToolUtilities.swift */,
 				EFACB0A8550E6FD043C2C3E1 /* SCMiscUtilities.swift */,
 			);
 			path = Utilities;
@@ -212,6 +253,8 @@
 		631FD8FA37CA858EEA87759C /* XPC */ = {
 			isa = PBXGroup;
 			children = (
+				2DFB0AFE764F88E0B7FBD806 /* SCXPCAuthorization.swift */,
+				5DAB6759F20C23316048431E /* SCXPCClient.swift */,
 			);
 			path = XPC;
 			sourceTree = "<group>";
@@ -245,6 +288,15 @@
 				1EC10F58DCCA388EAE65D588 /* StoneConstants.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		BD48DC24DA0B4613418334A5 /* ScheduleManager */ = {
+			isa = PBXGroup;
+			children = (
+				6E68C4A9C57642218C792495 /* LaunchAgentWriter.swift */,
+				168C56121028944D384946B1 /* SCScheduleManager.swift */,
+			);
+			path = ScheduleManager;
 			sourceTree = "<group>";
 		};
 		DC1E08AA328E1C12E7CB5236 /* Utility */ = {
@@ -420,17 +472,25 @@
 			files = (
 				88E470BEA357FAAA338045DB /* AuditTokenBridge.m in Sources */,
 				F0DBD53D5BB1C46385DDB328 /* BlockEntry.swift in Sources */,
+				34E13B558FA50E3047BDB490 /* BlockManager.swift in Sources */,
 				748D71676E7172BB5D6500BF /* DaemonMain.swift in Sources */,
+				8AD91468D12501578312CE2C /* HostFileBlocker.swift in Sources */,
+				D0161A5A3C18119313DF2A48 /* HostFileBlockerSet.swift in Sources */,
+				CD87D586EF3F7FB3884641AF /* PacketFilter.swift in Sources */,
 				E7B86B6C4C85D6494183CDE7 /* SCBlockFileReaderWriter.swift in Sources */,
 				5B5D2ED27324A66270D42416 /* SCBlockUtilities.swift in Sources */,
 				6FCC3875421881F9E624F060 /* SCDaemon.swift in Sources */,
+				3A8975C5BE707AB29E13AAE1 /* SCDaemonBlockMethods.swift in Sources */,
 				D25ACC5540E5D1B753327502 /* SCDaemonProtocol.swift in Sources */,
 				4E88ED763599BC497531CEC7 /* SCDaemonXPC.swift in Sources */,
 				B2DA1464C5D58E5FD8298319 /* SCError.swift in Sources */,
 				F087391F7573F522F2114ACF /* SCFileWatcher.swift in Sources */,
+				589BA90E5B9027B8A8390D42 /* SCHelperToolUtilities.swift in Sources */,
 				8DE027BC2F7ECD35803A7E0F /* SCMiscUtilities.swift in Sources */,
 				C02EEB8F35329B0BEEEC136B /* SCSchedule.swift in Sources */,
 				25E2105DC1DDA3F569872498 /* SCSettings.swift in Sources */,
+				419CA4823F8E6980DD937027 /* SCXPCAuthorization.swift in Sources */,
+				3475125047C6FD631B8D91D1 /* SCXPCClient.swift in Sources */,
 				1505D0C4E9D97C2C8095A048 /* StoneConstants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -441,14 +501,23 @@
 			files = (
 				1D7A2DEC40C56B4BA3EA8B6A /* AppDelegate.swift in Sources */,
 				D987C89596EFF402461E788F /* BlockEntry.swift in Sources */,
+				51F333ADA960DD1768FF5029 /* BlockManager.swift in Sources */,
+				CC6B70DE885B0FA34D079580 /* HostFileBlocker.swift in Sources */,
+				7CB93BD6B5C774E87D3F571B /* HostFileBlockerSet.swift in Sources */,
+				DFE5B44375F387C025FED2B9 /* LaunchAgentWriter.swift in Sources */,
+				8D126F42CC966C40EB4C9A92 /* PacketFilter.swift in Sources */,
 				86ED6D4184D72512453B6EF9 /* SCBlockFileReaderWriter.swift in Sources */,
 				ADD609E33123F092B55D4BB4 /* SCBlockUtilities.swift in Sources */,
 				AF1F6D9FE0D5D6511D15A6D9 /* SCDaemonProtocol.swift in Sources */,
 				69887871491A8F0543A1A2FF /* SCError.swift in Sources */,
 				294E88BFA0F896F86DD69EFC /* SCFileWatcher.swift in Sources */,
+				E5170D0B68AD145E1886A147 /* SCHelperToolUtilities.swift in Sources */,
 				8E22A23323934A5D7EE4D1AB /* SCMiscUtilities.swift in Sources */,
 				0ED3392D9A12A2E8880ED2BA /* SCSchedule.swift in Sources */,
+				907E89F80D2B863C6D5AB7AC /* SCScheduleManager.swift in Sources */,
 				7BC4288DD6EA269A4754C549 /* SCSettings.swift in Sources */,
+				64EA6D95887D3AFFB78E6A88 /* SCXPCAuthorization.swift in Sources */,
+				31E737CB6266E78638D66D5A /* SCXPCClient.swift in Sources */,
 				18333F10096A9054D4D319E3 /* StoneConstants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -458,15 +527,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				278E6A08181EE2EBBE3A8F9F /* BlockEntry.swift in Sources */,
+				7D95A03028567BA5EFA15968 /* BlockManager.swift in Sources */,
 				117A8C434516A4012844B26B /* CLIMain.swift in Sources */,
+				AD8B4D075BABBC6C4DC98D6C /* HostFileBlocker.swift in Sources */,
+				7B28026A528D1215E5BDF787 /* HostFileBlockerSet.swift in Sources */,
+				34427832FD6532C71DE07B58 /* PacketFilter.swift in Sources */,
 				24EA5EF8600F76989822456D /* SCBlockFileReaderWriter.swift in Sources */,
 				1BEFE1899805F4645CD76520 /* SCBlockUtilities.swift in Sources */,
 				84815EB64C09FEFDD9C77291 /* SCDaemonProtocol.swift in Sources */,
 				2B8D76B0A3B122EB01865DA7 /* SCError.swift in Sources */,
 				37BB975D12BD86E29BD3D6B1 /* SCFileWatcher.swift in Sources */,
+				040A88FF896E666909FC8C44 /* SCHelperToolUtilities.swift in Sources */,
 				106FFBC6D17CCC244FF24FEF /* SCMiscUtilities.swift in Sources */,
 				546A1A30070BB988713DFC5C /* SCSchedule.swift in Sources */,
 				5055D3900FC720534831662B /* SCSettings.swift in Sources */,
+				CAA072446AE9BF20D8D1CE1B /* SCXPCAuthorization.swift in Sources */,
+				477E9916ADEF6848646C3320 /* SCXPCClient.swift in Sources */,
 				E75714E8838B21BD022D0EBB /* StoneConstants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -11,23 +11,44 @@ final class SCDaemonXPC: NSObject, SCDaemonProtocol {
                     blockSettings: [String: Any],
                     authorization: Data,
                     reply: @escaping (Error?) -> Void) {
-        // TODO: Validate authorization, delegate to SCDaemonBlockMethods
-        NSLog("stonectld: startBlock called with %d entries, endDate=%@", blocklist.count, endDate as NSDate)
-        reply(nil)
+        do {
+            try SCXPCAuthorization.checkAuthorization(authorization, for: "startBlock")
+            try SCDaemonBlockMethods.shared.startBlock(
+                controllingUID: uid_t(controllingUID),
+                blocklist: blocklist,
+                isAllowlist: isAllowlist,
+                endDate: endDate,
+                blockSettings: blockSettings
+            )
+            reply(nil)
+        } catch {
+            NSLog("stonectld: startBlock failed: %@", error.localizedDescription)
+            reply(error)
+        }
     }
 
     func updateBlocklist(_ newBlocklist: [String],
                          authorization: Data,
                          reply: @escaping (Error?) -> Void) {
-        // TODO: Validate authorization, delegate to SCDaemonBlockMethods
-        reply(nil)
+        do {
+            try SCXPCAuthorization.checkAuthorization(authorization, for: "updateBlocklist")
+            try SCDaemonBlockMethods.shared.updateBlocklist(newBlocklist)
+            reply(nil)
+        } catch {
+            reply(error)
+        }
     }
 
     func updateBlockEndDate(_ newEndDate: Date,
                             authorization: Data,
                             reply: @escaping (Error?) -> Void) {
-        // TODO: Validate authorization, delegate to SCDaemonBlockMethods
-        reply(nil)
+        do {
+            try SCXPCAuthorization.checkAuthorization(authorization, for: "updateBlockEndDate")
+            try SCDaemonBlockMethods.shared.updateBlockEndDate(newEndDate)
+            reply(nil)
+        } catch {
+            reply(error)
+        }
     }
 
     func getVersion(reply: @escaping (String) -> Void) {
