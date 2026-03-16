@@ -1,71 +1,78 @@
-# Go Run — 2026-03-15
-
-Started: now
-Finished: now
-Status: Complete
+# Go Run — 2026-03-16
 
 ## Summary
-Completed: 2/2 tickets
-Blocked: 0
-Skipped: 0
+Clean Swift rewrite of SelfControl → Stone. **31 Swift files, ~3,650 lines.** All three targets compile with zero errors and zero warnings.
 
-## Review Guide
+Branch: `swift-rewrite` (3 commits ahead of master)
 
-All changes are on a single branch: `worktree-agent-a18ebc64`
+## What was built
 
-### To review:
+### Project Infrastructure
+- XcodeGen-based project with 3 targets: Stone (app), stonectld (daemon), stone-cli (CLI)
+- Deployment target macOS 12.0, Swift 5.9
+- Info.plists with SMJobBless/SMAuthorizedClients for privileged helper
+- ObjC bridging header for audit token access (1 .m file)
 
-```bash
-cd /Users/maxforsey/Code/selfcontrol/.claude/worktrees/agent-a18ebc64
-git diff master...HEAD
-```
+### Common Layer (shared across all targets)
+- `SCError` — error enum with localized descriptions
+- `StoneConstants` — bundle IDs, sentinel strings, default preferences
+- `BlockEntry` — hostname/IP parser with pf rule and hosts line generation
+- `SCSchedule` — Codable recurring schedule model
+- `SCDaemonProtocol` — @objc XPC protocol
+- `SCSettings` — cross-process settings store (root-owned binary plist)
+- `SCBlockUtilities` — block state checks
+- `SCBlockFileReaderWriter` — .stone blocklist file I/O
+- `SCFileWatcher` — FSEvents wrapper
+- `SCMiscUtilities` — serial number, SHA1, utilities
 
-### What was built:
+### Block Enforcement
+- `PacketFilter` — pf rules via pfctl, anchor management, token persistence
+- `HostFileBlocker` — /etc/hosts editing with sentinel markers
+- `HostFileBlockerSet` — multi-hosts-file coordinator
+- `BlockManager` — orchestrates PF + hosts, DNS resolution, subdomain expansion
 
-**1. CLI --duration flag** (`cli-main.m`)
-- `selfcontrol-cli start --blocklist <file> --duration 60` starts a 60-minute block
-- Mutually exclusive with `--enddate` (errors if both provided)
-- Validates duration is a positive integer
+### XPC Communication
+- `SCXPCAuthorization` — AuthorizationServices wrapper
+- `SCXPCClient` — SMJobBless + NSXPCConnection lifecycle
 
-**2. SCSchedule model** (`SCSchedule.h/m`)
-- Properties: identifier (UUID), name, weekdays (0=Sun-6=Sat), hour, minute, durationMinutes, blocklist, enabled
-- Serializes to/from NSDictionary for NSUserDefaults storage
+### Daemon
+- `SCDaemon` — XPC listener, 1s checkup timer, 2min inactivity exit
+- `SCDaemonXPC` — protocol implementation with auth validation
+- `SCDaemonBlockMethods` — block start/checkup/integrity/update logic
+- `SCHelperToolUtilities` — settings ↔ enforcement bridge
 
-**3. SCScheduleManager** (`SCScheduleManager.h/m`)
-- Singleton that reads/writes schedules to NSUserDefaults key `ScheduledBlocks`
-- `syncAllLaunchdAgents` writes launchd plists to ~/Library/LaunchAgents/ and blocklist files to ~/Library/Application Support/SelfControl/Schedules/
-- Handles load/unload via launchctl, cleans up stale plists on remove/disable
+### Schedule Manager
+- `SCScheduleManager` — Codable CRUD with UserDefaults, launchd sync
+- `LaunchAgentWriter` — plist generation, launchctl operations
 
-**4. ScheduleListWindowController** (`ScheduleListWindowController.h/m`)
-- Programmatic Cocoa UI (no xib) — table with On/Name/Days/Time/Duration columns
-- Add/Edit/Remove buttons, edit sheet with day checkboxes + time picker + duration + blocklist
-- Toggling the enabled checkbox immediately syncs launchd agents
+### CLI
+- Full argument parsing: --blocklist, --enddate, --duration, --settings, --uid
+- Legacy positional arg fallback, UserDefaults fallback
+- XPC-based block start
 
-**5. AppController wiring** (`AppController.h/m`, `SCConstants.h/m`, `project.pbxproj`)
-- "Schedules..." menu item added programmatically to the SelfControl menu
-- `syncAllLaunchdAgents` called on app launch
-- All 6 new files added to Xcode project
+### App UI (all programmatic, no xibs)
+- `AppController` — block start/stop flow, window lifecycle, notification observation
+- `MainWindowController` — duration slider, start button, blocklist toggle
+- `TimerWindowController` — countdown, add-to-block, extend time, dock badge
+- `DomainListWindowController` — editable table, add/remove, quick-add
+- `ScheduleListWindowController` — 5-column table, add/edit/remove with sheet
+- `PreferencesWindowController` — General + Advanced tabs
 
-### Smoke test:
+## What's NOT done yet
+- No app icon / assets
+- No localization (English only)
+- Code signing not configured (needs your Apple Developer Team ID)
+- No Sentry integration
+- No "move to Applications" prompt
+- No migration from SelfControl settings
+- No unit tests
+- UI is functional but not polished (no custom styling)
 
-1. `pod install` then open `SelfControl.xcworkspace` in Xcode
-2. Build and run
-3. Look for "Schedules..." in the app menu → click it
-4. Click Add → fill in name, check some days, set time/duration, enter domains → Save
-5. Verify plist exists: `ls ~/Library/LaunchAgents/org.eyebeam.SelfControl.schedule.*.plist`
-6. Verify blocklist exists: `ls ~/Library/Application\ Support/SelfControl/Schedules/`
-7. Uncheck the "On" checkbox → verify plist is removed
-8. Click Remove → verify cleanup
-
-For CLI: `selfcontrol-cli start --blocklist /path/to/file.selfcontrol --duration 60`
-
-### To merge:
+## To test
 
 ```bash
 cd /Users/maxforsey/Code/selfcontrol
-git merge worktree-agent-a18ebc64
-git worktree remove .claude/worktrees/agent-a18ebc64
+git checkout swift-rewrite
+open Stone.xcodeproj
+# Set signing team in Xcode, then Build & Run
 ```
-
-## Build Status
-Full xcodebuild fails due to pre-existing infra issues (missing CocoaPods, code signing cert). Unrelated to new code. Individual file syntax checks pass clean.
