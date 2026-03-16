@@ -1,0 +1,751 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0ED3392D9A12A2E8880ED2BA /* SCSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED1399C417B39686EB99AD4 /* SCSchedule.swift */; };
+		106FFBC6D17CCC244FF24FEF /* SCMiscUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFACB0A8550E6FD043C2C3E1 /* SCMiscUtilities.swift */; };
+		117A8C434516A4012844B26B /* CLIMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A146DC953141CDB91A35B6F8 /* CLIMain.swift */; };
+		1505D0C4E9D97C2C8095A048 /* StoneConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC10F58DCCA388EAE65D588 /* StoneConstants.swift */; };
+		18333F10096A9054D4D319E3 /* StoneConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC10F58DCCA388EAE65D588 /* StoneConstants.swift */; };
+		1BEFE1899805F4645CD76520 /* SCBlockUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569551479489BC531A33BEB7 /* SCBlockUtilities.swift */; };
+		1D7A2DEC40C56B4BA3EA8B6A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232FB9DA4ED5132949F91C14 /* AppDelegate.swift */; };
+		24EA5EF8600F76989822456D /* SCBlockFileReaderWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5970812CE66F46499078AE02 /* SCBlockFileReaderWriter.swift */; };
+		25E2105DC1DDA3F569872498 /* SCSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A044613CE99FFAB614D20EA0 /* SCSettings.swift */; };
+		278E6A08181EE2EBBE3A8F9F /* BlockEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7698B13644DCEE090D8536 /* BlockEntry.swift */; };
+		294E88BFA0F896F86DD69EFC /* SCFileWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDBB035AB421516579E60CC0 /* SCFileWatcher.swift */; };
+		2B8D76B0A3B122EB01865DA7 /* SCError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED6F8E16436AAE80A0B23FE /* SCError.swift */; };
+		37BB975D12BD86E29BD3D6B1 /* SCFileWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDBB035AB421516579E60CC0 /* SCFileWatcher.swift */; };
+		4E88ED763599BC497531CEC7 /* SCDaemonXPC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057C5BBC3302FF8EE61617EA /* SCDaemonXPC.swift */; };
+		5055D3900FC720534831662B /* SCSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A044613CE99FFAB614D20EA0 /* SCSettings.swift */; };
+		546A1A30070BB988713DFC5C /* SCSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED1399C417B39686EB99AD4 /* SCSchedule.swift */; };
+		5B5D2ED27324A66270D42416 /* SCBlockUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569551479489BC531A33BEB7 /* SCBlockUtilities.swift */; };
+		69876C7DBD71CC1FD4F421DE /* selfcontrold-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B278D52251F163FB6F6C5024 /* selfcontrold-Info.plist */; };
+		69887871491A8F0543A1A2FF /* SCError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED6F8E16436AAE80A0B23FE /* SCError.swift */; };
+		6FCC3875421881F9E624F060 /* SCDaemon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30EEF5DB4977AE0BE8C349C /* SCDaemon.swift */; };
+		748D71676E7172BB5D6500BF /* DaemonMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 261228596B561E606AF0AE61 /* DaemonMain.swift */; };
+		7BC4288DD6EA269A4754C549 /* SCSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A044613CE99FFAB614D20EA0 /* SCSettings.swift */; };
+		84815EB64C09FEFDD9C77291 /* SCDaemonProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AB71FFC84568F369668307 /* SCDaemonProtocol.swift */; };
+		86ED6D4184D72512453B6EF9 /* SCBlockFileReaderWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5970812CE66F46499078AE02 /* SCBlockFileReaderWriter.swift */; };
+		88E470BEA357FAAA338045DB /* AuditTokenBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = F7F20A1F0BC042C079D0BFC8 /* AuditTokenBridge.m */; };
+		8DE027BC2F7ECD35803A7E0F /* SCMiscUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFACB0A8550E6FD043C2C3E1 /* SCMiscUtilities.swift */; };
+		8E22A23323934A5D7EE4D1AB /* SCMiscUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFACB0A8550E6FD043C2C3E1 /* SCMiscUtilities.swift */; };
+		ADD609E33123F092B55D4BB4 /* SCBlockUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569551479489BC531A33BEB7 /* SCBlockUtilities.swift */; };
+		AF1F6D9FE0D5D6511D15A6D9 /* SCDaemonProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AB71FFC84568F369668307 /* SCDaemonProtocol.swift */; };
+		B2DA1464C5D58E5FD8298319 /* SCError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED6F8E16436AAE80A0B23FE /* SCError.swift */; };
+		C02EEB8F35329B0BEEEC136B /* SCSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED1399C417B39686EB99AD4 /* SCSchedule.swift */; };
+		D25ACC5540E5D1B753327502 /* SCDaemonProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AB71FFC84568F369668307 /* SCDaemonProtocol.swift */; };
+		D987C89596EFF402461E788F /* BlockEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7698B13644DCEE090D8536 /* BlockEntry.swift */; };
+		E75714E8838B21BD022D0EBB /* StoneConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC10F58DCCA388EAE65D588 /* StoneConstants.swift */; };
+		E7B86B6C4C85D6494183CDE7 /* SCBlockFileReaderWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5970812CE66F46499078AE02 /* SCBlockFileReaderWriter.swift */; };
+		F087391F7573F522F2114ACF /* SCFileWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDBB035AB421516579E60CC0 /* SCFileWatcher.swift */; };
+		F0DBD53D5BB1C46385DDB328 /* BlockEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7698B13644DCEE090D8536 /* BlockEntry.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BB0669151D26FC2EC81CA122 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8631BC5990162C10C0F2F9F7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9608672A1CB611C3899ECFE1;
+			remoteInfo = stonectld;
+		};
+		C0386963B2AC9C91FD2D4CD9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8631BC5990162C10C0F2F9F7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4EF7DCE8DD80278647418D5A;
+			remoteInfo = "stone-cli";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		048790817576E977828D84C2 /* stonectld */ = {isa = PBXFileReference; includeInIndex = 0; path = stonectld; sourceTree = BUILT_PRODUCTS_DIR; };
+		0508BAB39CA3480AFD649FA8 /* Daemon-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Daemon-Bridging-Header.h"; sourceTree = "<group>"; };
+		057C5BBC3302FF8EE61617EA /* SCDaemonXPC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCDaemonXPC.swift; sourceTree = "<group>"; };
+		0C6D45C45DE02C5347B040F4 /* stonectld-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "stonectld-Info.plist"; sourceTree = "<group>"; };
+		123DE962F50955B8D07A576F /* Stone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stone.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1BEDC951BC669725F0BD9476 /* SCXPCClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCXPCClient.m; sourceTree = "<group>"; };
+		1EC10F58DCCA388EAE65D588 /* StoneConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoneConstants.swift; sourceTree = "<group>"; };
+		232FB9DA4ED5132949F91C14 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		243011EE17C85EA874A61A4A /* SCXPCClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCXPCClient.h; sourceTree = "<group>"; };
+		2528103835D7841AC7D6D93C /* SCBlockUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCBlockUtilities.h; sourceTree = "<group>"; };
+		261228596B561E606AF0AE61 /* DaemonMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaemonMain.swift; sourceTree = "<group>"; };
+		26B4B82DA0F5D5595F6293CE /* SCSentry.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCSentry.m; sourceTree = "<group>"; };
+		2B7698B13644DCEE090D8536 /* BlockEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockEntry.swift; sourceTree = "<group>"; };
+		2CCF370D9DBC8842BCDEB00F /* SCMiscUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCMiscUtilities.h; sourceTree = "<group>"; };
+		2ED6F8E16436AAE80A0B23FE /* SCError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCError.swift; sourceTree = "<group>"; };
+		363AEBEB1B7EE3D1181B51A8 /* SCMiscUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCMiscUtilities.m; sourceTree = "<group>"; };
+		374DE5F3841F565820706831 /* SCXPCAuthorization.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCXPCAuthorization.h; sourceTree = "<group>"; };
+		4059E42EA649653FA3FB9C27 /* SCMigrationUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCMigrationUtilities.h; sourceTree = "<group>"; };
+		4095D9FBFF9211A9FB1BCA2D /* SCBlockFileReaderWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCBlockFileReaderWriter.h; sourceTree = "<group>"; };
+		46E6F3563A98E77E296BD499 /* SCFileWatcher.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCFileWatcher.m; sourceTree = "<group>"; };
+		53F5834162EDF5DBE631FE61 /* SCXPCAuthorization.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCXPCAuthorization.m; sourceTree = "<group>"; };
+		5652B8E9E1631B55F7672F1D /* SCErr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCErr.h; sourceTree = "<group>"; };
+		569551479489BC531A33BEB7 /* SCBlockUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCBlockUtilities.swift; sourceTree = "<group>"; };
+		5970812CE66F46499078AE02 /* SCBlockFileReaderWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCBlockFileReaderWriter.swift; sourceTree = "<group>"; };
+		74F3B97CCDEF17E04640F7D2 /* SCFileWatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCFileWatcher.h; sourceTree = "<group>"; };
+		7964AA928B13A6124B9E9F22 /* SCHelperToolUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCHelperToolUtilities.h; sourceTree = "<group>"; };
+		81B85B7204FBAA041AA22026 /* SCHelperToolUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCHelperToolUtilities.m; sourceTree = "<group>"; };
+		842940A25301847E3B4E0745 /* SCSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCSettings.h; sourceTree = "<group>"; };
+		8AD3C1F151F282715803D81A /* SCMigrationUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCMigrationUtilities.m; sourceTree = "<group>"; };
+		9A682B3340DC84919B08145A /* stone-cli-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "stone-cli-Info.plist"; sourceTree = "<group>"; };
+		9AB7136E59B2FA338645AE81 /* SCBlockUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCBlockUtilities.m; sourceTree = "<group>"; };
+		A044613CE99FFAB614D20EA0 /* SCSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCSettings.swift; sourceTree = "<group>"; };
+		A146DC953141CDB91A35B6F8 /* CLIMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLIMain.swift; sourceTree = "<group>"; };
+		A4AB71FFC84568F369668307 /* SCDaemonProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCDaemonProtocol.swift; sourceTree = "<group>"; };
+		A4FAE9DA8608684E15D4DFF5 /* SCSettings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCSettings.m; sourceTree = "<group>"; };
+		B278D52251F163FB6F6C5024 /* selfcontrold-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "selfcontrold-Info.plist"; sourceTree = "<group>"; };
+		B3CD9D15E10F73F816C31880 /* DeprecationSilencers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeprecationSilencers.h; sourceTree = "<group>"; };
+		B83D9D55954B90E64DE6C9B9 /* Stone-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Stone-Info.plist"; sourceTree = "<group>"; };
+		B90BC2D6A4F71CC656A0483F /* SCSentry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCSentry.h; sourceTree = "<group>"; };
+		BDB7743052430508FE2ED85B /* SCUtility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCUtility.h; sourceTree = "<group>"; };
+		C008F9968CD2891A1403669B /* SCBlockFileReaderWriter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCBlockFileReaderWriter.m; sourceTree = "<group>"; };
+		DED1399C417B39686EB99AD4 /* SCSchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCSchedule.swift; sourceTree = "<group>"; };
+		E0221CFF6929F228A523C497 /* Stone.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Stone.entitlements; sourceTree = "<group>"; };
+		EA02F9A6D41568ED2F6BA7E3 /* stone-cli */ = {isa = PBXFileReference; includeInIndex = 0; path = "stone-cli"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EFACB0A8550E6FD043C2C3E1 /* SCMiscUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCMiscUtilities.swift; sourceTree = "<group>"; };
+		F30EEF5DB4977AE0BE8C349C /* SCDaemon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCDaemon.swift; sourceTree = "<group>"; };
+		F4FA1FB17B16818C95688C22 /* SCErr.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCErr.m; sourceTree = "<group>"; };
+		F7F20A1F0BC042C079D0BFC8 /* AuditTokenBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AuditTokenBridge.m; sourceTree = "<group>"; };
+		F9B574D60FEBD95CF4E0CF33 /* AuditTokenBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuditTokenBridge.h; sourceTree = "<group>"; };
+		FDBB035AB421516579E60CC0 /* SCFileWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCFileWatcher.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		087B7F199963E3FF9928A533 = {
+			isa = PBXGroup;
+			children = (
+				671292155A56CAFF50E6415C /* App */,
+				68D2A09ECFA733093863D5CD /* CLI */,
+				F54276623912CE4E80222E1E /* Common */,
+				469A196B1F7B4C5BB39BB5E4 /* Daemon */,
+				542797B83A462E80C83FBEF0 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1CC73973318527A034B1F4CA /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				2ED6F8E16436AAE80A0B23FE /* SCError.swift */,
+			);
+			path = Errors;
+			sourceTree = "<group>";
+		};
+		2EEF7B848C93C7443C587D4F /* Block */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Block;
+			sourceTree = "<group>";
+		};
+		32BF39EF071779D528A17471 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		469A196B1F7B4C5BB39BB5E4 /* Daemon */ = {
+			isa = PBXGroup;
+			children = (
+				F9B574D60FEBD95CF4E0CF33 /* AuditTokenBridge.h */,
+				F7F20A1F0BC042C079D0BFC8 /* AuditTokenBridge.m */,
+				0508BAB39CA3480AFD649FA8 /* Daemon-Bridging-Header.h */,
+				261228596B561E606AF0AE61 /* DaemonMain.swift */,
+				F30EEF5DB4977AE0BE8C349C /* SCDaemon.swift */,
+				057C5BBC3302FF8EE61617EA /* SCDaemonXPC.swift */,
+				B278D52251F163FB6F6C5024 /* selfcontrold-Info.plist */,
+				0C6D45C45DE02C5347B040F4 /* stonectld-Info.plist */,
+			);
+			path = Daemon;
+			sourceTree = "<group>";
+		};
+		507CFEFB1DD408F5B73A9642 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				5970812CE66F46499078AE02 /* SCBlockFileReaderWriter.swift */,
+				569551479489BC531A33BEB7 /* SCBlockUtilities.swift */,
+				FDBB035AB421516579E60CC0 /* SCFileWatcher.swift */,
+				EFACB0A8550E6FD043C2C3E1 /* SCMiscUtilities.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		542797B83A462E80C83FBEF0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EA02F9A6D41568ED2F6BA7E3 /* stone-cli */,
+				123DE962F50955B8D07A576F /* Stone.app */,
+				048790817576E977828D84C2 /* stonectld */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5BDEB8A50FFF383562C687F0 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		5BEEBC4B3C82B893DCD6FDCA /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				A4AB71FFC84568F369668307 /* SCDaemonProtocol.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
+		5DC9094F3DFAFD62D6783C96 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				A044613CE99FFAB614D20EA0 /* SCSettings.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		631FD8FA37CA858EEA87759C /* XPC */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = XPC;
+			sourceTree = "<group>";
+		};
+		671292155A56CAFF50E6415C /* App */ = {
+			isa = PBXGroup;
+			children = (
+				232FB9DA4ED5132949F91C14 /* AppDelegate.swift */,
+				B83D9D55954B90E64DE6C9B9 /* Stone-Info.plist */,
+				E0221CFF6929F228A523C497 /* Stone.entitlements */,
+				5BDEB8A50FFF383562C687F0 /* Resources */,
+				32BF39EF071779D528A17471 /* UI */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		68D2A09ECFA733093863D5CD /* CLI */ = {
+			isa = PBXGroup;
+			children = (
+				A146DC953141CDB91A35B6F8 /* CLIMain.swift */,
+				9A682B3340DC84919B08145A /* stone-cli-Info.plist */,
+			);
+			path = CLI;
+			sourceTree = "<group>";
+		};
+		8D399B5FA509FC13FB039159 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				2B7698B13644DCEE090D8536 /* BlockEntry.swift */,
+				DED1399C417B39686EB99AD4 /* SCSchedule.swift */,
+				1EC10F58DCCA388EAE65D588 /* StoneConstants.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DC1E08AA328E1C12E7CB5236 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				2528103835D7841AC7D6D93C /* SCBlockUtilities.h */,
+				9AB7136E59B2FA338645AE81 /* SCBlockUtilities.m */,
+				7964AA928B13A6124B9E9F22 /* SCHelperToolUtilities.h */,
+				81B85B7204FBAA041AA22026 /* SCHelperToolUtilities.m */,
+				4059E42EA649653FA3FB9C27 /* SCMigrationUtilities.h */,
+				8AD3C1F151F282715803D81A /* SCMigrationUtilities.m */,
+				2CCF370D9DBC8842BCDEB00F /* SCMiscUtilities.h */,
+				363AEBEB1B7EE3D1181B51A8 /* SCMiscUtilities.m */,
+				BDB7743052430508FE2ED85B /* SCUtility.h */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		F54276623912CE4E80222E1E /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				B3CD9D15E10F73F816C31880 /* DeprecationSilencers.h */,
+				4095D9FBFF9211A9FB1BCA2D /* SCBlockFileReaderWriter.h */,
+				C008F9968CD2891A1403669B /* SCBlockFileReaderWriter.m */,
+				5652B8E9E1631B55F7672F1D /* SCErr.h */,
+				F4FA1FB17B16818C95688C22 /* SCErr.m */,
+				74F3B97CCDEF17E04640F7D2 /* SCFileWatcher.h */,
+				46E6F3563A98E77E296BD499 /* SCFileWatcher.m */,
+				B90BC2D6A4F71CC656A0483F /* SCSentry.h */,
+				26B4B82DA0F5D5595F6293CE /* SCSentry.m */,
+				842940A25301847E3B4E0745 /* SCSettings.h */,
+				A4FAE9DA8608684E15D4DFF5 /* SCSettings.m */,
+				374DE5F3841F565820706831 /* SCXPCAuthorization.h */,
+				53F5834162EDF5DBE631FE61 /* SCXPCAuthorization.m */,
+				243011EE17C85EA874A61A4A /* SCXPCClient.h */,
+				1BEDC951BC669725F0BD9476 /* SCXPCClient.m */,
+				2EEF7B848C93C7443C587D4F /* Block */,
+				1CC73973318527A034B1F4CA /* Errors */,
+				8D399B5FA509FC13FB039159 /* Model */,
+				5BEEBC4B3C82B893DCD6FDCA /* Protocol */,
+				5DC9094F3DFAFD62D6783C96 /* Settings */,
+				507CFEFB1DD408F5B73A9642 /* Utilities */,
+				DC1E08AA328E1C12E7CB5236 /* Utility */,
+				631FD8FA37CA858EEA87759C /* XPC */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4EF7DCE8DD80278647418D5A /* stone-cli */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E9843ADB9693963C2975D443 /* Build configuration list for PBXNativeTarget "stone-cli" */;
+			buildPhases = (
+				5703D2B0AFF49A60F8BFFCBA /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "stone-cli";
+			packageProductDependencies = (
+			);
+			productName = "stone-cli";
+			productReference = EA02F9A6D41568ED2F6BA7E3 /* stone-cli */;
+			productType = "com.apple.product-type.tool";
+		};
+		9608672A1CB611C3899ECFE1 /* stonectld */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 12FBD430CC514D006BB378FE /* Build configuration list for PBXNativeTarget "stonectld" */;
+			buildPhases = (
+				1CD92A72950F4B110E36E00D /* Sources */,
+				6F09F37A3238F049220C67A0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = stonectld;
+			packageProductDependencies = (
+			);
+			productName = stonectld;
+			productReference = 048790817576E977828D84C2 /* stonectld */;
+			productType = "com.apple.product-type.tool";
+		};
+		A84044D94B3AAA75AFBC785A /* Stone */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DD91E3612950828C44233F30 /* Build configuration list for PBXNativeTarget "Stone" */;
+			buildPhases = (
+				259D1AF1552537C5641BC614 /* Sources */,
+				1BDE74C22FB8DC52EC7812A6 /* Copy Daemon to LaunchServices */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A87536CB7C7EADEA2E9EEB52 /* PBXTargetDependency */,
+				B4BB9287699396349F6AF333 /* PBXTargetDependency */,
+			);
+			name = Stone;
+			packageProductDependencies = (
+			);
+			productName = Stone;
+			productReference = 123DE962F50955B8D07A576F /* Stone.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8631BC5990162C10C0F2F9F7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
+			};
+			buildConfigurationList = 42020E3AC92EB5ACB3D6F263 /* Build configuration list for PBXProject "Stone" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 087B7F199963E3FF9928A533;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A84044D94B3AAA75AFBC785A /* Stone */,
+				4EF7DCE8DD80278647418D5A /* stone-cli */,
+				9608672A1CB611C3899ECFE1 /* stonectld */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6F09F37A3238F049220C67A0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				69876C7DBD71CC1FD4F421DE /* selfcontrold-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1BDE74C22FB8DC52EC7812A6 /* Copy Daemon to LaunchServices */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Daemon to LaunchServices";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/../Library/LaunchServices\"\ncp \"${BUILT_PRODUCTS_DIR}/com.max4c.stonectld\" \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/../Library/LaunchServices/\" 2>/dev/null || true\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1CD92A72950F4B110E36E00D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				88E470BEA357FAAA338045DB /* AuditTokenBridge.m in Sources */,
+				F0DBD53D5BB1C46385DDB328 /* BlockEntry.swift in Sources */,
+				748D71676E7172BB5D6500BF /* DaemonMain.swift in Sources */,
+				E7B86B6C4C85D6494183CDE7 /* SCBlockFileReaderWriter.swift in Sources */,
+				5B5D2ED27324A66270D42416 /* SCBlockUtilities.swift in Sources */,
+				6FCC3875421881F9E624F060 /* SCDaemon.swift in Sources */,
+				D25ACC5540E5D1B753327502 /* SCDaemonProtocol.swift in Sources */,
+				4E88ED763599BC497531CEC7 /* SCDaemonXPC.swift in Sources */,
+				B2DA1464C5D58E5FD8298319 /* SCError.swift in Sources */,
+				F087391F7573F522F2114ACF /* SCFileWatcher.swift in Sources */,
+				8DE027BC2F7ECD35803A7E0F /* SCMiscUtilities.swift in Sources */,
+				C02EEB8F35329B0BEEEC136B /* SCSchedule.swift in Sources */,
+				25E2105DC1DDA3F569872498 /* SCSettings.swift in Sources */,
+				1505D0C4E9D97C2C8095A048 /* StoneConstants.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		259D1AF1552537C5641BC614 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1D7A2DEC40C56B4BA3EA8B6A /* AppDelegate.swift in Sources */,
+				D987C89596EFF402461E788F /* BlockEntry.swift in Sources */,
+				86ED6D4184D72512453B6EF9 /* SCBlockFileReaderWriter.swift in Sources */,
+				ADD609E33123F092B55D4BB4 /* SCBlockUtilities.swift in Sources */,
+				AF1F6D9FE0D5D6511D15A6D9 /* SCDaemonProtocol.swift in Sources */,
+				69887871491A8F0543A1A2FF /* SCError.swift in Sources */,
+				294E88BFA0F896F86DD69EFC /* SCFileWatcher.swift in Sources */,
+				8E22A23323934A5D7EE4D1AB /* SCMiscUtilities.swift in Sources */,
+				0ED3392D9A12A2E8880ED2BA /* SCSchedule.swift in Sources */,
+				7BC4288DD6EA269A4754C549 /* SCSettings.swift in Sources */,
+				18333F10096A9054D4D319E3 /* StoneConstants.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5703D2B0AFF49A60F8BFFCBA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				278E6A08181EE2EBBE3A8F9F /* BlockEntry.swift in Sources */,
+				117A8C434516A4012844B26B /* CLIMain.swift in Sources */,
+				24EA5EF8600F76989822456D /* SCBlockFileReaderWriter.swift in Sources */,
+				1BEFE1899805F4645CD76520 /* SCBlockUtilities.swift in Sources */,
+				84815EB64C09FEFDD9C77291 /* SCDaemonProtocol.swift in Sources */,
+				2B8D76B0A3B122EB01865DA7 /* SCError.swift in Sources */,
+				37BB975D12BD86E29BD3D6B1 /* SCFileWatcher.swift in Sources */,
+				106FFBC6D17CCC244FF24FEF /* SCMiscUtilities.swift in Sources */,
+				546A1A30070BB988713DFC5C /* SCSchedule.swift in Sources */,
+				5055D3900FC720534831662B /* SCSettings.swift in Sources */,
+				E75714E8838B21BD022D0EBB /* StoneConstants.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A87536CB7C7EADEA2E9EEB52 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9608672A1CB611C3899ECFE1 /* stonectld */;
+			targetProxy = BB0669151D26FC2EC81CA122 /* PBXContainerItemProxy */;
+		};
+		B4BB9287699396349F6AF333 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4EF7DCE8DD80278647418D5A /* stone-cli */;
+			targetProxy = C0386963B2AC9C91FD2D4CD9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0B565D7B650B81F5F9F2C653 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		2B8D1184F8FAAD8B00D3589C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = "Daemon/stonectld-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.max4c.stonectld;
+				PRODUCT_NAME = com.max4c.stonectld;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Daemon/Daemon-Bridging-Header.h";
+			};
+			name = Release;
+		};
+		2F5E74367BCC4E70A9E9A3CB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = "CLI/stone-cli-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.max4c.stone-cli";
+				PRODUCT_NAME = "stone-cli";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		316EB30D69653FB41DC1FB88 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = App/Stone.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = "App/Stone-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.max4c.stone;
+				PRODUCT_NAME = Stone;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		3CC92D64DE6E16659A648EB1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = "CLI/stone-cli-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.max4c.stone-cli";
+				PRODUCT_NAME = "stone-cli";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		816E6D4567388374C7F0A335 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		841AAC963D77EDF7A0D26F5F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = "Daemon/stonectld-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.max4c.stonectld;
+				PRODUCT_NAME = com.max4c.stonectld;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Daemon/Daemon-Bridging-Header.h";
+			};
+			name = Debug;
+		};
+		B2040455476B664A13157B2A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = App/Stone.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = "App/Stone-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.max4c.stone;
+				PRODUCT_NAME = Stone;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		12FBD430CC514D006BB378FE /* Build configuration list for PBXNativeTarget "stonectld" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				841AAC963D77EDF7A0D26F5F /* Debug */,
+				2B8D1184F8FAAD8B00D3589C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		42020E3AC92EB5ACB3D6F263 /* Build configuration list for PBXProject "Stone" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0B565D7B650B81F5F9F2C653 /* Debug */,
+				816E6D4567388374C7F0A335 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		DD91E3612950828C44233F30 /* Build configuration list for PBXNativeTarget "Stone" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				316EB30D69653FB41DC1FB88 /* Debug */,
+				B2040455476B664A13157B2A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E9843ADB9693963C2975D443 /* Build configuration list for PBXNativeTarget "stone-cli" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3CC92D64DE6E16659A648EB1 /* Debug */,
+				2F5E74367BCC4E70A9E9A3CB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8631BC5990162C10C0F2F9F7 /* Project object */;
+}

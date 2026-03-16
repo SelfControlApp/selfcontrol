@@ -1,0 +1,112 @@
+name: Stone
+options:
+  bundleIdPrefix: com.max4c
+  deploymentTarget:
+    macOS: "12.0"
+  xcodeVersion: "15.0"
+  generateEmptyDirectories: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    MACOSX_DEPLOYMENT_TARGET: "12.0"
+    CLANG_ENABLE_OBJC_ARC: YES
+
+fileGroups:
+  - Common
+
+targets:
+  Stone:
+    type: application
+    platform: macOS
+    sources:
+      - path: App
+        excludes:
+          - "**/*.m"
+      - path: Common
+        excludes:
+          - "**/*.m"
+          - "**/*.h"
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.max4c.stone
+        INFOPLIST_FILE: App/Stone-Info.plist
+        CODE_SIGN_ENTITLEMENTS: App/Stone.entitlements
+        ENABLE_HARDENED_RUNTIME: YES
+        PRODUCT_NAME: Stone
+        COMBINE_HIDPI_IMAGES: YES
+        LD_RUNPATH_SEARCH_PATHS: "@executable_path/../Frameworks"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    dependencies:
+      - target: stonectld
+        embed: false
+        copy:
+          destination: executables
+          subpath: ../Library/LaunchServices
+      - target: stone-cli
+        embed: false
+        copy:
+          destination: executables
+    postBuildScripts:
+      - name: "Copy Daemon to LaunchServices"
+        script: |
+          mkdir -p "${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/../Library/LaunchServices"
+          cp "${BUILT_PRODUCTS_DIR}/com.max4c.stonectld" "${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/../Library/LaunchServices/" 2>/dev/null || true
+
+  stonectld:
+    type: tool
+    platform: macOS
+    sources:
+      - path: Daemon
+        excludes:
+          - "**/*.m"
+          - "**/*.h"
+          - "**/org.eyebeam.*"
+      - path: Daemon/AuditTokenBridge.h
+      - path: Daemon/AuditTokenBridge.m
+      - path: Daemon/Daemon-Bridging-Header.h
+      - path: Common
+        excludes:
+          - "**/*.m"
+          - "**/*.h"
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.max4c.stonectld
+        PRODUCT_NAME: com.max4c.stonectld
+        INFOPLIST_FILE: Daemon/stonectld-Info.plist
+        SKIP_INSTALL: YES
+        ENABLE_HARDENED_RUNTIME: YES
+        SWIFT_OBJC_BRIDGING_HEADER: Daemon/Daemon-Bridging-Header.h
+    scheme:
+      testTargets: []
+
+  stone-cli:
+    type: tool
+    platform: macOS
+    sources:
+      - path: CLI
+        excludes:
+          - "**/*.m"
+      - path: Common
+        excludes:
+          - "**/*.m"
+          - "**/*.h"
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.max4c.stone-cli
+        PRODUCT_NAME: stone-cli
+        INFOPLIST_FILE: CLI/stone-cli-Info.plist
+        SKIP_INSTALL: YES
+        ENABLE_HARDENED_RUNTIME: YES
+    scheme:
+      testTargets: []
+
+schemes:
+  Stone:
+    build:
+      targets:
+        Stone: all
+        stonectld: all
+        stone-cli: all
+    run:
+      config: Debug
