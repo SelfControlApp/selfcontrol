@@ -20,12 +20,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// Forward declaration to avoid compiler weirdness
+// Forward declarations to avoid compiler weirdness
 @class TimerWindowController;
+@class ScheduleListWindowController;
 
 #import <Cocoa/Cocoa.h>
 #import "DomainListWindowController.h"
 #import "TimerWindowController.h"
+#import "ScheduleListWindowController.h"
 #import <Security/Security.h>
 #import <SystemConfiguration/SCNetwork.h>
 #import <unistd.h>
@@ -51,6 +53,7 @@
 	NSUserDefaults* defaults_;
     SCSettings* settings_;
 	NSLock* refreshUILock_;
+	ScheduleListWindowController* scheduleListWindowController_;
 	BOOL blockIsOn;
 	BOOL addingBlock;
 }
@@ -124,6 +127,9 @@
 
 // Changed property to manual accessor for pre-Leopard compatibility
 @property (nonatomic, readonly, strong) id initialWindow;
+
+// Opens the schedule list window for managing recurring blocks.
+- (IBAction)openScheduleList:(id)sender;
 
 // opens the SelfControl FAQ in the default browser
 - (IBAction)openFAQ:(id)sender;

@@ -10,6 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 extern OSStatus const AUTH_CANCELLED_STATUS;
+extern NSString *const kScheduledBlocks;
 
 @interface SCConstants : NSObject
 

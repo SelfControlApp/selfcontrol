@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA00000200000001 /* SCSchedule.m in Sources */ = {isa = PBXBuildFile; fileRef = AA00000100000002 /* SCSchedule.m */; };
+		AA00000200000002 /* SCScheduleManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AA00000100000004 /* SCScheduleManager.m */; };
+		AA00000200000003 /* ScheduleListWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA00000100000006 /* ScheduleListWindowController.m */; };
 		5E6BEEBB5C6E29DADDB344CF /* libPods-selfcontrol-cli.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C85A094F15E20A0DB58665A8 /* libPods-selfcontrol-cli.a */; };
 		63BAC9E58A69B15D342B0E29 /* libPods-org.eyebeam.selfcontrold.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BF3973D41997900DF147B24 /* libPods-org.eyebeam.selfcontrold.a */; };
 		8CA8987104D2956493D6AF6B /* Pods_SelfControl_SelfControlTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F41DEF1E3926B4CF3AE2B76C /* Pods_SelfControl_SelfControlTests.framework */; };
@@ -523,6 +526,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		AA00000100000001 /* SCSchedule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSchedule.h; sourceTree = "<group>"; };
+		AA00000100000002 /* SCSchedule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCSchedule.m; sourceTree = "<group>"; };
+		AA00000100000003 /* SCScheduleManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCScheduleManager.h; sourceTree = "<group>"; };
+		AA00000100000004 /* SCScheduleManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCScheduleManager.m; sourceTree = "<group>"; };
+		AA00000100000005 /* ScheduleListWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleListWindowController.h; sourceTree = "<group>"; };
+		AA00000100000006 /* ScheduleListWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleListWindowController.m; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
@@ -1704,6 +1713,12 @@
 				CBD4848D19D768C90020F949 /* PreferencesAdvancedViewController.m */,
 				CBB637210F3E296000EBD135 /* DomainListWindowController.h */,
 				CBB637220F3E296000EBD135 /* DomainListWindowController.m */,
+				AA00000100000001 /* SCSchedule.h */,
+				AA00000100000002 /* SCSchedule.m */,
+				AA00000100000003 /* SCScheduleManager.h */,
+				AA00000100000004 /* SCScheduleManager.m */,
+				AA00000100000005 /* ScheduleListWindowController.h */,
+				AA00000100000006 /* ScheduleListWindowController.m */,
 				CBEE50BF0F48C21F00F5DF1C /* TimerWindowController.h */,
 				CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */,
 				CBC2F8650F4674E300CF2A42 /* LaunchctlHelper.h */,
@@ -3724,6 +3739,9 @@
 				CBD4848F19D768C90020F949 /* PreferencesAdvancedViewController.m in Sources */,
 				CB81A9D025B7C269006956F7 /* SCBlockUtilities.m in Sources */,
 				CBB7DEEA0F53313F00ABF3EA /* DomainListWindowController.m in Sources */,
+				AA00000200000001 /* SCSchedule.m in Sources */,
+				AA00000200000002 /* SCScheduleManager.m in Sources */,
+				AA00000200000003 /* ScheduleListWindowController.m in Sources */,
 				CB953114262BC64F000C8309 /* SCDurationSlider.m in Sources */,
 				CBF3B574217BADD7006D5F52 /* SCSettings.m in Sources */,
 				CB25806616C237F10059C99A /* NSString+IPAddress.m in Sources */,

@@ -32,6 +32,8 @@
 #import "SCBlockFileReaderWriter.h"
 #import "SCUIUtilities.h"
 #import <TransformerKit/NSValueTransformer+TransformerKit.h>
+#import "SCScheduleManager.h"
+#import "ScheduleListWindowController.h"
 
 @interface AppController () {}
 
@@ -418,7 +420,28 @@
     blocklistTeaserLabel_.stringValue = [SCUIUtilities blockTeaserStringWithMaxLength: 60];
 
 	[self refreshUserInterface];
-    
+
+    // Sync recurring scheduled block launchd agents on launch
+    [[SCScheduleManager sharedManager] syncAllLaunchdAgents];
+
+    // Programmatically add a "Schedules..." menu item to the main menu.
+    // We do this in code rather than editing MainMenu.xib.
+    NSMenu *mainMenu = [NSApp mainMenu];
+    // Find the SelfControl menu (first item after Apple menu, index 1)
+    if (mainMenu.itemArray.count > 1) {
+        NSMenu *appSubmenu = [mainMenu.itemArray[1] submenu];
+        if (appSubmenu == nil) {
+            appSubmenu = [mainMenu.itemArray[0] submenu];
+        }
+        NSMenuItem *schedulesItem = [[NSMenuItem alloc] initWithTitle:@"Schedules..."
+                                                              action:@selector(openScheduleList:)
+                                                       keyEquivalent:@""];
+        schedulesItem.target = self;
+        // Insert before the last separator or at the end
+        [appSubmenu addItem:[NSMenuItem separatorItem]];
+        [appSubmenu addItem:schedulesItem];
+    }
+
     NSOperatingSystemVersion minRequiredVersion = (NSOperatingSystemVersion){10,10,0}; // Yosemite
     NSString* minRequiredVersionString = @"10.10 (Yosemite)";
 	if (![[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion: minRequiredVersion]) {
@@ -788,6 +811,14 @@
 
 - (BOOL)application:(NSApplication*)theApplication openFile:(NSString*)filename {
     return [self openSavedBlockFileAtURL: [NSURL fileURLWithPath: filename]];
+}
+
+- (IBAction)openScheduleList:(id)sender {
+    if (scheduleListWindowController_ == nil) {
+        scheduleListWindowController_ = [[ScheduleListWindowController alloc] init];
+    }
+    [scheduleListWindowController_.window center];
+    [scheduleListWindowController_ showWindow:self];
 }
 
 - (IBAction)openFAQ:(id)sender {

@@ -39,12 +39,13 @@ int main(int argc, char* argv[]) {
           * startSig = [XPMArgumentSignature argumentSignatureWithFormat:@"[start --start --install]"],
           * blocklistSig = [XPMArgumentSignature argumentSignatureWithFormat:@"[--blocklist -b]="],
           * blockEndDateSig = [XPMArgumentSignature argumentSignatureWithFormat:@"[--enddate -d]="],
+          * blockDurationSig = [XPMArgumentSignature argumentSignatureWithFormat:@"[--duration]="],
           * blockSettingsSig = [XPMArgumentSignature argumentSignatureWithFormat:@"[--settings -s]="],
           * removeSig = [XPMArgumentSignature argumentSignatureWithFormat:@"[remove --remove]"],
           * printSettingsSig = [XPMArgumentSignature argumentSignatureWithFormat:@"[print-settings --printsettings -p]"],
           * isRunningSig = [XPMArgumentSignature argumentSignatureWithFormat:@"[is-running --isrunning -r]"],
           * versionSig = [XPMArgumentSignature argumentSignatureWithFormat:@"[version --version -v]"];
-        NSArray * signatures = @[controllingUIDSig, startSig, blocklistSig, blockEndDateSig, blockSettingsSig, removeSig, printSettingsSig, isRunningSig, versionSig];
+        NSArray * signatures = @[controllingUIDSig, startSig, blocklistSig, blockEndDateSig, blockDurationSig, blockSettingsSig, removeSig, printSettingsSig, isRunningSig, versionSig];
         XPMArgumentPackage * arguments = [[NSProcessInfo processInfo] xpmargs_parseArgumentsWithSignatures:signatures];
         
         // We'll need the controlling UID to know what settings to read
@@ -94,7 +95,25 @@ int main(int argc, char* argv[]) {
             // 1) we can receive them as command-line arguments, including a path to a blocklist file
             // 2) we can read them from user defaults (for legacy support, don't encourage this)
             NSString* pathToBlocklistFile = [arguments firstObjectForSignature: blocklistSig];
-            NSDate* blockEndDateArg = [[NSISO8601DateFormatter new] dateFromString: [arguments firstObjectForSignature: blockEndDateSig]];
+
+            NSString* endDateString = [arguments firstObjectForSignature: blockEndDateSig];
+            NSString* durationString = [arguments firstObjectForSignature: blockDurationSig];
+            if (endDateString != nil && durationString != nil) {
+                NSLog(@"ERROR: --enddate and --duration are mutually exclusive. Provide one or the other.");
+                exit(EX_USAGE);
+            }
+
+            NSDate* blockEndDateArg = nil;
+            if (durationString != nil) {
+                int durationMinutes = [durationString intValue];
+                if (durationMinutes <= 0) {
+                    NSLog(@"ERROR: --duration must be a positive number of minutes.");
+                    exit(EX_USAGE);
+                }
+                blockEndDateArg = [NSDate dateWithTimeIntervalSinceNow: durationMinutes * 60];
+            } else if (endDateString != nil) {
+                blockEndDateArg = [[NSISO8601DateFormatter new] dateFromString: endDateString];
+            }
 
             // if we didn't get a valid block end date in the future, try our next approach: legacy unlabeled arguments
             // this is for backwards compatibility. In SC pre-4.0, this used to be called as --install {uid} {pathToBlocklistFile} {blockEndDate}
@@ -241,6 +260,7 @@ int main(int argc, char* argv[]) {
             printf("\n    start --> starts a SelfControl block\n");
             printf("        --blocklist <path to saved blocklist file>\n");
             printf("        --enddate <specified end date for block in ISO8601 format>\n");
+            printf("        --duration <block duration in minutes (alternative to --enddate)>\n");
             printf("        --settings <other block settings in JSON format>\n");
             printf("\n    is-running --> prints YES if a SelfControl block is currently running, or NO otherwise\n");
             printf("\n    print-settings --> prints the SelfControl settings being used for the active block (for debug purposes)\n");
@@ -248,6 +268,7 @@ int main(int argc, char* argv[]) {
             printf("\n");
             printf("--uid argument MUST be specified and set to the controlling user ID if selfcontrol-cli is being run as root. Otherwise, it does not need to be set.\n\n");
             printf("Example start command: selfcontrol-cli start --blocklist /path/to/blocklist.selfcontrol --enddate 2021-02-12T06:53:00Z\n");
+            printf("Example with duration: selfcontrol-cli start --blocklist /path/to/blocklist.selfcontrol --duration 60\n");
         }
 
         // final sync before we exit
