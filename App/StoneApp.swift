@@ -6,7 +6,7 @@ struct StoneApp: App {
 
     var body: some Scene {
         WindowGroup {
-            MainView()
+            MainView(appController: appDelegate.appController)
                 .frame(width: 420, height: 320)
                 .onAppear {
                     appDelegate.appController.start()

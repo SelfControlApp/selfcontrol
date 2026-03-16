@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct MainView: View {
+    let appController: AppController
+
     @AppStorage("BlockDuration") private var blockDuration = 60
     @AppStorage("MaxBlockLength") private var maxBlockLength = 1440
     @AppStorage("BlockAsWhitelist") private var blockAsWhitelist = false
@@ -66,7 +68,7 @@ struct MainView: View {
 
             // Start
             Button(action: {
-                // TODO: Wire to AppController.startBlock()
+                appController.startBlock()
             }) {
                 Text("Start Block")
                     .font(.system(size: 13, weight: .semibold))
