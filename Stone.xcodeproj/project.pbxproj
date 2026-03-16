@@ -25,7 +25,9 @@
 		3475125047C6FD631B8D91D1 /* SCXPCClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAB6759F20C23316048431E /* SCXPCClient.swift */; };
 		34E13B558FA50E3047BDB490 /* BlockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B32D03470CDDAACDE0FC7C0 /* BlockManager.swift */; };
 		37BB975D12BD86E29BD3D6B1 /* SCFileWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDBB035AB421516579E60CC0 /* SCFileWatcher.swift */; };
+		3870CC537FE7C26B06C63C6F /* DomainListWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CF651375CFC460C717E91 /* DomainListWindowController.swift */; };
 		3A8975C5BE707AB29E13AAE1 /* SCDaemonBlockMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74D771F3252AE3956D9C3D5 /* SCDaemonBlockMethods.swift */; };
+		3AB4C7A8A4E735F07E6C095E /* ScheduleListWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D02C57DDDEEFE5CA8049A77 /* ScheduleListWindowController.swift */; };
 		419CA4823F8E6980DD937027 /* SCXPCAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DFB0AFE764F88E0B7FBD806 /* SCXPCAuthorization.swift */; };
 		477E9916ADEF6848646C3320 /* SCXPCClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAB6759F20C23316048431E /* SCXPCClient.swift */; };
 		4E88ED763599BC497531CEC7 /* SCDaemonXPC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057C5BBC3302FF8EE61617EA /* SCDaemonXPC.swift */; };
@@ -51,10 +53,12 @@
 		8DE027BC2F7ECD35803A7E0F /* SCMiscUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFACB0A8550E6FD043C2C3E1 /* SCMiscUtilities.swift */; };
 		8E22A23323934A5D7EE4D1AB /* SCMiscUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFACB0A8550E6FD043C2C3E1 /* SCMiscUtilities.swift */; };
 		907E89F80D2B863C6D5AB7AC /* SCScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168C56121028944D384946B1 /* SCScheduleManager.swift */; };
+		9DD1F0B230E6CF53A34A4907 /* TimerWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82185FB5301AF5C63A1C3BDB /* TimerWindowController.swift */; };
 		AD8B4D075BABBC6C4DC98D6C /* HostFileBlocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 851832B4CC5063A4D705791C /* HostFileBlocker.swift */; };
 		ADD609E33123F092B55D4BB4 /* SCBlockUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569551479489BC531A33BEB7 /* SCBlockUtilities.swift */; };
 		AF1F6D9FE0D5D6511D15A6D9 /* SCDaemonProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AB71FFC84568F369668307 /* SCDaemonProtocol.swift */; };
 		B2DA1464C5D58E5FD8298319 /* SCError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED6F8E16436AAE80A0B23FE /* SCError.swift */; };
+		B46E85D5661A50A68DB27231 /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D79D35D15F488E9B9DECA2F /* AppController.swift */; };
 		C02EEB8F35329B0BEEEC136B /* SCSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED1399C417B39686EB99AD4 /* SCSchedule.swift */; };
 		CAA072446AE9BF20D8D1CE1B /* SCXPCAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DFB0AFE764F88E0B7FBD806 /* SCXPCAuthorization.swift */; };
 		CC6B70DE885B0FA34D079580 /* HostFileBlocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 851832B4CC5063A4D705791C /* HostFileBlocker.swift */; };
@@ -66,8 +70,10 @@
 		E5170D0B68AD145E1886A147 /* SCHelperToolUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F284281E701208ECD7EBCE7 /* SCHelperToolUtilities.swift */; };
 		E75714E8838B21BD022D0EBB /* StoneConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC10F58DCCA388EAE65D588 /* StoneConstants.swift */; };
 		E7B86B6C4C85D6494183CDE7 /* SCBlockFileReaderWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5970812CE66F46499078AE02 /* SCBlockFileReaderWriter.swift */; };
+		EDEA395D6C081E33587893D9 /* PreferencesWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B69CC6C0BFA46FA3B5D6E7 /* PreferencesWindowController.swift */; };
 		F087391F7573F522F2114ACF /* SCFileWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDBB035AB421516579E60CC0 /* SCFileWatcher.swift */; };
 		F0DBD53D5BB1C46385DDB328 /* BlockEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7698B13644DCEE090D8536 /* BlockEntry.swift */; };
+		FCCBCDF0C497C9A5AEC06740 /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990FAD6FDA907CA9F17F300A /* MainWindowController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +113,8 @@
 		2ED6F8E16436AAE80A0B23FE /* SCError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCError.swift; sourceTree = "<group>"; };
 		363AEBEB1B7EE3D1181B51A8 /* SCMiscUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCMiscUtilities.m; sourceTree = "<group>"; };
 		374DE5F3841F565820706831 /* SCXPCAuthorization.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCXPCAuthorization.h; sourceTree = "<group>"; };
+		3B6CF651375CFC460C717E91 /* DomainListWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainListWindowController.swift; sourceTree = "<group>"; };
+		3D79D35D15F488E9B9DECA2F /* AppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppController.swift; sourceTree = "<group>"; };
 		4059E42EA649653FA3FB9C27 /* SCMigrationUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCMigrationUtilities.h; sourceTree = "<group>"; };
 		4095D9FBFF9211A9FB1BCA2D /* SCBlockFileReaderWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCBlockFileReaderWriter.h; sourceTree = "<group>"; };
 		46E6F3563A98E77E296BD499 /* SCFileWatcher.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCFileWatcher.m; sourceTree = "<group>"; };
@@ -114,15 +122,18 @@
 		5652B8E9E1631B55F7672F1D /* SCErr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCErr.h; sourceTree = "<group>"; };
 		569551479489BC531A33BEB7 /* SCBlockUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCBlockUtilities.swift; sourceTree = "<group>"; };
 		5970812CE66F46499078AE02 /* SCBlockFileReaderWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCBlockFileReaderWriter.swift; sourceTree = "<group>"; };
+		5D02C57DDDEEFE5CA8049A77 /* ScheduleListWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleListWindowController.swift; sourceTree = "<group>"; };
 		5DAB6759F20C23316048431E /* SCXPCClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCXPCClient.swift; sourceTree = "<group>"; };
 		5F284281E701208ECD7EBCE7 /* SCHelperToolUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCHelperToolUtilities.swift; sourceTree = "<group>"; };
 		6E68C4A9C57642218C792495 /* LaunchAgentWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAgentWriter.swift; sourceTree = "<group>"; };
 		74F3B97CCDEF17E04640F7D2 /* SCFileWatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCFileWatcher.h; sourceTree = "<group>"; };
 		7964AA928B13A6124B9E9F22 /* SCHelperToolUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCHelperToolUtilities.h; sourceTree = "<group>"; };
 		81B85B7204FBAA041AA22026 /* SCHelperToolUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCHelperToolUtilities.m; sourceTree = "<group>"; };
+		82185FB5301AF5C63A1C3BDB /* TimerWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerWindowController.swift; sourceTree = "<group>"; };
 		842940A25301847E3B4E0745 /* SCSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCSettings.h; sourceTree = "<group>"; };
 		851832B4CC5063A4D705791C /* HostFileBlocker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostFileBlocker.swift; sourceTree = "<group>"; };
 		8AD3C1F151F282715803D81A /* SCMigrationUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCMigrationUtilities.m; sourceTree = "<group>"; };
+		990FAD6FDA907CA9F17F300A /* MainWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
 		9A682B3340DC84919B08145A /* stone-cli-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "stone-cli-Info.plist"; sourceTree = "<group>"; };
 		9AB7136E59B2FA338645AE81 /* SCBlockUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCBlockUtilities.m; sourceTree = "<group>"; };
 		9B32D03470CDDAACDE0FC7C0 /* BlockManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockManager.swift; sourceTree = "<group>"; };
@@ -144,6 +155,7 @@
 		EA02F9A6D41568ED2F6BA7E3 /* stone-cli */ = {isa = PBXFileReference; includeInIndex = 0; path = "stone-cli"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFACB0A8550E6FD043C2C3E1 /* SCMiscUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCMiscUtilities.swift; sourceTree = "<group>"; };
 		F30EEF5DB4977AE0BE8C349C /* SCDaemon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCDaemon.swift; sourceTree = "<group>"; };
+		F3B69CC6C0BFA46FA3B5D6E7 /* PreferencesWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesWindowController.swift; sourceTree = "<group>"; };
 		F4FA1FB17B16818C95688C22 /* SCErr.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCErr.m; sourceTree = "<group>"; };
 		F7F20A1F0BC042C079D0BFC8 /* AuditTokenBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AuditTokenBridge.m; sourceTree = "<group>"; };
 		F9B574D60FEBD95CF4E0CF33 /* AuditTokenBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuditTokenBridge.h; sourceTree = "<group>"; };
@@ -185,6 +197,11 @@
 		32BF39EF071779D528A17471 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				3B6CF651375CFC460C717E91 /* DomainListWindowController.swift */,
+				990FAD6FDA907CA9F17F300A /* MainWindowController.swift */,
+				F3B69CC6C0BFA46FA3B5D6E7 /* PreferencesWindowController.swift */,
+				5D02C57DDDEEFE5CA8049A77 /* ScheduleListWindowController.swift */,
+				82185FB5301AF5C63A1C3BDB /* TimerWindowController.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -262,6 +279,7 @@
 		671292155A56CAFF50E6415C /* App */ = {
 			isa = PBXGroup;
 			children = (
+				3D79D35D15F488E9B9DECA2F /* AppController.swift */,
 				232FB9DA4ED5132949F91C14 /* AppDelegate.swift */,
 				B83D9D55954B90E64DE6C9B9 /* Stone-Info.plist */,
 				E0221CFF6929F228A523C497 /* Stone.entitlements */,
@@ -499,13 +517,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B46E85D5661A50A68DB27231 /* AppController.swift in Sources */,
 				1D7A2DEC40C56B4BA3EA8B6A /* AppDelegate.swift in Sources */,
 				D987C89596EFF402461E788F /* BlockEntry.swift in Sources */,
 				51F333ADA960DD1768FF5029 /* BlockManager.swift in Sources */,
+				3870CC537FE7C26B06C63C6F /* DomainListWindowController.swift in Sources */,
 				CC6B70DE885B0FA34D079580 /* HostFileBlocker.swift in Sources */,
 				7CB93BD6B5C774E87D3F571B /* HostFileBlockerSet.swift in Sources */,
 				DFE5B44375F387C025FED2B9 /* LaunchAgentWriter.swift in Sources */,
+				FCCBCDF0C497C9A5AEC06740 /* MainWindowController.swift in Sources */,
 				8D126F42CC966C40EB4C9A92 /* PacketFilter.swift in Sources */,
+				EDEA395D6C081E33587893D9 /* PreferencesWindowController.swift in Sources */,
 				86ED6D4184D72512453B6EF9 /* SCBlockFileReaderWriter.swift in Sources */,
 				ADD609E33123F092B55D4BB4 /* SCBlockUtilities.swift in Sources */,
 				AF1F6D9FE0D5D6511D15A6D9 /* SCDaemonProtocol.swift in Sources */,
@@ -518,7 +540,9 @@
 				7BC4288DD6EA269A4754C549 /* SCSettings.swift in Sources */,
 				64EA6D95887D3AFFB78E6A88 /* SCXPCAuthorization.swift in Sources */,
 				31E737CB6266E78638D66D5A /* SCXPCClient.swift in Sources */,
+				3AB4C7A8A4E735F07E6C095E /* ScheduleListWindowController.swift in Sources */,
 				18333F10096A9054D4D319E3 /* StoneConstants.swift in Sources */,
+				9DD1F0B230E6CF53A34A4907 /* TimerWindowController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
