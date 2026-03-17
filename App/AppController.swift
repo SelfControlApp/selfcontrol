@@ -222,6 +222,31 @@ final class AppController: NSObject {
         addingBlock = true
         DispatchQueue.main.async { self.refreshUserInterface() }
 
+        let blockDurationSecs = TimeInterval(max(defaults.integer(forKey: "BlockDuration") * 60, 0))
+        let endDate = Date(timeIntervalSinceNow: blockDurationSecs)
+        let blocklist = defaults.stringArray(forKey: "Blocklist") ?? []
+        let isAllowlist = defaults.bool(forKey: "BlockAsWhitelist")
+
+        #if DEBUG
+        // Debug mode: simulate block without privileged daemon.
+        // Writes block state to settings so the timer UI works.
+        NSLog("AppController: DEBUG mode — simulating block without daemon")
+
+        settings.setValue(blocklist, for: "ActiveBlocklist")
+        settings.setValue(isAllowlist, for: "ActiveBlockAsWhitelist")
+        settings.setValue(endDate, for: "BlockEndDate")
+        settings.setValue(true, for: "BlockIsRunning")
+        settings.synchronize()
+
+        defaults.set(true, forKey: "FirstBlockStarted")
+        addingBlock = false
+
+        DispatchQueue.main.async {
+            self.blockIsOn = true
+            self.refreshUserInterface()
+        }
+        #else
+        // Production: install daemon via SMJobBless and start block via XPC
         xpc.installDaemon { [self] error in
             if let error = error {
                 DispatchQueue.main.async {
@@ -231,11 +256,6 @@ final class AppController: NSObject {
                 }
                 return
             }
-
-            let blockDurationSecs = TimeInterval(max(defaults.integer(forKey: "BlockDuration") * 60, 0))
-            let endDate = Date(timeIntervalSinceNow: blockDurationSecs)
-            let blocklist = defaults.stringArray(forKey: "Blocklist") ?? []
-            let isAllowlist = defaults.bool(forKey: "BlockAsWhitelist")
 
             settings.synchronize()
 
@@ -271,6 +291,7 @@ final class AppController: NSObject {
                 }
             }
         }
+        #endif
     }
 
     // MARK: - Modify Running Block
