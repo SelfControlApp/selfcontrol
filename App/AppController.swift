@@ -1,17 +1,18 @@
 import Cocoa
 
 /// Central controller that manages block start/stop flow and window lifecycle.
-final class AppController: NSObject {
-    private(set) var mainWindowController: MainWindowController?
-    private(set) var timerWindowController: TimerWindowController?
+final class AppController: NSObject, ObservableObject {
+    @Published var blockIsOn = false
+    @Published var addingBlock = false
 
     private let defaults = UserDefaults.standard
     private let settings = SCSettings.shared
     private let xpc = SCXPCClient()
     private let refreshLock = NSLock()
 
-    private var blockIsOn = false
-    var addingBlock = false
+    // Legacy AppKit window controllers (kept for timer window during block)
+    private var mainWindowController: MainWindowController?
+    private var timerWindowController: TimerWindowController?
 
     // MARK: - Setup
 
@@ -62,32 +63,18 @@ final class AppController: NSObject {
 
     func refreshUserInterface() {
         if !Thread.isMainThread {
-            DispatchQueue.main.sync { self.refreshUserInterface() }
+            DispatchQueue.main.async { self.refreshUserInterface() }
             return
         }
 
         guard refreshLock.try() else { return }
         defer { refreshLock.unlock() }
 
-        let blockWasOn = blockIsOn
         blockIsOn = SCBlockUtilities.anyBlockIsRunning()
 
-        if blockIsOn {
-            if !blockWasOn {
-                closeTimerWindow()
-                showTimerWindow()
-                mainWindowController?.close()
-            }
-        } else {
-            if blockWasOn {
-                timerWindowController?.blockEnded()
-                closeTimerWindow()
-                showMainWindow()
-                NSApp.dockTile.badgeLabel = nil
-            }
-
-            mainWindowController?.updateControls(addingBlock: addingBlock)
-        }
+        // SwiftUI owns the main window. AppController only manages the
+        // timer window and block state — no AppKit window creation.
+        NSApp.dockTile.badgeLabel = blockIsOn ? "●" : nil
     }
 
     // MARK: - Window Management

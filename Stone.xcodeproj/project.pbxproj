@@ -42,6 +42,7 @@
 		69887871491A8F0543A1A2FF /* SCError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED6F8E16436AAE80A0B23FE /* SCError.swift */; };
 		6FCC3875421881F9E624F060 /* SCDaemon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30EEF5DB4977AE0BE8C349C /* SCDaemon.swift */; };
 		748D71676E7172BB5D6500BF /* DaemonMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 261228596B561E606AF0AE61 /* DaemonMain.swift */; };
+		798637F8EBAB0ED4885A8D22 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0570BFDD7A5C59587B66094B /* TimerView.swift */; };
 		7B28026A528D1215E5BDF787 /* HostFileBlockerSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACCE1D3A846400EF79C0DD98 /* HostFileBlockerSet.swift */; };
 		7BC4288DD6EA269A4754C549 /* SCSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A044613CE99FFAB614D20EA0 /* SCSettings.swift */; };
 		7CB93BD6B5C774E87D3F571B /* HostFileBlockerSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACCE1D3A846400EF79C0DD98 /* HostFileBlockerSet.swift */; };
@@ -100,6 +101,7 @@
 /* Begin PBXFileReference section */
 		048790817576E977828D84C2 /* stonectld */ = {isa = PBXFileReference; includeInIndex = 0; path = stonectld; sourceTree = BUILT_PRODUCTS_DIR; };
 		0508BAB39CA3480AFD649FA8 /* Daemon-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Daemon-Bridging-Header.h"; sourceTree = "<group>"; };
+		0570BFDD7A5C59587B66094B /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		057C5BBC3302FF8EE61617EA /* SCDaemonXPC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCDaemonXPC.swift; sourceTree = "<group>"; };
 		096EC9AC36CCB4176B678026 /* ScheduleEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleEditorView.swift; sourceTree = "<group>"; };
 		0C6D45C45DE02C5347B040F4 /* stonectld-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "stonectld-Info.plist"; sourceTree = "<group>"; };
@@ -212,6 +214,7 @@
 				F3B69CC6C0BFA46FA3B5D6E7 /* PreferencesWindowController.swift */,
 				096EC9AC36CCB4176B678026 /* ScheduleEditorView.swift */,
 				5D02C57DDDEEFE5CA8049A77 /* ScheduleListWindowController.swift */,
+				0570BFDD7A5C59587B66094B /* TimerView.swift */,
 				82185FB5301AF5C63A1C3BDB /* TimerWindowController.swift */,
 			);
 			path = UI;
@@ -572,6 +575,7 @@
 				3AB4C7A8A4E735F07E6C095E /* ScheduleListWindowController.swift in Sources */,
 				0D6CF09467365285F500641A /* StoneApp.swift in Sources */,
 				18333F10096A9054D4D319E3 /* StoneConstants.swift in Sources */,
+				798637F8EBAB0ED4885A8D22 /* TimerView.swift in Sources */,
 				9DD1F0B230E6CF53A34A4907 /* TimerWindowController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

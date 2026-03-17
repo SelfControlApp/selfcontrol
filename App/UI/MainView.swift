@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct MainView: View {
-    let appController: AppController
+    @ObservedObject var appController: AppController
 
     @AppStorage("BlockDuration") private var blockDuration = 60
     @AppStorage("MaxBlockLength") private var maxBlockLength = 1440
@@ -12,10 +12,17 @@ struct MainView: View {
     @State private var blocklist: [String] = []
 
     var body: some View {
+        if appController.blockIsOn {
+            TimerView(appController: appController)
+        } else {
+            setupView
+        }
+    }
+
+    private var setupView: some View {
         VStack(spacing: 0) {
             Spacer()
 
-            // Duration — the hero
             VStack(spacing: 2) {
                 Text(formattedDuration)
                     .font(.system(size: 48, weight: .bold, design: .rounded))
@@ -29,13 +36,11 @@ struct MainView: View {
 
             Spacer().frame(height: 24)
 
-            // Slider
             Slider(value: durationBinding, in: 1...Double(max(maxBlockLength, 1)), step: 1)
                 .frame(maxWidth: 280)
 
             Spacer().frame(height: 32)
 
-            // Mode + count
             HStack(spacing: 16) {
                 Picker("", selection: $blockAsWhitelist) {
                     Text("Block").tag(false)
@@ -51,7 +56,6 @@ struct MainView: View {
 
             Spacer().frame(height: 24)
 
-            // Actions
             HStack(spacing: 10) {
                 Button(action: { showingBlocklist = true }) {
                     Label("Sites", systemImage: "list.bullet")
@@ -66,10 +70,7 @@ struct MainView: View {
 
             Spacer().frame(height: 20)
 
-            // Start
-            Button(action: {
-                appController.startBlock()
-            }) {
+            Button(action: { appController.startBlock() }) {
                 Text("Start Block")
                     .font(.system(size: 13, weight: .semibold))
                     .frame(maxWidth: 200)
@@ -77,7 +78,7 @@ struct MainView: View {
             }
             .buttonStyle(.borderedProminent)
             .controlSize(.large)
-            .disabled(blocklist.isEmpty && !blockAsWhitelist)
+            .disabled((blocklist.isEmpty && !blockAsWhitelist) || appController.addingBlock)
 
             Spacer()
         }

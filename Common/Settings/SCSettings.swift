@@ -16,7 +16,11 @@ final class SCSettings {
 
     init() {
         self.filePath = SCMiscUtilities.settingsFilePath()
+        #if DEBUG
+        self.isReadOnly = false
+        #else
         self.isReadOnly = geteuid() != 0
+        #endif
         loadFromDisk()
         startObservingNotifications()
         startSyncTimer()
