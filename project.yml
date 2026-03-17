@@ -11,6 +11,9 @@ settings:
     SWIFT_VERSION: "5.9"
     MACOSX_DEPLOYMENT_TARGET: "12.0"
     CLANG_ENABLE_OBJC_ARC: YES
+    DEVELOPMENT_TEAM: H9N9P29TX5
+    CODE_SIGN_IDENTITY: "Apple Development"
+    CODE_SIGN_STYLE: Automatic
 
 fileGroups:
   - Common

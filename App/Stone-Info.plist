@@ -27,7 +27,7 @@
 	<key>SMPrivilegedExecutables</key>
 	<dict>
 		<key>com.max4c.stonectld</key>
-		<string>identifier "com.max4c.stonectld" and anchor apple generic</string>
+		<string>identifier "com.max4c.stonectld" and anchor apple generic and certificate leaf[subject.OU] = "H9N9P29TX5"</string>
 	</dict>
 </dict>
 </plist>
