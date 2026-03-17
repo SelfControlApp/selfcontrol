@@ -47,6 +47,7 @@
 		7BC4288DD6EA269A4754C549 /* SCSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A044613CE99FFAB614D20EA0 /* SCSettings.swift */; };
 		7CB93BD6B5C774E87D3F571B /* HostFileBlockerSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACCE1D3A846400EF79C0DD98 /* HostFileBlockerSet.swift */; };
 		7D95A03028567BA5EFA15968 /* BlockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B32D03470CDDAACDE0FC7C0 /* BlockManager.swift */; };
+		810FDBD7877DACDA53954155 /* stonectld-launchd.plist in Resources */ = {isa = PBXBuildFile; fileRef = FDA547682924A811CA0DC334 /* stonectld-launchd.plist */; };
 		84815EB64C09FEFDD9C77291 /* SCDaemonProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AB71FFC84568F369668307 /* SCDaemonProtocol.swift */; };
 		86ED6D4184D72512453B6EF9 /* SCBlockFileReaderWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5970812CE66F46499078AE02 /* SCBlockFileReaderWriter.swift */; };
 		88E470BEA357FAAA338045DB /* AuditTokenBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = F7F20A1F0BC042C079D0BFC8 /* AuditTokenBridge.m */; };
@@ -169,6 +170,7 @@
 		F4FA1FB17B16818C95688C22 /* SCErr.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCErr.m; sourceTree = "<group>"; };
 		F7F20A1F0BC042C079D0BFC8 /* AuditTokenBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AuditTokenBridge.m; sourceTree = "<group>"; };
 		F9B574D60FEBD95CF4E0CF33 /* AuditTokenBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuditTokenBridge.h; sourceTree = "<group>"; };
+		FDA547682924A811CA0DC334 /* stonectld-launchd.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "stonectld-launchd.plist"; sourceTree = "<group>"; };
 		FDBB035AB421516579E60CC0 /* SCFileWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCFileWatcher.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -232,6 +234,7 @@
 				057C5BBC3302FF8EE61617EA /* SCDaemonXPC.swift */,
 				B278D52251F163FB6F6C5024 /* selfcontrold-Info.plist */,
 				0C6D45C45DE02C5347B040F4 /* stonectld-Info.plist */,
+				FDA547682924A811CA0DC334 /* stonectld-launchd.plist */,
 			);
 			path = Daemon;
 			sourceTree = "<group>";
@@ -486,6 +489,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				69876C7DBD71CC1FD4F421DE /* selfcontrold-Info.plist in Resources */,
+				810FDBD7877DACDA53954155 /* stonectld-launchd.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -691,11 +695,22 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				CREATE_INFOPLIST_SECTION_IN_BINARY = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "Daemon/stonectld-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"-sectcreate",
+					__TEXT,
+					__info_plist,
+					"$(SRCROOT)/Daemon/stonectld-Info.plist",
+					"-sectcreate",
+					__TEXT,
+					__launchd_plist,
+					"$(SRCROOT)/Daemon/stonectld-launchd.plist",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.max4c.stonectld;
 				PRODUCT_NAME = com.max4c.stonectld;
@@ -817,11 +832,22 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				CREATE_INFOPLIST_SECTION_IN_BINARY = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "Daemon/stonectld-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"-sectcreate",
+					__TEXT,
+					__info_plist,
+					"$(SRCROOT)/Daemon/stonectld-Info.plist",
+					"-sectcreate",
+					__TEXT,
+					__launchd_plist,
+					"$(SRCROOT)/Daemon/stonectld-launchd.plist",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.max4c.stonectld;
 				PRODUCT_NAME = com.max4c.stonectld;

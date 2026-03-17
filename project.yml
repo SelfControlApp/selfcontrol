@@ -78,9 +78,19 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.max4c.stonectld
         PRODUCT_NAME: com.max4c.stonectld
         INFOPLIST_FILE: Daemon/stonectld-Info.plist
+        CREATE_INFOPLIST_SECTION_IN_BINARY: NO
         SKIP_INSTALL: YES
         ENABLE_HARDENED_RUNTIME: YES
         SWIFT_OBJC_BRIDGING_HEADER: Daemon/Daemon-Bridging-Header.h
+        OTHER_LDFLAGS:
+          - "-sectcreate"
+          - "__TEXT"
+          - "__info_plist"
+          - "$(SRCROOT)/Daemon/stonectld-Info.plist"
+          - "-sectcreate"
+          - "__TEXT"
+          - "__launchd_plist"
+          - "$(SRCROOT)/Daemon/stonectld-launchd.plist"
     scheme:
       testTargets: []
 
