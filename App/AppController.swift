@@ -214,26 +214,7 @@ final class AppController: NSObject, ObservableObject {
         let blocklist = defaults.stringArray(forKey: "Blocklist") ?? []
         let isAllowlist = defaults.bool(forKey: "BlockAsWhitelist")
 
-        #if DEBUG
-        // Debug mode: simulate block without privileged daemon.
-        // Writes block state to settings so the timer UI works.
-        NSLog("AppController: DEBUG mode — simulating block without daemon")
-
-        settings.setValue(blocklist, for: "ActiveBlocklist")
-        settings.setValue(isAllowlist, for: "ActiveBlockAsWhitelist")
-        settings.setValue(endDate, for: "BlockEndDate")
-        settings.setValue(true, for: "BlockIsRunning")
-        settings.synchronize()
-
-        defaults.set(true, forKey: "FirstBlockStarted")
-        addingBlock = false
-
-        DispatchQueue.main.async {
-            self.blockIsOn = true
-            self.refreshUserInterface()
-        }
-        #else
-        // Production: install daemon via SMJobBless and start block via XPC
+        // Install daemon via SMJobBless and start block via XPC
         xpc.installDaemon { [self] error in
             if let error = error {
                 DispatchQueue.main.async {
@@ -273,12 +254,13 @@ final class AppController: NSObject, ObservableObject {
                     }
 
                     self.settings.synchronize()
-                    self.addingBlock = false
-                    self.refreshUserInterface()
+                    DispatchQueue.main.async {
+                        self.addingBlock = false
+                        self.blockIsOn = SCBlockUtilities.anyBlockIsRunning()
+                    }
                 }
             }
         }
-        #endif
     }
 
     // MARK: - Modify Running Block
