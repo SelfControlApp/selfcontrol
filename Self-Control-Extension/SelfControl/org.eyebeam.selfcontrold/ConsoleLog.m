@@ -11,7 +11,7 @@
 @implementation ConsoleLog
 
 + (void)log:(NSString *)message {
-    os_log(OS_LOG_DEFAULT, "ConsoleLog: %@", message);
+    os_log(OS_LOG_DEFAULT, "ConsoleLog: [SC] 🔍] %{public}@", message);
 }
 
 @end
