@@ -159,6 +159,8 @@ struct Strings {
         static let autoCheckUpdates = "Automatically check for updates"
         static let autoSendErrorReports = "Automatically send anonymized error reports"
         static let playSoundOnCompletion = "Play sound on completion"
+        static let showNotificationOnCompletion = "Show Notification on completion"
+
         static let timerFloatsOnTop = "Timer window should float on top"
         static let showCountdownInDock = "Show countdown in Dock"
         static let hideSecondsInCountdown = "Hide seconds in countdown"

@@ -14,6 +14,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ notification: Notification) {
         print("App did finish launching")
+        LocalNotificationManager.requestAuthorization()
     }
 
     func applicationWillTerminate(_ notification: Notification) {

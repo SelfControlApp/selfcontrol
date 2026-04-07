@@ -17,9 +17,9 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.12</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>12</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
 	<key>NSHumanReadableCopyright</key>
@@ -37,8 +37,14 @@
 	<key>SMPrivilegedExecutables</key>
 	<dict>
 		<key>org.eyebeam.selfcontrold</key>
-		<string>anchor apple generic and identifier "org.eyebeam.selfcontrold"</string>
+		<string>identifier "org.eyebeam.selfcontrold" and anchor apple generic and certificate leaf[subject.OU] = "X6FQ433AWK"</string>
 	</dict>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
+	<key>SUFeedURL</key>
+	<string>https://selfcontrolapp.com/appcast.xml</string>
+	<key>SUPublicDSAKeyFile</key>
+	<string>dsa_pub.pem</string>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>

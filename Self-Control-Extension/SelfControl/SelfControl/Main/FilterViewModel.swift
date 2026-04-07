@@ -102,7 +102,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
   
     override init() {
         super.init()
-        ProxyPreferences.reset() //TODO: remove
+//        ProxyPreferences.reset() //TODO: remove
         onInit()
         SafariExtensionManager.shared.onExtensionStateChange = {
             print("SafariExtensionManager.shared.onChange++")
@@ -205,11 +205,8 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
         }
         
         if isSafariExtensionInstalled == true {
-            withAnimation(.easeInOut(duration: 3)) {
                 print(" isSafariExtensionInstalled == true true in Safari")
                 self.viewState = .filter
-            }
-
         } else {
             withAnimation(.easeInOut(duration: 3)) {
                 print("viewState = .installChromeExtension true in Safari")
@@ -489,6 +486,12 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
         _ = IPCConnection.shared.sendMessageToEnableNetworkExtension(_enable: false)
         BlockListManager.deactivateSafariBlocking()
         chromeService.deactivateSafariBlocking()
+        if ProxyPreferences.playSoundOnCompletion {
+            NSSound.playDefaultSound()
+        }
+        if ProxyPreferences.showNotificationOnCompletion {
+            LocalNotificationManager.scheduleNotification()
+        }
     }
     
     // MARK: - Timer management

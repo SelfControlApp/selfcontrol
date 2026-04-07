@@ -15,6 +15,8 @@ struct ProxyPreferences {
     private static let isChromeExtensionKey: String = "isChromeExtensionKey"
     private static let isSafariExtInstallKey: String = "isSafariExtInstallKey"
     private static let isChromeExtInstallKey: String = "isChromeExtInstallKey"
+    private static let playSoundOnCompletionkey: String = "playSoundOnCompletion"
+    private static let showNotificationOnCompletionkey: String = "showNotificationOnCompletion"
 
     private static let defaults = UserDefaults.standard
     static func getBlockedDomains() -> [String] {
@@ -55,6 +57,14 @@ struct ProxyPreferences {
         return UserDefaults.standard.bool(forKey: isChromeExtInstallKey)
     }
     
+    static var playSoundOnCompletion: Bool {
+        return UserDefaults.standard.bool(forKey: playSoundOnCompletionkey)
+    }
+    
+    static var showNotificationOnCompletion: Bool {
+        return UserDefaults.standard.bool(forKey: showNotificationOnCompletionkey)
+    }
+    
     static func setChromeExtensionInstalled() {
         UserDefaults.standard.set(true, forKey: isChromeExtInstallKey)
     }
@@ -64,5 +74,9 @@ struct ProxyPreferences {
         UserDefaults.standard.removeObject(forKey: isSafariExtInstallKey)
         UserDefaults.standard.removeObject(forKey: isSafariExtensionKey)
         UserDefaults.standard.removeObject(forKey: isChromeExtensionKey)
+    }
+    
+    static var soundNames: [String] {
+        ["Basso", "Blow", "Bottle", "Frog", "Funk", "Glass", "Hero", "Morse", "Ping", "Pop", "Purr", "Sosumi", "Submarine", "Tink"]
     }
 }

@@ -27,6 +27,8 @@ struct AdvancedSettingsView: View {
     @AppStorage("autoCheckUpdates") private var autoCheckUpdates = true
     @AppStorage("sendErrorReports") private var sendErrorReports = false
     @AppStorage("playSoundOnCompletion") private var playSoundOnCompletion = true
+    @AppStorage("showNotificationOnCompletion") private var showNotificationOnCompletion = true
+
     @AppStorage("timerFloatsOnTop") private var timerFloatsOnTop = false
     @AppStorage("showCountdownInDock") private var showCountdownInDock = true
     
@@ -107,8 +109,9 @@ struct AdvancedSettingsView: View {
                             
                             VStack(spacing: 0) {
                                 settingRow(title: Strings.AdvancedSettings.autoCheckUpdates, isOn: $autoCheckUpdates, showDivider: true)
-                                settingRow(title: Strings.AdvancedSettings.autoSendErrorReports, isOn: $sendErrorReports, showDivider: true)
+//                                settingRow(title: Strings.AdvancedSettings.autoSendErrorReports, isOn: $sendErrorReports, showDivider: true)
                                 settingRow(title: Strings.AdvancedSettings.playSoundOnCompletion, isOn: $playSoundOnCompletion, showDivider: false)
+                                settingRow(title: Strings.AdvancedSettings.showNotificationOnCompletion, isOn: $showNotificationOnCompletion, showDivider: false)
                             }
                         }
                         .padding(DesignSystem.spacingMedium)
