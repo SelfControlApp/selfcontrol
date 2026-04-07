@@ -57,9 +57,6 @@ final class WebPageViewModel: NSObject, WKNavigationDelegate, WKScriptMessageHan
         super.init()
         self.webView.navigationDelegate = self
         self.webView.configuration.userContentController.add(self, name: "controller")
-        extensionManager.onChange = { [weak self]  in
-            self?.updateSafariExtensionState(state: true)
-        }
     }
     
     private let extensionIdentifier = SafariExtensionConstants.identifier

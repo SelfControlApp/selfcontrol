@@ -11,7 +11,7 @@ final class SSCDaemonHelper {
     let xpc = SCXPCClient()
 
     init() {
-        
+    
     }
     
     func install(blockedDomains: [String], time: Date) {

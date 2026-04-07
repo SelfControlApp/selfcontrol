@@ -13,17 +13,19 @@ struct BlockedURL: Identifiable, Codable, Equatable {
     var domain: String
     var paths: [String]
     var isEnabled: Bool
-    
-    init(id: UUID = UUID(), domain: String, paths: [String] = [], isEnabled: Bool = true) {
+    var blockEntireDomain: Bool
+
+    init(id: UUID = UUID(), domain: String, paths: [String] = [], isEnabled: Bool = true, blockEntireDomain: Bool = false) {
         self.id = id
         self.domain = domain
         self.paths = paths
         self.isEnabled = isEnabled
+        self.blockEntireDomain = blockEntireDomain
     }
     
     var urls: [String]? {
         if isEnabled == false { return nil }
-        if paths.count == 0 {
+        if paths.count == 0 || blockEntireDomain {
             return [domain]
         } else {
             return paths.map { path in

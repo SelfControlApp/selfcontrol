@@ -1401,6 +1401,7 @@ struct NewContentView: View {
         stopCountdownTimer = nil
         stopCountdownTime = 600
         showingStopConfirmation = false
+        viewModel.deactivateNetworkBlocking()
     }
     
     private func resumeBlocking() {

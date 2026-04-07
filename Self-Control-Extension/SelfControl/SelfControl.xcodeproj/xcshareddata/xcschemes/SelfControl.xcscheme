@@ -60,7 +60,6 @@
       allowLocationSimulation = "YES">
       <PathRunnable
          runnableDebuggingMode = "0"
-         BundleIdentifier = "com.app.SelfControl"
          FilePath = "/Applications/SelfControl.app">
       </PathRunnable>
       <MacroExpansion>
