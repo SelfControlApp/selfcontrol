@@ -19,67 +19,50 @@ class FilterDataProvider: NEFilterDataProvider {
     
     // MARK: - Filter Lifecycle
       static let localPort = "8888"
-
     override func startFilter(completionHandler: @escaping (Error?) -> Void) {
-        os_log("[SC] 🔍] FilterDataProvider: Starting filter", log: OSLog.default, type: .info)
+        os_log("[SC] 🔍 FilterDataProvider: Starting filter", log: OSLog.default, type: .info)
         let blockedHosts = IPCConnection.shared.blockedUrls
-
-        os_log("[SC] 🔍] Bloked blockedUrls: %{public}@", log: OSLog.default, type: .error, blockedHosts)
-
-        // Filter incoming TCP connections on port 8888
-
-//        let filterRules = blockedHosts.map { address -> NEFilterRule in
-//  //          let localNetwork = NWHostEndpoint(hostname: address as! String, port: FilterDataProvider.localPort)
-//            let inboundNetworkRule = NENetworkRule(remoteNetwork: address,
-//                                                   remotePrefix: 0,
-//                                                   localNetwork: nil,
-//                                                   localPrefix: 0,
-//                                                   protocol: .any,
-//                                                   direction: .outbound)
-//            return NEFilterRule(networkRule: inboundNetworkRule, action: .filterData)
-//        }
-        // Filter incoming TCP connections on port 8888
-//        let filterRules = ["0.0.0.0", "::"].map { address -> NEFilterRule in
-//        let filterRules = ["*"].map { address -> NEFilterRule in
-//            let localNetwork = NWHostEndpoint(hostname: address, port: "*")
-//            let inboundNetworkRule = NENetworkRule(remoteNetwork: nil,
-//                                                   remotePrefix: 0,
-//                                                   localNetwork: localNetwork,
-//                                                   localPrefix: 0,
-//                                                   protocol: .any,
-//                                                   direction: .outbound)
-//            return NEFilterRule(networkRule: inboundNetworkRule, action: .filterData)
-//        }
-//
-        let filterRules = blockedHosts.map { address -> NEFilterRule in
-            let localNetwork = NWHostEndpoint(hostname: address, port: "*")
-            let inboundNetworkRule = NENetworkRule(remoteNetwork: nil,
-                                                   remotePrefix: 0,
-                                                   localNetwork: localNetwork,
-                                                   localPrefix: 0,
-                                                   protocol: .any,
-                                                   direction: .outbound)
-            return NEFilterRule(networkRule: inboundNetworkRule, action: .filterData)
+        
+        os_log("[SC] 🔍 Blocked blockedUrls: %{public}@", log: OSLog.default, type: .info, String(describing: blockedHosts))
+        
+        // Ensure blockedHosts is an array of String
+        var filterRules: [NEFilterRule] = blockedHosts.compactMap { address in
+            guard let host = address as? String else { return nil }
+            // For hostname-based rules, you must use NENetworkRule with nil networks (matches all)
+            let networkRule = NENetworkRule(
+                remoteNetwork: nil,
+                remotePrefix: 0,
+                localNetwork: nil,
+                localPrefix: 0,
+                protocol: .any,
+                direction: .outbound
+            )
+            return NEFilterRule(networkRule: networkRule, action: .filterData)
         }
         
-
-      // Create a rule matching all outbound traffic.
-//      let networkRule = NENetworkRule(remoteNetwork: nil,
-//                                      remotePrefix: 0,
-//                                      localNetwork: nil,
-//                                      localPrefix: 0,
-//                                      protocol: .any,
-//                                      direction: .outbound)
-//      let filterRule = NEFilterRule(networkRule: networkRule, action: .filterData)
-//      let filterSettings = NEFilterSettings(rules: [filterRule], defaultAction: .allow)
-        let filterSettings = NEFilterSettings(rules: filterRules, defaultAction: .allow)
-
-      apply(filterSettings) { error in
-        if let error = error {
-          os_log("[SC] 🔍] Error applying filter settings: %@", log: OSLog.default, type: .error, error.localizedDescription)
+        // Ensure at least one rule exists as required by NEFilterSettings
+        if filterRules.isEmpty {
+            // Add a default rule (matches all traffic, for example, and allows it)
+            let defaultNetworkRule = NENetworkRule(
+                remoteNetwork: nil,
+                remotePrefix: 0,
+                localNetwork: nil,
+                localPrefix: 0,
+                protocol: .any,
+                direction: .any
+            )
+            let defaultRule = NEFilterRule(networkRule: defaultNetworkRule, action: .allow)
+            filterRules = [defaultRule]
         }
-        completionHandler(error)
-      }
+        
+        let filterSettings = NEFilterSettings(rules: filterRules, defaultAction: .allow)
+        
+        apply(filterSettings) { error in
+            if let error = error {
+                os_log("[SC] 🔍 Error applying filter settings: %{public}@", log: OSLog.default, type: .error, error.localizedDescription)
+            }
+            completionHandler(error)
+        }
     }
     
     override func stopFilter(with reason: NEProviderStopReason, completionHandler: @escaping () -> Void) {
