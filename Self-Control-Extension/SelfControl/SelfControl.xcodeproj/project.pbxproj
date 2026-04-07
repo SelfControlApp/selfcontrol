@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		77BA53092D9D5E2A00863476 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77BA53082D9D5E2A00863476 /* NetworkExtension.framework */; };
 		9A441CE32E36024E00A521CC /* com.application.SelfControl.corebits.network.systemextension in Embed System Extensions */ = {isa = PBXBuildFile; fileRef = 77BA53062D9D5E2A00863476 /* com.application.SelfControl.corebits.network.systemextension */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		9AA492AE2F56E94200452252 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 9AA492AD2F56E94200452252 /* Sparkle */; };
 		9AC9E59E2F04357E0004D39C /* org.eyebeam.selfcontrold in Copy Daemon Launch Service */ = {isa = PBXBuildFile; fileRef = 9AC9E4EA2F041D570004D39C /* org.eyebeam.selfcontrold */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		9AD524CE2EC9F15500AAD5BF /* SelfControlWebExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 9AD524B12EC9B0EA00AAD5BF /* SelfControlWebExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -187,6 +188,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9AA492AE2F56E94200452252 /* Sparkle in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -273,6 +275,7 @@
 			);
 			name = SelfControl;
 			packageProductDependencies = (
+				9AA492AD2F56E94200452252 /* Sparkle */,
 			);
 			productName = SelfControl;
 			productReference = 77BA52D62D9D5D7700863476 /* SelfControl.app */;
@@ -377,6 +380,9 @@
 			);
 			mainGroup = 77BA52CD2D9D5D7700863476;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				9AA492AC2F56E94200452252 /* XCRemoteSwiftPackageReference "Sparkle" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 77BA52D72D9D5D7700863476 /* Products */;
 			projectDirPath = "";
@@ -588,30 +594,29 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = SelfControl/SelfControl.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 26210;
+				CURRENT_PROJECT_VERSION = 31711;
 				DEVELOPMENT_ASSET_PATHS = "\"SelfControl/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=macosx*]" = X6FQ433AWK;
+				DEVELOPMENT_TEAM = X6FQ433AWK;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GCC_PREFIX_HEADER = org.eyebeam.selfcontrold/SCDaemon_Prefix.pch;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SelfControl/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.5;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.application.SelfControl.corebits;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "Self Control app dev";
+				PROVISIONING_PROFILE_SPECIFIER = "Self Control app dev";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "SelfControl/SCDaemonSupport/SelfControl-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -624,30 +629,29 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = SelfControl/SelfControl.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 26210;
+				CURRENT_PROJECT_VERSION = 31711;
 				DEVELOPMENT_ASSET_PATHS = "\"SelfControl/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=macosx*]" = X6FQ433AWK;
+				DEVELOPMENT_TEAM = X6FQ433AWK;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GCC_PREFIX_HEADER = org.eyebeam.selfcontrold/SCDaemon_Prefix.pch;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SelfControl/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.5;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.application.SelfControl.corebits;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "Self Control app dev";
+				PROVISIONING_PROFILE_SPECIFIER = "Self Control app dev";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "SelfControl/SCDaemonSupport/SelfControl-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -725,10 +729,18 @@
 		9AC9E4EF2F041D570004D39C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
+				AUTOMATION_APPLE_EVENTS = NO;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 410;
 				DEVELOPMENT_TEAM = X6FQ433AWK;
-				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_HARDENED_RUNTIME = NO;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = NO;
 				GCC_PREFIX_HEADER = org.eyebeam.selfcontrold/SCDaemon_Prefix.pch;
 				INFOPLIST_FILE = "org.eyebeam.selfcontrold/selfcontrold-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 13.5;
@@ -746,6 +758,13 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.eyebeam.selfcontrold;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				RUNTIME_EXCEPTION_ALLOW_DYLD_ENVIRONMENT_VARIABLES = NO;
+				RUNTIME_EXCEPTION_ALLOW_JIT = NO;
+				RUNTIME_EXCEPTION_ALLOW_UNSIGNED_EXECUTABLE_MEMORY = NO;
+				RUNTIME_EXCEPTION_DEBUGGING_TOOL = NO;
+				RUNTIME_EXCEPTION_DISABLE_EXECUTABLE_PAGE_PROTECTION = NO;
+				RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION = NO;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -753,10 +772,18 @@
 		9AC9E4F02F041D570004D39C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
+				AUTOMATION_APPLE_EVENTS = NO;
+				CODE_SIGN_IDENTITY = "Developer ID Application: CoreBits Software Solutions Private Limited (X6FQ433AWK)";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 410;
 				DEVELOPMENT_TEAM = X6FQ433AWK;
-				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_HARDENED_RUNTIME = NO;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = NO;
 				GCC_PREFIX_HEADER = org.eyebeam.selfcontrold/SCDaemon_Prefix.pch;
 				INFOPLIST_FILE = "org.eyebeam.selfcontrold/selfcontrold-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 13.5;
@@ -774,6 +801,13 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.eyebeam.selfcontrold;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				RUNTIME_EXCEPTION_ALLOW_DYLD_ENVIRONMENT_VARIABLES = NO;
+				RUNTIME_EXCEPTION_ALLOW_JIT = NO;
+				RUNTIME_EXCEPTION_ALLOW_UNSIGNED_EXECUTABLE_MEMORY = NO;
+				RUNTIME_EXCEPTION_DEBUGGING_TOOL = NO;
+				RUNTIME_EXCEPTION_DISABLE_EXECUTABLE_PAGE_PROTECTION = NO;
+				RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION = NO;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -927,6 +961,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9AA492AC2F56E94200452252 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.9.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9AA492AD2F56E94200452252 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9AA492AC2F56E94200452252 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 77BA52CE2D9D5D7700863476 /* Project object */;
 }
