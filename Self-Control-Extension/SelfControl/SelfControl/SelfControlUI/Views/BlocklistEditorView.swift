@@ -157,6 +157,7 @@ struct BlocklistEditorView: View {
             }
             .buttonStyle(.plain)
             .focusable(false)
+            .disabled(isBlockingMode)
             .onHover { hovering in
                 withAnimation(DesignSystem.animationFast) {
                     isHoveringImport = hovering
@@ -266,10 +267,17 @@ struct BlocklistEditorView: View {
                         // TextField - animated transition
                         Group {
                             if isSearchMode {
+                            
                             TextField(Strings.BlocklistEditor.searchPlaceholder, text: $searchText)
                                 .textFieldStyle(.plain)
                                 .font(DesignSystem.font(size: DesignSystem.fontSizeMedium))
                                 .foregroundColor(DesignSystem.textPrimary)
+                                .placeholder(when: searchText.isEmpty, alignment: .leading) {
+                                    Text(Strings.BlocklistEditor.searchPlaceholder)
+                                        .foregroundColor(DesignSystem.disabledText)
+                                        .font(DesignSystem.font(size: DesignSystem.fontSizeMedium))
+                                        .padding(.vertical, 8) // match your field’s vertical insets
+                                }
                             } else {
                                 TextField(Strings.BlocklistEditor.addWebsitePlaceholder, text: $newSite, onCommit: {
                                     addWebsite()
@@ -277,6 +285,12 @@ struct BlocklistEditorView: View {
                                     .textFieldStyle(.plain)
                                     .font(DesignSystem.font(size: DesignSystem.fontSizeMedium))
                                     .foregroundColor(DesignSystem.textPrimary)
+                                    .placeholder(when: newSite.isEmpty, alignment: .leading) {
+                                        Text(Strings.BlocklistEditor.addWebsitePlaceholder)
+                                            .foregroundColor(DesignSystem.disabledText)
+                                            .font(DesignSystem.font(size: DesignSystem.fontSizeMedium))
+                                            .padding(.vertical, 8) // match your field’s vertical insets
+                                    }
                             }
                         }
                         .transition(.opacity.combined(with: .move(edge: .trailing)))
@@ -714,6 +728,7 @@ struct BlocklistEditorView: View {
                                 }
                                 .buttonStyle(.plain)
                                 .focusable(false)
+                                .disabled(isBlockingMode)
                                 .onHover { hovering in
                                     withAnimation(DesignSystem.animationFast) {
                                         isHoveringBulkEdit = hovering
