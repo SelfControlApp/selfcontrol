@@ -36,12 +36,11 @@ struct DomainDetailView: View {
     
     // Initialize blockEntireDomain from UserDefaults or based on domain state
     private func initializeBlockEntireDomain() {
+        blockEntireDomain = UserDefaults.standard.bool(forKey: storageKey)
         if let domain = domain {
             // If domain has paths, always show paths tab (override stored preference)
             if !domain.paths.isEmpty {
-                blockEntireDomain = false
                 // Update stored preference to match
-                UserDefaults.standard.set(false, forKey: storageKey)
             } else {
                 // No paths - check stored preference or default to true
                 if UserDefaults.standard.object(forKey: storageKey) != nil {
@@ -49,7 +48,7 @@ struct DomainDetailView: View {
                 } else {
                     // No stored preference - default to true (block entire domain)
                     blockEntireDomain = true
-                    UserDefaults.standard.set(true, forKey: storageKey)
+                    saveBlockEntireDomainPreference()
                 }
             }
         }
@@ -58,6 +57,10 @@ struct DomainDetailView: View {
     // Save the preference when it changes
     private func saveBlockEntireDomainPreference() {
         UserDefaults.standard.set(blockEntireDomain, forKey: storageKey)
+        if let index = blockedURLs.firstIndex(where: { $0.id == domainId }) {
+            blockedURLs[index].blockEntireDomain = blockEntireDomain
+            saveChanges()
+        }
     }
     
     var body: some View {
@@ -216,13 +219,20 @@ struct DomainDetailView: View {
                                             .font(DesignSystem.font(size: DesignSystem.fontSizeLarge))
                                             .foregroundColor(DesignSystem.textPrimary)
                                         
-                                        TextField(Strings.DomainDetail.addPathPlaceholder, text: $newPath, onCommit: {
-                                            addPath()
-                                        })
+                                        ZStack(alignment: .leading) {
+                                            TextField("", text: $newPath, onCommit: {
+                                                addPath()
+                                            })
                                             .textFieldStyle(.plain)
                                             .font(DesignSystem.font(size: DesignSystem.fontSizeMedium))
                                             .foregroundColor(DesignSystem.textPrimary)
-                                        
+                                            .placeholder(when: newPath.isEmpty, alignment: .leading) {
+                                                Text(Strings.DomainDetail.addPathPlaceholder)
+                                                    .foregroundColor(DesignSystem.disabledText)
+                                                    .font(DesignSystem.font(size: DesignSystem.fontSizeMedium))
+                                                    .padding(.vertical, 8) // match your field’s vertical insets
+                                            }
+                                        }
                                         Spacer()
                                             .frame(minWidth: 8)
                                         
