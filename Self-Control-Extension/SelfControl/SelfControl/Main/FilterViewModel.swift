@@ -45,6 +45,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
         }
     }
     @Published var viewState: SelfControlViewState = .installNetworkExtension
+    
     @Published var isNetworkExtensionSkipped: Bool = false {
         didSet {
             self.viewState = .filter
@@ -67,8 +68,8 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
     
     // Timer to manage delayed actions based on `delay` (in minutes)
     private var blockTimer: Timer?
-    private var timerFireDate: Date?
-        
+    var timerFireDate: Date?
+    var dockTimer :Timer?
     // Date formatter used to log entries
   lazy var dateFormatter: DateFormatter = {
     let formatter = DateFormatter()
@@ -479,6 +480,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
        _ = IPCConnection.shared.sendMessageToEnableNetworkExtension(_enable: true)
         BlockListManager.activateSafariBlocking()
         chromeService.activateSafariBlocking()
+        startShowingCountDownInDock()
     }
     
     func deactivateNetworkBlocking() {
@@ -492,6 +494,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
         if ProxyPreferences.showNotificationOnCompletion {
             LocalNotificationManager.scheduleNotification()
         }
+        stopShowingCountDownInDock()
     }
     
     // MARK: - Timer management
@@ -543,23 +546,26 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
         selfControlDaemon.updateBlocklist(newBlockedDomains)
     }
     
-    func updateBlockList(newBlockedDomains: [BlockedURL], time: Double ) {
+    @MainActor func updateBlockList(newBlockedDomains: [BlockedURL], time: Double ) {
         self.delay = time
-        let urls = newBlockedDomains.compactMap(\.urls)
-        let flattened: [String] = urls.flatMap { $0 }
-        ProxyPreferences.setBlockedDomains(flattened)
-
         if status == .stopped {
             installLegacyLaunched(futureDuration: Date.now.addingTimeInterval(delay*60))
         } else {
             if startTimerWithSelectedDelay() == false {
                 return
             }
-
-            setBlockedUrls(urls: flattened)
+            saveAndupdateBlockList(newBlockedDomains)
             if startTimerWithSelectedDelay() == false { return }
             activateNetworkBlocking()
         }
+    }
+    
+    @MainActor func saveAndupdateBlockList(_ newBlockedDomains: [BlockedURL]) {
+        blockerStorage?.set(blockedURLs)
+        let urls = newBlockedDomains.compactMap(\.urls)
+        let flattened: [String] = urls.flatMap { $0 }
+        ProxyPreferences.setBlockedDomains(flattened)
+        setBlockedUrls(urls: flattened)
     }
     
     func updateScheduledEvents() {

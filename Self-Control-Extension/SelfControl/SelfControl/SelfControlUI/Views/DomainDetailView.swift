@@ -377,7 +377,10 @@ struct DomainDetailView: View {
         let cleanPath = newPath.trimmingCharacters(in: .whitespaces)
         let formattedPath = cleanPath.hasPrefix("/") ? cleanPath : "/" + cleanPath
         
-        if !formattedPath.isEmpty, let index = blockedURLs.firstIndex(where: { $0.id == domainId }) {
+        guard !formattedPath.isEmpty else { return }
+        guard formattedPath.count > 1 else { return }
+        
+        if let index = blockedURLs.firstIndex(where: { $0.id == domainId }) {
             if !blockedURLs[index].paths.contains(formattedPath) {
                 withAnimation {
                     blockedURLs[index].paths.append(formattedPath)

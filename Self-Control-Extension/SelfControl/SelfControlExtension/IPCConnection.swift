@@ -117,7 +117,7 @@ class IPCConnection: NSObject {
         return
     }
     providerProxy.register(completionHandler)
-//      providerProxy.setBlockedURLs(blockedUrls)
+      providerProxy.setBlockedURLs(blockedUrls)
   }
   
   /**

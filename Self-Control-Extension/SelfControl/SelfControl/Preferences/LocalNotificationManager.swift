@@ -8,7 +8,7 @@ import UserNotifications
 
 final class LocalNotificationManager {
     class func requestAuthorization() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { granted, error in
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
             if let error = error {
                 print("Error requesting notification authorization: \(error)")
             }

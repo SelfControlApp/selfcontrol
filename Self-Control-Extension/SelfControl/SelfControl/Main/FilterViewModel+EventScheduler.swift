@@ -33,6 +33,7 @@ extension FilterViewModel {
         Task {
             await self.eventRunner?.stop()
         }
+        startEventScheduler()
     }
 }
 

@@ -14,7 +14,7 @@ struct AdvancedSettingsView: View {
     let isBlockingMode: Bool
     
     // Network Settings
-    @AppStorage("verifyConnection") private var verifyConnection = true
+    @AppStorage("VerifyInternetConnection") private var verifyConnection = true
     @AppStorage("clearCache") private var clearCache = true
     @AppStorage("allowLocalNetworks") private var allowLocalNetworks = true
     
@@ -30,7 +30,7 @@ struct AdvancedSettingsView: View {
     @AppStorage("showNotificationOnCompletion") private var showNotificationOnCompletion = true
 
     @AppStorage("timerFloatsOnTop") private var timerFloatsOnTop = false
-    @AppStorage("showCountdownInDock") private var showCountdownInDock = true
+    @AppStorage("BadgeApplicationIcon") private var showCountdownInDock = true
     
     // Display Settings
     @AppStorage("hideSeconds") private var hideSeconds = false

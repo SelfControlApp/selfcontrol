@@ -222,6 +222,36 @@
 //        }
 //    });
 //}
+// Simple in-memory block list (replace with native messaging later)
+//const BLOCKED_DOMAINS = [ ];
+//function isBlocked(url) {
+//  try {
+//    const u = new URL(url);
+//    return BLOCKED_DOMAINS.some(domain =>
+//      u.hostname === domain || u.hostname.endsWith("." + domain)
+//    );
+//  } catch (e) {
+//    return false;
+//  }
+//}
+
+
+// Fires for:
+// - already open tabs
+// - reloads
+// - back/forward
+// - SPA navigations
+//browser.webNavigation.onCommitted.addListener((details) => {
+//  if (details.frameId !== 0) return; // main frame only
+//
+//  if (isBlocked(details.url)) {
+//    browser.tabs.update(details.tabId, {
+//      url: "blocked.html"
+//    });
+//  }
+//});
+
+
 safari.extension.dispatchMessage("ready");
 (function () {
 
@@ -240,6 +270,10 @@ safari.extension.dispatchMessage("ready");
                 console.error("[SC] redirect error:", err);
             }
         }
+//        if (event.name === "updateBlockedList") {
+//            BLOCKED_DOMAINS.length = 0;
+//            BLOCKED_DOMAINS.push(...message.domains);
+//          }
     });
 
     // Send PAGE_VISIT message
@@ -255,10 +289,21 @@ safari.extension.dispatchMessage("ready");
             console.error("[SC] notifySwift error:", err);
         }
     }
+    
+    function notifySwiftDetails(details) {
+      // main frame only
+      if (details.frameId !== 0) return;
 
-    // Observe navigation changes (simplified)
+      browser.runtime.sendMessage({
+        type: "navigation",
+        url: details.url
+      });
+    }
+
+    const browser = window.browser || window.chrome || window.safari;
     window.addEventListener("load", notifySwift);
     window.addEventListener("popstate", notifySwift);
     document.addEventListener("click", () => setTimeout(notifySwift, 10), true);
-
+//    browser.webNavigation.onCommitted.addListener(notifySwiftDetails);
 })();
+//TODO: https://chatgpt.com/c/6963cb8a-349c-8320-a036-7f6b9828043a?ref=mini

@@ -17,7 +17,8 @@ struct ProxyPreferences {
     private static let isChromeExtInstallKey: String = "isChromeExtInstallKey"
     private static let playSoundOnCompletionkey: String = "playSoundOnCompletion"
     private static let showNotificationOnCompletionkey: String = "showNotificationOnCompletion"
-
+    private static let verifyNetworkBeforeBlock: String = "VerifyInternetConnection"
+    
     private static let defaults = UserDefaults.standard
     static func getBlockedDomains() -> [String] {
         return defaults.stringArray(forKey: blockedDomainsKey) ?? []
@@ -29,7 +30,6 @@ struct ProxyPreferences {
     
     static func setSafariExtensionState(_ isEnabled: Bool) {
         defaults.set(isEnabled, forKey: isSafariExtensionKey)
-
     }
     
     static func setChromeExtensionState(_ isEnabled: Bool) {
@@ -67,6 +67,14 @@ struct ProxyPreferences {
     
     static func setChromeExtensionInstalled() {
         UserDefaults.standard.set(true, forKey: isChromeExtInstallKey)
+    }
+    
+    static var showVerifyNetworkAlertBeforeBlock: Bool {
+        return UserDefaults.standard.bool(forKey: verifyNetworkBeforeBlock)
+    }
+    
+    static func setShowVerifyNetworkAlertBeforeBlock(_ isEnabled: Bool) {
+        defaults.set(isEnabled, forKey: verifyNetworkBeforeBlock)
     }
     
     static func reset() {

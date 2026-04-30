@@ -98,8 +98,10 @@ struct BlockScheduleView: View {
                                     onDelete: {
                                         withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
                                             schedules.removeAll { $0.id == schedule.id }
-                                            saveSchedules()
-                                            updateScheduleStatus()
+//                                            Task {
+//                                                saveSchedules()
+//                                                updateScheduleStatus()
+//                                            }
                                         }
                                     }
                                 )
@@ -174,7 +176,7 @@ struct ScheduleRow: View {
                             WeekdayCircle(
                                 weekday: weekday,
                                 isEnabled: schedule.enabledDays.contains(weekday),
-                                blockingMode: blockingMode,
+                                blockingMode: blockingMode,//
                                 onToggle: {
                                     withAnimation(DesignSystem.animationFast) {
                                         if schedule.enabledDays.contains(weekday) {

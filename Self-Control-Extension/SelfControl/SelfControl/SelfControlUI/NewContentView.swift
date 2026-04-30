@@ -1353,6 +1353,11 @@ struct NewContentView: View {
     }
     
     private func startBlocking(minutes: Double) {
+        if ProxyPreferences.showVerifyNetworkAlertBeforeBlock {
+           if  SCUIUtility.checkNetworkAndShowNetworkAlert() == false {
+                return
+            }
+        }
         withAnimation(DesignSystem.animationNormal) {
             isBlocking = true
             viewModel.updateBlockList(newBlockedDomains: blockedURLs, time: minutes)
