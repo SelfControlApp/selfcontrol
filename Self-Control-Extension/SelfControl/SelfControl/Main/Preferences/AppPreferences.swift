@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct ProxyPreferences {
+struct AppPreferences {
 //    static let appGroup = "X6FQ433AWK.com.application.SelfControl.Extension"
     private static let blockedDomainsKey = "BlockedDomains"
     private static let isSafariExtensionKey: String = "isSafariExtensionKey"

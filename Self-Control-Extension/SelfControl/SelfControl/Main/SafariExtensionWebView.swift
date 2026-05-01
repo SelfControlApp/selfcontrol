@@ -87,7 +87,7 @@ final class WebPageViewModel: NSObject, WKNavigationDelegate, WKScriptMessageHan
     
     
     private func updateSafariExtensionState(state: Bool) {
-        ProxyPreferences.setSafariExtensionState(state)
+        AppPreferences.setSafariExtensionState(state)
         IPCConnection.shared.sendMessageToSetActiveBrowserExtension(ActiveBrowserExtensios.safari.rawValue, state: state)
         if state == true {
             updateBlocker()
@@ -95,7 +95,7 @@ final class WebPageViewModel: NSObject, WKNavigationDelegate, WKScriptMessageHan
     }
     
     func updateBlocker() {
-        let urls = ProxyPreferences.getBlockedDomains()
+        let urls = AppPreferences.getBlockedDomains()
         print("URLS: \(urls)")
         BlockListManager.updateSafariBlockList(blockedPaths: urls, appGroup: extensionIdentifier, extensionIdentifier: extensionIdentifier)
     }

@@ -52,11 +52,11 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
         }
     }
 
-    private var isSafariExtensionInstalled: Bool = ProxyPreferences.isSafariExtensionInstalled
-    private var isChromeExtensionInstalled: Bool = ProxyPreferences.isChromeExtensionInstalled
+    private var isSafariExtensionInstalled: Bool = AppPreferences.isSafariExtensionInstalled
+    private var isChromeExtensionInstalled: Bool = AppPreferences.isChromeExtensionInstalled
     var eventRunner: EventSchedulerRunner? = nil
     var eventRunnerHandler: EventSchedulerRunner.EventHandler?
-    @State private var domains = ProxyPreferences.getBlockedDomains()
+    @State private var domains = AppPreferences.getBlockedDomains()
     private let chromeService = ChromeExtensionRequestListner()
     @State var blockedURLs: [BlockedURL] = []
     var blockerStorage: BlockedURLStore?
@@ -108,7 +108,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
         SafariExtensionManager.shared.onExtensionStateChange = {
             print("SafariExtensionManager.shared.onChange++")
             self.isSafariExtensionInstalled = true
-            ProxyPreferences.setSafariExtensionInstalled()
+            AppPreferences.setSafariExtensionInstalled()
             Task { @MainActor in
                 self.updateSafariExtensionViewStatus()
             }
@@ -116,7 +116,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
         self.chromeService.onExtensionStateChange = {
             print("Chrome.shared.onChange++")
             self.isChromeExtensionInstalled = true
-            ProxyPreferences.setChromeExtensionInstalled()
+            AppPreferences.setChromeExtensionInstalled()
             Task { @MainActor in
                 self.updateChromeExtensionViewStatus()
             }
@@ -124,7 +124,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
         SafariExtensionManager.shared.resetExtensionState()
         self.extensionIdentifier = extensionBundle.bundleIdentifier
         self.chromeService.blockeddomainFetcher = {
-            return ProxyPreferences.getBlockedDomains()
+            return AppPreferences.getBlockedDomains()
         }
 
         self.chromeService.startListening()
@@ -239,11 +239,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
     func setBlockedUrls(urls: [String]) {
         
         IPCConnection.shared.enableURLBlocking(urls)
-//        Task {
-//            let ips: Set<String> = await DNSResolverActor().resolve(hostURL: urls)
-//            print("Resolved app:\(ips)")
-//            setIPAddressesToBlock(addresses: Array(ips))
-//        }
+
         if status == .stopped { //If legacy blocking
             if isActiveBlocking { //if is active blocking
                 updateLegacyBlockedList(newBlockedDomains: urls)
@@ -331,7 +327,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
     IPCConnection.shared.register(withExtension: extensionBundle, delegate: self) { success in
       DispatchQueue.main.async {
         self.status = success ? .running : .stopped
-          self.setBlockedUrls(urls: ProxyPreferences.getBlockedDomains())
+          self.setBlockedUrls(urls: AppPreferences.getBlockedDomains())
           self.refreshExtensionState()
       }
 //        setBlockedURLs([])
@@ -488,10 +484,10 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
         _ = IPCConnection.shared.sendMessageToEnableNetworkExtension(_enable: false)
         BlockListManager.deactivateSafariBlocking()
         chromeService.deactivateSafariBlocking()
-        if ProxyPreferences.playSoundOnCompletion {
+        if AppPreferences.playSoundOnCompletion {
             NSSound.playDefaultSound()
         }
-        if ProxyPreferences.showNotificationOnCompletion {
+        if AppPreferences.showNotificationOnCompletion {
             LocalNotificationManager.scheduleNotification()
         }
         stopShowingCountDownInDock()
@@ -539,7 +535,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
     }
     
     func installLegacyLaunched(futureDuration: Date) {
-        selfControlDaemon.install(blockedDomains: ProxyPreferences.getBlockedDomains(), time: futureDuration)
+        selfControlDaemon.install(blockedDomains: AppPreferences.getBlockedDomains(), time: futureDuration)
     }
     
     func updateLegacyBlockedList(newBlockedDomains: [String]) {
@@ -564,7 +560,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
         blockerStorage?.set(blockedURLs)
         let urls = newBlockedDomains.compactMap(\.urls)
         let flattened: [String] = urls.flatMap { $0 }
-        ProxyPreferences.setBlockedDomains(flattened)
+        AppPreferences.setBlockedDomains(flattened)
         setBlockedUrls(urls: flattened)
     }
     

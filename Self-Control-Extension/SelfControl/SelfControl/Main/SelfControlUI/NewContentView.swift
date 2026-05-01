@@ -1353,7 +1353,7 @@ struct NewContentView: View {
     }
     
     private func startBlocking(minutes: Double) {
-        if ProxyPreferences.showVerifyNetworkAlertBeforeBlock {
+        if AppPreferences.showVerifyNetworkAlertBeforeBlock {
            if  SCUIUtility.checkNetworkAndShowNetworkAlert() == false {
                 return
             }

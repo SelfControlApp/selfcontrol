@@ -12,7 +12,6 @@ struct SelfControlApp: App {
     @StateObject var viewModel = FilterViewModel()
     @NSApplicationDelegateAdaptor(AppDelegate.self)
     var appDelegate
-
     var body: some Scene {
         WindowGroup {
             switch viewModel.viewState {
@@ -96,23 +95,8 @@ struct SelfControlApp: App {
                 }
             }
         }
-        Window("Preferences View", id: "preferences") {
-            PreferencesView() // Your view to be presented in the new window
-                .environmentObject(viewModel) // Inject the object into the environment
-        }
-        .windowStyle(.automatic)
     }
-    
-    private var oldView: some View {
-        ContentView()
-            .environmentObject(viewModel) // Inject the object into the environment
-            .onAppear(perform: {
-                appDelegate.onAppClose = {
-                    viewModel.stopFilter()
-                }
-            })
-    }    
-    
+        
     func resolveIPToHostname(ipAddress: String) -> String? {
         let hostRef = CFHostCreateWithName(nil, ipAddress as CFString).takeRetainedValue()
         
