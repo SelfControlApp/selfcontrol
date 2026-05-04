@@ -10,6 +10,7 @@
 #import "SCSentry.h"
 #import "SCErr.h"
 #import "SCSettings.h"
+#import "HostFileBlocker.h"
 
 @interface SCUtilityTests : XCTestCase
 
@@ -162,6 +163,37 @@ NSDictionary* veryLongBlockLegacyDict; // year-long block, one day in
     [SCBlockUtilities removeBlockFromSettings];
     XCTAssert(![SCBlockUtilities modernBlockIsRunning]);
     XCTAssert([SCBlockUtilities currentBlockIsExpired]);
+}
+
+- (NSURL*)temporaryHostsFileURLWithName:(NSString*)name contents:(NSString*)contents {
+    NSURL* url = [[NSURL fileURLWithPath: NSTemporaryDirectory()] URLByAppendingPathComponent: name];
+    [contents writeToURL: url atomically: YES encoding: NSUTF8StringEncoding error: nil];
+    return url;
+}
+
+- (void) testHostBlockIntegrityRequiresExpectedRules {
+    NSURL* hostsURL = [self temporaryHostsFileURLWithName: @"selfcontrol-empty-hosts-block-test"
+                                                 contents: @"127.0.0.1 localhost\n\n# BEGIN SELFCONTROL BLOCK\n# END SELFCONTROL BLOCK\n"];
+    HostFileBlocker* blocker = [[HostFileBlocker alloc] initWithPath: hostsURL.path];
+
+    XCTAssert([blocker containsSelfControlBlock]);
+    XCTAssertFalse([blocker containsExpectedRulesForBlocklist: @[ @"youtube.com" ]]);
+
+    [[NSFileManager defaultManager] removeItemAtURL: hostsURL error: nil];
+}
+
+- (void) testHostBlockIntegrityAcceptsExpectedRules {
+    NSURL* hostsURL = [self temporaryHostsFileURLWithName: @"selfcontrol-valid-hosts-block-test"
+                                                 contents: @"127.0.0.1 localhost\n"];
+    HostFileBlocker* blocker = [[HostFileBlocker alloc] initWithPath: hostsURL.path];
+    [blocker addSelfControlBlockHeader];
+    [blocker addRuleBlockingDomain: @"youtube.com"];
+    [blocker addSelfControlBlockFooter];
+
+    XCTAssert([blocker containsExpectedRulesForBlocklist: @[ @"youtube.com" ]]);
+    XCTAssertFalse([blocker containsExpectedRulesForBlocklist: @[ @"youtube.com", @"www.youtube.com" ]]);
+
+    [[NSFileManager defaultManager] removeItemAtURL: hostsURL error: nil];
 }
 
 - (void) testLegacyBlockDetection {

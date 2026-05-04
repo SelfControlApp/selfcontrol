@@ -349,7 +349,8 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     SCSettings* settings = [SCSettings sharedSettings];
     PacketFilter* pf = [[PacketFilter alloc] init];
     HostFileBlockerSet* hostFileBlockerSet = [[HostFileBlockerSet alloc] init];
-    if(![pf containsSelfControlBlock] || (![settings boolForKey: @"ActiveBlockAsWhitelist"] && ![hostFileBlockerSet.defaultBlocker containsSelfControlBlock])) {
+    BOOL hostsBlockIsValid = [settings boolForKey: @"ActiveBlockAsWhitelist"] || [hostFileBlockerSet.defaultBlocker containsExpectedRulesForBlocklist: [settings valueForKey: @"ActiveBlocklist"]];
+    if(![pf containsSelfControlBlock] || !hostsBlockIsValid) {
         NSLog(@"INFO: Block is missing in PF or hosts, re-adding...");
         // The firewall is missing at least the block header.  Let's clear everything
         // before we re-add to make sure everything goes smoothly.

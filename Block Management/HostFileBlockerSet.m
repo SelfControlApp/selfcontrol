@@ -112,6 +112,14 @@
     return ret;
 }
 
+- (BOOL)containsExpectedRulesForBlocklist:(NSArray<NSString*>*)blocklist {
+    BOOL ret = YES;
+    for (HostFileBlocker* blocker in self.blockers) {
+        ret = ret && [blocker containsExpectedRulesForBlocklist: blocklist];
+    }
+    return ret;
+}
+
 - (void)removeSelfControlBlock {
     for (HostFileBlocker* blocker in self.blockers) {
         [blocker removeSelfControlBlock];
