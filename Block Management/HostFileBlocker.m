@@ -234,7 +234,7 @@ NSString* const kDefaultHostsFileContents = @"##\n"
 
         for (NSString* blocklistString in blocklist) {
             SCBlockEntry* entry = [SCBlockEntry entryFromString: blocklistString];
-            if (entry == nil || entry.port || [entry.hostname isEqualToString: @"*"] || [entry.hostname isValidIPAddress]) {
+            if (entry == nil || entry.port || [entry.hostname rangeOfString: @"*"].location != NSNotFound || [entry.hostname isValidIPAddress]) {
                 continue;
             }
 

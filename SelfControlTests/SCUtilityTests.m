@@ -196,6 +196,16 @@ NSDictionary* veryLongBlockLegacyDict; // year-long block, one day in
     [[NSFileManager defaultManager] removeItemAtURL: hostsURL error: nil];
 }
 
+- (void) testHostBlockIntegrityIgnoresRulesHostsCannotRepresent {
+    NSURL* hostsURL = [self temporaryHostsFileURLWithName: @"selfcontrol-hosts-unrepresentable-rules-test"
+                                                 contents: @"127.0.0.1 localhost\n\n# BEGIN SELFCONTROL BLOCK\n# END SELFCONTROL BLOCK\n"];
+    HostFileBlocker* blocker = [[HostFileBlocker alloc] initWithPath: hostsURL.path];
+
+    XCTAssert([blocker containsExpectedRulesForBlocklist: @[ @"*.youtube.com", @"127.0.0.1", @"example.com:443" ]]);
+
+    [[NSFileManager defaultManager] removeItemAtURL: hostsURL error: nil];
+}
+
 - (void) testLegacyBlockDetection {
     // test blockIsRunningInLegacyDictionary
     // the block is "running" even if it's expired, since it hasn't been removed

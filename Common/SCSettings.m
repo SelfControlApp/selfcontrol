@@ -273,7 +273,7 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
                                     setAttributes: @{
 	                                        NSFileOwnerAccountID: [NSNumber numberWithUnsignedLong: 0],
 	                                        NSFileGroupOwnerAccountID: [NSNumber numberWithUnsignedLong: 0],
-	                                        NSFilePosixPermissions: [NSNumber numberWithShort: 0600]
+	                                        NSFilePosixPermissions: [NSNumber numberWithShort: 0644]
 	                                    }
                                     ofItemAtPath: SCSettings.securedSettingsFilePath
                                     error: &chmodErr];
