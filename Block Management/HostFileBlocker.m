@@ -21,6 +21,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "HostFileBlocker.h"
+#import "SCBlockEntry.h"
+#import "NSString+IPAddress.h"
 
 NSString* const kHostFileBlockerPath = @"/etc/hosts";
 NSString* const kHostFileBlockerSelfControlHeader = @"# BEGIN SELFCONTROL BLOCK";
@@ -180,6 +182,74 @@ NSString* const kDefaultHostsFileContents = @"##\n"
 
 	[strLock unlock];
 	return ret;
+}
+
+- (NSSet<NSString*>*)selfControlBlockRuleSet {
+    NSMutableSet<NSString*>* ruleSet = [NSMutableSet set];
+
+    NSRange startRange = [newFileContents rangeOfString: kHostFileBlockerSelfControlHeader];
+    NSRange endRange = [newFileContents rangeOfString: kHostFileBlockerSelfControlFooter];
+    if (startRange.location == NSNotFound || endRange.location == NSNotFound || endRange.location <= startRange.location) {
+        return ruleSet;
+    }
+
+    NSUInteger blockStart = startRange.location + startRange.length;
+    NSRange blockRange = NSMakeRange(blockStart, endRange.location - blockStart);
+    NSString* blockContents = [newFileContents substringWithRange: blockRange];
+    NSArray<NSString*>* lines = [blockContents componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
+    NSCharacterSet* whitespace = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+
+    for (NSString* line in lines) {
+        NSString* trimmedLine = [line stringByTrimmingCharactersInSet: whitespace];
+        if (trimmedLine.length == 0 || [trimmedLine hasPrefix: @"#"]) {
+            continue;
+        }
+
+        NSArray<NSString*>* parts = [trimmedLine componentsSeparatedByCharactersInSet: whitespace];
+        NSMutableArray<NSString*>* nonEmptyParts = [NSMutableArray array];
+        for (NSString* part in parts) {
+            if (part.length > 0) {
+                [nonEmptyParts addObject: part];
+            }
+        }
+        if (nonEmptyParts.count < 2) {
+            continue;
+        }
+
+        NSString* address = nonEmptyParts[0];
+        for (NSUInteger i = 1; i < nonEmptyParts.count; i++) {
+            [ruleSet addObject: [NSString stringWithFormat: @"%@ %@", address, nonEmptyParts[i]]];
+        }
+    }
+
+    return ruleSet;
+}
+
+- (BOOL)containsExpectedRulesForBlocklist:(NSArray<NSString*>*)blocklist {
+    [strLock lock];
+
+    BOOL ret = ([newFileContents rangeOfString: kHostFileBlockerSelfControlHeader].location != NSNotFound);
+    if (ret) {
+        NSSet<NSString*>* blockRuleSet = [self selfControlBlockRuleSet];
+
+        for (NSString* blocklistString in blocklist) {
+            SCBlockEntry* entry = [SCBlockEntry entryFromString: blocklistString];
+            if (entry == nil || entry.port || [entry.hostname rangeOfString: @"*"].location != NSNotFound || [entry.hostname isValidIPAddress]) {
+                continue;
+            }
+
+            NSString* ipv4Rule = [NSString stringWithFormat: @"0.0.0.0 %@", entry.hostname];
+            NSString* ipv6Rule = [NSString stringWithFormat: @":: %@", entry.hostname];
+            if (![blockRuleSet containsObject: ipv4Rule] || ![blockRuleSet containsObject: ipv6Rule]) {
+                NSLog(@"INFO: SelfControl hosts block is missing expected rule(s) for %@", entry.hostname);
+                ret = NO;
+                break;
+            }
+        }
+    }
+
+    [strLock unlock];
+    return ret;
 }
 
 - (void)removeSelfControlBlock {

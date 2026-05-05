@@ -42,6 +42,7 @@
 - (void)appendExistingBlockWithRuleForDomain:(NSString*)domainName;
 
 - (BOOL)containsSelfControlBlock;
+- (BOOL)containsExpectedRulesForBlocklist:(NSArray<NSString*>*)blocklist;
 
 - (void)removeSelfControlBlock;
 
