@@ -10,6 +10,7 @@
 #import "SCDaemonXPC.h"
 #import"SCDaemonBlockMethods.h"
 #import "SCFileWatcher.h"
+#import "SCBlockClock.h"
 
 static NSString* serviceName = @"org.eyebeam.selfcontrold";
 float const INACTIVITY_LIMIT_SECS = 60 * 2; // 2 minutes
@@ -25,6 +26,7 @@ float const INACTIVITY_LIMIT_SECS = 60 * 2; // 2 minutes
 
 @property (nonatomic, strong, readwrite) NSXPCListener* listener;
 @property (strong, readwrite) NSTimer* checkupTimer;
+@property (strong, readwrite) NSTimer* checkpointTimer;
 @property (strong, readwrite) NSTimer* inactivityTimer;
 @property (nonatomic, strong, readwrite) NSDate* lastActivityDate;
 
@@ -100,9 +102,24 @@ float const INACTIVITY_LIMIT_SECS = 60 * 2; // 2 minutes
     if (self.checkupTimer == nil) {
         return;
     }
-    
+
     [self.checkupTimer invalidate];
     self.checkupTimer = nil;
+}
+
+- (void)startCheckpointTimer {
+    if (self.checkpointTimer != nil) return;
+    self.checkpointTimer = [NSTimer scheduledTimerWithTimeInterval: 30.0
+                                                            repeats: YES
+                                                              block: ^(NSTimer* _Nonnull t) {
+        [SCBlockClock tickCheckpoint];
+    }];
+}
+
+- (void)stopCheckpointTimer {
+    if (self.checkpointTimer == nil) return;
+    [self.checkpointTimer invalidate];
+    self.checkpointTimer = nil;
 }
 
 
@@ -132,6 +149,10 @@ float const INACTIVITY_LIMIT_SECS = 60 * 2; // 2 minutes
     if (self.checkupTimer) {
         [self.checkupTimer invalidate];
         self.checkupTimer = nil;
+    }
+    if (self.checkpointTimer) {
+        [self.checkpointTimer invalidate];
+        self.checkpointTimer = nil;
     }
     if (self.inactivityTimer) {
         [self.inactivityTimer invalidate];

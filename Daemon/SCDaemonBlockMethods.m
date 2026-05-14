@@ -14,9 +14,12 @@
 #import "LaunchctlHelper.h"
 #import "HostFileBlockerSet.h"
 #import "SCBlockClock.h"
+#import "SCTrustedTime.h"
 
 NSTimeInterval METHOD_LOCK_TIMEOUT = 5.0;
 NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for checkups, because we'd prefer not to have tons pile up
+static NSTimeInterval const kVerifyBackoffs[] = { 10.0, 30.0, 60.0, 120.0, 120.0 };
+static const NSUInteger kVerifyBackoffsCount = sizeof(kVerifyBackoffs) / sizeof(kVerifyBackoffs[0]);
 
 @implementation SCDaemonBlockMethods
 
@@ -134,6 +137,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
 
     [[SCDaemon sharedDaemon] resetInactivityTimer];
     [[SCDaemon sharedDaemon] startCheckupTimer];
+    [[SCDaemon sharedDaemon] startCheckpointTimer];
     [self.daemonMethodLock unlock];
 }
 
@@ -316,16 +320,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         // once the checkups stop, the daemon will clear itself in a while due to inactivity
         [[SCDaemon sharedDaemon] stopCheckupTimer];
     } else if ([SCBlockUtilities currentBlockIsTrulyExpired]) {
-        NSLog(@"INFO: Checkup ran, block expired, removing block.");
-        
-        [SCHelperToolUtilities removeBlock];
-
-        [SCHelperToolUtilities sendConfigurationChangedNotification];
-
-        [SCSentry addBreadcrumb: @"Daemon found and cleared expired block" category: @"daemon"];
-
-        // once the checkups stop, the daemon will clear itself in a while due to inactivity
-        [[SCDaemon sharedDaemon] stopCheckupTimer];
+        [SCDaemonBlockMethods attemptVerifiedUnlock];
     } else if ([[NSDate date] timeIntervalSinceDate: lastBlockIntegrityCheck] > integrityCheckIntervalSecs) {
         lastBlockIntegrityCheck = [NSDate date];
         // The block is still on.  Every once in a while, we should
@@ -386,8 +381,45 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         [SCSentry addBreadcrumb: @"Daemon found compromised block integrity and re-added rules" category: @"daemon"];
         NSLog(@"INFO: Integrity check ran; readded block rules.");
     } else NSLog(@"INFO: Integrity check ran; no action needed.");
-    
+
     [self.daemonMethodLock unlock];
+}
+
++ (void)attemptVerifiedUnlock {
+    SCSettings* settings = [SCSettings sharedSettings];
+    NSDate* endDate = [settings valueForKey: @"BlockEndDate"];
+    NSUInteger attempt = [[settings valueForKey: @"BlockUnlockAttempt"] unsignedIntegerValue];
+
+    NSMutableDictionary* gate = [[settings valueForKey: @"BlockUnlockGate"] mutableCopy] ?: [NSMutableDictionary dictionary];
+    gate[@"waitingForNetworkVerification"] = @YES;
+    gate[@"lastNetworkAttemptAt"] = [NSDate date];
+    [settings setValue: gate forKey: @"BlockUnlockGate"];
+    [SCHelperToolUtilities sendConfigurationChangedNotification];
+
+    [SCTrustedTime verifyTimeIsAfter: endDate completion:^(BOOL ok, NSDate* med, NSError* err) {
+        if (ok) {
+            NSLog(@"INFO: Verified unlock — removing block.");
+            [settings setValue: nil forKey: @"BlockUnlockGate"];
+            [settings setValue: @(0) forKey: @"BlockUnlockAttempt"];
+            [SCHelperToolUtilities removeBlock];
+            [SCHelperToolUtilities sendConfigurationChangedNotification];
+            [SCSentry addBreadcrumb: @"Daemon performed verified unlock" category: @"daemon"];
+            [[SCDaemon sharedDaemon] stopCheckupTimer];
+            [[SCDaemon sharedDaemon] stopCheckpointTimer];
+            return;
+        }
+
+        NSLog(@"WARN: Trusted-time verification failed: %@. Block stays on.", err);
+        NSMutableDictionary* g = [[settings valueForKey: @"BlockUnlockGate"] mutableCopy] ?: [NSMutableDictionary dictionary];
+        g[@"lastNetworkErrorReason"] = err.localizedDescription ?: @"unknown";
+        [settings setValue: g forKey: @"BlockUnlockGate"];
+        [settings setValue: @(attempt + 1) forKey: @"BlockUnlockAttempt"];
+
+        NSTimeInterval backoff = kVerifyBackoffs[ MIN(attempt, kVerifyBackoffsCount - 1) ];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(backoff * NSEC_PER_SEC)),
+                       dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0),
+                       ^{ [SCDaemonBlockMethods attemptVerifiedUnlock]; });
+    }];
 }
 
 @end
