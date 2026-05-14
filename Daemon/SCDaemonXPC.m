@@ -74,4 +74,13 @@
     reply(SELFCONTROL_VERSION_STRING);
 }
 
+// Returns the daemon's unlock-gate state. Anyone can read this; no authorization required.
+- (void)getBlockUnlockGateStateWithReply:(void(^)(BOOL waitingForNetwork, NSDate* lastAttemptAt, NSString* errorReason))reply {
+    NSDictionary* gate = [[SCSettings sharedSettings] valueForKey: @"BlockUnlockGate"];
+    BOOL waiting = [gate[@"waitingForNetworkVerification"] boolValue];
+    NSDate* at = gate[@"lastNetworkAttemptAt"];
+    NSString* err = gate[@"lastNetworkErrorReason"];
+    reply(waiting, at, err);
+}
+
 @end

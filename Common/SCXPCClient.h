@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)startBlockWithControllingUID:(uid_t)controllingUID blocklist:(NSArray<NSString*>*)blocklist isAllowlist:(BOOL)isAllowlist endDate:(NSDate*)endDate blockSettings:(NSDictionary*)blockSettings reply:(void(^)(NSError* error))reply;
 - (void)updateBlocklist:(NSArray<NSString*>*)newBlocklist reply:(void(^)(NSError* error))reply;
 - (void)updateBlockEndDate:(NSDate*)newEndDate reply:(void(^)(NSError* error))reply;
+- (void)getBlockUnlockGateStateWithReply:(void(^)(BOOL waiting, NSDate* _Nullable lastAttemptAt, NSString* _Nullable errorReason))reply;
 
 @end
 

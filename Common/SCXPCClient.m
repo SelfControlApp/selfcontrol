@@ -329,6 +329,20 @@
     }];
 }
 
+- (void)getBlockUnlockGateStateWithReply:(void(^)(BOOL waiting, NSDate* lastAttemptAt, NSString* errorReason))reply {
+    [self connectAndExecuteCommandBlock:^(NSError * connectError) {
+        if (connectError != nil) {
+            NSLog(@"Failed to get unlock gate state with connection error: %@", connectError);
+            reply(NO, nil, connectError.localizedDescription);
+        } else {
+            [[self.daemonConnection remoteObjectProxyWithErrorHandler:^(NSError * proxyError) {
+                NSLog(@"Failed to get unlock gate state with remote object proxy error: %@", proxyError);
+                reply(NO, nil, proxyError.localizedDescription);
+            }] getBlockUnlockGateStateWithReply: reply];
+        }
+    }];
+}
+
 - (void)updateBlockEndDate:(NSDate*)newEndDate reply:(void(^)(NSError* error))reply {
     [self connectAndExecuteCommandBlock:^(NSError * connectError) {
         if (connectError != nil) {
