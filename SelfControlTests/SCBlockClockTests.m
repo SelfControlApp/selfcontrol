@@ -60,4 +60,46 @@
     XCTAssertGreaterThan([second[@"blockStartWallClock"] timeIntervalSinceDate: first[@"blockStartWallClock"]], 0.0);
 }
 
+- (void)testTickAdvancesElapsedByTrustedDelta {
+    [SCBlockClock recordBlockStartWithDuration: 600];
+    [NSThread sleepForTimeInterval: 2.0];
+    [SCBlockClock tickCheckpoint];
+
+    NSTimeInterval elapsed = [SCBlockClock elapsedSecondsForCurrentBlock];
+    XCTAssertGreaterThan(elapsed, 1.5);
+    XCTAssertLessThan(elapsed, 3.0);
+}
+
+- (void)testElapsedIncludesInFlightSinceLastCheckpoint {
+    [SCBlockClock recordBlockStartWithDuration: 600];
+    NSTimeInterval immediate = [SCBlockClock elapsedSecondsForCurrentBlock];
+    XCTAssertLessThan(immediate, 0.5);
+    [NSThread sleepForTimeInterval: 1.0];
+    NSTimeInterval later = [SCBlockClock elapsedSecondsForCurrentBlock];
+    XCTAssertGreaterThan(later, 0.8);
+}
+
+- (void)testBlockDurationHasElapsedFalseInitiallyTrueAfterDuration {
+    [SCBlockClock recordBlockStartWithDuration: 1];
+    XCTAssertFalse([SCBlockClock blockDurationHasElapsed]);
+    [NSThread sleepForTimeInterval: 1.2];
+    [SCBlockClock tickCheckpoint];
+    XCTAssertTrue([SCBlockClock blockDurationHasElapsed]);
+}
+
+- (void)testTickClampsAgainstForwardWallClockJump {
+    [SCBlockClock recordBlockStartWithDuration: 600];
+    [NSThread sleepForTimeInterval: 0.5];
+
+    // Simulate sudo date +1hour by pushing lastCheckpointWallClock 1 hour into the past.
+    // From tickCheckpoint's POV, deltaWall will be ~1 hour but deltaCont will be ~0.5s.
+    NSMutableDictionary* tk = [[[SCSettings sharedSettings] valueForKey: @"BlockTimekeeping"] mutableCopy];
+    tk[@"lastCheckpointWallClock"] = [NSDate dateWithTimeIntervalSinceNow: -3600.0];
+    [[SCSettings sharedSettings] setValue: tk forKey: @"BlockTimekeeping"];
+
+    [SCBlockClock tickCheckpoint];
+    NSTimeInterval elapsed = [SCBlockClock elapsedSecondsForCurrentBlock];
+    XCTAssertLessThan(elapsed, 5.0); // not 1 hour — clamped to monotonic delta
+}
+
 @end

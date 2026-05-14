@@ -24,7 +24,12 @@ static NSString* const kLastCheckpointContKey     = @"lastCheckpointContinuous";
 }
 
 + (uint64_t)continuousNanos {
-    return mach_continuous_time();
+    static mach_timebase_info_data_t tb;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{ mach_timebase_info(&tb); });
+    // mach_continuous_time() returns mach ticks; convert to nanoseconds via the
+    // platform timebase (numer/denom). On Apple Silicon ticks != nanoseconds.
+    return mach_continuous_time() * tb.numer / tb.denom;
 }
 
 + (void)recordBlockStartWithDuration:(NSTimeInterval)durationSeconds {
@@ -42,8 +47,64 @@ static NSString* const kLastCheckpointContKey     = @"lastCheckpointContinuous";
     [[SCSettings sharedSettings] setValue: tk forKey: kBlockTimekeepingKey];
 }
 
-+ (void)tickCheckpoint { /* implemented in Task 2 */ }
-+ (NSTimeInterval)elapsedSecondsForCurrentBlock { return 0.0; /* Task 2 */ }
-+ (BOOL)blockDurationHasElapsed { return NO; /* Task 2 */ }
++ (NSDictionary*)readTK {
+    return [[SCSettings sharedSettings] valueForKey: kBlockTimekeepingKey];
+}
+
++ (void)writeTK:(NSDictionary*)tk {
+    [[SCSettings sharedSettings] setValue: tk forKey: kBlockTimekeepingKey];
+}
+
++ (NSTimeInterval)inFlightDeltaFromTK:(NSDictionary*)tk
+                                  now:(NSDate*)now
+                       continuousNanos:(uint64_t)cont {
+    NSDate* lastWall  = tk[kLastCheckpointWallKey];
+    uint64_t lastCont = [tk[kLastCheckpointContKey] unsignedLongLongValue];
+
+    NSTimeInterval deltaWall = [now timeIntervalSinceDate: lastWall];
+    NSTimeInterval deltaCont = ((double)(cont - lastCont)) / 1e9;
+
+    NSTimeInterval trustedDelta = MIN(deltaCont, MAX(0.0, deltaWall));
+    if (trustedDelta < 0) trustedDelta = 0; // defense vs corrupt persisted lastCont
+    return trustedDelta;
+}
+
++ (void)tickCheckpoint {
+    NSDictionary* tk = [self readTK];
+    if (tk == nil) return;
+
+    // Same-boot guard: cross-boot path is Task 3.
+    if (![tk[kBootSessionUUIDKey] isEqualToString: [self currentBootSessionUUID]]) {
+        return;
+    }
+
+    NSDate* now = [NSDate date];
+    uint64_t cont = [self continuousNanos];
+
+    NSTimeInterval trustedDelta = [self inFlightDeltaFromTK: tk now: now continuousNanos: cont];
+    NSTimeInterval newAccum = [tk[kElapsedAccumulatedKey] doubleValue] + trustedDelta;
+
+    NSMutableDictionary* updated = [tk mutableCopy];
+    updated[kElapsedAccumulatedKey]    = @(newAccum);
+    updated[kLastCheckpointWallKey]    = now;
+    updated[kLastCheckpointContKey]    = @(cont);
+    [self writeTK: updated];
+}
+
++ (NSTimeInterval)elapsedSecondsForCurrentBlock {
+    NSDictionary* tk = [self readTK];
+    if (tk == nil) return 0.0;
+    if (![tk[kBootSessionUUIDKey] isEqualToString: [self currentBootSessionUUID]]) {
+        return [tk[kElapsedAccumulatedKey] doubleValue];
+    }
+    return [tk[kElapsedAccumulatedKey] doubleValue]
+         + [self inFlightDeltaFromTK: tk now: [NSDate date] continuousNanos: [self continuousNanos]];
+}
+
++ (BOOL)blockDurationHasElapsed {
+    NSDictionary* tk = [self readTK];
+    if (tk == nil) return NO;
+    return [self elapsedSecondsForCurrentBlock] >= [tk[kBlockDurationSecondsKey] doubleValue];
+}
 
 @end
