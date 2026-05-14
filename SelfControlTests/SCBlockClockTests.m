@@ -13,6 +13,11 @@
     [[SCSettings sharedSettings] setValue: nil forKey: @"BlockTimekeeping"];
 }
 
+- (void)tearDown {
+    [SCBlockClock setBootSessionUUIDOverrideForTesting: nil];
+    [super tearDown];
+}
+
 - (void)testRecordBlockStartPopulatesTimekeepingDict {
     NSDate* before = [NSDate date];
     [SCBlockClock recordBlockStartWithDuration: 600]; // 10 minutes
@@ -100,6 +105,59 @@
     [SCBlockClock tickCheckpoint];
     NSTimeInterval elapsed = [SCBlockClock elapsedSecondsForCurrentBlock];
     XCTAssertLessThan(elapsed, 5.0); // not 1 hour — clamped to monotonic delta
+}
+
+- (void)testRebootCreditsWallClockGap {
+    [SCBlockClock setBootSessionUUIDOverrideForTesting: @"BOOT_A"];
+    [SCBlockClock recordBlockStartWithDuration: 600];
+    [NSThread sleepForTimeInterval: 0.5];
+    [SCBlockClock tickCheckpoint]; // accumulate ~0.5 s under BOOT_A
+
+    // Simulate reboot: bump boot UUID and force the last checkpoint into the past.
+    [SCBlockClock setBootSessionUUIDOverrideForTesting: @"BOOT_B"];
+    NSMutableDictionary* tk = [[[SCSettings sharedSettings] valueForKey: @"BlockTimekeeping"] mutableCopy];
+    tk[@"lastCheckpointWallClock"] = [NSDate dateWithTimeIntervalSinceNow: -60.0];
+    [[SCSettings sharedSettings] setValue: tk forKey: @"BlockTimekeeping"];
+
+    [SCBlockClock tickCheckpoint]; // should credit ~60 s of reboot gap
+    NSTimeInterval elapsed = [SCBlockClock elapsedSecondsForCurrentBlock];
+    XCTAssertGreaterThan(elapsed, 55.0);
+    XCTAssertLessThan(elapsed, 65.0);
+}
+
+- (void)testRebootWithBackwardWallClockCreditsZero {
+    [SCBlockClock setBootSessionUUIDOverrideForTesting: @"BOOT_A"];
+    [SCBlockClock recordBlockStartWithDuration: 600];
+    [NSThread sleepForTimeInterval: 0.5];
+    [SCBlockClock tickCheckpoint];
+
+    NSTimeInterval accumBeforeReboot = [SCBlockClock elapsedSecondsForCurrentBlock];
+
+    [SCBlockClock setBootSessionUUIDOverrideForTesting: @"BOOT_B"];
+    NSMutableDictionary* tk = [[[SCSettings sharedSettings] valueForKey: @"BlockTimekeeping"] mutableCopy];
+    tk[@"lastCheckpointWallClock"] = [NSDate dateWithTimeIntervalSinceNow: +60.0]; // future
+    [[SCSettings sharedSettings] setValue: tk forKey: @"BlockTimekeeping"];
+
+    [SCBlockClock tickCheckpoint];
+    NSTimeInterval elapsedAfter = [SCBlockClock elapsedSecondsForCurrentBlock];
+    XCTAssertEqualWithAccuracy(elapsedAfter, accumBeforeReboot, 1.0);
+}
+
+- (void)testBackwardWallClockCreditsAtMostMonotonic {
+    [SCBlockClock recordBlockStartWithDuration: 600];
+    [NSThread sleepForTimeInterval: 0.5];
+    [SCBlockClock tickCheckpoint];
+    NSTimeInterval before = [SCBlockClock elapsedSecondsForCurrentBlock];
+
+    // Move lastCheckpointWallClock 1 hour into the future to simulate
+    // `sudo date -1hour` having moved "now" backward relative to it.
+    NSMutableDictionary* tk = [[[SCSettings sharedSettings] valueForKey: @"BlockTimekeeping"] mutableCopy];
+    tk[@"lastCheckpointWallClock"] = [NSDate dateWithTimeIntervalSinceNow: +3600.0];
+    [[SCSettings sharedSettings] setValue: tk forKey: @"BlockTimekeeping"];
+
+    [SCBlockClock tickCheckpoint];
+    NSTimeInterval after = [SCBlockClock elapsedSecondsForCurrentBlock];
+    XCTAssertEqualWithAccuracy(after, before, 1.0); // negative deltaWall → zero credit
 }
 
 @end

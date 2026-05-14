@@ -25,6 +25,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// YES iff elapsedSecondsForCurrentBlock >= the recorded duration.
 + (BOOL)blockDurationHasElapsed;
 
+#ifdef DEBUG
+/// Test-only override. Pass nil to clear.
++ (void)setBootSessionUUIDOverrideForTesting:(nullable NSString*)uuid;
+#endif
+
 @end
 
 NS_ASSUME_NONNULL_END

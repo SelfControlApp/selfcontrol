@@ -12,9 +12,12 @@ static NSString* const kElapsedAccumulatedKey     = @"elapsedSecondsAccumulated"
 static NSString* const kLastCheckpointWallKey     = @"lastCheckpointWallClock";
 static NSString* const kLastCheckpointContKey     = @"lastCheckpointContinuous";
 
+static NSString* sBootUUIDOverride = nil;
+
 @implementation SCBlockClock
 
 + (NSString*)currentBootSessionUUID {
+    if (sBootUUIDOverride != nil) return sBootUUIDOverride;
     struct timeval boottime;
     size_t size = sizeof(boottime);
     if (sysctlbyname("kern.boottime", &boottime, &size, NULL, 0) != 0) {
@@ -22,6 +25,12 @@ static NSString* const kLastCheckpointContKey     = @"lastCheckpointContinuous";
     }
     return [NSString stringWithFormat: @"%ld.%d", (long)boottime.tv_sec, boottime.tv_usec];
 }
+
+#ifdef DEBUG
++ (void)setBootSessionUUIDOverrideForTesting:(NSString*)uuid {
+    sBootUUIDOverride = [uuid copy];
+}
+#endif
 
 + (uint64_t)continuousNanos {
     static mach_timebase_info_data_t tb;
@@ -73,21 +82,32 @@ static NSString* const kLastCheckpointContKey     = @"lastCheckpointContinuous";
     NSDictionary* tk = [self readTK];
     if (tk == nil) return;
 
-    // Same-boot guard: cross-boot path is Task 3.
-    if (![tk[kBootSessionUUIDKey] isEqualToString: [self currentBootSessionUUID]]) {
-        return;
-    }
-
     NSDate* now = [NSDate date];
     uint64_t cont = [self continuousNanos];
+    NSString* currentBoot = [self currentBootSessionUUID];
+
+    if (![tk[kBootSessionUUIDKey] isEqualToString: currentBoot]) {
+        // Cross-boot: monotonic counter has reset. Credit max(0, wall-clock gap).
+        NSTimeInterval gapWall = [now timeIntervalSinceDate: tk[kLastCheckpointWallKey]];
+        NSTimeInterval credit = MAX(0.0, gapWall);
+        NSTimeInterval newAccum = [tk[kElapsedAccumulatedKey] doubleValue] + credit;
+
+        NSMutableDictionary* updated = [tk mutableCopy];
+        updated[kElapsedAccumulatedKey] = @(newAccum);
+        updated[kLastCheckpointWallKey] = now;
+        updated[kLastCheckpointContKey] = @(cont);
+        updated[kBootSessionUUIDKey]    = currentBoot;
+        [self writeTK: updated];
+        return;
+    }
 
     NSTimeInterval trustedDelta = [self inFlightDeltaFromTK: tk now: now continuousNanos: cont];
     NSTimeInterval newAccum = [tk[kElapsedAccumulatedKey] doubleValue] + trustedDelta;
 
     NSMutableDictionary* updated = [tk mutableCopy];
-    updated[kElapsedAccumulatedKey]    = @(newAccum);
-    updated[kLastCheckpointWallKey]    = now;
-    updated[kLastCheckpointContKey]    = @(cont);
+    updated[kElapsedAccumulatedKey] = @(newAccum);
+    updated[kLastCheckpointWallKey] = now;
+    updated[kLastCheckpointContKey] = @(cont);
     [self writeTK: updated];
 }
 
