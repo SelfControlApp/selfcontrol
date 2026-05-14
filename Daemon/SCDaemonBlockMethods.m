@@ -13,6 +13,7 @@
 #import "SCDaemon.h"
 #import "LaunchctlHelper.h"
 #import "HostFileBlockerSet.h"
+#import "SCBlockClock.h"
 
 NSTimeInterval METHOD_LOCK_TIMEOUT = 5.0;
 NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for checkups, because we'd prefer not to have tons pile up
@@ -85,7 +86,11 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     [settings setValue: blocklist forKey: @"ActiveBlocklist"];
     [settings setValue: @(isAllowlist) forKey: @"ActiveBlockAsWhitelist"];
     [settings setValue: endDate forKey: @"BlockEndDate"];
-    
+    NSTimeInterval duration = [endDate timeIntervalSinceNow];
+    if (duration > 0) {
+        [SCBlockClock recordBlockStartWithDuration: duration];
+    }
+
     // update all the settings for the block, which we're basically just copying from defaults to settings
     [settings setValue: blockSettings[@"ClearCaches"] forKey: @"ClearCaches"];
     [settings setValue: blockSettings[@"AllowLocalNetworks"] forKey: @"AllowLocalNetworks"];
@@ -310,7 +315,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         
         // once the checkups stop, the daemon will clear itself in a while due to inactivity
         [[SCDaemon sharedDaemon] stopCheckupTimer];
-    } else if ([SCBlockUtilities currentBlockIsExpired]) {
+    } else if ([SCBlockUtilities currentBlockIsTrulyExpired]) {
         NSLog(@"INFO: Checkup ran, block expired, removing block.");
         
         [SCHelperToolUtilities removeBlock];

@@ -8,6 +8,7 @@
 #import "SCBlockUtilities.h"
 #import "HostFileBlocker.h"
 #import "PacketFilter.h"
+#import "SCBlockClock.h"
 
 @implementation SCBlockUtilities
 
@@ -59,6 +60,11 @@
     } else {
         return YES;
     }
+}
+
++ (BOOL)currentBlockIsTrulyExpired {
+    if (![self currentBlockIsExpired]) return NO;
+    return [SCBlockClock blockDurationHasElapsed];
 }
 
 + (BOOL)blockRulesFoundOnSystem {
