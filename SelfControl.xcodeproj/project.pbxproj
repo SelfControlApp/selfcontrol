@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B32075B954DBAA7CDF5BE74 /* SCBlockClock.m in Sources */ = {isa = PBXBuildFile; fileRef = D483750E234BD131B4D3D705 /* SCBlockClock.m */; };
+		4E79FF9C6273791588F4AAE7 /* SCBlockClockTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D16D417A66377222AE733FD2 /* SCBlockClockTests.m */; };
 		5E6BEEBB5C6E29DADDB344CF /* libPods-selfcontrol-cli.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C85A094F15E20A0DB58665A8 /* libPods-selfcontrol-cli.a */; };
 		63BAC9E58A69B15D342B0E29 /* libPods-org.eyebeam.selfcontrold.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BF3973D41997900DF147B24 /* libPods-org.eyebeam.selfcontrold.a */; };
 		8CA8987104D2956493D6AF6B /* Pods_SelfControl_SelfControlTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F41DEF1E3926B4CF3AE2B76C /* Pods_SelfControl_SelfControlTests.framework */; };
@@ -207,8 +209,10 @@
 		CBEE50C10F48C21F00F5DF1C /* TimerWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */; };
 		CBF3B574217BADD7006D5F52 /* SCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF3B573217BADD7006D5F52 /* SCSettings.m */; };
 		D4EDD26C770910569C31D36F /* libPods-SCKillerHelper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF899A50A17F0C6C8C6B84A2 /* libPods-SCKillerHelper.a */; };
+		D53DB30311254599F589F6E9 /* SCBlockClock.m in Sources */ = {isa = PBXBuildFile; fileRef = D483750E234BD131B4D3D705 /* SCBlockClock.m */; };
 		DC4DBA9148D8D67A11899C5E /* Pods_SelfControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EBDE7B29D92764A409E4FDA /* Pods_SelfControl.framework */; };
 		E263B809965135813A557CD5 /* Pods_SelfControl_Killer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86DAD6532C67CBE72E99084C /* Pods_SelfControl_Killer.framework */; };
+		EC65D5055C5CDFCECDB7FE91 /* SCBlockClock.m in Sources */ = {isa = PBXBuildFile; fileRef = D483750E234BD131B4D3D705 /* SCBlockClock.m */; };
 		F5B8CBEE19EE21C30026F3A5 /* SCTimeIntervalFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F5B8CBED19EE21C30026F3A5 /* SCTimeIntervalFormatter.m */; };
 /* End PBXBuildFile section */
 
@@ -538,6 +542,7 @@
 		64682B3371BA0A5044028058 /* Pods-selfcontrol-cli.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-selfcontrol-cli.debug.xcconfig"; path = "Pods/Target Support Files/Pods-selfcontrol-cli/Pods-selfcontrol-cli.debug.xcconfig"; sourceTree = "<group>"; };
 		69102D5CD4E9672D0EFBF25B /* Pods-selfcontrol-cli.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-selfcontrol-cli.release.xcconfig"; path = "Pods/Target Support Files/Pods-selfcontrol-cli/Pods-selfcontrol-cli.release.xcconfig"; sourceTree = "<group>"; };
 		6EBDE7B29D92764A409E4FDA /* Pods_SelfControl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SelfControl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7780059D90429CAD9D925F31 /* SCBlockClock.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = SCBlockClock.h; sourceTree = "<group>"; };
 		77CFA479BA7C3ECBC15F96D7 /* Pods-org.eyebeam.selfcontrold.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-org.eyebeam.selfcontrold.debug.xcconfig"; path = "Pods/Target Support Files/Pods-org.eyebeam.selfcontrold/Pods-org.eyebeam.selfcontrold.debug.xcconfig"; sourceTree = "<group>"; };
 		86DAD6532C67CBE72E99084C /* Pods_SelfControl_Killer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SelfControl_Killer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BF3973D41997900DF147B24 /* libPods-org.eyebeam.selfcontrold.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-org.eyebeam.selfcontrold.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1464,6 +1469,8 @@
 		CBF3B572217BADD7006D5F52 /* SCSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCSettings.h; sourceTree = "<group>"; };
 		CBF3B573217BADD7006D5F52 /* SCSettings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCSettings.m; sourceTree = "<group>"; };
 		D0BABA9759C378EE7C619F91 /* Pods-SCKillerHelper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SCKillerHelper.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SCKillerHelper/Pods-SCKillerHelper.debug.xcconfig"; sourceTree = "<group>"; };
+		D16D417A66377222AE733FD2 /* SCBlockClockTests.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = SCBlockClockTests.m; sourceTree = "<group>"; };
+		D483750E234BD131B4D3D705 /* SCBlockClock.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = SCBlockClock.m; sourceTree = "<group>"; };
 		E1139D5A5B92C88FFF62718F /* Pods-SCKillerHelper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SCKillerHelper.release.xcconfig"; path = "Pods/Target Support Files/Pods-SCKillerHelper/Pods-SCKillerHelper.release.xcconfig"; sourceTree = "<group>"; };
 		E3346B8A670C55C686428776 /* Pods-SelfControl-SelfControlTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SelfControl-SelfControlTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SelfControl-SelfControlTests/Pods-SelfControl-SelfControlTests.debug.xcconfig"; sourceTree = "<group>"; };
 		EBDF1B23AA44B10313D79203 /* Pods-SelfControl Killer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SelfControl Killer.release.xcconfig"; path = "Pods/Target Support Files/Pods-SelfControl Killer/Pods-SelfControl Killer.release.xcconfig"; sourceTree = "<group>"; };
@@ -1580,7 +1587,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA /* SelfControl */ = {
+		29B97314FDCFA39411CA2CEA = {
 			isa = PBXGroup;
 			children = (
 				CBDFFF4B24A07DB300622CEE /* SelfControl.entitlements */,
@@ -1658,6 +1665,7 @@
 			children = (
 				CB0EEF7720FE49020024D27B /* SCUtilityTests.m */,
 				CB0EEF6120FD8CE00024D27B /* Info.plist */,
+				D16D417A66377222AE733FD2 /* SCBlockClockTests.m */,
 			);
 			path = SelfControlTests;
 			sourceTree = "<group>";
@@ -1758,6 +1766,8 @@
 				CBB1731320F041F4007FCAE9 /* SCMiscUtilities.m */,
 				CB81AA3825B7D152006956F7 /* SCHelperToolUtilities.h */,
 				CB81AA3925B7D152006956F7 /* SCHelperToolUtilities.m */,
+				7780059D90429CAD9D925F31 /* SCBlockClock.h */,
+				D483750E234BD131B4D3D705 /* SCBlockClock.m */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -3083,7 +3093,7 @@
 				Base,
 				da,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA /* SelfControl */;
+			mainGroup = 29B97314FDCFA39411CA2CEA;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectReferences = (
@@ -3727,6 +3737,7 @@
 				CB953114262BC64F000C8309 /* SCDurationSlider.m in Sources */,
 				CBF3B574217BADD7006D5F52 /* SCSettings.m in Sources */,
 				CB25806616C237F10059C99A /* NSString+IPAddress.m in Sources */,
+				EC65D5055C5CDFCECDB7FE91 /* SCBlockClock.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3751,6 +3762,8 @@
 				CB114284222CD4F0004B7868 /* SCSettings.m in Sources */,
 				CB0EEF7820FE49030024D27B /* SCUtilityTests.m in Sources */,
 				CB81A94D25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */,
+				D53DB30311254599F589F6E9 /* SCBlockClock.m in Sources */,
+				4E79FF9C6273791588F4AAE7 /* SCBlockClockTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3784,6 +3797,7 @@
 				CB69C4EF25A3FD8A0030CFCD /* SCXPCAuthorization.m in Sources */,
 				CB62FC4324B1329500ADBC40 /* PacketFilter.m in Sources */,
 				CB62FC4224B1329200ADBC40 /* BlockManager.m in Sources */,
+				3B32075B954DBAA7CDF5BE74 /* SCBlockClock.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4532,9 +4546,7 @@
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
 				CURRENT_PROJECT_VERSION = 410;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks\n\n$(PLATFORM_DIR)/Developer/Library/Frameworks\n\n",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks\n\n$(PLATFORM_DIR)/Developer/Library/Frameworks\n\n";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_NO_COMMON_BLOCKS = NO;
@@ -4567,9 +4579,7 @@
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
 				CURRENT_PROJECT_VERSION = 410;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks\n\n$(PLATFORM_DIR)/Developer/Library/Frameworks\n\n",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks\n\n$(PLATFORM_DIR)/Developer/Library/Frameworks\n\n";
 				GCC_MODEL_TUNING = G5;
 				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
