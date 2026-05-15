@@ -17,6 +17,7 @@
 #import "SCMigrationUtilities.h"
 #import <sysexits.h>
 #import "SCSentry.h"
+#import "SCBlockClock.h"
 
 #define LOG_FILE @"~/Documents/SelfControl-Killer.log"
 
@@ -66,6 +67,17 @@ int main(int argc, char* argv[]) {
         // we need to setuid to root, otherwise launchctl won't find system launch daemons
         // depite the EUID being 0 as expected - not sure why that is
         setuid(0);
+
+        // Refuse to wipe an in-progress block: this killer is a *recovery* tool, not
+        // a bypass. If SCBlockClock says we have a recorded block that has not yet
+        // elapsed, exit early with EX_TEMPFAIL so the caller can wait and retry.
+        if ([SCBlockClock blockDurationSeconds] > 0 && ![SCBlockClock blockDurationHasElapsed]) {
+            NSLog(@"ERROR: Refusing to clear block — block is still active (elapsed %.0fs of %.0fs).",
+                  [SCBlockClock elapsedSecondsForCurrentBlock],
+                  [SCBlockClock blockDurationSeconds]);
+            [SCSentry captureMessage: @"SCKillerHelper refused: block still active per SCBlockClock"];
+            exit(EX_TEMPFAIL);
+        }
 
 		/* FIRST TASK: print debug info */
 

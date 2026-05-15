@@ -24,10 +24,16 @@
 
 #import "TimerWindowController.h"
 #import "SCUIUtilities.h"
+#import "SCXPCClient.h"
+#import "SCBlockUtilities.h"
+#import "SCBlockClock.h"
 
 @interface TimerWindowController ()
 
 @property(nonatomic, readonly) AppController* appController;
+@property(nonatomic, strong) SCXPCClient* gateXPCClient;
+@property(nonatomic, assign) BOOL gateQueryInFlight;
+@property(nonatomic, assign) BOOL waitingForNetworkUnlock;
 
 @end
 
@@ -123,6 +129,8 @@
     [timerUpdater_ invalidate];
     timerUpdater_ = nil;
 
+    self.waitingForNetworkUnlock = NO;
+
     [timerLabel_ setStringValue: NSLocalizedString(@"Block not active", @"block not active string")];
     [timerLabel_ setFont: [[NSFontManager sharedFontManager]
                            convertFont: [timerLabel_ font]
@@ -148,13 +156,56 @@
                                       waitUntilDone:NO];
 
     NSString* finishingString = NSLocalizedString(@"Finishing", @"String shown when waiting for finished block to clear");
-	int numSeconds = (int) [blockEndingDate_ timeIntervalSinceNow];
+    NSString* waitingForInternetString = [NSString stringWithFormat: @"%@\n%@",
+        NSLocalizedString(@"Connect to the internet to finish your block.",
+                          @"Shown when block end time has passed but trusted-time check has not yet succeeded."),
+        NSLocalizedString(@"SelfControl checks the time with a trusted server. Once online, this finishes automatically.",
+                          @"Second line of the waiting-for-internet message.")];
+
+    // For modern blocks, drive the timer from SCBlockClock (tamper-resistant elapsed time)
+    // so a `sudo date` jump cannot trip the strike counter / expose the manual-stop button.
+    // Legacy blocks predate SCBlockClock and keep the wall-clock path.
+    BOOL useBlockClock = [SCBlockUtilities modernBlockIsRunning] && [SCBlockClock blockDurationSeconds] > 0;
+    BOOL blockElapsedButStillRunning;
+    int numSeconds;
+    if (useBlockClock) {
+        numSeconds = (int)[SCBlockClock remainingSecondsForCurrentBlock];
+        blockElapsedButStillRunning = [SCBlockClock blockDurationHasElapsed];
+    } else {
+        numSeconds = (int)[blockEndingDate_ timeIntervalSinceNow];
+        blockElapsedButStillRunning = (numSeconds < 0 && [SCBlockUtilities modernBlockIsRunning]);
+    }
 	int numHours;
 	int numMinutes;
 
+    // Block elapsed but not yet cleared: the daemon may be waiting on trusted-time
+    // network verification. Query the gate so we can surface that state to the user.
+    if (blockElapsedButStillRunning) {
+        [self queryUnlockGateState];
+    } else if (self.waitingForNetworkUnlock) {
+        // no longer past end (clock restored, or block cleared) - clear waiting state
+        self.waitingForNetworkUnlock = NO;
+    }
+
+    // If the daemon previously reported it was waiting for network verification, show that message
+    // instead of "Finishing". We re-poll periodically (see queryUnlockGateState) to refresh this.
+    if (blockElapsedButStillRunning && self.waitingForNetworkUnlock) {
+        if (![timerLabel_.stringValue isEqualToString: waitingForInternetString]) {
+            [[NSApp dockTile] setBadgeLabel: nil];
+            [timerLabel_ setStringValue: waitingForInternetString];
+            [timerLabel_ setFont: [[NSFontManager sharedFontManager]
+                                   convertFont: [timerLabel_ font]
+                                   toSize: 14]];
+            [timerLabel_ sizeToFit];
+            [timerLabel_ setFrame: NSRectFromCGRect(CGRectMake(0, timerLabel_.frame.origin.y, self.window.frame.size.width, timerLabel_.frame.size.height))];
+        }
+        [self resetStrikes];
+        return;
+    }
+
     // if we're already showing "Finishing", but the block timer isn't clearing,
     // keep track of that, so we can take drastic measures if necessary.
-	if(numSeconds < 0 && [timerLabel_.stringValue isEqualToString: finishingString]) {
+	if(blockElapsedButStillRunning && [timerLabel_.stringValue isEqualToString: finishingString]) {
 		[[NSApp dockTile] setBadgeLabel: nil];
 
 		// This increments the strike counter.  After four strikes of the timer being
@@ -316,6 +367,24 @@
 // see updateTimerDisplay: for an explanation
 - (void)resetStrikes {
 	numStrikes = 0;
+}
+
+// Asynchronously ask the daemon whether it's waiting on trusted-time network verification.
+// We coalesce in-flight requests so we don't pile up XPC calls when the timer ticks every second.
+- (void)queryUnlockGateState {
+    if (self.gateQueryInFlight) return;
+    self.gateQueryInFlight = YES;
+
+    if (self.gateXPCClient == nil) {
+        self.gateXPCClient = [SCXPCClient new];
+    }
+
+    [self.gateXPCClient getBlockUnlockGateStateWithReply:^(BOOL waiting, NSDate* lastAttemptAt, NSString* errorReason) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.waitingForNetworkUnlock = waiting;
+            self.gateQueryInFlight = NO;
+        });
+    }];
 }
 
 - (IBAction)killBlock:(id)sender {

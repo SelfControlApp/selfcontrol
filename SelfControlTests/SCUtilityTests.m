@@ -10,6 +10,7 @@
 #import "SCSentry.h"
 #import "SCErr.h"
 #import "SCSettings.h"
+#import "SCBlockClock.h"
 
 @interface SCUtilityTests : XCTestCase
 
@@ -162,6 +163,26 @@ NSDictionary* veryLongBlockLegacyDict; // year-long block, one day in
     [SCBlockUtilities removeBlockFromSettings];
     XCTAssert(![SCBlockUtilities modernBlockIsRunning]);
     XCTAssert([SCBlockUtilities currentBlockIsExpired]);
+}
+
+- (void)testTrulyExpiredRequiresBothSignals {
+    SCSettings* s = [SCSettings sharedSettings];
+    [s setValue: @YES forKey: @"BlockIsRunning"];
+    [s setValue: [NSDate dateWithTimeIntervalSinceNow: -10] forKey: @"BlockEndDate"]; // wall says expired
+    [SCBlockClock recordBlockStartWithDuration: 600]; // monotonic says NOT expired
+
+    XCTAssertTrue([SCBlockUtilities currentBlockIsExpired]);
+    XCTAssertFalse([SCBlockUtilities currentBlockIsTrulyExpired]);
+
+    // Now flip the monotonic side to also report expired.
+    NSMutableDictionary* tk = [[s valueForKey: @"BlockTimekeeping"] mutableCopy];
+    tk[@"elapsedSecondsAccumulated"] = @(99999);
+    [s setValue: tk forKey: @"BlockTimekeeping"];
+    XCTAssertTrue([SCBlockUtilities currentBlockIsTrulyExpired]);
+
+    // Cleanup so this test doesn't leak state to other tests
+    [SCBlockUtilities removeBlockFromSettings];
+    [s setValue: nil forKey: @"BlockTimekeeping"];
 }
 
 - (void) testLegacyBlockDetection {

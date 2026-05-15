@@ -7,11 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B8DE13F1AC76A3492243EF7 /* SCTrustedTimeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 775932FDEC5FE972E702D6CE /* SCTrustedTimeTests.m */; };
+		1F62DFC8BCDB5A0494F70778 /* SCBlockClock.m in Sources */ = {isa = PBXBuildFile; fileRef = D483750E234BD131B4D3D705 /* SCBlockClock.m */; };
+		3B32075B954DBAA7CDF5BE74 /* SCBlockClock.m in Sources */ = {isa = PBXBuildFile; fileRef = D483750E234BD131B4D3D705 /* SCBlockClock.m */; };
+		3D1962F9249CDADACC7209B6 /* SCPinnedHosts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B7620E0568062C60FE36D3B /* SCPinnedHosts.m */; };
+		4E79FF9C6273791588F4AAE7 /* SCBlockClockTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D16D417A66377222AE733FD2 /* SCBlockClockTests.m */; };
+		53A83D6C78E6B28B265DB92A /* SCTrustedTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DEFB5DF64C2C167C77F1936 /* SCTrustedTime.m */; };
 		5E6BEEBB5C6E29DADDB344CF /* libPods-selfcontrol-cli.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C85A094F15E20A0DB58665A8 /* libPods-selfcontrol-cli.a */; };
 		63BAC9E58A69B15D342B0E29 /* libPods-org.eyebeam.selfcontrold.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BF3973D41997900DF147B24 /* libPods-org.eyebeam.selfcontrold.a */; };
+		814B43720F59039AD312D69F /* SCPinnedHosts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B7620E0568062C60FE36D3B /* SCPinnedHosts.m */; };
+		85BDD37D005DD18B0FEF9609 /* SCBlockClock.m in Sources */ = {isa = PBXBuildFile; fileRef = D483750E234BD131B4D3D705 /* SCBlockClock.m */; };
 		8CA8987104D2956493D6AF6B /* Pods_SelfControl_SelfControlTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F41DEF1E3926B4CF3AE2B76C /* Pods_SelfControl_SelfControlTests.framework */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		A2EE8CF4722D0E9AF10DFFCB /* SCTrustedTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DEFB5DF64C2C167C77F1936 /* SCTrustedTime.m */; };
+		BA690D1AD4806A4CEF2922DB /* SCTrustedTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DEFB5DF64C2C167C77F1936 /* SCTrustedTime.m */; };
+		C9CFA33CD08F20F878270FBF /* SCPinnedHosts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B7620E0568062C60FE36D3B /* SCPinnedHosts.m */; };
 		CB0385E119D77051004614B6 /* PreferencesAdvancedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB0385DD19D77051004614B6 /* PreferencesAdvancedViewController.xib */; };
 		CB0385E219D77051004614B6 /* PreferencesGeneralViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB0385DF19D77051004614B6 /* PreferencesGeneralViewController.xib */; };
 		CB066F6C2652037E0076964D /* HostFileBlocker.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB0AE290FA74566006229B3 /* HostFileBlocker.m */; };
@@ -206,9 +217,12 @@
 		CBED7D9925ABB911003080D6 /* selfcontrol-cli in Copy Executable Helper Tools */ = {isa = PBXBuildFile; fileRef = CBA2AFD20F39EC12005AFEBE /* selfcontrol-cli */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		CBEE50C10F48C21F00F5DF1C /* TimerWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBEE50C00F48C21F00F5DF1C /* TimerWindowController.m */; };
 		CBF3B574217BADD7006D5F52 /* SCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF3B573217BADD7006D5F52 /* SCSettings.m */; };
+		D26FC97A4313152D82B52636 /* SCBlockClock.m in Sources */ = {isa = PBXBuildFile; fileRef = D483750E234BD131B4D3D705 /* SCBlockClock.m */; };
 		D4EDD26C770910569C31D36F /* libPods-SCKillerHelper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF899A50A17F0C6C8C6B84A2 /* libPods-SCKillerHelper.a */; };
+		D53DB30311254599F589F6E9 /* SCBlockClock.m in Sources */ = {isa = PBXBuildFile; fileRef = D483750E234BD131B4D3D705 /* SCBlockClock.m */; };
 		DC4DBA9148D8D67A11899C5E /* Pods_SelfControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EBDE7B29D92764A409E4FDA /* Pods_SelfControl.framework */; };
 		E263B809965135813A557CD5 /* Pods_SelfControl_Killer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86DAD6532C67CBE72E99084C /* Pods_SelfControl_Killer.framework */; };
+		EC65D5055C5CDFCECDB7FE91 /* SCBlockClock.m in Sources */ = {isa = PBXBuildFile; fileRef = D483750E234BD131B4D3D705 /* SCBlockClock.m */; };
 		F5B8CBEE19EE21C30026F3A5 /* SCTimeIntervalFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F5B8CBED19EE21C30026F3A5 /* SCTimeIntervalFormatter.m */; };
 /* End PBXBuildFile section */
 
@@ -529,22 +543,28 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32B26CAAF2E2B648B3C0E892 /* Pods-SelfControl.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SelfControl.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SelfControl/Pods-SelfControl.debug.xcconfig"; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* SelfControl_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelfControl_Prefix.pch; sourceTree = "<group>"; };
+		3310B533DAE070805ECF5C66 /* SCPinnedHosts.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = SCPinnedHosts.h; sourceTree = "<group>"; };
 		3EF418F71CC7F7FA002D99E8 /* nl */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3EF418F81CC7F7FA002D99E8 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		50CA92A5EB2C31792CA00641 /* Pods-SelfControl Killer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SelfControl Killer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SelfControl Killer/Pods-SelfControl Killer.debug.xcconfig"; sourceTree = "<group>"; };
+		5B7620E0568062C60FE36D3B /* SCPinnedHosts.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = SCPinnedHosts.m; sourceTree = "<group>"; };
 		5FA850E53EB64C54A1404AEF /* Pods-SelfControl.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SelfControl.release.xcconfig"; path = "Pods/Target Support Files/Pods-SelfControl/Pods-SelfControl.release.xcconfig"; sourceTree = "<group>"; };
 		640D40CB16D6E962003034B3 /* it */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		640D40CC16D6E962003034B3 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		64682B3371BA0A5044028058 /* Pods-selfcontrol-cli.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-selfcontrol-cli.debug.xcconfig"; path = "Pods/Target Support Files/Pods-selfcontrol-cli/Pods-selfcontrol-cli.debug.xcconfig"; sourceTree = "<group>"; };
 		69102D5CD4E9672D0EFBF25B /* Pods-selfcontrol-cli.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-selfcontrol-cli.release.xcconfig"; path = "Pods/Target Support Files/Pods-selfcontrol-cli/Pods-selfcontrol-cli.release.xcconfig"; sourceTree = "<group>"; };
 		6EBDE7B29D92764A409E4FDA /* Pods_SelfControl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SelfControl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		775932FDEC5FE972E702D6CE /* SCTrustedTimeTests.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = SCTrustedTimeTests.m; sourceTree = "<group>"; };
+		7780059D90429CAD9D925F31 /* SCBlockClock.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = SCBlockClock.h; sourceTree = "<group>"; };
 		77CFA479BA7C3ECBC15F96D7 /* Pods-org.eyebeam.selfcontrold.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-org.eyebeam.selfcontrold.debug.xcconfig"; path = "Pods/Target Support Files/Pods-org.eyebeam.selfcontrold/Pods-org.eyebeam.selfcontrold.debug.xcconfig"; sourceTree = "<group>"; };
+		7DEFB5DF64C2C167C77F1936 /* SCTrustedTime.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = SCTrustedTime.m; sourceTree = "<group>"; };
 		86DAD6532C67CBE72E99084C /* Pods_SelfControl_Killer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SelfControl_Killer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BF3973D41997900DF147B24 /* libPods-org.eyebeam.selfcontrold.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-org.eyebeam.selfcontrold.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* SelfControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SelfControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		949F9F8815B32EC6007B8B42 /* zh-Hans */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		949F9F8D15B333A1007B8B42 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		A0ABF5538520738322E1D87F /* SCTrustedTime.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = SCTrustedTime.h; sourceTree = "<group>"; };
 		AF899A50A17F0C6C8C6B84A2 /* libPods-SCKillerHelper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SCKillerHelper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C72025F2499F9F07E281CB50 /* Pods-SelfControl-SelfControlTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SelfControl-SelfControlTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SelfControl-SelfControlTests/Pods-SelfControl-SelfControlTests.release.xcconfig"; sourceTree = "<group>"; };
 		C85A094F15E20A0DB58665A8 /* libPods-selfcontrol-cli.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-selfcontrol-cli.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1464,6 +1484,8 @@
 		CBF3B572217BADD7006D5F52 /* SCSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCSettings.h; sourceTree = "<group>"; };
 		CBF3B573217BADD7006D5F52 /* SCSettings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCSettings.m; sourceTree = "<group>"; };
 		D0BABA9759C378EE7C619F91 /* Pods-SCKillerHelper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SCKillerHelper.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SCKillerHelper/Pods-SCKillerHelper.debug.xcconfig"; sourceTree = "<group>"; };
+		D16D417A66377222AE733FD2 /* SCBlockClockTests.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = SCBlockClockTests.m; sourceTree = "<group>"; };
+		D483750E234BD131B4D3D705 /* SCBlockClock.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = SCBlockClock.m; sourceTree = "<group>"; };
 		E1139D5A5B92C88FFF62718F /* Pods-SCKillerHelper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SCKillerHelper.release.xcconfig"; path = "Pods/Target Support Files/Pods-SCKillerHelper/Pods-SCKillerHelper.release.xcconfig"; sourceTree = "<group>"; };
 		E3346B8A670C55C686428776 /* Pods-SelfControl-SelfControlTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SelfControl-SelfControlTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SelfControl-SelfControlTests/Pods-SelfControl-SelfControlTests.debug.xcconfig"; sourceTree = "<group>"; };
 		EBDF1B23AA44B10313D79203 /* Pods-SelfControl Killer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SelfControl Killer.release.xcconfig"; path = "Pods/Target Support Files/Pods-SelfControl Killer/Pods-SelfControl Killer.release.xcconfig"; sourceTree = "<group>"; };
@@ -1580,7 +1602,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA /* SelfControl */ = {
+		29B97314FDCFA39411CA2CEA = {
 			isa = PBXGroup;
 			children = (
 				CBDFFF4B24A07DB300622CEE /* SelfControl.entitlements */,
@@ -1658,6 +1680,8 @@
 			children = (
 				CB0EEF7720FE49020024D27B /* SCUtilityTests.m */,
 				CB0EEF6120FD8CE00024D27B /* Info.plist */,
+				D16D417A66377222AE733FD2 /* SCBlockClockTests.m */,
+				775932FDEC5FE972E702D6CE /* SCTrustedTimeTests.m */,
 			);
 			path = SelfControlTests;
 			sourceTree = "<group>";
@@ -1758,6 +1782,12 @@
 				CBB1731320F041F4007FCAE9 /* SCMiscUtilities.m */,
 				CB81AA3825B7D152006956F7 /* SCHelperToolUtilities.h */,
 				CB81AA3925B7D152006956F7 /* SCHelperToolUtilities.m */,
+				7780059D90429CAD9D925F31 /* SCBlockClock.h */,
+				D483750E234BD131B4D3D705 /* SCBlockClock.m */,
+				A0ABF5538520738322E1D87F /* SCTrustedTime.h */,
+				7DEFB5DF64C2C167C77F1936 /* SCTrustedTime.m */,
+				3310B533DAE070805ECF5C66 /* SCPinnedHosts.h */,
+				5B7620E0568062C60FE36D3B /* SCPinnedHosts.m */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -2913,7 +2943,7 @@
 				CBDFFF4624A044C900622CEE /* Copy Daemon Launch Service */,
 				CB5E5FF81C3A5FD10038F331 /* ShellScript */,
 				CB81AB2725B7EFA4006956F7 /* Embed Frameworks */,
-				BED0609C15A860C955A3552D /* [CP] Embed Pods Frameworks */,
+				18074E0F50576891796754E7 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2934,7 +2964,7 @@
 				CB0EEF5920FD8CE00024D27B /* Sources */,
 				CB0EEF5A20FD8CE00024D27B /* Frameworks */,
 				CB0EEF5B20FD8CE00024D27B /* Resources */,
-				ED887BF54A55A00F42A6FD9C /* [CP] Embed Pods Frameworks */,
+				A90E36D275FE67D6D7D9178A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2973,7 +3003,6 @@
 				CB9C80F419CFB79700CDCAE1 /* Frameworks */,
 				CB9C80F519CFB79700CDCAE1 /* Resources */,
 				CB9C813119CFBBD300CDCAE1 /* Copy Helper Tools */,
-				AF328C5935C794FB31FCD1B5 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -3083,7 +3112,7 @@
 				Base,
 				da,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA /* SelfControl */;
+			mainGroup = 29B97314FDCFA39411CA2CEA;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectReferences = (
@@ -3426,6 +3455,80 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		18074E0F50576891796754E7 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SelfControl/Pods-SelfControl-resources.sh",
+				"${PODS_ROOT}/FormatterKit/FormatterKit/FormatterKit.bundle",
+				"${PODS_ROOT}/LetsMove/Base.lproj",
+				"${PODS_ROOT}/LetsMove/ca.lproj",
+				"${PODS_ROOT}/LetsMove/cs.lproj",
+				"${PODS_ROOT}/LetsMove/da.lproj",
+				"${PODS_ROOT}/LetsMove/de.lproj",
+				"${PODS_ROOT}/LetsMove/el.lproj",
+				"${PODS_ROOT}/LetsMove/en.lproj",
+				"${PODS_ROOT}/LetsMove/es.lproj",
+				"${PODS_ROOT}/LetsMove/fr.lproj",
+				"${PODS_ROOT}/LetsMove/hu.lproj",
+				"${PODS_ROOT}/LetsMove/it.lproj",
+				"${PODS_ROOT}/LetsMove/ja.lproj",
+				"${PODS_ROOT}/LetsMove/ko.lproj",
+				"${PODS_ROOT}/LetsMove/mk.lproj",
+				"${PODS_ROOT}/LetsMove/nb.lproj",
+				"${PODS_ROOT}/LetsMove/nl.lproj",
+				"${PODS_ROOT}/LetsMove/pl.lproj",
+				"${PODS_ROOT}/LetsMove/pt.lproj",
+				"${PODS_ROOT}/LetsMove/pt_BR.lproj",
+				"${PODS_ROOT}/LetsMove/ru.lproj",
+				"${PODS_ROOT}/LetsMove/sk.lproj",
+				"${PODS_ROOT}/LetsMove/sr.lproj",
+				"${PODS_ROOT}/LetsMove/sv.lproj",
+				"${PODS_ROOT}/LetsMove/tr.lproj",
+				"${PODS_ROOT}/LetsMove/vi-VN.lproj",
+				"${PODS_ROOT}/LetsMove/zh_CN.lproj",
+				"${PODS_ROOT}/LetsMove/zh_TW.lproj",
+				"${BUILT_PRODUCTS_DIR}/MASPreferences/MASPreferences.framework/en.lproj/MASPreferencesWindow.nib",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FormatterKit.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Base.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ca.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cs.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/da.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/de.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/el.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/en.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/es.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/fr.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/hu.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/it.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ja.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ko.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/mk.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/nb.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/nl.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/pl.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/pt.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/pt_BR.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ru.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/sk.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/sr.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/sv.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/tr.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/vi-VN.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/zh_CN.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/zh_TW.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MASPreferencesWindow.nib",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SelfControl/Pods-SelfControl-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		2A27B423AFFABE56BC018570 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3514,48 +3617,78 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		AF328C5935C794FB31FCD1B5 /* [CP] Embed Pods Frameworks */ = {
+		A90E36D275FE67D6D7D9178A /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SelfControl Killer/Pods-SelfControl Killer-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Sentry-framework/Sentry.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-SelfControl-SelfControlTests/Pods-SelfControl-SelfControlTests-resources.sh",
+				"${PODS_ROOT}/FormatterKit/FormatterKit/FormatterKit.bundle",
+				"${PODS_ROOT}/LetsMove/Base.lproj",
+				"${PODS_ROOT}/LetsMove/ca.lproj",
+				"${PODS_ROOT}/LetsMove/cs.lproj",
+				"${PODS_ROOT}/LetsMove/da.lproj",
+				"${PODS_ROOT}/LetsMove/de.lproj",
+				"${PODS_ROOT}/LetsMove/el.lproj",
+				"${PODS_ROOT}/LetsMove/en.lproj",
+				"${PODS_ROOT}/LetsMove/es.lproj",
+				"${PODS_ROOT}/LetsMove/fr.lproj",
+				"${PODS_ROOT}/LetsMove/hu.lproj",
+				"${PODS_ROOT}/LetsMove/it.lproj",
+				"${PODS_ROOT}/LetsMove/ja.lproj",
+				"${PODS_ROOT}/LetsMove/ko.lproj",
+				"${PODS_ROOT}/LetsMove/mk.lproj",
+				"${PODS_ROOT}/LetsMove/nb.lproj",
+				"${PODS_ROOT}/LetsMove/nl.lproj",
+				"${PODS_ROOT}/LetsMove/pl.lproj",
+				"${PODS_ROOT}/LetsMove/pt.lproj",
+				"${PODS_ROOT}/LetsMove/pt_BR.lproj",
+				"${PODS_ROOT}/LetsMove/ru.lproj",
+				"${PODS_ROOT}/LetsMove/sk.lproj",
+				"${PODS_ROOT}/LetsMove/sr.lproj",
+				"${PODS_ROOT}/LetsMove/sv.lproj",
+				"${PODS_ROOT}/LetsMove/tr.lproj",
+				"${PODS_ROOT}/LetsMove/vi-VN.lproj",
+				"${PODS_ROOT}/LetsMove/zh_CN.lproj",
+				"${PODS_ROOT}/LetsMove/zh_TW.lproj",
+				"${BUILT_PRODUCTS_DIR}/MASPreferences/MASPreferences.framework/en.lproj/MASPreferencesWindow.nib",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FormatterKit.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Base.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ca.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cs.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/da.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/de.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/el.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/en.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/es.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/fr.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/hu.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/it.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ja.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ko.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/mk.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/nb.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/nl.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/pl.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/pt.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/pt_BR.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ru.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/sk.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/sr.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/sv.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/tr.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/vi-VN.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/zh_CN.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/zh_TW.lproj",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MASPreferencesWindow.nib",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SelfControl Killer/Pods-SelfControl Killer-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BED0609C15A860C955A3552D /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SelfControl/Pods-SelfControl-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/FormatterKit/FormatterKit.framework",
-				"${BUILT_PRODUCTS_DIR}/LetsMove/LetsMove.framework",
-				"${BUILT_PRODUCTS_DIR}/MASPreferences/MASPreferences.framework",
-				"${BUILT_PRODUCTS_DIR}/Sentry-framework/Sentry.framework",
-				"${BUILT_PRODUCTS_DIR}/TransformerKit/TransformerKit.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FormatterKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LetsMove.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MASPreferences.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TransformerKit.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SelfControl/Pods-SelfControl-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SelfControl-SelfControlTests/Pods-SelfControl-SelfControlTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C4455A3F0260679D1BD5962E /* [CP] Check Pods Manifest.lock */ = {
@@ -3666,32 +3799,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		ED887BF54A55A00F42A6FD9C /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SelfControl-SelfControlTests/Pods-SelfControl-SelfControlTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/FormatterKit/FormatterKit.framework",
-				"${BUILT_PRODUCTS_DIR}/LetsMove/LetsMove.framework",
-				"${BUILT_PRODUCTS_DIR}/MASPreferences/MASPreferences.framework",
-				"${BUILT_PRODUCTS_DIR}/Sentry-framework/Sentry.framework",
-				"${BUILT_PRODUCTS_DIR}/TransformerKit/TransformerKit.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FormatterKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LetsMove.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MASPreferences.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TransformerKit.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SelfControl-SelfControlTests/Pods-SelfControl-SelfControlTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -3727,6 +3834,9 @@
 				CB953114262BC64F000C8309 /* SCDurationSlider.m in Sources */,
 				CBF3B574217BADD7006D5F52 /* SCSettings.m in Sources */,
 				CB25806616C237F10059C99A /* NSString+IPAddress.m in Sources */,
+				EC65D5055C5CDFCECDB7FE91 /* SCBlockClock.m in Sources */,
+				A2EE8CF4722D0E9AF10DFFCB /* SCTrustedTime.m in Sources */,
+				3D1962F9249CDADACC7209B6 /* SCPinnedHosts.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3751,6 +3861,11 @@
 				CB114284222CD4F0004B7868 /* SCSettings.m in Sources */,
 				CB0EEF7820FE49030024D27B /* SCUtilityTests.m in Sources */,
 				CB81A94D25B7B5B6006956F7 /* SCMigrationUtilities.m in Sources */,
+				D53DB30311254599F589F6E9 /* SCBlockClock.m in Sources */,
+				4E79FF9C6273791588F4AAE7 /* SCBlockClockTests.m in Sources */,
+				53A83D6C78E6B28B265DB92A /* SCTrustedTime.m in Sources */,
+				C9CFA33CD08F20F878270FBF /* SCPinnedHosts.m in Sources */,
+				0B8DE13F1AC76A3492243EF7 /* SCTrustedTimeTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3784,6 +3899,9 @@
 				CB69C4EF25A3FD8A0030CFCD /* SCXPCAuthorization.m in Sources */,
 				CB62FC4324B1329500ADBC40 /* PacketFilter.m in Sources */,
 				CB62FC4224B1329200ADBC40 /* BlockManager.m in Sources */,
+				3B32075B954DBAA7CDF5BE74 /* SCBlockClock.m in Sources */,
+				BA690D1AD4806A4CEF2922DB /* SCTrustedTime.m in Sources */,
+				814B43720F59039AD312D69F /* SCPinnedHosts.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3792,6 +3910,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB81A9D225B7C269006956F7 /* SCBlockUtilities.m in Sources */,
+				85BDD37D005DD18B0FEF9609 /* SCBlockClock.m in Sources */,
 				CB9C80FF19CFB79700CDCAE1 /* AppDelegate.m in Sources */,
 				CB9C80FC19CFB79700CDCAE1 /* main.m in Sources */,
 				CB5DFCBA2251DD1F0084CEC2 /* SCConstants.m in Sources */,
@@ -3827,6 +3946,7 @@
 				CB1CA64F25ABA5BB0084A551 /* SCXPCClient.m in Sources */,
 				CB114283222CCF19004B7868 /* SCSettings.m in Sources */,
 				CB81A9D325B7C269006956F7 /* SCBlockUtilities.m in Sources */,
+				D26FC97A4313152D82B52636 /* SCBlockClock.m in Sources */,
 				CB9C812319CFBB4400CDCAE1 /* LaunchctlHelper.m in Sources */,
 				CB1CA64D25ABA5BB0084A551 /* SCXPCAuthorization.m in Sources */,
 				CBC1F4B826070358008E3FA8 /* SCFileWatcher.m in Sources */,
@@ -3850,6 +3970,7 @@
 				CBADC27F25B22BC7000EE5BB /* SCSentry.m in Sources */,
 				CB1CA64E25ABA5BB0084A551 /* SCXPCAuthorization.m in Sources */,
 				CB81A9D125B7C269006956F7 /* SCBlockUtilities.m in Sources */,
+				1F62DFC8BCDB5A0494F70778 /* SCBlockClock.m in Sources */,
 				CBB67D5C25D6165B006E4BC9 /* NSArray+XPMArgumentsNormalizer.m in Sources */,
 				CB5888E225F60DC300B5C64D /* HostFileBlockerSet.m in Sources */,
 				CBB67D5D25D6165B006E4BC9 /* NSDictionary+RubyDescription.m in Sources */,
@@ -4532,9 +4653,7 @@
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
 				CURRENT_PROJECT_VERSION = 410;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks\n\n$(PLATFORM_DIR)/Developer/Library/Frameworks\n\n",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks\n\n$(PLATFORM_DIR)/Developer/Library/Frameworks\n\n";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_NO_COMMON_BLOCKS = NO;
@@ -4567,9 +4686,7 @@
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
 				CURRENT_PROJECT_VERSION = 410;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks\n\n$(PLATFORM_DIR)/Developer/Library/Frameworks\n\n",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks\n\n$(PLATFORM_DIR)/Developer/Library/Frameworks\n\n";
 				GCC_MODEL_TUNING = G5;
 				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

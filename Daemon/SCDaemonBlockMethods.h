@@ -31,6 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)checkBlockIntegrity;
 
++ (void)attemptVerifiedUnlock;
+
 @end
 
 NS_ASSUME_NONNULL_END

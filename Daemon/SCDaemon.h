@@ -30,6 +30,9 @@ NS_ASSUME_NONNULL_BEGIN
 // no block running, because we should have checkups going for all blocks)
 - (void)stopCheckupTimer;
 
+- (void)startCheckpointTimer;
+- (void)stopCheckpointTimer;
+
 // Lets the daemon know that there was recent activity
 // so we can reset our inactivity timer.
 // The daemon will die if goes for too long without activity.

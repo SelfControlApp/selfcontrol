@@ -23,6 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 // XPC method to get version of the installed daemon
 - (void)getVersionWithReply:(void(^)(NSString * version))reply;
 
+// XPC method to read the block unlock-gate state (no authorization required)
+- (void)getBlockUnlockGateStateWithReply:(void(^)(BOOL waitingForNetwork, NSDate* _Nullable lastAttemptAt, NSString* _Nullable errorReason))reply;
+
 @end
 
 NS_ASSUME_NONNULL_END

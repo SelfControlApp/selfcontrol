@@ -13,9 +13,13 @@
 #import "SCDaemon.h"
 #import "LaunchctlHelper.h"
 #import "HostFileBlockerSet.h"
+#import "SCBlockClock.h"
+#import "SCTrustedTime.h"
 
 NSTimeInterval METHOD_LOCK_TIMEOUT = 5.0;
 NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for checkups, because we'd prefer not to have tons pile up
+static NSTimeInterval const kVerifyBackoffs[] = { 10.0, 30.0, 60.0, 120.0, 120.0 };
+static const NSUInteger kVerifyBackoffsCount = sizeof(kVerifyBackoffs) / sizeof(kVerifyBackoffs[0]);
 
 @implementation SCDaemonBlockMethods
 
@@ -85,7 +89,17 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     [settings setValue: blocklist forKey: @"ActiveBlocklist"];
     [settings setValue: @(isAllowlist) forKey: @"ActiveBlockAsWhitelist"];
     [settings setValue: endDate forKey: @"BlockEndDate"];
-    
+    NSTimeInterval duration = [endDate timeIntervalSinceNow];
+    if (duration > 0) {
+        // Persist enough block-config alongside the timekeeping data so we can
+        // rebuild the block if SCSettings is later wiped (e.g. by the stock
+        // SelfControl Killer's resetAllSettingsToDefaults).
+        [SCBlockClock recordBlockStartWithDuration: duration
+                                         blocklist: blocklist
+                                       isAllowlist: isAllowlist
+                                           endDate: endDate];
+    }
+
     // update all the settings for the block, which we're basically just copying from defaults to settings
     [settings setValue: blockSettings[@"ClearCaches"] forKey: @"ClearCaches"];
     [settings setValue: blockSettings[@"AllowLocalNetworks"] forKey: @"AllowLocalNetworks"];
@@ -129,6 +143,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
 
     [[SCDaemon sharedDaemon] resetInactivityTimer];
     [[SCDaemon sharedDaemon] startCheckupTimer];
+    [[SCDaemon sharedDaemon] startCheckpointTimer];
     [self.daemonMethodLock unlock];
 }
 
@@ -287,40 +302,56 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
 
     BOOL shouldRunIntegrityCheck = NO;
     if(![SCBlockUtilities anyBlockIsRunning]) {
-        // No block appears to be running at all in our settings.
-        // Most likely, the user removed it trying to get around the block. Boo!
-        // but for safety and to avoid permablocks (we no longer know when the block should end)
-        // we should clear the block now.
-        // but let them know that we noticed their (likely) cheating and we're not happy!
-        NSLog(@"INFO: Checkup ran, no active block found.");
-        
-        [SCSentry captureMessage: @"Checkup ran and no active block found! Removing block, tampering suspected..."];
-        
-        [SCHelperToolUtilities removeBlock];
+        // SCSettings says no block, but BlockTimekeeping may still say otherwise.
+        // The stock SelfControl Killer wipes the user-facing settings keys (BlockIsRunning,
+        // ActiveBlocklist, BlockEndDate, …) via resetAllSettingsToDefaults but does NOT
+        // touch BlockTimekeeping (it is not in defaultSettingsDict). So if we still have
+        // an unelapsed timekeeping entry with a saved blocklist, treat this as tampering
+        // and rebuild the block instead of removing it.
+        NSArray<NSString*>* savedBlocklist = [SCBlockClock savedActiveBlocklist];
+        BOOL savedIsAllowlist               = [SCBlockClock savedActiveBlockAsWhitelist];
+        NSDate* savedEndDate                = [SCBlockClock savedBlockEndDate];
+        BOOL haveSavedConfig                = (savedBlocklist.count > 0 || savedIsAllowlist);
 
-        [SCHelperToolUtilities sendConfigurationChangedNotification];
-        
-        // Temporarily disabled the TamperingDetection flag because it was sometimes causing false positives
-        // (i.e. people having the background set repeatedly despite no attempts to cheat)
-        // We will try to bring this feature back once we can debug it
-        // GitHub issue: https://github.com/SelfControlApp/selfcontrol/issues/621
-        // [settings setValue: @YES forKey: @"TamperingDetected"];
-        //        [settings synchronizeSettings];
-        //
-        
-        // once the checkups stop, the daemon will clear itself in a while due to inactivity
-        [[SCDaemon sharedDaemon] stopCheckupTimer];
-    } else if ([SCBlockUtilities currentBlockIsExpired]) {
-        NSLog(@"INFO: Checkup ran, block expired, removing block.");
-        
-        [SCHelperToolUtilities removeBlock];
+        if (haveSavedConfig && ![SCBlockClock blockDurationHasElapsed]) {
+            NSLog(@"INFO: Checkup ran, settings were wiped but BlockTimekeeping still shows an active block. Restoring from saved config.");
+            [SCSentry captureMessage: @"Tampering detected (settings wiped). Restoring block from BlockTimekeeping."];
 
-        [SCHelperToolUtilities sendConfigurationChangedNotification];
+            SCSettings* settings = [SCSettings sharedSettings];
+            [settings setValue: savedBlocklist     forKey: @"ActiveBlocklist"];
+            [settings setValue: @(savedIsAllowlist) forKey: @"ActiveBlockAsWhitelist"];
+            if (savedEndDate != nil) {
+                [settings setValue: savedEndDate forKey: @"BlockEndDate"];
+            }
 
-        [SCSentry addBreadcrumb: @"Daemon found and cleared expired block" category: @"daemon"];
+            [SCHelperToolUtilities installBlockRulesFromSettings];
+            [settings setValue: @YES forKey: @"BlockIsRunning"];
 
-        // once the checkups stop, the daemon will clear itself in a while due to inactivity
-        [[SCDaemon sharedDaemon] stopCheckupTimer];
+            NSError* syncErr = [settings syncSettingsAndWait: 5];
+            if (syncErr != nil) {
+                NSLog(@"WARNING: Sync failed after restoring block: %@", syncErr);
+                [SCSentry captureError: syncErr];
+            }
+
+            [SCHelperToolUtilities sendConfigurationChangedNotification];
+        } else {
+            // No saved config, or the block has legitimately elapsed: existing behavior.
+            NSLog(@"INFO: Checkup ran, no active block found.");
+            [SCSentry captureMessage: @"Checkup ran and no active block found! Removing block, tampering suspected..."];
+            [SCHelperToolUtilities removeBlock];
+            [SCBlockClock clearAllBlockState];
+            [SCHelperToolUtilities sendConfigurationChangedNotification];
+
+            // Temporarily disabled the TamperingDetection flag because it was sometimes causing false positives
+            // (i.e. people having the background set repeatedly despite no attempts to cheat)
+            // GitHub issue: https://github.com/SelfControlApp/selfcontrol/issues/621
+            // [settings setValue: @YES forKey: @"TamperingDetected"];
+
+            // once the checkups stop, the daemon will clear itself in a while due to inactivity
+            [[SCDaemon sharedDaemon] stopCheckupTimer];
+        }
+    } else if ([SCBlockUtilities currentBlockIsTrulyExpired]) {
+        [SCDaemonBlockMethods attemptVerifiedUnlock];
     } else if ([[NSDate date] timeIntervalSinceDate: lastBlockIntegrityCheck] > integrityCheckIntervalSecs) {
         lastBlockIntegrityCheck = [NSDate date];
         // The block is still on.  Every once in a while, we should
@@ -381,8 +412,48 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         [SCSentry addBreadcrumb: @"Daemon found compromised block integrity and re-added rules" category: @"daemon"];
         NSLog(@"INFO: Integrity check ran; readded block rules.");
     } else NSLog(@"INFO: Integrity check ran; no action needed.");
-    
+
     [self.daemonMethodLock unlock];
+}
+
++ (void)attemptVerifiedUnlock {
+    SCSettings* settings = [SCSettings sharedSettings];
+    NSDate* endDate = [settings valueForKey: @"BlockEndDate"];
+    NSUInteger attempt = [[settings valueForKey: @"BlockUnlockAttempt"] unsignedIntegerValue];
+
+    NSMutableDictionary* gate = [[settings valueForKey: @"BlockUnlockGate"] mutableCopy] ?: [NSMutableDictionary dictionary];
+    gate[@"waitingForNetworkVerification"] = @YES;
+    gate[@"lastNetworkAttemptAt"] = [NSDate date];
+    [settings setValue: gate forKey: @"BlockUnlockGate"];
+    [SCHelperToolUtilities sendConfigurationChangedNotification];
+
+    [SCTrustedTime verifyTimeIsAfter: endDate completion:^(BOOL ok, NSDate* med, NSError* err) {
+        if (ok) {
+            NSLog(@"INFO: Verified unlock — removing block.");
+            [settings setValue: nil forKey: @"BlockUnlockGate"];
+            [settings setValue: @(0) forKey: @"BlockUnlockAttempt"];
+            [SCHelperToolUtilities removeBlock];
+            // Clear timekeeping after a legitimate end so the next checkupBlock
+            // does not misread stale saved-config as evidence of tampering.
+            [SCBlockClock clearAllBlockState];
+            [SCHelperToolUtilities sendConfigurationChangedNotification];
+            [SCSentry addBreadcrumb: @"Daemon performed verified unlock" category: @"daemon"];
+            [[SCDaemon sharedDaemon] stopCheckupTimer];
+            [[SCDaemon sharedDaemon] stopCheckpointTimer];
+            return;
+        }
+
+        NSLog(@"WARN: Trusted-time verification failed: %@. Block stays on.", err);
+        NSMutableDictionary* g = [[settings valueForKey: @"BlockUnlockGate"] mutableCopy] ?: [NSMutableDictionary dictionary];
+        g[@"lastNetworkErrorReason"] = err.localizedDescription ?: @"unknown";
+        [settings setValue: g forKey: @"BlockUnlockGate"];
+        [settings setValue: @(attempt + 1) forKey: @"BlockUnlockAttempt"];
+
+        NSTimeInterval backoff = kVerifyBackoffs[ MIN(attempt, kVerifyBackoffsCount - 1) ];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(backoff * NSEC_PER_SEC)),
+                       dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0),
+                       ^{ [SCDaemonBlockMethods attemptVerifiedUnlock]; });
+    }];
 }
 
 @end

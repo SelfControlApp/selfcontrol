@@ -18,6 +18,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (BOOL)currentBlockIsExpired;
 
+/// Strict check: both wall-clock and monotonic counter say the block is over.
+/// Use this in the daemon before tearing down firewall rules.
++ (BOOL)currentBlockIsTrulyExpired;
+
 + (BOOL)blockRulesFoundOnSystem;
 
 + (void)removeBlockFromSettings;
