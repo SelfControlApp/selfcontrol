@@ -10,6 +10,7 @@
 #import "SCDaemonXPC.h"
 #import"SCDaemonBlockMethods.h"
 #import "SCFileWatcher.h"
+#import "SCBlockClock.h"
 
 static NSString* serviceName = @"org.eyebeam.selfcontrold";
 float const INACTIVITY_LIMIT_SECS = 60 * 2; // 2 minutes
@@ -25,6 +26,7 @@ float const INACTIVITY_LIMIT_SECS = 60 * 2; // 2 minutes
 
 @property (nonatomic, strong, readwrite) NSXPCListener* listener;
 @property (strong, readwrite) NSTimer* checkupTimer;
+@property (strong, readwrite) NSTimer* checkpointTimer;
 @property (strong, readwrite) NSTimer* inactivityTimer;
 @property (nonatomic, strong, readwrite) NSDate* lastActivityDate;
 
@@ -100,9 +102,24 @@ float const INACTIVITY_LIMIT_SECS = 60 * 2; // 2 minutes
     if (self.checkupTimer == nil) {
         return;
     }
-    
+
     [self.checkupTimer invalidate];
     self.checkupTimer = nil;
+}
+
+- (void)startCheckpointTimer {
+    if (self.checkpointTimer != nil) return;
+    self.checkpointTimer = [NSTimer scheduledTimerWithTimeInterval: 30.0
+                                                            repeats: YES
+                                                              block: ^(NSTimer* _Nonnull t) {
+        [SCBlockClock tickCheckpoint];
+    }];
+}
+
+- (void)stopCheckpointTimer {
+    if (self.checkpointTimer == nil) return;
+    [self.checkpointTimer invalidate];
+    self.checkpointTimer = nil;
 }
 
 
@@ -133,6 +150,10 @@ float const INACTIVITY_LIMIT_SECS = 60 * 2; // 2 minutes
         [self.checkupTimer invalidate];
         self.checkupTimer = nil;
     }
+    if (self.checkpointTimer) {
+        [self.checkpointTimer invalidate];
+        self.checkpointTimer = nil;
+    }
     if (self.inactivityTimer) {
         [self.inactivityTimer invalidate];
         self.inactivityTimer = nil;
@@ -155,15 +176,39 @@ float const INACTIVITY_LIMIT_SECS = 60 * 2; // 2 minutes
     if (SecCodeCopyGuestWithAttributes(NULL, (__bridge CFDictionaryRef _Nullable)(guestAttributes), kSecCSDefaultFlags, &guest) != errSecSuccess) {
         return NO;
     }
-    
-    SecRequirementRef isSelfControlApp;
+
+    // Pin XPC clients to the same Apple Developer Team that signed this daemon.
+    // This mirrors the SMAuthorizedClients plist entry and works for both Apple
+    // Development local builds and Developer ID release builds (both certs have subject.OU).
+    NSString* teamID = nil;
+    SecCodeRef selfCode = NULL;
+    if (SecCodeCopySelf(kSecCSDefaultFlags, &selfCode) == errSecSuccess) {
+        CFDictionaryRef signingInfo = NULL;
+        if (SecCodeCopySigningInformation(selfCode, kSecCSSigningInformation, &signingInfo) == errSecSuccess) {
+            teamID = (__bridge NSString*)CFDictionaryGetValue(signingInfo, kSecCodeInfoTeamIdentifier);
+            teamID = [teamID copy];
+            CFRelease(signingInfo);
+        }
+        CFRelease(selfCode);
+    }
+    if (teamID.length == 0) {
+        NSLog(@"Rejecting XPC connection: could not determine daemon's own team identifier");
+        CFRelease(guest);
+        return NO;
+    }
+
+    NSString* requirementString = [NSString stringWithFormat:
+        @"anchor apple generic and (identifier \"org.eyebeam.SelfControl\" or identifier \"org.eyebeam.selfcontrol-cli\") and info [CFBundleVersion] >= \"407\" and certificate leaf[subject.OU] = \"%@\"",
+        teamID];
+
+    SecRequirementRef isSelfControlApp = NULL;
     // versions before 4.0 didn't have hardened code signing, so aren't trustworthy to talk to the daemon
     // (plus the daemon didn't exist before 4.0 so there's really no reason they should want to run it!)
-    SecRequirementCreateWithString(CFSTR("anchor apple generic and (identifier \"org.eyebeam.SelfControl\" or identifier \"org.eyebeam.selfcontrol-cli\") and info [CFBundleVersion] >= \"407\" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = EG6ZYP3AQH)"), kSecCSDefaultFlags, &isSelfControlApp);
+    SecRequirementCreateWithString((__bridge CFStringRef)requirementString, kSecCSDefaultFlags, &isSelfControlApp);
     OSStatus clientValidityStatus = SecCodeCheckValidity(guest, kSecCSDefaultFlags, isSelfControlApp);
-    
+
     CFRelease(guest);
-    CFRelease(isSelfControlApp);
+    if (isSelfControlApp) CFRelease(isSelfControlApp);
     
     if (clientValidityStatus) {
         NSError* error = [NSError errorWithDomain: NSOSStatusErrorDomain code: clientValidityStatus userInfo: nil];
