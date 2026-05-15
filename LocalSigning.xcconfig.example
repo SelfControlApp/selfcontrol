@@ -1,0 +1,5 @@
+// Copy this file to LocalSigning.xcconfig and put your Apple Developer
+// Team ID below. Find your Team ID at developer.apple.com → Membership.
+// This file is gitignored so you won't accidentally commit your team ID.
+
+DEVELOPMENT_TEAM = YOUR_TEAM_ID_HERE

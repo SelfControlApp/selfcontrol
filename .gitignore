@@ -31,3 +31,4 @@ xcuserdata/**/*
 !xcuserdata/**/xcschemes/*
 
 *.moved-aside
+LocalSigning.xcconfig
