@@ -12,6 +12,14 @@ static NSString* const kElapsedAccumulatedKey     = @"elapsedSecondsAccumulated"
 static NSString* const kLastCheckpointWallKey     = @"lastCheckpointWallClock";
 static NSString* const kLastCheckpointContKey     = @"lastCheckpointContinuous";
 
+// Tamper-recovery fields. Mirrored from SCSettings at block start so the daemon
+// can reconstitute the block if the user wipes SCSettings (e.g. via the stock
+// SelfControl Killer). These keys live inside BlockTimekeeping, which is not in
+// defaultSettingsDict and therefore survives resetAllSettingsToDefaults.
+static NSString* const kSavedBlocklistKey         = @"savedActiveBlocklist";
+static NSString* const kSavedIsAllowlistKey       = @"savedActiveBlockAsWhitelist";
+static NSString* const kSavedEndDateKey           = @"savedBlockEndDate";
+
 static NSString* sBootUUIDOverride = nil;
 
 @implementation SCBlockClock
@@ -42,9 +50,19 @@ static NSString* sBootUUIDOverride = nil;
 }
 
 + (void)recordBlockStartWithDuration:(NSTimeInterval)durationSeconds {
+    [self recordBlockStartWithDuration: durationSeconds
+                             blocklist: nil
+                           isAllowlist: NO
+                               endDate: nil];
+}
+
++ (void)recordBlockStartWithDuration:(NSTimeInterval)durationSeconds
+                           blocklist:(NSArray<NSString*>*)blocklist
+                         isAllowlist:(BOOL)isAllowlist
+                             endDate:(NSDate*)endDate {
     NSDate* now = [NSDate date];
     uint64_t cont = [self continuousNanos];
-    NSDictionary* tk = @{
+    NSMutableDictionary* tk = [@{
         kBlockStartWallClockKey:   now,
         kBlockStartContinuousKey:  @(cont),
         kBootSessionUUIDKey:       [self currentBootSessionUUID],
@@ -52,8 +70,32 @@ static NSString* sBootUUIDOverride = nil;
         kElapsedAccumulatedKey:    @(0.0),
         kLastCheckpointWallKey:    now,
         kLastCheckpointContKey:    @(cont),
-    };
+        kSavedIsAllowlistKey:      @(isAllowlist),
+    } mutableCopy];
+    if (blocklist != nil) tk[kSavedBlocklistKey] = blocklist;
+    if (endDate   != nil) tk[kSavedEndDateKey]   = endDate;
     [[SCSettings sharedSettings] setValue: tk forKey: kBlockTimekeepingKey];
+}
+
++ (NSArray<NSString*>*)savedActiveBlocklist {
+    NSDictionary* tk = [self readTK];
+    NSArray* list = tk[kSavedBlocklistKey];
+    return [list isKindOfClass: [NSArray class]] ? list : nil;
+}
+
++ (BOOL)savedActiveBlockAsWhitelist {
+    NSDictionary* tk = [self readTK];
+    return [tk[kSavedIsAllowlistKey] boolValue];
+}
+
++ (NSDate*)savedBlockEndDate {
+    NSDictionary* tk = [self readTK];
+    NSDate* d = tk[kSavedEndDateKey];
+    return [d isKindOfClass: [NSDate class]] ? d : nil;
+}
+
++ (void)clearAllBlockState {
+    [[SCSettings sharedSettings] setValue: nil forKey: kBlockTimekeepingKey];
 }
 
 + (NSDictionary*)readTK {

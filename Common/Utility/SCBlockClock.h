@@ -14,6 +14,24 @@ NS_ASSUME_NONNULL_BEGIN
 /// Called once at block start. Writes the BlockTimekeeping dictionary into SCSettings.
 + (void)recordBlockStartWithDuration:(NSTimeInterval)durationSeconds;
 
+/// As above, but also persists enough block-config to rebuild the block if SCSettings
+/// is tampered with (e.g. the stock SelfControl Killer running resetAllSettingsToDefaults).
+/// BlockTimekeeping is intentionally NOT in defaultSettingsDict, so it survives that reset.
++ (void)recordBlockStartWithDuration:(NSTimeInterval)durationSeconds
+                           blocklist:(nullable NSArray<NSString*>*)blocklist
+                         isAllowlist:(BOOL)isAllowlist
+                             endDate:(nullable NSDate*)endDate;
+
+/// Block-config previously stashed by recordBlockStart, for the daemon's tampering-
+/// recovery path. Returns nil if no block is recorded or the metadata was never stored.
++ (nullable NSArray<NSString*>*)savedActiveBlocklist;
++ (BOOL)savedActiveBlockAsWhitelist;
++ (nullable NSDate*)savedBlockEndDate;
+
+/// Erase all block-tracking state. Call after a legitimate block end so a future
+/// checkupBlock does not misread stale data as evidence of tampering.
++ (void)clearAllBlockState;
+
 /// Called every ~30 s by the daemon. Updates elapsedSecondsAccumulated and the
 /// last-checkpoint values, using the smaller of the wall-clock delta and the
 /// monotonic delta. A negative wall-clock delta credits zero.

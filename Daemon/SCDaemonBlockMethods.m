@@ -91,7 +91,13 @@ static const NSUInteger kVerifyBackoffsCount = sizeof(kVerifyBackoffs) / sizeof(
     [settings setValue: endDate forKey: @"BlockEndDate"];
     NSTimeInterval duration = [endDate timeIntervalSinceNow];
     if (duration > 0) {
-        [SCBlockClock recordBlockStartWithDuration: duration];
+        // Persist enough block-config alongside the timekeeping data so we can
+        // rebuild the block if SCSettings is later wiped (e.g. by the stock
+        // SelfControl Killer's resetAllSettingsToDefaults).
+        [SCBlockClock recordBlockStartWithDuration: duration
+                                         blocklist: blocklist
+                                       isAllowlist: isAllowlist
+                                           endDate: endDate];
     }
 
     // update all the settings for the block, which we're basically just copying from defaults to settings
@@ -296,29 +302,54 @@ static const NSUInteger kVerifyBackoffsCount = sizeof(kVerifyBackoffs) / sizeof(
 
     BOOL shouldRunIntegrityCheck = NO;
     if(![SCBlockUtilities anyBlockIsRunning]) {
-        // No block appears to be running at all in our settings.
-        // Most likely, the user removed it trying to get around the block. Boo!
-        // but for safety and to avoid permablocks (we no longer know when the block should end)
-        // we should clear the block now.
-        // but let them know that we noticed their (likely) cheating and we're not happy!
-        NSLog(@"INFO: Checkup ran, no active block found.");
-        
-        [SCSentry captureMessage: @"Checkup ran and no active block found! Removing block, tampering suspected..."];
-        
-        [SCHelperToolUtilities removeBlock];
+        // SCSettings says no block, but BlockTimekeeping may still say otherwise.
+        // The stock SelfControl Killer wipes the user-facing settings keys (BlockIsRunning,
+        // ActiveBlocklist, BlockEndDate, …) via resetAllSettingsToDefaults but does NOT
+        // touch BlockTimekeeping (it is not in defaultSettingsDict). So if we still have
+        // an unelapsed timekeeping entry with a saved blocklist, treat this as tampering
+        // and rebuild the block instead of removing it.
+        NSArray<NSString*>* savedBlocklist = [SCBlockClock savedActiveBlocklist];
+        BOOL savedIsAllowlist               = [SCBlockClock savedActiveBlockAsWhitelist];
+        NSDate* savedEndDate                = [SCBlockClock savedBlockEndDate];
+        BOOL haveSavedConfig                = (savedBlocklist.count > 0 || savedIsAllowlist);
 
-        [SCHelperToolUtilities sendConfigurationChangedNotification];
-        
-        // Temporarily disabled the TamperingDetection flag because it was sometimes causing false positives
-        // (i.e. people having the background set repeatedly despite no attempts to cheat)
-        // We will try to bring this feature back once we can debug it
-        // GitHub issue: https://github.com/SelfControlApp/selfcontrol/issues/621
-        // [settings setValue: @YES forKey: @"TamperingDetected"];
-        //        [settings synchronizeSettings];
-        //
-        
-        // once the checkups stop, the daemon will clear itself in a while due to inactivity
-        [[SCDaemon sharedDaemon] stopCheckupTimer];
+        if (haveSavedConfig && ![SCBlockClock blockDurationHasElapsed]) {
+            NSLog(@"INFO: Checkup ran, settings were wiped but BlockTimekeeping still shows an active block. Restoring from saved config.");
+            [SCSentry captureMessage: @"Tampering detected (settings wiped). Restoring block from BlockTimekeeping."];
+
+            SCSettings* settings = [SCSettings sharedSettings];
+            [settings setValue: savedBlocklist     forKey: @"ActiveBlocklist"];
+            [settings setValue: @(savedIsAllowlist) forKey: @"ActiveBlockAsWhitelist"];
+            if (savedEndDate != nil) {
+                [settings setValue: savedEndDate forKey: @"BlockEndDate"];
+            }
+
+            [SCHelperToolUtilities installBlockRulesFromSettings];
+            [settings setValue: @YES forKey: @"BlockIsRunning"];
+
+            NSError* syncErr = [settings syncSettingsAndWait: 5];
+            if (syncErr != nil) {
+                NSLog(@"WARNING: Sync failed after restoring block: %@", syncErr);
+                [SCSentry captureError: syncErr];
+            }
+
+            [SCHelperToolUtilities sendConfigurationChangedNotification];
+        } else {
+            // No saved config, or the block has legitimately elapsed: existing behavior.
+            NSLog(@"INFO: Checkup ran, no active block found.");
+            [SCSentry captureMessage: @"Checkup ran and no active block found! Removing block, tampering suspected..."];
+            [SCHelperToolUtilities removeBlock];
+            [SCBlockClock clearAllBlockState];
+            [SCHelperToolUtilities sendConfigurationChangedNotification];
+
+            // Temporarily disabled the TamperingDetection flag because it was sometimes causing false positives
+            // (i.e. people having the background set repeatedly despite no attempts to cheat)
+            // GitHub issue: https://github.com/SelfControlApp/selfcontrol/issues/621
+            // [settings setValue: @YES forKey: @"TamperingDetected"];
+
+            // once the checkups stop, the daemon will clear itself in a while due to inactivity
+            [[SCDaemon sharedDaemon] stopCheckupTimer];
+        }
     } else if ([SCBlockUtilities currentBlockIsTrulyExpired]) {
         [SCDaemonBlockMethods attemptVerifiedUnlock];
     } else if ([[NSDate date] timeIntervalSinceDate: lastBlockIntegrityCheck] > integrityCheckIntervalSecs) {
@@ -402,6 +433,9 @@ static const NSUInteger kVerifyBackoffsCount = sizeof(kVerifyBackoffs) / sizeof(
             [settings setValue: nil forKey: @"BlockUnlockGate"];
             [settings setValue: @(0) forKey: @"BlockUnlockAttempt"];
             [SCHelperToolUtilities removeBlock];
+            // Clear timekeeping after a legitimate end so the next checkupBlock
+            // does not misread stale saved-config as evidence of tampering.
+            [SCBlockClock clearAllBlockState];
             [SCHelperToolUtilities sendConfigurationChangedNotification];
             [SCSentry addBreadcrumb: @"Daemon performed verified unlock" category: @"daemon"];
             [[SCDaemon sharedDaemon] stopCheckupTimer];
