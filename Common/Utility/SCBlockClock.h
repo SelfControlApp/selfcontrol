@@ -25,6 +25,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// YES iff elapsedSecondsForCurrentBlock >= the recorded duration.
 + (BOOL)blockDurationHasElapsed;
 
+/// Recorded total block duration in seconds. Returns 0 if no block is recorded.
++ (NSTimeInterval)blockDurationSeconds;
+
+/// Seconds left until elapsedSecondsForCurrentBlock reaches blockDurationSeconds.
+/// Clamped at 0; returns 0 if no block is recorded.
++ (NSTimeInterval)remainingSecondsForCurrentBlock;
+
 #ifdef DEBUG
 /// Test-only override. Pass nil to clear.
 + (void)setBootSessionUUIDOverrideForTesting:(nullable NSString*)uuid;

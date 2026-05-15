@@ -127,4 +127,19 @@ static NSString* sBootUUIDOverride = nil;
     return [self elapsedSecondsForCurrentBlock] >= [tk[kBlockDurationSecondsKey] doubleValue];
 }
 
++ (NSTimeInterval)blockDurationSeconds {
+    NSDictionary* tk = [self readTK];
+    if (tk == nil) return 0.0;
+    return [tk[kBlockDurationSecondsKey] doubleValue];
+}
+
++ (NSTimeInterval)remainingSecondsForCurrentBlock {
+    NSDictionary* tk = [self readTK];
+    if (tk == nil) return 0.0;
+    NSTimeInterval duration = [tk[kBlockDurationSecondsKey] doubleValue];
+    NSTimeInterval elapsed  = [self elapsedSecondsForCurrentBlock];
+    NSTimeInterval remaining = duration - elapsed;
+    return remaining > 0 ? remaining : 0.0;
+}
+
 @end

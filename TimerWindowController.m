@@ -26,6 +26,7 @@
 #import "SCUIUtilities.h"
 #import "SCXPCClient.h"
 #import "SCBlockUtilities.h"
+#import "SCBlockClock.h"
 
 @interface TimerWindowController ()
 
@@ -160,22 +161,35 @@
                           @"Shown when block end time has passed but trusted-time check has not yet succeeded."),
         NSLocalizedString(@"SelfControl checks the time with a trusted server. Once online, this finishes automatically.",
                           @"Second line of the waiting-for-internet message.")];
-	int numSeconds = (int) [blockEndingDate_ timeIntervalSinceNow];
+
+    // For modern blocks, drive the timer from SCBlockClock (tamper-resistant elapsed time)
+    // so a `sudo date` jump cannot trip the strike counter / expose the manual-stop button.
+    // Legacy blocks predate SCBlockClock and keep the wall-clock path.
+    BOOL useBlockClock = [SCBlockUtilities modernBlockIsRunning] && [SCBlockClock blockDurationSeconds] > 0;
+    BOOL blockElapsedButStillRunning;
+    int numSeconds;
+    if (useBlockClock) {
+        numSeconds = (int)[SCBlockClock remainingSecondsForCurrentBlock];
+        blockElapsedButStillRunning = [SCBlockClock blockDurationHasElapsed];
+    } else {
+        numSeconds = (int)[blockEndingDate_ timeIntervalSinceNow];
+        blockElapsedButStillRunning = (numSeconds < 0 && [SCBlockUtilities modernBlockIsRunning]);
+    }
 	int numHours;
 	int numMinutes;
 
-    // If wall-clock is past the block end date but the block is still running, the daemon may be
-    // waiting for trusted-time network verification. Query the gate so we can surface that to the user.
-    if (numSeconds < 0 && [SCBlockUtilities modernBlockIsRunning]) {
+    // Block elapsed but not yet cleared: the daemon may be waiting on trusted-time
+    // network verification. Query the gate so we can surface that state to the user.
+    if (blockElapsedButStillRunning) {
         [self queryUnlockGateState];
     } else if (self.waitingForNetworkUnlock) {
-        // wall-clock no longer past end, or block cleared - clear our waiting state
+        // no longer past end (clock restored, or block cleared) - clear waiting state
         self.waitingForNetworkUnlock = NO;
     }
 
     // If the daemon previously reported it was waiting for network verification, show that message
     // instead of "Finishing". We re-poll periodically (see queryUnlockGateState) to refresh this.
-    if (numSeconds < 0 && self.waitingForNetworkUnlock) {
+    if (blockElapsedButStillRunning && self.waitingForNetworkUnlock) {
         if (![timerLabel_.stringValue isEqualToString: waitingForInternetString]) {
             [[NSApp dockTile] setBadgeLabel: nil];
             [timerLabel_ setStringValue: waitingForInternetString];
@@ -191,7 +205,7 @@
 
     // if we're already showing "Finishing", but the block timer isn't clearing,
     // keep track of that, so we can take drastic measures if necessary.
-	if(numSeconds < 0 && [timerLabel_.stringValue isEqualToString: finishingString]) {
+	if(blockElapsedButStillRunning && [timerLabel_.stringValue isEqualToString: finishingString]) {
 		[[NSApp dockTile] setBadgeLabel: nil];
 
 		// This increments the strike counter.  After four strikes of the timer being
