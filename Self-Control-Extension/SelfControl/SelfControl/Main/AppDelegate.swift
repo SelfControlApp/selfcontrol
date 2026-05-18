@@ -14,8 +14,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ notification: Notification) {
         print("App did finish launching")
+        enableHelper()
         AppMover.moveIfNeeded()
         LocalNotificationManager.requestAuthorization()
+    }
+    
+    private func enableHelper() {
+            Task {
+                do {
+                    try await HelperConnection.shared.installLoginItemIfNeeded()
+                    HelperConnection.shared.connect()
+                } catch {
+                    print("installLoginItemIfNeeded Error: \(error)")
+                }
+//                let error =
+//                print("Install Error: \(String(describing: error))")
+            }
     }
 
     func applicationWillTerminate(_ notification: Notification) {

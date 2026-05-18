@@ -238,7 +238,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
   
     func setBlockedUrls(urls: [String]) {
         
-        IPCConnection.shared.enableURLBlocking(urls)
+        IPCConnectionProxy().setBlockedURLs(urls)
 
         if status == .stopped { //If legacy blocking
             if isActiveBlocking { //if is active blocking
@@ -246,10 +246,6 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
             }
         }
         // State might change due to Safari integration
-    }
-
-    func setIPAddressesToBlock(addresses: [String]) {
-        IPCConnection.shared.enableIPAddressesBlocking(addresses)
     }
         
   func updateStatus() {
@@ -323,15 +319,16 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
   }
     
   func registerWithProvider() {
+      print("+registerWithProvider")
     // Assuming an IPCConnection singleton similar to the AppKit sample
-    IPCConnection.shared.register(withExtension: extensionBundle, delegate: self) { success in
-      DispatchQueue.main.async {
+      IPCConnectionProxy().register(completionHandler: { success in
+        DispatchQueue.main.async {
         self.status = success ? .running : .stopped
           self.setBlockedUrls(urls: AppPreferences.getBlockedDomains())
           self.refreshExtensionState()
       }
 //        setBlockedURLs([])
-    }
+    })
   }
   
     func activateExtension() {
@@ -473,7 +470,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
     
     func activateNetworkBlocking() {
         print("activateNetworkBlocking+++++")
-       _ = IPCConnection.shared.sendMessageToEnableNetworkExtension(_enable: true)
+        IPCConnectionProxy().setEnableService(true)
         BlockListManager.activateSafariBlocking()
         chromeService.activateSafariBlocking()
         startShowingCountDownInDock()
@@ -481,7 +478,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
     
     func deactivateNetworkBlocking() {
          print("deactivateNetworkBlocking+++++")
-        _ = IPCConnection.shared.sendMessageToEnableNetworkExtension(_enable: false)
+        IPCConnectionProxy().setEnableService(false)
         BlockListManager.deactivateSafariBlocking()
         chromeService.deactivateSafariBlocking()
         if AppPreferences.playSoundOnCompletion {

@@ -88,7 +88,7 @@ final class WebPageViewModel: NSObject, WKNavigationDelegate, WKScriptMessageHan
     
     private func updateSafariExtensionState(state: Bool) {
         AppPreferences.setSafariExtensionState(state)
-        IPCConnection.shared.sendMessageToSetActiveBrowserExtension(ActiveBrowserExtensios.safari.rawValue, state: state)
+        IPCConnectionProxy().sendMessageToSetActiveBrowserExtension(ActiveBrowserExtensios.safari.rawValue, state: state)
         if state == true {
             updateBlocker()
         }

@@ -5,6 +5,8 @@
 //  Created by Satendra Singh on 25/02/26.
 //
 
+import Foundation
+
 struct EventSchedulerStore {
     // Load schedules from UserDefaults
     static func loadSchedules() -> [Schedule] {
@@ -20,12 +22,14 @@ struct EventSchedulerStore {
     // Save schedules to UserDefaults
     static func saveSchedules(schedules: [Schedule]) {
         if let encoded = try? JSONEncoder().encode(schedules) {
-            HelperConnection.shared.saveSchedules(schedules: encoded) { result in
-                print("saveSchedules: To service: \(result)")
-            }
-            UserDefaults.standard.set(encoded, forKey: "schedules")
+            saveSchedulesData(schedules: encoded)
         }
     }
+    
+    static func saveSchedulesData(schedules: Data) {
+        UserDefaults.standard.set(schedules, forKey: "schedules")
+    }
+
 }
 
 // MARK: - Schedule

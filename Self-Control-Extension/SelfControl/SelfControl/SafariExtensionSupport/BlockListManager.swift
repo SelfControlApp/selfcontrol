@@ -77,14 +77,14 @@ enum BlockListManager {
                     print("Safari Extension State :\(state?.isEnabled ?? false)")
                     Task { @MainActor in
                         if NetworkExtensionState.shared.isEnabled == true {
-                            _ = IPCConnection.shared.sendMessageToSetActiveBrowserExtension(ActiveBrowserExtensios.safari.rawValue, state: state?.isEnabled ?? false)
+                            _ = IPCConnectionProxy().sendMessageToSetActiveBrowserExtension(ActiveBrowserExtensios.safari.rawValue, state: state?.isEnabled ?? false)
                             NetworkExtensionState.shared.isSafariExtensionEnabled = state?.isEnabled ?? false
                             NetworkExtensionState.shared.printAll()
                         }
                     }
                 }
 //            }
-            SFSafariApplication.dispatchMessage(
+        SFSafariApplication.dispatchMessage(
                 withName: SafariConst.MessagesName.reloadList.rawValue,
                 toExtensionWithIdentifier: SafariConst.identifier,
                 userInfo: ["changed": true]) { error in
@@ -93,7 +93,7 @@ enum BlockListManager {
                     if error == nil {
                         Task { @MainActor in
                             if NetworkExtensionState.shared.isEnabled == true && NetworkExtensionState.shared.isSafariExtensionEnabled == false { //possibly extension is ready now
-                                _ = IPCConnection.shared.sendMessageToSetActiveBrowserExtension(ActiveBrowserExtensios.safari.rawValue, state: true)
+                                _ = IPCConnectionProxy().sendMessageToSetActiveBrowserExtension(ActiveBrowserExtensios.safari.rawValue, state: true)
                                 NetworkExtensionState.shared.isSafariExtensionEnabled = true
                                 NetworkExtensionState.shared.printAll()
                             }
@@ -108,7 +108,7 @@ enum BlockListManager {
     static func updateExtensionState() {
         Task { @MainActor in
             if NetworkExtensionState.shared.isEnabled == true {
-                _ = IPCConnection.shared.sendMessageToSetActiveBrowserExtension(ActiveBrowserExtensios.safari.rawValue, state: SafariExtensionManager.shared.isExtensionReady)
+                IPCConnectionProxy().sendMessageToSetActiveBrowserExtension(ActiveBrowserExtensios.safari.rawValue, state: SafariExtensionManager.shared.isExtensionReady)
             }
         }
     }
@@ -122,7 +122,7 @@ enum BlockListManager {
     static func deactivateSafariBlocking() {
         updateExtensionState()
         SafariExtensionManager.shared.disableExtension()
-        _ = IPCConnection.shared.sendMessageToSetActiveBrowserExtension(ActiveBrowserExtensios.safari.rawValue, state: SafariExtensionManager.shared.isExtensionReady)
+        _ = IPCConnectionProxy().sendMessageToSetActiveBrowserExtension(ActiveBrowserExtensios.safari.rawValue, state: SafariExtensionManager.shared.isExtensionReady)
         os_log("Safari Message toExtensionWithIdentifier deactivateSafariBlocking called:")
     }
 }

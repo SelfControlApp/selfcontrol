@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NetworkExtension</key>
+	<dict>
+		<key>NEMachServiceName</key>
+		<string>$(TeamIdentifierPrefix)com.application.SelfControl.corebits.network</string>
+		<key>NEProviderClasses</key>
+		<dict>
+			<key>com.apple.networkextension.filter-data</key>
+			<string>$(PRODUCT_MODULE_NAME).FilterDataProvider</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

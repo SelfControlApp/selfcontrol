@@ -1,29 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1620"
+   LastUpgradeVersion = "2600"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES"
       buildArchitectures = "Automatic">
-      <PostActions>
-         <ExecutionAction
-            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
-            <ActionContent
-               title = "Run Script"
-               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;systemextensionsctl uninstall X6FQ433AWK com.application.SelfControl.corebits.network&#10;ditto &quot;${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}&quot; &quot;/Applications/${FULL_PRODUCT_NAME}&quot;&#10;">
-               <EnvironmentBuildable>
-                  <BuildableReference
-                     BuildableIdentifier = "primary"
-                     BlueprintIdentifier = "77BA52D52D9D5D7700863476"
-                     BuildableName = "SelfControl.app"
-                     BlueprintName = "SelfControl"
-                     ReferencedContainer = "container:SelfControl.xcodeproj">
-                  </BuildableReference>
-               </EnvironmentBuildable>
-            </ActionContent>
-         </ExecutionAction>
-      </PostActions>
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"
@@ -33,9 +15,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "77BA52D52D9D5D7700863476"
-               BuildableName = "SelfControl.app"
-               BlueprintName = "SelfControl"
+               BlueprintIdentifier = "9AB43AC12FB09CF00021BD1E"
+               BuildableName = "SelfControlBGLaunchService.app"
+               BlueprintName = "SelfControlBGLaunchService"
                ReferencedContainer = "container:SelfControl.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -58,20 +40,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <PathRunnable
-         runnableDebuggingMode = "0"
-         BundleIdentifier = "com.application.SelfControl.corebits"
-         FilePath = "/Applications/SelfControl.app">
-      </PathRunnable>
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "77BA52D52D9D5D7700863476"
-            BuildableName = "SelfControl.app"
-            BlueprintName = "SelfControl"
+            BlueprintIdentifier = "9AB43AC12FB09CF00021BD1E"
+            BuildableName = "SelfControlBGLaunchService.app"
+            BlueprintName = "SelfControlBGLaunchService"
             ReferencedContainer = "container:SelfControl.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -83,9 +61,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "77BA52D52D9D5D7700863476"
-            BuildableName = "SelfControl.app"
-            BlueprintName = "SelfControl"
+            BlueprintIdentifier = "9AB43AC12FB09CF00021BD1E"
+            BuildableName = "SelfControlBGLaunchService.app"
+            BlueprintName = "SelfControlBGLaunchService"
             ReferencedContainer = "container:SelfControl.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
