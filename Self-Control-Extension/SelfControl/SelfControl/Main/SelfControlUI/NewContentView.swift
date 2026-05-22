@@ -1334,7 +1334,15 @@ struct NewContentView: View {
                 let minutes = Double(eventreq.endTime.minutes(from: eventreq.startTime, wrapAroundMidnight: true))
                 await startBlocking(minutes: minutes)
             }
-
+            HelperConnection.shared.blockedStateHandler = { minutes in
+                print("Already in blocked state, show remaining minutes:\(minutes)")
+                Task { @MainActor in
+                    print("Already in blocked state, show remaining minutes:\(minutes)")
+                    await showBlockingStateForReminingMinutes(minutes: minutes)
+                }
+            }
+            
+            HelperConnection.shared.send_getBlockedStates()
             // Don't focus slider on startup - let tips modal show first if needed
             // Focus will be set after tips are dismissed
         }
@@ -1349,33 +1357,37 @@ struct NewContentView: View {
     }
     
     private func startBlocking() {
-      startBlocking(minutes: minutes)
-    }
-    
-    private func startBlocking(minutes: Double) {
         if AppPreferences.showVerifyNetworkAlertBeforeBlock {
            if  SCUIUtility.checkNetworkAndShowNetworkAlert() == false {
                 return
             }
         }
+        showBlockingStateForReminingMinutes(minutes: minutes)
+        startBlocking(minutes: minutes)
+    }
+    
+    private func showBlockingStateForReminingMinutes(minutes: Double) {
         withAnimation(DesignSystem.animationNormal) {
             isBlocking = true
-            viewModel.updateBlockList(newBlockedDomains: blockedURLs, time: minutes)
+//            viewModel.updateBlockList(newBlockedDomains: blockedURLs, time: minutes)
             // Calculate total time including days if easter egg is unlocked
             remainingTime = minutes * 60
-        }
-        
-        // Start countdown timer
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-            if remainingTime > 0 {
-                remainingTime -= 1
-            } else {
-                stopBlocking()
+            // Start countdown timer
+            timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+                if remainingTime > 0 {
+                    remainingTime -= 1
+                } else {
+                    showNonBlockingState()
+                }
             }
         }
+ 
     }
-
-    private func stopBlocking() {
+    
+    private func showNonBlockingState() {
+        withAnimation(DesignSystem.animationNormal) {
+            isBlocking = true
+        }
         withAnimation(DesignSystem.animationNormal) {
             isBlocking = false
         }
@@ -1383,6 +1395,15 @@ struct NewContentView: View {
         timer = nil
         remainingTime = 0
         cancelStopCountdown()
+    }
+    
+    private func startBlocking(minutes: Double) {
+        HelperConnection.shared.send_startNetwrokBlocking(minutes: Int(minutes))
+    }
+
+    private func stopBlocking() {
+        showNonBlockingState()
+        HelperConnection.shared.send_stopNetworkBlocking()
     }
     
     private func showStopConfirmation() {
@@ -1406,7 +1427,9 @@ struct NewContentView: View {
         stopCountdownTimer = nil
         stopCountdownTime = 600
         showingStopConfirmation = false
-        viewModel.deactivateNetworkBlocking()
+        
+//        viewModel.deactivateNetworkBlocking()
+//        HelperConnection.shared.send_stopNetworkBlocking()
     }
     
     private func resumeBlocking() {

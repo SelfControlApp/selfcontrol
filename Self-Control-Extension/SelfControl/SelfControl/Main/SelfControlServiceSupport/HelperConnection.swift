@@ -9,16 +9,21 @@
 import Cocoa
 import ServiceManagement
 
+enum HelperServiceConstants: String {
+    case bundleID = "com.application.SelfControl.corebits.bgservice" // HelperApp’s bundle identifier
+    case processName = "SelfControlBGService"
+    case machServiceName = "com.application.SelfControl.corebits.bgservice.xpc"
+}
+
 final class HelperConnection: NSObject, HelperClientProtocol, NSSecureCoding {
     static let shared = HelperConnection()
     static var supportsSecureCoding: Bool = true
-
-    private let helperBundleID = "com.application.SelfControl.corebits.bgservice" // HelperApp’s bundle identifier
-    private let machServiceName = "com.application.SelfControl.corebits.bgservice.xpc"
-
+    var onExtensionStateChange: ((WEBExtension, Bool) -> Void)?
+    var blockedStateHandler: ((Double) -> Void)?
     private var connection: NSXPCConnection?
     private var exportedConnection: NSXPCListenerEndpoint?
-
+    private let checkProcess = CheckProcess(bundleID: HelperServiceConstants.bundleID.rawValue, processName: HelperServiceConstants.processName.rawValue)
+    
     private let stateQueue = DispatchQueue(label: "com.application.SelfControl.corebits.bgservice.connection", attributes: .concurrent)
     
     override init() { }
@@ -33,15 +38,19 @@ final class HelperConnection: NSObject, HelperClientProtocol, NSSecureCoding {
     // MARK: - Public API
 
     func installLoginItemIfNeeded() async throws {
-        do {
-           try LaunchAgentManager.install()
-        } catch {
-            throw error
+        if !checkProcess.isRunning() {
+            do {
+               try LaunchAgentManager.install()
+            } catch {
+                throw error
+            }
+        } else {
+            print("BG App is already running")
         }
     }
 
     func uninstallLoginItem() throws {
-        let loginItem = SMAppService.loginItem(identifier: helperBundleID)
+        let loginItem = SMAppService.loginItem(identifier: HelperServiceConstants.bundleID.rawValue)
         try loginItem.unregister()
     }
 
@@ -49,7 +58,7 @@ final class HelperConnection: NSObject, HelperClientProtocol, NSSecureCoding {
         stateQueue.sync(flags: .barrier) {
             guard self.connection == nil else { return }
             
-            let conn = NSXPCConnection(machServiceName: machServiceName, options: [])
+            let conn = NSXPCConnection(machServiceName: HelperServiceConstants.machServiceName.rawValue, options: [])
             // Remote interface: the helper’s service protocol
             conn.remoteObjectInterface = NSXPCInterface(with: HelperServiceProtocol.self)
             // Exported interface: our client protocol to receive callbacks

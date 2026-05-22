@@ -6,7 +6,7 @@ import OSLog
 final class AppDelegate: NSObject, NSApplicationDelegate, NSXPCListenerDelegate {
     // Use a reverse-DNS mach service name. This must match your helper’s Info.plist.
     private let listener = NSXPCListener(machServiceName: "com.application.SelfControl.corebits.bgservice.xpc")
-    private let service = HelperService()
+    let service = HelperService()
     static let shared = AppDelegate()
     override init() {
         print("AppDelegate: init")

@@ -14,19 +14,21 @@ enum ServicePath: String {
     case safari = "/safari"
 }
 
-final class ChromeExtensionRequestListner: NSObject, ObservableObject {
+final class ChromeExtensionRequestListner: NSObject {
     private var isChromeStatusSetInExtension: Bool = false
     var listener: NWListener?
     var blockeddomainFetcher: (() -> [String])?
-    var isBlockingEnabled: Bool = false
+//    private var isBlockingEnabled: Bool = false
     var onExtensionStateChange: (() -> Void)?
-
+    static let servicePort: UInt16 = 8532
+//    private var lastUpdateReceivedTime = Date()
+    
     func startListening() {
         os_log("[SC] 🔍] PlistListner startListening")
 
         // Safely convert Int port to NWEndpoint.Port
-        guard let port = NWEndpoint.Port(rawValue: SafariConst.servicePort) else {
-            os_log("[SC] 🔍] Invalid service port: %d", SafariConst.servicePort)
+        guard let port = NWEndpoint.Port(rawValue: ChromeExtensionRequestListner.servicePort) else {
+            os_log("[SC] 🔍] Invalid service port: %d", ChromeExtensionRequestListner.servicePort)
             return
         }
         do {
@@ -43,19 +45,24 @@ final class ChromeExtensionRequestListner: NSObject, ObservableObject {
                    let req = String(data: data, encoding: .utf8) {
                     print("Raw Request:", req)
                     if let service = req.httpPathFromConnection() {
+                        Task {
+                            await AppStateManager.shared.handleApiRequest(path: service)
+                        }
                         switch service {
                         case .chrome:
                             print("Chrome request received")
-                            os_log("[SC] 🔍] Chrome request received")
+//                            os_log("[SC] 🔍] Chrome request received")
 
-                            self.sendChromeBlockedUrls(connection: conn)
-                            self.updateChromeStatus()
+                            Task {
+                                await self.sendChromeBlockedUrls(connection: conn)
+                            }
+//                            self.updateChromeStatus()
                         case .safari:
                             // Handle Safari service path if needed
                             conn.cancel()
                             print("Safari request received")
-                            os_log("[SC] 🔍] Safari request received")
-                            self.updateSafariStatus()
+//                            os_log("[SC] 🔍] Safari request received")
+//                            self.updateSafariStatus()
                             break
                         }
                     }
@@ -66,10 +73,10 @@ final class ChromeExtensionRequestListner: NSObject, ObservableObject {
 
             conn.stateUpdateHandler = { state in
                 if state == .ready {
-                    os_log("[SC] 🔍] PlistListner stateUpdateHandler ready")
+//                    os_log("[SC] 🔍] PlistListner stateUpdateHandler ready")
                 }
                 if state == .cancelled {
-                    os_log("[SC] 🔍] PlistListner stateUpdateHandler cancelled")
+//                    os_log("[SC] 🔍] PlistListner stateUpdateHandler cancelled")
                 }
             }
         }
@@ -77,27 +84,26 @@ final class ChromeExtensionRequestListner: NSObject, ObservableObject {
         listener?.start(queue: DispatchQueue.global(qos: .userInitiated))
     }
     
-    func activateSafariBlocking() {
-        isBlockingEnabled = true
-    }
+//    func activateSafariBlocking() {
+//        isBlockingEnabled = true
+//    }
+//    
+//    func deactivateSafariBlocking() {
+//        isBlockingEnabled = false
+//    }
     
-    func deactivateSafariBlocking() {
-        isBlockingEnabled = false
-    }
-    
-    private func sendChromeBlockedUrls(connection: NWConnection) {
+    private func sendChromeBlockedUrls(connection: NWConnection) async {
         print("sendChromeBlockedUrls")
         
         var blockedDomainList: [String] = self.blockeddomainFetcher?() ?? []
-        if self.isBlockingEnabled == false {
+        if await AppStateManager.shared.isBlockingEnabled == false {
             blockedDomainList = []
         }
         let blockedUrls = ["blocked": blockedDomainList]
         let jsonData = try! JSONSerialization.data(withJSONObject: blockedUrls, options: [])
         let jsonString = String(data: jsonData, encoding: .utf8)!
 
-        os_log("[SC] 🔍] PlistListner newConnectionHandler")
-        os_log("[SC] 🔍] PlistListner conn.receiveMessage")
+ //       os_log("[SC] 🔍] PlistListner newConnectionHandler")
         let response = """
         HTTP/1.1 200 OK\r
         Content-Type: application/json\r
@@ -107,30 +113,32 @@ final class ChromeExtensionRequestListner: NSObject, ObservableObject {
         """
         connection.send(content: response.data(using: .utf8), contentContext: .finalMessage , completion: .contentProcessed { error in
             if let error = error {
-                os_log("[SC] 🔍] PlistListner Sent response error: %{public}@", "\(error)")
+//                os_log("[SC] 🔍] PlistListner Sent response error: %{public}@", "\(error)")
             } else {
-                os_log("[SC] 🔍] PlistListner Sent response successfully")
+//                os_log("[SC] 🔍] PlistListner Sent response successfully")
             }
         })
     }
     
-    private func updateSafariStatus() {
-        SafariExtensionManager.shared.lastUpdateReceivedTime = Date()
-    }
-    
-    private func updateChromeStatus() {
-        Task { @MainActor in
-            print("newConnectionHandler isEnabled: \(NetworkExtensionState.shared.isEnabled)")
-            if NetworkExtensionState.shared.isEnabled == true && NetworkExtensionState.shared.isChromeExtensionEnabled == false {
-                NetworkExtensionState.shared.isChromeExtensionEnabled  = IPCConnection.shared.sendMessageToSetActiveBrowserExtension(ActiveBrowserExtensios.chrome.rawValue, state: true)
-                NetworkExtensionState.shared.printAll()
-            }
-            if isChromeStatusSetInExtension == false {
-                isChromeStatusSetInExtension = true
-                self.onExtensionStateChange?()
-            }
-        }
-    }
+//    private func updateSafariStatus() {
+//        lastUpdateReceivedTime = Date()
+//    }
+//    
+//    private func updateChromeStatus() {
+//        Task {
+//            AppStateManager.shared.handleApiRequest(path: "safari-extension-status)")
+//            print("newConnectionHandler isEnabled: \(NetworkExtensionState.shared.isEnabled)")
+//            if NetworkExtensionState.shared.isEnabled == true && NetworkExtensionState.shared.isChromeExtensionEnabled == false {
+////                NetworkExtensionState.shared.isChromeExtensionEnabled  = IPCConnectionProxy().sendMessageToSetActiveBrowserExtension(ActiveBrowserExtensios.chrome.rawValue, state: true)
+//                NetworkExtensionState.shared.isChromeExtensionEnabled  = true
+//                NetworkExtensionState.shared.printAll()
+//            }
+//            if isChromeStatusSetInExtension == false {
+//                isChromeStatusSetInExtension = true
+//                self.onExtensionStateChange?()
+//            }
+//        }
+//    }
 
 }
 

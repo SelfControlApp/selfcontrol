@@ -16,8 +16,10 @@ extension HelperService: AppToExtensionExtension {
     }
     
     func setBlockedURLs(_ urls: [String]) {
-        queue.async {
+        queue.async(flags: .barrier) {
             IPCConnection.shared.enableURLBlocking(urls)
+            self.blockedUrls = urls
+            BlockContentStore.saveBlockedUrls(blockedUrls: urls)
         }
     }
     
@@ -27,10 +29,17 @@ extension HelperService: AppToExtensionExtension {
         }
     }
     
-    func setEnableService(_ enable: Bool) {
-        queue.async {
-            _ = IPCConnection.shared.sendMessageToEnableNetworkExtension(enable)
-        }
+    func setEnableService(_ enable: Bool) { //TODO: REmove // Cleanup
+//        queue.async { [weak self] in
+//            _ = IPCConnection.shared.sendMessageToEnableNetworkExtension(enable)
+//            Task {
+//                if enable {
+//                    await AppStateManager.shared.activateContentBlocking()
+//                } else {
+//                    await AppStateManager.shared.deactivateContentBlocking()
+//                }
+//            }
+//        }
     }
     
     func sendMessageToSetActiveBrowserExtension(_ extensionTypeRawValue: String, state: Bool) {

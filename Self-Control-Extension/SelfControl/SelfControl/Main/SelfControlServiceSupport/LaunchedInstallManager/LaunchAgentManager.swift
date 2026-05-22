@@ -11,8 +11,10 @@ import Foundation
 final class LaunchAgentManager {
 
     static let label = "com.application.SelfControl.corebits.bgservice"
-    static let plistName = "com.application.SelfControl.corebits.bgservice"
+    static let processName = "SelfControlBGService"
 
+    static let plistName = "com.application.SelfControl.corebits.bgservice"
+    
     static func install() throws {
 
         let fm = FileManager.default
@@ -103,3 +105,4 @@ final class LaunchAgentManager {
         return String(data: data, encoding: .utf8) ?? ""
     }
 }
+

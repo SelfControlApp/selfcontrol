@@ -5,6 +5,7 @@ import Foundation
 @objc public protocol HelperClientProtocol {
     func didUpdateStatus(_ status: String)
     func didEmitEvent(_ message: String)
+    func didEnableWebExtension(_ extensionTypeRawValue: String, state: Bool)
 }
 
 // The service protocol defines the operations the UI app can call on the helper.
@@ -22,4 +23,15 @@ import Foundation
     //Schedule Save/load
     func saveSchedules(schedules: Data, reply: @escaping (Bool) -> Void)
     func loadSchedules(reply: @escaping (_ schedules: Data) -> Void)
+    
+    //Start blocking network
+    func startNetwrokBlocking(minutes: Int)
+    func stopNetworkBlocking()
+    func getBlockedStates(reply: @escaping (_ state: Bool, _ endDate: Date?) -> Void)
+    //Save block url list
+}
+
+enum WEBExtension: String {
+    case chrome
+    case safari
 }

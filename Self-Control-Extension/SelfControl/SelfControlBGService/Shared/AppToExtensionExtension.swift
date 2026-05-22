@@ -23,8 +23,8 @@ enum FlowInfoKey: String {
     func register(completionHandler: @escaping (Bool) -> Void)
     func register(_ completionHandler: @escaping (Bool) -> Void)
     func setBlockedURLs(_ urls: [String])
-    func setActiveBrowserExtension(_ extensionTypeRawValue: String, state: Bool)
-    func sendMessageToSetActiveBrowserExtension(_ extensionTypeRawValue: String, state: Bool)
+    func setActiveBrowserExtension(_ extensionTypeRawValue: String, state: Bool) //TODO: Remove once code is exported
+    func sendMessageToSetActiveBrowserExtension(_ extensionTypeRawValue: String, state: Bool) //TODO: Remove once code is exported
     func setEnableService(_ enable: Bool)
 }
 

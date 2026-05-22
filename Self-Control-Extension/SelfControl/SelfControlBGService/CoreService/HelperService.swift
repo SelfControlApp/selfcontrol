@@ -12,20 +12,26 @@ final class HelperService: NSObject, HelperServiceProtocol {
     private var clients = NSHashTable<AnyObject>.weakObjects()
     let queue = DispatchQueue(label: "com.application.SelfControl.corebits.bgservice.queue")
     var clientConnection: NSXPCConnection?
-
+    let chromeService = ChromeExtensionRequestListner()
+    var blockedUrls: [String] = []
+    private var timer: DelayTimerHandler?
+    
     func registerClient() {
         os_log("[SC] 🔍] BG registerClient")
         queue.async {
 //            self.clients.add(client)
 //            client.didUpdateStatus(self.isMonitoring ? "running" : "stopped")
             print("Register Client received")
-            
+            self.blockedUrls = BlockContentStore.loadlockedUrls() ?? []
         }
         self.sendPing()
-
+        self.chromeService.startListening()
+        self.chromeService.blockeddomainFetcher = { [weak self] in
+            return self?.blockedUrls ?? []
+        }
     }
     
-    private func proxyConnectionService() -> HelperClientProtocol? {
+    func proxyConnectionService() -> HelperClientProtocol? {
         var proxy: AnyObject?
         guard let conn = clientConnection else {
             os_log("[SC] 🔍] BG No client connection")
@@ -39,7 +45,7 @@ final class HelperService: NSObject, HelperServiceProtocol {
     
     func sendPing() {
         os_log("[SC] 🔍] BG HELPER sendPing")
-        let schedules = EventSchedulerStore.loadSchedules()
+        let schedules = BlockContentStore.loadSchedules()
         var details :String = ""
         for schedule in schedules {
             os_log("[SC] 🔍] BG Schedule: \(schedule.summaryString)")
@@ -101,7 +107,7 @@ final class HelperService: NSObject, HelperServiceProtocol {
     
     func saveSchedules(schedules: Data, reply: @escaping (Bool) -> Void) {
         queue.async {
-            EventSchedulerStore.saveSchedulesData(schedules: schedules)
+            BlockContentStore.saveSchedulesData(schedules: schedules)
             self.broadcastEvent("Schedules saved")
             self.sendPing()
             reply(true)
@@ -112,6 +118,70 @@ final class HelperService: NSObject, HelperServiceProtocol {
         queue.async {
             self.broadcastEvent("Schedules loaded")
             reply(Data())
+        }
+    }
+    
+    func saveBlockedUrls(blockedURLS: [String]) {
+        queue.async(flags: .barrier) {
+            self.blockedUrls = blockedURLS
+        }
+    }
+    
+    func startNetwrokBlocking(minutes: Int) {
+        os_log("[SC] 🔍] BG startNetwrokBlocking:\(minutes)")
+
+        queue.async { [weak self] in
+            self?.startNetworkBlocking()
+            self?.timer = DelayTimerHandler(delay: Double(minutes), completionHandler: { [weak self] in
+                self?.stopNetworkBlocking()
+            }, cancelHandler: { [weak self] in
+                self?.stopNetworkBlocking()
+            })
+            if let queue = self?.queue {
+                self?.timer?.timerQueue = queue
+            }
+            self?.timer?.startTimerWithSelectedDelay()
+        }
+ 
+    }
+    
+    func stopNetworkBlocking() {
+        timer?.cancelTimer()
+        queue.async {
+            Task {
+                _ = IPCConnection.shared.sendMessageToEnableNetworkExtension(false)
+                await AppStateManager.shared.deactivateContentBlocking()
+            }
+        }
+    }
+    
+    func getBlockedStates(reply: @escaping (_ state: Bool, _ endDate: Date?) -> Void) {
+        queue.async { [weak self] in
+            Task { [weak self] in
+                let state = await AppStateManager.shared.isBlockingEnabled
+                if state {
+                    if let endDate = self?.timer?.timerFireDate {
+                        os_log("[SC] 🔍] BG getBlockedStates Timer active, firing at: \(endDate)")
+                        reply(true, endDate)
+                    } else {
+                        os_log("[SC] 🔍] BG getBlockedStates Timer active, firing NIL")
+                        reply(false, nil)
+                    }
+                    
+                } else {
+                    os_log("[SC] 🔍] BG getBlockedStates Timer not running")
+                    reply(false, nil)
+                }
+            }
+        }
+    }
+
+    private func startNetworkBlocking() {
+        queue.async {
+            Task {
+                _ = IPCConnection.shared.sendMessageToEnableNetworkExtension(true)
+                await AppStateManager.shared.activateContentBlocking()
+            }
         }
     }
 }

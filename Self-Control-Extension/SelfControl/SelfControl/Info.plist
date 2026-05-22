@@ -17,13 +17,13 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.14</string>
+	<string>1.15</string>
 	<key>CFBundleVersion</key>
-	<string>14</string>
+	<string>15</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2025 SelfControl. All rights reserved.</string>
+	<string>Copyright © 2026 SelfControl. All rights reserved.</string>
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>DNS lookup</string>
 	<key>NSMainStoryboardFile</key>
@@ -36,6 +36,8 @@
 	<true/>
 	<key>SMPrivilegedExecutables</key>
 	<dict>
+		<key>SelfControlBGLaunchService.app</key>
+		<string>identifier "org.eyebeam.selfcontrold" and anchor apple generic and certificate leaf[subject.OU] = "X6FQ433AWK"</string>
 		<key>org.eyebeam.selfcontrold</key>
 		<string>identifier "org.eyebeam.selfcontrold" and anchor apple generic and certificate leaf[subject.OU] = "X6FQ433AWK"</string>
 	</dict>
