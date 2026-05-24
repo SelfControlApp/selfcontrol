@@ -13,7 +13,7 @@ typealias Const = SafariExtensionConstants
 class SafariExtensionHandler: SFSafariExtensionHandler {
     private let ping = ServerPing()
     private let defaults = UserDefaults(suiteName: Const.appGroup)
-    var blockedPatterns: [String] = [
+    var blockedPatterns: Set<String> = [
         "facebook.com/friends",
         "facebook.com/marketplace",
         "instagram.com/explore",
@@ -39,7 +39,8 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     
     override func beginRequest(with context: NSExtensionContext) {
         let request = context.inputItems.first as? NSExtensionItem
-        refreshBlockedURLs()
+//        refreshBlockedURLs()
+        blockedPatterns = ping.blockedURL
         let profile: UUID?
         if #available(iOS 17.0, macOS 14.0, *) {
             profile = request?.userInfo?[SFExtensionProfileKey] as? UUID
@@ -55,7 +56,8 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
         typealias MSG = SafariExtensionConstants.MessagesName
         os_log("[SC] 🔍 The extension received a message: %{public}@", messageName)
         if messageName == MSG.reloadList.rawValue {
-            refreshBlockedURLs()
+//            refreshBlockedURLs()
+            blockedPatterns = ping.blockedURL
         }
 //        if messageName == "ready" {
 //                pingHostApp()
@@ -68,14 +70,14 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
 //            self.isEanbled = false
 //        }
         
-        guard isEanbled else { return }
+//        guard isEanbled else { return }
         guard messageName == MSG.pageVisit.rawValue,
               let urlString = userInfo?["url"] as? String else { return }
 
         os_log("[SC] 🔍 Received URL: %{public}@", urlString)
 
         // Match against blocked URLs
-        if blockedPatterns.contains(where: { urlString.contains($0) }) {
+        if ping.blockedURL.contains(where: { urlString.contains($0) }) {
             os_log("[SC] 🚫 Blocking and redirecting: %{public}@", urlString)
             page.dispatchMessageToScript(withName: "REDIRECT_BLOCKED_URL", userInfo: ["redirect": redirectURL])
         }
@@ -95,13 +97,13 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     
     
     
-    private func refreshBlockedURLs() {
-        let res = ContentBlockerExtensionRequestHandler.handleRequestList(groupIdentifier: Const.appGroup)
-        os_log(.default, "[SC] 🔍] List of blocked URLs: %{public}@", res ?? "No data")
-        let domains: [String] = res?.map({ $0.trigger.urlFilter }) ?? []
-        os_log(.default, "[SC] 🔍] List of blocked URLs: %{public}@", domains)
-        blockedPatterns = domains
-    }
+//    private func refreshBlockedURLs() {
+//        let res = ContentBlockerExtensionRequestHandler.handleRequestList(groupIdentifier: Const.appGroup)
+//        os_log(.default, "[SC] 🔍] List of blocked URLs: %{public}@", res ?? "No data")
+//        let domains: [String] = res?.map({ $0.trigger.urlFilter }) ?? []
+//        os_log(.default, "[SC] 🔍] List of blocked URLs: %{public}@", domains)
+//        blockedPatterns = domains
+//    }
 
     func messagexReceived(withName messageName: String, from page: SFSafariPage, userInfo: [String : Any]?) {
         os_log(.default, "[SC] 🔍] The extension messageReceived: %{public}@", messageName)
@@ -172,7 +174,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     override func validateToolbarItem(in window: SFSafariWindow, validationHandler: @escaping ((Bool, String) -> Void)) {
         os_log(.default, "[SC] 🔍] validateToolbarItem")
         validationHandler(true, "")
-        updateExtensionState()
+//        updateExtensionState()
         pingHostApp()
     }
 

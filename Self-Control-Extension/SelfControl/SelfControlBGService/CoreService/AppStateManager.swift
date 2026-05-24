@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import os.log
 
 actor AppStateManager {
     static let shared = AppStateManager()
@@ -42,6 +43,7 @@ actor AppStateManager {
     
     func deactivateContentBlocking() {
         isBlockingEnabled = false
+        os_log("[SC] 🔍] BG deactivateContentBlocking: %{public}%d",isBlockingEnabled)
     }
     
     func reset() {

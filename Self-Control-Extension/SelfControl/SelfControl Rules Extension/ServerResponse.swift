@@ -11,6 +11,7 @@ import os.log
 
 final class ServerPing {
     var timer: Timer?
+    var blockedURL: Set<String> = []
     
     init() { }
     
@@ -29,7 +30,7 @@ final class ServerPing {
 
         URLSession.shared.dataTask(with: url) { data, _, error in
             if let error = error {
-                os_log(("[SC] Fetch failed: \(error.localizedDescription)"))
+                os_log("[SC] Fetch failed: %{public}@", error.localizedDescription)
                 return
             }
 
@@ -38,14 +39,15 @@ final class ServerPing {
     //            completion([])
                 return
             }
-            os_log(("[SC] Fetch data successful: \(String(decoding: data, as: UTF8.self))"))
-    //        do {
-    //            let decoded = try JSONDecoder().decode(ServerResponse.self, from: data)
-    //            completion(decoded.blocked)
-    //        } catch {
-    //            os_log(("[SC] Fetch failed: \(error.localizedDescription)"))
-    //            completion([])
-    //        }
+            os_log("[SC] Fetch data successful: %{public}@", String(decoding: data, as: UTF8.self))
+            do {
+                let decoded = try JSONDecoder().decode(ServerResponse.self, from: data)
+                self.blockedURL = .init(decoded.blocked)
+//                completion(decoded.blocked)
+            } catch {
+                os_log(("[SC] Fetch failed: \(error.localizedDescription)"))
+//                completion([])
+            }
 
         }.resume()
     }

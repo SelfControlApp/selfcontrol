@@ -28,7 +28,7 @@ final class ChromeExtensionRequestListner: NSObject {
 
         // Safely convert Int port to NWEndpoint.Port
         guard let port = NWEndpoint.Port(rawValue: ChromeExtensionRequestListner.servicePort) else {
-            os_log("[SC] 🔍] Invalid service port: %d", ChromeExtensionRequestListner.servicePort)
+            os_log("[SC] 🔍] BG Invalid service port: %d", ChromeExtensionRequestListner.servicePort)
             return
         }
         do {
@@ -50,8 +50,7 @@ final class ChromeExtensionRequestListner: NSObject {
                         }
                         switch service {
                         case .chrome:
-                            print("Chrome request received")
-//                            os_log("[SC] 🔍] Chrome request received")
+//                            os_log("[SC] 🔍] BG Chrome request received")
 
                             Task {
                                 await self.sendChromeBlockedUrls(connection: conn)
@@ -59,9 +58,11 @@ final class ChromeExtensionRequestListner: NSObject {
 //                            self.updateChromeStatus()
                         case .safari:
                             // Handle Safari service path if needed
-                            conn.cancel()
-                            print("Safari request received")
-//                            os_log("[SC] 🔍] Safari request received")
+                            Task {
+                                await self.sendChromeBlockedUrls(connection: conn)
+                            }
+//                            conn.cancel()
+//                            os_log("[SC] 🔍] BG Safari request received")
 //                            self.updateSafariStatus()
                             break
                         }
@@ -93,10 +94,11 @@ final class ChromeExtensionRequestListner: NSObject {
 //    }
     
     private func sendChromeBlockedUrls(connection: NWConnection) async {
+        let isBlockEnabled = await AppStateManager.shared.isBlockingEnabled
         print("sendChromeBlockedUrls")
-        
+//        os_log("[SC] 🔍] BG sendChromeBlockedUrls %{public}d", isBlockEnabled)
         var blockedDomainList: [String] = self.blockeddomainFetcher?() ?? []
-        if await AppStateManager.shared.isBlockingEnabled == false {
+        if isBlockEnabled == false {
             blockedDomainList = []
         }
         let blockedUrls = ["blocked": blockedDomainList]

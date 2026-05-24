@@ -142,10 +142,10 @@ final class HelperService: NSObject, HelperServiceProtocol {
             }
             self?.timer?.startTimerWithSelectedDelay()
         }
- 
     }
     
     func stopNetworkBlocking() {
+        os_log("[SC] 🔍] BG stopNetworkBlocking")
         timer?.cancelTimer()
         queue.async {
             Task {
