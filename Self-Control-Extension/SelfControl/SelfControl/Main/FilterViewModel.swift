@@ -44,6 +44,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
             }
         }
     }
+    
     @Published var viewState: SelfControlViewState = .installNetworkExtension
     
     @Published var isNetworkExtensionSkipped: Bool = false {
@@ -57,7 +58,6 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
     var eventRunner: EventSchedulerRunner? = nil
     var eventRunnerHandler: EventSchedulerRunner.EventHandler?
     @State private var domains = AppPreferences.getBlockedDomains()
-    private let chromeService = ChromeExtensionRequestListner()
     @State var blockedURLs: [BlockedURL] = []
     var blockerStorage: BlockedURLStore?
     @Published var delay: Double = 5.0
@@ -105,29 +105,49 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
         super.init()
 //        ProxyPreferences.reset() //TODO: remove
         onInit()
-        SafariExtensionManager.shared.onExtensionStateChange = {
-            print("SafariExtensionManager.shared.onChange++")
-            self.isSafariExtensionInstalled = true
-            AppPreferences.setSafariExtensionInstalled()
-            Task { @MainActor in
-                self.updateSafariExtensionViewStatus()
+//        SafariExtensionManager.shared.onExtensionStateChange = {
+//            print("SafariExtensionManager.shared.onChange++")
+//            self.isSafariExtensionInstalled = true
+//            AppPreferences.setSafariExtensionInstalled()
+//            Task { @MainActor in
+//                self.updateSafariExtensionViewStatus()
+//            }
+//        }
+//        self.chromeService.onExtensionStateChange = {
+//            print("Chrome.shared.onChange++")
+//            self.isChromeExtensionInstalled = true
+//            AppPreferences.setChromeExtensionInstalled()
+//            Task { @MainActor in
+//                self.updateChromeExtensionViewStatus()
+//            }
+//        }
+        HelperConnection.shared.onExtensionStateChange = { (ext, state) in
+            if state == true {
+                switch ext {
+                case .safari:
+                    print("SafariExtensionManager.shared.onChange++")
+                    self.isSafariExtensionInstalled = true
+                    AppPreferences.setSafariExtensionInstalled()
+                    Task { @MainActor in
+                        self.updateSafariExtensionViewStatus()
+                    }
+                case .chrome:
+                    print("Chrome.shared.onChange++")
+                    self.isChromeExtensionInstalled = true
+                    AppPreferences.setChromeExtensionInstalled()
+                    Task { @MainActor in
+                        self.updateChromeExtensionViewStatus()
+                    }
+                }
             }
         }
-        self.chromeService.onExtensionStateChange = {
-            print("Chrome.shared.onChange++")
-            self.isChromeExtensionInstalled = true
-            AppPreferences.setChromeExtensionInstalled()
-            Task { @MainActor in
-                self.updateChromeExtensionViewStatus()
-            }
-        }
-        SafariExtensionManager.shared.resetExtensionState()
+//        SafariExtensionManager.shared.resetExtensionState()
         self.extensionIdentifier = extensionBundle.bundleIdentifier
-        self.chromeService.blockeddomainFetcher = {
-            return AppPreferences.getBlockedDomains()
-        }
+//        self.chromeService.blockeddomainFetcher = {
+//            return AppPreferences.getBlockedDomains()
+//        }
 
-        self.chromeService.startListening()
+        //self.chromeService.startListening()
         
         // Print status whenever it changes
         $status
@@ -472,7 +492,6 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
         print("activateNetworkBlocking+++++")
         IPCConnectionProxy().setEnableService(true)
         BlockListManager.activateSafariBlocking()
-        chromeService.activateSafariBlocking()
         startShowingCountDownInDock()
     }
     
@@ -480,7 +499,6 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
          print("deactivateNetworkBlocking+++++")
         IPCConnectionProxy().setEnableService(false)
         BlockListManager.deactivateSafariBlocking()
-        chromeService.deactivateSafariBlocking()
         if AppPreferences.playSoundOnCompletion {
             NSSound.playDefaultSound()
         }
@@ -493,7 +511,9 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
     // MARK: - Timer management
     
     func startTimerWithSelectedDelay() -> Bool {
-        cancelTimer()
+        HelperConnection.shared.send_startNetwrokBlocking(minutes: Int(delay))
+        return true
+//        cancelTimer()
         let seconds = delay * 60.0
         guard seconds > 30 else {
             os_log("[SC] 🔍] startTimerWithSelectedDelay called with non-positive delay: %f", seconds)
@@ -508,6 +528,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
             self.cancelTimer()
         }
         isActiveBlocking = true
+        
 //        RunLoop.main.add(blockTimer!, forMode: .common)
         return true
     }
