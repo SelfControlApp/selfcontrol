@@ -254,7 +254,7 @@
 
 safari.extension.dispatchMessage("ready");
 (function () {
-
+    
     // Listen for messages from the Swift extension
     safari.self.addEventListener("message", (event) => {
         if (event.name === "REDIRECT_BLOCKED_URL") {
@@ -293,17 +293,37 @@ safari.extension.dispatchMessage("ready");
     function notifySwiftDetails(details) {
       // main frame only
       if (details.frameId !== 0) return;
+        safari.extension.dispatchMessage("NAVIGATION", {
+            url: details.url,
+            time: Date.now(),
+        });
 
-      browser.runtime.sendMessage({
-        type: "navigation",
-        url: details.url
-      });
+//      browser.runtime.sendMessage({
+//        type: "navigation",
+//        url: details.url
+//      });
     }
-
+    
+    
     const browser = window.browser || window.chrome || window.safari;
     window.addEventListener("load", notifySwift);
     window.addEventListener("popstate", notifySwift);
     document.addEventListener("click", () => setTimeout(notifySwift, 10), true);
 //    browser.webNavigation.onCommitted.addListener(notifySwiftDetails);
+//    browser.webNavigation.onBeforeNavigate.addListener((details) => {
+//
+//        // main frame only
+//        if (details.frameId !== 0) return;
+//        console.log("[SC] onBeforeNavigate Blocking:", details.url);
+//    });
+
+//    browser.webRequest.onBeforeRequest.addListener(
+//        (details) => {
+//            console.log("[SC] webRequest onBeforeRequest Blocking:", details.url);
+//        },
+//        { urls: ["<all_urls>"] },
+//        ["blocking"]
+//    );
+//    browser.webNavigation.onBeforeNavigate.addListener(notifySwiftDetails);
 })();
 //TODO: https://chatgpt.com/c/6963cb8a-349c-8320-a036-7f6b9828043a?ref=mini
