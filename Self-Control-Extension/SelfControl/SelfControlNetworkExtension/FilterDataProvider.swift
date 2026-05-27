@@ -21,13 +21,16 @@ class FilterDataProvider: NEFilterDataProvider {
       static let localPort = "8888"
     override func startFilter(completionHandler: @escaping (Error?) -> Void) {
         os_log("[SC] 🔍 NE FilterDataProvider: Starting filter", log: OSLog.default, type: .info)
-        let blockedHosts = IPCConnection.shared.blockedUrls
+        var blockedHosts = IPCConnection.shared.blockedUrls
+//        if blockedHosts.count == 0 {
+//            blockedHosts = ["https://www.corebitss.com"]
+//        }
         
         os_log("[SC] 🔍 NE Blocked blockedUrls: %{public}@", log: OSLog.default, type: .info, String(describing: blockedHosts))
         
         // Ensure blockedHosts is an array of String
         var filterRules: [NEFilterRule] = blockedHosts.compactMap { address in
-            let host = address
+            guard let host = address as? String else { return nil }
             // For hostname-based rules, you must use NENetworkRule with nil networks (matches all)
             let networkRule = NENetworkRule(
                 remoteNetwork: nil,
@@ -41,7 +44,7 @@ class FilterDataProvider: NEFilterDataProvider {
         }
         
         // Ensure at least one rule exists as required by NEFilterSettings
-        if filterRules.isEmpty {
+        if filterRules.count == 0 {
             // Add a default rule (matches all traffic, for example, and allows it)
             let defaultNetworkRule = NENetworkRule(
                 remoteNetwork: nil,
@@ -51,7 +54,7 @@ class FilterDataProvider: NEFilterDataProvider {
                 protocol: .any,
                 direction: .any
             )
-            let defaultRule = NEFilterRule(networkRule: defaultNetworkRule, action: .allow)
+            let defaultRule = NEFilterRule(networkRule: defaultNetworkRule, action: .filterData)
             filterRules = [defaultRule]
         }
         
@@ -238,12 +241,12 @@ class FilterDataProvider: NEFilterDataProvider {
 
     // Called for each new flow.
     override func handleNewFlow(_ flow: NEFilterFlow) -> NEFilterNewFlowVerdict {
-        os_log("[SC] 🔍 NE] FilterDataProvider: handleNewFlow invoked", log: OSLog.default, type: .debug)
+//        os_log("[SC] 🔍 NE] FilterDataProvider: handleNewFlow invoked", log: OSLog.default, type: .debug)
         guard IPCConnection.shared.isServiceActive else {
             return .allow()
         }
         // Provide peek sizes required by this overload
-      os_log("[SC] 🔍 NE] FilterDataProvider: handleNewFlow invoked", log: OSLog.default, type: .debug)
+//      os_log("[SC] 🔍 NE] FilterDataProvider: handleNewFlow invoked", log: OSLog.default, type: .debug)
         guard IPCConnection.shared.blockedUrls.count > 0 else { //No signinficant urls to block
             return .allow()
         }

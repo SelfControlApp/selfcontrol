@@ -52,7 +52,12 @@ class IPCConnection: NSObject, NSSecureCoding {
         // The exported object is the delegate.
         newConnection.exportedInterface = NSXPCInterface(with: ExtensionToApp.self)
         newConnection.exportedObject = self
-        
+        newConnection.invalidationHandler = { [weak self] in
+            self?.currentConnection = nil
+        }
+        newConnection.interruptionHandler = { [weak self] in
+            self?.currentConnection = nil
+        }
         // The remote object is the provider's IPCConnection instance.
         newConnection.remoteObjectInterface = NSXPCInterface(with: AppToExtensionExtension.self)
         
@@ -65,7 +70,7 @@ class IPCConnection: NSObject, NSSecureCoding {
             self.currentConnection = nil
             completionHandler(false)
         }) as? AppToExtensionExtension else {
-            os_log("Failed to create a remote object proxy for the provider")
+            os_log("[SC] 🔍] Failed to create a remote object proxy for the provider")
             return
         }
         providerProxy.register(completionHandler)

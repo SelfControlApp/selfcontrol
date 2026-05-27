@@ -109,7 +109,7 @@ extension IPCConnection: NSXPCListenerDelegate {
         os_log("[SC] 🔍] NE interruptionHandler:" )
       self.currentConnection = nil
     }
-    
+    currentConnection?.suspend()
     currentConnection = newConnection
     newConnection.resume()
     

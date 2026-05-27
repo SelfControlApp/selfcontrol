@@ -11,7 +11,7 @@ extension HelperService: AppToExtensionExtension {
     
     func register(_ completionHandler: @escaping (Bool) -> Void) {
         queue.async {
-            IPCConnection.shared.register(completionHandler)
+            IPCConnection.shared.register(completionHandler: completionHandler)
         }
     }
     
@@ -48,9 +48,5 @@ extension HelperService: AppToExtensionExtension {
         }
     }
     
-    func register(completionHandler: @escaping (Bool) -> Void) {
-        queue.async {
-            IPCConnection.shared.register(completionHandler: completionHandler)
-        }
-    }
+    func register(completionHandler: @escaping (Bool) -> Void) { } //TODO Remove
 }

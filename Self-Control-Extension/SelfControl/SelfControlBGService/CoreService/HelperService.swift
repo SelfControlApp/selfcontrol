@@ -25,6 +25,7 @@ final class HelperService: NSObject, HelperServiceProtocol {
             self.blockedUrls = BlockContentStore.loadlockedUrls() ?? []
         }
         self.sendPing()
+
         self.chromeService.startListening()
         self.chromeService.blockeddomainFetcher = { [weak self] in
             return self?.blockedUrls ?? []
@@ -129,7 +130,9 @@ final class HelperService: NSObject, HelperServiceProtocol {
     
     func startNetwrokBlocking(minutes: Int) {
         os_log("[SC] 🔍] BG startNetwrokBlocking:\(minutes)")
-
+        self.register({ status in
+            os_log("[SC] 🔍] BG register NE status: \(status)")
+        })
         queue.async { [weak self] in
             self?.startNetworkBlocking()
             self?.timer = DelayTimerHandler(delay: Double(minutes), completionHandler: { [weak self] in
@@ -181,6 +184,10 @@ final class HelperService: NSObject, HelperServiceProtocol {
             Task {
                 _ = IPCConnection.shared.sendMessageToEnableNetworkExtension(true)
                 await AppStateManager.shared.activateContentBlocking()
+                FilterController.restartFilter { result in
+                    os_log("[SC] 🔍] BG FilterController.restartFilter: \(result)")
+                }
+
             }
         }
     }

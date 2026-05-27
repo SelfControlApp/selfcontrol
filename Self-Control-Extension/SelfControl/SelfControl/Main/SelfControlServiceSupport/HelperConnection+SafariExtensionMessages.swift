@@ -27,7 +27,7 @@ extension HelperConnection: AppToExtensionExtension {
     }
     
     func register(completionHandler: @escaping (Bool) -> Void) {
-        bgProxyServiceConnection()?.register(completionHandler: completionHandler)
+        bgProxyServiceConnection()?.register(completionHandler)
     }
     
     func send_startNetwrokBlocking(minutes: Int) {

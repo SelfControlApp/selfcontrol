@@ -20,7 +20,6 @@ enum FlowInfoKey: String {
 /// App --> Provider IPC, to be implememted in Extension
 ///     // Use Objective-C bridgeable type for XPC surface
 @objc public protocol AppToExtensionExtension {
-    func register(completionHandler: @escaping (Bool) -> Void)
     func register(_ completionHandler: @escaping (Bool) -> Void)
     func setBlockedURLs(_ urls: [String])
     func setActiveBrowserExtension(_ extensionTypeRawValue: String, state: Bool) //TODO: Remove once code is exported

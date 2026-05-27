@@ -161,6 +161,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
             .store(in: &cancellables)
         Task { @MainActor in
             self.blockerStorage = BlockedURLStore()
+            self.blockerStorage?.load()
         }
         self.eventRunnerHandler = { event in
             
@@ -304,7 +305,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
   func enableFilterConfiguration() {
     let filterManager = NEFilterManager.shared()
     guard !filterManager.isEnabled else {
-      registerWithProvider()
+//      registerWithProvider()
       return
     }
       Self.loadFilterConfiguration { success in
@@ -332,7 +333,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
             self.refreshExtensionState()
             return
           }
-          self.registerWithProvider()
+//          self.registerWithProvider()
         }
       }
     }
@@ -575,7 +576,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
     }
     
     @MainActor func saveAndupdateBlockList(_ newBlockedDomains: [BlockedURL]) {
-        blockerStorage?.set(blockedURLs)
+        blockerStorage?.set(newBlockedDomains)
         let urls = newBlockedDomains.compactMap(\.urls)
         let flattened: [String] = urls.flatMap { $0 }
         AppPreferences.setBlockedDomains(flattened)
