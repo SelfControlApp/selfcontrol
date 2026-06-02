@@ -15,6 +15,18 @@ final class HelperService: NSObject, HelperServiceProtocol {
     let chromeService = ChromeExtensionRequestListner()
     var blockedUrls: [String] = []
     private var timer: DelayTimerHandler?
+    private var eventSchedulerController: EventSchedulerRunnerController?
+    
+    override init() {
+        super.init()
+        
+        eventSchedulerController = EventSchedulerRunnerController(eventRunnerHandler: { [weak self] event in
+            os_log("New Event schedule started: \(event.startTime.formatted()) - \(event.endTime.formatted())")
+
+            let minutes = Double(event.endTime.minutes(from: event.startTime, wrapAroundMidnight: true))
+            self?.startNetwrokBlocking(minutes: Int(minutes))
+        })
+    }
     
     func registerClient() {
         os_log("[SC] 🔍] BG registerClient")
@@ -22,7 +34,7 @@ final class HelperService: NSObject, HelperServiceProtocol {
 //            self.clients.add(client)
 //            client.didUpdateStatus(self.isMonitoring ? "running" : "stopped")
             print("Register Client received")
-            self.blockedUrls = BlockContentStore.loadlockedUrls() ?? []
+            self.blockedUrls = HelperAppPreferences.loadlockedUrls() ?? []
         }
         self.sendPing()
 
@@ -46,7 +58,7 @@ final class HelperService: NSObject, HelperServiceProtocol {
     
     func sendPing() {
         os_log("[SC] 🔍] BG HELPER sendPing")
-        let schedules = BlockContentStore.loadSchedules()
+        let schedules = HelperAppPreferences.loadSchedules()
         var details :String = ""
         for schedule in schedules {
             os_log("[SC] 🔍] BG Schedule: \(schedule.summaryString)")
@@ -55,41 +67,9 @@ final class HelperService: NSObject, HelperServiceProtocol {
         proxyConnectionService()?.didEmitEvent("Hello from helper: \(schedules.count), details: \(details)")
     }
 
-
-    func startMonitoring(reply: @escaping (Bool) -> Void) {
-        os_log("[SC] 🔍] BG startMonitoring")
-        queue.async {
-            guard !self.isMonitoring else { reply(true); return }
-            self.isMonitoring = true
-            self.broadcastStatus()
-            // Start your actual background work here (timers, file watchers, etc.)
-            reply(true)
-        }
-    }
-
-    func stopMonitoring(reply: @escaping (Bool) -> Void) {
-        os_log("[SC] 🔍] BG stopMonitoring")
-
-        queue.async {
-            guard self.isMonitoring else { reply(true); return }
-            self.isMonitoring = false
-            // Stop your background work
-            self.broadcastStatus()
-            reply(true)
-        }
-    }
-
     func currentStatus(reply: @escaping (String) -> Void) {
         queue.async {
             reply(self.isMonitoring ? "running" : "stopped")
-        }
-    }
-
-    func performWork(_ input: String, reply: @escaping (Bool) -> Void) {
-        queue.async {
-            // Do some work…
-            self.broadcastEvent("Processed: \(input)")
-            reply(true)
         }
     }
 
@@ -107,10 +87,11 @@ final class HelperService: NSObject, HelperServiceProtocol {
     }
     
     func saveSchedules(schedules: Data, reply: @escaping (Bool) -> Void) {
-        queue.async {
-            BlockContentStore.saveSchedulesData(schedules: schedules)
-            self.broadcastEvent("Schedules saved")
-            self.sendPing()
+        queue.async { [weak self] in
+            HelperAppPreferences.saveSchedulesData(schedules: schedules)
+            self?.broadcastEvent("Schedules saved")
+            self?.sendPing()
+            self?.eventSchedulerController?.startEventScheduler()
             reply(true)
         }
     }
@@ -144,6 +125,10 @@ final class HelperService: NSObject, HelperServiceProtocol {
                 self?.timer?.timerQueue = queue
             }
             self?.timer?.startTimerWithSelectedDelay()
+            if let fireDate = self?.timer?.timerFireDate {
+                os_log("[SC] 🔍] BG register NE timer active, firing at: \(fireDate)")
+                HelperService.send_didStartedBlocking(true, fireDate)
+            }
         }
     }
     
@@ -154,10 +139,21 @@ final class HelperService: NSObject, HelperServiceProtocol {
             Task {
                 _ = IPCConnection.shared.sendMessageToEnableNetworkExtension(false)
                 await AppStateManager.shared.deactivateContentBlocking()
+                Sound.checkAndPlay()
             }
         }
     }
     
+    func extendBlocking(minutes: Int) {
+        os_log("[SC] 🔍] BG extendBlocking: %{public}d", minutes)
+        timer?.extendBlocking(minutes: minutes)
+    }
+    
+    func setPreference(key: String, value: Bool) {
+        os_log("[SC] 🔍] BG extendBlocking: %{public}@:, %{public}d", key, value)
+        HelperAppPreferences.savePreference(key: key, value: value)
+    }
+
     func getBlockedStates(reply: @escaping (_ state: Bool, _ endDate: Date?) -> Void) {
         queue.async { [weak self] in
             Task { [weak self] in

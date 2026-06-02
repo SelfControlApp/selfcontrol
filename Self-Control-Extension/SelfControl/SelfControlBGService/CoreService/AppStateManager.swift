@@ -43,7 +43,7 @@ actor AppStateManager {
     
     func deactivateContentBlocking() {
         isBlockingEnabled = false
-        os_log("[SC] 🔍] BG deactivateContentBlocking: %{public}%d",isBlockingEnabled)
+        os_log("[SC] 🔍] BG deactivateContentBlocking: %{public}d",isBlockingEnabled)
     }
     
     func reset() {

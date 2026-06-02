@@ -10,9 +10,7 @@ import Foundation
 final class SSCDaemonHelper {
     let xpc = SCXPCClient()
 
-    init() {
-    
-    }
+    init() { }
     
     func install(blockedDomains: [String], time: Date) {
         xpc.installDaemon { (error: Error?) in

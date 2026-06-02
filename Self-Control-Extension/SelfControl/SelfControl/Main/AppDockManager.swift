@@ -1,17 +1,23 @@
 //
-//  FilterViewModel+Dock.swift
+//  AppDockManager.swift
 //  SelfControl
 //
-//  Created by Satendra Singh on 12/04/26.
+//  Created by Satendra Singh on 31/05/26.
 //
 
-import Foundation
-import AppKit
+import Cocoa
 
-extension FilterViewModel {
+final class AppDockManager {
+    var dockTimer: Timer?
+    var timerFireDate: Date?
     
-    func startShowingCountDownInDock() {
-        dockTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateDockCountDown), userInfo: nil, repeats: true)
+    func checAndStartShowDockTimer(endTime: Date) {
+        timerFireDate = endTime
+        if UserDefaults.standard.bool(forKey: "BadgeApplicationIcon") {
+            dockTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateDockCountDown), userInfo: nil, repeats: true)
+        } else {
+            stopShowingCountDownInDock()
+        }
     }
     
     func stopShowingCountDownInDock() {
@@ -19,7 +25,7 @@ extension FilterViewModel {
         NSApp?.dockTile.badgeLabel = nil
     }
     
-     @objc func updateDockCountDown() {
+     @objc private func updateDockCountDown() {
         let blockEndingDate: Date = timerFireDate ?? .now
         let blockingSecond: Int = Int(blockEndingDate.timeIntervalSinceNow)
         var numSeconds: Int = Int(blockEndingDate.timeIntervalSinceNow)
@@ -30,8 +36,7 @@ extension FilterViewModel {
         numSeconds %= 3600
         numMinutes = numSeconds / 60
         numSeconds %= 60
-        if UserDefaults.standard.bool(forKey: "BadgeApplicationIcon"),
-           blockingSecond > 0 {
+           if blockingSecond > 0 {
             // Round up minutes when showing mm:ss style without seconds
             var minutes = numMinutes
             if numSeconds > 0 && minutes != 59 { minutes += 1 }

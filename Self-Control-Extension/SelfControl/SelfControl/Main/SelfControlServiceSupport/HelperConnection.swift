@@ -91,9 +91,6 @@ final class HelperConnection: NSObject, HelperClientProtocol, NSSecureCoding {
             self.connection = conn
             // Register for callbacks
             bgProxyServiceConnection()?.registerClient()
-            bgProxyServiceConnection()?.startMonitoring { status in
-                print("startMonitoring: Status Received: \(status)")
-            }
         }
     }
 
@@ -114,35 +111,10 @@ final class HelperConnection: NSObject, HelperClientProtocol, NSSecureCoding {
         //TODO:
     }
 
-    // Convenience wrappers using async/await
-    func startMonitoring() async throws {
-        try await withCheckedThrowingContinuation { cont in
-            self.withProxy(error: { cont.resume(throwing: $0) }) { proxy in
-                proxy.startMonitoring { _ in cont.resume() }
-            }
-        }
-    }
-
-    func stopMonitoring() async throws {
-        try await withCheckedThrowingContinuation { cont in
-            self.withProxy(error: { cont.resume(throwing: $0) }) { proxy in
-                proxy.stopMonitoring { _ in cont.resume() }
-            }
-        }
-    }
-
     func currentStatus() async throws -> String {
         try await withCheckedThrowingContinuation { cont in
             self.withProxy(error: { cont.resume(throwing: $0) }) { proxy in
                 proxy.currentStatus { status in cont.resume(returning: status) }
-            }
-        }
-    }
-
-    func performWork(_ input: String) async throws {
-        try await withCheckedThrowingContinuation { cont in
-            self.withProxy(error: { cont.resume(throwing: $0) }) { proxy in
-                proxy.performWork(input) { _ in cont.resume() }
             }
         }
     }

@@ -392,7 +392,7 @@ struct DomainDetailView: View {
     }
     
     private func saveChanges() {
-        viewModel.blockerStorage?.set(blockedURLs)
+        viewModel.saveAndupdateBlockList(blockedURLs)
     }
 }
 

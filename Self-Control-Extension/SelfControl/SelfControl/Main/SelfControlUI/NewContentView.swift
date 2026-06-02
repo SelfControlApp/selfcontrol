@@ -176,6 +176,7 @@ struct NewContentView: View {
                             extensionMinutes: $extensionMinutes,
                             onConfirm: { minutes in
                                 extendTimer(by: minutes)
+                                HelperConnection.shared.send_extendBlocking(minutes: Int(minutes))
                                 viewModel.extendBlockTimer(by: Int(minutes))
                                 withAnimation(DesignSystem.animationNormal) {
                                     showingExtendTimer = false
@@ -1328,12 +1329,7 @@ struct NewContentView: View {
             }
         }
         .onAppear {
-            print("onAppear viewModel.eventRunnerHandler")
-            viewModel.eventRunnerHandler? = { eventreq in
-                print("New Event schedule started: \(eventreq.startTime) - \(eventreq.endTime)")
-                let minutes = Double(eventreq.endTime.minutes(from: eventreq.startTime, wrapAroundMidnight: true))
-                await startBlocking(minutes: minutes)
-            }
+            print("onAppear main view")
             HelperConnection.shared.blockedStateHandler = { minutes in
                 print("Already in blocked state, show remaining minutes:\(minutes)")
                 Task { @MainActor in
@@ -1362,8 +1358,8 @@ struct NewContentView: View {
                 return
             }
         }
-        showBlockingStateForReminingMinutes(minutes: minutes)
         startBlocking(minutes: minutes)
+        viewModel.startBlocking(endDate: Date().addingTimeInterval(minutes * 60))
     }
     
     private func showBlockingStateForReminingMinutes(minutes: Double) {
@@ -1373,6 +1369,10 @@ struct NewContentView: View {
             // Calculate total time including days if easter egg is unlocked
             remainingTime = minutes * 60
             // Start countdown timer
+            if timer != nil {
+                timer?.invalidate()
+                timer = nil
+            }
             timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
                 if remainingTime > 0 {
                     remainingTime -= 1
@@ -1385,6 +1385,7 @@ struct NewContentView: View {
     }
     
     private func showNonBlockingState() {
+        viewModel.stopBlocking()
         withAnimation(DesignSystem.animationNormal) {
             isBlocking = true
         }
@@ -1404,6 +1405,7 @@ struct NewContentView: View {
     private func stopBlocking() {
         showNonBlockingState()
         HelperConnection.shared.send_stopNetworkBlocking()
+        viewModel.stopBlocking()
     }
     
     private func showStopConfirmation() {
@@ -1427,9 +1429,6 @@ struct NewContentView: View {
         stopCountdownTimer = nil
         stopCountdownTime = 600
         showingStopConfirmation = false
-        
-//        viewModel.deactivateNetworkBlocking()
-//        HelperConnection.shared.send_stopNetworkBlocking()
     }
     
     private func resumeBlocking() {

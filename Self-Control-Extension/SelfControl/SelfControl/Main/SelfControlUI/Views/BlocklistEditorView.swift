@@ -419,7 +419,6 @@ struct BlocklistEditorView: View {
     }
 
     private func saveChanges() {
-        viewModel.blockedURLs = blockedURLs
         viewModel.saveAndupdateBlockList(blockedURLs)
     }
 }

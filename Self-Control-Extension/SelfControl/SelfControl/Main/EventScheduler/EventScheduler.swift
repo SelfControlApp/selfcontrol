@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 //  A simple, concurrency-safe scheduler for recurring events by SCSCWeekday and time.
 //  It validates time ranges and prevents overlapping events on the same day.
 
@@ -41,18 +40,6 @@ public enum SCWeekday: Int, CaseIterable, Codable, Hashable, Sendable {
     case friday = 6
     case saturday = 7
     case sunday = 1
-    
-//    public var displayName: String {
-//        switch self {
-//        case .monday: return "Monday"
-//        case .tuesday: return "Tuesday"
-//        case .wednesday: return "Wednesday"
-//        case .thursday: return "Thursday"
-//        case .friday: return "Friday"
-//        case .saturday: return "Saturday"
-//        case .sunday: return "Sunday"
-//        }
-//    }
     
     var letter: String {
         switch self {
@@ -193,150 +180,5 @@ public struct Event: Identifiable, Codable, Hashable, Sendable {
         let bStart = other.startTime.minutesSinceMidnight
         let bEnd = other.endTime.minutesSinceMidnight
         return aStart < bEnd && aEnd > bStart
-    }
-}
-
-/// A concurrency-safe scheduler to add, update, and query recurring events by SCWeekday and time.
-public actor EventScheduler {
-    public init(calendar: Calendar = .current) {
-        self.calendar = calendar
-    }
-    
-    public let calendar: Calendar
-    private var eventsByID: [UUID: Event] = [:]
-    
-    // MARK: - CRUD
-    
-    /// Schedules a new event. Throws if the time range is invalid or conflicts with existing events.
-    @discardableResult
-    public func schedule(
-        title: String = "",
-        days: Set<SCWeekday>,
-        startTime: TimeOfDay,
-        endTime: TimeOfDay,
-        userInfo: [String: String]? = nil
-    ) throws -> Event {
-        let newEvent = try Event(title: title, days: days, startTime: startTime, endTime: endTime, userInfo: userInfo)
-        try assertNoConflicts(with: newEvent, excludingID: nil)
-        eventsByID[newEvent.id] = newEvent
-        return newEvent
-    }
-
-    @discardableResult
-    public func schedule(
-        newEvent: Event
-    ) throws -> Event {
-        try assertNoConflicts(with: newEvent, excludingID: nil)
-        eventsByID[newEvent.id] = newEvent
-        return newEvent
-    }
-
-    /// Updates an existing event. Throws if not found or if the updated event conflicts.
-    public func update(
-        id: UUID,
-        title: String? = nil,
-        days: Set<SCWeekday>? = nil,
-        startTime: TimeOfDay? = nil,
-        endTime: TimeOfDay? = nil,
-        userInfo: [String: String]? = nil
-    ) throws -> Event {
-        guard var existing = eventsByID[id] else {
-            throw SchedulerError.eventNotFound
-        }
-        
-        let newTitle = title ?? existing.title
-        let newDays = days ?? existing.days
-        let newStart = startTime ?? existing.startTime
-        let newEnd = endTime ?? existing.endTime
-        let newUserInfo = userInfo ?? existing.userInfo
-        
-        let updated = try Event(id: id, title: newTitle, days: newDays, startTime: newStart, endTime: newEnd, userInfo: newUserInfo)
-        try assertNoConflicts(with: updated, excludingID: id)
-        eventsByID[id] = updated
-        return updated
-    }
-    
-    /// Removes an event by ID. Returns the removed event or throws if not found.
-    @discardableResult
-    public func remove(id: UUID) throws -> Event {
-        guard let removed = eventsByID.removeValue(forKey: id) else {
-            throw SchedulerError.eventNotFound
-        }
-        return removed
-    }
-    
-    /// Returns all scheduled events sorted by title.
-    public func allEvents() -> [Event] {
-        eventsByID.values.sorted { $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending }
-    }
-    
-    /// Returns events that occur on the specified SCWeekday, sorted by start time.
-    public func events(on day: SCWeekday) -> [Event] {
-        eventsByID.values
-            .filter { $0.occurs(on: day) }
-            .sorted { lhs, rhs in
-                if lhs.startTime == rhs.startTime {
-                    return lhs.title.localizedCaseInsensitiveCompare(rhs.title) == .orderedAscending
-                }
-                return lhs.startTime < rhs.startTime
-            }
-    }
-    
-    // MARK: - Conflict Checking
-    
-    /// Returns any events that would conflict with the provided event.
-    public func conflicts(for event: Event, excludingID: UUID? = nil) -> [Event] {
-        eventsByID.values
-            .filter { existing in
-                if let exclude = excludingID, existing.id == exclude { return false }
-                // Only check days that overlap
-                let sharedDays = existing.days.intersection(event.days)
-                guard !sharedDays.isEmpty else { return false }
-                return sharedDays.contains { event.overlaps(with: existing, on: $0) }
-            }
-            .sorted { $0.startTime < $1.startTime }
-    }
-    
-    private func assertNoConflicts(with event: Event, excludingID: UUID?) throws {
-        let conflicts = conflicts(for: event, excludingID: excludingID)
-        if !conflicts.isEmpty {
-            throw SchedulerError.conflict(conflictingEvents: conflicts)
-        }
-    }
-    
-    // MARK: - Query Helpers
-    
-    /// Returns the next DateInterval this event will occur after the given date, if any.
-    /// This uses the scheduler's calendar to resolve the next occurrence in the current week or later.
-    public func nextOccurrence(of eventID: UUID, after date: Date = Date()) -> DateInterval? {
-        guard let event = eventsByID[eventID] else { return nil }
-        return nextOccurrence(of: event, after: date)
-    }
-    
-    /// Returns the next DateInterval an event will occur after the given date, if any.
-    public func nextOccurrence(of event: Event, after date: Date = Date()) -> DateInterval? {
-        // Search up to 8 weeks ahead to be safe for unusual calendars
-        for dayOffset in 0..<(7 * 8) {
-            guard let candidateDay = calendar.date(byAdding: .day, value: dayOffset, to: date) else { continue }
-            let SCWeekday = SCWeekday.from(date: candidateDay, calendar: calendar)
-            guard event.occurs(on: SCWeekday) else { continue }
-            
-            var comps = calendar.dateComponents([.year, .month, .day], from: candidateDay)
-            comps.hour = event.startTime.hour
-            comps.minute = event.startTime.minute
-            comps.second = 0
-            let start = calendar.date(from: comps)
-            
-            comps.hour = event.endTime.hour
-            comps.minute = event.endTime.minute
-            let end = calendar.date(from: comps)
-            
-            if let start, let end, end > date {
-                // If the start is in the past but end is in the future, return the remaining portion.
-                let actualStart = max(start, date)
-                return DateInterval(start: actualStart, end: end)
-            }
-        }
-        return nil
     }
 }

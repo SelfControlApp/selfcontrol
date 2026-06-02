@@ -15,7 +15,7 @@ struct AppPreferences {
     private static let isChromeExtensionKey: String = "isChromeExtensionKey"
     private static let isSafariExtInstallKey: String = "isSafariExtInstallKey"
     private static let isChromeExtInstallKey: String = "isChromeExtInstallKey"
-    private static let playSoundOnCompletionkey: String = "playSoundOnCompletion"
+    static let playSoundOnCompletionkey: String = "playSoundOnCompletion"
     private static let showNotificationOnCompletionkey: String = "showNotificationOnCompletion"
     private static let verifyNetworkBeforeBlock: String = "VerifyInternetConnection"
     

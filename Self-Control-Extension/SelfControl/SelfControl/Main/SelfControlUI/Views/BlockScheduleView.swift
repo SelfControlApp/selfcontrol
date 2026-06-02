@@ -132,7 +132,6 @@ struct BlockScheduleView: View {
         }
         .onDisappear {
             print("Schedule off-screen")
-            viewModel.updateScheduledEvents()
         }
     }
 }

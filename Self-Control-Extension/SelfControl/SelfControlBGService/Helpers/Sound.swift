@@ -2,10 +2,11 @@
 //  Sound.swift
 //  SelfControl
 //
-//  Created by Satendra Singh on 02/04/26.
+//  Created by Satendra Singh on 31/05/26.
 //
 
 import AppKit
+import os.log
 
 public extension NSSound {
 
@@ -36,5 +37,14 @@ public extension NSSound {
     
     static func playDefaultSound() {
         play(.basso)
+    }
+}
+
+struct Sound {
+    static func checkAndPlay() {
+        os_log("[SC] 🔍] BG checkAndPlay: %{public}d",HelperAppPreferences.playSoundOnCompletion)
+        if HelperAppPreferences.playSoundOnCompletion {
+            NSSound.playDefaultSound()
+        }
     }
 }

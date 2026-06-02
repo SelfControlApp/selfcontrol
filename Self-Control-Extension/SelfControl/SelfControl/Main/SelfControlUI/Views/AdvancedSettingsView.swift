@@ -110,7 +110,9 @@ struct AdvancedSettingsView: View {
                             VStack(spacing: 0) {
                                 settingRow(title: Strings.AdvancedSettings.autoCheckUpdates, isOn: $autoCheckUpdates, showDivider: true)
 //                                settingRow(title: Strings.AdvancedSettings.autoSendErrorReports, isOn: $sendErrorReports, showDivider: true)
-                                settingRow(title: Strings.AdvancedSettings.playSoundOnCompletion, isOn: $playSoundOnCompletion, showDivider: false)
+                                settingRow(title: Strings.AdvancedSettings.playSoundOnCompletion, isOn: $playSoundOnCompletion, showDivider: false) {value in
+                                    HelperConnection.shared.send_setPreference(key: AppPreferences.playSoundOnCompletionkey, value: value)
+                                }
                                 settingRow(title: Strings.AdvancedSettings.showNotificationOnCompletion, isOn: $showNotificationOnCompletion, showDivider: false)
                             }
                         }
@@ -129,7 +131,7 @@ struct AdvancedSettingsView: View {
                             
                             VStack(spacing: 0) {
                                 settingRow(title: Strings.AdvancedSettings.verifyInternetConnection, isOn: $verifyConnection, showDivider: true)
-                                settingRow(title: Strings.AdvancedSettings.clearBrowserCache, isOn: $clearCache, showDivider: true)
+//                                settingRow(title: Strings.AdvancedSettings.clearBrowserCache, isOn: $clearCache, showDivider: true)
                                 settingRow(title: Strings.AdvancedSettings.allowLocalNetworks, isOn: $allowLocalNetworks, showDivider: false)
                             }
                         }
@@ -147,9 +149,9 @@ struct AdvancedSettingsView: View {
                                 .tracking(1.2)
                             
                             VStack(spacing: 0) {
-                                settingRow(title: Strings.AdvancedSettings.timerFloatsOnTop, isOn: $timerFloatsOnTop, showDivider: true)
+//                                settingRow(title: Strings.AdvancedSettings.timerFloatsOnTop, isOn: $timerFloatsOnTop, showDivider: true)
                                 settingRow(title: Strings.AdvancedSettings.showCountdownInDock, isOn: $showCountdownInDock, showDivider: true)
-                                settingRow(title: Strings.AdvancedSettings.hideSecondsInCountdown, isOn: $hideSeconds, showDivider: false)
+//                                settingRow(title: Strings.AdvancedSettings.hideSecondsInCountdown, isOn: $hideSeconds, showDivider: false)
                             }
                         }
                         .padding(DesignSystem.spacingMedium)
@@ -159,61 +161,61 @@ struct AdvancedSettingsView: View {
                         )
                         
                         // Mode Settings
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text(Strings.AdvancedSettings.mode)
-                                .font(DesignSystem.font(size: DesignSystem.fontSizeSmall, weight: DesignSystem.fontWeightSemibold))
-                                .foregroundColor(DesignSystem.textTertiary)
-                                .tracking(1.2)
-                            
-                            // Allowlist mode checkbox with warning
-                            VStack(alignment: .leading, spacing: 8) {
-                                Toggle(isOn: Binding(
-                                    get: { blockingMode == .allowlist },
-                                    set: { newValue in
-                                        if !isBlockingMode {
-                                            if newValue {
-                                                showingAllowlistWarning = true
-                                            } else {
-                                                withAnimation(DesignSystem.animationFast) {
-                                                    blockingMode = .blocklist
-                                                }
-                                            }
-                                        }
-                                    }
-                                )) {
-                                    HStack(spacing: 8) {
-                                        Image(systemName: "exclamationmark.shield.fill")
-                                            .font(DesignSystem.font(size: DesignSystem.fontSizeLarge))
-                                            .foregroundColor(blockingMode == .allowlist ? Color.white : DesignSystem.textSecondary)
-                                        VStack(alignment: .leading, spacing: 2) {
-                                            Text(Strings.AdvancedSettings.allowlistMode)
-                                                .font(DesignSystem.font(size: DesignSystem.fontSizeLarge, weight: DesignSystem.fontWeightMedium))
-                                                .foregroundColor(DesignSystem.textPrimary)
-                                            Text(Strings.AdvancedSettings.allowlistModeDescription)
-                                                .font(DesignSystem.font(size: DesignSystem.fontSizeSmall))
-                                                .foregroundColor(DesignSystem.textSecondary)
-                                        }
-                                    }
-                                }
-                                .toggleStyle(SwitchToggleStyle(tint: DesignSystem.toggleTint))
-                                .disabled(isBlockingMode)
-                                .opacity(isBlockingMode ? DesignSystem.disabledOpacity : DesignSystem.opacityFull)
-                                .padding(DesignSystem.spacingMedium)
-                                .background(
-                                    RoundedRectangle(cornerRadius: DesignSystem.radiusMedium)
-                                        .fill(blockingMode == .allowlist ? DesignSystem.textPrimary.opacity(DesignSystem.opacityMedium) : DesignSystem.backgroundTertiary)
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: DesignSystem.radiusMedium)
-                                                .stroke(blockingMode == .allowlist ? DesignSystem.hoverBorder.opacity(DesignSystem.opacityHigher) : DesignSystem.borderPrimary, lineWidth: 1)
-                                        )
-                                )
-                            }
-                        }
-                        .padding(DesignSystem.spacingMedium)
-                        .background(
-                            RoundedRectangle(cornerRadius: DesignSystem.radiusSmall)
-                                .fill(DesignSystem.backgroundPrimary.opacity(DesignSystem.opacityHigher))
-                        )
+//                        VStack(alignment: .leading, spacing: 8) {
+//                            Text(Strings.AdvancedSettings.mode)
+//                                .font(DesignSystem.font(size: DesignSystem.fontSizeSmall, weight: DesignSystem.fontWeightSemibold))
+//                                .foregroundColor(DesignSystem.textTertiary)
+//                                .tracking(1.2)
+//                            
+//                            // Allowlist mode checkbox with warning
+//                            VStack(alignment: .leading, spacing: 8) {
+//                                Toggle(isOn: Binding(
+//                                    get: { blockingMode == .allowlist },
+//                                    set: { newValue in
+//                                        if !isBlockingMode {
+//                                            if newValue {
+//                                                showingAllowlistWarning = true
+//                                            } else {
+//                                                withAnimation(DesignSystem.animationFast) {
+//                                                    blockingMode = .blocklist
+//                                                }
+//                                            }
+//                                        }
+//                                    }
+//                                )) {
+//                                    HStack(spacing: 8) {
+//                                        Image(systemName: "exclamationmark.shield.fill")
+//                                            .font(DesignSystem.font(size: DesignSystem.fontSizeLarge))
+//                                            .foregroundColor(blockingMode == .allowlist ? Color.white : DesignSystem.textSecondary)
+//                                        VStack(alignment: .leading, spacing: 2) {
+//                                            Text(Strings.AdvancedSettings.allowlistMode)
+//                                                .font(DesignSystem.font(size: DesignSystem.fontSizeLarge, weight: DesignSystem.fontWeightMedium))
+//                                                .foregroundColor(DesignSystem.textPrimary)
+//                                            Text(Strings.AdvancedSettings.allowlistModeDescription)
+//                                                .font(DesignSystem.font(size: DesignSystem.fontSizeSmall))
+//                                                .foregroundColor(DesignSystem.textSecondary)
+//                                        }
+//                                    }
+//                                }
+//                                .toggleStyle(SwitchToggleStyle(tint: DesignSystem.toggleTint))
+//                                .disabled(isBlockingMode)
+//                                .opacity(isBlockingMode ? DesignSystem.disabledOpacity : DesignSystem.opacityFull)
+//                                .padding(DesignSystem.spacingMedium)
+//                                .background(
+//                                    RoundedRectangle(cornerRadius: DesignSystem.radiusMedium)
+//                                        .fill(blockingMode == .allowlist ? DesignSystem.textPrimary.opacity(DesignSystem.opacityMedium) : DesignSystem.backgroundTertiary)
+//                                        .overlay(
+//                                            RoundedRectangle(cornerRadius: DesignSystem.radiusMedium)
+//                                                .stroke(blockingMode == .allowlist ? DesignSystem.hoverBorder.opacity(DesignSystem.opacityHigher) : DesignSystem.borderPrimary, lineWidth: 1)
+//                                        )
+//                                )
+//                            }
+//                        }
+//                        .padding(DesignSystem.spacingMedium)
+//                        .background(
+//                            RoundedRectangle(cornerRadius: DesignSystem.radiusSmall)
+//                                .fill(DesignSystem.backgroundPrimary.opacity(DesignSystem.opacityHigher))
+//                        )
                     }
                     .padding(DesignSystem.spacingLarge)
                 }
@@ -233,7 +235,7 @@ struct AdvancedSettingsView: View {
         }
     }
     
-    private func settingRow(title: String, isOn: Binding<Bool>, showDivider: Bool) -> some View {
+    private func settingRow(title: String, isOn: Binding<Bool>, showDivider: Bool,  onChange:( (Bool) -> Void)? = nil) -> some View {
         VStack(spacing: 0) {
             HStack(alignment: .center) {
                 Toggle(isOn: isOn) {
@@ -241,6 +243,8 @@ struct AdvancedSettingsView: View {
                         .font(DesignSystem.font(size: DesignSystem.fontSizeMedium))
                         .foregroundColor(DesignSystem.textPrimary)
                         .multilineTextAlignment(.leading)
+                }.onChange(of: isOn.wrappedValue) { _ in
+                    onChange?(isOn.wrappedValue)
                 }
                 .toggleStyle(CheckboxToggleStyle())
                 Spacer()

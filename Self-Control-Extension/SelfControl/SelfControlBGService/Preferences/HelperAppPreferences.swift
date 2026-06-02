@@ -7,7 +7,11 @@
 
 import Foundation
 
-struct BlockContentStore {
+struct HelperAppPreferences {
+    enum Keys: String {
+        case playSoundOnCompletionkey = "playSoundOnCompletion"
+    }
+
     // Load schedules from UserDefaults
     static func loadSchedules() -> [Schedule] {
         if let data = UserDefaults.standard.data(forKey: "schedules"),
@@ -36,6 +40,18 @@ struct BlockContentStore {
     
     static func loadlockedUrls() -> [String]? {
         UserDefaults.standard.value(forKey: "blockedUrls") as? [String]
+    }
+    
+    static var playSoundOnCompletion: Bool {
+        return UserDefaults.standard.bool(forKey: Keys.playSoundOnCompletionkey.rawValue)
+    }
+    
+    static func setPlaySoundOnCompletion(_ value: Bool) {
+        UserDefaults.standard.set(value, forKey: Keys.playSoundOnCompletionkey.rawValue)
+    }
+    
+    static func savePreference(key: String, value: Bool) {
+        UserDefaults.standard.set(value, forKey: key)
     }
 }
 

@@ -47,7 +47,7 @@ final class DelayTimerHandler {
         let seconds = delay * 60.0
 
         guard seconds > 30 else {
-            os_log("[SC] Invalid delay: %f", seconds)
+            os_log("[SC] 🔍] BG Invalid delay: %f", seconds)
             return false
         }
 
@@ -65,7 +65,7 @@ final class DelayTimerHandler {
         timer.setEventHandler { [weak self] in
             guard let self else { return }
 
-            os_log("[SC] Timer fired")
+            os_log("[SC] 🔍] BG Timer fired")
 
             // Prevent future usage immediately
             let completion = self.completionHandler
@@ -89,11 +89,36 @@ final class DelayTimerHandler {
 
         return true
     }
+    
+    func extendBlocking(minutes: Int) {
+        guard minutes > 0 else { return }
+        timerQueue.async { [weak self] in
+            guard let self = self else { return }
+            guard self.isActiveBlocking, let timer = self.blockTimer else {
+                os_log("[SC] 🔍] BG extendBlocking ignored: no active timer")
+                return
+            }
 
+            let additionalSeconds = Double(minutes) * 60.0
+            let now = Date()
+            let currentFire = self.timerFireDate ?? now
+            let newFire = currentFire.addingTimeInterval(additionalSeconds)
+
+            // Update model
+            self.timerFireDate = newFire
+            self.delay += Double(minutes) // keep start time consistent
+
+            // Reschedule timer to the new deadline
+            let remaining = max(0, newFire.timeIntervalSince(now))
+            os_log("[SC] 🔍] BG Extending blocking by %{public}d minutes (%{public}.0f s). New remaining: %.0f s", minutes, additionalSeconds, remaining)
+            timer.schedule(deadline: .now() + remaining, repeating: .never, leeway: .seconds(1))
+        }
+    }
+    
     private func cancelEventHandler() {
         guard let timer = blockTimer else { return }
 
-        os_log("[SC] Cancelling timer")
+        os_log("[SC] 🔍] BG Cancelling timer")
 
         timer.setEventHandler {}
         timer.cancel()
@@ -103,7 +128,7 @@ final class DelayTimerHandler {
 
         guard let timer = blockTimer else { return }
 
-        os_log("[SC] Cancelling timer")
+        os_log("[SC] 🔍] BG Cancelling timer")
 
         timer.setEventHandler {}
         timer.cancel()

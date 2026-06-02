@@ -1,17 +1,24 @@
 //
-//  FilterViewModel+EventScheduler.swift
+//  EventSchedulerRunnerContainer.swift
 //  SelfControl
 //
-//  Created by Satendra Singh on 25/02/26.
+//  Created by Satendra Singh on 28/05/26.
 //
 
-extension FilterViewModel {
+final class EventSchedulerRunnerController {
+    private var eventRunner: EventSchedulerRunner? = nil
+    var eventRunnerHandler: EventSchedulerRunner.EventHandler?
+    
+    init(eventRunnerHandler: EventSchedulerRunner.EventHandler? = nil) {
+        self.eventRunnerHandler = eventRunnerHandler
+        startEventScheduler()
+    }
     
     func startEventScheduler() {
         Task {
             await self.eventRunner?.stop()
             let scheduler = EventScheduler()
-            let events = EventSchedulerStore.loadSchedules()
+            let events = HelperAppPreferences.loadSchedules()
             var eventObjs: [Event] = []
             for event in events {
                 eventObjs.append(contentsOf: event.scheduledEvents)
@@ -26,7 +33,6 @@ extension FilterViewModel {
             }
             await eventRunner?.start()
         }
-//        eventRunner = EventRunner(schedules: self.storedValue.schedules.scheduledEvents)
     }
     
     func stopEventScheduler() {

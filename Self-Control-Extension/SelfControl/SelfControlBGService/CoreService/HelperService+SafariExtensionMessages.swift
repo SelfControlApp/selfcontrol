@@ -19,7 +19,7 @@ extension HelperService: AppToExtensionExtension {
         queue.async(flags: .barrier) {
             IPCConnection.shared.enableURLBlocking(urls)
             self.blockedUrls = urls
-            BlockContentStore.saveBlockedUrls(blockedUrls: urls)
+            HelperAppPreferences.saveBlockedUrls(blockedUrls: urls)
         }
     }
     

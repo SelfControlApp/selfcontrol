@@ -37,14 +37,8 @@ enum SelfControlViewState: Equatable {
 }
 
 final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionRequestDelegate, ExtensionToApp {
-    @Published var status: Status = .stopped {
-        didSet {
-            if self.status == .running {
-               updateScheduledEvents()
-            }
-        }
-    }
-    
+    @Published var status: Status = .stopped
+    let dockManager = AppDockManager()
     @Published var viewState: SelfControlViewState = .installNetworkExtension
     
     @Published var isNetworkExtensionSkipped: Bool = false {
@@ -55,13 +49,8 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
 
     private var isSafariExtensionInstalled: Bool = AppPreferences.isSafariExtensionInstalled
     private var isChromeExtensionInstalled: Bool = AppPreferences.isChromeExtensionInstalled
-    var eventRunner: EventSchedulerRunner? = nil
-    var eventRunnerHandler: EventSchedulerRunner.EventHandler?
     @State private var domains = AppPreferences.getBlockedDomains()
-    @State var blockedURLs: [BlockedURL] = []
-    var blockerStorage: BlockedURLStore?
-    @Published var delay: Double = 5.0
-    var blockedIPAddressed: [String] = []
+    private(set) var blockerStorage: BlockedURLStore?
     private var cancellables = Set<AnyCancellable>()
     @Published var isActiveBlocking: Bool = false
     lazy var selfControlDaemon = SSCDaemonHelper()
@@ -162,9 +151,6 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
         Task { @MainActor in
             self.blockerStorage = BlockedURLStore()
             self.blockerStorage?.load()
-        }
-        self.eventRunnerHandler = { event in
-            
         }
     }
   
@@ -453,85 +439,27 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
     }
 
   // MARK: - App Communication (Prompting the User)
-  
-  @objc func promptUser(aboutFlow flowInfo: [String: String], responseHandler: @escaping (Bool) -> Void) {
-    guard let localPort = flowInfo[FlowInfoKey.localPort.rawValue],
-          let remoteAddress = flowInfo[FlowInfoKey.remoteAddress.rawValue] else {
-      os_log("[SC] 🔍] Got a promptUser call without valid flow info: %@", flowInfo)
-      responseHandler(true)
-      return
-    }
-    let connectionDate = Date()
-    DispatchQueue.main.async {
-      // For SwiftUI on macOS, use NSAlert via the shared NSApplication window.
-      if let window = NSApplication.shared.windows.first {
-        let alert = NSAlert()
-        alert.alertStyle = .informational
-        alert.messageText = "New incoming connection"
-        alert.informativeText = "A new connection on port \(localPort) has been received from \(remoteAddress)."
-        alert.addButton(withTitle: "Allow")
-        alert.addButton(withTitle: "Deny")
-        alert.beginSheetModal(for: window) { response in
-          let userAllowed = (response == .alertFirstButtonReturn)
-          self.logFlow(flowInfo, at: connectionDate, userAllowed: userAllowed)
-          responseHandler(userAllowed)
-        }
-      } else {
-        // Fallback if no window is available.
-        self.logFlow(flowInfo, at: connectionDate, userAllowed: true)
-        responseHandler(true)
-      }
-    }
-  }
+
+    //TODO: Cleanup
+  @objc func promptUser(aboutFlow flowInfo: [String: String], responseHandler: @escaping (Bool) -> Void) { }
+    func didSetUrls() { }
     
-    func didSetUrls() {
-        print("didSetUrls+++++")
-        // URLs updated; refresh extension state in case Safari side changed.
-    }
-    
-    func activateNetworkBlocking() {
+    func startBlocking(endDate: Date) {
         print("activateNetworkBlocking+++++")
-        IPCConnectionProxy().setEnableService(true)
-        BlockListManager.activateSafariBlocking()
-        startShowingCountDownInDock()
+        isActiveBlocking = true
+        dockManager.checAndStartShowDockTimer(endTime: endDate)
     }
     
-    func deactivateNetworkBlocking() {
+    func stopBlocking() {
          print("deactivateNetworkBlocking+++++")
-        IPCConnectionProxy().setEnableService(false)
-        BlockListManager.deactivateSafariBlocking()
-        if AppPreferences.playSoundOnCompletion {
-            NSSound.playDefaultSound()
-        }
+//        if AppPreferences.playSoundOnCompletion {
+//            NSSound.playDefaultSound()
+//        }
         if AppPreferences.showNotificationOnCompletion {
             LocalNotificationManager.scheduleNotification()
         }
-        stopShowingCountDownInDock()
-    }
-    
-    // MARK: - Timer management
-    
-    func startTimerWithSelectedDelay() -> Bool {
-        HelperConnection.shared.send_startNetwrokBlocking(minutes: Int(delay))
-        return true
-//        cancelTimer()
-        let seconds = delay * 60.0
-        guard seconds > 30 else {
-            os_log("[SC] 🔍] startTimerWithSelectedDelay called with non-positive delay: %f", seconds)
-            return false
-        }
-        timerFireDate = Date().addingTimeInterval(seconds)
-        os_log("[SC] 🔍] Scheduling timer to fire in %.0f seconds (%.2f minutes)", seconds, delay)
-        blockTimer = Timer.scheduledTimer(withTimeInterval: seconds, repeats: false) { [weak self] _ in
-            guard let self = self else { return }
-            os_log("[SC] 🔍] Timer fired. Deactivating network blocking.")
-            self.deactivateNetworkBlocking()
-            self.cancelTimer()
-        }
-        isActiveBlocking = true
-        
-//        RunLoop.main.add(blockTimer!, forMode: .common)
-        return true
+        dockManager.stopShowingCountDownInDock()
+        isActiveBlocking = false
     }
     
     func extendBlockTimer(by minutes: Int) {
@@ -540,6 +468,8 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
         timer.fireDate = timer.fireDate.addingTimeInterval(delta)
         // Optionally also track a blockEndDate if you show a countdown
         timerFireDate = timer.fireDate
+        dockManager.dockTimer?.fireDate = timer.fireDate
+        dockManager.timerFireDate = timer.fireDate
         os_log("[SC] 🔍] Timer fire date updated to %{public}@", timerFireDate?.description ?? "Empty time")
     }
     
@@ -561,29 +491,11 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
         selfControlDaemon.updateBlocklist(newBlockedDomains)
     }
     
-    @MainActor func updateBlockList(newBlockedDomains: [BlockedURL], time: Double ) {
-        self.delay = time
-        if status == .stopped {
-            installLegacyLaunched(futureDuration: Date.now.addingTimeInterval(delay*60))
-        } else {
-            if startTimerWithSelectedDelay() == false {
-                return
-            }
-            saveAndupdateBlockList(newBlockedDomains)
-            if startTimerWithSelectedDelay() == false { return }
-            activateNetworkBlocking()
-        }
-    }
-    
     @MainActor func saveAndupdateBlockList(_ newBlockedDomains: [BlockedURL]) {
         blockerStorage?.set(newBlockedDomains)
         let urls = newBlockedDomains.compactMap(\.urls)
         let flattened: [String] = urls.flatMap { $0 }
         AppPreferences.setBlockedDomains(flattened)
         setBlockedUrls(urls: flattened)
-    }
-    
-    func updateScheduledEvents() {
-        startEventScheduler()
     }
 }

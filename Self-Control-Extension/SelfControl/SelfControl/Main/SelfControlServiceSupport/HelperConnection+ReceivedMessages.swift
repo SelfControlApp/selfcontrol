@@ -19,4 +19,12 @@ extension HelperConnection {
             }
 //        }
     }
+    
+    func didStartedBlocking(_ state: Bool, _ endDate: Date) -> Void {
+        if state == true {
+            let minutes: Double = Double(endDate.timeIntervalSinceNow / 60)
+            self.blockedStateHandler?(minutes)
+        }
+        print("REceived Blocked State: \(String(describing: state)), End Date: \(String(describing: endDate))")
+    }
 }
