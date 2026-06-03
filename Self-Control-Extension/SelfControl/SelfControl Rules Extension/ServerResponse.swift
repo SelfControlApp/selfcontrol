@@ -12,8 +12,9 @@ import os.log
 final class ServerPing {
     var timer: Timer?
     var blockedURL: Set<String> = []
+    static let shared = ServerPing()
     
-    init() { }
+    private init() {}
     
     func start() {
         ping()

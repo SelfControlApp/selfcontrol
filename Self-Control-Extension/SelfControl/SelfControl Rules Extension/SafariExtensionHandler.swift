@@ -11,7 +11,7 @@ import os.log
 typealias Const = SafariExtensionConstants
 
 class SafariExtensionHandler: SFSafariExtensionHandler {
-    private let ping = ServerPing()
+    private let ping = ServerPing.shared
     private let defaults = UserDefaults(suiteName: Const.appGroup)
     var blockedPatterns: Set<String> = [
         "facebook.com/friends",
@@ -80,6 +80,8 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
         if ping.blockedURL.contains(where: { urlString.contains($0) }) {
             os_log("[SC] 🚫 Blocking and redirecting: %{public}@", urlString)
             page.dispatchMessageToScript(withName: "REDIRECT_BLOCKED_URL", userInfo: ["redirect": redirectURL])
+        } else {
+            os_log("[SC] 🔍 Blocked URL: %{public}@", ping.blockedURL)
         }
     }
     

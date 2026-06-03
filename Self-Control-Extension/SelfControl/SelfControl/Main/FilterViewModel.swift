@@ -28,7 +28,6 @@ enum SelfControlViewState: Equatable {
         }
     }
     
-    
     case installNetworkExtension
     case installSafariExtension
     case installChromeExtension
@@ -92,24 +91,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
   
     override init() {
         super.init()
-//        ProxyPreferences.reset() //TODO: remove
         onInit()
-//        SafariExtensionManager.shared.onExtensionStateChange = {
-//            print("SafariExtensionManager.shared.onChange++")
-//            self.isSafariExtensionInstalled = true
-//            AppPreferences.setSafariExtensionInstalled()
-//            Task { @MainActor in
-//                self.updateSafariExtensionViewStatus()
-//            }
-//        }
-//        self.chromeService.onExtensionStateChange = {
-//            print("Chrome.shared.onChange++")
-//            self.isChromeExtensionInstalled = true
-//            AppPreferences.setChromeExtensionInstalled()
-//            Task { @MainActor in
-//                self.updateChromeExtensionViewStatus()
-//            }
-//        }
         HelperConnection.shared.onExtensionStateChange = { (ext, state) in
             if state == true {
                 switch ext {
@@ -130,14 +112,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
                 }
             }
         }
-//        SafariExtensionManager.shared.resetExtensionState()
         self.extensionIdentifier = extensionBundle.bundleIdentifier
-//        self.chromeService.blockeddomainFetcher = {
-//            return AppPreferences.getBlockedDomains()
-//        }
-
-        //self.chromeService.startListening()
-        
         // Print status whenever it changes
         $status
             .sink { [weak self] newValue in
@@ -244,9 +219,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
   // MARK: - UI and Filter Management
   
     func setBlockedUrls(urls: [String]) {
-        
         IPCConnectionProxy().setBlockedURLs(urls)
-
         if status == .stopped { //If legacy blocking
             if isActiveBlocking { //if is active blocking
                 updateLegacyBlockedList(newBlockedDomains: urls)
@@ -326,16 +299,8 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
   }
     
   func registerWithProvider() {
+        self.refreshExtensionState()
       print("+registerWithProvider")
-    // Assuming an IPCConnection singleton similar to the AppKit sample
-      IPCConnectionProxy().register(completionHandler: { success in
-        DispatchQueue.main.async {
-        self.status = success ? .running : .stopped
-          self.setBlockedUrls(urls: AppPreferences.getBlockedDomains())
-          self.refreshExtensionState()
-      }
-//        setBlockedURLs([])
-    })
   }
   
     func activateExtension() {
@@ -452,9 +417,6 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
     
     func stopBlocking() {
          print("deactivateNetworkBlocking+++++")
-//        if AppPreferences.playSoundOnCompletion {
-//            NSSound.playDefaultSound()
-//        }
         if AppPreferences.showNotificationOnCompletion {
             LocalNotificationManager.scheduleNotification()
         }

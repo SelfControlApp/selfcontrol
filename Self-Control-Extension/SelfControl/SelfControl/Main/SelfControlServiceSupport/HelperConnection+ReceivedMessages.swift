@@ -9,17 +9,9 @@ extension HelperConnection {
     func didEnableWebExtension(_ extensionTypeRawValue: String, state: Bool) {
 //        Task { @MainActor in
         print("REceived didEnableWebExtension: \(extensionTypeRawValue), state: \(state)")
-
             if let ext = WEBExtension(rawValue: extensionTypeRawValue) {
                 onExtensionStateChange?(ext, state)
-//                switch ext {
-//                case .chrome:
-//                    NetworkExtensionState.shared.isChromeExtensionEnabled = state
-//                case .safari:
-//                    NetworkExtensionState.shared.isSafariExtensionEnabled = state
-//                }
             }
-//        }
     }
     
     func didStartedBlocking(_ state: Bool, _ endDate: Date) -> Void {
