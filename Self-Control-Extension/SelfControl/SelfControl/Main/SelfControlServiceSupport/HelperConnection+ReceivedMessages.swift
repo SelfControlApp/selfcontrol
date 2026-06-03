@@ -8,6 +8,8 @@
 extension HelperConnection {
     func didEnableWebExtension(_ extensionTypeRawValue: String, state: Bool) {
 //        Task { @MainActor in
+        print("REceived didEnableWebExtension: \(extensionTypeRawValue), state: \(state)")
+
             if let ext = WEBExtension(rawValue: extensionTypeRawValue) {
                 onExtensionStateChange?(ext, state)
 //                switch ext {

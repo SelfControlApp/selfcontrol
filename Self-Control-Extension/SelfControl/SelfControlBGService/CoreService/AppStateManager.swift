@@ -26,9 +26,9 @@ actor AppStateManager {
     
     private func receivedSafariApiRequest() {
         safariLastApiUpdateReceivedTime = Date()
-        guard !isChromeExtensionRunning else { return }
-        isChromeExtensionRunning = true
-        HelperService.send_didEnableWebExtension(WEBExtension.chrome.rawValue, state: true)
+        guard !isSafariExtensionRunning else { return }
+        isSafariExtensionRunning = true
+        HelperService.send_didEnableWebExtension(WEBExtension.safari.rawValue, state: true)
     }
     
     private func receivedChromeApiRequest() {
