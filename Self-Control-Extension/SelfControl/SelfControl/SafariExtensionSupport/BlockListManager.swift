@@ -77,7 +77,6 @@ enum BlockListManager {
                     print("Safari Extension State :\(state?.isEnabled ?? false)")
                     Task { @MainActor in
                         if NetworkExtensionState.shared.isEnabled == true {
-                            _ = IPCConnectionProxy().sendMessageToSetActiveBrowserExtension(ActiveBrowserExtensios.safari.rawValue, state: state?.isEnabled ?? false)
                             NetworkExtensionState.shared.isSafariExtensionEnabled = state?.isEnabled ?? false
                             NetworkExtensionState.shared.printAll()
                         }
@@ -93,7 +92,6 @@ enum BlockListManager {
                     if error == nil {
                         Task { @MainActor in
                             if NetworkExtensionState.shared.isEnabled == true && NetworkExtensionState.shared.isSafariExtensionEnabled == false { //possibly extension is ready now
-                                _ = IPCConnectionProxy().sendMessageToSetActiveBrowserExtension(ActiveBrowserExtensios.safari.rawValue, state: true)
                                 NetworkExtensionState.shared.isSafariExtensionEnabled = true
                                 NetworkExtensionState.shared.printAll()
                             }
@@ -107,9 +105,7 @@ enum BlockListManager {
     
     static func updateExtensionState() {
         Task { @MainActor in
-            if NetworkExtensionState.shared.isEnabled == true {
-                IPCConnectionProxy().sendMessageToSetActiveBrowserExtension(ActiveBrowserExtensios.safari.rawValue, state: SafariExtensionManager.shared.isExtensionReady)
-            }
+            if NetworkExtensionState.shared.isEnabled == true { }
         }
     }
     
@@ -122,7 +118,6 @@ enum BlockListManager {
     static func deactivateSafariBlocking() {
         updateExtensionState()
         SafariExtensionManager.shared.disableExtension()
-        _ = IPCConnectionProxy().sendMessageToSetActiveBrowserExtension(ActiveBrowserExtensios.safari.rawValue, state: SafariExtensionManager.shared.isExtensionReady)
         os_log("Safari Message toExtensionWithIdentifier deactivateSafariBlocking called:")
     }
 }

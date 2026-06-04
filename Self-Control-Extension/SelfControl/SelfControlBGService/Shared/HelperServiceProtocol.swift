@@ -26,7 +26,7 @@ import Foundation
     func stopNetworkBlocking()
     func extendBlocking(minutes: Int)
     func setPreference(key: String, value: Bool)
-    
+    func setBlockedURLs(_ urls: [String])
     func getBlockedStates(reply: @escaping (_ state: Bool, _ endDate: Date?) -> Void)
     //Save block url list
 }

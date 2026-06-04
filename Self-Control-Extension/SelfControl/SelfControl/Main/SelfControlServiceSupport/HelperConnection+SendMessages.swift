@@ -31,4 +31,8 @@ extension HelperConnection {
     func send_setPreference(key: String, value: Bool) {
         bgProxyServiceConnection()?.setPreference(key: key, value: value)
     }
+    
+    func send_setBlockedURLs(_ urls: [String]) {
+        bgProxyServiceConnection()?.setBlockedURLs(urls)
+    }
 }

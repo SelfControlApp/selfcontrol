@@ -125,7 +125,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
-				IPCConnectionProxy.swift,
 			);
 			target = 77BA53052D9D5E2A00863476 /* SelfControlNetworkExtension */;
 		};
@@ -156,7 +155,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				BlockOrAllowList.swift,
-				IPCConnectionProxy.swift,
 				"String+URL.swift",
 			);
 			target = 77BA52D52D9D5D7700863476 /* SelfControl */;

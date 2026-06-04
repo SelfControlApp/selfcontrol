@@ -219,7 +219,7 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
   // MARK: - UI and Filter Management
   
     func setBlockedUrls(urls: [String]) {
-        IPCConnectionProxy().setBlockedURLs(urls)
+        HelperConnection.shared.send_setBlockedURLs(urls)
         if status == .stopped { //If legacy blocking
             if isActiveBlocking { //if is active blocking
                 updateLegacyBlockedList(newBlockedDomains: urls)
