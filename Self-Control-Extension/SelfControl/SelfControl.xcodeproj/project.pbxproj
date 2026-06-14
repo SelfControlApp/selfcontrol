@@ -140,7 +140,7 @@
 		9A33B1F52FAFA3FE002AAA0F /* Exceptions for "SelfControl" folder in "SelfControl" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Main/SelfControlServiceSupport/SelfControlServiceSupport.swift,
+				Main/SelfControlBGServiceSupport/SelfControlServiceSupport.swift,
 			);
 			target = 77BA52D52D9D5D7700863476 /* SelfControl */;
 		};
@@ -722,7 +722,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.5;
-				MARKETING_VERSION = 1.8;
+				MARKETING_VERSION = 1.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.application.SelfControl.corebits;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Self Control app dev";
@@ -757,7 +757,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.5;
-				MARKETING_VERSION = 1.8;
+				MARKETING_VERSION = 1.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.application.SelfControl.corebits;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Self Control app dev";

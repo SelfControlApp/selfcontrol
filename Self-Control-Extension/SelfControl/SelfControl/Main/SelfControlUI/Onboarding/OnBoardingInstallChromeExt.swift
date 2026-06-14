@@ -9,6 +9,8 @@
 import SwiftUI
 
 struct OnBoardingInstallChromeExt: View {
+    @EnvironmentObject var viewModel: FilterViewModel
+    
     var body: some View {
         VStack {
             Text("Welcome to SelfControl!")
@@ -21,13 +23,13 @@ struct OnBoardingInstallChromeExt: View {
             
             Spacer()
             
-            Text("To get started, we'll need t o prepare your computer so our blocks work properly.")
+            Text("To get started, we'll need to prepare your computer so our blocks work properly.")
                 .font(.title2)
             
             Spacer()
             OnboardingStepView(step: 2)
 
-            Text("Install the SelfControl Chrome Extension so we can provide better blocking in Chrome.. We never store, share, or analyze your data - this is used or blocking.")
+            Text("Install the SelfControl Chrome Extension so we can provide better blocking in Chrome. We never store, share, or analyze your data - this is used or blocking.")
                 .font(.title2)
 
             Spacer()
@@ -39,13 +41,15 @@ struct OnBoardingInstallChromeExt: View {
 //                }
                 let task = Process()
                 task.launchPath = "/usr/bin/open"
-                task.arguments = ["-a", "Google Chrome", "chrome://extensions"]
+                task.arguments = ["-a", "Google Chrome", "https://chromewebstore.google.com/detail/selfcontrol-blocker/lmpnckgcpefbmipnbfcickkaakpgbdhj"]
                 task.launch()
             }
             
             Spacer()
             ClickableLinkButton(message: "Skip and accept subpar blocking", onTap: {
                 print("Handle callback")
+                AppPreferences.setChromeExtensionInstalled()
+                viewModel.updateChromeExtensionViewStatus()
             })
             Spacer()
 //                .tint(.blue)

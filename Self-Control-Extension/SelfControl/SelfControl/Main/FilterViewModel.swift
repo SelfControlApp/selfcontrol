@@ -45,9 +45,10 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
             self.viewState = .filter
         }
     }
-
-    private var isSafariExtensionInstalled: Bool = AppPreferences.isSafariExtensionInstalled
-    private var isChromeExtensionInstalled: Bool = AppPreferences.isChromeExtensionInstalled
+    
+    private var isSafariExtensionInstalled: Bool { AppPreferences.isSafariExtensionInstalled }
+    private var isChromeExtensionInstalled: Bool { AppPreferences.isChromeExtensionInstalled }
+    
     @State private var domains = AppPreferences.getBlockedDomains()
     private(set) var blockerStorage: BlockedURLStore?
     private var cancellables = Set<AnyCancellable>()
@@ -97,14 +98,12 @@ final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionReques
                 switch ext {
                 case .safari:
                     print("SafariExtensionManager.shared.onChange++")
-                    self.isSafariExtensionInstalled = true
                     AppPreferences.setSafariExtensionInstalled()
                     Task { @MainActor in
                         self.updateSafariExtensionViewStatus()
                     }
                 case .chrome:
                     print("Chrome.shared.onChange++")
-                    self.isChromeExtensionInstalled = true
                     AppPreferences.setChromeExtensionInstalled()
                     Task { @MainActor in
                         self.updateChromeExtensionViewStatus()

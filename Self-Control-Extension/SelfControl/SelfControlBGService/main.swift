@@ -8,7 +8,8 @@
 import Foundation
 import OSLog
 
-os_log("[SC] 🔍] BG AshouldAcceptNewConnection")
-print("Hello, World!")
+//os_log("[SC] 🔍] BG AshouldAcceptNewConnection")
+BGFileLogger.info("\(#function) Hello, World!")
+//print("Hello, World!")
 let deletegate = AppDelegate.shared
 RunLoop.current.run()

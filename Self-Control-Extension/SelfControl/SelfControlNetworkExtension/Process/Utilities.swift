@@ -31,7 +31,7 @@ private let PROC_PIDPATHINFO_MAXSIZE: Int = 4096
 final class Utilities {
     // Provided elsewhere in project
 
-    let logger = Logger(subsystem: "com.example.myapp", category: "network")
+    let logger = Logger(subsystem: "com.application.SelfControl.corebits.SelfControl-Safari-Extension", category: "network")
 
     // MARK: - Version / Bundle
 

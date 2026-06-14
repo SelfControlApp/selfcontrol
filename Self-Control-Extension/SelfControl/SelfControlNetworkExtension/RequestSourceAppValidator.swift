@@ -29,7 +29,7 @@ struct RequestSourceAppValidator {
             return nil
         }
         
-        // Convert NSData → audit_token_t
+        // Convert NSData → audit_token_tdf
         var auditToken = auditTokenData.withUnsafeBytes { ptr -> audit_token_t in
             return ptr.load(as: audit_token_t.self)
         }

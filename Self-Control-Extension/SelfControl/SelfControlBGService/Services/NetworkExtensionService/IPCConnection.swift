@@ -39,10 +39,12 @@ class IPCConnection: NSObject, NSSecureCoding {
     func register(completionHandler: @escaping (Bool) -> Void) {
         
 //        self.delegate = delegate
-        os_log("[SC] 🔍] register(withExtension")
+//        os_log("[SC] 🔍] register(withExtension")
+        BGFileLogger.error("\(#function) ")
 
         guard currentConnection == nil else {
-            os_log("[SC] 🔍] Already registered with the provider")
+//            os_log("[SC] 🔍] Already registered with the provider")
+            BGFileLogger.error("\(#function) Already registered with the provider")
             completionHandler(true)
             return
         }
@@ -53,9 +55,11 @@ class IPCConnection: NSObject, NSSecureCoding {
         newConnection.exportedInterface = NSXPCInterface(with: ExtensionToApp.self)
         newConnection.exportedObject = self
         newConnection.invalidationHandler = { [weak self] in
+            BGFileLogger.error("\(#function) invalidationHandler")
             self?.currentConnection = nil
         }
         newConnection.interruptionHandler = { [weak self] in
+            BGFileLogger.error("\(#function) interruptionHandler")
             self?.currentConnection = nil
         }
         // The remote object is the provider's IPCConnection instance.
@@ -65,12 +69,14 @@ class IPCConnection: NSObject, NSSecureCoding {
         newConnection.resume()
         
         guard let providerProxy = newConnection.remoteObjectProxyWithErrorHandler({ registerError in
-            os_log("[SC] 🔍] Failed to register with the provider: %{public}@", registerError.localizedDescription)
+//            os_log("[SC] 🔍] Failed to register with the provider: %{public}@", registerError.localizedDescription)
+            BGFileLogger.error("\(#function) Failed to register with the provider: \(registerError.localizedDescription) ")
             self.currentConnection?.invalidate()
             self.currentConnection = nil
             completionHandler(false)
         }) as? AppToExtensionExtension else {
-            os_log("[SC] 🔍] Failed to create a remote object proxy for the provider")
+            BGFileLogger.error("\(#function) Failed to create a remote object proxy ")
+//            os_log("[SC] 🔍] Failed to create a remote object proxy for the provider")
             return
         }
         providerProxy.register(completionHandler)
@@ -84,16 +90,19 @@ class IPCConnection: NSObject, NSSecureCoding {
   func promptUser(aboutFlow flowInfo: [String: String], responseHandler:@escaping (Bool) -> Void) -> Bool {
     
       guard let connection = currentConnection else {
-          os_log("[SC] 🔍] Cannot prompt user because the app isn't registered")
+          BGFileLogger.error("\(#function) Cannot prompt user because the app isn't registered")
+//          os_log("[SC] 🔍] Cannot prompt user because the app isn't registered")
           return false
       }
     
     guard let appProxy = connection.remoteObjectProxyWithErrorHandler({ promptError in
-      os_log("[SC] 🔍] Failed to prompt the user: %{public}@", promptError.localizedDescription)
+//      os_log("[SC] 🔍] Failed to prompt the user: %{public}@", promptError.localizedDescription)
+        BGFileLogger.error("\(#function) Failed to prompt the user: \(promptError.localizedDescription) ")
       self.currentConnection = nil
       responseHandler(true)
     }) as? ExtensionToApp else {
-        os_log("Failed to create a remote object proxy for the app")
+        BGFileLogger.error("\(#function) Failed to create a remote object proxy ")
+//        os_log("Failed to create a remote object proxy for the app")
         return false
     }
     
@@ -131,33 +140,41 @@ extension IPCConnection: NSXPCListenerDelegate {
   }
     
     func enableURLBlocking(_ urls: [String]) {
-        os_log("[SC] 🔍] Enabling URL blocking")
+//        os_log("[SC] 🔍] Enabling URL blocking")
+        BGFileLogger.info("\(#function) Enabling URL blocking")
         guard let providerProxy = currentConnection?.remoteObjectProxyWithErrorHandler({ registerError in
           os_log("[SC] 🔍] Failed to register with the provider: %{public}@", registerError.localizedDescription)
         }) as? AppToExtensionExtension else {
-            os_log("[SC] 🔍] Failed to create a remote object proxy for the provider")
+//            os_log("[SC] 🔍] Failed to create a remote object proxy for the provider")
+            BGFileLogger.error("\(#function) Failed to create a remote object proxy ")
             return
         }
         providerProxy.setBlockedURLs(urls)
     }
     
     func sendMessageToSetActiveBrowserExtension(_ extensionTypeRawValue: String, state: Bool) {
-        os_log("[SC] 🔍] sendMessageToSetActiveBrowserExtension:\(extensionTypeRawValue), state:\(state)")
+//        os_log("[SC] 🔍] sendMessageToSetActiveBrowserExtension:\(extensionTypeRawValue), state:\(state)")
+        BGFileLogger.error("\(#function) Failed to create a remote object proxy \(extensionTypeRawValue), state:\(state)")
         guard let providerProxy = currentConnection?.remoteObjectProxyWithErrorHandler({ registerError in
-          os_log("[SC] 🔍] sendMessageToSetActiveBrowserExtension: %{public}@", registerError.localizedDescription)
+            BGFileLogger.error("\(#function) \(registerError.localizedDescription)")
+//          os_log("[SC] 🔍] sendMessageToSetActiveBrowserExtension: %{public}@", registerError.localizedDescription)
         }) as? AppToExtensionExtension else {
-            os_log("[SC] 🔍] Failed to create a remote object proxy for the provider")
+            BGFileLogger.error("\(#function) Failed to create a remote object proxy ")
+//            os_log("[SC] 🔍] Failed to create a remote object proxy for the provider")
             return
         }
         providerProxy.setActiveBrowserExtension(extensionTypeRawValue, state: state)
     }
     
     func sendMessageToEnableNetworkExtension(_ enable: Bool) -> Bool {
-        os_log("[SC] 🔍] sendMessageToEnableNetworkExtension state %{public}d", enable)
+//        os_log("[SC] 🔍] sendMessageToEnableNetworkExtension state %{public}d", enable)
+        BGFileLogger.error("\(#function) \(enable)")
         guard let providerProxy = currentConnection?.remoteObjectProxyWithErrorHandler({ registerError in
-          os_log("[SC] 🔍] sendMessageToEnableNetworkExtension: %{public}@", registerError.localizedDescription)
+//          os_log("[SC] 🔍] sendMessageToEnableNetworkExtension: %{public}@", registerError.localizedDescription)
+            BGFileLogger.error("\(#function) \(enable)")
         }) as? AppToExtensionExtension else {
-            os_log("[SC] 🔍] Failed to create a remote object proxy for the provider")
+            BGFileLogger.error("\(#function) Failed to create a remote object proxy")
+//            os_log("[SC] 🔍] Failed to create a remote object proxy for the provider")
             return false
         }
         providerProxy.setEnableService(enable)

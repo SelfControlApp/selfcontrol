@@ -9,6 +9,8 @@ import SwiftUI
 import SafariServices
 
 struct OnBoardingInstallSafariExt: View {
+    @EnvironmentObject var viewModel: FilterViewModel
+
     var body: some View {
         VStack {
             Text("Welcome to SelfControl!")
@@ -21,13 +23,13 @@ struct OnBoardingInstallSafariExt: View {
             
             Spacer()
             
-            Text("To get started, we'll need t o prepare your computer so our blocks work properly.")
+            Text("To get started, we'll need to prepare your computer so our blocks work properly.")
                 .font(.title2)
             
             Spacer()
             OnboardingStepView(step: 3)
 
-            Text("Install the SelfControl Saari Extension so we can provide better blocking in Safari. We never store, share,o r analyze your data - this i s used o r blocking only.")
+            Text("Install the SelfControl Safari Extension so we can provide better blocking in Safari. We never store, share, or analyze your data — this is used for blocking only.")
                 .font(.title2)
 
             Spacer()
@@ -40,6 +42,8 @@ struct OnBoardingInstallSafariExt: View {
             Spacer()
             ClickableLinkButton(message: "Skip and accept subpar blocking", onTap: {
                 print("Handle callback")
+                AppPreferences.setSafariExtensionInstalled()
+                viewModel.updateSafariExtensionViewStatus()
             })
             Spacer()
 //                .tint(.blue)

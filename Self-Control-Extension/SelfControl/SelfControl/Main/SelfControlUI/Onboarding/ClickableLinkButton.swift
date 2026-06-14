@@ -13,10 +13,11 @@ struct ClickableLinkButton: View {
     var body: some View {
         Text("[\(message)](https://localhost)")
             .environment(\.openURL, OpenURLAction { url in
-             handleURL(url)
-             return .handled
+                handleURL(url)
+                return .handled
             })
     }
+    
     func handleURL(_ url: URL) {
         print("Handled URL: \(url)")
         onTap()

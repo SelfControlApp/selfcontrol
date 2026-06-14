@@ -70,7 +70,10 @@ struct AppPreferences {
     }
     
     static var showVerifyNetworkAlertBeforeBlock: Bool {
-        return UserDefaults.standard.bool(forKey: verifyNetworkBeforeBlock)
+        if let value = defaults.value(forKey: verifyNetworkBeforeBlock) as? Bool {
+            return value
+        }
+        return true
     }
     
     static func setShowVerifyNetworkAlertBeforeBlock(_ isEnabled: Bool) {

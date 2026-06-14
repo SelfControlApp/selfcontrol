@@ -798,6 +798,7 @@ private struct DomainListSection: View {
                                 }
                                 .buttonStyle(.plain)
                                 .focusable(false)
+                                .disabled(isBlockingMode)
                                 .onHover { hovering in
                                     withAnimation(DesignSystem.animationFast) {
                                         isHoveringBulkEdit = hovering

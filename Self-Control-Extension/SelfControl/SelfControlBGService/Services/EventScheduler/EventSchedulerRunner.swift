@@ -42,8 +42,8 @@ public actor EventSchedulerRunner {
     // MARK: - Control
 
     public func start() async {
-        os_log("[SC] 🔍] BG Event Scheduler is starting")
-
+//        os_log("[SC] 🔍] BG Event Scheduler is starting")
+        BGFileLogger.info("\(#function) Event Scheduler is starting")
         guard timer == nil else { return }
         await scheduleNextTimer()
     }
@@ -107,8 +107,8 @@ public actor EventSchedulerRunner {
         // If you already obtain events differently, keep your existing code here.
         // Example (keep your own):
         let (maybeNextDate, maybeEvent) = earliestNextStart(after: now, events: events, calendar: calendar)
-        os_log("[SC] 🔍] BG scheduleNextTimer: %{public}@ ",maybeNextDate?.debugDescription ?? "nil")
-
+//        os_log("[SC] 🔍] BG scheduleNextTimer: %{public}@ ",maybeNextDate?.debugDescription ?? "nil")
+        BGFileLogger.info("\(#function) scheduleNextTimer:\(maybeNextDate?.debugDescription ?? "nil")")
         guard let fireDate = maybeNextDate, let event = maybeEvent else {
             scheduledEvent = nil
             return
@@ -138,8 +138,8 @@ public actor EventSchedulerRunner {
     }
     
     private func timerDidFire() async {
-        os_log("[SC] 🔍] BG timerDidFire: %{public}%@ ",scheduledEvent.debugDescription)
-
+//        os_log("[SC] 🔍] BG timerDidFire: %{public}%@ ",scheduledEvent.debugDescription)
+        BGFileLogger.info("\(#function) timerDidFire:\(scheduledEvent.debugDescription)")
         // Clear scheduled event if you do that today
 
 

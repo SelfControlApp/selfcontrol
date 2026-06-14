@@ -24,17 +24,19 @@ final class ChromeExtensionRequestListner: NSObject {
 //    private var lastUpdateReceivedTime = Date()
     
     func startListening() {
-        os_log("[SC] 🔍] PlistListner startListening")
+//        os_log("[SC] 🔍] PlistListner startListening")
 
         // Safely convert Int port to NWEndpoint.Port
         guard let port = NWEndpoint.Port(rawValue: ChromeExtensionRequestListner.servicePort) else {
-            os_log("[SC] 🔍] BG Invalid service port: %d", ChromeExtensionRequestListner.servicePort)
+//            os_log("[SC] 🔍] BG Invalid service port: %d", ChromeExtensionRequestListner.servicePort)
+            BGFileLogger.error("\(#function) invalid service port: : \(ChromeExtensionRequestListner.servicePort)")
             return
         }
         do {
             listener = try NWListener(using: .tcp, on: port)
         } catch {
-            os_log("[SC] 🔍] Failed to create NWListener: %{public}@", error.localizedDescription)
+            BGFileLogger.error("\(#function) error: \(error.localizedDescription)")
+//            os_log("[SC] 🔍] BG Failed to create NWListener: %{public}@", error.localizedDescription)
             return
         }
         
@@ -73,11 +75,12 @@ final class ChromeExtensionRequestListner: NSObject {
             conn.start(queue: DispatchQueue.global(qos: .userInitiated))
 
             conn.stateUpdateHandler = { state in
+                BGFileLogger.info("\(#function) Conn stateUpdateHandler: : \(state)")
                 if state == .ready {
-//                    os_log("[SC] 🔍] PlistListner stateUpdateHandler ready")
+                    os_log("[SC] 🔍] PlistListner stateUpdateHandler ready")
                 }
                 if state == .cancelled {
-//                    os_log("[SC] 🔍] PlistListner stateUpdateHandler cancelled")
+                    os_log("[SC] 🔍] BG PlistListner stateUpdateHandler cancelled")
                 }
             }
         }
@@ -115,6 +118,7 @@ final class ChromeExtensionRequestListner: NSObject {
         """
         connection.send(content: response.data(using: .utf8), contentContext: .finalMessage , completion: .contentProcessed { error in
             if let error = error {
+                BGFileLogger.error("\(#function) error: \(error.localizedDescription)")
 //                os_log("[SC] 🔍] PlistListner Sent response error: %{public}@", "\(error)")
             } else {
 //                os_log("[SC] 🔍] PlistListner Sent response successfully")
