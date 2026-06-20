@@ -111,6 +111,7 @@ final class DelayTimerHandler {
             // Reschedule timer to the new deadline
             let remaining = max(0, newFire.timeIntervalSince(now))
             os_log("[SC] 🔍] BG Extending blocking by %{public}d minutes (%{public}.0f s). New remaining: %.0f s", minutes, additionalSeconds, remaining)
+            BGFileLogger.info("[SC] 🔍] BG Extending blocking by \(minutes) minutes \(additionalSeconds). New remaining: \(remaining)")
             timer.schedule(deadline: .now() + remaining, repeating: .never, leeway: .seconds(1))
         }
     }
