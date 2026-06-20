@@ -13,8 +13,8 @@ final class SCUIUtility {
             let alert = NSAlert()
             alert.messageText = NSLocalizedString("No network connection detected", comment: "No network connection detected message")
             alert.informativeText = NSLocalizedString("A block cannot be started without a working network connection.  You can override this setting in Preferences.", comment: "Message when network connection is unavailable")
-            alert.addButton(withTitle: NSLocalizedString("OK", comment: "OK button"))
             alert.runModal()
+            alert.addButton(withTitle: NSLocalizedString("OK", comment: "OK button"))
             return false
         }
         return true
