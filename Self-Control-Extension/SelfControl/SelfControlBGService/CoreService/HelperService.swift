@@ -48,10 +48,12 @@ final class HelperService: NSObject, HelperServiceProtocol {
         var proxy: AnyObject?
         guard let conn = clientConnection else {
             os_log("[SC] 🔍] BG No client connection")
+            BGFileLogger.error("BG No client connection")
             return nil
         }
         proxy = conn.remoteObjectProxyWithErrorHandler { err in
             os_log("[SC] 🔍] BG Client proxy error:\(err)")
+            BGFileLogger.error("HelperService: proxyConnectionService: Error: \(err)")
            } as AnyObject?
         return proxy as? HelperClientProtocol
     }

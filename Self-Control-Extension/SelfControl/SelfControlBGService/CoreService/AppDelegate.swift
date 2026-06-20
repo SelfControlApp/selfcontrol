@@ -30,7 +30,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSXPCListenerDelegate 
 
         print("shouldAcceptNewConnection")
         os_log("[SC] 🔍] BG shouldAcceptNewConnection")
-
+        BGFileLogger.info("shouldAcceptNewConnection")
         let exportedInterface =
             NSXPCInterface(with: HelperServiceProtocol.self)
 
@@ -39,10 +39,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSXPCListenerDelegate 
         newConnection.remoteObjectInterface = NSXPCInterface(with: HelperClientProtocol.self)
         newConnection.invalidationHandler = {
             os_log("[SC] 🔍] BG newConnection.invalidationHandler")
+            BGFileLogger.error("newConnection.invalidationHandler")
         }
 
         newConnection.interruptionHandler = {
             os_log("[SC] 🔍] BG newConnection.interruptionHandler")
+            BGFileLogger.error("newConnection.interruptionHandler")
         }
         service.clientConnection = newConnection
         newConnection.resume()
