@@ -144,6 +144,7 @@ extension IPCConnection: NSXPCListenerDelegate {
         BGFileLogger.info("\(#function) Enabling URL blocking")
         guard let providerProxy = currentConnection?.remoteObjectProxyWithErrorHandler({ registerError in
           os_log("[SC] 🔍] Failed to register with the provider: %{public}@", registerError.localizedDescription)
+            BGFileLogger.error("\(#function) Failed to register with the provider: \(registerError.localizedDescription)")
         }) as? AppToExtensionExtension else {
 //            os_log("[SC] 🔍] Failed to create a remote object proxy for the provider")
             BGFileLogger.error("\(#function) Failed to create a remote object proxy ")
