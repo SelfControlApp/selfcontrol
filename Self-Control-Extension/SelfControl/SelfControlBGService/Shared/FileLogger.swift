@@ -126,6 +126,7 @@ private actor FileLogger {
                 try fileHandle?.seekToEnd()
                 try fileHandle?.write(contentsOf: data)
             } catch {
+                os_log("[SC] 🔍] File handler error: %{public}@", error.localizedDescription)
                 // Give up silently to avoid crashing the app
             }
         }
