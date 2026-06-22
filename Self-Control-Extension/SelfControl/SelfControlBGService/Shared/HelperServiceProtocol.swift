@@ -10,7 +10,7 @@ import Foundation
 }
 
 // The service protocol defines the operations the UI app can call on the helper.
-@objc public protocol HelperServiceProtocol: AppToExtensionExtension {
+@objc public protocol HelperServiceProtocol {
     // One-time registration so the helper can call back into the UI app.
     func registerClient()
     

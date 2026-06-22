@@ -438,7 +438,7 @@ class FilterDataProvider: NEFilterDataProvider {
 //        completionHandler(.allow())
 //    }
     
-    /// Processes the flow and returns a verdict.
+    ///ss Processes the flow and returns a verdict.
     /// This is a simplified test rule that blocks flows destined for "example.com".
     private func processEvent(for flow: NEFilterSocketFlow) -> NEFilterNewFlowVerdict {
       guard let endpoint = flow.remoteEndpoint as? NWHostEndpoint else {
@@ -471,6 +471,8 @@ class FilterDataProvider: NEFilterDataProvider {
     private func addRelatedFlow(forKey key: String, flow: NEFilterSocketFlow) {
       os_log("[SC] 🔍 NE] Adding related flow for key: %@", log: OSLog.default, type: .debug, key)
       if relatedFlows[key] == nil {
+          
+          
         relatedFlows[key] = []
       }
       relatedFlows[key]?.append(flow)

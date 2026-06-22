@@ -13,10 +13,11 @@ final class HelperService: NSObject, HelperServiceProtocol {
     let queue = DispatchQueue(label: "com.application.SelfControl.corebits.bgservice.queue")
     var clientConnection: NSXPCConnection?
     let chromeService = ChromeExtensionRequestListner()
-    var blockedUrls: [String] = []
+    var blockedUrls: [String] = HelperAppPreferences.loadlockedUrls() ?? []
     private var timer: DelayTimerHandler?
     private var eventSchedulerController: EventSchedulerRunnerController?
-    
+    let networkExtension = IPCConnection.shared
+
     override init() {
         super.init()
         
@@ -35,6 +36,10 @@ final class HelperService: NSObject, HelperServiceProtocol {
 //            client.didUpdateStatus(self.isMonitoring ? "running" : "stopped")
             print("Register Client received")
             self.blockedUrls = HelperAppPreferences.loadlockedUrls() ?? []
+            self.networkExtension.register(completionHandler: { [weak self] status  in
+                os_log("[SC] 🔍] BG register NE status: \(status)")
+                self?.networkExtension.sendMessageToSetBlockingURLs(self?.blockedUrls ?? [])
+            })
         }
         self.sendPing()
 
@@ -105,17 +110,23 @@ final class HelperService: NSObject, HelperServiceProtocol {
         }
     }
     
-    func saveBlockedUrls(blockedURLS: [String]) {
+    func setBlockedURLs(_ urls: [String]) {
+        os_log("[SC] 🔍] BG setBlockedURLs: %{public}@", urls)
         queue.async(flags: .barrier) {
-            self.blockedUrls = blockedURLS
+            self.networkExtension.sendMessageToSetBlockingURLs(urls)
+            self.blockedUrls = urls
+            HelperAppPreferences.saveBlockedUrls(blockedUrls: urls)
         }
     }
     
     func startNetwrokBlocking(minutes: Int) {
-        os_log("[SC] 🔍] BG startNetwrokBlocking:\(minutes)")
-        self.register({ status in
+        os_log("[SC] 🔍] BG startNetwrokBlocking: %{public}d", minutes)
+        self.networkExtension.register(completionHandler: { [weak self] status  in
             os_log("[SC] 🔍] BG register NE status: \(status)")
+            self?.networkExtension.sendMessageToSetBlockingURLs(self?.blockedUrls ?? [])
         })
+        os_log("[SC] 🔍] BG startNetwrokBlocking: %{public}@", blockedUrls)
+
         queue.async { [weak self] in
             self?.startNetworkBlocking()
             self?.timer = DelayTimerHandler(delay: Double(minutes), completionHandler: { [weak self] in
@@ -139,7 +150,7 @@ final class HelperService: NSObject, HelperServiceProtocol {
         timer?.cancelTimer()
         queue.async {
             Task {
-                _ = IPCConnection.shared.sendMessageToEnableNetworkExtension(false)
+                _ = self.networkExtension.sendMessageToEnableNetworkExtension(false)
                 await AppStateManager.shared.deactivateContentBlocking()
                 Sound.checkAndPlay()
             }
@@ -180,12 +191,11 @@ final class HelperService: NSObject, HelperServiceProtocol {
     private func startNetworkBlocking() {
         queue.async {
             Task {
-                _ = IPCConnection.shared.sendMessageToEnableNetworkExtension(true)
+                _ = self.networkExtension.sendMessageToEnableNetworkExtension(true)
                 await AppStateManager.shared.activateContentBlocking()
                 FilterController.restartFilter { result in
                     os_log("[SC] 🔍] BG FilterController.restartFilter: \(result)")
                 }
-
             }
         }
     }

@@ -29,8 +29,6 @@ class IPCConnection: NSObject, NSSecureCoding {
   var currentConnection: NSXPCConnection?
   weak var delegate: ExtensionToApp?
   static let shared = IPCConnection()
-//    var blockedUrls: [String] = ProxyPreferences.getBlockedDomains()
-    var blockedUrls: [String] = [String]()
     // Published extension state for UI/observers
 
   // MARK: Methods
@@ -80,7 +78,6 @@ class IPCConnection: NSObject, NSSecureCoding {
             return
         }
         providerProxy.register(completionHandler)
-        providerProxy.setBlockedURLs(blockedUrls)
     }
   
   /**
@@ -139,8 +136,7 @@ extension IPCConnection: NSXPCListenerDelegate {
     return true
   }
     
-    func enableURLBlocking(_ urls: [String]) {
-//        os_log("[SC] 🔍] Enabling URL blocking")
+    func sendMessageToSetBlockingURLs(_ urls: [String]) { //        os_log("[SC] 🔍] Enabling URL blocking")
         BGFileLogger.info("\(#function) Enabling URL blocking")
         guard let providerProxy = currentConnection?.remoteObjectProxyWithErrorHandler({ registerError in
           os_log("[SC] 🔍] Failed to register with the provider: %{public}@", registerError.localizedDescription)
@@ -181,30 +177,6 @@ extension IPCConnection: NSXPCListenerDelegate {
         providerProxy.setEnableService(enable)
         return true
     }
-}
-
-
-extension IPCConnection: AppToExtensionExtension {
-    func setEnableService(_ enable: Bool) {
-        os_log("[SC] 🔍] setEnableService")
-
-    } //Unused cleanup later
-    
-    func setBlockedURLs(_ urls: [String]) {
-        os_log("[SC] 🔍] setBlockedURLs")
-    } //Unused cleanup later
-    
-    func setActiveBrowserExtension(_ extensionTypeRawValue: String, state: Bool) {
-        os_log("[SC] 🔍] setActiveBrowserExtension")
-    } //Unused cleanup later
-  
-  // MARK: ProviderCommunication
-  
-  func register(_ completionHandler: @escaping (Bool) -> Void) {
-    
-    os_log("[SC] 🔍] App registered")
-    completionHandler(true)
-  }
 }
 
 extension IPCConnection: ExtensionToApp {
