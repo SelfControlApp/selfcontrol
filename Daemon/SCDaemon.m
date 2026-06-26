@@ -124,6 +124,7 @@ float const INACTIVITY_LIMIT_SECS = 60 * 2; // 2 minutes
         }
     }];
 }
+
 - (void)resetInactivityTimer {
     self.lastActivityDate = [NSDate date];
 }
@@ -146,6 +147,11 @@ float const INACTIVITY_LIMIT_SECS = 60 * 2; // 2 minutes
 #pragma mark - NSXPCListenerDelegate
 
 - (BOOL)listener:(NSXPCListener *)listener shouldAcceptNewConnection:(NSXPCConnection *)newConnection {
+//#if DEBUG
+//    // In Debug builds, skip code signature validation to ease development.
+//    NSLog(@"[DEBUG] Accepting XPC connection without signature validation.");
+//    [SCSentry addBreadcrumb:@"DEBUG: accepted XPC connection without validation" category:@"daemon"];
+//#else
     // There is a potential security issue / race condition with matching based on PID, so we use the (technically private) auditToken instead
     audit_token_t auditToken = newConnection.auditToken;
     NSDictionary* guestAttributes = @{
@@ -159,7 +165,7 @@ float const INACTIVITY_LIMIT_SECS = 60 * 2; // 2 minutes
     SecRequirementRef isSelfControlApp;
     // versions before 4.0 didn't have hardened code signing, so aren't trustworthy to talk to the daemon
     // (plus the daemon didn't exist before 4.0 so there's really no reason they should want to run it!)
-    SecRequirementCreateWithString(CFSTR("anchor apple generic and (identifier \"org.eyebeam.SelfControl\" or identifier \"org.eyebeam.selfcontrol-cli\") and info [CFBundleVersion] >= \"407\" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = EG6ZYP3AQH)"), kSecCSDefaultFlags, &isSelfControlApp);
+    SecRequirementCreateWithString(CFSTR("anchor apple generic and (identifier \"org.eyebeam.SelfControl\" or identifier \"org.eyebeam.selfcontrol-cli\") and info [CFBundleVersion] >= \"407\""), kSecCSDefaultFlags, &isSelfControlApp);
     OSStatus clientValidityStatus = SecCodeCheckValidity(guest, kSecCSDefaultFlags, isSelfControlApp);
     
     CFRelease(guest);
@@ -171,6 +177,7 @@ float const INACTIVITY_LIMIT_SECS = 60 * 2; // 2 minutes
         [SCSentry captureError: error];
         return NO;
     }
+//#endif
     
     SCDaemonXPC* scdXPC = [[SCDaemonXPC alloc] init];
     newConnection.exportedInterface = [NSXPCInterface interfaceWithProtocol: @protocol(SCDaemonProtocol)];

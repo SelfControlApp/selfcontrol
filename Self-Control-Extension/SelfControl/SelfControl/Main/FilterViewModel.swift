@@ -1,0 +1,462 @@
+//
+//  FilterViewModel.swift
+//  SelfControl
+//
+//  Created by Egzon Arifi on 02/04/2025.
+//
+
+import SwiftUI
+import NetworkExtension
+import SystemExtensions
+import os.log
+import Cocoa
+import Combine
+import SafariServices
+
+enum SelfControlViewState: Equatable {
+    
+    static func == (lhs: SelfControlViewState, rhs: SelfControlViewState) -> Bool {
+        switch (lhs, rhs) {
+        case (.installNetworkExtension, .installNetworkExtension),
+             (.installSafariExtension, .installSafariExtension),
+             (.installChromeExtension, .installChromeExtension),
+             (.error, .error),
+             (.filter, .filter):
+            return true
+        default:
+            return false
+        }
+    }
+    
+    case installNetworkExtension
+    case installSafariExtension
+    case installChromeExtension
+    case error(Error)
+    case filter
+}
+
+final class FilterViewModel: NSObject, ObservableObject, OSSystemExtensionRequestDelegate, ExtensionToApp {
+    @Published var status: Status = .stopped
+    let dockManager = AppDockManager()
+    @Published var viewState: SelfControlViewState = .installNetworkExtension
+    
+    @Published var isNetworkExtensionSkipped: Bool = false {
+        didSet {
+            self.viewState = .filter
+        }
+    }
+    
+    private var isSafariExtensionInstalled: Bool { AppPreferences.isSafariExtensionInstalled }
+    private var isChromeExtensionInstalled: Bool { AppPreferences.isChromeExtensionInstalled }
+    
+    @State private var domains = AppPreferences.getBlockedDomains()
+    private(set) var blockerStorage: BlockedURLStore?
+    private var cancellables = Set<AnyCancellable>()
+    @Published var isActiveBlocking: Bool = false
+    lazy var selfControlDaemon = SSCDaemonHelper()
+    
+    // Timer to manage delayed actions based on `delay` (in minutes)
+    private var blockTimer: Timer?
+    var timerFireDate: Date?
+    var dockTimer :Timer?
+    // Date formatter used to log entries
+  lazy var dateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+    return formatter
+  }()
+  
+  // Observer for filter configuration changes
+  var observer: Any?
+  var extensionIdentifier: String?
+    
+  // Load the system extension bundle from the app’s Contents/Library/SystemExtensions folder.
+  lazy var extensionBundle: Bundle = {
+    let extensionsDirectoryURL = URL(fileURLWithPath: "Contents/Library/SystemExtensions", relativeTo: Bundle.main.bundleURL)
+    let extensionURLs: [URL]
+    do {
+      extensionURLs = try FileManager.default.contentsOfDirectory(at: extensionsDirectoryURL,
+                                                                  includingPropertiesForKeys: nil,
+                                                                  options: .skipsHiddenFiles)
+    } catch let error {
+      fatalError("Failed to get the contents of \(extensionsDirectoryURL.absoluteString): \(error.localizedDescription)")
+    }
+    guard let extensionURL = extensionURLs.first else {
+      fatalError("Failed to find any system extensions")
+    }
+    guard let extensionBundle = Bundle(url: extensionURL) else {
+      fatalError("Failed to create a bundle with URL \(extensionURL.absoluteString)")
+    }
+    return extensionBundle
+  }()
+  
+    override init() {
+        super.init()
+        onInit()
+        HelperConnection.shared.onExtensionStateChange = { (ext, state) in
+            if state == true {
+                switch ext {
+                case .safari:
+                    print("SafariExtensionManager.shared.onChange++")
+                    AppPreferences.setSafariExtensionInstalled()
+                    Task { @MainActor in
+                        self.updateSafariExtensionViewStatus()
+                    }
+                case .chrome:
+                    print("Chrome.shared.onChange++")
+                    AppPreferences.setChromeExtensionInstalled()
+                    Task { @MainActor in
+                        self.updateChromeExtensionViewStatus()
+                    }
+                }
+            }
+        }
+        self.extensionIdentifier = extensionBundle.bundleIdentifier
+        // Print status whenever it changes
+        $status
+            .sink { [weak self] newValue in
+                guard let self = self else { return }
+                print("[FilterViewModel] status changed to: \(newValue) (\(newValue.text))")
+                os_log("[SC] 🔍] status changed to: %{public}@ (%{public}@)", String(describing: newValue), newValue.text)
+                // Keep extension state in sync when status changes
+                self.refreshExtensionState()
+            }
+            .store(in: &cancellables)
+        Task { @MainActor in
+            self.blockerStorage = BlockedURLStore()
+            self.blockerStorage?.load()
+        }
+    }
+  
+  deinit {
+    if let observer = observer {
+      NotificationCenter.default.removeObserver(observer, name: .NEFilterConfigurationDidChange, object: NEFilterManager.shared())
+    }
+    blockTimer?.invalidate()
+    blockTimer = nil
+  }
+  
+  func onInit() {
+    // On initialization load the filter configuration and register for changes.
+      Self.loadFilterConfiguration { success in
+      guard success else {
+        self.status = .stopped
+        self.viewState = .installNetworkExtension
+        self.refreshExtensionState()
+        return
+      }
+      self.updateStatus()
+      self.observer = NotificationCenter.default.addObserver(forName: .NEFilterConfigurationDidChange,
+                                                             object: NEFilterManager.shared(),
+                                                             queue: .main) { [weak self] _ in
+        self?.updateStatus()
+        self?.refreshExtensionState()
+      }
+      // Initial state refresh
+      self.refreshExtensionState()
+    }
+  }
+  
+  // MARK: - NetworkExtensionStateProviding
+
+    func refreshExtensionState() {
+      let isNEEnabled = NEFilterManager.shared().isEnabled
+      Task { @MainActor in
+          NetworkExtensionState.shared.isEnabled = isNEEnabled
+          if isNEEnabled == true { //Reset
+              NetworkExtensionState.shared.isSafariExtensionEnabled = false
+              NetworkExtensionState.shared.isChromeExtensionEnabled = false
+              updateNetworkExtensionViewStatus()
+          }
+      }       // We’ll query Safari extension state asynchronously for accuracy.
+  }
+  
+    @MainActor func updateNetworkExtensionViewStatus() {
+        if NetworkExtensionState.shared.isEnabled == true {
+            withAnimation(.easeInOut(duration: 3)) {
+                self.viewState = .installChromeExtension
+                updateChromeExtensionViewStatus()
+            }
+        }
+    }
+    
+    @MainActor func updateSafariExtensionViewStatus() {
+        if .installNetworkExtension == viewState {
+            print(".installNetworkExtension == viewState in updateSafariExtensionViewStatus")
+            return
+        }
+        
+        if isSafariExtensionInstalled == true {
+                print(" isSafariExtensionInstalled == true true in Safari")
+                self.viewState = .filter
+        } else {
+            withAnimation(.easeInOut(duration: 3)) {
+                print("viewState = .installChromeExtension true in Safari")
+                self.viewState = .installSafariExtension
+            }
+        }
+    }
+
+    @MainActor func updateChromeExtensionViewStatus() {
+        if .installNetworkExtension == viewState {
+            print(".installNetworkExtension == viewState in Chrome")
+            return
+        }
+
+        if isChromeExtensionInstalled == true {
+            print("if isChromeExtensionInstalled == true in Chrome")
+
+            updateSafariExtensionViewStatus()
+        } else {
+            withAnimation(.easeInOut(duration: 3)) {
+                print("viewState = .installChromeExtension true in Chrome")
+                self.viewState = .installChromeExtension
+            }
+        }
+    }
+
+  // MARK: - UI and Filter Management
+  
+    func setBlockedUrls(urls: [String]) {
+        HelperConnection.shared.send_setBlockedURLs(urls)
+        if status == .stopped { //If legacy blocking
+            if isActiveBlocking { //if is active blocking
+                updateLegacyBlockedList(newBlockedDomains: urls)
+            }
+        }
+        // State might change due to Safari integration
+    }
+        
+  func updateStatus() {
+    if NEFilterManager.shared().isEnabled {
+      registerWithProvider()
+    } else {
+      status = .stopped
+    }
+    // Keep extension state refreshed
+    refreshExtensionState()
+  }
+  
+  func logFlow(_ flowInfo: [String: String], at date: Date, userAllowed: Bool) {
+    guard let localPort = flowInfo[FlowInfoKey.localPort.rawValue],
+          let remoteAddress = flowInfo[FlowInfoKey.remoteAddress.rawValue] else {
+      return
+    }
+    let dateString = dateFormatter.string(from: date)
+    let message = "\(dateString) \(userAllowed ? "ALLOW" : "DENY") \(localPort) <-- \(remoteAddress)\n"
+    os_log("[SC] 🔍] %@", message)
+  }
+  
+  static func loadFilterConfiguration(completionHandler: @escaping (Bool) -> Void) {
+    NEFilterManager.shared().loadFromPreferences { loadError in
+      DispatchQueue.main.async {
+        var success = true
+        if let error = loadError {
+          os_log("[SC] 🔍] Failed to load the filter configuration: %@", error.localizedDescription)
+          success = false
+        }
+        completionHandler(success)
+      }
+    }
+  }
+  
+  func enableFilterConfiguration() {
+    let filterManager = NEFilterManager.shared()
+    guard !filterManager.isEnabled else {
+//      registerWithProvider()
+      return
+    }
+      Self.loadFilterConfiguration { success in
+      guard success else {
+        self.status = .stopped
+        self.refreshExtensionState()
+        return
+      }
+      if filterManager.providerConfiguration == nil {
+        let providerConfiguration = NEFilterProviderConfiguration()
+        providerConfiguration.filterSockets = true
+        providerConfiguration.filterPackets = false
+//        providerConfiguration.filterBrowsers = true
+        filterManager.providerConfiguration = providerConfiguration
+        if let appName = Bundle.main.infoDictionary?["CFBundleName"] as? String {
+          filterManager.localizedDescription = appName
+        }
+      }
+      filterManager.isEnabled = true
+      filterManager.saveToPreferences { saveError in
+        DispatchQueue.main.async {
+          if let error = saveError {
+            os_log("[SC] 🔍] Failed to save the filter configuration: %@", error.localizedDescription)
+            self.status = .stopped
+            self.refreshExtensionState()
+            return
+          }
+//          self.registerWithProvider()
+        }
+      }
+    }
+  }
+    
+  func registerWithProvider() {
+        self.refreshExtensionState()
+      print("+registerWithProvider")
+  }
+  
+    func activateExtension() {
+        // Start by activating the system extension.
+        guard let extensionIdentifier = extensionIdentifier else {
+            self.status = .stopped
+            self.refreshExtensionState()
+            return
+          }
+//        let request = OSSystemExtensionRequest.propertiesRequest(forExtensionWithIdentifier: extensionIdentifier, queue: .main)
+//        request.delegate = self
+//        OSSystemExtensionManager.shared.submitRequest(request)
+        let activationRequest = OSSystemExtensionRequest.activationRequest(forExtensionWithIdentifier: extensionIdentifier, queue: .main)
+        activationRequest.delegate = self
+        OSSystemExtensionManager.shared.submitRequest(activationRequest)
+    }
+  // MARK: - UI Event Handlers.
+  
+  func startFilter() {
+    status = .indeterminate
+    guard !NEFilterManager.shared().isEnabled else {
+      registerWithProvider()
+      return
+    }
+//    guard let extensionIdentifier = extensionBundle.bundleIdentifier else {
+//      status = .stopped
+//      return
+//    }
+      activateExtension()
+  }
+    
+    func checkUrlRequest(url: String) {
+        URLSession.shared.dataTask(with: URL(string: url)!) { (data, response, error) in
+            print("Response: \(String(describing: response))")
+            print("Data: \(String(describing: data))")
+            print("Error: \(String(describing: error))")
+        }.resume()
+    }
+    
+  func stopFilter() {
+    let filterManager = NEFilterManager.shared()
+    status = .indeterminate
+    guard filterManager.isEnabled else {
+      status = .stopped
+      refreshExtensionState()
+      return
+    }
+      Self.loadFilterConfiguration { success in
+      guard success else {
+        self.status = .running
+        self.refreshExtensionState()
+        return
+      }
+      // Disable the content filter configuration.
+      filterManager.isEnabled = false
+      filterManager.saveToPreferences { saveError in
+        DispatchQueue.main.async {
+          if let error = saveError {
+            os_log("[SC] 🔍] Failed to disable the filter configuration: %@", error.localizedDescription)
+            self.status = .running
+            self.refreshExtensionState()
+            return
+          }
+          self.status = .stopped
+          self.refreshExtensionState()
+        }
+      }
+    }
+  }
+  // MARK: - OSSystemExtensionRequestDelegate Methods
+  
+  func request(_ request: OSSystemExtensionRequest, didFinishWithResult result: OSSystemExtensionRequest.Result) {
+    guard result == .completed else {
+      os_log("[SC] 🔍] Unexpected result %d for system extension request", result.rawValue)
+      status = .stopped
+      refreshExtensionState()
+      return
+    }
+    enableFilterConfiguration()
+  }
+  
+  func request(_ request: OSSystemExtensionRequest, didFailWithError error: Error) {
+    os_log("[SC] 🔍] System extension request failed: %@", error.localizedDescription)
+    status = .stopped
+    refreshExtensionState()
+  }
+  
+  func requestNeedsUserApproval(_ request: OSSystemExtensionRequest) {
+    os_log("[SC] 🔍] Extension %@ requires user approval", request.identifier)
+  }
+  
+  func request(_ request: OSSystemExtensionRequest,
+               actionForReplacingExtension existing: OSSystemExtensionProperties,
+               withExtension ext: OSSystemExtensionProperties) -> OSSystemExtensionRequest.ReplacementAction {
+    os_log("[SC] 🔍] Replacing extension %@ version %@ with version %@", request.identifier, existing.bundleShortVersion, ext.bundleShortVersion)
+    return .replace
+  }
+    
+    func request(_ request: OSSystemExtensionRequest, foundProperties properties: [OSSystemExtensionProperties]) {
+        os_log("[SC] 🔍] foundProperties extension %@", properties)
+    }
+
+  // MARK: - App Communication (Prompting the User)
+
+    //TODO: Cleanup
+  @objc func promptUser(aboutFlow flowInfo: [String: String], responseHandler: @escaping (Bool) -> Void) { }
+    func didSetUrls() { }
+    
+    func startBlocking(endDate: Date) {
+        print("activateNetworkBlocking+++++")
+        isActiveBlocking = true
+        dockManager.checAndStartShowDockTimer(endTime: endDate)
+    }
+    
+    func stopBlocking() {
+         print("deactivateNetworkBlocking+++++")
+        if AppPreferences.showNotificationOnCompletion {
+            LocalNotificationManager.scheduleNotification()
+        }
+        dockManager.stopShowingCountDownInDock()
+        isActiveBlocking = false
+    }
+    
+    func extendBlockTimer(by minutes: Int) {
+        guard minutes != 0, let timer = blockTimer else { return }
+        let delta = TimeInterval(minutes * 60)
+        timer.fireDate = timer.fireDate.addingTimeInterval(delta)
+        // Optionally also track a blockEndDate if you show a countdown
+        timerFireDate = timer.fireDate
+        dockManager.dockTimer?.fireDate = timer.fireDate
+        dockManager.timerFireDate = timer.fireDate
+        os_log("[SC] 🔍] Timer fire date updated to %{public}@", timerFireDate?.description ?? "Empty time")
+    }
+    
+    func cancelTimer() {
+        if let fireDate = timerFireDate {
+            os_log("[SC] 🔍] Cancelling timer scheduled for %{public}@", fireDate as NSDate)
+        }
+        blockTimer?.invalidate()
+        blockTimer = nil
+        timerFireDate = nil
+        self.isActiveBlocking = false
+    }
+    
+    func installLegacyLaunched(futureDuration: Date) {
+        selfControlDaemon.install(blockedDomains: AppPreferences.getBlockedDomains(), time: futureDuration)
+    }
+    
+    func updateLegacyBlockedList(newBlockedDomains: [String]) {
+        selfControlDaemon.updateBlocklist(newBlockedDomains)
+    }
+    
+    @MainActor func saveAndupdateBlockList(_ newBlockedDomains: [BlockedURL]) {
+        blockerStorage?.set(newBlockedDomains)
+        let urls = newBlockedDomains.compactMap(\.urls)
+        let flattened: [String] = urls.flatMap { $0 }
+        AppPreferences.setBlockedDomains(flattened)
+        setBlockedUrls(urls: flattened)
+    }
+}

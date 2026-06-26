@@ -71,7 +71,7 @@
     NSLog(@"XPC method called: getVersionWithReply");
     // We specifically don't check for authorization here.  Everyone is always allowed to get
     // the version of the helper tool.
-    reply(SELFCONTROL_VERSION_STRING);
+    reply(@"4.0.2");
 }
 
 @end

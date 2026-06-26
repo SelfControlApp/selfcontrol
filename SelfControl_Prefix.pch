@@ -4,10 +4,11 @@
 
 #ifdef __OBJC__
 
+#define SELFCONTROL_VERSION_STRING @"4.0.2"
+
 #import <Foundation/Foundation.h>
 #import <Cocoa/Cocoa.h>
 
-#import "version-header.h"
 #import "DeprecationSilencers.h"
 #import "SCUtility.h"
 #import "SCErr.h"

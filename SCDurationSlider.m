@@ -7,7 +7,6 @@
 
 #import "SCDurationSlider.h"
 #import "SCTimeIntervalFormatter.h"
-#import <TransformerKit/NSValueTransformer+TransformerKit.h>
 
 #define kValueTransformerName @"BlockDurationSliderTransformer"
 
@@ -47,15 +46,17 @@
 }
 
 - (void)registerMinutesValueTransformer {
-    [NSValueTransformer registerValueTransformerWithName: kValueTransformerName
-                                   transformedValueClass: [NSNumber class]
-                      returningTransformedValueWithBlock:^id _Nonnull(id  _Nonnull value) {
-        // if it's not a number or convertable to one, IDK man
-        if (![value respondsToSelector: @selector(floatValue)]) return @0;
-        
-        long minutesValue = lroundf([value floatValue]);
-        return @(minutesValue);
-    }];
+    
+//SS: TODO:
+//    [NSValueTransformer registerValueTransformerWithName: kValueTransformerName
+//                                   transformedValueClass: [NSNumber class]
+//                      returningTransformedValueWithBlock:^id _Nonnull(id  _Nonnull value) {
+//        // if it's not a number or convertable to one, IDK man
+//        if (![value respondsToSelector: @selector(floatValue)]) return @0;
+//        
+//        long minutesValue = lroundf([value floatValue]);
+//        return @(minutesValue);
+//    }];
 }
 
 - (NSInteger)durationValueMinutes {
@@ -63,13 +64,13 @@
 }
 
 - (void)bindDurationToObject:(id)obj keyPath:(NSString*)keyPath {
-    [self bind: @"value"
-      toObject: obj
-   withKeyPath: keyPath
-       options: @{
-                  NSContinuouslyUpdatesValueBindingOption: @YES,
-                  NSValueTransformerNameBindingOption: kValueTransformerName
-                  }];
+//    [self bind: @"value"
+//      toObject: obj
+//   withKeyPath: keyPath
+//       options: @{
+//                  NSContinuouslyUpdatesValueBindingOption: @YES,
+//                  NSValueTransformerNameBindingOption: kValueTransformerName
+//                  }];
 }
 
 - (NSString*)durationDescription {

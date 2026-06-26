@@ -9,7 +9,8 @@
 #import "SCSettings.h"
 
 #ifndef TESTING
-#import <Sentry/Sentry.h>
+//#import <Sentry/Sentry.h>
+//#import <Sentry/Sentry.h>
 #endif
 
 @implementation SCSentry
@@ -17,24 +18,24 @@
 //org.eyebeam.SelfControl
 + (void)startSentry:(NSString*)componentId {
 #ifndef TESTING
-    [SentrySDK startWithConfigureOptions:^(SentryOptions *options) {
-        options.dsn = @"https://58fbe7145368418998067f88896007b2@o504820.ingest.sentry.io/5592195";
-        options.releaseName = [NSString stringWithFormat: @"%@%@", componentId, SELFCONTROL_VERSION_STRING];
-        options.enableAutoSessionTracking = NO;
-        options.environment = @"dev";
-        
-        // make sure no data leaves the device if error reporting isn't enabled
-        options.beforeSend = ^SentryEvent * _Nullable(SentryEvent * _Nonnull event) {
-            if ([SCSentry errorReportingEnabled]) {
-                return event;
-            } else {
-                return NULL;
-            }
-        };
-    }];
-    [SentrySDK configureScope:^(SentryScope * _Nonnull scope) {
-        [scope setTagValue: [[NSLocale currentLocale] localeIdentifier] forKey: @"localeId"];
-    }];
+//    [SentrySDK startWithConfigureOptions:^(SentryOptions *options) {
+//        options.dsn = @"https://58fbe7145368418998067f88896007b2@o504820.ingest.sentry.io/5592195";
+//        options.releaseName = [NSString stringWithFormat: @"%@%@", componentId, SELFCONTROL_VERSION_STRING];
+//        options.enableAutoSessionTracking = NO;
+//        options.environment = @"dev";
+//        
+//        // make sure no data leaves the device if error reporting isn't enabled
+//        options.beforeSend = ^SentryEvent * _Nullable(SentryEvent * _Nonnull event) {
+//            if ([SCSentry errorReportingEnabled]) {
+//                return event;
+//            } else {
+//                return NULL;
+//            }
+//        };
+//    }];
+//    [SentrySDK configureScope:^(SentryScope * _Nonnull scope) {
+//        [scope setTagValue: [[NSLocale currentLocale] localeIdentifier] forKey: @"localeId"];
+//    }];
 #endif
 }
 
@@ -113,19 +114,19 @@
     [defaultsDict removeObjectForKey: @"SULastProfileSubmissionDate"];
 
 #ifndef TESTING
-    [SentrySDK configureScope:^(SentryScope * _Nonnull scope) {
-        [scope setContextValue: defaultsDict forKey: @"NSUserDefaults"];
-    }];
+//    [SentrySDK configureScope:^(SentryScope * _Nonnull scope) {
+//        [scope setContextValue: defaultsDict forKey: @"NSUserDefaults"];
+//    }];
 #endif
 }
 
 + (void)addBreadcrumb:(NSString*)message category:(NSString*)category {
 #ifndef TESTING
-    SentryBreadcrumb* crumb = [[SentryBreadcrumb alloc] init];
-    crumb.level = kSentryLevelInfo;
-    crumb.category = category;
-    crumb.message = message;
-    [SentrySDK addBreadcrumb: crumb];
+//    SentryBreadcrumb* crumb = [[SentryBreadcrumb alloc] init];
+//    crumb.level = kSentryLevelInfo;
+//    crumb.category = category;
+//    crumb.message = message;
+//    [SentrySDK addBreadcrumb: crumb];
 #endif
 }
 
@@ -147,7 +148,7 @@
     [[SCSettings sharedSettings] updateSentryContext];
     [SCSentry updateDefaultsContext];
 #ifndef TESTING
-    [SentrySDK captureError: error];
+//    [SentrySDK captureError: error];
 #endif
 }
 
@@ -170,11 +171,11 @@
     [SCSentry updateDefaultsContext];
     
 #ifndef TESTING
-    if (block != nil) {
-        [SentrySDK captureMessage: message withScopeBlock: block];
-    } else {
-        [SentrySDK captureMessage: message];
-    }
+//    if (block != nil) {
+//        [SentrySDK captureMessage: message withScopeBlock: block];
+//    } else {
+//        [SentrySDK captureMessage: message];
+//    }
 #endif
 }
 

@@ -232,10 +232,10 @@ int main(int argc, char* argv[]) {
             NSLog(@"%@", blockIsRunning ? @"YES" : @"NO");
         } else if ([arguments booleanValueForSignature: versionSig]) {
             [SCSentry addBreadcrumb: @"CLI method --version called" category: @"cli"];
-            NSLog(SELFCONTROL_VERSION_STRING);
+//            NSLog(SELFCONTROL_VERSION_STRING);
         } else {
             // help / usage message
-            printf("SelfControl CLI Tool v%s\n", [SELFCONTROL_VERSION_STRING UTF8String]);
+//            printf("SelfControl CLI Tool v%s\n", [SELFCONTROL_VERSION_STRING UTF8String]);
             printf("Usage: selfcontrol-cli [--uid <controlling user ID>] <command> [<args>]\n\n");
             printf("Valid commands:\n");
             printf("\n    start --> starts a SelfControl block\n");

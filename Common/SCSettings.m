@@ -9,7 +9,7 @@
 #import <AppKit/AppKit.h>
 
 #ifndef TESTING
-#import <Sentry/Sentry.h>
+//#import <Sentry/Sentry.h>
 #endif
 
 float const SYNC_INTERVAL_SECS = 30;
@@ -485,9 +485,9 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
     }
 
 #ifndef TESTING
-    [SentrySDK configureScope:^(SentryScope * _Nonnull scope) {
-        [scope setContextValue: dictCopy forKey: @"SCSettings"];
-    }];
+//    [SentrySDK configureScope:^(SentryScope * _Nonnull scope) {
+//        [scope setContextValue: dictCopy forKey: @"SCSettings"];
+//    }];
 #endif
 }
 

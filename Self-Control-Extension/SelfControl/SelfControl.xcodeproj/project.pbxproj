@@ -1,0 +1,1142 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		77BA53092D9D5E2A00863476 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77BA53082D9D5E2A00863476 /* NetworkExtension.framework */; };
+		9A441CE32E36024E00A521CC /* com.application.SelfControl.corebits.network.systemextension in Embed System Extensions */ = {isa = PBXBuildFile; fileRef = 77BA53062D9D5E2A00863476 /* com.application.SelfControl.corebits.network.systemextension */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		9AA492AE2F56E94200452252 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 9AA492AD2F56E94200452252 /* Sparkle */; };
+		9AC9E59E2F04357E0004D39C /* org.eyebeam.selfcontrold in Copy Daemon Launch Service */ = {isa = PBXBuildFile; fileRef = 9AC9E4EA2F041D570004D39C /* org.eyebeam.selfcontrold */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		9AD524CE2EC9F15500AAD5BF /* SelfControlWebExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 9AD524B12EC9B0EA00AAD5BF /* SelfControlWebExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		9AEB2C6E2FB249C00024E93A /* SelfControlBGService in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9A33B1E02FAF2127002AAA0F /* SelfControlBGService */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9A441CE12E36024300A521CC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 77BA52CE2D9D5D7700863476 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 77BA53052D9D5E2A00863476;
+			remoteInfo = SelfControlExtension;
+		};
+		9AC9E59A2F0434F00004D39C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 77BA52CE2D9D5D7700863476 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9AC9E4E92F041D570004D39C;
+			remoteInfo = org.eyebeam.selfcontrold;
+		};
+		9AD524CF2EC9F15500AAD5BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 77BA52CE2D9D5D7700863476 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9AD524B02EC9B0EA00AAD5BF;
+			remoteInfo = "SelfControl Rules Extension";
+		};
+		9AEB2C6F2FB249CC0024E93A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 77BA52CE2D9D5D7700863476 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9A33B1DF2FAF2127002AAA0F;
+			remoteInfo = SelfControlBGService;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9A33B1DE2FAF2127002AAA0F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		9A33B1E72FAF2153002AAA0F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Library/LaunchAgents;
+			dstSubfolderSpec = 1;
+			files = (
+				9AEB2C6E2FB249C00024E93A /* SelfControlBGService in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9AC9E4E82F041D570004D39C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		9AC9E59D2F0435560004D39C /* Copy Daemon Launch Service */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Library/LaunchServices;
+			dstSubfolderSpec = 1;
+			files = (
+				9AC9E59E2F04357E0004D39C /* org.eyebeam.selfcontrold in Copy Daemon Launch Service */,
+			);
+			name = "Copy Daemon Launch Service";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9AD524D12EC9F15500AAD5BF /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				9AD524CE2EC9F15500AAD5BF /* SelfControlWebExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9AFC129E2E355671003B5455 /* Embed System Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(SYSTEM_EXTENSIONS_FOLDER_PATH)";
+			dstSubfolderSpec = 16;
+			files = (
+				9A441CE32E36024E00A521CC /* com.application.SelfControl.corebits.network.systemextension in Embed System Extensions */,
+			);
+			name = "Embed System Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		77BA52D62D9D5D7700863476 /* SelfControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SelfControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		77BA53062D9D5E2A00863476 /* com.application.SelfControl.corebits.network.systemextension */ = {isa = PBXFileReference; explicitFileType = "wrapper.system-extension"; includeInIndex = 0; path = com.application.SelfControl.corebits.network.systemextension; sourceTree = BUILT_PRODUCTS_DIR; };
+		77BA53082D9D5E2A00863476 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
+		9A33B1E02FAF2127002AAA0F /* SelfControlBGService */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SelfControlBGService; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A7FFA0B2E91950D007D4A0D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		9AC9E4EA2F041D570004D39C /* org.eyebeam.selfcontrold */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = org.eyebeam.selfcontrold; sourceTree = BUILT_PRODUCTS_DIR; };
+		9AD524B12EC9B0EA00AAD5BF /* SelfControlWebExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SelfControlWebExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		77BA53142D9D5E2A00863476 /* Exceptions for "SelfControlNetworkExtension" folder in "SelfControlNetworkExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 77BA53052D9D5E2A00863476 /* SelfControlNetworkExtension */;
+		};
+		9A240F092FB042C900A06370 /* Exceptions for "SelfControlBGService" folder in "SelfControl" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				com.application.SelfControl.corebits.bgservice.plist,
+				Shared/AppToExtensionExtension.swift,
+				Shared/HelperServiceProtocol.swift,
+			);
+			target = 77BA52D52D9D5D7700863476 /* SelfControl */;
+		};
+		9A33B1F52FAFA3FE002AAA0F /* Exceptions for "SelfControl" folder in "SelfControl" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Main/SelfControlBGServiceSupport/SelfControlServiceSupport.swift,
+			);
+			target = 77BA52D52D9D5D7700863476 /* SelfControl */;
+		};
+		9A6873742E280E320054AD3F /* Exceptions for "SelfControl" folder in "SelfControlNetworkExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Main/Preferences/AppPreferences.swift,
+			);
+			target = 77BA53052D9D5E2A00863476 /* SelfControlNetworkExtension */;
+		};
+		9A6873762E2814B30054AD3F /* Exceptions for "SelfControlNetworkExtension" folder in "SelfControl" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				BlockOrAllowList.swift,
+				"String+URL.swift",
+			);
+			target = 77BA52D52D9D5D7700863476 /* SelfControl */;
+		};
+		9A9AA3AC2EE87BA000AF720F /* Exceptions for "SelfControl Rules Extension" folder in "SelfControl" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				SafariExtensionConstants.swift,
+			);
+			target = 77BA52D52D9D5D7700863476 /* SelfControl */;
+		};
+		9AC9E5972F0422140004D39C /* Exceptions for "org.eyebeam.selfcontrold" folder in "SelfControl" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Common/SCErr.m,
+				Common/SCFileWatcher.m,
+				Common/SCSettings.m,
+				Common/SCXPCAuthorization.m,
+				Common/SCXPCClient.m,
+				Common/Utilities/SCConstants.m,
+				Common/Utilities/SCMiscUtilities.m,
+				org.eyebeam.selfcontrold.plist,
+			);
+			target = 77BA52D52D9D5D7700863476 /* SelfControl */;
+		};
+		9ACDADBC2FB9DFB400013EC8 /* Exceptions for "SelfControlBGService" folder in "SelfControlNetworkExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Shared/AppToExtensionExtension.swift,
+			);
+			target = 77BA53052D9D5E2A00863476 /* SelfControlNetworkExtension */;
+		};
+		9AD524C32EC9B0EA00AAD5BF /* Exceptions for "SelfControl Rules Extension" folder in "SelfControlWebExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 9AD524B02EC9B0EA00AAD5BF /* SelfControlWebExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		77BA52D82D9D5D7700863476 /* SelfControl */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				9A33B1F52FAFA3FE002AAA0F /* Exceptions for "SelfControl" folder in "SelfControl" target */,
+				9A6873742E280E320054AD3F /* Exceptions for "SelfControl" folder in "SelfControlNetworkExtension" target */,
+			);
+			path = SelfControl;
+			sourceTree = "<group>";
+		};
+		77BA530A2D9D5E2A00863476 /* SelfControlNetworkExtension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				9A6873762E2814B30054AD3F /* Exceptions for "SelfControlNetworkExtension" folder in "SelfControl" target */,
+				77BA53142D9D5E2A00863476 /* Exceptions for "SelfControlNetworkExtension" folder in "SelfControlNetworkExtension" target */,
+			);
+			path = SelfControlNetworkExtension;
+			sourceTree = "<group>";
+		};
+		9A33B1E12FAF2127002AAA0F /* SelfControlBGService */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				9A240F092FB042C900A06370 /* Exceptions for "SelfControlBGService" folder in "SelfControl" target */,
+				9ACDADBC2FB9DFB400013EC8 /* Exceptions for "SelfControlBGService" folder in "SelfControlNetworkExtension" target */,
+			);
+			path = SelfControlBGService;
+			sourceTree = "<group>";
+		};
+		9AC9E4EB2F041D570004D39C /* org.eyebeam.selfcontrold */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				9AC9E5972F0422140004D39C /* Exceptions for "org.eyebeam.selfcontrold" folder in "SelfControl" target */,
+			);
+			path = org.eyebeam.selfcontrold;
+			sourceTree = "<group>";
+		};
+		9AD524B52EC9B0EA00AAD5BF /* SelfControl Rules Extension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				9A9AA3AC2EE87BA000AF720F /* Exceptions for "SelfControl Rules Extension" folder in "SelfControl" target */,
+				9AD524C32EC9B0EA00AAD5BF /* Exceptions for "SelfControl Rules Extension" folder in "SelfControlWebExtension" target */,
+			);
+			path = "SelfControl Rules Extension";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		77BA52D32D9D5D7700863476 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9AA492AE2F56E94200452252 /* Sparkle in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		77BA53032D9D5E2A00863476 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				77BA53092D9D5E2A00863476 /* NetworkExtension.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A33B1DD2FAF2127002AAA0F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9AC9E4E72F041D570004D39C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9AD524AE2EC9B0EA00AAD5BF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		77BA52CD2D9D5D7700863476 = {
+			isa = PBXGroup;
+			children = (
+				77BA52D82D9D5D7700863476 /* SelfControl */,
+				77BA530A2D9D5E2A00863476 /* SelfControlNetworkExtension */,
+				9AD524B52EC9B0EA00AAD5BF /* SelfControl Rules Extension */,
+				9AC9E4EB2F041D570004D39C /* org.eyebeam.selfcontrold */,
+				9A33B1E12FAF2127002AAA0F /* SelfControlBGService */,
+				77BA53072D9D5E2A00863476 /* Frameworks */,
+				77BA52D72D9D5D7700863476 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		77BA52D72D9D5D7700863476 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				77BA52D62D9D5D7700863476 /* SelfControl.app */,
+				77BA53062D9D5E2A00863476 /* com.application.SelfControl.corebits.network.systemextension */,
+				9AD524B12EC9B0EA00AAD5BF /* SelfControlWebExtension.appex */,
+				9AC9E4EA2F041D570004D39C /* org.eyebeam.selfcontrold */,
+				9A33B1E02FAF2127002AAA0F /* SelfControlBGService */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		77BA53072D9D5E2A00863476 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				77BA53082D9D5E2A00863476 /* NetworkExtension.framework */,
+				9A7FFA0B2E91950D007D4A0D /* Cocoa.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		77BA52D52D9D5D7700863476 /* SelfControl */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 77BA52E52D9D5D7A00863476 /* Build configuration list for PBXNativeTarget "SelfControl" */;
+			buildPhases = (
+				77BA52D22D9D5D7700863476 /* Sources */,
+				77BA52D32D9D5D7700863476 /* Frameworks */,
+				77BA52D42D9D5D7700863476 /* Resources */,
+				9AFC129E2E355671003B5455 /* Embed System Extensions */,
+				9AD524D12EC9F15500AAD5BF /* Embed Foundation Extensions */,
+				9AC9E59D2F0435560004D39C /* Copy Daemon Launch Service */,
+				9A33B1E72FAF2153002AAA0F /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9AEB2C702FB249CC0024E93A /* PBXTargetDependency */,
+				9AC9E59B2F0434F00004D39C /* PBXTargetDependency */,
+				9A441CE22E36024300A521CC /* PBXTargetDependency */,
+				9AD524D02EC9F15500AAD5BF /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				77BA52D82D9D5D7700863476 /* SelfControl */,
+			);
+			name = SelfControl;
+			packageProductDependencies = (
+				9AA492AD2F56E94200452252 /* Sparkle */,
+			);
+			productName = SelfControl;
+			productReference = 77BA52D62D9D5D7700863476 /* SelfControl.app */;
+			productType = "com.apple.product-type.application";
+		};
+		77BA53052D9D5E2A00863476 /* SelfControlNetworkExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 77BA53152D9D5E2A00863476 /* Build configuration list for PBXNativeTarget "SelfControlNetworkExtension" */;
+			buildPhases = (
+				77BA53022D9D5E2A00863476 /* Sources */,
+				77BA53032D9D5E2A00863476 /* Frameworks */,
+				77BA53042D9D5E2A00863476 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				77BA530A2D9D5E2A00863476 /* SelfControlNetworkExtension */,
+			);
+			name = SelfControlNetworkExtension;
+			packageProductDependencies = (
+			);
+			productName = SelfControlExtension;
+			productReference = 77BA53062D9D5E2A00863476 /* com.application.SelfControl.corebits.network.systemextension */;
+			productType = "com.apple.product-type.system-extension";
+		};
+		9A33B1DF2FAF2127002AAA0F /* SelfControlBGService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9A33B1E62FAF2127002AAA0F /* Build configuration list for PBXNativeTarget "SelfControlBGService" */;
+			buildPhases = (
+				9A33B1DC2FAF2127002AAA0F /* Sources */,
+				9A33B1DD2FAF2127002AAA0F /* Frameworks */,
+				9A33B1DE2FAF2127002AAA0F /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				9A33B1E12FAF2127002AAA0F /* SelfControlBGService */,
+			);
+			name = SelfControlBGService;
+			packageProductDependencies = (
+			);
+			productName = SelfControlBGService;
+			productReference = 9A33B1E02FAF2127002AAA0F /* SelfControlBGService */;
+			productType = "com.apple.product-type.tool";
+		};
+		9AC9E4E92F041D570004D39C /* org.eyebeam.selfcontrold */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9AC9E4EE2F041D570004D39C /* Build configuration list for PBXNativeTarget "org.eyebeam.selfcontrold" */;
+			buildPhases = (
+				9AC9E4E62F041D570004D39C /* Sources */,
+				9AC9E4E72F041D570004D39C /* Frameworks */,
+				9AC9E4E82F041D570004D39C /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				9AC9E4EB2F041D570004D39C /* org.eyebeam.selfcontrold */,
+			);
+			name = org.eyebeam.selfcontrold;
+			packageProductDependencies = (
+			);
+			productName = org.eyebeam.selfcontrold;
+			productReference = 9AC9E4EA2F041D570004D39C /* org.eyebeam.selfcontrold */;
+			productType = "com.apple.product-type.tool";
+		};
+		9AD524B02EC9B0EA00AAD5BF /* SelfControlWebExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9AD524C42EC9B0EA00AAD5BF /* Build configuration list for PBXNativeTarget "SelfControlWebExtension" */;
+			buildPhases = (
+				9AD524AD2EC9B0EA00AAD5BF /* Sources */,
+				9AD524AE2EC9B0EA00AAD5BF /* Frameworks */,
+				9AD524AF2EC9B0EA00AAD5BF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				9AD524B52EC9B0EA00AAD5BF /* SelfControl Rules Extension */,
+			);
+			name = SelfControlWebExtension;
+			packageProductDependencies = (
+			);
+			productName = "SelfControl Rules Extension";
+			productReference = 9AD524B12EC9B0EA00AAD5BF /* SelfControlWebExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		77BA52CE2D9D5D7700863476 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2600;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					77BA52D52D9D5D7700863476 = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					77BA53052D9D5E2A00863476 = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					9A33B1DF2FAF2127002AAA0F = {
+						CreatedOnToolsVersion = 26.0;
+					};
+					9AC9E4E92F041D570004D39C = {
+						CreatedOnToolsVersion = 26.0;
+					};
+					9AD524B02EC9B0EA00AAD5BF = {
+						CreatedOnToolsVersion = 26.0;
+					};
+				};
+			};
+			buildConfigurationList = 77BA52D12D9D5D7700863476 /* Build configuration list for PBXProject "SelfControl" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 77BA52CD2D9D5D7700863476;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				9AA492AC2F56E94200452252 /* XCRemoteSwiftPackageReference "Sparkle" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 77BA52D72D9D5D7700863476 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				77BA52D52D9D5D7700863476 /* SelfControl */,
+				77BA53052D9D5E2A00863476 /* SelfControlNetworkExtension */,
+				9AD524B02EC9B0EA00AAD5BF /* SelfControlWebExtension */,
+				9AC9E4E92F041D570004D39C /* org.eyebeam.selfcontrold */,
+				9A33B1DF2FAF2127002AAA0F /* SelfControlBGService */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		77BA52D42D9D5D7700863476 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		77BA53042D9D5E2A00863476 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9AD524AF2EC9B0EA00AAD5BF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		77BA52D22D9D5D7700863476 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		77BA53022D9D5E2A00863476 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A33B1DC2FAF2127002AAA0F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9AC9E4E62F041D570004D39C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9AD524AD2EC9B0EA00AAD5BF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9A441CE22E36024300A521CC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 77BA53052D9D5E2A00863476 /* SelfControlNetworkExtension */;
+			targetProxy = 9A441CE12E36024300A521CC /* PBXContainerItemProxy */;
+		};
+		9AC9E59B2F0434F00004D39C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9AC9E4E92F041D570004D39C /* org.eyebeam.selfcontrold */;
+			targetProxy = 9AC9E59A2F0434F00004D39C /* PBXContainerItemProxy */;
+		};
+		9AD524D02EC9F15500AAD5BF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9AD524B02EC9B0EA00AAD5BF /* SelfControlWebExtension */;
+			targetProxy = 9AD524CF2EC9F15500AAD5BF /* PBXContainerItemProxy */;
+		};
+		9AEB2C702FB249CC0024E93A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9A33B1DF2FAF2127002AAA0F /* SelfControlBGService */;
+			targetProxy = 9AEB2C6F2FB249CC0024E93A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		77BA52E32D9D5D7A00863476 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		77BA52E42D9D5D7A00863476 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		77BA52E62D9D5D7A00863476 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SelfControl/Main/SelfControl.entitlements;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 31711;
+				DEVELOPMENT_ASSET_PATHS = "\"SelfControl/Preview Content\"";
+				DEVELOPMENT_TEAM = X6FQ433AWK;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GCC_PREFIX_HEADER = org.eyebeam.selfcontrold/SCDaemon_Prefix.pch;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = SelfControl/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				MARKETING_VERSION = 1.9;
+				PRODUCT_BUNDLE_IDENTIFIER = com.application.SelfControl.corebits;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Self Control app dev";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "SelfControl/Main/SCDaemonSupport/SelfControl-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		77BA52E72D9D5D7A00863476 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SelfControl/Main/SelfControl.entitlements;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 31711;
+				DEVELOPMENT_ASSET_PATHS = "\"SelfControl/Preview Content\"";
+				DEVELOPMENT_TEAM = X6FQ433AWK;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GCC_PREFIX_HEADER = org.eyebeam.selfcontrold/SCDaemon_Prefix.pch;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = SelfControl/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				MARKETING_VERSION = 1.9;
+				PRODUCT_BUNDLE_IDENTIFIER = com.application.SelfControl.corebits;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Self Control app dev";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "SelfControl/Main/SCDaemonSupport/SelfControl-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		77BA53162D9D5E2A00863476 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = SelfControlNetworkExtension/SelfControlExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 26210;
+				DEVELOPMENT_TEAM = X6FQ433AWK;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SelfControlNetworkExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SelfControlNetworkExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "DNS lookup";
+				INFOPLIST_KEY_NSSystemExtensionUsageDescription = "testing extension";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "-lbsm";
+				PRODUCT_BUNDLE_IDENTIFIER = com.application.SelfControl.corebits.network;
+				PRODUCT_NAME = "$(inherited)";
+				PROVISIONING_PROFILE_SPECIFIER = "Self Control Dev ext";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		77BA53172D9D5E2A00863476 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = SelfControlNetworkExtension/SelfControlExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 26210;
+				DEVELOPMENT_TEAM = X6FQ433AWK;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SelfControlNetworkExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SelfControlNetworkExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "DNS lookup";
+				INFOPLIST_KEY_NSSystemExtensionUsageDescription = "testing extension";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "-lbsm";
+				PRODUCT_BUNDLE_IDENTIFIER = com.application.SelfControl.corebits.network;
+				PRODUCT_NAME = "$(inherited)";
+				PROVISIONING_PROFILE_SPECIFIER = "Self Control Dev ext";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		9A33B1E42FAF2127002AAA0F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = X6FQ433AWK;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SelfControlBGService/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				PRODUCT_BUNDLE_IDENTIFIER = com.application.SelfControl.corebits.bgservice;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		9A33B1E52FAF2127002AAA0F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = X6FQ433AWK;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SelfControlBGService/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				PRODUCT_BUNDLE_IDENTIFIER = com.application.SelfControl.corebits.bgservice;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		9AC9E4EF2F041D570004D39C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				AUTOMATION_APPLE_EVENTS = NO;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 410;
+				DEVELOPMENT_TEAM = X6FQ433AWK;
+				ENABLE_HARDENED_RUNTIME = NO;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = NO;
+				GCC_PREFIX_HEADER = org.eyebeam.selfcontrold/SCDaemon_Prefix.pch;
+				INFOPLIST_FILE = "org.eyebeam.selfcontrold/selfcontrold-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-sectcreate",
+					__TEXT,
+					__info_plist,
+					"org.eyebeam.selfcontrold/selfcontrold-Info.plist",
+					"-sectcreate",
+					__TEXT,
+					__launchd_plist,
+					org.eyebeam.selfcontrold/org.eyebeam.selfcontrold.plist,
+					"$(inherited)",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.eyebeam.selfcontrold;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				RUNTIME_EXCEPTION_ALLOW_DYLD_ENVIRONMENT_VARIABLES = NO;
+				RUNTIME_EXCEPTION_ALLOW_JIT = NO;
+				RUNTIME_EXCEPTION_ALLOW_UNSIGNED_EXECUTABLE_MEMORY = NO;
+				RUNTIME_EXCEPTION_DEBUGGING_TOOL = NO;
+				RUNTIME_EXCEPTION_DISABLE_EXECUTABLE_PAGE_PROTECTION = NO;
+				RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION = NO;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		9AC9E4F02F041D570004D39C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				AUTOMATION_APPLE_EVENTS = NO;
+				CODE_SIGN_IDENTITY = "Developer ID Application: CoreBits Software Solutions Private Limited (X6FQ433AWK)";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 410;
+				DEVELOPMENT_TEAM = X6FQ433AWK;
+				ENABLE_HARDENED_RUNTIME = NO;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = NO;
+				GCC_PREFIX_HEADER = org.eyebeam.selfcontrold/SCDaemon_Prefix.pch;
+				INFOPLIST_FILE = "org.eyebeam.selfcontrold/selfcontrold-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-sectcreate",
+					__TEXT,
+					__info_plist,
+					"org.eyebeam.selfcontrold/selfcontrold-Info.plist",
+					"-sectcreate",
+					__TEXT,
+					__launchd_plist,
+					org.eyebeam.selfcontrold/org.eyebeam.selfcontrold.plist,
+					"$(inherited)",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.eyebeam.selfcontrold;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				RUNTIME_EXCEPTION_ALLOW_DYLD_ENVIRONMENT_VARIABLES = NO;
+				RUNTIME_EXCEPTION_ALLOW_JIT = NO;
+				RUNTIME_EXCEPTION_ALLOW_UNSIGNED_EXECUTABLE_MEMORY = NO;
+				RUNTIME_EXCEPTION_DEBUGGING_TOOL = NO;
+				RUNTIME_EXCEPTION_DISABLE_EXECUTABLE_PAGE_PROTECTION = NO;
+				RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION = NO;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		9AD524C52EC9B0EA00AAD5BF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "SelfControl Rules Extension/SelfControl Rules Extension.entitlements";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 26210;
+				DEVELOPMENT_TEAM = X6FQ433AWK;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
+				ENABLE_RESOURCE_ACCESS_USB = NO;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "SelfControl Rules Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = SelfControlWebExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.application.SelfControl.corebits.SelfControl-Safari-Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "SelfControl Dev Net Ext";
+				REGISTER_APP_GROUPS = YES;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		9AD524C62EC9B0EA00AAD5BF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "SelfControl Rules Extension/SelfControl Rules Extension.entitlements";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 26210;
+				DEVELOPMENT_TEAM = X6FQ433AWK;
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = X6FQ433AWK;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
+				ENABLE_RESOURCE_ACCESS_USB = NO;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "SelfControl Rules Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = SelfControlWebExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.application.SelfControl.corebits.SelfControl-Safari-Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "SelfControl Dev Net Ext";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "SelfControl Dev Net Ext";
+				REGISTER_APP_GROUPS = YES;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		77BA52D12D9D5D7700863476 /* Build configuration list for PBXProject "SelfControl" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				77BA52E32D9D5D7A00863476 /* Debug */,
+				77BA52E42D9D5D7A00863476 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		77BA52E52D9D5D7A00863476 /* Build configuration list for PBXNativeTarget "SelfControl" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				77BA52E62D9D5D7A00863476 /* Debug */,
+				77BA52E72D9D5D7A00863476 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		77BA53152D9D5E2A00863476 /* Build configuration list for PBXNativeTarget "SelfControlNetworkExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				77BA53162D9D5E2A00863476 /* Debug */,
+				77BA53172D9D5E2A00863476 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9A33B1E62FAF2127002AAA0F /* Build configuration list for PBXNativeTarget "SelfControlBGService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9A33B1E42FAF2127002AAA0F /* Debug */,
+				9A33B1E52FAF2127002AAA0F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9AC9E4EE2F041D570004D39C /* Build configuration list for PBXNativeTarget "org.eyebeam.selfcontrold" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9AC9E4EF2F041D570004D39C /* Debug */,
+				9AC9E4F02F041D570004D39C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9AD524C42EC9B0EA00AAD5BF /* Build configuration list for PBXNativeTarget "SelfControlWebExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9AD524C52EC9B0EA00AAD5BF /* Debug */,
+				9AD524C62EC9B0EA00AAD5BF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9AA492AC2F56E94200452252 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.9.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9AA492AD2F56E94200452252 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9AA492AC2F56E94200452252 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 77BA52CE2D9D5D7700863476 /* Project object */;
+}
