@@ -14,6 +14,7 @@ extension HelperService {
     
     static func send_didEnableWebExtension(_ extensionTypeRawValue: String, state: Bool) {
         proxyConnectionService?.didEnableWebExtension(extensionTypeRawValue, state: state)
+        AppDelegate.shared.service.networkExtension.sendMessageToSetActiveBrowserExtension(extensionTypeRawValue, state: state)
     }
     
     static func send_didStartedBlocking(_ state: Bool, _ endDate: Date) {

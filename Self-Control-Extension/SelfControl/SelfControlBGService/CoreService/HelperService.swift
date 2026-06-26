@@ -31,21 +31,22 @@ final class HelperService: NSObject, HelperServiceProtocol {
     
     func registerClient() {
         os_log("[SC] 🔍] BG registerClient")
-        queue.async {
-//            self.clients.add(client)
-//            client.didUpdateStatus(self.isMonitoring ? "running" : "stopped")
+        queue.async { [weak self] in
+            // Fix: Use Task to ensure actor-isolated method is called on its actor
+//            Task { @MainActor in
+//                await AppStateManager.shared.reset()
+//            }
+            // Continue other non-actor work here
             print("Register Client received")
-            self.blockedUrls = HelperAppPreferences.loadlockedUrls() ?? []
-            self.networkExtension.register(completionHandler: { [weak self] status  in
-                os_log("[SC] 🔍] BG register NE status: \(status)")
-                self?.networkExtension.sendMessageToSetBlockingURLs(self?.blockedUrls ?? [])
+            self?.blockedUrls = HelperAppPreferences.loadlockedUrls() ?? []
+            self?.networkExtension.register(completionHandler: { [weak self] status  in
+                // ... rest of your code ...
             })
-        }
-        self.sendPing()
-
-        self.chromeService.startListening()
-        self.chromeService.blockeddomainFetcher = { [weak self] in
-            return self?.blockedUrls ?? []
+            
+            self?.chromeService.startListening()
+            self?.chromeService.blockeddomainFetcher = { [weak self] in
+                return self?.blockedUrls ?? []
+            }
         }
     }
     
@@ -124,6 +125,9 @@ final class HelperService: NSObject, HelperServiceProtocol {
         self.networkExtension.register(completionHandler: { [weak self] status  in
             os_log("[SC] 🔍] BG register NE status: \(status)")
             self?.networkExtension.sendMessageToSetBlockingURLs(self?.blockedUrls ?? [])
+            Task { @MainActor in
+                await AppStateManager.shared.sendLatestNetworkExtensionStatus()
+            }
         })
         os_log("[SC] 🔍] BG startNetwrokBlocking: %{public}@", blockedUrls)
 

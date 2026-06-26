@@ -202,4 +202,24 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
 //
 //        try? (data as NSDictionary).write(to: url)
 //    }
+    
+    override func additionalRequestHeaders(for url: URL) async -> [String : String]? {
+        os_log(.default, "[SC] 🔍] Safari additionalRequestHeaders %{public}@", url.absoluteString)
+        return await super.additionalRequestHeaders(for: url)
+    }
+    
+    override func page(_ page: SFSafariPage, willNavigateTo url: URL?) {
+        os_log(.default, "[SC] 🔍] Safari page(_ page: SFSafariPage, willNavigateTo: %{public}@", url?.absoluteString ?? url?.path() ?? url?.debugDescription ?? "nil")
+        
+        if let urlString = url?.absoluteString, ping.blockedURL.contains(where: { urlString.contains($0) }) {
+            os_log("[SC] 🚫 Blocking and redirecting: %{public}@", urlString)
+            
+            Task {
+                await page.containingTab().navigate(to: URL(string: redirectURL)!)
+            }
+//            page.dispatchMessageToScript(withName: "REDIRECT_BLOCKED_URL", userInfo: ["redirect": redirectURL])
+        } else {
+            os_log("[SC] 🔍 Blocked URL: %{public}@", ping.blockedURL)
+        }
+    }
 }

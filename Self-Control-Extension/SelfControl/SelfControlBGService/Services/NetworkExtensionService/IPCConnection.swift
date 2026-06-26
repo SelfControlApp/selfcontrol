@@ -46,7 +46,11 @@ class IPCConnection: NSObject, NSSecureCoding {
             completionHandler(true)
             return
         }
-        
+        // Fix: Use Task to ensure actor-isolated method is called on its actor
+        Task { @MainActor in
+            await AppStateManager.shared.reset()
+        }
+
         let newConnection = NSXPCConnection(machServiceName: "X6FQ433AWK.com.application.SelfControl.corebits.network", options: [])
         
         // The exported object is the delegate.

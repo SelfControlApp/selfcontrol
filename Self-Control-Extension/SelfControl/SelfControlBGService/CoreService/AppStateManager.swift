@@ -51,4 +51,9 @@ actor AppStateManager {
         isSafariExtensionRunning = false
         isChromeExtensionRunning = false
     }
+    
+    func sendLatestNetworkExtensionStatus() {
+        HelperService.send_didEnableWebExtension(WEBExtension.safari.rawValue, state: isSafariExtensionRunning)
+        HelperService.send_didEnableWebExtension(WEBExtension.chrome.rawValue, state: isChromeExtensionRunning)
+    }
 }
