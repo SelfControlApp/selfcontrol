@@ -1,12 +1,11 @@
 {
   "manifest_version": 3,
-  "name": "Dynamic URL Blocker",
+  "name": "SelfControl Blocker",
   "version": "1.0.0",
   "description": "Block websites by typing them into a popup. Uses dynamic Declarative Net Request rules.",
   "permissions": [
     "declarativeNetRequest",
     "storage",
-    "scripting",
     "alarms"
   ],
   "host_permissions": [
@@ -19,6 +18,6 @@
   },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Dynamic URL Blocker"
+    "default_title": "SelfControl Blocker"
   }
 }
